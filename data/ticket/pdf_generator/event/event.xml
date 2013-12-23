@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<event name="Cantus" date="21 December 2013">
+    <our_union short_name="VTK">
+        <name>Vlaamse Technische Kring</name>
+        <logo>data/images/logo/logo.svg</logo>
+    </our_union>
+    <tickets>
+        <ticket>
+            <name>Kristof Mari&#xeb;n</name>
+            <status>Sold</status>
+            <option>Water (Member)</option>
+            <number>1105679045</number>
+            <bookdate>21/12/2013 18:30</bookdate>
+            <solddate>21/12/2013 18:30</solddate>
+            <member>1</member>
+        </ticket>
+        <ticket>
+            <name>Kristof Mari&#xeb;n</name>
+            <status>Sold</status>
+            <option>Water (Member)</option>
+            <number>1277011971</number>
+            <bookdate>21/12/2013 18:30</bookdate>
+            <solddate>21/12/2013 18:30</solddate>
+            <member>1</member>
+        </ticket>
+        <ticket>
+            <name>Kristof Mari&#xeb;n</name>
+            <status>Sold</status>
+            <option>Bier (Member)</option>
+            <number>62796661</number>
+            <bookdate>21/12/2013 18:30</bookdate>
+            <solddate>21/12/2013 18:30</solddate>
+            <member>1</member>
+        </ticket>
+        <ticket>
+            <name>Kristof Mari&#xeb;n</name>
+            <status>Sold</status>
+            <option>Bier (Member)</option>
+            <number>1915001285</number>
+            <bookdate>21/12/2013 18:30</bookdate>
+            <solddate>21/12/2013 18:30</solddate>
+            <member>1</member>
+        </ticket>
+        <ticket>
+            <name>Kristof Mari&#xeb;n</name>
+            <status>Sold</status>
+            <option>Bier (Member)</option>
+            <number>307376854</number>
+            <bookdate>21/12/2013 18:30</bookdate>
+            <solddate>21/12/2013 18:30</solddate>
+            <member>1</member>
+        </ticket>
+    </tickets>
+</event>

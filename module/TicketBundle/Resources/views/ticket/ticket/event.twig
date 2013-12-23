@@ -47,6 +47,11 @@
                 </dl>
             {% endif %}
 
+            {% if event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium) %}
+                <h2>{{ translate('Book Tickets') }}</h2>
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            {% endif %}
 
             <h2>{{ translate('Your Tickets') }}</h2>
 
@@ -75,12 +80,6 @@
                     </tr>
                 {% endfor %}
             </table>
-
-            {% if event.isStillBookable() %}
-                <h2>{{ translate('Book Tickets') }}</h2>
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(form) }}
-            {% endif %}
         </div>
     </div>
 

@@ -35,7 +35,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MailingListController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class MailingListController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {

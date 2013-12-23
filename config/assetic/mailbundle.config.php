@@ -54,6 +54,8 @@ return array(
         ),
         'mail_admin_prof' => array(
             '@common_jquery',
+            '@gollum_css',
+            '@gollum_js',
             '@admin_css',
             '@admin_js',
         ),

@@ -13,7 +13,7 @@ use SyllabusBundle\Entity\Subject\Comment as CommentEntity,
  */
 class Reply extends EntityRepository
 {
-    public function findLast($nb = 10)
+    public function findLastQuery($nb = 10)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -24,13 +24,12 @@ class Reply extends EntityRepository
             )
             ->orderBy('r.date', 'DESC')
             ->setMaxResults($nb)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByComment(CommentEntity $comment)
+    public function findAllByCommentQuery(CommentEntity $comment)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -40,8 +39,7 @@ class Reply extends EntityRepository
             )
             ->orderBy('r.date', 'ASC')
             ->setParameter('comment', $comment)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

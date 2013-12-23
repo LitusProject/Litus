@@ -25,7 +25,9 @@ class Barcode extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode', 'b')
-            ->where($query->expr()->eq('b.barcode', ':barcode'))
+            ->where(
+                $query->expr()->eq('b.barcode', ':barcode')
+            )
             ->setParameter('barcode', $barcode)
             ->setMaxResults(1)
             ->getQuery()

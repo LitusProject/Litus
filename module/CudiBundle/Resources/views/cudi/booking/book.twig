@@ -89,10 +89,10 @@
                                     <td colspan="7"></td>
                                 </tr>
 
-                                <tr class="course-title">
-                                    <td colspan="7">
+                                <tr {% if null != subjectArticle['subject'] %}class="course-title"{% endif %}>
+                                    <td colspan="7" {% if null == subjectArticle['subject'] %}style="border: none;"{% endif %}>
                                         {% if null == subjectArticle['subject'] %}
-                                            {{ translate('General') }}
+                                            <h1>{{ translate('General') }}</h1>
                                         {% else %}
                                             {{ subjectArticle['subject'].getCode() }} - {{ subjectArticle['subject'].getName() }}
                                         {% endif %}

@@ -135,6 +135,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('cudi_admin_sales_article', 'cancelBookings') %}
+            <div class="sidebox">
+                <div class="title">Cancel Bookings</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to cancel all open bookings of article!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="deleteBookings">&rarr; Cancel Bookings</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal hide fade" id="sellProfVersion">
@@ -174,6 +187,25 @@
             </div>
         </div>
     </div>
+
+    <div class="modal hide fade" id="cancelBookingsModal">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Cancel Bookings
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to cancel all open bookings of this article!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="cancelBookings" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -185,6 +217,7 @@
 
             $('.sellProfVersion').click(openSellProfModal);
             $('.assignAll').click(openAssignAllModal);
+            $('.deleteBookings').click(openDeleteBookingsModal);
 
             {% if article.getMainArticle().isInternal() %}
             var field = $('<span>').css({
@@ -211,6 +244,7 @@
                 });
             {% endif %}
         });
+
         function openSellProfModal(e) {
             var $this = $(this);
 
@@ -221,6 +255,7 @@
             });
             sellProfVersion.modal();
         }
+
         function openAssignAllModal(e) {
             var $this = $(this);
 
@@ -230,6 +265,17 @@
                 window.location.href = '{{ url('cudi_admin_sales_article', {"action": "assignAll", "id": article.getId()})}}';
             });
             assignAllBooking.modal();
+        }
+
+        function openDeleteBookingsModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var cancelBookingsModal = $('#cancelBookingsModal');
+            cancelBookingsModal.find('.cancelBookings').unbind('click').click(function () {
+                window.location.href = '{{ url('cudi_admin_sales_article', {"action": "cancelBookings", "id": article.getId()}) }}';
+            });
+            cancelBookingsModal.modal();
         }
     </script>
 {% endblock %}

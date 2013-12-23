@@ -1,27 +1,25 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'news/admin/news/partials/navigation.twig' %}
+    {% include 'news/admin/news/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
-        });
 
-	    $(document).ready(function () {
-	        $('textarea').gollum({
-	            toolbar: {
-					"bold": ["bold", "Bold", "bold"],
-					"italic": ["italic", "Italic", "italic"],
+            $('textarea').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
                     "divider": "-",
                     "link": ["link", "Link", "link"],
                     "divider": "-",
@@ -32,7 +30,7 @@
                     "divider": "-",
                     "help": ["help", "Help", "help"],
                 },
-	        });
-	    });
+            });
+        });
     </script>
 {% endblock %}

@@ -22,6 +22,7 @@
                     <th width="40px">&nbsp;</th>
                     <th width="120px">Date</th>
                     <th width="120px">Expires On</th>
+                    <th width="120px">Sold On</th>
                     <th width="80px">Status</th>
                     <th width="70px">Actions</th>
                 </tr>
@@ -32,6 +33,7 @@
                         <td>&times;{{ booking.getNumber() }}</td>
                         <td>{{ booking.getBookDate().format('d/m/Y H:i') }}</td>
                         <td>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ booking.getSaleDate().format('d/m/Y H:i') }}</td>
                         <td class="status">{{ booking.getStatus()|capitalize }}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_sales_booking', 'edit') %}

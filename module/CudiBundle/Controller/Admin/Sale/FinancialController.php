@@ -15,8 +15,11 @@
 namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
+    CudiBundle\Component\Document\Generator\Financial as FinancialGenerator,
     CudiBundle\Form\Admin\Sales\Financial\Period as PeriodForm,
     DateTime,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -189,6 +192,29 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'activeAcademicYear' => $academicYear,
                 'organizationsList' => $organizationsList,
                 'data' => $data,
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        $file = new TmpFile();
+        $document = new FinancialGenerator($this->getEntityManager(), $this->getAcademicYear(), $file);
+        $document->generate();
+
+        $now = new DateTime();
+        $filename = 'financial_' . $now->format('Y_m_d') . '.pdf';
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }

@@ -33,7 +33,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
             ->getConfigValue('syllabus.update_socket_port');
         $allowUpdate = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.enable_update') == '1';
+            ->getConfigValue('syllabus.enable_update');
 
         return new ViewModel(
             array(

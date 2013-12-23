@@ -16,6 +16,7 @@ namespace SecretaryBundle\Controller;
 
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
@@ -49,7 +50,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         $enabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         if ('1' !== $enabled) {
             $this->getResponse()->setStatusCode(404);
@@ -71,9 +72,23 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'WARNING',
-                        'You already have registered for this academic year.'
+                        'You have already registered for this academic year.'
                     )
                 );
+
+                if ($this->_isValidCode()) {
+                    $authentication = new Authentication(
+                        new ShibbolethAdapter(
+                            $this->getEntityManager(),
+                            'CommonBundle\Entity\User\Person\Academic',
+                            'universityIdentification'
+                        ),
+                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                    );
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'secretary_registration',
@@ -329,9 +344,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled') == '1';
+            ->getConfigValue('secretary.enable_registration');
 
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -457,7 +472,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 if (null !== $metaData) {
-                    if ($registrationEnabled) {
+                    if ($enableRegistration) {
                         if (null !== $metaData->getTshirtSize()) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -477,7 +492,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($becomeMember) {
-                        if ($registrationEnabled) {
+                        if ($enableRegistration) {
                             $metaData->setBecomeMember($becomeMember)
                                 ->setTshirtSize($formData['tshirt_size']);
                         }
@@ -485,7 +500,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $metaData->setReceiveIrReeelAtCudi($formData['irreeel']);
                     }
                     $metaData->setBakskeByMail($formData['bakske']);
-                } elseif ($registrationEnabled) {
+                } elseif ($enableRegistration) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -509,7 +524,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if ($registrationEnabled) {
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -736,6 +751,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
+
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';

@@ -26,8 +26,9 @@ use CommonBundle\Component\Authentication\Action,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Doctrine extends \Zend\Authentication\AuthenticationService
+class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthenticationService
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
@@ -38,26 +39,6 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
      * @var string The name of the entity that holds the sessions
      */
     private $_entityName = '';
-
-    /**
-     * @var int The expiration time for the persistent storage
-     */
-    private $_expire = -1;
-
-    /**
-     * @var string The namespace the storage handlers will use
-     */
-    private $_namespace = '';
-
-    /**
-     * @var string The cookie suffix that is used to store the session cookie
-     */
-    private $_cookieSuffix = '';
-
-    /**
-     * @var \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
-     */
-    private $_action;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -73,14 +54,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
     )
     {
-        parent::__construct($storage);
+        parent::__construct($storage, $namespace, $cookieSuffix, $expire, $action);
 
         $this->_entityManager = $entityManager;
-
-        $this->_namespace = $namespace;
-        $this->_expire = $expire;
-        $this->_cookieSuffix = $cookieSuffix;
-        $this->_action = $action;
 
         if ('\\' == substr($entityName, 0, 1)) {
             throw new Exception\InvalidArgumentException(
@@ -93,13 +69,13 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     /**
      * Authenticates against the supplied adapter
      *
-     * @param \Zend\Authentication\Adapter $adapter The supplied adapter
+     * @param \Zend\Authentication\Adapter\AdapterInterface $adapter The supplied adapter
      * @param boolean $rememberMe Remember this authentication session
      * @param boolean $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(AdapterInterface $adapter = null, $rememberMe = true, $shibboleth = false)
+    public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
 
@@ -113,7 +89,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
                     $_SERVER['HTTP_USER_AGENT'],
                     $_SERVER['REMOTE_ADDR'],
                     $shibboleth,
-                    $this->_expire
+                    $this->_duration
                 );
                 $this->_entityManager->persist($newSession);
 
@@ -121,9 +97,9 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
-                    $this->_setCookie($newSession->getId(), time() + $this->_expire);
+                    $this->_setCookie($newSession->getId());
                 } else {
-                    $this->_setCookie('', -1);
+                    $this->_clearCookie();
                 }
 
                 $result = $adapterResult;
@@ -149,22 +125,25 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
 
                 if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
-                    if ($rememberMe) {
-                        $this->_setCookie($sessionValidation, time() + $this->_expire);
+
+                    if ($this->_hasCookie() || $rememberMe) {
+                        $this->_setCookie($sessionValidation);
                     } else {
-                        $this->_setCookie('', -1);
+                        $this->_clearCookie();
                     }
                 }
 
-                $result = new Result(
-                    Result::SUCCESS,
-                    $session->getPerson()->getUsername(),
-                    array(
-                         'Authentication successful'
-                    ),
-                    $session->getPerson(),
-                    $session
-                );
+                if (false !== $sessionValidation) {
+                    $result = new Result(
+                        Result::SUCCESS,
+                        $session->getPerson()->getUsername(),
+                        array(
+                             'Authentication successful'
+                        ),
+                        $session->getPerson(),
+                        $session
+                    );
+                }
             } else {
                 $this->clearIdentity();
             }
@@ -205,8 +184,7 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
         }
 
         $this->getStorage()->clear();
-
-        $this->_setCookie('', -1);
+        $this->_clearCookie();
 
         return $session;
     }
@@ -219,44 +197,10 @@ class Doctrine extends \Zend\Authentication\AuthenticationService
     public function hasIdentity()
     {
         if ($this->getStorage()->isEmpty() || $this->getStorage()->read() == '') {
-            if (isset($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]))
-                $this->getStorage()->write($_COOKIE[$this->_namespace . '_' . $this->_cookieSuffix]);
+            if ($this->_hasCookie())
+                $this->getStorage()->write($this->_getCookie());
         }
 
         return !$this->getStorage()->isEmpty();
-    }
-
-    /**
-     * @param \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
-     *
-     * @return \CommonBundle\Component\Authentication\Service\Doctrine
-     */
-    public function setAction(Action $action)
-    {
-        $this->_action = $action;
-        return $this;
-    }
-
-    /**
-     * Set the authentication cookie.
-     *
-     * @param string $value The cookie's value
-     * @param int $expire The cookie's expiration time
-     */
-    private function _setCookie($value, $expire)
-    {
-        setcookie(
-            $this->_namespace . '_' . $this->_cookieSuffix,
-            '',
-            -1,
-            '/'
-        );
-        setcookie(
-            $this->_namespace . '_' . $this->_cookieSuffix,
-            $value,
-            $expire,
-            '/',
-            str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
-        );
     }
 }

@@ -60,7 +60,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
@@ -90,7 +90,6 @@ class Booking
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addCc($mailAddress, $mailName)
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -98,6 +97,12 @@ class Booking
                 'System Administrator'
             )
             ->setSubject($subject);
+
+        $sendMailsToCudi = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
+        if ($sendMailsToCudi)
+            $mail->addCc($mailAddress, $mailName);
 
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
@@ -136,7 +141,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
         foreach($openingHours as $openingHour) {
@@ -166,7 +171,6 @@ class Booking
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addCc($mailAddress, $mailName)
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -174,6 +178,12 @@ class Booking
                 'System Administrator'
             )
             ->setSubject($subject);
+
+        $sendMailsToCudi = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
+        if ($sendMailsToCudi)
+            $mail->addCc($mailAddress, $mailName);
 
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);
@@ -212,7 +222,7 @@ class Booking
 
         $openingHours = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P7D');
 
         $language = $entityManager
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -246,7 +256,6 @@ class Booking
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addCc($mailAddress, $mailName)
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -254,6 +263,12 @@ class Booking
                 'System Administrator'
             )
             ->setSubject($subject);
+
+        $sendMailsToCudi = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
+        if ($sendMailsToCudi)
+            $mail->addCc($mailAddress, $mailName);
 
         if ('development' != getenv('APPLICATION_ENV'))
             $mailTransport->send($mail);

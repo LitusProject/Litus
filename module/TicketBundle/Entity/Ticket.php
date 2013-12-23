@@ -320,7 +320,7 @@ class Ticket
      * @param \TicketBundle\Entity\Option $option
      * @return \TicketBundle\Entity\Ticket
      */
-    public function setOption(Option $option)
+    public function setOption(Option $option = null)
     {
         $this->option = $option;
         return $this;

@@ -33,8 +33,34 @@ class Virtual extends EntityRepository
             $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->getQuery()
-            ->getScalarResult();
+            ->getSingleScalarResult();
 
-        return $resultSet[0][1];
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
+    public function findAllByPeriodAndArticleQuery(Period $period, Article $article)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $query->select('v')
+            ->from('CudiBundle\Entity\Stock\Order\Virtual', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.article', ':article'),
+                    $query->expr()->gt('v.dateCreated', ':startDate'),
+                    $period->isOpen() ? '1=1' : $query->expr()->lt('v.dateCreated', ':endDate')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('startDate', $period->getStartDate());
+
+        if (!$period->isOpen())
+            $query->setParameter('endDate', $period->getEndDate());
+
+        $resultSet = $query->getQuery();
+
+        return $resultSet;
     }
 }

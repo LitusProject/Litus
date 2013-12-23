@@ -19,14 +19,21 @@ class Lease extends EntityRepository
      * @param \LogisticsBundle\Entity\Lease\Item $item
      * @return array
      */
-    public function findUnreturnedByItemQuery(Item $item) {
-        return $this->createQueryBuilder('l')
-            ->select()
-            ->where('l.returned = false')
-            ->andWhere('l.item = :item')
-            ->setParameter('item', $item->getId())
+    public function findUnreturnedByItemQuery(Item $item)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.returned', 'false'),
+                    $query->expr()->eq('l.item', ':item')
+                )
+            )
+            ->setParameter('item')
             ->getQuery();
 
+        return $resultSet;
     }
 
     /**
@@ -36,9 +43,15 @@ class Lease extends EntityRepository
      */
     public function findAllUnreturnedQuery()
     {
-        return $this->createQueryBuilder('l')
-            ->select()
-            ->where('l.returned = false')
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
+            ->where(
+                $query->expr()->eq('l.returned', 'false'),
+            )
+            ->setParameter('item')
             ->getQuery();
+
+        return $resultSet;
     }
 }

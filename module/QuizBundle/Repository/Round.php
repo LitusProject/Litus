@@ -41,7 +41,7 @@ class Round extends EntityRepository
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
+        $resultSet = $query->select('MAX(r.order)')
             ->from('QuizBundle\Entity\Round', 'r')
             ->where(
                 $query->expr()->eq('r.quiz', ':quiz')
@@ -49,12 +49,11 @@ class Round extends EntityRepository
             ->orderBy('r.order', 'DESC')
             ->setParameter('quiz', $quiz)
             ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+            ->getSingleScalarResult();
 
         if($resultSet === null)
             return 1;
 
-        return $resultSet->getOrder() + 1;
+        return $resultSet + 1;
     }
 }

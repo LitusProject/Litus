@@ -3,8 +3,9 @@
 namespace LogisticsBundle\Repository\Reservation;
 
 use CommonBundle\Entity\User\Person,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 
 /**
  * PianoReservation
@@ -166,7 +167,7 @@ class PianoReservation extends EntityRepository
      * @param int $ignoreId
      * @return array
      */
-    public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
+    public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -184,8 +185,7 @@ class PianoReservation extends EntityRepository
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
             ->setParameter('id', $ignoreId)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

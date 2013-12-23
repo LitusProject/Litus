@@ -22,7 +22,7 @@
     <xsl:template match="stock">
         <fo:root font-size="10pt">
             <fo:layout-master-set>
-                <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="55mm" margin-bottom="40mm" margin-left="15mm" margin-right="15mm">
+                <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="55mm" margin-bottom="10mm" margin-left="15mm" margin-right="15mm">
                     <fo:region-body margin-bottom="8mm"/>
                     <fo:region-before region-name="header-block" extent="-35mm"/>
                 </fo:simple-page-master>

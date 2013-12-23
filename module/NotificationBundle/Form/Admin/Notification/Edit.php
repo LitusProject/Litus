@@ -14,8 +14,7 @@
 
 namespace NotificationBundle\Form\Admin\Notification;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     NotificationBundle\Entity\Node\Notification,
     Zend\Form\Element\Submit;
 

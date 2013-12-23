@@ -22,5 +22,4 @@ namespace CommonBundle\Component\Authentication\Adapter\Exception;
  */
 class QueryFailedException extends \RuntimeException implements \Zend\Authentication\Exception\ExceptionInterface
 {
-
 }

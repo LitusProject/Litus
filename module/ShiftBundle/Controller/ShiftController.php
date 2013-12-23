@@ -181,14 +181,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $end_date = clone $start_date;
             $end_date->add(new DateInterval('P1W'));
 
-            $searchResults = $searchResults = $this->getEntityManager()
-                            ->getRepository('ShiftBundle\Entity\Shift')
-                            ->findAllActiveBetweenDates($start_date, $end_date);
+            $searchResults = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveBetweenDates($start_date, $end_date);
 
             $resultString = $this->getTranslator()->translate('Shifts from %start% to %end%');
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
+
+        $academicYear = $this->getCurrentAcademicYear();
+        $now = new DateTime();
+        if ($now < $academicYear->getUniversityStartDate() && $now > $academicYear->getStartDate())
+            $searchResults = array();
 
         if (!isset($resultString))
             $resultString = 'Results';
@@ -424,7 +429,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $token = $this->getDocumentManager()
                 ->getRepository('ShiftBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));
-            
+
             $shifts = $this->getEntityManager()
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));

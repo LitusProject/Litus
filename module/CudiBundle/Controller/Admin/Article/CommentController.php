@@ -31,9 +31,12 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comment\Mapping')
-            ->findByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Comment\Mapping')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         $form = new AddForm();
 
@@ -79,7 +82,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'article' => $article,
                 'form' => $form,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

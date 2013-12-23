@@ -119,6 +119,10 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'cudi_admin_sales_financial' => array(
             '@common_jquery',
@@ -128,8 +132,14 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_download_file',
         ),
         'cudi_admin_sales_financial_sold' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+        ),
+        'cudi_admin_sales_financial_returned' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

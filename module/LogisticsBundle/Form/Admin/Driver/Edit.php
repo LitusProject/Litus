@@ -14,8 +14,7 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,

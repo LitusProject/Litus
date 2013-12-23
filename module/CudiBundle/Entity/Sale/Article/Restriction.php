@@ -21,7 +21,7 @@ use CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Restriction")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction")
  * @ORM\Table(name="cudi.sales_articles_restrictions")
  */
 class Restriction
@@ -152,7 +152,7 @@ class Restriction
             ->findOneByUniversityStart($startAcademicYear);
 
         if ('member' == $this->type) {
-            return ('1' == $this->value && $person->isMember($academicYear) || '0' == $this->value && !$person->isMember($academicYear));
+            return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
         } elseif ('amount' == $this->type) {
             $amount = sizeof($entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')

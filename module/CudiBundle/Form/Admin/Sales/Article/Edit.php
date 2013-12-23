@@ -14,8 +14,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
+use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

@@ -160,7 +160,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $id) {

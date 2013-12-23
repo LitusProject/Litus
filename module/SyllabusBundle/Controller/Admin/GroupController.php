@@ -16,8 +16,8 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    DateTime,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\StudyGroupMap,
     SyllabusBundle\Form\Admin\Group\Add as AddForm,
@@ -289,43 +289,79 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function exportAction()
+    {
+        if(!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        if(!($group = $this->_getGroup()))
+            return new ViewModel();
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->findAllByGroupAndAcademicYear($group, $academicYear);
+
+        $academics = array();
+
+        foreach($mappings as $mapping) {
+            $study = $mapping->getStudy();
+            $enrollments = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                ->findAllByStudyAndAcademicYear($study, $academicYear);
+
+            foreach($enrollments as $enrollment) {
+                $ac = $enrollment->getAcademic();
+                $academics[$ac->getId()] = array(
+                    'academicFirstName'             => $ac->getFirstName(),
+                    'academicLastName'              => $ac->getLastName(),
+                    'academicEmail'                 => $ac->getEmail(),
+                    'academicPrimaryAddressStreet'  => $ac->getPrimaryAddress()->getStreet(),
+                    'academicPrimaryAddressNumber'  => $ac->getPrimaryAddress()->getNumber(),
+                    'academicPrimaryAddressMailbox' => $ac->getPrimaryAddress()->getMailbox(),
+                    'academicPrimaryAddressPostal'  => $ac->getPrimaryAddress()->getPostal(),
+                    'academicPrimaryAddressCity'    => $ac->getPrimaryAddress()->getCity(),
+                    'academicPrimaryAddressCountry' => $ac->getPrimaryAddress()->getCountry(),
+                    'study'                         => $study->getFullTitle(),
+                );
+            }
+
+        }
+
+        $header = array(
+            'First name',
+            'Last name',
+            'Email',
+            'Street',
+            'Number',
+            'Mailbox',
+            'Postal',
+            'City',
+            'Country',
+            'City',
+        );
+        $exportFile = new CsvFile();
+        $csvGenerator = new CsvGenerator($header, $academics);
+        $csvGenerator->generateDocument($exportFile);
+
+        $this->getResponse()->getHeaders()
+            ->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="'.$group->getName().'_'.$academicYear->getCode().'.csv"',
+            'Content-Type' => 'text/csv',
+        ));
+
+        return new ViewModel(
+            array(
+                'result' => $exportFile->getContent(),
+            )
+        );
+    }
+
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

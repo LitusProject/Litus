@@ -64,7 +64,8 @@ class TimeSlot extends EntityRepository
 
         return $resultSet;
     }
-    public function findAllConflictingByFormAndTime(Form $form, DateTime $start, DateTime $end)
+
+    public function findAllConflictingByFormAndTimeQuery(Form $form, DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -91,13 +92,12 @@ class TimeSlot extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
             ->setParameter('form', $form)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllForReminderMail(DateTime $start, DateTime $end)
+    public function findAllForReminderMailQuery(DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();
         $reminderDoodles = $query->select('d')
@@ -125,8 +125,7 @@ class TimeSlot extends EntityRepository
             )
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

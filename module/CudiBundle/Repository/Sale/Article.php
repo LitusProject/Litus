@@ -6,9 +6,7 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
-    Doctrine\ORM\Query\Expr\OrderBy;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Article
@@ -18,25 +16,22 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
  */
 class Article extends EntityRepository
 {
-    public function findAllByAcademicYear(AcademicYear $academicYear, $semester = 0)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -52,8 +47,6 @@ class Article extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
@@ -100,87 +93,78 @@ class Article extends EntityRepository
         return null;
     }
 
-    public function findAllByTypeAndAcademicYear($type, AcademicYear $academicYear)
+    public function findAllByTypeAndAcademicYearQuery($type, AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-        ->from('CudiBundle\Entity\Sale\Article', 'a')
-        ->innerJoin('a.mainArticle', 'm')
-        ->where(
-            $query->expr()->andX(
-                $query->expr()->eq('m.type', ':type'),
-                $query->expr()->eq('a.isHistory', 'false'),
-                $query->expr()->eq('m.isHistory', 'false'),
-                $query->expr()->eq('m.isProf', 'false'),
-                $query->expr()->in('m.id', $articles)
+        $resultSet = $query->select('a, m')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.type', ':type'),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->in('m.id', $articles)
+                )
             )
-        )
-        ->setParameter('type', $type)
-        ->orderBy('m.title', 'ASC')
-        ->getQuery()
-        ->getResult();
+            ->setParameter('type', $type)
+            ->orderBy('m.title', 'ASC')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear, $semester = 0)
+    public function findAllByTitleAndAcademicYearQuery($title, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.title'), ':title'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAuthorAndAcademicYear($author, AcademicYear $academicYear, $semester = 0)
+    public function findAllByAuthorAndAcademicYearQuery($author, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.authors'), ':author'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('author', '%'.strtolower($author).'%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByTitleOrAuthorAndAcademicYear($string, AcademicYear $academicYear)
+    public function findAllByTitleOrAuthorAndAcademicYearQuery($string, AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, 0);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -190,105 +174,89 @@ class Article extends EntityRepository
                         $query->expr()->like($query->expr()->lower('m.authors'), ':string')
                     ),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('string', '%'.strtolower($string).'%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByPublisherAndAcademicYear($publisher, AcademicYear $academicYear, $semester = 0)
+    public function findAllByPublisherAndAcademicYearQuery($publisher, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.publishers'), ':publisher'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('publisher', '%'.strtolower($publisher).'%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByBarcodeAndAcademicYear($barcode, AcademicYear $academicYear, $semester = 0)
+    public function findAllByBarcodeAndAcademicYearQuery($barcode, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
+        $resultSet = $query->select('a, m')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
-            ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', 'a'),
                     $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
-                    $query->expr()->in('m.id', $articles)
+                    $query->expr()->in('a.id', $articles)
                 )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        $articles = array();
-        foreach($resultSet as $barcode)
-            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
-
-        return $articles;
+        return $resultSet;
     }
 
-    public function findAllBySupplierStringAndAcademicYear($supplier, AcademicYear $academicYear, $semester = 0)
+    public function findAllBySupplierStringAndAcademicYearQuery($supplier, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
-            ->innerJoin('a.supplier', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
-            )
+            ->innerJoin('a.supplier', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':supplier'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllBySupplier(Supplier $supplier)
+    public function findAllBySupplierQuery(Supplier $supplier)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
+        $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
@@ -301,45 +269,36 @@ class Article extends EntityRepository
             )
             ->setParameter('supplier', $supplier->getId())
             ->orderBy('m.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
+    public function findAllByTitleOrBarcodeAndAcademicYearQuery($title, AcademicYear $academicYear)
     {
         $articles = $this->_getArticleIdsBySemester($academicYear);
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
+        $resultSet = $query->select('a, m')
+            ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
-            ->innerJoin('b.article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('b.article', 'a'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('m.isHistory', 'false'),
-                    $query->expr()->eq('m.isProf', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),
-                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':title')
                     ),
                     $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('title', '%'.strtolower($title).'%')
-            ->setParameter('barcode', strtolower($title).'%')
             ->orderBy('m.title', 'ASC')
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
-        $articles = array();
-        foreach($resultSet as $barcode)
-            $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
-
-        return $articles;
+        return $resultSet;
     }
 
     private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
@@ -351,7 +310,11 @@ class Article extends EntityRepository
                 ->innerJoin('m.article', 'a')
                 ->innerJoin('m.subject', 's')
                 ->where(
-                    $query->expr()->eq('m.academicYear', ':academicYear')
+                    $query->expr()->andX(
+                        $query->expr()->eq('a.isHistory', 'false'),
+                        $query->expr()->eq('a.isProf', 'false'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
                 )
                 ->setParameter('academicYear', $academicYear->getId())
                 ->getQuery()
@@ -364,6 +327,8 @@ class Article extends EntityRepository
                 ->innerJoin('m.subject', 's')
                 ->where(
                     $query->expr()->andX(
+                        $query->expr()->eq('a.isHistory', 'false'),
+                        $query->expr()->eq('a.isProf', 'false'),
                         $query->expr()->orX(
                             $query->expr()->eq('s.semester', '0'),
                             $query->expr()->eq('s.semester', ':semester')
@@ -385,7 +350,11 @@ class Article extends EntityRepository
         $resultSet = $query->select('a.id')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
-                $query->expr()->eq('a.type', '\'common\'')
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false'),
+                    $query->expr()->eq('a.type', '\'common\'')
+                )
             )
             ->getQuery()
             ->getResult();

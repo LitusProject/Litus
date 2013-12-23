@@ -107,12 +107,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $identification = $item->getPerson()->getUniversityIdentification() ? $item->getPerson()->getUniversityIdentification() : $item->getPerson()->getUserName();
+
         $result = (object) array();
         $result->id = $item->getId();
         $result->barcode = $prefix + $item->getId();
         $result->number = $item->getQueueNumber();
         $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
-        $result->university_identification = $item->getPerson()->getUniversityIdentification();
+        $result->university_identification = $identification;
         $result->status = $item->getStatus();
         $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
         $result->collectPrinted = $item->getCollectPrinted();
@@ -259,7 +261,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($enableCollectScanning == '1' && $lightVersion == '0' && !$bulk) {
+        if ($enableCollectScanning && !$lightVersion && !$bulk) {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
@@ -285,7 +287,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1' || !isset($this->_queueItems[$id]) || null == $articles)
+        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles)
             return;
 
         $this->_queueItems[$id]->setCollectedArticles($articles);
@@ -601,27 +603,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-            $this->_entityManager->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 }

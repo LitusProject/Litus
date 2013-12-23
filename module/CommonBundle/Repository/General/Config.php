@@ -25,8 +25,14 @@ class Config extends EntityRepository
 
     public function findAllByPrefix($prefix)
     {
-        $configs = $this->_em
-            ->createQuery('SELECT c FROM CommonBundle\Entity\General\Config c WHERE c.key LIKE \'' . $prefix . '.%\'')
+        $query = $this->_em->createQueryBuilder();
+        $configs = $query->select('c')
+            ->from('CommonBundle\Entity\General\Config', 'c')
+            ->where(
+                $query->expr()->like('c.key', ':prefix')
+            )
+            ->setParameter('prefix', $prefix . '.%')
+            ->getQuery()
             ->getResult();
 
         $result = array();

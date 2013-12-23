@@ -19,11 +19,8 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
     Locale,
     Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
@@ -230,13 +227,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * Redirects after a successful authentication.
+     *
+     * If this returns null, no redirection will take place.
+     *
+     * @return void
+     */
+    protected function redirectAfterAuthentication()
+    {
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
+    }
+
+    /**
      * Initializes the authentication.
      *
      * @return void
      */
     protected function initAuthentication()
     {
-        if (null !== $this->getAuthenticationHandler()) {
+        $authenticationHandler = $this->getAuthenticationHandler();
+        if (null !== $authenticationHandler) {
             if (
                 $this->hasAccess()->resourceAction(
                     $this->getParam('controller'), $this->getParam('action')
@@ -244,22 +256,20 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] == $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] == $this->getParam('action')
+                        $authenticationHandler['controller'] == $this->getParam('controller')
+                            && $authenticationHandler['action'] == $this->getParam('action')
                     ) {
-                        return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['redirect_route']
-                        );
+                        return $this->redirectAfterAuthentication();
                     }
                 }
             } else {
                 if (!$this->getAuthentication()->isAuthenticated()) {
                     if (
-                        $this->getAuthenticationHandler()['controller'] != $this->getParam('controller')
-                            && $this->getAuthenticationHandler()['action'] != $this->getParam('action')
+                        $authenticationHandler['controller'] != $this->getParam('controller')
+                            && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
-                            $this->getAuthenticationHandler()['auth_route']
+                            $authenticationHandler['auth_route']
                         );
                     }
                 } else {
@@ -365,70 +375,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getCurrentAcademicYear($organization = false)
     {
-        if (!$organization) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-            $startAcademicYear->setTime(0, 0);
+        if ($organization)
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
 
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByUniversityStart($startAcademicYear);
-
-            if (null === $academicYear) {
-                $organizationStart = str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                );
-                $organizationStart = new DateTime($organizationStart);
-                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-                $this->getEntityManager()->persist($academicYear);
-                $this->getEntityManager()->flush();
-            }
-
-            return $academicYear;
-        } else {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-            $startAcademicYear->setTime(0, 0);
-
-            $now = new DateTime();
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.prof_start_academic_year')
-                )
-            );
-            $start->add(new DateInterval('P1Y'));
-
-            if ($now > $start) {
-                $startAcademicYear->add(new DateInterval('P1Y2M'));
-                $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
-            }
-
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByUniversityStart($startAcademicYear);
-
-            if (null === $academicYear) {
-                $organizationStart = str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                );
-                $organizationStart = new DateTime($organizationStart);
-                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-                $this->getEntityManager()->persist($academicYear);
-                $this->getEntityManager()->flush();
-            }
-
-            return $academicYear;
-        }
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**

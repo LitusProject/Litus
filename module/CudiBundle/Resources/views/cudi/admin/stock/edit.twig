@@ -11,6 +11,7 @@
         <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
         <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
         <br style="clear:both" />
+
         <h1>Orders</h1>
         <table class="half_width">
             {% set ordered = period.getNbOrdered(article) %}
@@ -40,6 +41,7 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(orderForm) }}
         <br style="clear:both" />
+
         <h1>Deliveries</h1>
         <table class="half_width">
             <tr>
@@ -51,6 +53,7 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(deliveryForm) }}
         <br style="clear:both" />
+
         <h1>Retours</h1>
         <table class="half_width">
             <tr>
@@ -59,6 +62,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+
         <h1>Bookings</h1>
         <table class="half_width">
             <tr>
@@ -71,6 +75,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+
         <h1>Sales</h1>
         <table class="half_width">
             <tr>
@@ -79,6 +84,7 @@
             </tr>
         </table>
         <br style="clear:both" />
+        
         <h1>Stock</h1>
         <table class="half_width">
             <tr>

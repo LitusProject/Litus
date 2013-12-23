@@ -16,7 +16,7 @@ namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    FormBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
@@ -452,34 +452,60 @@ class FormController extends \FormBundle\Component\Controller\FormController
         if ($viewerMap->isMail()) {
             $heading[] = 'Email';
         }
-        $fields = $form->getFields();
-        foreach ($fields as $field) {
-            $heading[] = $field->getLabel($language);
+
+        if ($form->getType() == 'doodle') {
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByForm($form);
+
+            $maxSlots = 0;
+            foreach ($entries as $entry) {
+                $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+                if ($viewerMap->isMail())
+                    $result[] = $entry->getPersonInfo()->getEmail();
+
+                $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
+                foreach($entry->getFieldEntries() as $fieldEntry) {
+                    $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
+                    $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
+                }
+                $results[] = $result;
+            }
+
+            for ($i = 0 ; $i < $maxSlots ; $i++) {
+                $heading[] = 'Slot ' . ($i+1) . ' Start';
+                $heading[] = 'Slot ' . ($i+1) . ' End';
+            }
+        } else {
+            $fields = $form->getFields();
+            foreach ($fields as $field) {
+                $heading[] = $field->getLabel($language);
+            }
+
+            $entries = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findAllByForm($form);
+
+            $results = array();
+            foreach ($entries as $entry) {
+                $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
+                if ($viewerMap->isMail())
+                    $result[] = $entry->getPersonInfo()->getEmail();
+
+                foreach($fields as $field) {
+                    $fieldEntry = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Entry')
+                        ->findOneByFormEntryAndField($entry, $field);
+                    if ($fieldEntry)
+                        $result[] = $fieldEntry->getValueString($language);
+                    else
+                        $result[] = '';
+                }
+                $results[] = $result;
+            }
         }
 
-        $entries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($form);
-
-        $results = array();
-        foreach ($entries as $entry) {
-            $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-            if ($viewerMap->isMail()) {
-                $result[] = $entry->getPersonInfo()->getEmail();
-            }
-            foreach($fields as $field) {
-                $fieldEntry = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Entry')
-                    ->findOneByFormEntryAndField($entry, $field);
-                if ($fieldEntry)
-                    $result[] = $fieldEntry->getValueString($language);
-                else
-                    $result[] = '';
-            }
-            $results[] = $result;
-        }
-
-        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();

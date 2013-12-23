@@ -2,7 +2,9 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime,
+    LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 
 /**
  * Reservation
@@ -12,7 +14,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Reservation extends EntityRepository
 {
-    public function findAllQuery() {
+    public function findAllQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
@@ -21,8 +24,8 @@ class Reservation extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllConflictingQuery($startDate, $endDate, $resource) {
-
+    public function findAllConflictingQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
@@ -51,7 +54,7 @@ class Reservation extends EntityRepository
      * @param int $ignoreId
      * @return array
      */
-    public function findAllConflictingIgnoringIdQuery($startDate, $endDate, $resource, $ignoreId) {
+    public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')

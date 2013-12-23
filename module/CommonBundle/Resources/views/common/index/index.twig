@@ -100,8 +100,8 @@
                 {% for openingHour in cudi.openingHours %}
                     <div>
                         {% if previousDay != openingHour.getStart().format('d/M') %}
-                            <div class="label label-info" style="display: block; width: 70px; text-align: center;">
-                                {{ dateLocalized(openingHour.getStart(), 'EEEE')|capitalize }}
+                            <div class="label label-info" style="display: block; width: 110px; text-align: center;">
+                                {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
                             </div>
                         {% endif %}
                         <div style="margin-left: 20px;">
@@ -115,8 +115,8 @@
                 {% endfor %}
             {% endif %}
 
-            {% if myShifts is not null %}
-                <a href="{{ url('shift') }}"><img class="heading-icon no-margin" src="/_site/img/glyphicons-tasks.png" /></a>
+            {% if myShifts is not null and myShifts|length > 0 %}
+                <a href="{{ url('shift') }}"><img class="heading-icon" src="/_site/img/glyphicons-tasks.png" /></a>
                 <h2>{{ translate('Shifts') }}</h2>
 
                 {% for shift in myShifts %}

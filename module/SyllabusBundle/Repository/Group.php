@@ -64,10 +64,10 @@ class Group extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
-            ->getScalarResult();
+            ->getSingleScalarResult();
 
-        if (isset($resultSet[0][1]))
-            return $resultSet[0][1];
+        if ($resultSet)
+            return $resultSet;
 
         return 0;
     }

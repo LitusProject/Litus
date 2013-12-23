@@ -1,15 +1,30 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace Admin\Form\Contract;
 
-use \Litus\Form\Admin\Decorator\ButtonDecorator;
-use \Litus\Form\Admin\Decorator\FieldDecorator;
 use \Litus\Entity\Br\Contract;
 
 use \Zend\Form\Element\Submit;
 use \Zend\Form\Element\Hidden;
 use \Zend\Form\Element\Text;
 
+/**
+ * Edit Contract
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ */
 class Edit extends Add {
 
     public function __construct(Contract $contract, $options = null)
@@ -24,8 +39,7 @@ class Edit extends Add {
 
         $field = new Text('contract_nb');
         $field->setLabel('Contract number')
-            ->setRequired()
-            ->setDecorators(array(new FieldDecorator()));
+            ->setRequired();
         $this->addElement($field);
 
         if($contract->isSigned()) {
@@ -33,15 +47,13 @@ class Edit extends Add {
             $field->setLabel('Invoice number')
                 ->setRequired()
                 ->setValue($contract->getInvoiceNb())
-                ->setDecorators(array(new FieldDecorator()))
                 ->setAttrib('disabled', 'disabled');
             $this->addElement($field);
         }
 
         $field = new Submit('Save');
         $field->setValue('Save')
-            ->setAttrib('class', 'contracts_edit')
-            ->setDecorators(array(new ButtonDecorator()));
+            ->setAttrib('class', 'contracts_edit');
         $this->addElement($field);
 
         $this->populate(

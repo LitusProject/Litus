@@ -14,7 +14,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Article extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -26,13 +26,12 @@ class Article extends EntityRepository
                 )
             )
             ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByTitle($title)
+    public function findAllByTitleQuery($title)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -45,13 +44,12 @@ class Article extends EntityRepository
             )
             ->setParameter('title', '%'.strtolower($title).'%')
             ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAuthor($author)
+    public function findAllByAuthorQuery($author)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -65,18 +63,18 @@ class Article extends EntityRepository
             )
             ->setParameter('author', '%'.strtolower($author).'%')
             ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByISBN($isbn)
+    public function findAllByISBNQuery($isbn)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
-            ->where($query->expr()->andX(
+            ->where(
+                $query->expr()->andX(
                     $query->expr()->like($query->expr()->concat('a.isbn', '\'\''), ':isbn'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->eq('a.isProf', 'false')
@@ -84,13 +82,12 @@ class Article extends EntityRepository
             )
             ->setParameter('isbn', '%'.strtolower($isbn).'%')
             ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByPublisher($publisher)
+    public function findAllByPublisherQuery($publisher)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -104,16 +101,15 @@ class Article extends EntityRepository
             )
             ->setParameter('publisher', '%'.strtolower($publisher).'%')
             ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllBySubject($subject, AcademicYear $academicYear)
+    public function findAllBySubjectQuery($subject, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
-        $subjects = $query->select('s')
+        $subjects = $query->select('s.id')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
                 $query->expr()->orX(
@@ -127,18 +123,16 @@ class Article extends EntityRepository
 
         $ids = array(0);
         foreach($subjects as $subject)
-            $ids[] = $subject->getId();
+            $ids[] = $subject['id'];
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('s')
+        $resultSet = $query->select('a.id')
             ->from('CudiBundle\Entity\Article\SubjectMap', 's')
-            ->join('s.article', 'a')
+            ->innerJoin('s.article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->in('s.subject', $ids),
-                    $query->expr()->eq('s.academicYear', ':academicYear'),
-                    $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->eq('a.isProf', 'false')
+                    $query->expr()->eq('s.academicYear', ':academicYear')
                 )
             )
             ->setParameter('academicYear', $academicYear)
@@ -147,9 +141,21 @@ class Article extends EntityRepository
 
         $articles = array();
         foreach($resultSet as $mapping)
-            $articles[] = $mapping->getArticle();
+            $articles[] = $mapping->getArticle()->getId();
 
-        return $articles;
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('a.id', $articles),
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->eq('a.isProf', 'false')
+                )
+            )
+            ->getQuery();
+
+        return $resultSet;
     }
 
     public function findAllByProf(Person $person)
@@ -250,8 +256,7 @@ class Article extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet &&
-                (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
+        if ($resultSet && (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
             return $resultSet->getArticle();
 
         $actions = $this->getEntityManager()

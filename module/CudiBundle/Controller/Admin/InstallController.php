@@ -252,11 +252,6 @@ VTK Cudi
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'cudi.prof_start_academic_year',
-                    'value'       => '{{ year }}-7-15 0:0:0',
-                    'description' => 'The start date of the academic year for a prof',
-                ),
-                array(
                     'key'         => 'cudi.purchase_prices',
                     'value'       => serialize(
                         array(
@@ -329,7 +324,7 @@ VTK Cudi
                     'description' => 'The port of the print socket',
                 ),
                 array(
-                    'key'         => 'cudi.printers_enable',
+                    'key'         => 'cudi.enable_printers',
                     'value'       => '1',
                     'description' => 'Flag whether the printers are enabled',
                 ),
@@ -444,6 +439,11 @@ VTK Cudi
                     'value'       => 'vtk-{{ date }}',
                     'description' => 'The job id for a XML exported order',
                 ),
+                array(
+                    'key'         => 'cudi.booking_mails_to_cudi',
+                    'value'       => '1',
+                    'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
+                ),
             )
         );
 
@@ -480,7 +480,7 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'cudi_admin_sales_article' => array(
-                        'activate', 'add', 'assignAll', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead'
+                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead', 'view'
                     ),
                     'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'
@@ -495,7 +495,7 @@ VTK Cudi
                         'add', 'delete', 'edit', 'manage'
                     ),
                     'cudi_admin_sales_financial' => array(
-                        'overview', 'period'
+                        'export', 'overview', 'period'
                     ),
                     'cudi_admin_sales_financial_delivered' => array(
                         'article', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'supplierSearch', 'supplier', 'suppliers'
@@ -505,6 +505,9 @@ VTK Cudi
                     ),
                     'cudi_admin_sales_financial_sold' => array(
                         'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions', 'supplierSearch', 'supplier', 'suppliers'
+                    ),
+                    'cudi_admin_sales_financial_returned' => array(
+                        'article', 'articleSearch', 'articlesSearch', 'articles', 'individualSearch', 'individual', 'sessionSearch', 'session', 'sessions'
                     ),
                     'cudi_admin_sales_session' => array(
                         'add', 'close', 'edit', 'editRegister', 'manage', 'queueItems', 'killSocket'
@@ -516,7 +519,7 @@ VTK Cudi
                         'add', 'edit', 'delete', 'manage', 'old'
                     ),
                     'cudi_admin_stock' => array(
-                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered'
+                        'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered', 'view'
                     ),
                     'cudi_admin_stock_delivery' => array(
                         'add', 'delete', 'manage', 'supplier', 'typeahead'
@@ -570,7 +573,7 @@ VTK Cudi
                         'overview', 'screen', 'signin'
                     ),
                     'cudi_sale_sale' => array(
-                        'return', 'sale'
+                        'return', 'returnPrice', 'sale'
                     ),
                     'cudi_supplier_article' => array(
                         'manage'

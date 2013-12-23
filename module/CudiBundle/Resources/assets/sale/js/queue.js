@@ -346,20 +346,16 @@
     function _updateQueueItem($this, data) {
         var settings = $this.data('queueSettings');
         if (settings.lightVersion) {
-            if (data.university_identification == $this.find('.filterText').val().toLowerCase()) {
-                if (data.status == 'selling') {
-                    _addPersonError($this);
-                } else {
-                    $this.find('.filterText').val('');
-                    $this.find('.startSale').addClass('disabled').unbind('click');
-                    settings.sendToSocket(
-                        JSON.stringify({
-                            'command': 'action',
-                            'action': 'startSale',
-                            'id': data.id,
-                        })
-                    );
-                }
+            if (data.university_identification.toLowerCase() == $this.find('.filterText').val().toLowerCase()) {
+                $this.find('.filterText').val('');
+                $this.find('.startSale').addClass('disabled').unbind('click');
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'startSale',
+                        'id': data.id,
+                    })
+                );
             }
         } else {
             var item = $this.find('tbody #item-' + data.id);

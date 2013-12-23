@@ -5,7 +5,6 @@ namespace SecretaryBundle\Repository;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Query\Expr\Join,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**

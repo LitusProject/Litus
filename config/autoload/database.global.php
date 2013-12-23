@@ -29,6 +29,7 @@ return array(
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');
 
                     $cache = new \Doctrine\Common\Cache\MemcachedCache();
+                    $cache->setNamespace('Litus');
                     $memcached = new \Memcached();
 
                     if(!$memcached->addServer('localhost', 11211))
@@ -45,7 +46,7 @@ return array(
     ),
     'doctrine' => array(
         'cache' => array(
-            'apc' => array(
+            'memcached' => array(
                 'namespace' => 'Litus',
             ),
             'array' => array(

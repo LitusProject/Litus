@@ -107,11 +107,11 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                         'entry' => $value
                     )
                 );
-
             if ($value === $this->_currentList || count($lists) > 0)
                 unset($listsArray[$key]);
         }
 
+        $lists = array();
         foreach ($listsArray as $list)
             $lists[$list->getId()] = $list->getName();
 
