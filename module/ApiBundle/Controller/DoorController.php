@@ -15,6 +15,7 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic,
+    DoorBundle\Document\Log,
     DoorBundle\Document\Rule,
     Zend\View\Model\ViewModel;
 
@@ -62,5 +63,32 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'result' => (object) $result
             )
         );
+    }
+
+    public function logAction()
+    {
+        $this->getDocumentManager()->persist(
+            new Log(
+                $this->_getAcademic()
+            )
+        );
+        $this->getDocumentManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    private function _getAcademic()
+    {
+        if (null !== $this->getRequest()->getPost('academic')) {
+            return $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById($this->getRequest()->getPost('academic'));
+        }
+
+        return null;
     }
 }

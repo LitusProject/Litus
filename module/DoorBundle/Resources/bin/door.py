@@ -6,7 +6,7 @@ import pickle
 import urllib, urllib2
 
 # Parameters
-API_HOST        = 'http://litus/api/door/getRules'
+API_HOST        = 'http://litus'
 API_KEY         = ''
 
 CACHE_FILE      = '/tmp/door_rules'
@@ -27,6 +27,17 @@ def allowAccess(identification, academic):
         'academic': academic
     }
 
+    try:
+        print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Logging access to the server'
+        response = json.load(
+            urllib2.urlopen(API_HOST + '/api/door/log', urllib.urlencode(data))
+        )
+
+        if 'success' == response['status']:
+            print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Log entry was successfully created'
+    except Exception:
+        print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Log entry could not be created'
+
 def getRules():
     global rules
 
@@ -36,7 +47,9 @@ def getRules():
 
     try:
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Downloading rules'
-        rules = json.load(urllib2.urlopen(API_HOST, urllib.urlencode(data)))
+        rules = json.load(
+            urllib2.urlopen(API_HOST + '/api/door/getRules', urllib.urlencode(data))
+        )
 
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Writing rules to cache file'
         cacheFile = open(CACHE_FILE, 'w')
@@ -64,15 +77,15 @@ while True:
         startDate = datetime.date.fromtimestamp(int(rules[identification]['start_date']))
         endDate = datetime.date.fromtimestamp(int(rules[identification]['end_date']))
 
-        if (startDate < now.date() and endDate > now.date()):
+        if startDate < now.date() and endDate > now.date():
             startTime = int(rules[identification]['start_time'])
             endTime = int(rules[identification]['end_time'])
 
-            if (0 == startTime and 0 == endTime):
+            if 0 == startTime and 0 == endTime:
                 allowAccess(identification, rules[identification]['academic'])
                 continue
 
-            if (startTime < now.time().strftime('%H%M') and endTime > now.time().strftime('%H%M')):
+            if startTime < now.time().strftime('%H%M') and endTime > now.time().strftime('%H%M'):
                 allowAccess(identification, rules[identification]['academic'])
                 continue
 
