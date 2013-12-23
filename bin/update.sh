@@ -17,7 +17,6 @@ checkAndMakeExecutable "bin/sockets.sh"
 checkAndMakeExecutable "bin/upgrade.sh"
 
 checkAndMakeExecutable "bin/CommonBundle/gc.sh"
-checkAndMakeExecutable "bin/CommonBundle/upgrade.sh"
 checkAndMakeExecutable "bin/CudiBundle/catalogUpdate.sh"
 checkAndMakeExecutable "bin/CudiBundle/expireWarning.sh"
 checkAndMakeExecutable "bin/Doctrine/doctrine-module"
