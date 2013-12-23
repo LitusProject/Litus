@@ -319,6 +319,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
 
-        return $academicYear;
+        return $this->_academicYear;
     }
 }
