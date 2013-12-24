@@ -41,11 +41,12 @@ class Edit extends Add
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
+     * @param boolean $enableOtherOrganization Enable the "other organization" option
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $name = null)
+    public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $enableOtherOrganization = false, $name = null)
     {
-        parent::__construct($cache, $entityManager, $identification, $name);
+        parent::__construct($cache, $entityManager, $identification, null, $enableOtherOrganization, $name);
 
         if (
             null !== $academic->getOrganizationStatus($academicYear)

@@ -52,7 +52,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if ($enableRegistration) {
+        if (!$enableRegistration) {
             $this->getResponse()->setStatusCode(404);
             return new ViewModel();
         }
@@ -107,6 +107,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
 
+        $enableOtherOrganization = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.enable_other_organization');
+
         $termsAndConditions = $this->_getTermsAndConditions();
 
         if (null !== $academic) {
@@ -145,16 +149,20 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()), $enableOtherOrganization);
 
                 $formData = $this->getRequest()->getPost();
                 $formData['university_identification'] = $this->getParam('identification');
                 $form->setData($formData);
 
                 if (isset($formData['organization'])) {
-                    $selectedOrganization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
+                    if (0 == $formData['organization'] && $enableOtherOrganization) {
+                        $selectedOrganization = null;
+                    } else {
+                        $selectedOrganization = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findOneById($formData['organization']);
+                    }
                 } else {
                     $selectedOrganization = current(
                         $this->getEntityManager()
@@ -214,7 +222,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         );
 
-                    if (isset($formData['organization'])) {
+                    if (isset($formData['organization']) && $selectedOrganization) {
                         $this->_setOrganization(
                             $academic,
                             $this->getCurrentAcademicYear(),
@@ -301,6 +309,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'organizations' => $organizations,
                         'membershipArticles' => $membershipArticles,
                         'selectedOrganization' => $selectedOrganization,
+                        'isPost' => true,
+                        'enableOtherOrganization' => $enableOtherOrganization,
                     )
                 );
             }
@@ -310,7 +320,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
 
-                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()));
+                $form = new AddForm($this->getCache(), $this->getEntityManager(), $this->getParam('identification'), unserialize($code->getInfo()), $enableOtherOrganization);
 
                 return new ViewModel(
                     array(
@@ -319,6 +329,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'studentDomain' => $studentDomain,
                         'organizations' => $organizations,
                         'membershipArticles' => $membershipArticles,
+                        'enableOtherOrganization' => $enableOtherOrganization,
                     )
                 );
             }
@@ -356,6 +367,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        $enableOtherOrganization = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.enable_other_organization');
+
         $termsAndConditions = $this->_getTermsAndConditions();
 
         $form = new EditForm(
@@ -364,7 +379,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $metaData,
             $this->getCache(),
             $this->getEntityManager(),
-            $this->getParam('identification')
+            $this->getParam('identification'),
+            $enableOtherOrganization
         );
 
         $ids = unserialize(
@@ -448,15 +464,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if (isset($formData['organization'])) {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
+                    if (0 == $formData['organization'] && $enableOtherOrganization) {
+                        $organization = null;
+                    } else {
+                        $organization = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findOneById($formData['organization']);
 
-                    $this->_setOrganization(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $organization
-                    );
+                        $this->_setOrganization(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $organization
+                        );
+                    }
                 } else {
                     $organization = current(
                         $this->getEntityManager()
