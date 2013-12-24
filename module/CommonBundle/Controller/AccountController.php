@@ -115,9 +115,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled') == '1';
+            ->getConfigValue('secretary.enable_registration');
 
         $academic = $this->getAuthentication()->getPersonObject();
 
@@ -251,7 +251,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 );
 
                 if (null !== $metaData) {
-                    if ($registrationEnabled) {
+                    if ($enableRegistration) {
                         if (null !== $metaData->getTshirtSize()) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -271,7 +271,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($becomeMember) {
-                        if ($registrationEnabled) {
+                        if ($enableRegistration) {
                             $metaData->setBecomeMember($becomeMember)
                                 ->setTshirtSize($formData['tshirt_size']);
                         }
@@ -280,7 +280,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     $metaData->setBakskeByMail($formData['bakske']);
-                } elseif ($registrationEnabled) {
+                } elseif ($enableRegistration) {
                     if ($formData['become_member']) {
                         $metaData = new MetaData(
                             $academic,
@@ -304,7 +304,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if ($registrationEnabled) {
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()

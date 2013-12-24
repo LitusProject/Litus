@@ -86,12 +86,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findPeriodFromNow('P14D');
 
-        $piwikEnabled = $this->getEntityManager()
+        $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.piwik_enabled');
+            ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
             $piwik = array(
                 'url' => parse_url(
                     $this->getEntityManager()

@@ -28,6 +28,25 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class MailController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
+    public function getAliasesAction()
+    {
+        $aliases = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Alias')
+            ->findAll();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Type' => 'text/plain'
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'aliases' => $aliases
+            )
+        );
+    }
+
     public function getListsArchiveAction()
     {
         $lists = $this->getEntityManager()
@@ -54,25 +73,6 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         return new ViewModel(
             array(
                 'data' => $archive->getContent()
-            )
-        );
-    }
-
-    public function getAliasesAction()
-    {
-        $aliases = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Alias')
-            ->findAll();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'text/plain'
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'aliases' => $aliases
             )
         );
     }

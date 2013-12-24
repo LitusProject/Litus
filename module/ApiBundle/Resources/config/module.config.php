@@ -54,6 +54,18 @@ return array(
                     ),
                 ),
             ),
+            'api_door' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/door[/:action][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_door',
+                    ),
+                ),
+            ),
             'api_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -142,6 +154,7 @@ return array(
             'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
             'api_auth'      => 'ApiBundle\Controller\AuthController',
+            'api_door'      => 'ApiBundle\Controller\DoorController',
             'api_mail'      => 'ApiBundle\Controller\MailController',
             'api_news'      => 'ApiBundle\Controller\NewsController',
             'api_calendar'  => 'ApiBundle\Controller\CalendarController',

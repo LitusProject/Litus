@@ -106,7 +106,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_bookings') == '1';
+            ->getConfigValue('cudi.enable_bookings');
 
         $bookingsClosedExceptions = unserialize(
             $this->getEntityManager()
@@ -270,7 +270,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('cudi.enable_automatic_assignment');
 
-                        if ($enableAssignment == '1') {
+                        if ($enableAssignment) {
                             $currentPeriod = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Stock\Period')
                                 ->findOneActive();
@@ -355,9 +355,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         array_splice($articles, $numResults);
 
-        $bookingsEnabled = $this->getEntityManager()
+        $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_bookings') == '1';
+            ->getConfigValue('cudi.enable_bookings');
 
         $bookingsClosedExceptions = unserialize(
             $this->getEntityManager()
@@ -408,7 +408,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             $item->bookable = $article->isBookable()
                 && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
-                && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions));
+                && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions));
             $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
             $item->sold = isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0;
             $item->comments = array();
@@ -436,9 +436,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            $bookingsEnabled = $this->getEntityManager()
+            $enableBookings = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.enable_bookings') == '1';
+                ->getConfigValue('cudi.enable_bookings');
 
             $bookingsClosedExceptions = unserialize(
                 $this->getEntityManager()
@@ -463,7 +463,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 if (null === $article || !is_numeric($number))
                     continue;
 
-                if ($article->isBookable() && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions))) {
+                if ($article->isBookable() && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions))) {
                     $booking = new Booking(
                         $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
@@ -474,7 +474,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                     $this->getEntityManager()->persist($booking);
 
-                    if ($enableAssignment == '1') {
+                    if ($enableAssignment) {
                         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                         if ($available > 0) {
                             if ($available >= $booking->getNumber()) {

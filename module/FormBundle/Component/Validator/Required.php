@@ -51,7 +51,7 @@ class Required extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if ($value == '1' && isset($context['visible_if']) && $context['visible_if'] !== '0') {
+        if ('1' == $value && isset($context['visible_if']) && '0' != $context['visible_if']) {
             $this->error(self::MAY_NOT_BE_REQUIRED);
             return false;
         }

@@ -305,7 +305,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.enable_automatic_assignment');
 
-                    if ($enableAssignment == '1') {
+                    if ($enableAssignment) {
                         $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Booking')
                             ->assignAllByArticle($article, $this->getMailTransport());

@@ -28,12 +28,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $piwikEnabled = $this->getEntityManager()
+        $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.piwik_enabled');
+            ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -53,12 +53,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         $registrationsGraph = null;
-        if ($registrationEnabled)
+        if ($enableRegistration)
             $registrationsGraph = $this->_getRegistrationsGraph();
 
         $profActions = $this->getEntityManager()
@@ -172,28 +172,19 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'dataset' => array()
         );
 
+        for ($i = 0; $i < 7; $i++) {
+            $today = new DateTime('midnight');
+            $labelDate = $today->sub(new DateInterval('P' . $i . 'D'));
+            $data[$labelDate->format('d/m/Y')] = 0;
+        }
+
+        $today = new DateTime('midnight');
         $registrations = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findBy(
-                array(
-                    'academicYear' => $this->getCurrentAcademicYear()
-                ),
-                array(
-                    'timestamp' => 'DESC'
-                )
-            );
+            ->findAllSince($today->sub(new DateInterval('P6D')));
 
-        $data = array();
-        foreach ($registrations as $registration) {
-            if (count($data) >= 7)
-                break;
-
-            if (!isset($data[$registration->getTimestamp()->format('d/m/Y')])) {
-                $data[$registration->getTimestamp()->format('d/m/Y')] = 1;
-            } else {
-                $data[$registration->getTimestamp()->format('d/m/Y')]++;
-            }
-        }
+        foreach ($registrations as $registration)
+            $data[$registration->getTimestamp()->format('d/m/Y')]++;
 
         foreach(array_reverse($data) as $label => $value) {
             $registationGraphData['labels'][] = $label;
