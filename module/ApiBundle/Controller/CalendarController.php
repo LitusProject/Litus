@@ -19,46 +19,36 @@ use DateInterval,
     IntlDateFormatter,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
+
 /**
  * CalendarController
  *
- * @author Koen Certyn
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
 class CalendarController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-
-    /**
-    * Returns all active events
-    *
-    * @return array
-    */
-    public function getEventAction()
+    public function getActiveEventsAction()
     {
         $items = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
-        
+
         $result = array();
         foreach ($items as $item) {
             $result[] = array(
                 'title' => $item->getTitle($this->getLanguage()),
                 'content' => $item->getContent($this->getLanguage()),
-                'summary' => $item->getSummary($this->getLanguage()),
                 'startDate' => $item->getStartDate()->format('c'),
                 'endDate' => $item->getEndDate()->format('c'),
-                'poster' => $item-> getPoster(),
-                'location' => $item ->getLocation()
+                'poster' => $item->getPoster(),
+                'location' => $item->getLocation()
             );
         }
-        
+
         return new ViewModel(
             array(
                 'result' => (object) $result
             )
         );
-        
     }
-
-    
-
 }
