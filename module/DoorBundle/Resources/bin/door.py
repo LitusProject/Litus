@@ -3,7 +3,7 @@
 import datetime
 import json
 import pickle
-import urllib, urllib2
+import requests
 
 # Parameters
 API_HOST        = 'http://litus'
@@ -29,11 +29,9 @@ def allowAccess(identification, academic):
 
     try:
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Logging access to the server'
-        response = json.load(
-            urllib2.urlopen(API_HOST + '/api/door/log', urllib.urlencode(data))
-        )
+        result = requests.post(API_HOST + '/api/door/log', data = data).json()
 
-        if 'success' == response['status']:
+        if 'success' == result['status']:
             print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Log entry was successfully created'
     except Exception:
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Log entry could not be created'
@@ -47,9 +45,7 @@ def getRules():
 
     try:
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Downloading rules'
-        rules = json.load(
-            urllib2.urlopen(API_HOST + '/api/door/getRules', urllib.urlencode(data))
-        )
+        rules = requests.post(API_HOST + '/api/door/getRules', data = data).json()
 
         print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Writing rules to cache file'
         cacheFile = open(CACHE_FILE, 'w')
