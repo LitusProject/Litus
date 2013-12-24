@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+#
+# Door
+# @author Pieter Maene <pieter.maene@litus.cc>
+#
+
 import datetime
 import json
 import pickle
