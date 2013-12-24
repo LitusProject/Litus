@@ -22,10 +22,10 @@ return array(
 
         'door_admin_rule' => array(
             '@common_jquery',
+            '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@admin_css',
             '@common_remote_typeahead',
             '@common_jqueryui',
             '@common_jqueryui_datepicker',
