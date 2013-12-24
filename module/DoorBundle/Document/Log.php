@@ -37,11 +37,11 @@ class Log
     private $id;
 
     /**
-     * @var string The time of entry
+     * @var string The timestamp of entry
      *
      * @ODM\Field(type="date")
      */
-    private $time;
+    private $timestamp;
 
     /**
      * @var integer The ID of the academic
@@ -55,7 +55,7 @@ class Log
      */
     public function __construct(Academic $academic)
     {
-        $this->time = new DateTime();
+        $this->timestamp = new DateTime();
         $this->academic = $academic->getId();
     }
 
@@ -70,9 +70,9 @@ class Log
     /**
      * @return string
      */
-    public function getTime()
+    public function getTimestamp()
     {
-        return $this->time;
+        return $this->timestamp;
     }
 
     /**

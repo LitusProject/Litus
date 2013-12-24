@@ -2,7 +2,8 @@
 
 namespace DoorBundle\Repository;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use DateTime,
+    Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * Log
@@ -12,4 +13,13 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class Log extends DocumentRepository
 {
+    public function findAllSince(DateTime $since)
+    {
+        $resultSet = $this->createQueryBuilder()
+            ->field('timestamp')->gte($since)
+            ->getQuery()
+            ->execute();
+
+        return $resultSet;
+    }
 }

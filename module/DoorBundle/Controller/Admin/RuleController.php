@@ -15,6 +15,7 @@
 namespace DoorBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateInterval,
     DateTime,
     DoorBundle\Document\Rule,
     DoorBundle\Form\Admin\Rule\Add as AddForm,
@@ -37,6 +38,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'logGraph' => $this->_getLogGraph(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'entityManager' => $this->getEntityManager(),
@@ -217,5 +219,58 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $rule;
+    }
+
+    private function _getLogGraph()
+    {
+        if (null !== $this->getCache()) {
+            if($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
+                $now = new DateTime();
+                if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now)
+                    return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
+            }
+
+            $this->getCache()->setItem(
+                'CommonBundle_Controller_RuleController_LogGraph',
+                $this->_getLogGraphData()
+            );
+
+            return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
+        }
+
+        return $this->_getLogGraphData();
+    }
+
+    private function _getLogGraphData()
+    {
+        $now = new DateTime();
+
+        $logGraphData = array(
+            'expirationTime' => $now->add(new DateInterval('PT1H')),
+
+            'labels' => array(),
+            'dataset' => array()
+        );
+
+        for ($i = 0; $i < 7; $i++) {
+            $today = new DateTime('midnight');
+            $labelDate = $today->sub(new DateInterval('P' . $i . 'D'));
+            $data[$labelDate->format('d/m/Y')] = 0;
+        }
+
+        $today = new DateTime('midnight');
+        $entries = $this->getDocumentManager()
+            ->getRepository('DoorBundle\Document\Log')
+            ->findAllSince($today->sub(new DateInterval('P6D')));
+
+        foreach ($entries as $entry)
+            $data[$entry->getTimestamp()->format('d/m/Y')]++;
+
+        foreach(array_reverse($data) as $label => $value) {
+            $logGraphData['labels'][] = $label;
+            $logGraphData['dataset'][] = $value;
+        }
+
+        return $logGraphData;
     }
 }

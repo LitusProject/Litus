@@ -5,6 +5,13 @@
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage info_message full_width">
+        <div class="title">Info</div>
+        <div class="content">
+            <p>Praesidium members are automatically granted access at all times, so there's no need to create a rule for them.</p>
+        </div>
+    </div>
+
 	<div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}

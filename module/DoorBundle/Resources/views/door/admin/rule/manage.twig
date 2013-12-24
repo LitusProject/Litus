@@ -17,14 +17,14 @@
     	</div>
     </div>
 
-    <div class="flashmessage info_message full_width">
-    	<div class="title">Info</div>
-    	<div class="content">
-    		<p>Praesidium members are automatically granted access at all times, so there's no need to create a rule for them.</p>
-    	</div>
-    </div>
-
 	<div id="controller_action">
+		<h1>Log Summary</h1>
+        <div class="chart full_width">
+            <canvas id="logGraph" width="988" height="125"></canvas>
+        </div>
+
+        <h1>Rules</h1>
+
 	    <table class="full_width manage">
 	        <thead>
 	            <tr>
@@ -82,7 +82,26 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('.item .delete').click(openModal);
+			drawLogGraph();
 		});
+
+        function drawLogGraph() {
+            var data = {
+                labels : {% autoescape false %}{{ logGraph['labels']|json_encode }}{% endautoescape %},
+                datasets : [
+                    {
+                        fillColor : "rgba(98, 207, 252, 0.25)",
+                        strokeColor : "rgba(98, 207, 252, 1)",
+                        pointColor : "rgba(98, 207, 252, 1)",
+                        pointStrokeColor : "#fff",
+                        data : {% autoescape false %}{{ logGraph['dataset']|json_encode }}{% endautoescape %}
+                    }
+                ]
+            };
+
+            $('#logGraph').attr('width', $('#logGraph').parent().width());
+            new Chart($('#logGraph').get(0).getContext('2d')).Line(data);
+        }
 
 		function openModal(e) {
 			var $this = $(this);

@@ -31,6 +31,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@common_chart_js',
         ),
     ),
     'routes' => array(),
