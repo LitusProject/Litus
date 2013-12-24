@@ -28,12 +28,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $piwikEnabled = $this->getEntityManager()
+        $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.piwik_enabled');
+            ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -53,12 +53,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        $registrationEnabled = $this->getEntityManager()
+        $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.registration_enabled');
+            ->getConfigValue('secretary.enable_registration');
 
         $registrationsGraph = null;
-        if ($registrationEnabled)
+        if ($enableRegistration)
             $registrationsGraph = $this->_getRegistrationsGraph();
 
         $profActions = $this->getEntityManager()

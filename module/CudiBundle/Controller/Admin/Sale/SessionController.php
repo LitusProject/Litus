@@ -280,7 +280,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_automatic_expire');
 
-                if ('1' == $autoExpire) {
+                if ($autoExpire) {
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->expireBookings($this->getMailTransport());

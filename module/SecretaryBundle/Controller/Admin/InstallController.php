@@ -29,7 +29,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'secretary.registration_enabled',
+                    'key'         => 'secretary.enable_registration',
                     'value'       => '1',
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
@@ -53,8 +53,10 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The article for the membership',
                 ),
                 array(
-                    'key'         => 'secretary.terms_and_conditions_nl',
-                    'value'       => 'Aan het lidmaatschap zijn een aantal gebruiksvoorwaarden verbonden:
+                    'key'         => 'secretary.terms_and_conditions',
+                    'value'       => serialize(
+                        array(
+                            'nl' => 'Aan het lidmaatschap zijn een aantal gebruiksvoorwaarden verbonden:
 
 * Deze voorwaarden zijn van toepassing op iedere overeenkomst tussen het lid en Vlaamse Technische Kring vzw, hierna VTK genoemd. Het lid heeft deze voorwaarden van toepassing verklaard voor zover van deze voorwaarden niet door partijen uitdrukkelijk en schriftelijk is afgeweken.
 
@@ -69,11 +71,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 * Ieder lid kan via schriftelijk schrijven aan de secretaris zijn lidmaatschap ten allen tijde opzeggen. Ook VTK kan steeds, omwille van gegronde redenen, de overeenkomst doen ontbinden.
 
 * Op deze overeenkomst en alle overeenkomsten en geschillen die daaruit voortvloeien, is enkel Belgisch recht van toepassing.',
-                    'description' => 'The organization\'s terms and conditions',
-                ),
-                array(
-                    'key'         => 'secretary.terms_and_conditions_en',
-                    'value'       => 'The terms of use of the membership are:
+                            'en' => 'The terms of use of the membership are:
 
 * These conditions apply to all contracts between the member and the Vlaamse Technische Kring vzw, hereafter called VTK. The member has declared these conditions applicable if the parties have not - explicitly and in writing - decided otherwise.
 
@@ -90,6 +88,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 * Each member may put a hold to his membership at any time by a written demand  to the Secretary. Also VTK can always, for serious reasons, terminate the Agreement.
 
 * On this agreement and all contracts and disputes arising therefrom, only Belgian law applies.',
+                        )
+                    ),
                     'description' => 'The organization\'s terms and conditions',
                 ),
             )

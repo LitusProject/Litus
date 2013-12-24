@@ -146,7 +146,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_automatic_assignment');
 
-                if ($enableAssignment == '1') {
+                if ($enableAssignment) {
                     $currentPeriod = $this->getActiveStockPeriod();
 
                     $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
