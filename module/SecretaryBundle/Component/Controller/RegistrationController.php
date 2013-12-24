@@ -255,16 +255,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     protected function _getTermsAndConditions()
     {
-        try {
-            $termsAndConditions = $this->getEntityManager()
+        $termsAndConditions = unserialize(
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
-        } catch(\Exception $e) {
-            $termsAndConditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
-        }
-        return $termsAndConditions;
+                ->getConfigValue('secretary.terms_and_conditions')
+        );
+
+        return $termsAndConditions[$this->getLanguage()->getAbbrev()];
     }
 
     protected function _getPrimaryAddress($formData)
@@ -322,6 +319,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
 
-        return $academicYear;
+        return $this->_academicYear;
     }
 }

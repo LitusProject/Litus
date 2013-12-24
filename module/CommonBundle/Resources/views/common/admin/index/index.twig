@@ -10,15 +10,15 @@
 	<div id="controller_action">
         {% if piwik is not null %}
             <h1>Visits Summary</h1>
-            <div class="chart full_width">
+            <div class="chart">
                 <canvas id="visitsGraph" width="988" height="125"></canvas>
             </div>
         {% endif %}
 
         {% if registrationsGraph is not null and registrationsGraph['dataset']|length > 1 %}
             <h1>Registrations Summary</h1>
-            <div class="chart full_width">
-                <canvas id="registrationGraph" width="988" height="125"></canvas>
+            <div class="chart">
+                <canvas id="registrationsGraph" width="988" height="125"></canvas>
             </div>
         {% endif %}
 
@@ -208,7 +208,6 @@
             new Chart($('#visitsGraph').get(0).getContext('2d')).Line(data);
         }
 
-
         function drawRegistrationsGraph() {
             var data = {
                 labels : {% autoescape false %}{{ registrationsGraph['labels']|json_encode }}{% endautoescape %},
@@ -223,8 +222,8 @@
                 ]
             };
 
-            $('#registrationGraph').attr('width', $('#registrationGraph').parent().width());
-            new Chart($('#registrationGraph').get(0).getContext('2d')).Line(data);
+            $('#registrationsGraph').attr('width', $('#registrationsGraph').parent().width());
+            new Chart($('#registrationsGraph').get(0).getContext('2d')).Line(data);
         }
 
         function expireSession(e) {

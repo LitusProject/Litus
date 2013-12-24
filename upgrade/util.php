@@ -1,27 +1,27 @@
 <?php
 
-function renameConfigKey($connection, $oldName, $newName)
+function renameConfigKey($connection, $oldName, $newName, $description = null)
 {
-    $database = include __DIR__ . '/../config/database.config.php';
+    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
+    if (null !== $description)
+        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
+}
 
-    $connection = pg_connect(
-        'dbname=' . $database['relational']['dbname']
-        . ' host=' . $database['relational']['host']
-        . ' port=' . $database['relational']['port']
-        . ' user=' . $database['relational']['user']
-        . ' password=' . $database['relational']['password']
-    );
-
-    $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'' . $oldName . '\'');
+function getConfigValue($connection, $name)
+{
+    $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'' . $name . '\'');
     if (0 == pg_num_rows($result))
-        throw new \RuntimeException('The config key ' . $oldName . ' does not exist');
+        throw new \RuntimeException('The config key ' . $name . ' does not exist');
 
-    $oldValue = pg_fetch_row($result)[0];
+    return pg_fetch_row($result)[0];
+}
 
-    $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'' . $newName . '\'');
-    if (0 == pg_num_rows($result))
-        throw new \RuntimeException('The config key ' . $newName . ' does not yet exist');
+function addConfigKey($connection, $name, $value, $description)
+{
+    pg_query($connection, 'INSERT INTO general.config VALUES (\'' . $name . '\', \'' . $value . '\', \'' . $description . '\')');
+}
 
-    pg_query($connection, 'UPDATE general.config SET value = \'' . $oldValue . '\' WHERE key = \'' . $newName . '\'');
-    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $oldName . '\'');
+function removeConfigKey($connection, $name)
+{
+    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
 }
