@@ -34,6 +34,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'Flag whether the registration module is enabled or not',
                 ),
                 array(
+                    'key'         => 'secretary.enable_other_organization',
+                    'value'       => '0',
+                    'description' => 'Flag whether the "other organization" option is enabled',
+                ),
+                array(
                     'key'         => 'secretary.mail',
                     'value'       => 'secretaris@vtk.be',
                     'description' => 'The mail address the secretary mails will be send from',

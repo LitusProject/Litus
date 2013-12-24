@@ -49,19 +49,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_conditionsAlreadyChecked = false;
 
     /**
+     * @var boolean Enable the "other organization" option
+     */
+    protected $_enableOtherOrganization = false;
+
+    /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
      * @param array|null $extraInfo Extra information about the user
+     * @param boolean $enableOtherOrganization Enable the "other organization" option
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
     {
         parent::__construct($name);
 
         $this->setAttribute('id', 'register_form');
 
         $this->_entityManager = $entityManager;
+        $this->_enableOtherOrganization = $enableOtherOrganization;
 
         $this->setAttribute('enctype', 'multipart/form-data');
 
@@ -283,7 +290,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $organizationOptions = array();
+        $organizationOptions = $this->_enableOtherOrganization ? array("Other") : array();
         foreach($organizations as $organization)
             $organizationOptions[$organization->getId()] = $organization->getName();
 
