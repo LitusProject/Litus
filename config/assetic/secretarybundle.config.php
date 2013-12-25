@@ -24,6 +24,8 @@ return array(
             '@admin_css',
             '@admin_js',
             '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'secretary_admin_promotion' => array(
             '@common_jquery',
