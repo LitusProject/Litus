@@ -39,7 +39,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
                 'title' => $item->getTitle($this->getLanguage()),
                 'content' => $item->getContent($this->getLanguage()),
                 'startDate' => $item->getStartDate()->format('c'),
-                'endDate' => $item->getEndDate()->format('c'),
+                'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
                 'poster' => $item->getPoster(),
                 'location' => $item->getLocation()
             );
