@@ -25,3 +25,15 @@ function removeConfigKey($connection, $name)
 {
     pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
 }
+
+function removeAclAction($connection, $resource, $action)
+{
+    $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
+    if (0 == pg_num_rows($result))
+        throw new \RuntimeException('The ACL action ' . $name . ' does not exist');
+
+    $id = pg_fetch_row($result)[0];
+
+    pg_query($connection, 'DELETE FROM acl.roles_actions_map WHERE action = \'' . $id . '\'');
+    pg_query($connection, 'DELETE FROM acl.actions WHERE id = \'' . $id . '\'');
+}
