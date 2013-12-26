@@ -129,6 +129,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByDiscountAndAcademicYearQuery($this->getParam('string'), $academicYear);
+            case 'type':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByTypeAndAcademicYearQuery($this->getParam('string'), $academicYear);
         }
     }
 

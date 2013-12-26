@@ -18,9 +18,15 @@
                     <option value="person">Person</option>
                     <option value="organization">Organization</option>
                     <option value="discount">Discount</option>
+                    <option value="type">Type</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
+                <select id="searchStringSelect" style="display: none">
+                    <option value="regular">Regular</option>
+                    <option value="prof">Prof</option>
+                    <option value="external">External</option>
+                </select>
             </div>
 
             <table class="full_width manage">
@@ -78,6 +84,20 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#searchStringSelect').change(function (e) {
+                $('#searchString').val($('#searchStringSelect').val()).trigger('keyup');
+            });
+
+            $('#searchField').change(function (e) {
+                if ($(this).val() == 'type') {
+                    $('#searchString').hide();
+                    $('#searchStringSelect').show().change();
+                } else {
+                    $('#searchString').show();
+                    $('#searchStringSelect').hide();
+                }
+            });
+
             {% if hasAccess('cudi_admin_sales_financial_sold', 'individualSearch') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
