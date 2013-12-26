@@ -54,6 +54,7 @@
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
+                    <th width="70px" class="wider">Type</th>
                 </tr>
             </table>
         </div>
@@ -68,17 +69,19 @@
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
+                    <th width="70px" class="wider">Type</th>
                 </tr>
 
                 {% for item in paginator %}
                     <tr class="item">
                         <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getSession().getOpenDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ item.getPerson().getFullName() }}</td>
+                        <td>{% if item.getType() == 'regular' %}{{ item.getPerson().getFullName() }}{% else %}{{ item.getPerson() }}{% endif %}</td>
                         <td>{{ item.getPerson().getOrganization(item.getSession().getAcademicYear()).getName() }}</td>
                         <td>{{ item.getNumber() }}</td>
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
-                        <td class="wider">{{ item.getDiscountType() }}</td>
+                        <td>{{ item.getDiscountType() }}</td>
+                        <td class="wider">{{ item.getType()|capitalize }}</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -109,7 +112,8 @@
                             .append('<td>' + this.organization + '</td>')
                             .append('<td>' + this.number + '</td>')
                             .append('<td>&euro; ' + this.sellPrice + '</td>')
-                            .append('<td>' + this.discount + '</td>');
+                            .append('<td>' + this.discount + '</td>')
+                            .append('<td class="wider">' + this.type + '</td>');
                     });
                     $('#sold_search table').change();
                 },

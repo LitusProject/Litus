@@ -150,6 +150,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'int',
                         ),
+                        array(
+                            'name' => 'greaterthan',
+                            'options' => array(
+                                'min' => 0,
+                            ),
+                        ),
                     ),
                 )
             )

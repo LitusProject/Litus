@@ -30,7 +30,7 @@ function removeAclAction($connection, $resource, $action)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
     if (0 == pg_num_rows($result))
-        throw new \RuntimeException('The ACL action ' . $name . ' does not exist');
+        throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
 
     $id = pg_fetch_row($result)[0];
 
