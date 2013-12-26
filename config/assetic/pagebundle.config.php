@@ -22,6 +22,7 @@ return array(
 
         'page_admin_page' => array(
             '@common_jquery',
+            '@admin_css',
             '@admin_js',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
@@ -30,23 +31,22 @@ return array(
             '@common_form_upload_progress',
             '@gollum_css',
             '@gollum_js',
-            '@admin_css',
         ),
         'page_admin_category' => array(
             '@common_jquery',
+            '@admin_css',
             '@admin_js',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@admin_css',
         ),
         'page_admin_link' => array(
             '@common_jquery',
+            '@admin_css',
             '@admin_js',
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@admin_css',
         ),
 
         'page' => array(

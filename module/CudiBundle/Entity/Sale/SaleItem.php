@@ -24,6 +24,13 @@ use CudiBundle\Entity\Sale\Article,
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem")
  * @ORM\Table(name="cudi.sales_sale_items", indexes={@ORM\Index(name="sales_sale_item_time", columns={"timestamp"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "regular" = "CudiBundle\Entity\Sale\SaleItem",
+ *     "prof" = "CudiBundle\Entity\Sale\SaleItem\Prof",
+ *     "external" = "CudiBundle\Entity\Sale\SaleItem\External"
+ * })
  */
 class SaleItem
 {
@@ -234,5 +241,13 @@ class SaleItem
     {
         if (isset(Discount::$POSSIBLE_TYPES[$this->discountType]))
             return Discount::$POSSIBLE_TYPES[$this->discountType];
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'regular';
     }
 }

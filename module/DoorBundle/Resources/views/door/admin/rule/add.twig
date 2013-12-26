@@ -1,0 +1,37 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'door/admin/rule/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage info_message full_width">
+        <div class="title">Info</div>
+        <div class="content">
+            <p>Praesidium members are automatically granted access at all times, so there's no need to create a rule for them.</p>
+        </div>
+    </div>
+
+	<div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#academicSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -48,6 +48,7 @@ return array(
         'PublicationBundle',
 
         'ApiBundle',
+        'DoorBundle',
         'OnBundle',
 
         'WikiBundle',

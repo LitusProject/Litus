@@ -17,6 +17,8 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
+    CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
@@ -81,19 +83,23 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+                $organization = null;
+            else
+                $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
 
             $item = (object) array();
             $item->id = $soldItem->getId();
             $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
             $item->session = $soldItem->getSession()->getOpenDate()->format('d/m/Y H:i');
             $item->article = $soldItem->getArticle()->getMainArticle()->getTitle();
-            $item->person = $soldItem->getPerson()->getFullName();
+            $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
             $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
             $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
         }
 
@@ -123,6 +129,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByDiscountAndAcademicYearQuery($this->getParam('string'), $academicYear);
+            case 'type':
+                return $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findAllByTypeAndAcademicYearQuery($this->getParam('string'), $academicYear);
         }
     }
 
@@ -215,18 +225,22 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+                $organization = null;
+            else
+                $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
 
             $item = (object) array();
             $item->id = $soldItem->getId();
             $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
             $item->article = $soldItem->getArticle()->getMainArticle()->getTitle();
-            $item->person = $soldItem->getPerson()->getFullName();
+            $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
             $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
             $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
         }
 
@@ -419,18 +433,22 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+                $organization = null;
+            else
+                $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
 
             $item = (object) array();
             $item->id = $soldItem->getId();
             $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
             $item->session = $soldItem->getSession()->getOpenDate()->format('d/m/Y H:i');
-            $item->person = $soldItem->getPerson()->getFullName();
+            $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
             $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
             $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
         }
 
@@ -554,19 +572,23 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+                $organization = null;
+            else
+                $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
 
             $item = (object) array();
             $item->id = $soldItem->getId();
             $item->timestamp = $soldItem->getTimestamp()->format('d/m/Y H:i');
             $item->session = $soldItem->getSession()->getOpenDate()->format('d/m/Y H:i');
             $item->article = $soldItem->getArticle()->getMainArticle()->getTitle();
-            $item->person = $soldItem->getPerson()->getFullName();
+            $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
             $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
             $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
+            $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
         }
 

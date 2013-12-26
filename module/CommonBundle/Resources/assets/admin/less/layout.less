@@ -24,6 +24,10 @@ h1 {
     margin-top: 2*@defaultSpacing;
     margin-bottom: @defaultSpacing;
     font-size: @tSizeHeadingOne;
+
+    &:first-child {
+        margin-top: 0;
+    }
 }
 
 h2 {
@@ -41,6 +45,14 @@ h2 {
     height: 100%;
     margin: 0 auto -@footerHeight auto;
     background: @cBase;
+}
+
+#toggleHelpButton {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: @layoutWidth;
+    margin-left: -@layoutWidth/2;
 }
 
 // Content
@@ -295,15 +307,11 @@ h2 {
             margin: 5px 0 0 5px;
             .box-shadow(0 0 5px 2px #7F7C7C);
 
-            &.full_width {
-                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10 !important;
-            }
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
         }
 
         .chart {
-            &.full_width {
-                width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10 !important;
-            }
+            width: @layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10;
         }
 
         .form {

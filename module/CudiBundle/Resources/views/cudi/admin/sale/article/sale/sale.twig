@@ -1,0 +1,25 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/article/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage info_message full_width">
+        <div class="title">Info</div>
+        <div class="content">
+            <p>There are {{ article.getStockValue() }} items of this article in stock</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>Article</h1>
+
+        <p>Title: <b>{{ article.getMainArticle().getTitle() }}</b></p>
+        <p>Author: <b>{{ article.getMainArticle().getAuthors() }}</b></p>
+        <p>Publisher: <b>{{ article.getMainArticle().getPublishers() }}</b></p>
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

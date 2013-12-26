@@ -131,13 +131,18 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $termsAndConditions = $this->_getTermsAndConditions();
 
+        $enableOtherOrganization = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.enable_other_organization');
+
         $form = new EditForm(
             $academic,
             $this->getCurrentAcademicYear(),
             $metaData,
             $this->getCache(),
             $this->getEntityManager(),
-            $this->getParam('identification')
+            $this->getParam('identification'),
+            $enableOtherOrganization
         );
 
         $ids = unserialize(
@@ -227,15 +232,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->_uploadProfileImage($upload, $academic);
                 if (isset($formData['organization'])) {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
+                    if (0 == $formData['organization'] && $enableOtherOrganization) {
+                        $organization = null;
+                    } else {
+                        $organization = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Organization')
+                            ->findOneById($formData['organization']);
 
-                    $this->_setOrganization(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $organization
-                    );
+                        $this->_setOrganization(
+                            $academic,
+                            $this->getCurrentAcademicYear(),
+                            $organization
+                        );
+                    }
                 } else {
                     $organization = current(
                         $this->getEntityManager()

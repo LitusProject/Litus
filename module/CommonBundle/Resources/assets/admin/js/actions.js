@@ -4,7 +4,7 @@
             $(this).find('td.actions').each(function () {
                 if ($(this).find('.action').length > 0)
                     return;
-                
+
                 if ($(this).find('a').length < 2) {
                     $(this).find('a').show();
                     return;

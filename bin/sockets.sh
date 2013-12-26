@@ -15,8 +15,7 @@ function backgroundTask() {
 }
 
 # Starting the WebSockets
-for i in {1..50}
-do
+for i in {1..50}; do
     backgroundTask "php $SCRIPT_DIRECTORY/CudiBundle/queue.php --run"
     backgroundTask "php $SCRIPT_DIRECTORY/SportBundle/run.php --run"
     backgroundTask "php $SCRIPT_DIRECTORY/SyllabusBundle/update.php --run"
