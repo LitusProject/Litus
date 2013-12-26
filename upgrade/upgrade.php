@@ -12,6 +12,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+/**
+ * To force an upgrade, use -f {number}
+ */
+
 $database = include __DIR__ . '/../config/database.config.php';
 
 $connection = pg_connect(
@@ -39,11 +43,13 @@ foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
 
 sort($files);
 
+$options = getopt("f:");
+
 // Run
 include 'util.php';
 
 foreach($files as $file) {
-    if ($file <= $lastUpgrade . '.php')
+    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file))
         continue;
 
     echo 'Upgrade ' . substr($file, 0, strrpos($file, '.')) . PHP_EOL;

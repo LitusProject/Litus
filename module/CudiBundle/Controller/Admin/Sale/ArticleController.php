@@ -21,7 +21,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Log\Sale\ProfVersion as ProfVersionLog,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
     CudiBundle\Entity\Sale\SaleItem,
@@ -356,40 +355,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'current' => $article,
             )
         );
-    }
-
-    public function sellProfAction()
-    {
-        if (!($saleArticle = $this->_getSaleArticle()))
-            return new ViewModel();
-
-        $saleItem = new SaleItem(
-            $saleArticle,
-            1,
-            0,
-            null,
-            null,
-            $this->getEntityManager()
-        );
-        $this->getEntityManager()->persist($saleItem);
-
-        $this->getEntityManager()->persist(new ProfVersionLog($this->getAuthentication()->getPersonObject(), $saleArticle));
-
-        $saleArticle->setStockValue($saleArticle->getStockValue() - 1);
-
-        $this->getEntityManager()->flush();
-
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The article is successfully sold to a prof'
-            )
-        );
-
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
-
-        return new ViewModel();
     }
 
     public function typeaheadAction()

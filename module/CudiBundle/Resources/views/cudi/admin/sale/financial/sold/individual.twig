@@ -18,9 +18,15 @@
                     <option value="person">Person</option>
                     <option value="organization">Organization</option>
                     <option value="discount">Discount</option>
+                    <option value="type">Type</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
+                <select id="searchStringSelect" style="display: none">
+                    <option value="regular">Regular</option>
+                    <option value="prof">Prof</option>
+                    <option value="external">External</option>
+                </select>
             </div>
 
             <table class="full_width manage">
@@ -34,6 +40,7 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
+                    <th width="70px" class="wider">Type</th>
                 </tr>
             </table>
         </div>
@@ -50,6 +57,7 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
+                    <th width="70px" class="wider">Type</th>
                 </tr>
 
                 {% for item in paginator %}
@@ -57,12 +65,13 @@
                         <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
                         <td class="widest">{{ item.getSession().getOpenDate().format('d/m/Y H:i') }}</td>
                         <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
-                        <td>{{ item.getPerson().getFullName() }}</td>
+                        <td>{% if item.getType() == 'regular' %}{{ item.getPerson().getFullName() }}{% else %}{{ item.getPerson() }}{% endif %}</td>
                         <td>{{ item.getPerson().getOrganization(item.getSession().getAcademicYear()).getName() }}</td>
                         <td>{{ item.getNumber() }}</td>
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
                         <td>&euro; {{ (item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
                         <td class="wider">{{ item.getDiscountType() }}</td>
+                        <td class="wider">{{ item.getType()|capitalize }}</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -75,6 +84,20 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#searchStringSelect').change(function (e) {
+                $('#searchString').val($('#searchStringSelect').val()).trigger('keyup');
+            });
+
+            $('#searchField').change(function (e) {
+                if ($(this).val() == 'type') {
+                    $('#searchString').hide();
+                    $('#searchStringSelect').show().change();
+                } else {
+                    $('#searchString').show();
+                    $('#searchStringSelect').hide();
+                }
+            });
+
             {% if hasAccess('cudi_admin_sales_financial_sold', 'individualSearch') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
@@ -95,7 +118,8 @@
                             .append('<td>' + this.number + '</td>')
                             .append('<td>&euro; ' + this.sellPrice + '</td>')
                             .append('<td>&euro; ' + this.purchasePrice + '</td>')
-                            .append('<td class="wider">' + this.discount + '</td>');
+                            .append('<td class="wider">' + this.discount + '</td>')
+                            .append('<td class="wider">' + this.type + '</td>');
                     });
                     $('#sold_search table').change();
                 },
