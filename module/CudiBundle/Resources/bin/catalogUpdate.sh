@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# A very small wrapper around our garbage collector
+# A very small wrapper around our catelog update script
 #
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)

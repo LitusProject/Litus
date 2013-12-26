@@ -91,16 +91,19 @@
                             <li>
                                 <div class="subtitle">
                                         <b>Apps</b><br />
-                                        24h Run, Quiz &amp; Tickets
+                                        24h Run, Door, Quiz &amp; Tickets
                                 </div>
 
                                 <ul
-                                    {% if 'sport_admin_run' == getParam('controller') or 'ticket_admin_event' == getParam('controller') or 'ticket_admin_ticket' == getParam('controller') or 'quiz_admin_quiz' == getParam('controller')  or 'quiz_admin_round' == getParam('controller') or 'quiz_admin_team' == getParam('controller') %}
+                                    {% if 'sport_admin_run' == getParam('controller') or 'door_admin_rule' == getParam('controller') or 'ticket_admin_event' == getParam('controller') or 'ticket_admin_ticket' == getParam('controller') or 'quiz_admin_quiz' == getParam('controller')  or 'quiz_admin_round' == getParam('controller') or 'quiz_admin_team' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
                                 >
                                     {% if hasAccess('sport_admin_run', 'queue') %}
                                         <li><a href="{{ url('sport_admin_run') }}">24h Run</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('door_admin_rule', 'manage') %}
+                                        <li><a href="{{ url('door_admin_rule') }}">Door</a></li>
                                     {% endif %}
                                     {% if hasAccess('quiz_admin_quiz', 'manage') %}
                                         <li><a href="{{ url('quiz_admin_quiz') }}">Quiz</a></li>

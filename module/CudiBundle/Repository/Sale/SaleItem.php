@@ -522,6 +522,32 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByTypeAndAcademicYearQuery($type, AcademicYear $academicYear)
+    {
+        $entity = 'CudiBundle\Entity\Sale\SaleItem';
+        if ('prof' == $type)
+            $entity = 'CudiBundle\Entity\Sale\SaleItem\Prof';
+        elseif ('external' == $type)
+            $entity = 'CudiBundle\Entity\Sale\SaleItem\External';
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from($entity, 'i')
+            ->innerJoin('i.session', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
+                )
+            )
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
+            ->orderBy('i.timestamp', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
     public function findAllBySessionQuery(SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

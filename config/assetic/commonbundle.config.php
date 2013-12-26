@@ -53,6 +53,8 @@ return array(
             '@common_chart_js',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'common_admin_location' => array(
             '@common_jquery',
