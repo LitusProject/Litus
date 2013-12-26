@@ -3,17 +3,18 @@
     $(document).ready(function () {
         if ($('[data-help]').length > 0) {
             $('body').append(
-                $('<div>', {'id': 'toggleHelpButton'}).html('Help').css({
-                    'position': 'fixed',
-                    'top': 0,
-                    'right': 10,
-                    'background': '#dddcdc',
-                    'color': '#7f7c7c',
-                    'padding': '5px',
-                    'cursor': 'pointer',
-                    'border': '1px solid #000',
-                    'border-top': 'none'
-                }).click(toggleHelp)
+                $('<div>', {'id': 'toggleHelpButton'}).append(
+                    $('<div>').html('Help').css({
+                        'float': 'right',
+                        'margin-right': '5px',
+                        'background': '#dddcdc',
+                        'color': '#7f7c7c',
+                        'padding': '5px',
+                        'cursor': 'pointer',
+                        'border': '1px solid #000',
+                        'border-top': 'none'
+                    })
+                ).click(toggleHelp)
             );
         }
 
