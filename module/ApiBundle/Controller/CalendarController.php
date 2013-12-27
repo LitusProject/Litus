@@ -17,7 +17,6 @@ namespace ApiBundle\Controller;
 use DateInterval,
     DateTime,
     IntlDateFormatter,
-    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -44,6 +43,8 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
                 'location' => $item->getLocation()
             );
         }
+
+        $this->initJson();
 
         return new ViewModel(
             array(

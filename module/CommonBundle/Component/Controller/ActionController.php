@@ -23,6 +23,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\User\Person,
     Locale,
     Zend\Cache\StorageFactory,
+    Zend\Http\Headers,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
     Zend\Paginator\Adapter\ArrayAdapter,
@@ -109,6 +110,47 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );
+        }
+    }
+
+    /**
+     * Initializes the authentication.
+     *
+     * @return void
+     */
+    protected function initAuthentication()
+    {
+        $authenticationHandler = $this->getAuthenticationHandler();
+        if (null !== $authenticationHandler) {
+            if (
+                $this->hasAccess()->resourceAction(
+                    $this->getParam('controller'), $this->getParam('action')
+                )
+            ) {
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $authenticationHandler['controller'] == $this->getParam('controller')
+                            && $authenticationHandler['action'] == $this->getParam('action')
+                    ) {
+                        return $this->redirectAfterAuthentication();
+                    }
+                }
+            } else {
+                if (!$this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $authenticationHandler['controller'] != $this->getParam('controller')
+                            && $authenticationHandler['action'] != $this->getParam('action')
+                    ) {
+                        return $this->redirect()->toRoute(
+                            $authenticationHandler['auth_route']
+                        );
+                    }
+                } else {
+                    throw new Exception\HasNoAccessException(
+                        'You do not have sufficient permissions to access this resource'
+                    );
+                }
+            }
         }
     }
 
@@ -227,58 +269,25 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Redirects after a successful authentication.
+     * Modifies the reponse headers for a JSON reponse.
      *
-     * If this returns null, no redirection will take place.
-     *
+     * @param array $additionalHeaders Any additional headers that should be set
      * @return void
      */
-    protected function redirectAfterAuthentication()
+    protected function initJson(array $additionalHeaders = array())
     {
-        return $this->redirect()->toRoute(
-            $this->getAuthenticationHandler()['redirect_route']
-        );
-    }
+        unset($additionalHeaders['Content-Type']);
 
-    /**
-     * Initializes the authentication.
-     *
-     * @return void
-     */
-    protected function initAuthentication()
-    {
-        $authenticationHandler = $this->getAuthenticationHandler();
-        if (null !== $authenticationHandler) {
-            if (
-                $this->hasAccess()->resourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
-            ) {
-                if ($this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] == $this->getParam('controller')
-                            && $authenticationHandler['action'] == $this->getParam('action')
-                    ) {
-                        return $this->redirectAfterAuthentication();
-                    }
-                }
-            } else {
-                if (!$this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] != $this->getParam('controller')
-                            && $authenticationHandler['action'] != $this->getParam('action')
-                    ) {
-                        return $this->redirect()->toRoute(
-                            $authenticationHandler['auth_route']
-                        );
-                    }
-                } else {
-                    throw new Exception\HasNoAccessException(
-                        'You do not have sufficient permissions to access this resource'
-                    );
-                }
-            }
-        }
+        $headers = new Headers();
+        $headers->addHeaders(
+            array_merge(
+                array(
+                    'Content-Type' => 'application/json',
+                ),
+                $additionalHeaders
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
     }
 
     /**
@@ -505,5 +514,19 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     public function getMvcTranslator()
     {
         return $this->getServiceLocator()->get('MvcTranslator');
+    }
+
+    /**
+     * Redirects after a successful authentication.
+     *
+     * If this returns null, no redirection will take place.
+     *
+     * @return void
+     */
+    protected function redirectAfterAuthentication()
+    {
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
     }
 }
