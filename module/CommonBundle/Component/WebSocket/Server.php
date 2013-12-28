@@ -60,13 +60,13 @@ class Server
         $isFile = strpos($this->_file, 'unix://') === 0;
         $fileName = substr($this->_file, strlen('unix://'));
 
-        if ($isFile === 0) {
+        if ($isFile) {
             if (file_exists($fileName))
                 unlink($fileName);
         }
 
         $this->master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
-        
+
         if ($isFile)
             chmod($fileName, 0777);
 
