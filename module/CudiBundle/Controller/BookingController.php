@@ -33,11 +33,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class BookingController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    /**
-     * @var \CommonBundle\Entity\General\AcademicYear
-     */
-    private $_academicYear;
-
     public function viewAction()
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
@@ -564,20 +559,5 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             return;
 
         return $booking;
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = false)
-    {
-        if (null !== $this->_academicYear)
-            return $this->_academicYear;
-
-        $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
-
-        return $this->_academicYear;
     }
 }
