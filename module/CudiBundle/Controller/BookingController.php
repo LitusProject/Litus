@@ -578,6 +578,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
 
-        return $academicYear;
+        return $this->_academicYear;
     }
 }
