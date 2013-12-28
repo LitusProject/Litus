@@ -25,12 +25,6 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function indexAction()
     {
-        $address = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_port');
         $allowUpdate = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.enable_update');
@@ -38,7 +32,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'allowUpdate' => $allowUpdate,
-                'socketUrl' => 'ws://' . $address . ':' . $port,
+                'socketUrl' => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -46,5 +40,19 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
                     ->getConfigValue('syllabus.queue_socket_key'),
             )
         );
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        $address = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_public');
+
+        return 'ws://' . $address;
     }
 }

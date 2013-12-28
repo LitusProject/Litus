@@ -39,19 +39,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The ID of the organization on the official result page',
                 ),
                 array(
-                    'key'         => 'sport.queue_socket_port',
-                    'value'       => '8897',
-                    'description' => 'The port used for the websocket of the queue',
+                    'key'         => 'sport.queue_socket_file',
+                    'value'       => 'tcp://127.0.0.1:8897',
+                    'description' => 'The file used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'sport.queue_socket_remote_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The remote host for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'sport.queue_socket_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The host used for the websocket of the queue',
+                    'key'         => 'sport.queue_socket_public',
+                    'value'       => '127.0.0.1:8897',
+                    'description' => 'The public address for the websocket of the queue',
                 ),
                 array(
                     'key'         => 'sport.queue_socket_key',

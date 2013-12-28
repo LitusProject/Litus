@@ -318,16 +318,18 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return $academicYear;
     }
 
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
     protected function getSocketUrl()
     {
         $address = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_port');
+            ->getRepository('CommonBundle\Entity\General\Config');
+            ->getConfigValue('sport.queue_socket_public');
 
-        return 'ws://' . $address . ':' . $port;
+        return 'ws://' . $address;
     }
 
     private function _convertDateIntervalToSeconds(DateInterval $interval)

@@ -49,14 +49,11 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
-        $address = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_host');
-        $port = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_port');
-
-        parent::__construct($address, $port);
+        parent::__construct(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.update_socket_file')
+        );
 
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
