@@ -90,11 +90,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     {
         $address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_port');
+            ->getConfigValue('cudi.queue_socket_public');
 
-        return 'ws://' . $address . ':' . $port;
+        return 'ws://' . $address;
     }
 }

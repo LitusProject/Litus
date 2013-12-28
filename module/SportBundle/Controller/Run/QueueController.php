@@ -72,21 +72,4 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 
         return new ViewModel();
     }
-
-    /**
-     * Returns the WebSocket URL.
-     *
-     * @return string
-     */
-    protected function getSocketUrl()
-    {
-        $address = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_port');
-
-        return 'ws://' . $address . ':' . $port;
-    }
 }
