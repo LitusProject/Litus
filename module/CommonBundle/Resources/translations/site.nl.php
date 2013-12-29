@@ -13,8 +13,8 @@
  */
 
 return array(
-    'Vlaamse Technische Kring Leuven' => 'Vlaamse Technische Kring Leuven',
-    'VTK Leuven vzw' => 'VTK Leuven vzw',
+    'Vlaamse Technische Kring' => 'Vlaamse Technische Kring',
+    'VTK vzw' => 'VTK vzw',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
     'Dutch' => 'Nederlands',
