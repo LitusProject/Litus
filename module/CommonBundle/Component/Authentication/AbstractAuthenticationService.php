@@ -29,7 +29,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      * @var string The namespace the storage handlers will use
      */
     private $_namespace = '';
-    
+
     /**
      * @var string The name of the cookie
      */
@@ -73,7 +73,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
         $this->_action = $action;
         return $this;
     }
-    
+
     /**
      * Checks whether external sites (e.g. wiki) can access this authentication
      *
@@ -83,7 +83,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     {
         return $this->_hasCookie();
     }
-    
+
     /**
      * Returns the value of the cookie
      *
@@ -93,7 +93,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     {
         return $_COOKIE[$this->_cookie];
     }
-    
+
     /**
      * Checks whether the cookie has been set.
      *
@@ -103,7 +103,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     {
         return isset($_COOKIE[$this->_cookie]);
     }
-    
+
     /**
      * Clear the authentication cookie.
      */
@@ -127,7 +127,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected function _setCookie($value)
     {
         $this->_clearCookie();
-        
+
         $_COOKIE[$this->_cookie] = $value;
         setcookie(
             $this->_cookie,
