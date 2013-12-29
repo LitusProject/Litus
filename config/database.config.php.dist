@@ -19,6 +19,7 @@ return array(
         'user'     => 'litus',
         'password' => 'huQeyU8te3aXusaz',
         'dbname'   => 'litus',
+        'options'  => array(),
     ),
     'relational' => array(
         'driver'   => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',

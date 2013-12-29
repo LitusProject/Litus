@@ -80,7 +80,8 @@ return array(
                 'port'     => $databaseConfig['document']['port'],
                 'user'     => $databaseConfig['document']['user'],
                 'password' => $databaseConfig['document']['password'],
-                'dbname'   => $databaseConfig['document']['dbname']
+                'dbname'   => $databaseConfig['document']['dbname'],
+                'options'  => $databaseConfig['document']['options'],
             ),
             'orm_default' => array(
                 'driverClass' => $databaseConfig['relational']['driver'],
