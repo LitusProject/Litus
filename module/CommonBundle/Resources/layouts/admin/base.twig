@@ -392,6 +392,10 @@
 
 <footer>
     Litus Admin | Code by <a href="http://litus.cc">Litus</a> | Design by <a href="http://www.serayo.com">Robin de Bruin</a>
+
+    {% if servedBy is not null %}
+        <span class="right">Served by {{ servedBy }}</span>
+    {% endif %}
 </footer>
 
 {{ inlineScript() }}

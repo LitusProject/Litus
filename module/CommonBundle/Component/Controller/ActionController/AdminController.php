@@ -79,6 +79,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $result->servedBy = null;
+        if (false !== getenv('SERVED_BY'))
+            $result->servedBy = ucfirst(getenv('SERVED_BY'));
+
         $e->setResult($result);
 
         return $result;
