@@ -135,7 +135,7 @@ class Key
             return false;
         }
 
-        if (gethostbyname($this->host) != $_SERVER['REMOTE_ADDR'])
+        if (gethostbyname($this->host) != $ip)
             return false;
 
         return true;
