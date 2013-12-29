@@ -57,7 +57,11 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('ApiBundle\Entity\Key')
                 ->findOneActiveByCode($this->getRequest()->getPost('key'));
 
-            if (!$key->validate($_SERVER['REMOTE_ADDR'])) {
+            $validateKey = $key->validate(
+                isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+            );
+
+            if (!$validateKey) {
                 throw new InvalidKeyException(
                     'The given API key was invalid'
                 );
