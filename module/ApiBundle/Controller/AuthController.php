@@ -26,7 +26,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getPersonAction()
     {
-        if (null !== ($person = $this->_getPerson())) {
+        if (null === ($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
                     'result' => null
