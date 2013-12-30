@@ -88,10 +88,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     protected function getSocketUrl()
     {
-        $address = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_public');
-
-        return 'ws://' . $address;
     }
 }
