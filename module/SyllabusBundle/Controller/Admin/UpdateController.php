@@ -49,10 +49,8 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
      */
     protected function getSocketUrl()
     {
-        $address = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.update_socket_public');
-
-        return 'ws://' . $address;
     }
 }
