@@ -325,11 +325,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
      */
     protected function getSocketUrl()
     {
-        $address = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('sport.queue_socket_public');
-
-        return 'ws://' . $address;
     }
 
     private function _convertDateIntervalToSeconds(DateInterval $interval)

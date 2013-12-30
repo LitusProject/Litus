@@ -1,4 +1,6 @@
 (function ($) {
+    var socketConnectTimeout;
+
     var defaults = {
         name: 'webSocket',
         url: '',
@@ -11,18 +13,38 @@
         init : function (options) {
             var settings = $.extend(defaults, options);
 
-            var ws = new WebSocket(options.url);
+            if ($(document).data(settings.name + '_options') && $(document).data(settings.name + '_options').ssl_enabled) {
+                $(document).data(settings.name + '_options', {'ssl_enabled': false});
+                var ws = new WebSocket('ws://' + options.url);
+            } else {
+                $(document).data(settings.name + '_options', {'ssl_enabled': true});
+                var ws = new WebSocket('wss://' + options.url);
+            }
+
+            clearTimeout(socketConnectTimeout);
+                socketConnectTimeout = setTimeout(
+                    function () {
+                        $.webSocket(settings)
+                    },
+                    1000
+                );
 
             $(ws)
-                .bind('open', settings.open)
+                .bind('open', function (e) {
+                    clearTimeout(socketConnectTimeout);
+                    settings.open(e);
+                })
                 .bind('close', function (e) {
+                    clearTimeout(socketConnectTimeout);
                     setTimeout(function () {$.webSocket(settings)}, 1000);
                     settings.error(e);
                 })
                 .bind('error', function (e) {
+                    clearTimeout(socketConnectTimeout);
                     settings.error(e);
                 })
                 .bind('message', function (e) {
+                    clearTimeout(socketConnectTimeout);
                     if (e.type == 'message' && e.originalEvent.data)
                         settings.message(e.originalEvent, $.parseJSON(e.originalEvent.data));
                 });
@@ -41,7 +63,9 @@
             return this;
         },
         close : function (data) {
-            $(document).data(data.name).close();
+            var socket = $(document).data(data.name);
+            if (socket != undefined)
+                $(document).data(data.name).close();
             $(document).removeData(data.name);
             return this;
         }
