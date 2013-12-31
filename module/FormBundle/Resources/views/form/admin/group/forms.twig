@@ -54,7 +54,7 @@
 
             <tbody>
                 {% for form in group.getForms() %}
-                    <tr class="item item-{{ form.getId() }}" data-id="{{ form.getId() }}">
+                    <tr class="item item-{{ form.getId() }}" data-id="{{ form.getId() }}" data-form-id="{{ form.getForm().getId() }}" data-title="{{ form.getForm().getTitle() }}">
                         <td>{{ form.getForm().getType()|capitalize }}</td>
                         <td>{{ form.getForm().getTitle(language) }}</td>
                         <td>{{ form.getForm().getCreationPerson().getFullName() }}</td>
@@ -159,6 +159,9 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.form_removed_success').removeClass('hide');
+                        $('select#form').append(
+                            $('<option>', {'value': $('.item-' + id).data('form-id')}).html($('.item-' + id).data('title'))
+                        );
                         $('.item-' + id).remove();
                         removeForm.modal('hide');
                     } else {
