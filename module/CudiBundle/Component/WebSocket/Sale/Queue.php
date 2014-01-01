@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Queue extends \CommonBundle\Component\WebSocket\Server
+class Queue
 {
     /**
      * @var Doctrine\ORM\EntityManager

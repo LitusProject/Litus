@@ -8,16 +8,17 @@
     ],
     "require": {
         "zendframework/zendframework" : "@stable",
+        "zendframework/zend-developer-tools": "dev-master",
 
         "doctrine/doctrine-orm-module": "@dev",
         "doctrine/doctrine-mongo-odm-module": "@dev",
 
         "EvanDotPro/EdpMarkdown": "@dev",
+        "symfony/process": "2.3.4",
         "widmogrod/zf2-assetic-module": "@dev",
         "zf-commons/zfc-twig": "@dev",
-        "twitter/bootstrap": "2.3.*",
-        "zendframework/zend-developer-tools": "dev-master",
-        "symfony/process": "2.3.4"
+
+        "twitter/bootstrap": "2.3.*"
     },
     "autoload": {
         "psr-0": {

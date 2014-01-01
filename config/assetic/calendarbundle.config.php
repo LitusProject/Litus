@@ -42,6 +42,8 @@ return array(
             '@admin_css',
             '@admin_js',
             '@common_download_file',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'calendar' => array(
             '@common_jquery',

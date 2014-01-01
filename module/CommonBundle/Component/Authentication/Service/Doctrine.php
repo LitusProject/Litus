@@ -87,7 +87,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 $newSession = new $sessionEntity(
                     $adapterResult->getPersonObject(),
                     $_SERVER['HTTP_USER_AGENT'],
-                    $_SERVER['REMOTE_ADDR'],
+                    isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'],
                     $shibboleth,
                     $this->_duration
                 );
@@ -120,7 +120,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 $sessionValidation = $session->validate(
                     $this->_entityManager,
                     $_SERVER['HTTP_USER_AGENT'],
-                    $_SERVER['REMOTE_ADDR']
+                    isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
                 );
 
                 if (true !== $sessionValidation) {

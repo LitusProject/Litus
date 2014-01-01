@@ -139,7 +139,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     if ($authentication->isAuthenticated()) {
                         $registrationEnabled = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('secretary.registration_enabled');
+                            ->getConfigValue('secretary.enable_registration');
 
                         if ($registrationEnabled) {
                             $academic = $this->getEntityManager()

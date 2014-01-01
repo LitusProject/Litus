@@ -31,19 +31,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'syllabus.update_socket_port',
-                    'value'       => '8898',
-                    'description' => 'The port used for the websocket of the syllabus update',
+                    'key'         => 'syllabus.update_socket_file',
+                    'value'       => 'tcp://127.0.0.1:8898',
+                    'description' => 'The file used for the websocket of the syllabus update',
                 ),
                 array(
-                    'key'         => 'syllabus.update_socket_remote_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The remote host for the websocket of the syllabus update',
-                ),
-                array(
-                    'key'         => 'syllabus.update_socket_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The host used for the websocket of the syllabus update',
+                    'key'         => 'syllabus.update_socket_public',
+                    'value'       => '127.0.0.1:8898',
+                    'description' => 'The public address for the websocket of the syllabus update',
                 ),
                 array(
                     'key'         => 'syllabus.queue_socket_key',

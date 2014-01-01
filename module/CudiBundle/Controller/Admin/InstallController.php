@@ -232,19 +232,14 @@ VTK Cudi
                     'description' => 'The start for a serving queue item barcode',
                 ),
                 array(
-                    'key'         => 'cudi.queue_socket_port',
-                    'value'       => '8899',
-                    'description' => 'The port used for the websocket of the queue',
+                    'key'         => 'cudi.queue_socket_file',
+                    'value'       => 'tcp://127.0.0.1:8899',
+                    'description' => 'The file used for the websocket of the queue',
                 ),
                 array(
-                    'key'         => 'cudi.queue_socket_remote_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The remote host for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'cudi.queue_socket_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The host used for the websocket of the queue',
+                    'key'         => 'cudi.queue_socket_public',
+                    'value'       => '127.0.0.1:8899',
+                    'description' => 'The public address for the websocket of the queue',
                 ),
                 array(
                     'key'         => 'cudi.queue_socket_key',
@@ -480,7 +475,10 @@ VTK Cudi
                         'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
                     ),
                     'cudi_admin_sales_article' => array(
-                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'sellProf', 'typeahead', 'view'
+                        'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'typeahead', 'view'
+                    ),
+                    'cudi_admin_sales_article_sale' => array(
+                        'sale'
                     ),
                     'cudi_admin_sales_article_barcode' => array(
                         'delete', 'manage'

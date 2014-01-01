@@ -20,20 +20,21 @@
         width: @layoutWidth + 200;
     }
 
+    #toggleHelpButton {
+        width: @layoutWidth + 200;
+        margin-left: -(@layoutWidth + 200)/2;
+    }
+
     #content_controller {
         width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing) + 200;
 
         #controller_action {
             img {
-                &.full_width {
-                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200 !important;
-                }
+                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200;
             }
 
             .chart {
-                &.full_width {
-                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200 !important;
-                }
+                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 200;
             }
 
             .form {
@@ -123,21 +124,21 @@
         width: @layoutWidth + 400;
     }
 
+    #toggleHelpButton {
+        width: @layoutWidth + 400;
+        margin-left: -(@layoutWidth + 400)/2;
+    }
+
     #content_controller {
         width: @layoutWidth - (@leftSidebarWidth + 2 * @defaultSpacing) + 400;
 
         #controller_action {
             img {
-                &.full_width {
-                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400 !important;
-                }
+                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400;
             }
 
             .chart {
-                &.full_width {
-                    height: auto;
-                    width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400 !important;
-                }
+                width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing) - 10) + 400;
             }
 
             .form {

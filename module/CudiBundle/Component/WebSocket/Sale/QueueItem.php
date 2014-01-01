@@ -31,7 +31,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class QueueItem extends \CommonBundle\Component\WebSocket\Server
+class QueueItem
 {
     /**
      * @var \CudiBundle\Entity\Sale\Session The sale session

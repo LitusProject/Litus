@@ -31,11 +31,15 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'mail_admin_group' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'mail_admin_list' => array(
             '@common_jquery',
@@ -58,16 +62,22 @@ return array(
             '@gollum_js',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'mail_admin_study' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'mail_admin_volunteer' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         )
     ),
     'routes' => array(),

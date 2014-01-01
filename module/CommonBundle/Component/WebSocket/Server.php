@@ -23,8 +23,7 @@ use Exception;
  */
 class Server
 {
-    private $_address;
-    private $_port;
+    private $_file;
 
     private $_users;
     private $_sockets;
@@ -39,13 +38,11 @@ class Server
     const OP_PONG = 0xa;
 
     /**
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
+     * @param string $address The file for the websocket master socket
      */
-    public function __construct($address, $port)
+    public function __construct($file)
     {
-        $this->_address = $address;
-        $this->_port = $port;
+        $this->_file = $file;
         $this->_users = array();
         $this->_sockets = array();
         $this->_authenticated = array();
@@ -58,15 +55,21 @@ class Server
      */
     private function createSocket()
     {
-        $context = stream_context_create();
-
-        stream_context_set_option($context, 'ssl', 'local_cert', '/etc/apache2/ssl/server.pem');
-
-        stream_context_set_option($context, 'ssl', 'allow_self_signed', true);
-        stream_context_set_option($context, 'ssl', 'verify_peer', false);
-
         $err = $errno = 0;
-        $this->master = stream_socket_server('tcp://' . $this->_address . ':' . $this->_port, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+
+        $isFile = strpos($this->_file, 'unix://') === 0;
+        $fileName = substr($this->_file, strlen('unix://'));
+
+        if ($isFile) {
+            if (file_exists($fileName))
+                unlink($fileName);
+        }
+
+        $this->master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+
+        if ($isFile)
+            chmod($fileName, 0777);
+
         $this->_sockets[] = $this->master;
 
         if ($this->master == false)

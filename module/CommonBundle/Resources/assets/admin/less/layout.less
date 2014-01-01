@@ -47,6 +47,14 @@ h2 {
     background: @cBase;
 }
 
+#toggleHelpButton {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: @layoutWidth;
+    margin-left: -@layoutWidth/2;
+}
+
 // Content
 #content:after {
     .clearfix;
@@ -585,7 +593,7 @@ footer {
         color: inherit;
     }
 
-    .development_information {
+    .right {
         float: right;
         margin-right: 2 * @defaultSpacing;
     }

@@ -43,14 +43,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     public function __construct(EntityManager $entityManager)
     {
-        $address = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_host');
-        $port = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_port');
-
-        parent::__construct($address, $port);
+        parent::__construct(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.queue_socket_file')
+        );
 
         $this->_entityManager = $entityManager;
     }
