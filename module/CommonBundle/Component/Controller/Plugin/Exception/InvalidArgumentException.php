@@ -22,5 +22,4 @@ namespace CommonBundle\Component\Controller\Plugin\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-
 }

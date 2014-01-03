@@ -15,6 +15,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\Acl\RoleAware,
     CommonBundle\Component\Authentication\Authentication;
 
 /**
@@ -33,16 +34,23 @@ class HasAccess
     /**
      * @var \CommonBundle\Component\Authentication\Authentication The authentication object
      */
-    private $_authentication = null;
+    private $_entity = null;
+
+    /**
+     * @var boolean Whether the person is authenticated
+     */
+    private $_authenticated = false;
 
     /**
      * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
+     * @param boolean $authenticated Whether the person is authenticated
+     * @param \CommonBundle\Component\Acl\RoleAware $entity The authenticated entity
      */
-    public function __construct(Acl $acl, Authentication $authentication)
+    public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)
     {
         $this->_acl = $acl;
-        $this->_authentication = $authentication;
+        $this->_authenticated = $authenticated;
+        $this->_entity = $entity;
     }
 
     /**
@@ -55,8 +63,8 @@ class HasAccess
         if (null === $this->_acl)
             throw new Exception\RuntimeException('No ACL object was provided');
 
-        if (null === $this->_authentication)
-            throw new Exception\RuntimeException('No authentication object was provided');
+        if ($this->_authenticated && null === $this->_entity)
+            throw new Exception\RuntimeException('No entity was provided');
 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
@@ -65,8 +73,8 @@ class HasAccess
         if (!$this->_acl->hasResource($resource))
             return false;
 
-        if ($this->_authentication->isAuthenticated()) {
-            foreach ($this->_authentication->getPersonObject()->getRoles() as $role) {
+        if ($this->_authenticated && null !== $this->_entity) {
+            foreach ($this->_entity->getRoles() as $role) {
                 if (
                     $role->isAllowed(
                         $this->_acl, $resource, $action

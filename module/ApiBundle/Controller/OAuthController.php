@@ -12,13 +12,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
+namespace ApiBundle\Controller;
+
+use CommonBundle\Entity\User\Person\Academic,
+    Zend\View\Model\ViewModel;
 
 /**
- * Thrown when someone tries to access the API without using an API key.
+ * OAuthController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class InvalidKeyException extends \RuntimeException
+class OAuthController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
 }

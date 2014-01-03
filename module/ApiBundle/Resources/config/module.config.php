@@ -131,7 +131,8 @@ return array(
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'api_view' => __DIR__ . '/../views',
+            'api_layout' => __DIR__ . '/../layouts',
+            'api_view'   => __DIR__ . '/../views',
         ),
     ),
     'doctrine' => array(

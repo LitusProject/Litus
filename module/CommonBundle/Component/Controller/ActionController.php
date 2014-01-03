@@ -21,7 +21,6 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    Locale,
     Zend\Cache\StorageFactory,
     Zend\Http\Headers,
     Zend\Mvc\MvcEvent,
@@ -123,7 +122,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $authenticationHandler = $this->getAuthenticationHandler();
         if (null !== $authenticationHandler) {
             if (
-                $this->hasAccess()->resourceAction(
+                $this->hasAccess(
                     $this->getParam('controller'), $this->getParam('action')
                 )
             ) {
@@ -171,9 +170,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->getPluginManager()->setInvokableClass(
             'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
         );
+
         $this->hasAccess()->setDriver(
             new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
 
@@ -184,7 +186,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Initializes the fallback language and stores it in the Registry so that it is
+     * Initializes the fallback language and sets it as the default so that it is
      * accessible troughout the application.
      *
      * @return void
@@ -209,10 +211,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                     )
                 );
             } else {
-                Locale::setDefault($fallbackLanguage->getAbbrev());
+                \Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch(\Exception $e) {
-        }
+        } catch(\Exception $e) {}
     }
 
     /**
@@ -238,7 +239,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         );
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
 
@@ -278,7 +281,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         unset($additionalHeaders['Content-Type']);
 
-        $headers = new Headers();
+        $headers = $this->getResponse()->getHeaders();
+
+        if ($headers->has('Content-Type'))
+            $headers->removeHeader('Content-Type');
+
         $headers->addHeaders(
             array_merge(
                 array(
@@ -287,7 +294,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 $additionalHeaders
             )
         );
-        $this->getResponse()->setHeaders($headers);
     }
 
     /**
@@ -518,7 +524,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
     /**
      * Redirects after a successful authentication.
-     *
      * If this returns null, no redirection will take place.
      *
      * @return void

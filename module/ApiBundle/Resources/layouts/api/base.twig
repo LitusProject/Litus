@@ -1,0 +1,7 @@
+{% autoescape false %}
+    {% if error is not null %}
+        {{ error|json_encode }}
+    {% else %}
+        {% block content %} {% endblock %}
+    {% endif %}
+{% endautoescape %}

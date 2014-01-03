@@ -14,7 +14,8 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Acl\RoleAware,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -44,7 +45,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *      "supplier"="CudiBundle\Entity\User\Person\Supplier"
  * })
  */
-abstract class Person
+abstract class Person implements RoleAware
 {
     /**
      * @var string The persons unique identifier

@@ -17,7 +17,8 @@ namespace CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    Zend\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.
@@ -53,7 +54,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'display' => date('l, F j Y, H:i', time())
         );
 
-        if ($this->hasAccess()->resourceAction('cudi_admin_stock_period', 'new')) {
+        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
             $period = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
@@ -113,7 +114,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getMvcTranslator()->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
 
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+        AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
 
     /**

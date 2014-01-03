@@ -65,7 +65,7 @@ class Authentication
      */
     public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)
     {
-        if (isset($this->_result) && $identity == '')
+        if (null !== $this->_result && $identity == '')
             return;
 
         if ('' != $identity) {
@@ -91,23 +91,23 @@ class Authentication
     }
 
     /**
-     * Returns true if the provided user has been authenticated.
+     * Returns true if the user has been authenticated.
      *
      * @return bool
      */
     public function isAuthenticated()
     {
-        if (isset($this->_result))
+        if (null !== $this->_result)
             return $this->_result->isValid();
 
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (null === $this->_result)
             return false;
 
         return $this->_result->isValid();
     }
-    
+
     /**
      * Checks whether external sites can access this authentication.
      *
@@ -130,7 +130,7 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (null === $this->_result)
             return null;
 
         return $this->_result->getPersonObject();
@@ -145,7 +145,7 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (null === $this->_result)
             return null;
 
         return $this->_result->getSessionObject();

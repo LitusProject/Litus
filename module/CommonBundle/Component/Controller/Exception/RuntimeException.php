@@ -12,13 +12,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
+namespace CommonBundle\Component\Controller\Exception;
 
 /**
- * Thrown when someone tries to access the API without issuing a POST request.
+ * Custom RuntimeException so that we can quickly see where it was
+ * thrown.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class NoPostRequestException extends \RuntimeException
+class RuntimeException extends \RuntimeException
 {
 }

@@ -31,7 +31,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     private $_entityManager = null;
 
     /**
-     * @param \CommonBundle\Component\Acl\Driver\HasAccess $driver The driver object
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return \CommonBundle\Component\View\Helper\StaticMap
      */
     public function setEntityManager(EntityManager $entityManager)

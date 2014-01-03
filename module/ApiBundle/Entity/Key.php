@@ -14,7 +14,8 @@
 
 namespace ApiBundle\Entity;
 
-use DateTime,
+use CommonBundle\Component\Acl\RoleAware,
+    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,7 +24,7 @@ use DateTime,
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\Key")
  * @ORM\Table(name="api.keys")
  */
-class Key
+class Key implements RoleAware
 {
     /**
      * @var integer The ID of this code
@@ -54,6 +55,18 @@ class Key
      * @ORM\Column(type="string", length=32, unique=true)
      */
     private $code;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection;
+     *
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
+     *      name="api.keys_roles_map",
+     *      joinColumns={@ORM\JoinColumn(name="key", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
+     * )
+     */
+    private $roles;
 
     /**
      * @param string $host
@@ -123,6 +136,51 @@ class Key
     }
 
     /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+
+    /**
+     * Add the specified roles to the user.
+     *
+     * @param array $roles An array containing the roles that should be added
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = new ArrayCollection($roles);
+        return $this;
+    }
+
+    /**
+     * Returns a one-dimensional array containing all roles this user has, without
+     * inheritance.
+     *
+     * @return array
+     */
+    public function getFlattenedRoles()
+    {
+        return $this->_flattenRolesInheritance(
+            $this->getRoles()
+        );
+    }
+
+    /**
+     * Removes the given role.
+     *
+     * @param \CommonBundle\Entity\Acl\Role $role The role that should be removed
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function removeRole(Role $role)
+    {
+        $this->roles->removeElement($role);
+        return $this;
+    }
+
+    /**
      * Checks whether or not this key is valid.
      *
      * @param string $ip The remote IP
@@ -139,5 +197,24 @@ class Key
             return false;
 
         return true;
+    }
+
+    /**
+     * This method is called recursively to create a one-dimensional role flattening the
+     * roles' inheritance structure.
+     *
+     * @param array $inheritanceRoles The array with the roles that should be unfolded
+     * @param array $return The one-dimensional return array
+     * @return array
+     */
+    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
+    {
+        foreach ($inheritanceRoles as $role) {
+            if (!in_array($role, $return))
+                $return[] = $role;
+            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
+        }
+
+        return $return;
     }
 }

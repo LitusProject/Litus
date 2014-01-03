@@ -355,7 +355,7 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'br_layout' => __DIR__ . '/../layouts',
-            'br_view' => __DIR__ . '/../views',
+            'br_view'   => __DIR__ . '/../views',
         ),
     ),
     'doctrine' => array(
