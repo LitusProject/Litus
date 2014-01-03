@@ -693,6 +693,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
 
+        $entry->getForm()->setEntityManager($this->getEntityManager());
+
         $now = new DateTime();
         if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
             return new ViewModel(
@@ -1024,29 +1026,30 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $guestInfo->renew();
             }
 
-            if (null !== $guestInfo) {
-                foreach($group->getForms() as $groupForm) {
+            foreach($group->getForms() as $groupForm) {
+                $formEntry = array();
+                if (null !== $guestInfo) {
                     $formEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
                         ->findAllByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
+                }
 
-                    if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                        $data['current_completed'] = (sizeof($formEntry) > 0);
-                    } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
-                        $data['previous_form'] = $groupForm->getForm()->getId();
-                        if (sizeof($formEntry) > 0) {
-                            $data['completed_before_current']++;
-                        } else {
-                            $data['uncompleted_before_current']++;
-                            if ($data['first_uncompleted_id'] == 0)
-                                $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
-                        }
+                if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
+                    $data['current_completed'] = (sizeof($formEntry) > 0);
+                } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
+                    $data['previous_form'] = $groupForm->getForm()->getId();
+                    if (sizeof($formEntry) > 0) {
+                        $data['completed_before_current']++;
                     } else {
-                        if (sizeof($formEntry) > 0)
-                            $data['completed_after_current']++;
-                        if ($data['next_form'] == 0)
-                            $data['next_form'] = $groupForm->getForm()->getId();
+                        $data['uncompleted_before_current']++;
+                        if ($data['first_uncompleted_id'] == 0)
+                            $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
                     }
+                } else {
+                    if (sizeof($formEntry) > 0)
+                        $data['completed_after_current']++;
+                    if ($data['next_form'] == 0)
+                        $data['next_form'] = $groupForm->getForm()->getId();
                 }
             }
         }
