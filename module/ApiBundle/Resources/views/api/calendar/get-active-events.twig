@@ -1,5 +1,7 @@
 {% extends 'api/base.twig' %}
 
 {% block content %}
-    {{ result|json_encode }}
+    {% autoescape false %}
+        {{ result|json_encode }}
+    {% endautoescape %}
 {% endblock %}

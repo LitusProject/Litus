@@ -1,7 +1,7 @@
-{% autoescape false %}
-    {% if error is not null %}
+{% if error is not null %}
+    {% autoescape false %}
         {{ error|json_encode }}
-    {% else %}
-        {% block content %} {% endblock %}
-    {% endif %}
-{% endautoescape %}
+    {% endautoescape %}
+{% else %}
+    {% block content %} {% endblock %}
+{% endif %}
