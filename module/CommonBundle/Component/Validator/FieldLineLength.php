@@ -68,7 +68,7 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
 
         $len = 0;
         for ($i=count($lines) - 2; $i >= 0; $i--) {
-            $line = $lines[i];
+            $line = $lines[$i];
             $len = $len + ceil(strlen($line) === 0 ? 1 : strlen($line) / $this->_charsPerLine) * $this->_charsPerLine;
         }
 
