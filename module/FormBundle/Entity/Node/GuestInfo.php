@@ -83,13 +83,7 @@ class GuestInfo
 
         $this->sessionId = $sessionId;
 
-        setcookie(
-            'LITUS_form',
-            $sessionId,
-            time()+3600,
-            '/',
-            str_replace('www.', '', $_SERVER['SERVER_NAME'])
-        );
+        $this->renew();
     }
 
     /**
