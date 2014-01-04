@@ -136,7 +136,7 @@ class GuestInfo
             $this->sessionId,
             time()+3600,
             '/',
-            str_replace('www.', '', $_SERVER['SERVER_NAME'])
+            str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
         );
         return $this;
     }
