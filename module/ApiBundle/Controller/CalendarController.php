@@ -35,6 +35,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         $result = array();
         foreach ($items as $item) {
             $result[] = array(
+                'id' => $item->getId(),
                 'title' => $item->getTitle($this->getLanguage()),
                 'content' => $item->getContent($this->getLanguage()),
                 'startDate' => $item->getStartDate()->format('c'),
