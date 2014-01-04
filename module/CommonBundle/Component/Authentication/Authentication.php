@@ -65,7 +65,7 @@ class Authentication
      */
     public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)
     {
-        if (null !== $this->_result && $identity == '')
+        if (isset($this->_result) && $identity == '')
             return;
 
         if ('' != $identity) {
@@ -97,12 +97,12 @@ class Authentication
      */
     public function isAuthenticated()
     {
-        if (null !== $this->_result)
+        if (isset($this->_result))
             return $this->_result->isValid();
 
         $this->authenticate();
 
-        if (null === $this->_result)
+        if (!isset($this->_result))
             return false;
 
         return $this->_result->isValid();
@@ -130,7 +130,7 @@ class Authentication
     {
         $this->authenticate();
 
-        if (null === $this->_result)
+        if (!isset($this->_result))
             return null;
 
         return $this->_result->getPersonObject();
@@ -145,7 +145,7 @@ class Authentication
     {
         $this->authenticate();
 
-        if (null === $this->_result)
+        if (!isset($this->_result))
             return null;
 
         return $this->_result->getSessionObject();
