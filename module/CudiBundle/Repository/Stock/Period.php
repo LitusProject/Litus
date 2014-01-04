@@ -118,9 +118,11 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->in('a.id', $this->_findAllArticleIds($period))
             )
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
