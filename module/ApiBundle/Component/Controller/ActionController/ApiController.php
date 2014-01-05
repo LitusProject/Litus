@@ -93,6 +93,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             }
         }
 
+        $this->initJson();
+
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
                 ->getHeaders()
@@ -129,7 +131,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 return new ViewModel(
                     array(
                         'error' => (object) array(
-                            'message' => 'The specified fallback language does not exist!'
+                            'message' => 'The specified fallback language does not exist'
                         )
                     )
                 );

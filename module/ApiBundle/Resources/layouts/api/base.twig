@@ -3,5 +3,9 @@
         {{ error|json_encode }}
     {% endautoescape %}
 {% else %}
-    {% block content %} {% endblock %}
+    {% block content %}
+        {% autoescape false %}
+            {{ result|json_encode }}
+        {% endautoescape %}
+    {% endblock %}
 {% endif %}

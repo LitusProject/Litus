@@ -45,12 +45,62 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             );
         }
 
-        $this->initJson();
+        return new ViewModel(
+            array(
+                'result' => (object) $result
+            )
+        );
+    }
+
+    public function getPosterAction()
+    {
+        if (null === ($poster = $this->_getPoster())) {
+            $this->getResponse()->setStatusCode(404);
+            return new ViewModel(
+                array(
+                    'error' => (object) array(
+                        'message' => 'No poster key was provided with the request'
+                    )
+                )
+            );
+        }
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('calendar.poster_path') . '/';
+
+        if (!file_exists($filePath . $poster)) {
+            $this->getResponse()->setStatusCode(500);
+            return new ViewModel(
+                array(
+                    'error' => (object) array(
+                        'message' => 'The poster file does not exist'
+                    )
+                )
+            );
+        }
+
+        $handle = fopen($filePath . $event->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $poster));
+        fclose($handle);
+
+        $result = array(
+            'mime_type' => mime_content_type($filePath . $poster),
+            'data' => $data
+        );
 
         return new ViewModel(
             array(
                 'result' => (object) $result
             )
         );
+    }
+
+    private function _getPoster()
+    {
+        if (null !== $this->getRequest()->getPost('poster'))
+            return $this->getRequest()->getPost('poster');
+
+        return null;
     }
 }

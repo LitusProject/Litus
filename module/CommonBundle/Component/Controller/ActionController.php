@@ -207,7 +207,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'Warning',
-                        'The specified fallback language does not exist!'
+                        'The specified fallback language does not exist'
                     )
                 );
             } else {
