@@ -134,7 +134,7 @@ class GuestInfo
         setcookie(
             'LITUS_form',
             $this->sessionId,
-            time()+3600,
+            time() + (60*60*24*7),
             '/',
             str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
         );
