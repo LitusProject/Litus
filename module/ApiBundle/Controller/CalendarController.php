@@ -80,8 +80,15 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             );
         }
 
-        $handle = fopen($filePath . $event->getPoster(), 'r');
-        $data = fread($handle, filesize($filePath . $poster));
+        $posterData = null;
+        if (!file_exists($filePath . $poster . '_thumb')) {
+            $image = new Imagick($filePath . $poster);
+            $image->scaleImage(1136, 1136);
+            $image->writeImage($filePath . $poster. '_thumb');
+        }
+
+        $handle = fopen($filePath . $poster . '_thumb', 'r');
+        $data = base64_encode(fread($handle, filesize($filePath . $poster)));
         fclose($handle);
 
         $result = array(
