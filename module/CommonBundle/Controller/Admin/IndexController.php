@@ -47,7 +47,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             $piwik = array(
-                'uniqueVisitors' => (null === $analytics->getUniqueVisitors()) ? 'N/A' : $analytics->getUniqueVisitors(),
+                'uniqueVisitors' => $analytics->getUniqueVisitors(),
                 'liveCounters' => $analytics->getLiveCounters(),
                 'visitsGraph' => $this->_getVisitsGraph($analytics)
             );
