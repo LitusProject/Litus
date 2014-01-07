@@ -138,6 +138,8 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                 else
                     $notification->setStartDate(null);
 
+                $notification->setActive($formData['active']);
+
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
