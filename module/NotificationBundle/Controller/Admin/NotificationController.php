@@ -37,7 +37,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             'NotificationBundle\Entity\Node\Notification',
             $this->getParam('page'),
             array(),
-            array('startDate' => 'ASC')
+            array('startDate' => 'DESC')
         );
 
         return new ViewModel(
