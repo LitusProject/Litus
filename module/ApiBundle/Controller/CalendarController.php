@@ -17,6 +17,7 @@ namespace ApiBundle\Controller;
 use DateInterval,
     DateTime,
     IntlDateFormatter,
+    Imagick,
     Zend\View\Model\ViewModel;
 
 /**
@@ -88,7 +89,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         }
 
         $handle = fopen($filePath . $poster . '_thumb', 'r');
-        $data = base64_encode(fread($handle, filesize($filePath . $poster)));
+        $data = base64_encode(fread($handle, filesize($filePath . $poster . '_thumb')));
         fclose($handle);
 
         $result = array(
