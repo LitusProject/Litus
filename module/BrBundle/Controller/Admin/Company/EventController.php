@@ -277,14 +277,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $image = new Imagick($upload->getFileName());
 
-                if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
-                    $fileName = '/' . $event->getEvent()->getPoster();
-                } else {
-                    $fileName = '';
-                    do{
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
+                $fileName = '';
+                do{
+                    $fileName = '/' . sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                if ($event->getPoster() != '' || $event->getPoster() !== null) {
+                    if (file_exists($filePath . '/' . $event->getPoster()))
+                        unlink($filePath . '/' . $event->getPoster());
                 }
+
                 $image->writeImage($filePath . $fileName);
                 $event->getEvent()->setPoster($fileName);
 
