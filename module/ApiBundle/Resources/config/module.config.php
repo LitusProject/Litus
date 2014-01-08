@@ -45,9 +45,10 @@ return array(
             'api_auth' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/auth[/:action][/]',
+                    'route' => '[/:language]/api/auth[/:action][/]',
                     'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'api_auth',
@@ -81,9 +82,10 @@ return array(
             'api_news' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/news[/:action][/]',
+                    'route' => '[/:language]/api/news[/:action][/]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'api_news',
@@ -93,9 +95,10 @@ return array(
             'api_calendar' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/calendar[/:action][/]',
+                    'route' => '[/:language]/api/calendar[/:action][/]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'api_calendar',
@@ -105,9 +108,10 @@ return array(
             'api_cudi' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/cudi[/:action][/]',
+                    'route' => '[/:language]/api/cudi[/:action][/]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'api_cudi',
@@ -117,9 +121,10 @@ return array(
             'api_shift' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/api/shift[/:action][/]',
+                    'route' => '[/:language]/api/shift[/:action][/]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[a-z]{2}',
                     ),
                     'defaults' => array(
                         'controller' => 'api_shift',
