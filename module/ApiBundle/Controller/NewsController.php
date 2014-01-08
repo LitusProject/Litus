@@ -27,13 +27,14 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findNbActive($this->getRequest()->getPost('number', 5));
+            ->findAll();
 
         $result = array();
         foreach ($items as $item) {
             $result[] = array(
+                'id' => $item->getId(),
                 'creationTime' => $item->getCreationTime()->format('c'),
-                'endDate' => $item->getEndDate()->format('c'),
+                'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
                 'message' => $item->getContent($this->getLanguage()),
                 'title' => $item->getTitle($this->getLanguage())
             );
