@@ -27,7 +27,7 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findAll();
+            ->findAllSite();
 
         $result = array();
         foreach ($items as $item) {
