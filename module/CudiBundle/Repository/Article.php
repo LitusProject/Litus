@@ -139,7 +139,7 @@ class Article extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $articles = array();
+        $articles = array(0);
         foreach($resultSet as $mapping)
             $articles[] = $mapping->getArticle()->getId();
 
