@@ -124,13 +124,12 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $this->populateFromAcademic($person, $academicYear);
     }
 
-    public function populateFromAcademic(Academic $academic, AcademicYear $academicYear)
+    protected function populateFromAcademic(Academic $academic, AcademicYear $academicYear)
     {
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail) {
+        if ($universityEmail)
             $universityEmail = explode('@', $universityEmail)[0];
-        }
 
         $data = array(
             'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',

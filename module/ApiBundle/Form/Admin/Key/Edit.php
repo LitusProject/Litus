@@ -15,6 +15,7 @@
 namespace ApiBundle\Form\Admin\Key;
 
 use ApiBundle\Entity\Key,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 
@@ -29,14 +30,9 @@ class Edit extends Add
      * @param \ApiBundle\Entity\Key $key The key we're going to modify
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(Key $key, $name = null)
+    public function __construct(EntityManager $entityManager, Key $key, $name = null)
     {
-        parent::__construct($name);
-
-        $field = new Text('code');
-        $field->setLabel('Code')
-            ->setAttribute('disabled', 'disabled');
-        $this->add($field);
+        parent::__construct($entityManager, $name);
 
         $this->remove('submit');
 
@@ -51,10 +47,29 @@ class Edit extends Add
     private function _populateFromKey(Key $key)
     {
         $data = array(
-            'host' => $key->getHost(),
-            'code' => $key->getCode()
+            'host'       => $key->getHost(),
+            'check_host' => $key->getCheckHost(),
+            'roles'      => $this->_createRolesPopulationArray($key->getRoles()),
         );
 
         $this->setData($data);
+    }
+
+    /**
+     * Returns an array that is in the right format to populate the roles field.
+     *
+     * @param array $roles The key's roles
+     * @return array
+     */
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem())
+                continue;
+
+            $rolesArray[] = $role->getName();
+        }
+        return $rolesArray;
     }
 }

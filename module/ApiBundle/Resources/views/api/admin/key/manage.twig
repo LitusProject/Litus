@@ -23,6 +23,7 @@
 	            <tr>
 	                <th>Host</th>
 	                <th width="300px">Code</th>
+	                <th width="100px">Check Host</th>
 	                <th width="70px">Actions</th>
 	            </tr>
 	        </thead>
@@ -32,6 +33,7 @@
 	                <tr class="item item-{{ key.getId() }}">
 	                    <td>{{ key.getHost() }}</td>
 	                    <td>{{ key.getCode() }}</td>
+	                    <td>{% if key.checkHost() %}&times;{% endif %}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('api_admin_key', 'edit') %}
 	                            <a href="{{ url('api_admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
