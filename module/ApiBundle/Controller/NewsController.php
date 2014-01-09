@@ -44,7 +44,6 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'summary' => $summary,
                 'title' => $item->getTitle($this->getLanguage())
             );
-            break;
         }
 
         return new ViewModel(
