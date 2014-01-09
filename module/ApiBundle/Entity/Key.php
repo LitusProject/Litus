@@ -36,7 +36,7 @@ class Key implements RoleAware
     private $id;
 
     /**
-     * @var \DateTime The expire time of this code
+     * @var \DateTime The expiration time of this code
      *
      * @ORM\Column(name="expiration_time", type="datetime", nullable=true)
      */
@@ -69,11 +69,19 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @param string $host
-     * @param string $code
-     * @param int $expirationTime
+     * @var string Whether the host should be checked
+     *
+     * @ORM\Column(name="check_host", type="boolean")
      */
-    public function __construct($host, $code, $expirationTime = 946080000)
+    private $checkHost;
+
+    /**
+     * @param string $host The host this key's valid for
+     * @param string $code The code
+     * @param boolean $checkHost Whether the host should be checked
+     * @param int $expirationTime The expiration time of this code
+     */
+    public function __construct($host, $code, $checkHost, $expirationTime = 157680000)
     {
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
@@ -81,6 +89,7 @@ class Key implements RoleAware
 
         $this->host = $host;
         $this->code = $code;
+        $this->checkHost = $checkHost;
     }
 
     /**
@@ -133,6 +142,24 @@ class Key implements RoleAware
     public function revoke()
     {
         $this->expirationTime = new DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCheckHost()
+    {
+        return $this->checkHost;
+    }
+
+    /**
+     * @param boolean $checkHost
+     * @return \ApiBundle\Entity\Key
+     */
+    public function setCheckHost($checkHost)
+    {
+        $this->checkHost = $checkHost;
+        return $this;
     }
 
     /**
@@ -189,11 +216,10 @@ class Key implements RoleAware
     public function validate($ip)
     {
         $now = new DateTime();
-        if ($this->expirationTime < $now) {
+        if ($this->expirationTime < $now)
             return false;
-        }
 
-        if (gethostbyname($this->host) != $ip)
+        if ($this->checkHost && gethostbyname($this->host) != $ip)
             return false;
 
         return true;
