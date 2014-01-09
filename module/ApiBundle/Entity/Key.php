@@ -57,7 +57,14 @@ class Key implements RoleAware
     private $code;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection;
+     * @var string Whether the host should be checked
+     *
+     * @ORM\Column(name="check_host", type="boolean")
+     */
+    private $checkHost;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The key's roles
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -69,19 +76,13 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @var string Whether the host should be checked
-     *
-     * @ORM\Column(name="check_host", type="boolean")
-     */
-    private $checkHost;
-
-    /**
      * @param string $host The host this key's valid for
      * @param string $code The code
      * @param boolean $checkHost Whether the host should be checked
+     * @param array $roles The key's roles
      * @param int $expirationTime The expiration time of this code
      */
-    public function __construct($host, $code, $checkHost, $expirationTime = 157680000)
+    public function __construct($host, $code, $checkHost, $roles, $expirationTime = 157680000)
     {
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
@@ -90,6 +91,7 @@ class Key implements RoleAware
         $this->host = $host;
         $this->code = $code;
         $this->checkHost = $checkHost;
+        $this->roles = new ArrayCollection($roles);
     }
 
     /**

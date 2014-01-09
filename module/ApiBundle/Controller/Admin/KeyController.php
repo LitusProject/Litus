@@ -65,10 +65,25 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                         ->findOneByCode($code);
                 } while(isset($found));
 
+                $roles = array();
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('student');
+
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        if ('student' == $role) continue;
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
                 $key = new Key(
                     $formData['host'],
                     $code,
-                    $formData['check_host']
+                    $formData['check_host'],
+                    $roles
                 );
                 $this->getEntityManager()->persist($key);
 
@@ -113,8 +128,24 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
+
+                $roles = array();
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('student');
+
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        if ('student' == $role) continue;
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
                 $key->setHost($formData['host'])
-                    ->setCheckHost($formData['check_host']);
+                    ->setCheckHost($formData['check_host'])
+                    ->setRoles($roles);
 
                 $this->getEntityManager()->flush();
 

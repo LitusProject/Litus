@@ -72,7 +72,7 @@ abstract class Person implements RoleAware
     private $credential;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection;
+     * @var \Doctrine\Common\Collections\ArrayCollection The person's roles
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -491,8 +491,10 @@ abstract class Person implements RoleAware
      */
     public function setFailedLogins($failedLogins)
     {
-        if($failedLogins > 32767) // Limit of Postgres smallint datatype
+         // Limit of Postgres smallint datatype
+        if ($failedLogins > 32767)
             $failedLogins = 32767;
+
         $this->failedLogins = $failedLogins;
         return $this;
     }
