@@ -20,7 +20,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\Validator\Hostname as HostnameValidator;
 
 /**
  * Add Key
@@ -107,6 +108,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'Hostname',
+                            'options' => array(
+                                'allow' => HostnameValidator::ALLOW_ALL
+                            )
                         ),
                     ),
                 )
