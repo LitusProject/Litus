@@ -38,7 +38,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             $result[] = array(
                 'id' => $item->getId(),
                 'title' => $item->getTitle($this->getLanguage()),
-                'content' => strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage()))),
+                'content' => trim(strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage())))),
                 'startDate' => $item->getStartDate()->format('c'),
                 'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
                 'poster' => $item->getPoster(),
@@ -84,7 +84,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         $posterData = null;
         if (!file_exists($filePath . $poster . '_thumb')) {
             $image = new Imagick($filePath . $poster);
-            $image->scaleImage(1136, 1136);
+            $image->scaleImage(1136, 1136, true);
             $image->writeImage($filePath . $poster. '_thumb');
         }
 

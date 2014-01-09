@@ -14,7 +14,8 @@
 
 namespace ApiBundle\Controller;
 
-use Zend\View\Model\ViewModel;
+use Markdown_Parser,
+    Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -31,13 +32,19 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $result = array();
         foreach ($items as $item) {
+            $parser = new Markdown_Parser();
+            $summary = preg_replace('/\s+/', ' ', strip_tags($parser->transform($item->getContent($this->getLanguage()))));
+            $summary = substr($summary, 0, isset($_POST['summary_length']) && is_numeric($_POST['summary_length']) ? $_POST['summary_length'] : 200);
+
             $result[] = array(
                 'id' => $item->getId(),
                 'creationTime' => $item->getCreationTime()->format('c'),
                 'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
-                'message' => $item->getContent($this->getLanguage()),
+                'message' => trim(strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage())))),
+                'summary' => $summary,
                 'title' => $item->getTitle($this->getLanguage())
             );
+            break;
         }
 
         return new ViewModel(
