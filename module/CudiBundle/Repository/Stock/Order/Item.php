@@ -132,7 +132,7 @@ class Item extends EntityRepository
                         $query->expr()->gt('o.dateOrdered', ':startDate'),
                         $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                     ),
-                    $query->expr()->isNull('o.dateOrdered'),
+                    $query->expr()->isNull('o.dateOrdered')
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')
@@ -162,7 +162,7 @@ class Item extends EntityRepository
                             $query->expr()->gt('o.dateOrdered', ':startDate'),
                             $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                         ),
-                        $query->expr()->isNull('o.dateOrdered'),
+                        $query->expr()->isNull('o.dateOrdered')
                     )
                 )
             )
@@ -193,7 +193,7 @@ class Item extends EntityRepository
                             $query->expr()->gt('o.dateOrdered', ':startDate'),
                             $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                         ),
-                        $query->expr()->isNull('o.dateOrdered'),
+                        $query->expr()->isNull('o.dateOrdered')
                     )
                 )
             )
