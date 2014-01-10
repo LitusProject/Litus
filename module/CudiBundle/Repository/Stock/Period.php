@@ -48,9 +48,12 @@ class Period extends EntityRepository
             ->innerJoin('i.article', 'a')
             ->innerJoin('i.order', 'o')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->gt('o.dateOrdered', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                $query->expr()->orX(
+                    $query->expr()->andX(
+                        $query->expr()->gt('o.dateOrdered', ':startDate'),
+                        $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                    ),
+                    $query->expr()->isNull('o.dateOrdered'),
                 )
             )
             ->groupBy('a.id')
@@ -260,8 +263,13 @@ class Period extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->gt('o.dateOrdered', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->gt('o.dateOrdered', ':startDate'),
+                            $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                        ),
+                        $query->expr()->isNull('o.dateOrdered'),
+                    )
                 )
             )
             ->setParameter('startDate', $period->getStartDate())
