@@ -298,6 +298,20 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         )
                     )
                 );
+            } else {
+                $formErrors = array();
+
+                if (sizeof($upload->getMessages()) > 0)
+                    $formErrors['poster'] = $upload->getMessages();
+
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $formErrors
+                        ),
+                    )
+                );
             }
         }
 
