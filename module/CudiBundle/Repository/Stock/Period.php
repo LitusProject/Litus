@@ -53,7 +53,7 @@ class Period extends EntityRepository
                         $query->expr()->gt('o.dateOrdered', ':startDate'),
                         $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                     ),
-                    $query->expr()->isNull('o.dateOrdered'),
+                    $query->expr()->isNull('o.dateOrdered')
                 )
             )
             ->groupBy('a.id')
@@ -268,7 +268,7 @@ class Period extends EntityRepository
                             $query->expr()->gt('o.dateOrdered', ':startDate'),
                             $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
                         ),
-                        $query->expr()->isNull('o.dateOrdered'),
+                        $query->expr()->isNull('o.dateOrdered')
                     )
                 )
             )
