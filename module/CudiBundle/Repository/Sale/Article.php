@@ -220,7 +220,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('b.article', 'a'),
                     $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->in('a.id', $articles)
+                    $query->expr()->in('m.id', $articles)
                 )
             )
             ->setParameter('barcode', '%'.$barcode.'%')
