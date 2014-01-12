@@ -19,7 +19,8 @@ data/form/files
 
 public/_assetic
 public/_gallery/albums
-public/_publications
+public/_publications/pdf
+public/_publications/html
 public/_br/img
 
 # Exclude Composer configuration and dependencies

@@ -70,12 +70,17 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $year);
 
+        $publicPdfDir = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
         return new ViewModel(
             array(
                 'publication' => $publication,
                 'year' => $year,
                 'pdfs' => $pdfs,
                 'htmls' => $htmls,
+                'publicPdfDir' => $publicPdfDir,
             )
         );
     }
