@@ -13,7 +13,7 @@
                     {% for pdf in pdfs %}
                         <li>
                             <center>
-                                <a class="thumbnail span2 archive-item" target="_blank" href="/{{ pdf.getUrl() }}">
+                                <a class="thumbnail span2 archive-item" target="_blank" href="{{ publicPdfDir}}{{ pdf.getFileName() }}">
                                     {{ pdf.getTitle() }}<br />
                                     <span class="date">({{ dateLocalized(pdf.getDate(), 'd MMM Y') }})</span>
                                 </a>

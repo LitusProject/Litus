@@ -17,6 +17,7 @@ namespace PublicationBundle\Form\Admin\Edition\Html;
 use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
@@ -69,6 +70,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
+        $field = new Select('pdf_version');
+        $field->setLabel('PDF Version')
+            ->setAttribute('options', $this->getPDFEditions())
+            ->setRequired();
+        $this->add($field);
+
         $field = new Textarea('html');
         $field->setLabel('HTML')
             ->setAttribute('rows', 20)
@@ -91,6 +98,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'html_add');
         $this->add($field);
+    }
+
+    public function getPDFEditions()
+    {
+        $pdfs = $this->_entityManager
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
+            ->findAllByPublicationAndAcademicYear($this->_publication, $this->_academicYear);
+
+        $options = array();
+        foreach($pdfs as $pdf) {
+            $options[$pdf->getId()] = $pdf->getTitle();
+        }
+
+        return $options;
     }
 
     public function getInputFilter()

@@ -93,12 +93,25 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
-            $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], DateTime::createFromFormat('d/m/Y', $formData['date']));
 
-            if (!file_exists($edition->getDirectory()))
-                mkdir($edition->getDirectory(), 0775, true);
+            $filePath = 'public' . $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('publication.public_pdf_directory');
 
-            $upload->addFilter('Rename', $edition->getFileName());
+            $fileName = '';
+            do{
+                $fileName = sha1(uniqid()) . '.pdf';
+            } while (file_exists($filePath . $fileName));
+
+            $edition = new PdfEdition(
+                $publication,
+                $this->getCurrentAcademicYear(),
+                $formData['title'],
+                DateTime::createFromFormat('d/m/Y', $formData['date']),
+                $fileName
+            );
+
+            $upload->addFilter('Rename', $filePath . $fileName);
             $upload->receive();
 
             $this->getEntityManager()->persist($edition);
@@ -158,8 +171,13 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
-        if (file_exists($edition->getFileName()))
-            unlink($edition->getFileName());
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
+        if (file_exists($filePath . $edition->getFileName()))
+            unlink($filePath . $edition->getFileName());
+
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
