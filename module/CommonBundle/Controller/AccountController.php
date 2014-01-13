@@ -93,6 +93,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'metaData' => $metaData,
                 'studies' => $mappings,
                 'subjects' => $subjectIds,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
@@ -508,30 +511,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
-    public function photoAction() {
-        $imagePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.profile_path') . '/' . $this->getParam('image');
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-            'Content-Type' => mime_content_type($imagePath),
-            'Content-Length' => filesize($imagePath),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($imagePath, 'r');
-        $data = fread($handle, filesize($imagePath));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
-    }
-
     public function passbookAction()
     {
         $pass = new TmpFile();
@@ -614,7 +593,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     private function _uploadProfileImage(FileUpload $upload, Academic $academic)
     {
-        $filePath = $this->getEntityManager()
+        $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path');
 

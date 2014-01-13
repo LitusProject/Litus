@@ -359,7 +359,7 @@ class Study
                         $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
 
                         if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
-                            $filePath = $this->getEntityManager()
+                            $filePath = 'public' . $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('common.profile_path');
 

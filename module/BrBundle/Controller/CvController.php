@@ -167,6 +167,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 'languageError' => $languageError,
                 'oral_skills' => CvLanguage::$ORAL_SKILLS,
                 'written_skills' => CvLanguage::$WRITTEN_SKILLS,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }

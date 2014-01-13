@@ -159,7 +159,7 @@ Het VTK Bedrijvenrelaties Team'
                         'index',
                     ),
                     'br_corporate_cv' => array(
-                        'grouped', 'list', 'search', 'cvPhoto',
+                        'grouped', 'list', 'search',
                     ),
                 )
             )
