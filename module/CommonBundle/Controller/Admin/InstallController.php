@@ -36,7 +36,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'common.profile_path',
-                    'value'       => 'data/common/profile',
+                    'value'       => '/_common/profile',
                     'description' => 'The path for profile photo\'s',
                 ),
                 array(
@@ -369,7 +369,7 @@ Disallow: /admin/*',
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'fileServer', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'fileServer', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'

@@ -71,6 +71,9 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 'extraUnits' => $extra,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
