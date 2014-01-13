@@ -13,13 +13,15 @@ foreach (new DirectoryIterator('data/common/profile') as $fileInfo) {
 
 rrmdir('data/common/');
 
-function rrmdir($dir)
-{
-    foreach(glob($dir . '/*') as $file) {
-        if(is_dir($file))
-            rrmdir($file);
-        else
-            unlink($file);
+if(!function_exists("rrmdir")) {
+    function rrmdir($dir)
+    {
+        foreach(glob($dir . '/*') as $file) {
+            if(is_dir($file))
+                rrmdir($file);
+            else
+                unlink($file);
+        }
+        rmdir($dir);
     }
-    rmdir($dir);
 }

@@ -80,25 +80,30 @@ foreach($academicYears as $year) {
     rrmdir('public/_publications/' . $year . ($year + 1));
 }
 
-//addConfigKey($connection, 'publication.public_pdf_directory', '/_publications/pdf/', 'The public pdf direction of publication');
-//addConfigKey($connection, 'publication.public_html_directory', '/_publications/html/', 'The public html direction of publication');
+addConfigKey($connection, 'publication.public_pdf_directory', '/_publications/pdf/', 'The public pdf direction of publication');
+addConfigKey($connection, 'publication.public_html_directory', '/_publications/html/', 'The public html direction of publication');
 
-function createSlug($string, $delimiter = '-') {
-    $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-    $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-    $clean = strtolower(trim($clean, '-'));
-    $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
 
-    return $clean;
+if(!function_exists("createSlug")) {
+    function createSlug($string, $delimiter = '-') {
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
+
+        return $clean;
+    }
 }
 
-function rrmdir($dir)
-{
-    foreach(glob($dir . '/*') as $file) {
-        if(is_dir($file))
-            rrmdir($file);
-        else
-            unlink($file);
+if(!function_exists("rrmdir")) {
+    function rrmdir($dir)
+    {
+        foreach(glob($dir . '/*') as $file) {
+            if(is_dir($file))
+                rrmdir($file);
+            else
+                unlink($file);
+        }
+        rmdir($dir);
     }
-    rmdir($dir);
 }
