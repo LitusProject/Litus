@@ -132,8 +132,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 
     private function _generateCv(Entry $cv)
     {
-
-        $picturePath = $this->getEntityManager()
+        $picturePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path');
 
