@@ -56,19 +56,16 @@ class Edit extends Add
 
     private function _populateFromCompany(Company $company)
     {
-        $years = $company->getPage()->getYears();
+        $yearIds = array();
+        foreach($company->getPage()->getYears() as $year)
+            $yearIds[] = $year->getId();
 
-        $yearids = array();
-        foreach($years as $year) {
-            $yearids[] = $year->getId();
-        }
+        $cvYearIds = array();
+        foreach($company->getCvBookYears() as $year)
+            $cvYearIds[] = $year->getId();
 
-        $years = $company->getCvBookYears();
-
-        $cvyearids = array();
-        foreach($years as $year) {
-            $cvyearids[] = $year->getId();
-        }
+        foreach($company->getCvBookArchiveYears() as $year)
+            $cvYearIds[] = 'archive-' . $year;
 
         $formData =  array(
             'company_name' => $company->getName(),
@@ -82,8 +79,8 @@ class Edit extends Add
             'address_country' => $company->getAddress()->getCountryCode(),
             'phone_number' => $company->getPhoneNumber(),
             'website' => $company->getWebsite(),
-            'years' => $yearids,
-            'cvbook' => $cvyearids,
+            'years' => $yearIds,
+            'cvbook' => $cvYearIds,
         );
 
         $formData['summary'] = $company->getPage()->getSummary();

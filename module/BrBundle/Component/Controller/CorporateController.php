@@ -50,6 +50,12 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             )
         );
 
+        $result->cvArchiveYears = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_archive_years')
+        );
+
         $result->loginForm = $loginForm;
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

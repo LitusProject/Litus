@@ -101,6 +101,13 @@ Het VTK Bedrijvenrelaties Team'
                         )
                     ),
                     'description' => 'The possible amounts of VAT'
+                ),
+                array(
+                    'key'         => 'br.cv_archive_years',
+                    'value'       => serialize(
+                        array()
+                    ),
+                    'description' => 'The cv archive years'
                 )
             )
         );
@@ -159,7 +166,7 @@ Het VTK Bedrijvenrelaties Team'
                         'index',
                     ),
                     'br_corporate_cv' => array(
-                        'grouped', 'list', 'search',
+                        'downloadArchive', 'grouped', 'list', 'search',
                     ),
                 )
             )
