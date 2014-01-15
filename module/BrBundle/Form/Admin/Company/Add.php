@@ -82,8 +82,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $cvYears = array_merge($years, $this->_getArchiveYears());
+        $cvYears = $this->_getArchiveYears();
+        foreach($years as $key => $year)
+            $cvYears['year-' . $key] = $year;
         asort($cvYears);
+
         $field = new Select('cvbook');
         $field->setLabel('CV Book')
             ->setAttribute('multiple', true)
@@ -138,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $options = array();
         foreach($years as $code => $year)
-            $options['archive-' . $code] = $year['full_year'];
+            $options['archive-' . $code] = $year['full_year'] . ' (Archive)';
 
         return $options;
     }
