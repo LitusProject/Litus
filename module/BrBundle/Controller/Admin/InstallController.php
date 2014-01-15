@@ -105,7 +105,14 @@ Het VTK Bedrijvenrelaties Team'
                 array(
                     'key'         => 'br.cv_archive_years',
                     'value'       => serialize(
-                        array()
+                        array(
+                            /*
+                            '0910' => array(
+                                'full_year' => '2009-2010',
+                                'file' => 'cvboek0910.pdf',
+                            ),
+                             */
+                        )
                     ),
                     'description' => 'The cv archive years'
                 )
