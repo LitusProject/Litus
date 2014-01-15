@@ -413,7 +413,7 @@ class Company
     {
         if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears)
             return array();
-        
+
         try {
             return unserialize($this->cvBookArchiveYears);
         } catch(\Exception $e) {

@@ -102,7 +102,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         if (strpos($yearId, 'archive-') === 0) {
                             $archiveYears[] = substr($yearId, strlen('archive-'));
                         } else {
-                            $years[] = $repository->findOneById($yearId);
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
                         }
                     }
                 }
@@ -194,7 +194,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         if (strpos($yearId, 'archive-') === 0) {
                             $archiveYears[] = substr($yearId, strlen('archive-'));
                         } else {
-                            $years[] = $repository->findOneById($yearId);
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
                         }
                     }
                 }
