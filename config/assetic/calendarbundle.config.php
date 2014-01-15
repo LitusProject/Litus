@@ -57,6 +57,7 @@ return array(
             '@calendar_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',

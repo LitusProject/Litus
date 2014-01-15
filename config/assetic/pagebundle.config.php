@@ -60,6 +60,7 @@ return array(
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
