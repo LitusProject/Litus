@@ -283,6 +283,15 @@
         </div>
     </footer>
 
+    <div class="cookie-banner">
+        <div class="container">
+            {% autoescape false %}
+                <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="viewCookiePolicy">our cookiepolicy</a> here.') }}</p>
+                <button type="button" class="btn">{{ translate('Continue') }}</button>
+            {% endautoescape %}
+        </div>
+    </div>
+
     {{ inlineScript() }}
 
     <script type="text/javascript">
