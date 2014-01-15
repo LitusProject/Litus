@@ -411,6 +411,9 @@ class Company
      */
     public function getCvBookArchiveYears()
     {
+        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears)
+            return array();
+        
         try {
             return unserialize($this->cvBookArchiveYears);
         } catch(\Exception $e) {
