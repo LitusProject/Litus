@@ -216,6 +216,86 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    public function downloadArchiveAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'Please login to view the CV book.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $archive = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_archive_years')
+        );
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.file_path') . '/cv/';
+
+        $archiveYearKey = '';
+        foreach($archive as $key => $year) {
+            if ($year['full_year'] == $this->getParam('academicyear')) {
+                $archiveYear = $year;
+                $archiveYearKey = $key;
+                break;
+            }
+        }
+
+        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
+            'Content-Type' => 'application/octet-stream',
+            'Content-Length' => filesize($filePath . $archiveYear['file']),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $archiveYear['file'], 'r');
+        $data = fread($handle, filesize($filePath . $archiveYear['file']));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     private function _getList(AcademicYear $academicYear)
     {
         return $this->getEntityManager()

@@ -61,6 +61,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('br_admin_company_user', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Users</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the useres of this company!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_company_user', {"action": "manage", "id": company.getId()}) }}">&rarr; Users</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 {% endblock %}
 

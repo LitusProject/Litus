@@ -49,14 +49,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $years = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        $yearnames = array();
-        foreach($years as $year) {
-            $yearnames[$year->getId()] = $year->getCode();
-        }
+        $years = $this->_getYears();
+        $archiveYears = $this->_getArchiveYears();
 
         $field = new Text('company_name');
         $field->setLabel('Company Name')
@@ -88,10 +82,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $cvYears = array_merge($years, $this->_getArchiveYears());
+        asort($cvYears);
         $field = new Select('cvbook');
         $field->setLabel('CV Book')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $yearnames);
+            ->setAttribute('options', $cvYears);
         $this->add($field);
 
         $page = new Collection('page_collection');
@@ -102,7 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('years');
         $field->setLabel('Page Visible During')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $yearnames);
+            ->setAttribute('options', $years);
         $page->add($field);
 
         $field = new Textarea('summary');
@@ -117,6 +113,34 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'company_add');
         $this->add($field);
+    }
+
+    private function _getYears()
+    {
+        $years = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $options = array();
+        foreach($years as $year)
+            $options[$year->getId()] = $year->getCode();
+
+        return $options;
+    }
+
+    private function _getArchiveYears()
+    {
+        $years = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_archive_years')
+        );
+
+        $options = array();
+        foreach($years as $code => $year)
+            $options['archive-' . $code] = $year['full_year'];
+
+        return $options;
     }
 
     private function _getSectors()
