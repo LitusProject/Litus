@@ -283,14 +283,16 @@
         </div>
     </footer>
 
-    <div class="cookie-banner">
-        <div class="container">
-            {% autoescape false %}
-                <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="viewCookiePolicy">our cookiepolicy</a> here.') }}</p>
-                <button type="button" class="btn">{{ translate('Continue') }}</button>
-            {% endautoescape %}
+    {% if showCookieBanner %}
+        <div class="cookie-banner">
+            <div class="container">
+                {% autoescape false %}
+                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="view-cookie-policy">our cookiepolicy</a> here.') }}</p>
+                    <button type="button" class="btn cookie-permission">{{ translate('Continue') }}</button>
+                {% endautoescape %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     {{ inlineScript() }}
 
@@ -303,6 +305,13 @@
             $('.item-0').addClass('active');
 
             $('.carousel').carousel();
+
+            {% if showCookieBanner %}
+                $('.cookie-permission').click(function () {
+                    $('.cookie-banner').hide();
+                    document.cookie="cookie_permission=true";
+                });
+            {% endif %}
         });
     </script>
 
