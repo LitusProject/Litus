@@ -113,6 +113,13 @@ class Company
     private $cvBookYears;
 
     /**
+     * @var string The archive years of which this company has access to the CV Book.
+     *
+     * @ORM\Column(name="cv_book_archive_years", type="string", nullable=true)
+     */
+    private $cvBookArchiveYears;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
@@ -383,16 +390,42 @@ class Company
     /**
      * @return array
      */
-    public function getCvBookYears() {
+    public function getCvBookYears()
+    {
         return $this->cvBookYears->toArray();
     }
 
     /**
      * @param array $years
-     * @return \LogisticsBundle\Entity\Driver This
+     *
+     * @return \BrBundle\Entity\Company
      */
-    public function setCvBookYears(array $years) {
+    public function setCvBookYears(array $years)
+    {
         $this->cvBookYears = new ArrayCollection($years);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCvBookArchiveYears()
+    {
+        try {
+            return unserialize($this->cvBookArchiveYears);
+        } catch(\Exception $e) {
+            return array();
+        }
+    }
+
+    /**
+     * @param array $years
+     *
+     * @return \BrBundle\Entity\Company
+     */
+    public function setCvBookArchiveYears(array $archiveYears)
+    {
+        $this->cvBookArchiveYears = serialize($archiveYears);
         return $this;
     }
 }

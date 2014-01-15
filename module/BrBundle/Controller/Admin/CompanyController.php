@@ -94,16 +94,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($company);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById($yearId);
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {
@@ -181,16 +186,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setCountry($formData['address_country']);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById($yearId);
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {
