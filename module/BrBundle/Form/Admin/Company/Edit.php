@@ -62,7 +62,7 @@ class Edit extends Add
 
         $cvYearIds = array();
         foreach($company->getCvBookYears() as $year)
-            $cvYearIds[] = $year->getId();
+            $cvYearIds[] = 'year-' . $year->getId();
 
         foreach($company->getCvBookArchiveYears() as $year)
             $cvYearIds[] = 'archive-' . $year;
