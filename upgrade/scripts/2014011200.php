@@ -83,7 +83,6 @@ foreach($academicYears as $year) {
 addConfigKey($connection, 'publication.public_pdf_directory', '/_publications/pdf/', 'The public pdf direction of publication');
 addConfigKey($connection, 'publication.public_html_directory', '/_publications/html/', 'The public html direction of publication');
 
-
 if(!function_exists("createSlug")) {
     function createSlug($string, $delimiter = '-') {
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
