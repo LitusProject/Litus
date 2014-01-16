@@ -1,7 +1,7 @@
 (function ($) {
     var showHelp = false;
     $(document).ready(function () {
-        if ($('[data-help]').length > 0) {
+        if ($('[data-help]:visible').length > 0) {
             $('body').append(
                 $('<div>', {'id': 'toggleHelpButton'}).append(
                     $('<div>').html('Help').css({
