@@ -31,6 +31,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
+                    'key'         => 'logistics.piano_auto_confirm_immediatly',
+                    'value'       => '1',
+                    'description' => 'Automatically confirm all piano reservations',
+                ),
+                array(
                     'key'         => 'logistics.piano_auto_confirm_deadline',
                     'value'       => 'P1D',
                     'description' => 'The deadline for auto confirm a piano reservation',

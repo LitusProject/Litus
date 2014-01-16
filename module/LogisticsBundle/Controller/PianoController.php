@@ -93,7 +93,11 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                         )
                     );
 
-                    if (sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) {
+                    $autoConfirm = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('logistics.piano_auto_confirm_immediatly');
+
+                    if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
                         $mailData = unserialize(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
