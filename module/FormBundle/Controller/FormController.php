@@ -155,7 +155,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
                 if ($person === null && $guestInfo == null) {
@@ -168,7 +168,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($guestInfo);
                 }
 
-                $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
+                $formEntry = new FormEntry($person, $guestInfo, $formSpecification, isset($formData['save_as_draft']));
 
                 $this->getEntityManager()->persist($formEntry);
 
@@ -221,31 +221,41 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
+                if (!isset($formData['save_as_draft'])) {
+                    if ($formSpecification->hasMail()) {
+                        $mailAddress = $formSpecification->getMail()->getFrom();
 
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+                        $mail = new Message();
+                        $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
+                            ->setFrom($mailAddress)
+                            ->setSubject($formSpecification->getMail()->getSubject())
+                            ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
+                        if ($formSpecification->getMail()->getBcc())
+                            $mail->addBcc($mailAddress);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+                    }
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been recorded.'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been saved.'
+                        )
+                    );
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your entry has been recorded.'
-                    )
-                );
-
-                if ($group) {
+                if ($group && !isset($formData['save_as_draft'])) {
                     if ($progressBarInfo['next_form'] == 0) {
                         $this->redirect()->toRoute(
                             'form_group',

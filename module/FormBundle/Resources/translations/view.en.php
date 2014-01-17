@@ -22,6 +22,7 @@ return array(
     'You can\'t fill this form more than once.' => 'You can\'t fill this form more than once.',
     'Please login to view this form.' => 'Please login to view this form.',
     'Your entry has been recorded.' => 'Your entry has been recorded.',
+    'Your entry has been saved.' => 'Your entry has been saved.',
     'Your entry couldn\'t be recorded.' => 'Your entry couldn\'t be recorded.',
     'Your entry has been updated.' => 'Your entry has been updated.',
     'Submissions' => 'Submissions',
@@ -38,4 +39,6 @@ return array(
     'Not Completed' => 'Not Completed',
     'Start' => 'Start',
     'Continue' => 'Continue',
+
+    'Save as Draft' => 'Save as Draft',
 );
