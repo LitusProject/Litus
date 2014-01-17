@@ -129,13 +129,25 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        if ($person === null && !$formSpecification->isNonMember()) {
+        if (null === $person && !$formSpecification->isNonMember()) {
             return new ViewModel(
                 array(
                     'message'       => 'Please login to view this form.',
                     'specification' => $formSpecification,
                 )
             );
+        } elseif (null === $person) {
+            if (!$formSpecification->isMultiple() && count($entries) > 0) {
+                return new ViewModel(
+                    array(
+                        'message'       => 'You can\'t fill this form more than once.',
+                        'specification' => $formSpecification,
+                        'entries'       => $entries,
+                        'group'           => $group,
+                        'progressBarInfo' => $progressBarInfo,
+                    )
+                );
+            }
         } elseif (null !== $person) {
             if (!$formSpecification->isMultiple() && count($entries) > 0) {
                 return new ViewModel(
@@ -754,6 +766,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid() || isset($formData['save_as_draft'])) {
+                if ($entry->isGuestEntry()) {
+                    $entry->getGuestInfo()
+                        ->setFirstName($formData['first_name'])
+                        ->setLastName($formData['last_name'])
+                        ->setEmail($formData['email']);
+                }
+
                 $formData = $form->getFormData($formData);
 
                 $entry->setDraft(isset($formData['save_as_draft']));
@@ -1066,18 +1085,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $formEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
                         ->findAllByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
+
+                    $draftVersion = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Node\Entry')
+                        ->findDraftVersionByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
                 }
 
-                $draftVersion = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Node\Entry')
-                    ->findDraftVersionByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
-
                 if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                    $data['current_completed'] = (sizeof($formEntry) > 0);
+                    $data['current_completed'] = (sizeof($formEntry) > 0) && !isset($draftVersion);
+                    $data['current_draft'] = isset($draftVersion);
                 } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
                     $data['previous_form'] = $groupForm->getForm()->getId();
 
-                    if (sizeof($formEntry) > 0 && null === $draftVersion) {
+                    if (sizeof($formEntry) > 0 && !isset($draftVersion)) {
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
@@ -1085,7 +1105,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
                     }
                 } else {
-                    if (sizeof($formEntry) > 0 && null === $draftVersion)
+                    if (sizeof($formEntry) > 0 && !isset($draftVersion))
                         $data['completed_after_current']++;
                     if ($data['next_form'] == 0)
                         $data['next_form'] = $groupForm->getForm()->getId();
