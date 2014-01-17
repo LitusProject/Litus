@@ -126,6 +126,36 @@ hr {
     margin: 0 0 10px 0;
 }
 
+.resultPlaceholder {
+    position: relative;
+
+    .resultScroll {
+        overflow-x: scroll;
+        margin-left: 150px;
+        margin-right: 150px;
+        border-left: #dddddd 1px solid;
+        border-right: #dddddd 1px solid;
+    }
+
+    tr {
+        th:first-child,
+        td:first-child {
+            position: absolute;
+            width: 134px;
+            left: 0;
+            top: auto;
+        }
+
+        th:last-child,
+        td:last-child {
+            position: absolute;
+            width: 134px;
+            right: 0;
+            top: auto;
+        }
+    }
+}
+
 
 /*
 * Popovers
