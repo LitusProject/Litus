@@ -61,15 +61,13 @@
                             {% else %}
                                 <th>{{ translate('Subscriptions') }}</th>
                             {% endif %}
-                            {% if viewer.isEdit() %}
-                                <th width="175px">{{ translate("Actions") }}</th>
-                            {% endif %}
+                            <th width="175px">{{ translate("Actions") }}</th>
                         </tr>
                     </thead>
 
                     <tbody>
                     {% for entry in entries %}
-                        <tr class="item item-{{ entry.getId() }}">
+                        <tr class="item item-{{ entry.getId() }}" {% if entry.isDraft() %}style="background: #ccc"{% endif%}>
                             <td>
                                 <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
                                     <dt>{{ translate('ID') }}</dt>
@@ -97,6 +95,8 @@
                                         <dt>{{ translate('Email') }}</dt>
                                         <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
                                     {% endif %}
+                                    <dt>{{ translate('Draft') }}</dt>
+                                    <dd>{% if entry.isDraft() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
                                 </dl>">
                                     {{ entry.getPersonInfo().getFullName() }}
                                 </a>
@@ -126,12 +126,12 @@
                                 </td>
                             {% endif %}
 
-                            {% if viewer.isEdit() %}
-                                <td>
+                            <td class="actions">
+                                {% if viewer.isEdit() %}
                                     <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
                                     <a href="#" class="btn btn-mini btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
-                                </td>
-                            {% endif %}
+                                {% endif %}
+                            </td>
 
                         </tr>
                     {% endfor %}

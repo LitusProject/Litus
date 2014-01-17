@@ -170,4 +170,23 @@ class Entry
     public function getFieldEntries() {
         return $this->fieldEntries->toArray();
     }
+
+    /**
+     * @param boolean $draft
+     *
+     * @return \FormBundle\Entity\Node\Entry
+     */
+    public function setDraft($draft)
+    {
+        $this->draft = $draft;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDraft()
+    {
+        return $this->draft;
+    }
 }

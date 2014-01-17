@@ -43,8 +43,6 @@ class Edit extends Add
     {
         parent::__construct($entityManager, $language, $form, $person, $name);
 
-        $this->remove('save_as_draft');
-
         $field = new Submit('submit');
         $field->setValue($form->getUpdateText($language))
             ->setAttribute('class', 'btn btn-primary');

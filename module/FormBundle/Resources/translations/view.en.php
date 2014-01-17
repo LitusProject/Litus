@@ -34,6 +34,7 @@ return array(
     'This form group is currently closed.' => 'This form group is currently closed.',
     'Please login to view this group.' => 'Please login to view this group.',
     'Completed' => 'Completed',
+    'In Progress' => 'In Progress',
     'Editing' => 'Editing',
     'First Submittion' => 'First Submittion',
     'Not Completed' => 'Not Completed',
@@ -41,4 +42,5 @@ return array(
     'Continue' => 'Continue',
 
     'Save as Draft' => 'Save as Draft',
+    'Draft' => 'Draft',
 );

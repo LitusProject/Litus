@@ -34,6 +34,7 @@ return array(
     'This form group is currently closed.' => 'Deze formulier groep is momenteel gesloten.',
     'Please login to view this group.' => 'Gelieve aan te melden om deze formulieren groep te bekijken.',
     'Completed' => 'Voltooid',
+    'In Progress' => 'Lopende',
     'Not Completed' => 'Niet Voltooid',
     'Editing' => 'Bewerken',
     'First Submittion' => 'Eerste Registratie',
@@ -41,4 +42,5 @@ return array(
     'Continue' => 'Ga Verder',
 
     'Save as Draft' => 'Opslaan als Concept',
+    'Draft' => 'Concept',
 );
