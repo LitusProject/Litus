@@ -22,6 +22,7 @@ return array(
     'You can\'t fill this form more than once.' => 'You can\'t fill this form more than once.',
     'Please login to view this form.' => 'Please login to view this form.',
     'Your entry has been recorded.' => 'Your entry has been recorded.',
+    'Your entry has been saved.' => 'Your entry has been saved.',
     'Your entry couldn\'t be recorded.' => 'Your entry couldn\'t be recorded.',
     'Your entry has been updated.' => 'Your entry has been updated.',
     'Submissions' => 'Submissions',
@@ -33,9 +34,14 @@ return array(
     'This form group is currently closed.' => 'This form group is currently closed.',
     'Please login to view this group.' => 'Please login to view this group.',
     'Completed' => 'Completed',
+    'In Progress' => 'In Progress',
     'Editing' => 'Editing',
     'First Submittion' => 'First Submittion',
     'Not Completed' => 'Not Completed',
     'Start' => 'Start',
     'Continue' => 'Continue',
+
+    'Save as Draft' => 'Save as Draft',
+    'Draft' => 'Draft',
+    'You have already a draft of this form' => 'You have already a draft of this form',
 );

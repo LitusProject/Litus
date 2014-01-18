@@ -74,6 +74,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $entries = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person);
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndPerson($formSpecification, $person);
         } elseif(isset($_COOKIE['LITUS_form'])) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
@@ -82,6 +85,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $entries = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndGuestInfo($formSpecification, $guestInfo);
         }
 
         $group = $this->_getGroup($formSpecification);
@@ -123,28 +129,40 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        if ($person === null && !$formSpecification->isNonMember()) {
+        if (null === $person && !$formSpecification->isNonMember()) {
             return new ViewModel(
                 array(
                     'message'       => 'Please login to view this form.',
                     'specification' => $formSpecification,
                 )
             );
-        } elseif (null !== $person) {
-            if (!$formSpecification->isMultiple() && count($entries) > 0) {
-                return new ViewModel(
-                    array(
-                        'message'       => 'You can\'t fill this form more than once.',
-                        'specification' => $formSpecification,
-                        'entries'       => $entries,
-                        'group'           => $group,
-                        'progressBarInfo' => $progressBarInfo,
-                    )
-                );
-            }
+        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && null === $draftVersion) {
+            return new ViewModel(
+                array(
+                    'message'       => 'You can\'t fill this form more than once.',
+                    'specification' => $formSpecification,
+                    'entries'       => $entries,
+                    'group'           => $group,
+                    'progressBarInfo' => $progressBarInfo,
+                )
+            );
         }
 
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
+        if (isset($draftVersion)) {
+            $form->populateFromEntry($draftVersion);
+            $form->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'form_view',
+                    array(
+                        'action' => 'edit',
+                        'id' => $draftVersion->getId(),
+                    )
+                )
+            );
+        }
+
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -155,7 +173,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
                 if ($person === null && $guestInfo == null) {
@@ -168,7 +186,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($guestInfo);
                 }
 
-                $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
+                $formEntry = new FormEntry($person, $guestInfo, $formSpecification, isset($formData['save_as_draft']));
 
                 $this->getEntityManager()->persist($formEntry);
 
@@ -221,31 +239,41 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
+                if (!isset($formData['save_as_draft'])) {
+                    if ($formSpecification->hasMail()) {
+                        $mailAddress = $formSpecification->getMail()->getFrom();
 
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
+                        $mail = new Message();
+                        $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
+                            ->setFrom($mailAddress)
+                            ->setSubject($formSpecification->getMail()->getSubject())
+                            ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
+                        if ($formSpecification->getMail()->getBcc())
+                            $mail->addBcc($mailAddress);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+                    }
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been recorded.'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been saved.'
+                        )
+                    );
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your entry has been recorded.'
-                    )
-                );
-
-                if ($group) {
+                if ($group && !isset($formData['save_as_draft'])) {
                     if ($progressBarInfo['next_form'] == 0) {
                         $this->redirect()->toRoute(
                             'form_group',
@@ -731,14 +759,40 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+
+        if (null !== $person) {
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
+        } elseif(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+        }
+
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
+        $form->hasDraft(null !== $draftVersion && $draftVersion != $entry);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            if ($form->isValid() || isset($formData['save_as_draft'])) {
+                if ($entry->isGuestEntry()) {
+                    $entry->getGuestInfo()
+                        ->setFirstName($formData['first_name'])
+                        ->setLastName($formData['last_name'])
+                        ->setEmail($formData['email']);
+                }
+
                 $formData = $form->getFormData($formData);
+
+                $entry->setDraft(isset($formData['save_as_draft']));
 
                 foreach ($entry->getForm()->getFields() as $field) {
                     $value = $formData['field-' . $field->getId()];
@@ -802,31 +856,41 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                if ($entry->getForm()->hasMail()) {
-                    $mailAddress = $entry->getForm()->getMail()->getFrom();
+                if (!isset($formData['save_as_draft'])) {
+                    if ($entry->getForm()->hasMail()) {
+                        $mailAddress = $entry->getForm()->getMail()->getFrom();
 
-                    $mail = new Message();
-                    $mail->setBody($entry->getForm()->getCompletedMailBody($entry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($entry->getForm()->getMail()->getSubject())
-                        ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
+                        $mail = new Message();
+                        $mail->setBody($entry->getForm()->getCompletedMailBody($entry, $this->getLanguage()))
+                            ->setFrom($mailAddress)
+                            ->setSubject($entry->getForm()->getMail()->getSubject())
+                            ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
 
-                    if ($entry->getForm()->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
+                        if ($entry->getForm()->getMail()->getBcc())
+                            $mail->addBcc($mailAddress);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
+                        if ('development' != getenv('APPLICATION_ENV'))
+                            $this->getMailTransport()->send($mail);
+                    }
+
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been updated.'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'Your entry has been saved.'
+                        )
+                    );
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your entry has been updated.'
-                    )
-                );
-
-                if ($group) {
+                if ($group && !isset($formData['save_as_draft'])) {
                     if ($progressBarInfo['next_form'] == 0) {
                         $this->redirect()->toRoute(
                             'form_group',
@@ -987,6 +1051,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             'previous_form' => 0,
             'current_form' => $group->getFormNumber($form),
             'current_completed' => false,
+            'current_draft' => false,
             'next_form' => 0,
             'completed_after_current' => 0,
             'total_forms' => sizeof($group->getForms()),
@@ -998,11 +1063,16 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findAllByFormAndPerson($groupForm->getForm(), $this->getAuthentication()->getPersonObject());
 
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndPerson($groupForm->getForm(), $this->getAuthentication()->getPersonObject());
+
                 if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                    $data['current_completed'] = (sizeof($formEntry) > 0);
+                    $data['current_completed'] = (sizeof($formEntry) > 0) && $draftVersion === null;
+                    $data['current_draft'] = $draftVersion !== null;
                 } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
                     $data['previous_form'] = $groupForm->getForm()->getId();
-                    if (sizeof($formEntry) > 0) {
+                    if (sizeof($formEntry) > 0 && null === $draftVersion) {
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
@@ -1010,7 +1080,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
                     }
                 } else {
-                    if (sizeof($formEntry) > 0)
+                    if (sizeof($formEntry) > 0 && null === $draftVersion)
                         $data['completed_after_current']++;
                     if ($data['next_form'] == 0)
                         $data['next_form'] = $groupForm->getForm()->getId();
@@ -1032,13 +1102,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $formEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
                         ->findAllByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
+
+                    $draftVersion = $this->getEntityManager()
+                        ->getRepository('FormBundle\Entity\Node\Entry')
+                        ->findDraftVersionByFormAndGuestInfo($groupForm->getForm(), $guestInfo);
                 }
 
                 if ($data['current_form'] == $group->getFormNumber($groupForm->getForm())) {
-                    $data['current_completed'] = (sizeof($formEntry) > 0);
+                    $data['current_completed'] = (sizeof($formEntry) > 0) && !isset($draftVersion);
+                    $data['current_draft'] = isset($draftVersion);
                 } elseif ($data['current_form'] > $group->getFormNumber($groupForm->getForm())) {
                     $data['previous_form'] = $groupForm->getForm()->getId();
-                    if (sizeof($formEntry) > 0) {
+
+                    if (sizeof($formEntry) > 0 && !isset($draftVersion)) {
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
@@ -1046,7 +1122,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
                     }
                 } else {
-                    if (sizeof($formEntry) > 0)
+                    if (sizeof($formEntry) > 0 && !isset($draftVersion))
                         $data['completed_after_current']++;
                     if ($data['next_form'] == 0)
                         $data['next_form'] = $groupForm->getForm()->getId();

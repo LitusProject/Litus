@@ -103,11 +103,33 @@ class GuestInfo
     }
 
     /**
+     * @param string firstName
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
      * @return string lastName
      */
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
     }
 
     /**
@@ -119,11 +141,22 @@ class GuestInfo
     }
 
     /**
-     * @return string email
+     * @return string $email
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
     }
 
     /**

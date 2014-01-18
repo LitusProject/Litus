@@ -7,8 +7,8 @@
         {% endfor %}
     {% endif %}
 
-    <div class="bar {% if progressBarInfo.current_completed and getParam('action') == 'edit' %}bar-warning{% elseif progressBarInfo.current_completed %}bar-success{% endif %}" style="width: {{ 1/progressBarInfo.total_forms*100 }}%;">
-        <span data-toggle="tooltip" title="{% if progressBarInfo.current_completed and getParam('action') == 'edit' %}{{ translate('Editing') }}{% elseif progressBarInfo.current_completed %}{{ translate('Completed') }}{% else %}{{ translate('First Submittion') }}{% endif %}">{{ specification.getTitle(language) }}</span>
+    <div class="bar {% if (progressBarInfo.current_completed and getParam('action') == 'edit') or progressBarInfo.current_draft %}bar-warning{% elseif progressBarInfo.current_completed %}bar-success{% endif %}" style="width: {{ 1/progressBarInfo.total_forms*100 }}%;">
+        <span data-toggle="tooltip" title="{% if progressBarInfo.current_completed and getParam('action') == 'edit' %}{{ translate('Editing') }}{% elseif progressBarInfo.current_completed %}{{ translate('Completed') }}{% elseif progressBarInfo.current_draft %}{{ translate('In Progress') }}{% else %}{{ translate('First Submittion') }}{% endif %}">{{ specification.getTitle(language) }}</span>
     </div>
 
     {% if progressBarInfo.completed_after_current > 0 %}
