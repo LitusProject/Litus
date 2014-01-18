@@ -29,11 +29,13 @@
 
         <table class="table table-striped">
             <tr>
+                <th width="100px">{{ translate('Draft') }}</th>
                 <th>{{ translate('Submission Date') }}</th>
                 <th>{{ translate('Actions') }}</th>
             </tr>
             {% for entry in entries %}
                 <tr>
+                    <td>{% if entry.isDraft() %}&times;{% endif %}</td>
                     <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
                     <td>
                         {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}

@@ -71,6 +71,13 @@ class Entry
     private $form;
 
     /**
+     * @var boolean Flag whether this entry is a draft version.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $draft;
+
+    /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry", cascade={"all"})
      */
     private $fieldEntries;
@@ -79,14 +86,16 @@ class Entry
      * @param \CommonBundle\Entity\User\Person $person
      * @param \FormBundle\Entity\Node\GuestInfo $guestInfo
      * @param \FormBundle\Entity\Node\Form $form
+     * @param boolean $draft
      */
-    public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form)
+    public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form, $draft = false)
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;
         $this->guestInfo = $guestInfo;
         $this->form = $form;
         $this->fieldEntries = new ArrayCollection();
+        $this->draft = $draft;
     }
 
     /**
@@ -160,5 +169,24 @@ class Entry
      */
     public function getFieldEntries() {
         return $this->fieldEntries->toArray();
+    }
+
+    /**
+     * @param boolean $draft
+     *
+     * @return \FormBundle\Entity\Node\Entry
+     */
+    public function setDraft($draft)
+    {
+        $this->draft = $draft;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDraft()
+    {
+        return $this->draft;
     }
 }
