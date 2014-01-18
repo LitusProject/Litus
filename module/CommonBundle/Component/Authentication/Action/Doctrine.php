@@ -82,7 +82,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $mailData = unserialize(
                 $this->_entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue($messageConfig)
+                    ->getConfigValue('common.account_deactivated_mail')
             );
 
             $message = $mailData[$language->getAbbrev()]['content'];
