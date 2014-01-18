@@ -947,11 +947,6 @@ return array(
                             'output' => 'supplier_css.css',
                         ),
                     ),
-                    'supplier_nav' => array(
-                        'assets' => array(
-                            'admin/js/supplierNavigation.js',
-                        ),
-                    ),
                     'queue_js' => array(
                         'assets' => array(
                             'queue/js/*.js',

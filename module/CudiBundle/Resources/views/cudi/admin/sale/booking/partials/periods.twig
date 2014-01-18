@@ -1,6 +1,6 @@
-<header id="controller_sub_header">
-    <nav id="controller_sub_nav">
-        <ul id="supplier_nav">
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
+        <ul>
             {% for period in periods %}
                 <li><a {% if period.getStartDate() == activePeriod.getStartDate() %} class="active" {% endif %}href="{{ url("cudi_admin_sales_booking", {"action": getParam('action'), "period": period.getId()}) }}">{{ period.getStartDate().format('M \'y') }} : {% if period.isOpen() %}Now{% else %}{{ period.getEndDate().format('M \'y') }}{% endif %}</a></li>
             {% endfor %}
