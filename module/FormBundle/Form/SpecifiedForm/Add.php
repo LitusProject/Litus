@@ -153,6 +153,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setData($formData);
     }
 
+    public function hasDraft($hasDraft)
+    {
+        if ($hasDraft) {
+            $this->get('save_as_draft')->setAttribute('disabled', 'disabled');
+        } else {
+            $this->get('save_as_draft')->setAttribute('disabled', null);
+        }
+    }
+
     public function populateFromGuestInfo(GuestInfo $guestInfo)
     {
         $data = array(

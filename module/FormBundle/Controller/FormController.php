@@ -136,33 +136,33 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'specification' => $formSpecification,
                 )
             );
-        } elseif (null === $person) {
-            if (!$formSpecification->isMultiple() && count($entries) > 0) {
-                return new ViewModel(
-                    array(
-                        'message'       => 'You can\'t fill this form more than once.',
-                        'specification' => $formSpecification,
-                        'entries'       => $entries,
-                        'group'           => $group,
-                        'progressBarInfo' => $progressBarInfo,
-                    )
-                );
-            }
-        } elseif (null !== $person) {
-            if (!$formSpecification->isMultiple() && count($entries) > 0) {
-                return new ViewModel(
-                    array(
-                        'message'       => 'You can\'t fill this form more than once.',
-                        'specification' => $formSpecification,
-                        'entries'       => $entries,
-                        'group'           => $group,
-                        'progressBarInfo' => $progressBarInfo,
-                    )
-                );
-            }
+        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && null === $draftVersion) {
+            return new ViewModel(
+                array(
+                    'message'       => 'You can\'t fill this form more than once.',
+                    'specification' => $formSpecification,
+                    'entries'       => $entries,
+                    'group'           => $group,
+                    'progressBarInfo' => $progressBarInfo,
+                )
+            );
         }
 
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
+        if (null !== $draftVersion) {
+            $form->populateFromEntry($draftVersion);
+            $form->setAttribute(
+                'action',
+                $this->url()->fromRoute(
+                    'form_view',
+                    array(
+                        'action' => 'edit',
+                        'id' => $draftVersion->getId(),
+                    )
+                )
+            );
+        }
+
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -759,7 +759,24 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+
+        if (null !== $person) {
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
+        } elseif(isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+        }
+
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
+        $form->hasDraft(null !== $draftVersion && $draftVersion != $entry);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
