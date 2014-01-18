@@ -149,7 +149,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new AddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person);
-        if (null !== $draftVersion) {
+        if (isset($draftVersion)) {
             $form->populateFromEntry($draftVersion);
             $form->setAttribute(
                 'action',
