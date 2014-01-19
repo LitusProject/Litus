@@ -208,7 +208,6 @@ return array(
             '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
         ),
         'cudi_admin_stock_delivery' => array(
@@ -217,7 +216,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
             '@common_download_file',
         ),
@@ -227,7 +225,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
             '@common_download_file',
         ),
