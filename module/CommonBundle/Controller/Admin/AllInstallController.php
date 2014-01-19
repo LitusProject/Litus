@@ -39,6 +39,7 @@ class AllInstallController extends \CommonBundle\Component\Controller\ActionCont
             'calendar',
             'common',
             'cudi',
+            'door',
             'form',
             'gallery',
             'logistics',
