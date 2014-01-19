@@ -251,6 +251,22 @@ h2 {
             }
         }
 
+        .caret_sub_nav {
+            float: right;
+            font-size: 16px;
+            padding: 1px 5px;
+            margin: 4px 0;
+            height: 20px;
+            line-height: 20px;
+            cursor: pointer;
+
+            &:hover,
+            &.active {
+                background: #ccc;
+                color: @cWhite;
+            }
+        }
+
         .controller_sub_nav,
         #controller_nav {
             display: block;
@@ -555,6 +571,27 @@ h2 {
                     margin-top: 0;
                 }
             }
+        }
+    }
+}
+
+.sub_nav_dropdown {
+    position: absolute;
+    background: #ccc;
+    padding: 10px 20px;
+
+    a {
+        display: block;
+        padding: 3px 0;
+        color: @cText;
+        text-decoration: none;
+
+        &:hover {
+            color: @cBlack;
+        }
+
+        &.active {
+            font-weight: bold;
         }
     }
 }
