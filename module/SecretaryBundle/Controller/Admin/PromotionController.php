@@ -64,7 +64,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -233,6 +233,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
+        exit;
         $academicYear = $this->_getAcademicYear();
 
         $promotions = $this->getEntityManager()
@@ -386,8 +387,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $date = null;
         if (null !== $this->getParam('academicyear'))
-            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
+            $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
@@ -399,7 +400,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_article',
+                'secretary_admin_promotion',
                 array(
                     'action' => 'manage'
                 )

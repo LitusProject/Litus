@@ -1,9 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'admin/partials/flashMessenger.twig' %}
-
     {% include 'secretary/admin/promotion/partials/navigation.twig' %}
+
+    {% include 'secretary/admin/promotion/partials/years.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
