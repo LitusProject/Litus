@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -26,7 +30,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Queue extends \CommonBundle\Component\WebSocket\Server
+class Queue
 {
     /**
      * @var Doctrine\ORM\EntityManager
@@ -107,14 +111,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $identification = $item->getPerson()->getUniversityIdentification() ? $item->getPerson()->getUniversityIdentification() : $item->getPerson()->getUserName();
+
         $result = (object) array();
         $result->id = $item->getId();
         $result->barcode = $prefix + $item->getId();
         $result->number = $item->getQueueNumber();
         $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
-        $result->university_identification = $item->getPerson()->getUniversityIdentification();
+        $result->university_identification = $identification;
         $result->status = $item->getStatus();
-        $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
+        $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
+        $result->collectPrinted = $item->getCollectPrinted();
 
         if ($item->getPayDesk()) {
             $result->payDesk = $item->getPayDesk()->getName();
@@ -188,7 +195,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
-        if (empty($bookings)) {
+        if (empty($bookings) && !$forced) {
             return json_encode(
                 (object) array(
                     'error' => 'noBookings',
@@ -238,13 +245,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param \CommonBundle\Component\WebSocket\User $user
      * @param integer $id
      */
-    public function startCollecting(User $user, $id)
+    public function startCollecting(User $user, $id, $bulk = false)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collecting');
+        if ($bulk)
+            $item->setCollectPrinted(true);
+
         $this->_entityManager->flush();
 
         $enableCollectScanning = $this->_entityManager
@@ -255,14 +265,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($enableCollectScanning == '1' && $lightVersion == '1') {
+        if ($enableCollectScanning && !$lightVersion && !$bulk) {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
 
             return $this->_queueItems[$id]->getCollectInfo();
-        } else {
-            $item->setStatus('collected');
-            $this->_entityManager->flush();
         }
+
+        $this->_entityManager->flush();
     }
 
     /**
@@ -275,13 +284,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findOneById($id);
 
         $item->setStatus('collected');
+
         $this->_entityManager->flush();
 
         $enableCollectScanning = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if ($enableCollectScanning !== '1' || !isset($this->_queueItems[$id]) || null == $articles)
+        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles)
             return;
 
         $this->_queueItems[$id]->setCollectedArticles($articles);
@@ -296,14 +306,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $item->setStatus('signed_in');
+        $item->setStatus('signed_in')
+            ->setCollectPrinted(false);
         $this->_entityManager->flush();
     }
 
     /**
      * @param integer $id
      */
-    public function startSelling(User $user, $id)
+    public function startSale(User $user, $id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -329,7 +340,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function cancelSelling($id)
+    public function cancelSale($id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -346,7 +357,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param string $payMethod
      * @return array
      */
-    public function concludeSelling($id, $articles, $discounts, $payMethod)
+    public function concludeSale($id, $articles, $discounts, $payMethod)
     {
         if (!isset($this->_queueItems[$id]))
             return;
@@ -404,7 +415,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param integer $id
      * @param integer $barcode
      */
-    public function addArticle($id, $barcode)
+    public function addArticle($id, $articleId)
     {
         if (!isset($this->_queueItems[$id])) {
             return json_encode(
@@ -416,7 +427,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
         }
 
-        if (!is_numeric($barcode)) {
+        if (!is_numeric($articleId)) {
             return json_encode(
                 array(
                     'addArticle' => array(
@@ -432,13 +443,29 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneByBarcode($barcode);
+            ->findOneById($articleId);
 
         if (!isset($article)) {
             return json_encode(
                 array(
                     'addArticle' => array(
                         'error' => 'no_article',
+                    ),
+                )
+            );
+        }
+
+        $period = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+
+        $period->setEntityManager($this->_entityManager);
+
+        if ($article->getStockValue() - $period->getNbAssigned($article) <= 0) {
+            return json_encode(
+                array(
+                    'addArticle' => array(
+                        'error' => 'occupied',
                     ),
                 )
             );
@@ -484,7 +511,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param integer $id
      */
-    public function undoSelling($id)
+    public function undoSale($id)
     {
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -507,6 +534,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             } else {
                 $articles[$saleItem->getArticle()->getId()]['number'] += $saleItem->getNumber();
             }
+            $this->_entityManager->remove($saleItem);
         }
 
         foreach($articles as $article) {
@@ -562,7 +590,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
-            $result->locked = isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : false;
+            $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : */false;
+            $result->collectPrinted = $item->getCollectPrinted();
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();
@@ -578,27 +607,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-            $this->_entityManager->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 }

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -36,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'common.profile_path',
-                    'value'       => 'data/common/profile',
+                    'value'       => '/_common/profile',
                     'description' => 'The path for profile photo\'s',
                 ),
                 array(
@@ -46,29 +50,59 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'common.account_deactivated_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Account Deactivated',
+                                'content' => 'Dear {{ name }},
 
 Your account on VTK has been deactivated.
-Click here to activate it again: http://litus/account/activate/code/{{ code }}',
+Click here to activate it again: http://litus/account/activate/code/{{ code }}
+
+With best regards,
+VTK'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Account Gedeactiveerd',
+                                'content' => 'Beste {{ name }},
+
+Uw account op VTK is gedeactiveerd.
+Klik hier om deze opnieuw te activeren: http://litus/account/activate/code/{{ code }}
+
+Met vriendelijke groeten,
+VTK'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is deactivated',
                 ),
                 array(
-                    'key'         => 'common.account_deactivated_subject',
-                    'value'       => 'Account Deactivated',
-                    'description' => 'The mail subject when an account is deactivated',
-                ),
-                array(
                     'key'         => 'common.account_activated_mail',
-                    'value'       => 'Dear {{ name }},
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Account Activated',
+                                'content' => 'Dear {{ name }},
 
 An account for you was created on VTK with username {{ username }}.
-Click here to activate it: http://litus/account/activate/code/{{ code }}',
+Click here to activate it: http://litus/account/activate/code/{{ code }}
+
+With best regards,
+VTK'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Account Geactiveerd',
+                                'content' => 'Beste {{ name }},
+
+Een account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
+
+Met vriendelijke groeten,
+VTK'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is activated',
-                ),
-                array(
-                    'key'         => 'common.account_activated_subject',
-                    'value'       => 'Account Created',
-                    'description' => 'The mail subject when an account is activated',
                 ),
                 array(
                     'key'         => 'system_mail_address',
@@ -81,19 +115,19 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The system mail name',
                 ),
                 array(
-                    'key'         => 'union_short_name',
+                    'key'         => 'organization_short_name',
                     'value'       => 'VTK',
-                    'description' => 'The short name of this union',
+                    'description' => 'The short name of this organization',
                 ),
                 array(
-                    'key'         => 'union_name',
-                    'value'       => 'VTK vzw',
-                    'description' => 'The full name of this union',
+                    'key'         => 'organization_name',
+                    'value'       => 'Vlaamse Technische Kring',
+                    'description' => 'The full name of this organization',
                 ),
                 array(
-                    'key'         => 'union_logo',
+                    'key'         => 'organization_logo',
                     'value'       => 'data/images/logo/logo.svg',
-                    'description' => 'The path to the logo of the union',
+                    'description' => 'The path to the logo of the organization',
                 ),
                 array(
                     'key'         => 'union_address',
@@ -117,7 +151,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 array(
                     'key'         => 'union_url',
                     'value'       => 'http://vtk.be',
-                    'description' => 'The URL of the union',
+                    'description' => 'The URL of the organization',
                 ),
                 array(
                     'key'         => 'university',
@@ -135,8 +169,18 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The start date of the organization year',
                 ),
                 array(
+                    'key'         => 'start_academic_year_offset',
+                    'value'       => 'P1W',
+                    'description' => 'The date interval the academic year will start before the official start',
+                ),
+                array(
                     'key'         => 'shibboleth_url',
-                    'value'       => 'https://arianna.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Farianna.vtk.be%3A8443%2Fshibboleth%2F',
+                    'value'       => serialize(
+                        array(
+                            'faye' => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
+                            'liv'  => 'https://liv.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Fliv.vtk.be%3A8443%2Fshibboleth%2F',
+                        )
+                    ),
                     'description' => 'The Shibboleth authentication URL, wherein the target parameter specifies the redirect',
                 ),
                 array(
@@ -146,28 +190,44 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                 ),
                 array(
                     'key'         => 'shibboleth_person_key',
-                    'value'       => 'Shib-Person-uid',
+                    'value'       => 'Shib_Person_uid',
                     'description' => 'The key in the $_SERVER array that accesses the university identification',
                 ),
                 array(
                     'key'         => 'shibboleth_session_key',
-                    'value'       => 'Shib-Session-ID',
+                    'value'       => 'Shib_Session_Index',
                     'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
                 ),
                 array(
                     'key'         => 'shibboleth_code_handler_url',
                     'value'       => serialize(
                         array(
-                            'admin'     => 'https://dev.vtk.be/admin/auth/shibboleth/',
-                            'prof'      => 'https://dev.vtk.be/cudi/prof/auth/shibboleth/',
-                            'site'      => 'https://dev.vtk.be/auth/shibboleth/',
-                            'register'  => 'https://dev.vtk.be/secretary/registration/',
-                            'form'      => 'https://dev.vtk.be/form/manage/auth/shibboleth/',
-                            'logistics' => 'https://dev.vtk.be/logistics/auth/shibboleth/',
-                            'wiki'      => 'https://dev.vtk.be/wiki/auth/shibboleth/',
+                            'admin'     => 'https://vtk.be/admin/auth/shibboleth/',
+                            'prof'      => 'https://vtk.be/cudi/prof/auth/shibboleth/',
+                            'site'      => 'https://vtk.be/auth/shibboleth/',
+                            'register'  => 'https://vtk.be/secretary/registration/',
+                            'form'      => 'https://vtk.be/form/manage/auth/shibboleth/',
+                            'logistics' => 'https://vtk.be/logistics/auth/shibboleth/',
+                            'wiki'      => 'https://vtk.be/wiki/auth/shibboleth/',
                         )
                     ),
                     'description' => 'The Shibboleth handler URL, without a trailing slash',
+                ),
+                array(
+                    'key'         => 'shibboleth_extra_info',
+                    'value'       => serialize(
+                        array(
+                            'first_name' => 'Shib_Person_givenName',
+                            'last_name' => 'Shib_Person_surname',
+                            'email' => 'Shib_Person_mail',
+                        )
+                    ),
+                    'description' => 'The keys for extra info from Shibboleth',
+                ),
+                array(
+                    'key'         => 'student_email_domain',
+                    'value'       => '@student.kuleuven.be',
+                    'description' => 'The domain for the student email',
                 ),
                 array(
                     'key'         => 'system_administrator_mail',
@@ -195,7 +255,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'Show sport information on homepage',
                 ),
                 array(
-                    'key'         => 'common.piwik_enabled',
+                    'key'         => 'common.enable_piwik',
                     'value'       => '0',
                     'description' => 'Whether or not Piwik support should be enabled',
                 ),
@@ -215,20 +275,47 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     'description' => 'The Piwik ID of the site that should be queried',
                 ),
                 array(
-                    'key'         => 'shibboleth_extra_info',
-                    'value'       => serialize(
-                        array(
-                            'first_name' => 'Shib_Person_givenName',
-                            'last_name' => 'Shib_Person_surname',
-                            'email' => 'Shib_Person_mail',
-                        )
-                    ),
-                    'description' => 'The keys for extra info from Shibboleth',
+                    'key'         => 'common.robots',
+                    'value'       => '#
+# Robots File
+#
+
+# Taking care of AJAX locations
+User-agent: *
+Disallow: /*/calendar/month/
+Disallow: /*/run/group/getName/
+Disallow: /*/career/company/search/
+
+# We do not want them to access our admin
+Disallow: /admin/*
+',
+                    'description' => 'The robots.txt content',
                 ),
                 array(
-                    'key'         => 'student_email_domain',
-                    'value'       => '@student.kuleuven.be',
-                    'description' => 'The domain for the student email',
+                    'key'         => 'common.passkit_certificates',
+                    'value'       => serialize(
+                        array(
+                            'membership' => array(
+                                'path'     => 'data/certificates/private/membership.p12',
+                                'password' => '3Vg2Z401YDh514Qw3t4m76SL',
+                            )
+                        )
+                    ),
+                    'description' => 'The certificates that will be used to to create PassKit signatures',
+                ),
+                array(
+                    'key'         => 'common.passkit_pass_type_identifiers',
+                    'value'       => serialize(
+                        array(
+                            'membership' => 'pass.be.vtk.membership',
+                        )
+                    ),
+                    'description' => 'The PassKit pass type identifiers',
+                ),
+                array(
+                    'key'         => 'common.passkit_team_identifier',
+                    'value'       => '83GZ464K6U',
+                    'description' => 'The team identifier of the Apple developer account that generated the certificates',
                 ),
             )
         );
@@ -270,7 +357,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -280,6 +367,12 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                     'common_index' => array(
                         'index'
+                    ),
+                    'common_robots' => array(
+                        'index'
+                    ),
+                    'common_praesidium' => array(
+                        'overview'
                     ),
 
                     'all_install' => array(
@@ -374,6 +467,9 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                         'common_account' => array(
                             'activate'
                         ),
+                        'common_robots' => array(
+                            'index'
+                        ),
                     ),
                 ),
                 'student' => array(
@@ -382,7 +478,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}',
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'photo',
+                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),

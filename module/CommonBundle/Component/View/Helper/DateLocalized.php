@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,7 +31,7 @@ use DateTime,
  */
 class DateLocalized extends \Zend\View\Helper\AbstractHelper implements TranslatorAwareInterface
 {
-	/**
+    /**
      * Translator (optional)
      *
      * @var Translator
@@ -48,28 +52,28 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      */
     protected $translatorEnabled = true;
 
-	/**
-	 * @param \DateTime $date
-	 * @param string $format
-	 *
-	 * @return Zend\Date\Date
-	 */
-	public function __invoke(DateTime $date = null, $format = '')
-	{
-	    if (null == $date)
-	        return '';
-	    $formatter = new IntlDateFormatter(
-	    	$this->getTranslator()->getLocale(),
-	    	IntlDateFormatter::NONE,
-			IntlDateFormatter::NONE,
-			date_default_timezone_get(),
-			IntlDateFormatter::GREGORIAN,
-			$format
-	    );
-	    return $formatter->format($date);
-	}
+    /**
+     * @param \DateTime $date
+     * @param string $format
+     *
+     * @return Zend\Date\Date
+     */
+    public function __invoke(DateTime $date = null, $format = '')
+    {
+        if (null == $date)
+            return '';
+        $formatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            $format
+        );
+        return $formatter->format($date);
+    }
 
-	/**
+    /**
      * Sets translator to use in helper
      *
      * @param  Translator $translator  [optional] translator.

@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Config
@@ -12,22 +12,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class Config extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->orderBy('c.key', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
     public function findAllByPrefix($prefix)
     {
-        $configs = $this->_em
-            ->createQuery('SELECT c FROM CommonBundle\Entity\General\Config c WHERE c.key LIKE \'' . $prefix . '.%\'')
+        $query = $this->_em->createQueryBuilder();
+        $configs = $query->select('c')
+            ->from('CommonBundle\Entity\General\Config', 'c')
+            ->where(
+                $query->expr()->like('c.key', ':prefix')
+            )
+            ->setParameter('prefix', $prefix . '.%')
+            ->getQuery()
             ->getResult();
 
         $result = array();

@@ -28,9 +28,9 @@
                 cursor: 'pointer',
             });
             $('#sell_price').parent().append(field);
-            field.html('(Calculated: &euro; {{ precalculatedSellPrice|number_format(2) }})')
+            field.html('(Calculated: &euro; {{ (precalculatedSellPrice/100)|number_format(2) }})')
                 .click(function () {
-                    $('#sell_price').val(({{ precalculatedSellPrice|number_format(2) }}).toFixed(2));
+                    $('#sell_price').val(({{ (precalculatedSellPrice/100)|number_format(2) }}).toFixed(2));
                 });
 
 
@@ -40,9 +40,9 @@
                 cursor: 'pointer',
             });
             $('#purchase_price').parent().append(field);
-            field.html('(Calculated: &euro; {{ precalculatedPurchasePrice|number_format(2) }})')
+            field.html('(Calculated: &euro; {{ (precalculatedPurchasePrice/100)|number_format(2) }})')
                 .click(function () {
-                    $('#purchase_price').val(({{ precalculatedPurchasePrice|number_format(2) }}).toFixed(2));
+                    $('#purchase_price').val(({{ (precalculatedPurchasePrice/100)|number_format(2) }}).toFixed(2));
                 });
             {% endif %}
         });

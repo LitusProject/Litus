@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -54,6 +58,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
+            ->setAttribute('autofocus', true)
             ->setValue($person->getBarcode() ? $person->getBarcode()->getBarcode() : '')
             ->setRequired();
         $this->add($field);

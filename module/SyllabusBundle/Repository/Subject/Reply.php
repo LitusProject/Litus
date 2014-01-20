@@ -3,7 +3,7 @@
 namespace SyllabusBundle\Repository\Subject;
 
 use SyllabusBundle\Entity\Subject\Comment as CommentEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Reply
@@ -13,20 +13,23 @@ use SyllabusBundle\Entity\Subject\Comment as CommentEntity,
  */
 class Reply extends EntityRepository
 {
-    public function findLast($nb = 10)
+    public function findLastQuery($nb = 10)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SyllabusBundle\Entity\Subject\Reply', 'r')
+            ->innerJoin('r.comment', 'c')
+            ->where(
+                $query->expr()->isNull('c.readBy')
+            )
             ->orderBy('r.date', 'DESC')
             ->setMaxResults($nb)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByComment(CommentEntity $comment)
+    public function findAllByCommentQuery(CommentEntity $comment)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
@@ -36,8 +39,7 @@ class Reply extends EntityRepository
             )
             ->orderBy('r.date', 'ASC')
             ->setParameter('comment', $comment)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -54,11 +56,8 @@ class Reply extends EntityRepository
             ->setParameter('comment', $comment)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

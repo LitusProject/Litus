@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,6 +35,13 @@ include 'init_autoloader.php';
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
+
+$fallbackLanguage = $em->getRepository('CommonBundle\Entity\General\Language')
+    ->findOneByAbbrev(
+        $em->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('fallback_language')
+    );
+\Locale::setDefault($fallbackLanguage->getAbbrev());
 
 $rules = array(
     'printer|p-s' => 'Printer Name',
@@ -65,6 +76,7 @@ if (isset($opts->p) && isset($opts->t)) {
         'name' => 'Kristof Mariën',
         'queuenumber' => '3',
         'totalAmount' => '63,00',
+        'title' => 'Litus Cursusdienst',
         'items' => array(
             array(
                 'title' => 'Fundamentals of Computer Graphics',
@@ -92,7 +104,7 @@ if (isset($opts->p) && isset($opts->t)) {
             break;
         default:
             echo 'Invalid ticket type: ' . $opts->t . PHP_EOL;
-            echo 'Possible printers:' . PHP_EOL;
+            echo 'Possible ticket types:' . PHP_EOL;
             echo '    -> signin' . PHP_EOL;
             echo '    -> collect' . PHP_EOL;
             echo '    -> sale' . PHP_EOL;
@@ -105,7 +117,7 @@ if (isset($opts->p) && isset($opts->t)) {
             'id' => $printers[$opts->p],
             'ticket' => $data,
             'key' => $em->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.queue_socket_key'),
+                ->getConfigValue('cudi.printer_socket_key'),
         )
     );
 

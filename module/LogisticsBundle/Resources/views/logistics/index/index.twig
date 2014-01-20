@@ -50,14 +50,20 @@
         </div>
     </div>
 
+    {% if hasAccess('logistics_index', 'export') %}
+        <div class="pull-right" style="line-height: 50px">
+            <a href="{{ url('logistics_export') }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
+        </div>
+    {% endif %}
+
     <div id="calendar"></div>
 
-    <div id="reservationForm" class="hide">
-        {% if has_access('logistics_index', 'add') %}
+    {% if has_access('logistics_index', 'add') %}
+        <div id="reservationForm" class="hide">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}

@@ -5,21 +5,29 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -44,7 +52,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $total = 0;
         foreach ($bookings as $booking) {
-            $total += $booking->getArticle()->getSellPrice();
+            $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
         }
 
         return new ViewModel(
@@ -97,7 +105,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_bookings') == '1';
+            ->getConfigValue('cudi.enable_bookings');
 
         $bookingsClosedExceptions = unserialize(
             $this->getEntityManager()
@@ -220,13 +228,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $total = 0;
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
 
                     if (!$enableBookings && !in_array($saleArticleId, $bookingsClosedExceptions))
                         continue;
 
-                    if (substr($formKey, 0, 8) === 'article-' && $formValue != '' && $formValue != '0') {
+                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' != $formValue) {
+                        $total += $formValue;
+
                         $saleArticle = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($saleArticleId);
@@ -258,7 +269,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('cudi.enable_automatic_assignment');
 
-                        if ($enableAssignment == '1') {
+                        if ($enableAssignment) {
                             $currentPeriod = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Stock\Period')
                                 ->findOneActive();
@@ -288,13 +299,23 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The textbooks have been booked!'
-                    )
-                );
+                if (0 == $total) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::WARNING,
+                            'Warning',
+                            'You have not booked any textbooks!'
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::SUCCESS,
+                            'Success',
+                            'The textbooks have been booked!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'cudi_booking',
@@ -333,9 +354,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         array_splice($articles, $numResults);
 
-        $bookingsEnabled = $this->getEntityManager()
+        $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_bookings') == '1';
+            ->getConfigValue('cudi.enable_bookings');
 
         $bookingsClosedExceptions = unserialize(
             $this->getEntityManager()
@@ -367,6 +388,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $result = array();
         foreach($articles as $article) {
+            if (!$article->isBookable() && $article->getMainArticle()->getType() == 'common')
+                continue;
+
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
@@ -383,7 +407,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             $item->bookable = $article->isBookable()
                 && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
-                && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions));
+                && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions));
             $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
             $item->sold = isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0;
             $item->comments = array();
@@ -411,9 +435,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            $bookingsEnabled = $this->getEntityManager()
+            $enableBookings = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.enable_bookings') == '1';
+                ->getConfigValue('cudi.enable_bookings');
 
             $bookingsClosedExceptions = unserialize(
                 $this->getEntityManager()
@@ -438,7 +462,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 if (null === $article || !is_numeric($number))
                     continue;
 
-                if ($article->isBookable() && ($bookingsEnabled || in_array($article->getId(), $bookingsClosedExceptions))) {
+                if ($article->isBookable() && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions))) {
                     $booking = new Booking(
                         $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
@@ -449,7 +473,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                     $this->getEntityManager()->persist($booking);
 
-                    if ($enableAssignment == '1') {
+                    if ($enableAssignment) {
                         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                         if ($available > 0) {
                             if ($available >= $booking->getNumber()) {

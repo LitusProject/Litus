@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -73,7 +77,7 @@ return array(
             'br_admin_company_user' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/company/user[/:action[/:id]][/page/:page][/]',
+                    'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
@@ -220,7 +224,7 @@ return array(
             'br_career_event' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/event[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/event[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -236,7 +240,7 @@ return array(
             'br_career_vacancy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/vacancy[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/vacancy[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',
@@ -252,7 +256,7 @@ return array(
             'br_career_internship' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '[/:language]/career/internship[/:action[/:id]][/page/:page][/]',
+                    'route' => '[/:language]/career/internship[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'       => '[0-9_-]*',

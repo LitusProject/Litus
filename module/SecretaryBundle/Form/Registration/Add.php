@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,7 +21,6 @@ namespace SecretaryBundle\Form\Registration;
 use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
@@ -50,19 +53,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_conditionsAlreadyChecked = false;
 
     /**
+     * @var boolean Enable the "other organization" option
+     */
+    protected $_enableOtherOrganization = false;
+
+    /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $identification The university identification
      * @param array|null $extraInfo Extra information about the user
+     * @param boolean $enableOtherOrganization Enable the "other organization" option
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
     {
         parent::__construct($name);
 
         $this->setAttribute('id', 'register_form');
 
         $this->_entityManager = $entityManager;
+        $this->_enableOtherOrganization = $enableOtherOrganization;
 
         $this->setAttribute('enctype', 'multipart/form-data');
 
@@ -103,11 +113,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         $personal->add($field);
 
-        $field = new File('profile');
-        $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
-        $personal->add($field);
-
         $field = new Text('phone_number');
         $field->setLabel('Phone Number')
             ->setAttribute('placeholder', '+CCAAANNNNNN');
@@ -124,7 +129,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
-        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field = new AddressForm('secondary_address', 'secondary_address', false);
         $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 
@@ -156,22 +161,27 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $internet->add($field);
 
         $organization = new Collection('organization');
-        $organization->setLabel('Organization')
+        $organization->setLabel('Student Association')
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
-        if (sizeof($organizations) > 1) {
-            $field = new Select('organization');
-            $field->setLabel('Organization')
-                ->setAttribute('options', $organizations);
-            $organization->add($field);
-        }
+        $field = new Select('organization');
+        $field->setLabel('Student Association')
+            ->setAttribute('options', $organizations);
+        $organization->add($field);
+
+        $registrationEnabled = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.enable_registration');
 
         $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the organization (&euro;10)')
+        $field->setLabel('I want to become a member of the student association (&euro; { price })')
             ->setValue(true);
         $organization->add($field);
+
+        if ('1' != $registrationEnabled)
+            $field->setAttribute('disabled', 'disabled');
 
         $field = new Checkbox('conditions');
         $field->setLabel('I have read and agree with the terms and conditions');
@@ -207,9 +217,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail) {
+        if ($universityEmail)
             $universityEmail = explode('@', $universityEmail)[0];
-        }
 
         $organization = $academic->getOrganization($academicYear);
 
@@ -258,6 +267,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
+            if ($this->get('organization')->has('organization')) {
+                $this->get('organization')->get('organization')
+                    ->setAttribute('disabled', true);
+            }
             $this->get('organization')->get('become_member')
                 ->setAttribute('disabled', true);
             $this->get('organization')->get('conditions')
@@ -281,7 +294,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $organizationOptions = array();
+        $organizationOptions = $this->_enableOtherOrganization ? array("Other") : array();
         foreach($organizations as $organization)
             $organizationOptions[$organization->getId()] = $organization->getName();
 
@@ -353,29 +366,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'name'     => 'sex',
                     'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
-                        ),
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'extension' => '2MB',
-                            ),
-                        ),
-                    ),
                 )
             )
         );

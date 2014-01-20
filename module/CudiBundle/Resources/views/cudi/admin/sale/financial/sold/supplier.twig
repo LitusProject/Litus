@@ -1,0 +1,133 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Supplier</h1>
+        <p>Name: <b>{{ supplier.getName() }}</b></p>
+        <p>VAT Number: <b>{{ supplier.getVATNumber() }}</b></p>
+        <p>Phone Number: <b>{{ supplier.getPhoneNumber() }}</b></p>
+
+        {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
+        <p>Number Sold: <b>{{ supplier.getNumberSold(activeAcademicYear) }}</b></p>
+        <p>Total Purchase: <b>&euro; {{ (supplier.getTotalPurchase(activeAcademicYear)/100)|number_format(2) }}</b></p>
+        <p>Total Revenue: <b>&euro; {{ (supplier.getTotalRevenue(activeAcademicYear)/100)|number_format(2) }}</b></p>
+
+        {% if organizations|length > 1 %}
+            {% for organization in organizations %}
+                <h2>{{ organization.getName() }}</h2>
+                <p>Number Sold: <b>{{ supplier.getNumberSold(activeAcademicYear, organization) }}</b></p>
+                <p>Total Purchase: <b>&euro; {{ (supplier.getTotalPurchase(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
+                <p>Total Revenue: <b>&euro; {{ (supplier.getTotalRevenue(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
+            {% endfor %}
+        {% endif %}
+        <br />
+
+        <div id="sold_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="person">Person</option>
+                    <option value="article">Article</option>
+                    <option value="organization">Organization</option>
+                    <option value="discount">Discount</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th width="100px" class="widest">Sale Session</th>
+                    <th>Article</th>
+                    <th width="120px">Person</th>
+                    <th width="70px">Org.</th>
+                    <th width="80px">Number</th>
+                    <th width="70px">Sell Price</th>
+                    <th width="110px">Purchase Price</th>
+                    <th width="70px" class="wider">Discount</th>
+                    <th width="70px" class="wider">Type</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th width="100px" class="widest">Sale Session</th>
+                    <th>Article</th>
+                    <th width="120px">Person</th>
+                    <th width="70px">Org.</th>
+                    <th width="80px">Number</th>
+                    <th width="70px">Sell Price</th>
+                    <th width="110px">Purchase Price</th>
+                    <th width="70px" class="wider">Discount</th>
+                    <th width="70px" class="wider">Type</th>
+                </tr>
+
+                {% for item in paginator %}
+                    <tr class="item">
+                        <td>{{ item.getTimestamp().format('d/m/Y H:i') }}</td>
+                        <td class="widest">{{ item.getSession().getOpenDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>{% if item.getType() == 'regular' %}{{ item.getPerson().getFullName() }}{% else %}{{ item.getPerson() }}{% endif %}</td>
+                        <td>{{ item.getPerson().getOrganization(item.getSession().getAcademicYear()).getName() }}</td>
+                        <td>{{ item.getNumber() }}</td>
+                        <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
+                        <td>&euro; {{ (item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
+                        <td class="wider">{{ item.getDiscountType() }}</td>
+                        <td class="wider">{{ item.getType()|capitalize }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'supplierSearch') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#sold_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'supplier', 'id': supplier.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'supplierSearch', 'id': supplier.getId(), 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#sold_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.timestamp + '</td>')
+                            .append('<td class="widest">' + this.session + '</td>')
+                            .append('<td>' + this.article + '</td>')
+                            .append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.organization + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
+                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
+                            .append('<td class="wider">' + this.discount + '</td>')
+                            .append('<td class="wider">' + this.type + '</td>');
+                    });
+                    $('#sold_search table').change();
+                },
+                clear: function () {
+                    $('#sold_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

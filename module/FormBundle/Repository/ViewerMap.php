@@ -2,8 +2,11 @@
 
 namespace FormBundle\Repository;
 
-use DateTime,
-    Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person,
+    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Group,
+    DateTime;
 
 /**
  * Viewermap
@@ -13,35 +16,8 @@ use DateTime,
  */
 class ViewerMap extends EntityRepository
 {
-    public function findAll()
+    public function findOneByPersonAndForm(Person $person, Form $form)
     {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\ViewerMap', 'n')
-            ->getQuery()
-            ->getResult();
-
-        return $resultSet;
-    }
-
-    public function findOneById($id) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\ViewerMap', 'n')
-            ->where(
-                $query->expr()->eq('n.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
-    public function findOneByPersonAndForm($person, $form) {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
@@ -55,30 +31,29 @@ class ViewerMap extends EntityRepository
             ->setParameter('person', $person)
             ->setParameter('form', $form)
             ->orderBy('f.startDate', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
-    }
-
-    public function findAllByForm($formId) {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('n')
-            ->from('FormBundle\Entity\ViewerMap', 'n')
-            ->where(
-                $query->expr()->eq('n.form', ':id')
-            )
-            ->setParameter('id', $formId)
-            ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
         return $resultSet;
     }
 
-    public function findAllByPerson($person) {
+    public function findAllByFormQuery(Form $form)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\ViewerMap', 'n')
+            ->where(
+                $query->expr()->eq('n.form', ':form')
+            )
+            ->setParameter('form', $form)
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByPersonQuery(Person $person)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
@@ -88,9 +63,72 @@ class ViewerMap extends EntityRepository
             )
             ->setParameter('person', $person)
             ->orderBy('f.startDate', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByGroupAndPersonQuery(Group $group, Person $person)
+    {
+        $forms = array(0);
+        foreach($group->getForms() as $form)
+            $forms[] = $form->getForm()->getId();
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('FormBundle\Entity\ViewerMap', 'n')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('n.person', ':person'),
+                    $query->expr()->in('n.form', $forms)
+                )
+            )
+            ->setParameter('person', $person)
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllGroupsByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $forms = $query->select('f.id')
+            ->from('FormBundle\Entity\ViewerMap', 'n')
+            ->innerJoin('n.form', 'f')
+            ->where(
+                $query->expr()->eq('n.person', ':person')
+            )
+            ->setParameter('person', $person)
             ->getQuery()
             ->getResult();
 
-        return $resultSet;
+        $ids = array(0);
+        foreach($forms as $form)
+            $ids[] = $form['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $mappings = $query->select('m')
+            ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
+            ->innerJoin('m.form', 'f')
+            ->where(
+                $query->expr()->in('f.id', $ids)
+            )
+            ->orderBy('f.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        $groups = array();
+        foreach($mappings as $mapping)
+            $groups[$mapping->getGroup()->getId()] = $mapping->getGroup();
+
+        return $groups;
+    }
+
+    public function findOneByPersonAndGroup(Person $person, Group $group)
+    {
+        if (sizeof($group->getForms()) == 0)
+            return null;
+
+        return $this->findOneByPersonAndForm($person, $group->getForms()[0]->getForm());
     }
 }

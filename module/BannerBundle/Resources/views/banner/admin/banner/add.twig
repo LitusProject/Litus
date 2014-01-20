@@ -38,9 +38,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#uploadBanner').formUploadProgress({
-                url: '/progress.php',
-                name: $('#progress_key').val(),
-                interval: 1000,
                 onProgress: function (data) {
                     $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
                 },

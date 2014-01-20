@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,18 +19,18 @@
 namespace SecretaryBundle\Component\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CudiBundle\Entity\Sale\Booking,
-    Imagick,
+    DateInterval,
+    DateTime,
+    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel;
 
@@ -35,6 +39,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear
+     */
+    private $_academicYear;
+
     protected function _studiesAction(Academic $academic, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
@@ -73,8 +82,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
 
+        $studies = array();
+
         if (!empty($data['studies'])) {
             foreach($data['studies'] as $id) {
+                if (isset($studies[$id]))
+                    continue;
+
+                $studies[$id] = true;
+
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
@@ -194,8 +210,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach($enrollments as $enrollment)
             $this->getEntityManager()->remove($enrollment);
 
+        $subjects = array();
+
         if (!empty($data['subjects'])) {
             foreach($data['subjects'] as $id) {
+                if (isset($subjects[$id]))
+                    continue;
+
+                $subjects[$id] = true;
+
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
                     ->findOneById($id);
@@ -220,203 +243,29 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
     }
 
-    protected function _uploadProfileImage(Academic $academic)
+    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)
     {
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.profile_path');
-
-        $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-        $upload->addValidator(new ImageValidator());
-
-        if ($upload->isValid()) {
-            $upload->receive();
-
-            $image = new Imagick($upload->getFileName());
-            unlink($upload->getFileName());
-            $image->cropThumbnailImage(320, 240);
-
-            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                $fileName = $academic->getPhotoPath();
-            } else {
-                $fileName = '';
-                do{
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . '/' . $fileName));
-            }
-            $image->writeImage($filePath . '/' . $fileName);
-            $academic->setPhotoPath($fileName);
-        }
-    }
-
-    protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, AcademicYear $academicYear)
-    {
-        $organizationMap = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-            ->findOneByAcademicAndAcademicYear($academic, $academicYear);
-
-        if (null !== $organizationMap) {
-            $organization = $organizationMap->getOrganization();
-        } else {
-            $organization = current($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Organization')
-                ->findAll());
-        }
-
-        $ids = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.membership_article')
+        RegistrationArticles::book(
+            $this->getEntityManager(),
+            $academic,
+            $organization,
+            $academicYear,
+            array(
+                'payed' => false,
+                'tshirtSize' => $tshirtSize,
+            )
         );
-
-        $membershipArticle = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($ids[$organization->getId()]);
-
-        $booking = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                $membershipArticle,
-                $academic
-            );
-
-        if (null === $booking) {
-            $booking = new Booking(
-                $this->getEntityManager(),
-                $academic,
-                $membershipArticle,
-                'assigned',
-                1,
-                true
-            );
-
-            $this->getEntityManager()->persist($booking);
-        }
-
-        $tshirts = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.tshirt_article')
-        );
-
-        $hasShirt = false;
-        foreach ($tshirts as $tshirt) {
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($tshirt),
-                    $academic
-                );
-
-            if (null !== $booking) {
-                $hasShirt = true;
-                break;
-            }
-        }
-
-        $enableAssignment = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_automatic_assignment');
-        $currentPeriod = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-        $currentPeriod->setEntityManager($this->getEntityManager());
-
-        if (!$hasShirt) {
-            $booking = new Booking(
-                $this->getEntityManager(),
-                $academic,
-                $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($tshirts[$tshirtSize]),
-                'booked',
-                1,
-                true
-            );
-
-            $this->getEntityManager()->persist($booking);
-
-            if ($enableAssignment == '1') {
-                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                if ($available > 0) {
-                    if ($available >= $booking->getNumber()) {
-                        $booking->setStatus('assigned', $this->getEntityManager());
-                    }
-                }
-            }
-        }
-
-        $registrationArticles = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.registration_articles')
-        );
-
-        foreach ($registrationArticles as $registrationArticle) {
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldByArticleAndPerson(
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($registrationArticle),
-                    $academic
-                );
-
-            // Already got this article, continue
-            if (null !== $booking)
-                continue;
-
-            $booking = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneAssignedByArticleAndPerson(
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($registrationArticle),
-                    $academic
-                );
-
-            // Already booked this article, continue
-            if (null !== $booking)
-                continue;
-
-            $booking = new Booking(
-                $this->getEntityManager(),
-                $academic,
-                $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($registrationArticle),
-                'booked',
-                1,
-                true
-            );
-            $this->getEntityManager()->persist($booking);
-
-            if ($enableAssignment == '1') {
-                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                if ($available > 0) {
-                    if ($available >= $booking->getNumber()) {
-                        $booking->setStatus('assigned', $this->getEntityManager());
-                    }
-                }
-            }
-        }
     }
 
     protected function _getTermsAndConditions()
     {
-        try {
-            $termsAndConditions = $this->getEntityManager()
+        $termsAndConditions = unserialize(
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . $this->getLanguage()->getAbbrev());
-        } catch(\Exception $e) {
-            $termsAndConditions = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.terms_and_conditions_' . \Locale::getDefault());
-        }
-        return $termsAndConditions;
+                ->getConfigValue('secretary.terms_and_conditions')
+        );
+
+        return $termsAndConditions[$this->getLanguage()->getAbbrev()];
     }
 
     protected function _getPrimaryAddress($formData)
@@ -427,10 +276,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->findOneById($formData['primary_address_address_city']);
             $primaryCityName = $primaryCity->getName();
             $primaryPostal = $primaryCity->getPostal();
-            $primaryStreet = $this->getEntityManager()
+            $street = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\Street')
-                ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
-                ->getName();
+                ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']]);
+            $primaryStreet = $street ? $street->getName() : '';
         } else {
             $primaryCityName = $formData['primary_address_address_city_other'];
             $primaryStreet = $formData['primary_address_address_street_other'];
@@ -458,5 +307,22 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         } else {
             $map->setOrganization($organization);
         }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function getCurrentAcademicYear($organization = false)
+    {
+        if (null !== $this->_academicYear)
+            return $this->_academicYear;
+
+        $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
+
+        return $this->_academicYear;
     }
 }

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -23,10 +27,6 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 {
     protected function initConfig()
     {
-        $this->installConfig(
-            array(
-            )
-        );
     }
 
     protected function initAcl()
@@ -34,6 +34,18 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installAcl(
             array(
                 'quizbundle' => array(
+                    'quiz_admin_quiz' => array(
+                        'manage', 'add', 'delete', 'edit'
+                    ),
+                    'quiz_admin_round' => array(
+                        'manage', 'add', 'delete', 'edit'
+                    ),
+                    'quiz_admin_team' => array(
+                        'manage', 'add', 'delete', 'edit'
+                    ),
+                    'quiz_quiz' => array(
+                        'manage', 'update', 'view', 'results'
+                    )
                 ),
             )
         );

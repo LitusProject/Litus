@@ -3,7 +3,7 @@
 namespace CommonBundle\Repository\General\Address;
 
 use CommonBundle\Entity\General\Address\City as CityEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Street
@@ -26,12 +26,10 @@ class Street extends EntityRepository
             )
             ->setParameter('city', $city->getId())
             ->setParameter('name', $name)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

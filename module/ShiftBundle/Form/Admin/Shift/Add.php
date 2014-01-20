@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -67,6 +71,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Select('duplicate_hours');
+        $field->setLabel('Duplicate by Hours')
+            ->setRequired()
+            ->setAttribute('options', $this->_createDuplicatesArray());
+        $this->add($field);
+
+        $field = new Select('duplicate_days');
+        $field->setLabel('Duplicate by Days')
+            ->setRequired()
+            ->setAttribute('options', $this->_createDuplicatesArray());
+        $this->add($field);
+
+        $field = new Select('edit_roles');
+        $field->setLabel('Edit Roles')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createEditRolesArray());
+        $this->add($field);
+
         $field = new Text('manager');
         $field->setLabel('Manager')
             ->setAttribute('id', 'managerSearch')
@@ -117,6 +139,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'shift_add');
         $this->add($field);
+    }
+
+    private function _createDuplicatesArray()
+    {
+        $duplications = array();
+        for ($i = 1 ; $i <= 20 ; $i++) {
+            $duplications[$i] = $i;
+        }
+        return $duplications;
     }
 
     private function _createUnitsArray()
@@ -233,6 +264,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'duplicate_hours',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'duplicate_days',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'manager',
                     'required' => true,
                     'filters'  => array(
@@ -296,6 +357,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'edit_roles',
+                    'required' => false,
+                )
+            )
+        );
+
         return $inputFilter;
+    }
+
+	private function _createEditRolesArray()
+    {
+        $roles = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findBy(array(), array('name' => 'ASC'));
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if (!$role->getSystem())
+                $rolesArray[$role->getName()] = $role->getName();
+        }
+
+        if (empty($rolesArray))
+            throw new \RuntimeException('There needs to be at least one role before you can add a page');
+
+        return $rolesArray;
     }
 }

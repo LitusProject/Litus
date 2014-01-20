@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\User;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Barcode
@@ -25,15 +25,14 @@ class Barcode extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode', 'b')
-            ->where($query->expr()->eq('b.barcode', ':barcode'))
+            ->where(
+                $query->expr()->eq('b.barcode', ':barcode')
+            )
             ->setParameter('barcode', $barcode)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

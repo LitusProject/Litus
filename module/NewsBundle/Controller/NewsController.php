@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -29,10 +33,10 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('NewsBundle\Entity\Node\News')
-                ->findAllSite(),
+                ->findAllSiteQuery(),
             $this->getParam('page')
         );
 
@@ -69,7 +73,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $description = '';
-        $descriptions = unserialize($config->getConfigValue('newsbundle.rss_description'));
+        $descriptions = unserialize($config->getConfigValue('news.rss_description'));
         if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
             $description = $descriptions[$this->getLanguage()->getAbbrev()];
         else
@@ -84,7 +88,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             new XmlObject(
                 'title',
                 array(),
-                $config->getConfigValue('newsbundle.rss_title')
+                $config->getConfigValue('news.rss_title')
             ),
             new XmlObject(
                 'description',
@@ -113,12 +117,12 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'title',
                         array(),
-                        $config->getConfigValue('newsbundle.rss_title')
+                        $config->getConfigValue('news.rss_title')
                     ),
                     new XmlObject(
                         'url',
                         array(),
-                        $serverName . $config->getConfigValue('newsbundle.rss_image_link')
+                        $serverName . $config->getConfigValue('news.rss_image_link')
                     ),
                     new XmlObject(
                         'link',

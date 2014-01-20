@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -63,12 +67,20 @@ class Ticket
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person how bought/reserved the ticket
+     * @var \CommonBundle\Entity\User\Person The person who bought/reserved the ticket
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+
+    /**
+     * @var \TicketBundle\Entity\GuestInfo The guest info of who bought/reserved the ticket
+     *
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\GuestInfo")
+     * @ORM\JoinColumn(name="guest_info", referencedColumnName="id")
+     */
+    private $guestInfo;
 
     /**
      * @var \DateTime The date the ticket was booked
@@ -110,11 +122,12 @@ class Ticket
      * @param \TicketBundle\Entity\Event $event
      * @param string $status
      * @param \CommonBundle\Entity\User\Person $person
+     * @param \TicketBundle\Entity\GuestInfo $guestInfo
      * @param \DateTime $bookDate
      * @param \DateTime $soldDate
      * @param integer $number
      */
-    public function __construct(Event $event, $status, Person $person = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
+    public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status))
             throw new \InvalidArgumentException('The TicketStatus is not valid.');
@@ -122,6 +135,7 @@ class Ticket
         $this->event = $event;
         $this->status = $status;
         $this->person = $person;
+        $this->guestInfo = $guestInfo;
         $this->bookDate = $bookDate;
         $this->soldDate = $soldDate;
         $this->number = $number;
@@ -178,6 +192,7 @@ class Ticket
 
         if ($status == 'empty') {
             $this->person = null;
+            $this->guestInfo = null;
             $this->bookDate = null;
             $this->soldDate = null;
         } elseif ($status == 'sold') {
@@ -209,6 +224,38 @@ class Ticket
     {
         $this->person = $person;
         return $this;
+    }
+
+    /**
+     * @return \TicketBundle\Entity\GuestInfo
+     */
+    public function getGuestInfo()
+    {
+        return $this->guestInfo;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\GuestInfo $guestInfo
+     * @return \TicketBundle\Entity\Ticket
+     */
+    public function setGuestInfo(GuestInfo $guestInfo = null)
+    {
+        $this->guestInfo = $guestInfo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        if (null !== $this->person)
+            return $this->person->getFullName();
+
+        if (null !== $this->guestInfo)
+            return $this->guestInfo->getfullName();
+
+        return '';
     }
 
     /**
@@ -277,7 +324,7 @@ class Ticket
      * @param \TicketBundle\Entity\Option $option
      * @return \TicketBundle\Entity\Ticket
      */
-    public function setOption(Option $option)
+    public function setOption(Option $option = null)
     {
         $this->option = $option;
         return $this;

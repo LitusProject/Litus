@@ -5,12 +5,17 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Entity\Reservation;
 
 use Doctrine\ORM\Mapping as ORM,
@@ -45,7 +50,8 @@ class ReservableResource
      *
      * @param string $name The name of the resource.
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
         $this->reservations = new ArrayCollection();
     }
@@ -53,21 +59,24 @@ class ReservableResource
     /**
      * @return string The name of the resource.
      */
-    public function getName() {
+    public function getName()
+    {
         return $name;
     }
 
     /**
      * @return array An array of \LogisticsBundle\Entity\Reservation indicating when this resource is reserved.
      */
-    public function getReservations() {
+    public function getReservations()
+    {
         return $this->reservations->toArray();
     }
 
     /**
      * @param Reservation $reservation The reservation to add to this resource.
      */
-    public function addReservation(Reservation $reservation) {
+    public function addReservation(Reservation $reservation)
+    {
         $this->reservations->add($reservation);
     }
 

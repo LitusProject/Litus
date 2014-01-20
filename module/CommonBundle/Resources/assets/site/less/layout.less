@@ -22,12 +22,6 @@ header {
         padding: 10px 0 20px 20px;
     }
 
-    .headingIcon {
-        float: left;
-        margin: 10px 20px 0 20px;
-        height: 35px;
-    }
-
     .inner {
         background: transparent url(/_site/img/grid-18px.png) top center;
         padding: 60px 0 10px 0;
@@ -195,6 +189,10 @@ header {
             float: left;
             margin: 17px 10px 0 0;
             opacity: .8;
+
+            &.no-margin {
+                margin: 8px 10px 0 0;
+            }
         }
 
         .heading-spacer {
@@ -209,6 +207,10 @@ header {
 
             blockquote {
                 padding-right: 5px;
+
+                p {
+                    margin-bottom: 15px;
+                }
             }
 
             p.calendarItem {
@@ -401,6 +403,15 @@ fieldset .control-group:first-child {
 }
 
 .form-horizontal {
+    .control-group {
+        &.required {
+            .control-label:after {
+                content: "*";
+                color: #f00;
+            }
+        }
+    }
+
     .control-label {
         width: 200px !important;
     }
@@ -486,7 +497,9 @@ table {
         padding-right: 0;
     }
     td, th {
-        &.visible-phone     { display: table-cell !important; }
+        &.visible-phone {
+            display: table-cell !important;
+        }
     }
 
     .dl-horizontal {
@@ -502,7 +515,7 @@ table {
     }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 979px) {
     .dropdown ul.dropdown-menu {
         display: block;
     }

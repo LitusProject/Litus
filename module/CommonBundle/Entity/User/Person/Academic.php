@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -210,6 +214,16 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
+     * @param \CommonBundle\Entity\User\Status\University $universityStatus
+     * @return \CommonBundle\Entity\User\Person\Academic
+     */
+    public function removeUniversityStatus(UniversityStatus $universityStatus)
+    {
+        $this->universityStatuses->removeElement($universityStatus);
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \CommonBundle\Entity\User\Status\University
      */
@@ -219,6 +233,8 @@ class Academic extends \CommonBundle\Entity\User\Person
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
+
+        return null;
     }
 
     /**
@@ -266,6 +282,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function setPrimaryAddress(Address $primaryAddress)
     {
         $this->primaryAddress = $primaryAddress;
+        $this->setAddress($primaryAddress);
         return $this;
     }
 
@@ -301,10 +318,12 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getOrganization(AcademicYearEntity $academicYear)
     {
-        foreach($this->organizationMap as $map) {
+        foreach ($this->organizationMap as $map) {
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getOrganization();
         }
+
+        return null;
     }
 
     /**
@@ -313,10 +332,12 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getUnit(AcademicYearEntity $academicYear)
     {
-        foreach($this->unitMap as $map) {
+        foreach ($this->unitMap as $map) {
             if ($map->getAcademicYear() == $academicYear)
                 return $map->getUnit();
         }
+
+        return null;
     }
 
     /**
@@ -339,14 +360,17 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     public function getUnitRoles()
     {
-        $latestStartDate = null;
+        $now = new DateTime();
+
         $unitMaps = array();
-        foreach($this->unitMap as $map) {
-            $startDate = $map->getAcademicYear()->getStartDate();
-            if ($startDate >= $latestStartDate) {
-                $latestStartDate = $startDate;
-                $unitMaps[] = $map;
-            }
+        foreach ($this->unitMap as $map) {
+            if ($map->getAcademicYear()->getStartDate() > $now)
+                continue;
+
+            if ($map->getAcademicYear()->getEndDate() < $now)
+                continue;
+
+            $unitMaps[] = $map;
         }
 
         $roles = array();

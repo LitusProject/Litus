@@ -2,7 +2,7 @@
 
 namespace PublicationBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**
@@ -13,12 +13,28 @@ use Doctrine\ORM\EntityRepository,
  */
 class Edition extends EntityRepository
 {
-    public function findAllYearsByPublication(PublicationEntity $publication)
+    public function findAllYearsByPublicationQuery(PublicationEntity $publication)
     {
-        $resultSet = $this->_em
-        ->createQuery('SELECT y FROM CommonBundle\Entity\General\AcademicYear y WHERE EXISTS (SELECT e FROM PublicationBundle\Entity\Edition e WHERE e.academicYear = y AND e.publication = :publication)')
-        ->setParameter('publication', $publication)
-        ->getResult();
+        $subQuery = $this->_em->createQueryBuilder();
+        $subQuery->select('e')
+            ->from('PublicationBundle\Entity\Edition', 'e')
+            ->where(
+                $subQuery->expr()->andX(
+                    $subQuery->expr()->eq('e.academicYear', 'y'),
+                    $subQuery->expr()->eq('e.publication', ':publication')
+                )
+            );
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('y')
+            ->from('CommonBundle\Entity\General\AcademicYear', 'y')
+            ->where(
+                $query->expr()->exists(
+                   $subQuery->getDQL()
+               )
+            )
+            ->setParameter('publication', $publication)
+            ->getQuery();
 
         return $resultSet;
     }

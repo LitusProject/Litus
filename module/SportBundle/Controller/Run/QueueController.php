@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,7 +31,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 {
     public function indexAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         return new ViewModel(
             array(
@@ -71,22 +75,5 @@ class QueueController extends \SportBundle\Component\Controller\RunController
         }
 
         return new ViewModel();
-    }
-
-    /**
-     * Returns the WebSocket URL.
-     *
-     * @return string
-     */
-    protected function getSocketUrl()
-    {
-        $address = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_port');
-
-        return 'ws://' . $address . ':' . $port;
     }
 }

@@ -6,18 +6,14 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-
     </div>
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
         $(document).ready(function() {
-
             $('#passengerSearch').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead", {}) }}',
@@ -29,8 +25,6 @@
                     $('#passengerId').val('');
                 }
             });
-
         });
     </script>
-
 {% endblock %}

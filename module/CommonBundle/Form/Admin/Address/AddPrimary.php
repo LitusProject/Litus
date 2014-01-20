@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -40,47 +44,54 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
     protected $_cache = null;
 
     /**
-     * @var string
+     * @var string The form's prefix
      */
     private $_prefix;
+
+    /**
+     * @var boolean Whether or not the form is required
+     */
+    private $_required;
 
     /**
      * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $prefix
      * @param null|string|int $name Optional name for the element
+     * @param boolean $required Whether or not the form is required
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null)
+    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)
     {
         parent::__construct($name);
 
-        $this->_entityManager = $entityManager;
         $this->_cache = $cache;
+        $this->_entityManager = $entityManager;
 
         $prefix = '' == $prefix ? '' : $prefix . '_';
         $this->_prefix = $prefix;
+        $this->_required = $required;
 
         list($cities, $streets) = $this->_getCities();
 
         $field = new Select($prefix . 'address_city');
         $field->setLabel('City')
             ->setAttribute('options', $cities)
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal_other');
         $field->setLabel('Postal Code')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city_other');
         $field->setLabel('City')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_street_other');
         $field->setLabel('Street')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         foreach($streets as $id => $collection) {
@@ -93,7 +104,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
-            ->setRequired();
+            ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
@@ -104,16 +115,15 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
     private function _getCities()
     {
         if (null !== $this->_cache) {
-            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
+            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
                 return $result;
-            }
         }
 
         $cities = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Address\City')
             ->findAll();
 
-        $optionsCity = array(0 => '');
+        $optionsCity = array('' => '');
         $optionsStreet = array();
         foreach($cities as $city) {
             $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
@@ -146,15 +156,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_city',
-                'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'notempty',
-                        'options' => array(
-                            'type' => 16,
-                        ),
-                    ),
-                ),
+                'required' => $this->_required,
             )
         );
 
@@ -162,25 +164,30 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_street_' . $this->get($this->_prefix . 'address_city')->getValue(),
-                    'required' => true,
-                    'validators' => array(
-                        array(
-                            'name' => 'notempty',
-                            'options' => array(
-                                'type' => 16,
-                            ),
-                        ),
-                    ),
+                    'required' => $this->_required,
                 )
             );
         } else {
             $inputs[] = $factory->createInput(
                 array(
                     'name'     => $this->_prefix . 'address_street_other',
-                    'required' => true,
+                    'required' => $this->_required,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            );
+
+            $inputs[] = $factory->createInput(
+                array(
+                    'name'     => $this->_prefix . 'address_postal_other',
+                    'required' => $this->_required,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
-                            'name' => 'alpha',
+                            'name' => 'alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),
@@ -191,26 +198,17 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
 
             $inputs[] = $factory->createInput(
                 array(
-                    'name'     => $this->_prefix . 'address_postal_other',
-                    'required' => true,
+                    'name'     => $this->_prefix . 'address_city_other',
+                    'required' => $this->_required,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum',
-                        ),
-                    ),
-                )
-            );
-
-            $inputs[] = $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_city_other',
-                    'required' => true,
-                    'validators' => array(
-                        array(
                             'name' => 'alpha',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
                         ),
                     ),
                 )
@@ -220,7 +218,10 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
         $inputs[] = $factory->createInput(
             array(
                 'name'     => $this->_prefix . 'address_number',
-                'required' => true,
+                'required' => $this->_required,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     array(
                         'name' => 'alnum',
@@ -237,21 +238,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
             array(
                 'name'     => $this->_prefix . 'address_mailbox',
                 'required' => false,
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'StringLength',
-                                array(
-                                    'max' => 5,
-                                )
-                            )
-                        )
-                    ),
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
                 ),
             )
         );

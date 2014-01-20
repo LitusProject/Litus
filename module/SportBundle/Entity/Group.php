@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,7 +21,6 @@ namespace SportBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,7 +64,7 @@ class Group
     private $members;
 
     /**
-     * @var array
+     * @var array The happy hours of this group
      *
      * @ORM\Column(name="happy_hours", type="string")
      */
@@ -120,16 +123,6 @@ class Group
     }
 
     /**
-     * @param array $members
-     * @return \SportBundle\Entity\Group
-     */
-    public function setMembers(array $members)
-    {
-        $this->members = new ArrayCollection($members);
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getHappyHours()
@@ -149,8 +142,7 @@ class Group
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     *
-     * @return \CudiBundle\Entity\Article
+     * @return \SportBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -159,27 +151,32 @@ class Group
     }
 
     /**
+     * Returns the current point total of the group.
+     *
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)
     {
         $points = 0;
         foreach ($this->getMembers() as $member) {
-            foreach ($member->getLaps($this->_entityManager, $academicYear) as $lap) {
+            $member->setEntityManager($this->_entityManager);
+
+            foreach ($member->getLaps($academicYear) as $lap) {
                 if (null === $lap->getEndTime())
                     continue;
+
+                $lap->setEntityManager($this->_entityManager);
 
                 $startTime = $lap->getStartTime()->format('H');
                 $endTime = $lap->getEndTime()->format('H');
 
-                $points += 1;
+                $points += $lap->getPoints();
 
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
-                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                        if ($lap->getLapTime() <= new DateInterval('PT90S'))
-                            $points += 1;
-                    }
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                        $points += $lap->getPoints();
                 }
             }
         }

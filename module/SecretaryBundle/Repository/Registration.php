@@ -5,8 +5,8 @@ namespace SecretaryBundle\Repository;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Query\Expr\Join,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Registration
@@ -31,12 +31,9 @@ class Registration extends EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findAllByUniversityIdentification($universityIdentification, AcademicYear $academicYear, Organization $organization = null)
@@ -198,6 +195,22 @@ class Registration extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear)
             ->orderBy('r.timestamp', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findAllSince(DateTime $since)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->where(
+                $query->expr()->gte('r.timestamp', ':since')
+            )
+            ->setParameter('since', $since)
+            ->orderBy('r.timestamp', 'DESC')
             ->getQuery()
             ->getResult();
 

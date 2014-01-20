@@ -2,7 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear;
 
 /**
@@ -25,15 +25,14 @@ class Driver extends EntityRepository
                 )
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
-    public function findAllByYear(AcademicYear $year) {
+    public function findAllByYearQuery(AcademicYear $year) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
@@ -46,13 +45,12 @@ class Driver extends EntityRepository
                 )
             )
             ->setParameter('year', $year)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
@@ -62,8 +60,8 @@ class Driver extends EntityRepository
                 $query->expr()->eq('d.removed', 'false')
             )
             ->orderBy('p.lastName', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
+
         return $resultSet;
     }
 }

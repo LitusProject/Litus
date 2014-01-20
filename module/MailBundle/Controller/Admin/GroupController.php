@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,7 +31,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @autor Kristof Mariën <kristof.marien@litus.cc>
  */
-class GroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class GroupController extends \MailBundle\Component\Controller\AdminController
 {
     public function groupsAction()
     {
@@ -92,15 +96,23 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $mail->addTo($mailAddress, $mailName);
 
                 $emailValidator = new EmailAddressValidator();
-                $i = 0;
-                foreach($people as $person) {
-                    if (null !== $person->getPerson()->getEmail() && $emailValidator->isValid($person->getPerson()->getEmail())) {
-                        $i++;
-                        $mail->addBcc($person->getPerson()->getEmail(), $person->getPerson()->getFullName());
-                    }
 
-                    if ($i == 500) {
+                $addresses = array();
+                foreach($people as $person) {
+                    if (null === $person->getPerson()->getEmail() || !$emailValidator->isValid($person->getPerson()->getEmail()))
+                        continue;
+
+                    $addresses[$person->getPerson()->getEmail()] = $person->getPerson()->getEmail();
+                }
+
+                $i = 0;
+                foreach($addresses as $address) {
+                    $mail->addBcc($address);
+                    $i++;
+
+                    if (500 == $i) {
                         $i = 0;
+
                         if ('development' != getenv('APPLICATION_ENV'))
                             $this->getMailTransport()->send($mail);
 

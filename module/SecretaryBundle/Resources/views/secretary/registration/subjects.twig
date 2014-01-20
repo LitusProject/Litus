@@ -66,6 +66,14 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
+            $('.subject_enroll').click(function () {
+                console.log($(this));
+                if ( $(this).html() === '{{ translate('Enroll') }}')
+                    $(this).text('{{ translate('Unsubscribe') }}');
+                else
+                    $(this).text('{{ translate('Enroll') }}');
+            });
+
             $('.subject_enroll').change(function () {
                 $('.page-alert .flashmessage').removeClass('in');
                 saveChanges();

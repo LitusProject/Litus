@@ -3,7 +3,7 @@
 namespace ShiftBundle\Repository\Shift;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
 	ShiftBundle\Entity\Shift;
 
 /**
@@ -14,24 +14,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Volunteer extends EntityRepository
 {
-    public function findOneById($id)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('v')
-            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
-            ->where(
-                $query->expr()->eq('v.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getResult();
-
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
-    }
-
-    public function findAllByCountMinimum(AcademicYear $academicYear, $minimum)
+    public function findAllByCountMinimumQuery(AcademicYear $academicYear, $minimum)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
@@ -51,13 +34,12 @@ class Volunteer extends EntityRepository
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
             ->setParameter('min', $minimum)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByCountLimits(AcademicYear $academicYear, $minimum, $maximum)
+    public function findAllByCountLimitsQuery(AcademicYear $academicYear, $minimum, $maximum)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
@@ -77,17 +59,16 @@ class Volunteer extends EntityRepository
                     $query->expr()->lt('COUNT(p.id)', ':max')
                 )
             )
-            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
-            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
             ->setParameter('min', $minimum)
             ->setParameter('max', $maximum)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -100,8 +81,7 @@ class Volunteer extends EntityRepository
             )
             ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
             ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -5,16 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Util\Xml;
 
-use CommonBundle\Component\Util\UTF8;
+use CommonBundle\Component\Util\Utf8;
 
 /**
  * This class represents an XML object.
@@ -39,16 +43,13 @@ class Object
         if (($tag === null) || !is_string($tag))
             throw new InvalidArgumentException('Invalid tag');
 
-        $n = "\n";
-
         if ($content === null) {
             if ($params === null) {
                 $this->_content = '<' . $tag . '/>';
             } else {
                 $this->_content .= '<' . $tag;
-                foreach ($params as $key => $value) {
+                foreach ($params as $key => $value)
                     $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
-                }
                 $this->_content .= '/>';
             }
         } else {
@@ -56,30 +57,30 @@ class Object
                 $this->_content = '<' . $tag . '>';
             } else {
                 $this->_content .= '<' . $tag;
-                foreach ($params as $key => $value) {
+                foreach ($params as $key => $value)
                     $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
-                }
                 $this->_content .= '>';
             }
 
             if (is_string($content)) {
                 $this->_content .= $this->_escape($content);
             } else if ($content instanceof Object) {
-                $this->_content .= $n;
                 $this->_content .= $content->__toString();
             } else if (is_array($content)) {
-                $this->_content .= $n;
                 foreach ($content as $part) {
-                    if (is_string($part))
+                    if (is_string($part)) {
                         $this->_content .= $this->_escape($part);
-                    else if ($part instanceof Object)
+                    } else if ($part instanceof Object) {
                         $this->_content .= $part->__toString();
-                    else
+                    } else {
                         throw new Exception\InvalidArgumentException('The given content was invalid');
+                    }
                 }
-            } else throw new Exception\InvalidArgumentException('The given content was invalid');
+            } else {
+                throw new Exception\InvalidArgumentException('The given content was invalid');
+            }
 
-            $this->_content .= '</' . $tag . '>' . $n;
+            $this->_content .= '</' . $tag . '>';
         }
     }
 
@@ -104,7 +105,7 @@ class Object
      */
     private function _escape($value)
     {
-        return UTF8::utf8toHtml($value, true);
+        return Utf8::utf8ToHtml($value, true);
     }
 
     /**

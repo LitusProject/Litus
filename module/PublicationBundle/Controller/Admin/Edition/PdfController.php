@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,10 +41,10 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Edition\Pdf')
-                ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
+                ->findAllByPublicationAndAcademicYearQuery($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
@@ -93,12 +97,25 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
-            $edition = new PdfEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], DateTime::createFromFormat('d/m/Y', $formData['date']));
 
-            if (!file_exists($edition->getDirectory()))
-                mkdir($edition->getDirectory(), 0775, true);
+            $filePath = 'public' . $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('publication.public_pdf_directory');
 
-            $upload->addFilter('Rename', $edition->getFileName());
+            $fileName = '';
+            do{
+                $fileName = sha1(uniqid()) . '.pdf';
+            } while (file_exists($filePath . $fileName));
+
+            $edition = new PdfEdition(
+                $publication,
+                $this->getCurrentAcademicYear(),
+                $formData['title'],
+                DateTime::createFromFormat('d/m/Y', $formData['date']),
+                $fileName
+            );
+
+            $upload->addFilter('Rename', $filePath . $fileName);
             $upload->receive();
 
             $this->getEntityManager()->persist($edition);
@@ -158,8 +175,13 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
-        if (file_exists($edition->getFileName()))
-            unlink($edition->getFileName());
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
+        if (file_exists($filePath . $edition->getFileName()))
+            unlink($filePath . $edition->getFileName());
+
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,6 +21,7 @@ namespace NotificationBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     NotificationBundle\Entity\Node\Notification,
+    NotificationBundle\Entity\Node\Translation,
     NotificationBundle\Form\Admin\Notification\Add as AddForm,
     NotificationBundle\Form\Admin\Notification\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -34,7 +39,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $paginator = $this->paginator()->createFromEntity(
             'NotificationBundle\Entity\Node\Notification',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array('startDate' => 'DESC')
         );
 
         return new ViewModel(
@@ -48,22 +55,38 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     public function addAction()
     {
         $form = new AddForm($this->getEntityManager());
-
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
+            $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+            $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
                 $notification = new Notification(
                     $this->getAuthentication()->getPersonObject(),
-                    $formData['content'],
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate ? $startDate : null,
+                    $endDate ? $endDate : null,
                     $formData['active']
                 );
                 $this->getEntityManager()->persist($notification);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    if (''!= $formData['content_' . $language->getAbbrev()]) {
+                        $notification->addTranslation(
+                            new Translation(
+                                $notification,
+                                $language,
+                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                            )
+                        );
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -107,10 +130,41 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $notification->setContent($formData['content'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                    ->setActive($formData['active']);
+                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
+                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+                if ($endDate)
+                    $notification->setEndDate($endDate);
+                else
+                    $notification->setEndDate(null);
+
+                if ($startDate)
+                    $notification->setStartDate($startDate);
+                else
+                    $notification->setStartDate(null);
+
+                $notification->setActive($formData['active']);
+
+                $languages = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Language')
+                    ->findAll();
+
+                foreach($languages as $language) {
+                    $translation = $notification->getTranslation($language, false);
+
+                    if (null !== $translation) {
+                        $translation->setContent($formData['content_' . $language->getAbbrev()]);
+                    } else {
+                        if ('' != $formData['content_' . $language->getAbbrev()]) {
+                            $notification->addTranslation(
+                                new Translation(
+                                    $notification,
+                                    $language,
+                                    str_replace('#', '', $formData['content_' . $language->getAbbrev()])
+                                )
+                            );
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 

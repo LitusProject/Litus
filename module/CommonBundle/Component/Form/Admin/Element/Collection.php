@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -72,10 +76,15 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
+        foreach($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
         foreach($data as $key => $value) {
             if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
+
         if ($this->shouldCreateTemplate()) {
             foreach($data as $value) {
                 foreach ($this->byName as $name => $element) {
@@ -90,5 +99,24 @@ class Collection extends \Zend\Form\Element\Collection
             }
         }
         parent::populateValues($data);
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|Traversable $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
     }
 }

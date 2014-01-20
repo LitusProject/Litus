@@ -20,9 +20,7 @@
             return this;
         },
         deleteLap: function (options) {
-            options.command = 'action';
-            options.action = 'deleteLap';
-            _sendToSocket(JSON.stringify(options));
+            _sendToSocket(JSON.stringify({'command': 'action', 'action': 'deleteLap', 'id': options}));
             return this;
         },
         reloadQueue: function (options) {

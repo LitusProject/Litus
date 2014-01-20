@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -32,7 +36,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
 
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         $form = new AddForm();
@@ -140,7 +144,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         $mapping->getArticle()->setIsSameAsPreviousYear($this->getRequest()->getPost()['sameAsPreviousYear']);
 
-        $newMapping = new SubjectMap($mapping->getArticle(), $mapping->getSubject(), $this->getAcademicYear(), $mapping->isMandatory());
+        $newMapping = new SubjectMap($mapping->getArticle(), $mapping->getSubject(), $this->getCurrentAcademicYear(), $mapping->isMandatory());
         $newMapping->setIsProf(true);
         $this->getEntityManager()->persist($newMapping);
 
@@ -166,7 +170,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getMapping()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {
@@ -222,7 +226,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {

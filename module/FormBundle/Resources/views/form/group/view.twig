@@ -1,0 +1,50 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ group.getTitle(language) }}</h1>
+    </div>
+
+    {% autoescape false %}
+        {{ markdown(group.getIntroduction(language)) }}
+    {% endautoescape %}
+
+    <hr/>
+
+    {% if message %}
+        <div class="alert">
+            {{ translate(message) }}
+        </div>
+    {% else %}
+        <table class="table table-bordered span5">
+            {% for form in group.getForms() %}
+                <tr>
+                    <td>
+                        {% if hasAccess('form_view', 'view') %}
+                            <a href="{{ url('form_view', {'id': form.getForm().getId()}) }}">
+                                {{ form.getForm().getTitle(language) }}
+                                <i class="icon-chevron-right pull-right" style="margin-left: 10px"></i>
+                            </a>
+                        {% else %}
+                            {{ form.getForm().getTitle(language) }}
+                        {% endif %}
+                        {% if entries[form.getForm().getId()]['entry'] %}
+                            {% if entries[form.getForm().getId()]['draft'] %}
+                                <span class="badge badge-warning pull-right">{{ translate('In Progress') }}</span>
+                            {% else %}
+                                <span class="badge badge-success pull-right">{{ translate('Completed') }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge badge-important pull-right">{{ translate('Not Completed') }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if hasAccess('form_view', 'view') %}
+            <div class="form-actions" style="clear: both;text-align: center;">
+                <a href="{{ url('form_view', {'id': startForm.getId()}) }}" class="btn btn-primary">{% if isFirstForm %}{{ translate('Start') }}{% else %}{{ translate('Continue') }}{% endif %}</a>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

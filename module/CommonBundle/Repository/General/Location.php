@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Address
@@ -12,9 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class Location extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
-        return $this->_em->getRepository('CommonBundle\Entity\General\Location')
-            ->findBy(array('active' => true), array('name' => 'ASC'));
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('CommonBundle\Entity\General\Location', 'l')
+            ->where(
+                $query->expr()->eq('l.active', 'true')
+            )
+            ->orderBy('l.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

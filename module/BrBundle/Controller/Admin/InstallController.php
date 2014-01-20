@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -49,20 +53,33 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'br.account_activated_mail',
-                    'value'       => 'Dear {{ name }},
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'VTK Corporate Account',
+                                'content' => 'Dear {{ name }},
 
 A corporate account for you was created on VTK with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}
 You can use this account to view the CV Book at http://litus/corporate
 
 With best regards,
-The VTK Corporate Team',
+The VTK Corporate Team'
+                            ),
+                            'nl' => array(
+                                'subject' => 'VTK Bedrijven Account',
+                                'content' => 'Beste {{ name }},
+
+Een bedrijven account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
+U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
+
+Met vriendelijke groeten,
+Het VTK Bedrijvenrelaties Team'
+                            ),
+                        )
+                    ),
                     'description' => 'The email sent when an account is activated',
-                ),
-                array(
-                    'key'         => 'br.account_activated_subject',
-                    'value'       => 'VTK Corporate Account',
-                    'description' => 'The mail subject when an account is activated',
                 ),
                 array(
                     'key'         => 'br.cv_book_language',
@@ -142,6 +159,20 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                     'value'       => 'BE 123-456-789',
                     'description' => 'The VAT number of the union',
                 ),
+                array(
+                    'key'         => 'br.cv_archive_years',
+                    'value'       => serialize(
+                        array(
+                            /*
+                            '0910' => array(
+                                'full_year' => '2009-2010',
+                                'file' => 'cvboek0910.pdf',
+                            ),
+                             */
+                        )
+                    ),
+                    'description' => 'The cv archive years'
+                ),
             )
         );
     }
@@ -208,7 +239,7 @@ tel: +32-16-20.00.97  http://www.vtk.be/br   e-mail: br@vtk.be',
                         'index',
                     ),
                     'br_corporate_cv' => array(
-                        'grouped', 'list', 'search', 'cvPhoto',
+                        'downloadArchive', 'grouped', 'list', 'search',
                     ),
                 )
             )

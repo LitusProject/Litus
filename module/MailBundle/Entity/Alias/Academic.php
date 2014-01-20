@@ -5,16 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace MailBundle\Entity\Alias;
 
-use CommonBundle\Entity\User\Person\Academic as AcademicPerson,
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
@@ -41,7 +45,7 @@ class Academic extends \MailBundle\Entity\Alias
      * @param string $name The name for this alias.
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to create the alias for.
      */
-    public function __construct($name, AcademicPerson $academic)
+    public function __construct($name, AcademicEntity $academic)
     {
         parent::__construct($name);
         $this->academic = $academic;

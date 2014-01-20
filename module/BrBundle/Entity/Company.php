@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -111,6 +115,13 @@ class Company
      * )
      */
     private $cvBookYears;
+
+    /**
+     * @var string The archive years of which this company has access to the CV Book.
+     *
+     * @ORM\Column(name="cv_book_archive_years", type="string", nullable=true)
+     */
+    private $cvBookArchiveYears;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
@@ -383,16 +394,45 @@ class Company
     /**
      * @return array
      */
-    public function getCvBookYears() {
+    public function getCvBookYears()
+    {
         return $this->cvBookYears->toArray();
     }
 
     /**
      * @param array $years
-     * @return \LogisticsBundle\Entity\Driver This
+     *
+     * @return \BrBundle\Entity\Company
      */
-    public function setCvBookYears(array $years) {
+    public function setCvBookYears(array $years)
+    {
         $this->cvBookYears = new ArrayCollection($years);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCvBookArchiveYears()
+    {
+        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears)
+            return array();
+
+        try {
+            return unserialize($this->cvBookArchiveYears);
+        } catch(\Exception $e) {
+            return array();
+        }
+    }
+
+    /**
+     * @param array $years
+     *
+     * @return \BrBundle\Entity\Company
+     */
+    public function setCvBookArchiveYears(array $archiveYears)
+    {
+        $this->cvBookArchiveYears = serialize($archiveYears);
         return $this;
     }
 }

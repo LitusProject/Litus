@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -42,6 +46,13 @@ class Unit
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @var string The unit's mail
+     *
+     * @ORM\Column(type="string")
+     */
+    private $mail;
 
     /**
      * @var \CommonBundle\Entity\General\Organization The unit's organization
@@ -99,15 +110,17 @@ class Unit
 
     /**
      * @param string $name The unit's name
+     * @param string $mail The unit's mail
      * @param \CommonBundle\Entity\General\Organization $organization The unit's organization
      * @param array $roles The roles associated with the unit
      * @param array $coordinatorRoles The roles associated with the coordinator of the unit
      * @param boolean $displayed Whether or not this unit is displayed on the site
      * @param \CommonBundle\Entity\General\Organization\Unit $parent The unit's parent
      */
-    public function __construct($name, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
+    public function __construct($name, $mail, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
     {
         $this->name = $name;
+        $this->mail = $mail;
         $this->organization = $organization;
         $this->parent = $parent;
         $this->displayed = $displayed;
@@ -140,6 +153,24 @@ class Unit
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * @param string $mail
+     * @return \CommonBundle\Entity\General\Organization\Unit
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
         return $this;
     }
 

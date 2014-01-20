@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -64,7 +68,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
                 $slug = new Slug(
                     $this->getAuthentication()->getPersonObject(),
-                    ('' == $formData['name'] ? $name : $formData['name']),
+                    ('' == $formData['name'] ? $name : strtolower($formData['name'])),
                     $formData['url']
                 );
                 $this->getDocumentManager()->persist($slug);
@@ -111,7 +115,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $slug->setName($formData['name'])
+                $slug->setName(strtolower($formData['name']))
                     ->setUrl($formData['url']);
 
                 $this->getDocumentManager()->flush();
@@ -162,7 +166,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     private function _createRandomName()
     {
-        $characters = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789';
+        $characters = 'abcdefghijklmnopqrstuwxyz0123456789';
 
         $name = array();
         for ($i = 0; $i < 8; $i++)

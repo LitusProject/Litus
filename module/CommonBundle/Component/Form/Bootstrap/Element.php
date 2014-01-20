@@ -5,17 +5,18 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap;
-
-use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
-    Zend\Form\Decorator;
+namespace CommonBundle\Component\Form\Admin;
 
 /**
  * Extending Zend's form element component, so that our forms look the way we want
@@ -23,7 +24,7 @@ use CommonBundle\Component\Form\Bootstrap\Decorator\Errors,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Element extends \Zend\Form\Element
+interface Element
 {
     /**
      * Specifies whether this element is a required field.
@@ -33,9 +34,10 @@ class Element extends \Zend\Form\Element
      * @param boolean $flag
      * @return void
      */
-    public function setRequired($flag = true)
-    {
-        $this->setAttribute('required', $flag);
-        return $this;
-    }
+    public function setRequired($flag = true);
+
+    /**
+     * @return boolean
+     */
+    public function isRequired();
 }

@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# This script takes care of starting our WebSockets
+# This little script starts our WebSockets
 #
 
-scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "${scriptDirectory}/../"
+SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 function backgroundTask() {
 	if ps aux | grep -v grep | grep "$1" > /dev/null; then
@@ -16,11 +15,10 @@ function backgroundTask() {
 }
 
 # Starting the WebSockets
-for i in {1..50}
-do
-    backgroundTask "php bin/CudiBundle/queue.php --run"
-    backgroundTask "php bin/SportBundle/run.php --run"
-    backgroundTask "php bin/SyllabusBundle/update.php --run"
+for i in {1..50}; do
+    backgroundTask "php $SCRIPT_DIRECTORY/CudiBundle/queue.php --run"
+    backgroundTask "php $SCRIPT_DIRECTORY/SportBundle/run.php --run"
+    backgroundTask "php $SCRIPT_DIRECTORY/SyllabusBundle/update.php --run"
 
     sleep 1
 done

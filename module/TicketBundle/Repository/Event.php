@@ -3,7 +3,7 @@
 namespace TicketBundle\Repository;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Event
@@ -13,40 +13,32 @@ use DateTime,
  */
 class Event extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('e.active', 'true'),
-                    $query->expr()->gt('a.startDate', ':now')
-                )
+                $query->expr()->gt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findOld()
+    public function findOldQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->eq('e.active', 'false'),
-                    $query->expr()->lt('a.startDate', ':now')
-                )
+                $query->expr()->lt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

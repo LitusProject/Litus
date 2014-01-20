@@ -22,7 +22,9 @@
     <div id="controller_action">
         <h1>Order</h1>
         <p>Supplier: <b>{{ order.getSupplier().getName() }}</b></p>
-        <p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s')}}{% else %}(new){% endif %}</b></p>
+        <p>Person: <b>{{ order.getPerson().getFullName() }}</b></p>
+        <p>Date: <b>{% if order.getDateOrdered() %}{{ order.getDateOrdered().format('Y-m-d H:i:s') }}{% else %}(new){% endif %}</b></p>
+        <p>Price: <b>&euro; {{ (order.getPrice()/100)|number_format(2) }}</b></p>
         <br />
 
         {% import 'admin/partials/form.twig' as forms %}
@@ -42,6 +44,9 @@
                     <td>{{ item.getArticle().getMainArticle().getTitle() }}</td>
                     <td>{{ item.getNumber() }}</td>
                     <td class="actions">
+                        {% if not order.isOrdered() and hasAccess('cudi_admin_stock_order', 'editItem') %}
+                            <a href="{{ url('cudi_admin_stock_order', {'action': 'editItem', 'id': item.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
                         {% if not order.isOrdered() and hasAccess('cudi_admin_stock_order', 'delete') %}
                             <a href="#" class="delete" data-id="{{ item.getId() }}" data-title="{{ item.getArticle().getMainArticle().getTitle() }}" data-number="{{ item.getNumber() }}">Delete</a>
                         {% endif %}

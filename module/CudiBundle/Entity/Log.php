@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,7 +31,6 @@ use CommonBundle\Entity\User\Person,
  *      "sales_assignments"="CudiBundle\Entity\Log\Sale\Assignments",
  *      "sales_cancellations"="CudiBundle\Entity\Log\Sale\Cancellations",
  *      "sales_prof_version"="CudiBundle\Entity\Log\Sale\ProfVersion",
- *      "sales_return"="CudiBundle\Entity\Log\Sale\Returned",
  *      "articles_sales_bookable"="CudiBundle\Entity\Log\Article\Sale\Bookable",
  *      "articles_sales_unbookable"="CudiBundle\Entity\Log\Article\Sale\Unbookable",
  *      "articles_subject_map_added"="CudiBundle\Entity\Log\Article\SubjectMap\Added",

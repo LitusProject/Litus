@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# A very small wrapper around our garbage collector
+# A very small wrapper around our catelog update script
 #
 
-scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "${scriptDirectory}/../../"
+SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIRECTORY/../../"
 
 php bin/CudiBundle/catalogUpdate.php -rm

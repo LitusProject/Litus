@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,9 +35,12 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($article = $this->_getArticle()))
             return new ViewModel();
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comment\Mapping')
-            ->findByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Comment\Mapping')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         $form = new AddForm();
 
@@ -79,7 +86,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             array(
                 'article' => $article,
                 'form' => $form,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

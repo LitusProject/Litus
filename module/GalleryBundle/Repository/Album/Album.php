@@ -3,7 +3,7 @@
 namespace GalleryBundle\Repository\Album;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Album
@@ -13,19 +13,18 @@ use DateTime,
  */
 class Album extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('GalleryBundle\Entity\Album\Album', 'a')
-            ->orderBy('a.dateActivity', 'ASC')
-        	->getQuery()
-        	->getResult();
+            ->orderBy('a.dateActivity', 'DESC')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllFromTo(DateTime $start, DateTime $end)
+    public function findAllFromToQuery(DateTime $start, DateTime $end)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -39,8 +38,7 @@ class Album extends EntityRepository
             ->orderBy('a.dateActivity', 'ASC')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
-        	->getQuery()
-        	->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

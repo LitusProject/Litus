@@ -2,7 +2,7 @@
 
 namespace PublicationBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Publication
@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class Publication extends EntityRepository
 {
-
     public function findOneActiveById($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -25,12 +24,11 @@ class Publication extends EntityRepository
             	)
             )
             ->setParameter('id', $id)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
 	public function findOneByTitle($title)
@@ -42,16 +40,15 @@ class Publication extends EntityRepository
                 	$query->expr()->eq('p.title', ':title')
             )
             ->setParameter('title', $title)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-        return null;
+        return $resultSet;
     }
 
-	public function findAllActive()
-	{
+    public function findAllActiveQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Publication', 'p')
@@ -59,13 +56,12 @@ class Publication extends EntityRepository
             	$query->expr()->eq('p.deleted', 'false')
             )
             ->orderBy('p.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveWithEdition()
+    public function findAllActiveWithEditionQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $internal = $this->_em->createQueryBuilder();
@@ -80,8 +76,7 @@ class Publication extends EntityRepository
                 )
             )
             ->orderBy('p.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

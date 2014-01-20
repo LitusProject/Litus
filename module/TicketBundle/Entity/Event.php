@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -43,6 +47,13 @@ class Event
      * @ORM\JoinColumn(name="activity", referencedColumnName="id")
      */
     private $activity;
+
+    /**
+     * @var boolean Flag whether the tickets are bookable for praesidium
+     *
+     * @ORM\Column(name="bookable_praesidium", type="boolean")
+     */
+    private $bookablePraesidium;
 
     /**
      * @var boolean Flag whether the tickets are bookable
@@ -130,6 +141,7 @@ class Event
 
     /**
      * @param \CalendarBundle\Entity\Node\Event $activity
+     * @param boolean $bookablePraesidium
      * @param boolean $bookable
      * @param \DateTime $bookingsCloseDate
      * @param boolean $active
@@ -141,9 +153,10 @@ class Event
      * @param integer $priceMembers
      * @param integer $priceNonMembers
      */
-    public function __construct(CalendarEvent $activity, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
+    public function __construct(CalendarEvent $activity, $bookablePraesidium, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
     {
         $this->activity = $activity;
+        $this->bookablePraesidium = $bookablePraesidium;
         $this->bookable = $bookable;
         $this->bookingsCloseDate = $bookingsCloseDate;
         $this->active = $active;
@@ -186,6 +199,32 @@ class Event
     /**
      * @return boolean
      */
+    public function isBookablePraesidium()
+    {
+        return $this->bookablePraesidium;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isStillBookablePraesidium()
+    {
+        return $this->bookablePraesidium && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
+    }
+
+    /**
+     * @param boolean $bookablePraesidium
+     * @return \TicketBunlde\Entity\Event
+     */
+    public function setBookablePraesidium($bookablePraesidium)
+    {
+        $this->bookablePraesidium = $bookablePraesidium;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isBookable()
     {
         return $this->bookable;
@@ -196,7 +235,7 @@ class Event
      */
     public function isStillBookable()
     {
-        return $this->bookable && new DateTime() < $this->getBookingsCloseDate();
+        return $this->bookable && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
     }
 
     /**
@@ -400,9 +439,22 @@ class Event
         return $sold;
     }
 
+    /**
+     * @return integer
+     */
+    public function getNumberBooked()
+    {
+        $sold = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() == 'booked')
+                $sold++;
+        }
+        return $sold;
+    }
+
     public function getNumberFree()
     {
-        return $this->getNumberOfTickets() - $this->getNumberSold();
+        return $this->getNumberOfTickets() - $this->getNumberSold() - $this->getNumberBooked();
     }
 
     /**
@@ -450,5 +502,51 @@ class Event
              return false;
 
         return true;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\Option $option
+     * @param boolean $member
+     * @return integer
+     */
+    public function getNumberSoldByOption(Option $option = null, $member)
+    {
+        $number = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() !== 'sold')
+                continue;
+
+            if (null !== $option) {
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                    $number++;
+            } else {
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                    $number++;
+            }
+        }
+        return $number;
+    }
+
+    /**
+     * @param \TicketBundle\Entity\Option $option
+     * @param boolean $member
+     * @return integer
+     */
+    public function getNumberBookedByOption(Option $option = null, $member)
+    {
+        $number = 0;
+        foreach($this->tickets as $ticket) {
+            if ($ticket->getStatusCode() !== 'booked')
+                continue;
+
+            if (null !== $option) {
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                    $number++;
+            } else {
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                    $number++;
+            }
+        }
+        return $number;
     }
 }

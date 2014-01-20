@@ -1,0 +1,15 @@
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
+        <ul>
+            {% if hasAccess('cudi_admin_sales_financial_delivered', 'individual') %}
+                <li><a {% if 'individual' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_delivered", {"action": "individual", "academicyear": activeAcademicYear.getCode()}) }}">Individual</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_delivered', 'articles') %}
+                <li><a {% if 'articles' == getParam('action') or 'article' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_delivered", {"action": "articles", "academicyear": activeAcademicYear.getCode()}) }}">Articles</a></li>
+            {% endif %}
+            {% if hasAccess('cudi_admin_sales_financial_delivered', 'suppliers') %}
+                <li><a {% if 'suppliers' == getParam('action') or 'supplier' == getParam('action') %} class="active" {% endif %}href="{{ url("cudi_admin_sales_financial_delivered", {"action": "suppliers", "academicyear": activeAcademicYear.getCode()}) }}">Suppliers</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

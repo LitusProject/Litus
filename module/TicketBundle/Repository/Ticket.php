@@ -3,7 +3,7 @@
 namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -29,15 +29,12 @@ class Ticket extends EntityRepository
             ->setParameter('number', $number)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllByEvent(EventEntity $event)
+    public function findAllByEventQuery(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -46,13 +43,12 @@ class Ticket extends EntityRepository
                 $query->expr()->eq('t.event', ':event')
             )
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByEventAndPerson(EventEntity $event, Person $person)
+    public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -65,13 +61,12 @@ class Ticket extends EntityRepository
             )
             ->setParameter('person', $person)
             ->setParameter('event', $event)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllEmptyByEvent(EventEntity $event)
+    public function findAllEmptyByEventQuery(EventEntity $event)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
@@ -84,9 +79,38 @@ class Ticket extends EntityRepository
             )
             ->setParameter('event', $event)
             ->setParameter('empty', 'empty')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByEvent(EventEntity $event)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    )
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
             ->getQuery()
             ->getResult();
 
-        return $resultSet;
+        $tickets = array();
+        foreach($resultSet as $ticket) {
+            $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
+        }
+
+        ksort($tickets);
+
+        return $tickets;
     }
 }

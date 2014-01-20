@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -62,15 +66,24 @@ class Group
     private $extraMembers;
 
     /**
+     * @var string Comma separated string of excluded members
+     *
+     * @ORM\Column(type="text", name="excluded_members", nullable=true)
+     */
+    private $excludedMembers;
+
+    /**
      * @param string $name
      * @param boolean $cvBook
      * @param string $extraMembers
+     * @param string $excludedMembers
      */
-    public function __construct($name, $cvBook, $extraMembers)
+    public function __construct($name, $cvBook, $extraMembers, $excludedMembers)
     {
         $this->name = $name;
         $this->cvBook = $cvBook;
         $this->extraMembers = $extraMembers;
+        $this->excludedMembers = $excludedMembers;
 
         $this->removed = false;
     }
@@ -143,6 +156,24 @@ class Group
     public function setExtraMembers($extraMembers)
     {
         $this->extraMembers = $extraMembers;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExcludedMembers()
+    {
+        return $this->excludedMembers;
+    }
+
+    /**
+     * @param string $excludedMembers
+     * @return \SyllabusBundle\Entity\Group
+     */
+    public function setExcludedMembers($excludedMembers)
+    {
+        $this->excludedMembers = $excludedMembers;
         return $this;
     }
 

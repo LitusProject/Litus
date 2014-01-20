@@ -2,8 +2,12 @@
 
 namespace FormBundle\Repository\Node;
 
-use DateTime,
-    Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person,
+    DateTime,
+    FormBundle\Entity\Node\Form as FormEntity,
+    FormBundle\Entity\Node\Group as GroupEntity,
+    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Entry
@@ -13,19 +17,18 @@ use DateTime,
  */
 class Entry extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Entry', 'n')
             ->orderBy('n.creationTime', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByForm($form)
+    public function findAllByFormQuery(FormEntity $form)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -35,13 +38,12 @@ class Entry extends EntityRepository
                 $query->expr()->eq('f.form', ':form')
             )
             ->setParameter('form', $form)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByFormAndPerson($form, $person)
+    public function findAllByFormAndPersonQuery(FormEntity $form, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('f')
@@ -55,10 +57,164 @@ class Entry extends EntityRepository
             )
             ->setParameter('form', $form)
             ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+            ->orderBy('f.creationTime', 'DESC')
+            ->getQuery();
 
         return $resultSet;
     }
 
+    public function findDraftVersionByFormAndPerson(FormEntity $form, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.creationPerson', ':person'),
+                    $query->expr()->eq('f.draft', 'true')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('person', $person)
+            ->orderBy('f.creationTime', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findOneByFormAndPerson(FormEntity $form, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.creationPerson', ':person')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('person', $person)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByFormAndGuestInfoQuery(FormEntity $form, GuestInfoEntity $guestInfo)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.guestInfo', ':guestInfo')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('guestInfo', $guestInfo)
+            ->orderBy('f.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findDraftVersionByFormAndGuestInfo(FormEntity $form, GuestInfoEntity $guestInfo)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.guestInfo', ':guestInfo'),
+                    $query->expr()->eq('f.draft', 'true')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('guestInfo', $guestInfo)
+            ->orderBy('f.creationTime', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findOneByFormAndGuestInfo(FormEntity $form, GuestInfoEntity $guestInfo)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.guestInfo', ':guestInfo')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('guestInfo', $guestInfo)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findCompletedByGroup(GroupEntity $group)
+    {
+        if (sizeof($group->getForms()) == 0)
+            return array();
+
+        $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
+
+        $tmpEntries = array();
+        foreach($startEntries as $entry) {
+            $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
+        }
+
+        $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
+        $entries = array();
+        foreach($endEntries as $entry) {
+            if ($entry->isDraft())
+                continue;
+            if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
+                $entries[] = $entry;
+        }
+
+        return $entries;
+    }
+
+    public function findNotCompletedByGroup(GroupEntity $group)
+    {
+        if (sizeof($group->getForms()) == 0)
+            return array();
+
+        $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
+        $tmpEntries = array();
+        foreach($endEntries as $entry) {
+            $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
+        }
+
+        $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
+
+        $entries = array();
+        foreach($startEntries as $entry) {
+            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
+                    ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()))
+                $entries[] = $entry;
+        }
+
+        return $entries;
+    }
 }

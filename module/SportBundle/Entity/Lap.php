@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,7 +19,9 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
     DateTime,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +77,11 @@ class Lap
      * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
@@ -146,6 +157,16 @@ class Lap
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @return \SportBundle\Entity\Lap
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
      * Ends this lap.
      *
      * @return \SportBundle\Entity\Lap
@@ -157,10 +178,15 @@ class Lap
     }
 
     /**
+     * Returns the duration of the lap.
+     *
      * @return \DateInterval
      */
     public function getLapTime()
     {
+        if (null === $this->startTime)
+            return new DateInterval('PT0S');
+
         if (null !== $this->endTime) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
@@ -169,5 +195,45 @@ class Lap
         }
 
         return $lapTime;
+    }
+
+    /**
+     * Determines the number of points this lap is worth.
+     *
+     * @return integer
+     */
+    public function getPoints()
+    {
+        $pointsCriteria = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.points_criteria')
+        );
+
+        $seconds = $this->_convertDateIntervalToSeconds($this->getLapTime());
+
+        $points = 0;
+        foreach ($pointsCriteria as $i => $pointsCriterium) {
+            if (isset($pointsCriteria[$i+1])) {
+                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
+            } else {
+                if ($seconds <= $pointsCriterium['limit'])
+                    return $pointsCriterium['points'];
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Converts a DateInterval to seconds.
+     *
+     * @param \DateInterval $interval The interval that should be converted
+     * @return integer
+     */
+    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    {
+        return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 }

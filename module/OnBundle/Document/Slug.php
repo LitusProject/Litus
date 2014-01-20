@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -36,7 +40,7 @@ class Slug
     private $id;
 
     /**
-     * @var string The ID of the person that created this slug
+     * @var integer The ID of the person that created this slug
      *
      * @ODM\Field(type="int")
      */
@@ -87,6 +91,7 @@ class Slug
     }
 
     /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
      * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson(EntityManager $entityManager)

@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General\Organization;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Unit
@@ -12,15 +12,51 @@ use Doctrine\ORM\EntityRepository;
  */
 class Unit extends EntityRepository
 {
-    public function findAllActive()
+    public function findAllActiveQuery()
     {
-        return $this->_em->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findBy(array('active' => true), array('name' => 'ASC'));
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
+            ->where(
+                $query->expr()->eq('u.active', 'true')
+            )
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 
-    public function findAllActiveAndDisplayed()
+    public function findAllActiveAndDisplayedQuery()
     {
-        return $this->_em->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findBy(array('displayed' => true, 'active' => true), array('name' => 'ASC'));
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('u.active', 'true'),
+                    $query->expr()->eq('u.displayed', 'true')
+                )
+            )
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveAndNotDisplayedQuery()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('u.active', 'true'),
+                    $query->expr()->eq('u.displayed', 'false')
+                )
+            )
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

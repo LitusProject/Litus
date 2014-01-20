@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,10 +32,10 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
     {
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->paginator()->setItemsPerPage(5);
-            $paginator = $this->paginator()->createFromArray(
+            $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Prof\Action')
-                    ->findAllByPerson($this->getAuthentication()->getPersonObject()),
+                    ->findAllByPersonQuery($this->getAuthentication()->getPersonObject()),
                 $this->getParam('page')
             );
 

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,6 +19,7 @@
 namespace CommonBundle\Entity\General;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    DateInterval,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,14 +40,14 @@ class AcademicYear
     private $id;
 
     /**
-     * @var \DateTime The start date of this academic year
+     * @var \DateTime The start date of this academic year for the organization
      *
      * @ORM\Column(type="datetime", unique=true)
      */
     private $start;
 
     /**
-     * @var \DateTime The end date of this academic year
+     * @var \DateTime The start date of this academic year
      *
      * @ORM\Column(name="university_start", type="datetime")
      */
@@ -82,10 +87,7 @@ class AcademicYear
      */
     public function getEndDate()
     {
-        $date = clone $this->universityStart;
-        return $date->add(
-            new DateInterval('P1Y')
-        );
+        return $this->getUniversityEndDate();
     }
 
     /**

@@ -17,7 +17,7 @@
     <div id="modalMemberWarning" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Become A Member') }}</h3>
+            <h3>{{ translate('Become a Member') }}</h3>
         </div>
         <div class="modal-body">
             <p>
@@ -36,7 +36,7 @@
     <div id="modalTermsAndCoditions" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Terms And Conditions') }}</h3>
+            <h3>{{ translate('Terms and Conditions') }}</h3>
         </div>
         <div class="modal-body">
             <p>
@@ -52,6 +52,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            var membershipArticles = {
+                {% for organization, membershipArticle in membershipArticles %}
+                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }},
+                {% endfor %}
+            };
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
@@ -63,7 +69,7 @@
             $('#register').click(function (e) {
                 e.preventDefault();
 
-                if (!$('#become_member').is(':checked')) {
+                if (!$('#become_member').is(':checked') && $('#register_form #organization').val() != 0) {
                     $('#modalMemberWarning').modal();
                     $('#modalMemberWarning .confirm').one('click', function () {
                         $('#register_form').submit();
@@ -77,6 +83,16 @@
             $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
+
+            $('#register_form #organization').closest('.control-group').hide();
+            if ($('#register_form #organization').val() == 0) {
+                $('#register_form #become_member').closest('.control-group').hide();
+                $('#register_form #become_member').prop('checked', false);
+            } else {
+                $('#register_form #become_member').prop('checked', true);
+                $('#register_form #become_member').closest('.control-group').show();
+                $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
+            }
 
             $('#university_email').wrap('<div class=\"input-append\" />');
             $('#university_email').after('<span class=\"add-on\">{{ studentDomain }}</span>');
@@ -95,6 +111,7 @@
             else
                 $('#organization_info .control-group').hide();
             $('#become_member, #conditions, #bakske').closest('.control-group').show();
+            $('#register_form #organization').closest('.control-group').hide();
         }
     </script>
 {% endblock %}

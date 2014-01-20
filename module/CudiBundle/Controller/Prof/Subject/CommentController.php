@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -49,12 +53,16 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 if ($replyForm->isValid()) {
                     $formData = $replyForm->getFormData($formData);
 
+                    $comment = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject\Comment')
+                        ->findOneById($formData['comment']);
+
+                    $comment->setReadBy(null);
+
                     $reply = new Reply(
                         $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
-                        $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-                            ->findOneById($formData['comment']),
+                        $comment,
                         $formData['reply']
                     );
 
@@ -156,7 +164,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $id) {

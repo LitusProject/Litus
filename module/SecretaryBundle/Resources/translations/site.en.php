@@ -5,23 +5,29 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 return array(
     'Registration' => 'Registration',
-    'There is already a user with your university identification!' => 'There is already a user with your university identification!',
+    'There already is a user with your university identification!' => 'There already is a user with your university identification!',
 
     'Start' => 'Start',
     'Studies' => 'Studies',
     'Subjects' => 'Subjects',
     'Complete' => 'Complete',
 
-    'To register, please login first with your KU Leuven account' => 'To register, please login first with your KU Leuven account',
+    'Choose your study:' => 'Choose your study:',
+
+    'To register, please login first with your KU Leuven account.' => 'To register, please login first with your KU Leuven account.',
     'Personal' => 'Personal',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
@@ -43,19 +49,20 @@ return array(
     'University E-mail' => 'University E-mail',
     'Personal E-mail' => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'I want to receive e-mail at my personal e-mail address',
-    'Organization' => 'Organization',
-    'I want to become a member of the organization (&euro;10)' => 'I want to become a member of the organization (&euro;10)',
+    'Student Association' => 'Student Association',
+    'I want to become a member of the student association (&euro; { price })' => 'I want to become a member of the student association (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'I have read and agree with the terms and conditions',
     'I want to receive my Ir.Reëel at CuDi' => 'I want to receive my Ir.Reëel at CuDi',
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
     'T-shirt Size' => 'T-shirt Size',
     'Register' => 'Register',
-    'Become A Member' => 'Become A Member',
+    'Become a Member' => 'Become a Member',
     'You haven\'t checked the option to become a member. Being a member has many advantages.' => 'You haven\'t checked the option to become a member. Being a member has many advantages.',
     'Are you sure you want to continue?' => 'Are you sure you want to continue?',
+    'You have already registered for this academic year.' => 'You have already registered for this academic year.',
     'Your registration was succesfully updated!' => 'Your registration was succesfully updated!',
     'You are succesfully registered!' => 'You are succesfully registered!',
-    'Terms And Conditions' => 'Terms And Conditions',
+    'Terms and Conditions' => 'Terms and Conditions',
     'Close' => 'Close',
     'Read Them' => 'Read Them',
 

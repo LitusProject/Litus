@@ -13,6 +13,7 @@
                     <th width="100px">Start Time</th>
                     <th width="100px">End Time</th>
                     <th width="100px">Lap Time</th>
+                    <th width="70px">Points</th>
                 </tr>
             </thead>
 
@@ -23,6 +24,7 @@
                         <td>{{ lap.getStartTime().format('d/m/Y H:i') }}</td>
                         <td>{{ lap.getEndTime().format('d/m/Y H:i') }}</td>
                         <td>{{ lap.getLapTime().format('%i:%S') }}</td>
+                        <td>{{ lap.getPoints(academicYear) }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

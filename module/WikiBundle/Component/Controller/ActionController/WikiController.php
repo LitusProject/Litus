@@ -5,14 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace WikiBundle\Component\Controller\ActionController;
+
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 
 /**
  * We extend the CommonBundle controller.
@@ -50,9 +56,22 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!array_key_exists(getenv('SERVED_BY'), $shibbolethUrl))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
 
-        return $shibbolethUrl . '?source=wiki';
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
+
+        $shibbolethUrl .= '?source=wiki';
+
+        if (null !== $this->getParam('redirect'))
+            $shibbolethUrl .= '%26redirect=' . urlencode(urlencode($this->getParam('redirect')));
+
+        return $shibbolethUrl;
     }
 }

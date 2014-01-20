@@ -4,7 +4,7 @@ namespace SyllabusBundle\Repository\Subject;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Comment
@@ -19,6 +19,9 @@ class Comment extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->where(
+                $query->expr()->isNull('c.readBy')
+            )
             ->orderBy('c.date', 'DESC')
             ->setMaxResults($nb)
             ->getQuery()
@@ -27,7 +30,7 @@ class Comment extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -51,8 +54,7 @@ class Comment extends EntityRepository
                 $query->expr()->in('c.subject', $ids)
             )
             ->orderBy('c.date', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -41,7 +41,7 @@
                 }
             });
 
-            return this
+            return this;
         },
         isBarcode : function () {
             return _isBarcode($(this));

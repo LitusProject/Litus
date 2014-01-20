@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -40,9 +44,12 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($article);
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findAllByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\File\Mapping')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         $form = new AddForm();
         $form->setAttribute(
@@ -61,7 +68,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 'form' => $form,
                 'article' => $article,
                 'saleArticle' => $saleArticle,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
@@ -110,14 +118,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $mapping = $this->getEntityManager()
                 ->getRepository('Cudibundle\Entity\File\Mapping')
                 ->findOneByArticleAndFile($article, $file);
-
-            /*$this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCESS',
-                    'The file was successfully uploaded!'
-                )
-            );*/
 
             return new ViewModel(
                 array(

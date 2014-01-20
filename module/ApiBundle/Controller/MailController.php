@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,41 +32,6 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class MailController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getListsArchiveAction()
-    {
-        $lists = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
-            ->findAll();
-
-        if (0 == count($lists))
-            throw new \RuntimeException('There needs to be at least one list before an archive can be created');
-
-
-        $archive = new TmpFile();
-        $generator = ('zip' != $this->getParam('type'))
-            ? new Tar($this->getEntityManager(), $lists)
-            : new Zip($this->getEntityManager(), $lists);
-        $generator->generateArchive($archive);
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="lists.' . ('zip' != $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
-            'Content-Type' => mime_content_type($archive->getFileName()),
-            'Content-Length' => filesize($archive->getFileName()),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($archive->getFileName(), 'r');
-        $data = fread($handle, filesize($archive->getFileName()));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data
-            )
-        );
-    }
-
     public function getAliasesAction()
     {
         $aliases = $this->getEntityManager()
@@ -78,6 +47,36 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         return new ViewModel(
             array(
                 'aliases' => $aliases
+            )
+        );
+    }
+
+    public function getListsArchiveAction()
+    {
+        $lists = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList')
+            ->findAll();
+
+        if (0 == count($lists))
+            throw new \RuntimeException('There needs to be at least one list before an archive can be created');
+
+        $archive = new TmpFile();
+        $generator = ('zip' != $this->getParam('type'))
+            ? new Tar($this->getEntityManager(), $lists)
+            : new Zip($this->getEntityManager(), $lists);
+        $generator->generateArchive($archive);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="lists.' . ('zip' != $this->getParam('type') ? 'tar.gz' : 'zip') . '"',
+            'Content-Type'        => mime_content_type($archive->getFileName()),
+            'Content-Length'      => filesize($archive->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $archive->getContent()
             )
         );
     }

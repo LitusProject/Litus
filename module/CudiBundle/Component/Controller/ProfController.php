@@ -5,18 +5,22 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Form\Auth\Login as LoginForm,
     DateInterval,
     DateTime,
@@ -41,60 +45,22 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $result = parent::onDispatch($e);
 
         $result->shibbolethUrl = $this->_getShibbolethUrl();
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $e->setResult($result);
         return $result;
     }
 
     /**
-     * Returns the current academic year.
+     * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getAcademicYear()
+    protected function getCurrentAcademicYear($organization = true)
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $now = new DateTime();
-        $start = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.prof_start_academic_year')
-            )
-        );
-        $start->add(new DateInterval('P1Y'));
-
-        if ($now > $start) {
-            $startAcademicYear->add(new DateInterval('P1Y2M'));
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
-        }
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        return $academicYear;
+        return parent::getCurrentAcademicYear(true);
     }
 
     /**
@@ -125,9 +91,22 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
-            $shibbolethUrl .= '%2F';
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
 
-        return $shibbolethUrl . '?source=prof';
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch(\ErrorException $e) {}
+
+        $shibbolethUrl .= '?source=prof';
+
+        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        return $shibbolethUrl;
     }
 }

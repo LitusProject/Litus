@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -74,88 +78,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'data' => $data,
             )
         );
-    }
-
-    private function _buildSubmenu(Page $page)
-    {
-        $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findByParent($page->getId());
-
-        $links = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Link')
-            ->findByParent($page->getId());
-
-        $categories = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Category')
-            ->findByParent($page->getId());
-
-        $submenu = array();
-        foreach ($pages as $page) {
-            $submenu[] = array(
-                'type'     => 'page',
-                'name'     => $page->getName(),
-                'parent'   => $page->getParent()->getName(),
-                'title'    => $page->getTitle($this->getLanguage())
-            );
-        }
-
-        foreach ($links as $link) {
-            $submenu[] = array(
-                'type' => 'link',
-                'id'   => $link->getId(),
-                'name' => $link->getName($this->getLanguage())
-            );
-        }
-
-        $i = count($submenu);
-        foreach ($categories as $category) {
-            $submenu[$i] = array(
-                'type'  => 'category',
-                'name'  => $category->getName(),
-                'items' => array()
-            );
-
-            $pages = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Node\Page')
-                ->findByCategory($category);
-
-            $links = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Link')
-                ->findByCategory($category);
-
-            foreach ($pages as $page) {
-                $submenu[$i]['items'][] = array(
-                    'type'  => 'page',
-                    'name'  => $page->getName(),
-                    'title' => $page->getTitle($this->getLanguage())
-                );
-            }
-
-            foreach ($links as $link) {
-                $submenu[$i]['items'][] = array(
-                    'type' => 'link',
-                    'id'   => $link->getId(),
-                    'name' => $link->getName($this->getLanguage())
-                );
-            }
-
-            $sort = array();
-            foreach ($submenu[$i]['items'] as $key => $value)
-                $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
-
-            array_multisort($sort, $submenu[$i]['items']);
-
-            $i++;
-        }
-
-        $sort = array();
-        foreach ($submenu as $key => $value)
-            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
-
-        array_multisort($sort, $submenu);
-
-        return $submenu;
     }
 
     private function _getPage()

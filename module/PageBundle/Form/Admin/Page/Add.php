@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -47,7 +51,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-        $this->setAttribute('data-upload', 'progress');
 
         $tabs = new Tabs('languages');
         $this->add($tabs);
@@ -213,6 +216,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             )
         );
+
+        $categories = $this->_entityManager
+            ->getRepository('PageBundle\Entity\Category')
+            ->findAll();
+
+        foreach($categories as $category) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'parent_' . $category->getId(),
+                        'required' => false,
+                    )
+                )
+            );
+        }
 
         $inputFilter->add(
             $factory->createInput(

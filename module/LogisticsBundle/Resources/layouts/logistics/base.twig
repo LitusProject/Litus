@@ -13,11 +13,21 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
             <ul class="nav">
                 {% if hasAccess('logistics_index', 'index') %}
                     <li {% if 'index' == getParam('action') and 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                        <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('logistics_piano', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'logistics_piano' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("logistics_piano", {"language": language.getAbbrev()}) }}">{{ translate('Piano') }}</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('logistics_lease', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>
+                        <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
                     </li>
                 {% endif %}
             </ul>
@@ -29,7 +39,7 @@
                     <ul class="dropdown-menu">
                         {% for language in languages %}
                             <li>
-                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                <a href="{{ url(getParam('controller'), {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
                             </li>
                         {% endfor %}
                     </ul>

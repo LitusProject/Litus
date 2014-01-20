@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -46,6 +50,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('name');
         $field->setLabel('Name')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('mail');
+        $field->setLabel('Mail')
             ->setRequired();
         $this->add($field);
 
@@ -165,6 +174,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'mail',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'emailaddress'),
+                    )
                 )
             )
         );

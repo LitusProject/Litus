@@ -18,43 +18,62 @@
     </div>
 
 	<div id="controller_action">
-	    <table class="full_width manage">
-	        <thead>
-	            <tr>
-	                <th>Name</th>
-	                <th>Event</th>
-	                <th>Start</th>
-	                <th>End</th>
-	                <th width="70px">Actions</th>
-	            </tr>
-	        </thead>
+	    <div id="shift_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
 
-	        <tbody>
-	            {% for shift in paginator %}
-	                <tr class="item item-{{ shift.getId() }}">
-	                    <td>{{ shift.getName() }}</td>
-	                    <td>{{ shift.getEvent().getTitle(language) }}</td>
-	                    <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
-	                    <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
-	                    <td class="actions">
-		                	{% if shift.canBeEditedBy(authenticatedPerson) %}
-		                        {% if hasAccess('shift_admin_shift', 'edit') %}
-		                            <a href="{{ url('shift_admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
-		                        {% endif %}
-		                        {% if hasAccess('shift_admin_shift', 'delete') %}
-		                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
-		                        {% endif %}
-	                        {% endif %}
-	                        {% if hasAccess('shift_admin_shift_subscription', 'manage') %}
-	                            <a href="{{ url('shift_admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
-	                        {% endif %}
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
-	    </table>
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th>Event</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
 
-		{% include 'admin/partials/paginationControl.twig' %}
+        <div id="default_page">
+    	    <table class="full_width manage">
+    	        <tr>
+                    <th>Name</th>
+                    <th>Event</th>
+    	            <th>Start</th>
+    	            <th>End</th>
+                    <th width="70px">Actions</th>
+     	        </tr>
+
+    	        {% for shift in paginator %}
+    	            <tr class="item item-{{ shift.getId() }}">
+                        <td>{{ shift.getName() }}</td>
+                        <td>{{ shift.getEvent().getTitle(language) }}</td>
+                        <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td class="actions">
+    	                	{% if shift.canBeEditedBy(authenticatedPerson) %}
+    	                        {% if hasAccess('shift_admin_shift', 'edit') %}
+    	                            <a href="{{ url('shift_admin_shift', {"action": "edit", "id": shift.getId()}) }}" class="edit">Edit</a>
+    	                        {% endif %}
+    	                        {% if hasAccess('shift_admin_shift', 'delete') %}
+    	                            <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
+    	                        {% endif %}
+                            {% endif %}
+                            {% if hasAccess('shift_admin_shift_subscription', 'manage') %}
+                                <a href="{{ url('shift_admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+    	    </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
 	</div>
 
 	<div class="modal hide fade" id="removeShift">
@@ -81,6 +100,42 @@
 {% block content_script %}
 	<script type="text/javascript">
 		$(document).ready(function () {
+			{% if hasAccess('shift_admin_shift', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#shift_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('shift_admin_shift', {'action': 'manage'}) }}manage/',
+                url: '{{ url('shift_admin_shift', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#shift_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#shift_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.event + '</td>')
+                            .append('<td>' + this.startDate + '</td>')
+                            .append('<td>' + this.endDate + '</td>')
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append('<a href="{{ url('shift_admin_shift', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                    .append('<a href="{{ url('shift_admin_shift_subscription', {"action": "manage"}) }}' + this.id + '" class="view">View</a>')
+                                );
+                            deleteButton.data({
+                                id: this.id,
+                                fullname: this.fullName
+                            });
+                    });
+                    $('#shift_search .delete').click(openModal);
+                    $('#shift_search table').change();
+                },
+                clear: function () {
+                    $('#shift_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
 			$('.item .delete').click(openModal);
 		});
 

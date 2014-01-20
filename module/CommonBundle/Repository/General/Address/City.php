@@ -2,7 +2,7 @@
 
 namespace CommonBundle\Repository\General\Address;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * City

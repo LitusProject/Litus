@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -80,35 +84,43 @@ class ViewerMap
         $this->mail = $mail;
     }
 
-    public function getId() {
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \FormBundle\Entity\Node\Form
      */
-    public function getForm() {
+    public function getForm()
+    {
         return $this->form;
     }
 
     /**
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getPerson() {
+    public function getPerson()
+    {
         return $this->person;
     }
 
     /**
      * @return boolean
      */
-    public function isEdit() {
+    public function isEdit()
+    {
         return $this->edit;
     }
 
     /**
      * @return boolean
      */
-    public function isMail() {
+    public function isMail()
+    {
         return $this->mail;
     }
 }

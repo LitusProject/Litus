@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -72,14 +76,18 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             }
         }
 
-        $restrictions = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
-            ->findAllByArticle($article);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
+                ->findAllByArticleQuery($article),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
                 'article' => $article,
-                'restrictions' => $restrictions,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
                 'form' => $form,
             )
         );

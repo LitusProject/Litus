@@ -1,0 +1,41 @@
+<header id="controller_header">
+    <div class="title"><span class="secretary">Promotions</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('secretary_admin_promotion', 'update') %}
+                <li><a href="#updatePromotion" data-toggle="modal">Update</a></li>
+            {% endif %}
+            {% if hasAccess('secretary_admin_promotion', 'mail') %}
+                <li><a {% if getParam('action') == 'mail' %} class="active" {% endif %}href="{{ url('secretary_admin_promotion', {'action': 'mail', "academicyear": activeAcademicYear.getCode()}) }}">Mail</a></li>
+            {% endif %}
+            {% if hasAccess('secretary_admin_promotion', 'add') %}
+                <li><a {% if getParam('action') == 'add' %} class="active" {% endif %}href="{{ url('secretary_admin_promotion', {'action': 'add', "academicyear": activeAcademicYear.getCode()}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('secretary_admin_promotion', 'manage') %}
+                <li><a {% if getParam('action') == 'manage' %} class="active" {% endif %}href="{{ url('secretary_admin_promotion', {'action': 'manage', "academicyear": activeAcademicYear.getCode()}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<div class="modal hide fade" id="updatePromotion">
+    <div class="modal-header">
+        <span>Litus Admin</span>
+        /Update Promotion
+    </div>
+    <div class="modal-body">
+        <p>
+            You are about to update the following promotion: <b>{{ activeAcademicYear.getCode() }}</b>!
+            Please note that this operation cannot be undone!
+        </p>
+        <p>
+            Are you sure you want to continue?
+        </p>
+        <div class="footer">
+            <a href="{{ url('secretary_admin_promotion', {'action': 'update', 'academicyear': activeAcademicYear.getCode()}) }}"><button>Yes</button></a>
+            <input type="button" class="update" value="Yes">
+            <input type="button" class="cancel" data-dismiss="modal" value="No">
+        </div>
+    </div>
+</div>

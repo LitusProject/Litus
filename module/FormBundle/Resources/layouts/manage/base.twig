@@ -13,18 +13,23 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_form/img/logo.png" /></a>
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_form/img/logo.png" /></a>
             <ul class="nav">
                 {% if hasAccess('form_manage', 'index') %}
                     <li {% if 'index' == getParam('action') and 'form_manage' == getParam('controller') %} class="active" {% endif %}>
                         <a href="{{ url("form_manage", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                     </li>
                 {% endif %}
+                {% if hasAccess('form_manage_group', 'index') %}
+                    <li {% if 'index' == getParam('action') and 'form_manage_group' == getParam('controller') %} class="active" {% endif %}>
+                        <a href="{{ url("form_manage_group", {"language": language.getAbbrev()}) }}">{{ translate('Groups') }}</a>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="nav pull-right lang-nav visible-desktop">
                 <li class="dropdown" id="langDropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{ translate('Language') }} <span class="caret"></span>
+                        Language <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         {% for language in languages %}

@@ -1,0 +1,29 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="100px">Laps &le; 1:28 </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for pastaRunner in paginator %}
+                    <tr>
+                        <td>{{ pastaRunner['name'] }}</td>
+                        <td>{{ pastaRunner['count'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

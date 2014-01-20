@@ -5,18 +5,22 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Controller\Prof;
 
-use CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -124,13 +128,29 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        $this->redirect()->toRoute(
-                            'cudi_prof_index'
-                        );
+                        if (null !== $code->getRedirect()) {
+                            $this->redirect()->toUrl(
+                                $code->getRedirect()
+                            );
+
+                            return new ViewModel();
+                        }
                     }
                 }
             }
         }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'cudi_prof_index'
+        );
 
         return new ViewModel();
     }

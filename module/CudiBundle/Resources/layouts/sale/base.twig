@@ -13,7 +13,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+            <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
             <ul class="nav">
                 {% if hasAccess('cudi_sale_sale', 'sale') %}
                     <li {% if 'sale' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
@@ -59,7 +59,13 @@
     {% include 'sale/partials/flashMessenger.twig' %}
 
     <div id="content_controller">
-        {% block content %} {% endblock %}
+        {% if invalidSession %}
+            <div class="flashmessage alert alert-error fade in">
+                Invalid Sale Session
+            </div>
+        {% else %}
+            {% block content %} {% endblock %}
+        {% endif %}
     </div>
 
     <footer>

@@ -40,8 +40,10 @@
 
         if (opts.defaultPage) {
             opts.defaultPage.prepend(
-                $('<div>', {'class': 'search-button'})
-            ).click(function () {
+                button = $('<div>', {'class': 'search-button'}),
+                $('<br>', {'style': 'clear: both'})
+            );
+            button.click(function () {
                 if (opts.searchDiv)
                     opts.searchDiv.show();
                 opts.defaultPage.hide();

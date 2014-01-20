@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,6 +21,10 @@ namespace ApiBundle\Component\Controller\ActionController;
 use ApiBundle\Component\Controller\Request\Exception\NoPostRequestException,
     ApiBundle\Component\Controller\Request\Exception\NoKeyException,
     ApiBundle\Component\Controller\Request\Exception\InvalidKeyException,
+    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    DateInterval,
+    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -43,7 +51,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
 
-            if ('' == $this->getRequest()->getPost('key', '')) {
+            if (null === $this->getRequest()->getPost('key')) {
                 throw new NoKeyException(
                     'No API key was provided with the request'
                 );
@@ -53,7 +61,11 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('ApiBundle\Entity\Key')
                 ->findOneActiveByCode($this->getRequest()->getPost('key'));
 
-            if (!$key->validate($_SERVER['REMOTE_ADDR'])) {
+            $validateKey = $key->validate(
+                isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+            );
+
+            if (!$validateKey) {
                 throw new InvalidKeyException(
                     'The given API key was invalid'
                 );

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,7 +32,8 @@ use BrBundle\Entity\Contract,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form {
+class Edit extends \CommonBundle\Component\Form\Admin\Form
+{
 
     public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -23,13 +27,17 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MessageController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class MessageController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromDocument(
             'MailBundle\Document\Message',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'creationTime' => 'DESC'
+            )
         );
 
         return new ViewModel(
@@ -52,8 +60,6 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                var_dump("Hello");
-
                 $formData = $form->getFormData($formData);
 
                 $message->setSubject($formData['subject'])

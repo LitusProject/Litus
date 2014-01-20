@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -54,6 +58,18 @@ return array(
                     ),
                 ),
             ),
+            'api_door' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/api/door[/:action][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'api_door',
+                    ),
+                ),
+            ),
             'api_mail' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -94,6 +110,7 @@ return array(
             'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
             'api_auth'      => 'ApiBundle\Controller\AuthController',
+            'api_door'      => 'ApiBundle\Controller\DoorController',
             'api_mail'      => 'ApiBundle\Controller\MailController',
         ),
     ),

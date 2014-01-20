@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -147,6 +151,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Colored');
         $internal->add($field);
 
+        $field = new Checkbox('hardcovered');
+        $field->setLabel('Hardcovered');
+        $internal->add($field);
+
         $subject = new Collection('subject');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
@@ -158,6 +166,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('subject');
         $field->setLabel('Subject')
+            ->setRequired()
             ->setAttribute('size', 70)
             ->setAttribute('id', 'subjectSearch')
             ->setAttribute('autocomplete', 'off')
@@ -224,6 +233,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $data['front_color'] = $article->getFrontColor()->getId();
             $data['perforated'] = $article->isPerforated();
             $data['colored'] = $article->isColored();
+            $data['hardcovered'] = $article->isHardCovered();
         }
 
         $this->setData($data);

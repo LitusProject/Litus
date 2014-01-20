@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -61,8 +65,8 @@ return array(
 
     'An error occurred while updating your preferences.' => 'An error occurred while updating your preferences.',
     'Your preferences where succesfully saved.' => 'Your preferences where succesfully saved.',
-    'Send a mail when the catalogus is updated' => 'Send a mail when the catalogus is updated',
-    'Keep me updated' => 'Keep me updated',
-    'Don\'t send a mail when the catalogus is updated' => 'Don\'t send a mail when the catalogus is updated',
-    'Don\'t keep me updated' => 'Don\'t keep me updated',
+    'You will receive an e-mail when the catalog is updated.' => 'You will receive an e-mail when the catalog is updated.',
+    'Keep Me Updated' => 'Keep Me Updated',
+    'You won\'t receive an e-mail when the catalog is updated.' => 'You won\'t receive an e-mail when the catalog is updated.',
+    'Don\'t Keep Me Updated' => 'Don\'t Keep Me Updated',
 );

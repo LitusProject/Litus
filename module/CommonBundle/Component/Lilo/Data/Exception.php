@@ -5,14 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Lilo\Data;
+
+use CommonBundle\Component\Authentication\Authentication;
 
 /**
  * This class converts an exception to the right format for the
@@ -31,15 +37,24 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      * Construct a new Exception object.
      *
      * @param \Exception $exception The exception that should be formatted
+     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
      */
-    public function __construct(\Exception $exception)
+    public function __construct(\Exception $exception, Authentication $authentication)
     {
         $this->_data = array(
-            'url' => $this->_formatUrl(),
-            'exception_class' => get_class($exception),
+            'class' => get_class($exception),
             'message' => $exception->getMessage(),
-            'backtrace' => $this->_formatBacktrace($exception),
-            'enviroment' => $_SERVER['HTTP_USER_AGENT']
+            'trace' => $this->_formatBacktrace($exception),
+            'environment' => array(
+                'person' => $authentication->isAuthenticated()
+                    ? $authentication->getPersonObject()->getFullName() . ' ('. $authentication->getPersonObject()->getUsername() . ')'
+                    : 'Guest',
+                'session' => $authentication->isAuthenticated()
+                    ? $authentication->getSessionObject()->getId()
+                    : '',
+                'url' => $this->_formatUrl(),
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'],
+            ),
         );
     }
 
@@ -61,14 +76,18 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatBacktrace(\Exception $exception)
     {
-        $backtrace = array(
-            0 => $exception->getMessage()
-        );
+        $backtrace = array();
         foreach ($exception->getTrace() as $t) {
             if (!isset($t['file']))
                 continue;
 
-            $backtrace[] = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at ' . (isset($t['class']) ? $t['class'] . '.' : '') . $t['function'] . '(' . basename($t['file']) . ':' . $t['line'] . ')';
+            $backtrace[] = array(
+                'file' => basename($t['file']),
+                'line' => $t['line'],
+                'class' => isset($t['class']) ? $t['class'] : '',
+                'function' => $t['function'],
+                'args' => '',
+            );
         }
 
         return $backtrace;

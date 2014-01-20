@@ -2,7 +2,7 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     QuizBundle\Entity\Quiz as QuizEntity;
 
 /**
@@ -17,19 +17,20 @@ class Round extends EntityRepository
      * Gets all rounds belonging to a quiz
      * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
      */
-    public function findByQuiz(QuizEntity $quiz)
+    public function findAllByQuizQuery(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('round')
-            ->from('QuizBundle\Entity\Round', 'round')
+        $resultSet = $query->select('r')
+            ->from('QuizBundle\Entity\Round', 'r')
             ->where(
-                $query->expr()->eq('round.quiz', ':quiz')
+                $query->expr()->eq('r.quiz', ':quiz')
             )
-            ->orderBy('round.order', 'ASC')
-            ->setParameter('quiz', $quiz->getId())
-            ->getQuery()
-            ->getResult();
+            ->orderBy('r.order', 'ASC')
+            ->setParameter('quiz', $quiz)
+            ->getQuery();
+
+        return $resultSet;
     }
 
     /**
@@ -40,19 +41,19 @@ class Round extends EntityRepository
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('round')
-            ->from('QuizBundle\Entity\Round', 'round')
+        $resultSet = $query->select('MAX(r.order)')
+            ->from('QuizBundle\Entity\Round', 'r')
             ->where(
-                $query->expr()->eq('round.quiz', ':quiz')
+                $query->expr()->eq('r.quiz', ':quiz')
             )
-            ->orderBy('round.order', 'DESC')
-            ->setParameter('quiz', $quiz->getId())
+            ->orderBy('r.order', 'DESC')
+            ->setParameter('quiz', $quiz)
             ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+            ->getSingleScalarResult();
 
-        if($result === null)
+        if($resultSet === null)
             return 1;
-        return $result->getOrder() + 1;
+
+        return $resultSet + 1;
     }
 }

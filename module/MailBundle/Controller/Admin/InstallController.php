@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -38,13 +42,11 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                     'description' => 'The mail address name from which Het Bakske is sent',
                 ),
                 array(
-                    'key'         => 'mail.start_cudi_mail_subject',
-                    'value'       => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
-                    'description' => 'The subject of the mail send to profs at the start of a new semester',
-                ),
-                array(
                     'key'         => 'mail.start_cudi_mail',
-                    'value'       => 'Geachte professor,
+                    'value'       => serialize(
+                        array(
+                            'subject' => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
+                            'message' => 'Geachte professor,
 Geachte docent,
 
 Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
@@ -72,6 +74,8 @@ Met vriendelijke groeten en hartelijk dank bij voorbaat,
 Tom Van der Voorde,
 Philippe Blondeel,
 Jorn Hendrickx',
+                        )
+                    ),
                     'description' => 'The mail send to profs at the start of a new semester',
                 ),
             )
@@ -84,7 +88,7 @@ Jorn Hendrickx',
             array(
                 'mailbundle' => array(
                     'mail_admin_alias' => array(
-                        'manage', 'add', 'delete'
+                        'manage', 'add', 'delete', 'search'
                     ),
                     'mail_admin_bakske' => array(
                         'send'
@@ -93,7 +97,7 @@ Jorn Hendrickx',
                         'groups', 'send'
                     ),
                     'mail_admin_list' => array(
-                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry'
+                        'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry', 'search'
                     ),
                     'mail_admin_message' => array(
                         'manage', 'edit', 'delete'

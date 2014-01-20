@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -26,6 +30,8 @@ use CommonBundle\Entity\User\Person,
 class NumberTickets extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
+    const EXCEEDS_MAX_PERSON = 'exceedsMaxPerson';
+    const EXCEEDS_MAX = 'exceedsMax';
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -48,7 +54,9 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The number of tickets exceeds the maximum'
+        self::NOT_VALID => 'The number of tickets is not valid',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum',
+        self::EXCEEDS_MAX => 'The number of tickets exceeds the maximum',
     );
 
     /**
@@ -94,25 +102,32 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
             }
         }
 
-        if ($this->_person == null) {
+        if ($this->_person == null && isset($context['person_id']) && is_numeric($context['person_id'])) {
             $person = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\User\Person')
                 ->findOneById($context['person_id']);
         } else {
             $person = $this->_person;
         }
-        
-        if (null == $person ) {
+
+        if (null == $person && !isset($context['is_guest'])) {
             $this->error(self::NOT_VALID);
             return false;
         }
 
-        $tickets = $this->_entityManager
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByEventAndPerson($this->_event, $person);
+        if (null !== $person) {
+            $tickets = $this->_entityManager
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findAllByEventAndPerson($this->_event, $person);
 
-        if ($number + count($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
-            $this->error(self::NOT_VALID);
+            if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
+                $this->error(self::EXCEEDS_MAX_PERSON);
+                return false;
+            }
+        }
+
+        if ($number > $this->_event->getNumberFree() && $this->_event->getNumberOfTickets() != 0) {
+            $this->error(self::EXCEEDS_MAX);
             return false;
         }
 

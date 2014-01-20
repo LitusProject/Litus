@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -49,9 +53,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     private $_academicYear;
 
     /**
-     * Create a new Article Front Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $articles The kind of articles to export
      * @param string $order The ordering of the articles to export
      * @param boolean $onlyInStock Print only articles in stock
@@ -86,9 +88,9 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
         $configs = $this->getConfigRepository();
 
         $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $organization_short_name = $configs->getConfigValue('organization_short_name');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
@@ -160,18 +162,18 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $union_short_name
+                            'short_name' => $organization_short_name
                         ),
                         array(
                             new Object(
                                 'name',
                                 null,
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 null,
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),

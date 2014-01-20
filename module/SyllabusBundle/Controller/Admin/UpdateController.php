@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -25,20 +29,14 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function indexAction()
     {
-        $address = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_port');
         $allowUpdate = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.enable_update') == '1';
+            ->getConfigValue('syllabus.enable_update');
 
         return new ViewModel(
             array(
                 'allowUpdate' => $allowUpdate,
-                'socketUrl' => 'ws://' . $address . ':' . $port,
+                'socketUrl' => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -46,5 +44,17 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
                     ->getConfigValue('syllabus.queue_socket_key'),
             )
         );
+    }
+
+    /**
+     * Returns the WebSocket URL.
+     *
+     * @return string
+     */
+    protected function getSocketUrl()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_public');
     }
 }

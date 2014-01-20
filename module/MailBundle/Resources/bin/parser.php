@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -96,7 +100,7 @@ if (isset($opts->r)) {
                     $dm->persist($newMessage);
                     $dm->flush();
 
-                    if ('production' == getenv('APPLICATION_ENV')) {
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $lilo->sendLog(
                             'Storing incoming message with subject "' . substr($parser->getSubject(), 7) . '"',
                             array(
@@ -108,7 +112,7 @@ if (isset($opts->r)) {
                 }
             break;
             default:
-                if ('production' == getenv('APPLICATION_ENV')) {
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $lilo->sendLog(
                         'Invalid command specified in the subject line (' . $command . ')',
                         array(

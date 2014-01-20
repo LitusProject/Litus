@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,13 +34,11 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CudiBundle\Entity\Supplier',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC'
-            )
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Supplier')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -70,7 +72,8 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                         $formData['address_address_country']
                     ),
                     $formData['vat_number'],
-                    $formData['template']
+                    $formData['template'],
+                    $formData['contact']
                 );
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
@@ -119,6 +122,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                     ->setPhoneNumber($formData['phone_number'])
                     ->setVatNumber($formData['vat_number'])
                     ->setTemplate($formData['template'])
+                    ->setContact($formData['contact'])
                     ->getAddress()
                         ->setStreet($formData['address_address_street'])
                         ->setNumber($formData['address_address_number'])

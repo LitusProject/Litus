@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,19 +41,24 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field'))
-            $companies = $this->_search();
 
-        if (!isset($companies)) {
-            $companies = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company')
-                ->findAll();
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Company',
+                $this->getParam('page'),
+                array(
+                    'active' => true,
+                ),
+                array(
+                    'name'=> 'ASC',
+                )
+            );
+        } else {
+            $paginator = $this->paginator()->createFromQuery(
+                $this->_search(),
+                $this->getParam('page')
+            );
         }
-
-        $paginator = $this->paginator()->createFromArray(
-            $companies,
-            $this->getParam('page')
-        );
 
         return new ViewModel(
             array(
@@ -89,16 +98,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($company);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {
@@ -176,16 +190,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setCountry($formData['address_country']);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {
@@ -361,13 +380,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $companies = $this->_search();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($companies, $numResults);
+        $companies = $this->_search()
+                ->setMaxResults($numResults)
+                ->getResult();
 
         $result = array();
         foreach($companies as $company) {
@@ -415,7 +434,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
-                    ->findAllByName($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

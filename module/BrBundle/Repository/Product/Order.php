@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository\Product;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Order

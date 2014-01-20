@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -130,13 +134,19 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.mail_name');
 
-        $message = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.subscription_deleted_mail');
+        if (!($language = $subscription->getPerson()->getLanguage())) {
+            $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
 
-        $subject = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.subscription_deleted_mail_subject');
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.subscription_deleted_mail')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
 
         $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 

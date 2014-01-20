@@ -3,7 +3,7 @@
 namespace MailBundle\Repository\MailingList;
 
 use CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Named
@@ -13,7 +13,8 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class Named extends EntityRepository
 {
-    public function findAllByAdmin(Academic $academic) {
+    public function findAllByAdminQuery(Academic $academic)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('MailBundle\Entity\MailingList\Named', 'l')
@@ -23,8 +24,7 @@ class Named extends EntityRepository
             )
             ->orderBy('l.name', 'ASC')
             ->setParameter('academic', $academic)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

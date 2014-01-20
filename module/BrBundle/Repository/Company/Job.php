@@ -4,7 +4,7 @@ namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
     DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Job
@@ -32,16 +32,14 @@ class Job extends EntityRepository
             ->setParameter('id', $id)
             ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllByCompany(CompanyEntity $company)
+    public function findAllByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -51,16 +49,15 @@ class Job extends EntityRepository
             )
             ->setParameter('company', $company->getId())
             ->orderBy('v.type', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByType($type)
+    public function findAllActiveByTypeQuery($type)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('v')
+        $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
             ->where(
@@ -75,13 +72,12 @@ class Job extends EntityRepository
             ->setParameter('now', new DateTime())
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('v.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveByCompanyAndType(CompanyEntity $company, $type)
+    public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('v')
@@ -98,8 +94,7 @@ class Job extends EntityRepository
             ->setParameter('company', $company->getId())
             ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

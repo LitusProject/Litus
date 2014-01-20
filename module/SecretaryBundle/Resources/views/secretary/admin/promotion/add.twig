@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'secretary/admin/promotion/partials/navigation.twig' %}
+
+    {% include 'secretary/admin/promotion/partials/years.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#academic_add').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#academic').show();
+                    $('#external').hide();
+                } else {
+                    $('#external').show();
+                    $('#academic').hide();
+                }
+            }).change();
+            $('#academicSearch').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {'academicyear': activeAcademicYear.getCode()})}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#academicId').val($(this).data('value').id);
+                } else {
+                    $('#academicId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

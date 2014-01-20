@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,6 +20,7 @@ namespace CudiBundle\Form\Admin\Supplier;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
@@ -47,6 +52,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', '+CCAAANNNNNN');
         $this->add($field);
 
+        $field = new Checkbox('contact');
+        $field->setLabel('Contact');
+        $this->add($field);
+
         $field = new AddressForm('address', 'address');
         $field->setLabel('Address');
         $this->add($field);
@@ -73,6 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name' => $supplier->getName(),
             'phone_number' => $supplier->getPhoneNumber(),
             'vat_number' => $supplier->getVatNumber(),
+            'contact' => $supplier->isContact(),
             'template' => $supplier->getTemplate(),
             'address_address_street' => $supplier->getAddress()->getStreet(),
             'address_address_number' => $supplier->getAddress()->getNumber(),

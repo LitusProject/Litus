@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,9 +21,11 @@ namespace CommonBundle\Controller;
 use Zend\View\Model\ViewModel;
 
 /**
- * Handles system home page.
+ * IndexController
  *
+ * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class IndexController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -82,14 +88,14 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $cudi['openingHours'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findWeekFromNow();
+            ->findPeriodFromNow('P14D');
 
-        $piwikEnabled = $this->getEntityManager()
+        $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.piwik_enabled');
+            ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $piwikEnabled) {
+        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
             $piwik = array(
                 'url' => parse_url(
                     $this->getEntityManager()
@@ -103,6 +109,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
+        $myShifts = null;
+        if ($this->getAuthentication()->getPersonObject()) {
+            $myShifts = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+        }
+
         return new ViewModel(
             array(
                 'bookings' => $bookings,
@@ -112,6 +125,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'notifications' => $notifications,
                 'piwik' => $piwik,
                 'sportInfo' => $this->_getSportResults(),
+                'myShifts' => $myShifts,
             )
         );
     }
@@ -125,33 +139,46 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if ($showInfo != '1')
             return null;
 
-        $cacheDir = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.cache_xml_path');
-
-        $fileContents = @file_get_contents($cacheDir . 'ulyssis.xml');
+        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents)
-            $resultPage = simplexml_load_string($fileContents);
+            $resultPage = (array) json_decode($fileContents);
 
-        $returnArray = array();
+        $nbOfficialLaps = null;
         if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
-            $teamData = $resultPage->xpath('//team[@id=\'' . $teamId . '\']');
+            $currentPlace = null;
+            $teamData = null;
+            foreach ($resultPage['teams'] as $place => $team) {
+                if ($team[0] == $teamId) {
+                    $currentPlace = $place;
+                    $teamData = $team;
+                }
+            }
 
-            $returnArray = array(
-                'nbLaps' => $teamData[0]->rounds->__toString(),
-                'position' => round($teamData[0]->position->__toString() * 100),
-                'speed' => $teamData[0]->speed_kmh->__toString(),
-                'behind' => $teamData[0]->behind->__toString(),
-                'currentLap' => $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Lap')
-                    ->findCurrent($this->getCurrentAcademicYear()),
-            );
+            if (null !== $teamData) {
+                $behind = 0;
+                if (null !== $currentPlace && $currentPlace > 0) {
+                    $firstData = $resultPage['teams'][0];
+                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                }
+
+                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
+
+                $returnArray = array(
+                    'nbLaps' => $teamData[2],
+                    'position' => round($teamData[3] * 100),
+                    'speed' => round($teamData[4], 2),
+                    'behind' => $behind,
+                    'currentLap' => $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Lap')
+                        ->findCurrent($this->getCurrentAcademicYear()),
+                );
+            }
         }
 
         return $returnArray;

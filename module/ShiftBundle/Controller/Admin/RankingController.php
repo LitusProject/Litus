@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -80,41 +84,10 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear')) {
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-
-            $next = clone $start;
-            $next->add(new DateInterval('P1Y'));
-            if ($next <= new DateTime())
-                $start = $next;
-        } else {
-            $startAcademicYear = AcademicYear::getDateTime($this->getParam('academicyear'));
-
-            $start = new DateTime(
-                str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                )
-            );
-        }
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -17,6 +21,7 @@ namespace PublicationBundle\Form\Admin\Edition\Html;
 use CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
@@ -63,11 +68,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('data-upload', 'progress');
 
         $field = new Text('title');
         $field->setLabel('Title')
             ->setRequired(true);
+        $this->add($field);
+
+        $field = new Select('pdf_version');
+        $field->setLabel('PDF Version')
+            ->setAttribute('options', $this->getPDFEditions())
+            ->setRequired();
         $this->add($field);
 
         $field = new Textarea('html');
@@ -92,6 +102,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Add')
             ->setAttribute('class', 'html_add');
         $this->add($field);
+    }
+
+    public function getPDFEditions()
+    {
+        $pdfs = $this->_entityManager
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
+            ->findAllByPublicationAndAcademicYear($this->_publication, $this->_academicYear);
+
+        $options = array();
+        foreach($pdfs as $pdf) {
+            $options[$pdf->getId()] = $pdf->getTitle();
+        }
+
+        return $options;
     }
 
     public function getInputFilter()

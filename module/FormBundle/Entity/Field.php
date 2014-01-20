@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,9 +19,6 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;
@@ -33,7 +34,9 @@ use CommonBundle\Entity\General\Language,
  *      "string"="FormBundle\Entity\Field\String",
  *      "options"="FormBundle\Entity\Field\OptionSelector",
  *      "dropdown"="FormBundle\Entity\Field\Dropdown",
- *      "checkbox"="FormBundle\Entity\Field\Checkbox"
+ *      "checkbox"="FormBundle\Entity\Field\Checkbox",
+ *      "file"="FormBundle\Entity\Field\File",
+ *      "timeslot"="FormBundle\Entity\Field\TimeSlot"
  * })
  */
 abstract class Field
@@ -98,6 +101,7 @@ abstract class Field
         'string' => 'String',
         'dropdown' => 'Dropdown',
         'checkbox' => 'Checkbox',
+        'file' => 'File',
     );
 
     /**
@@ -118,16 +122,18 @@ abstract class Field
     }
 
     /**
-     * @return The identification number of this form.
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * @return The form this field belongs to.
+     * @return \FormBundle\Entity\Node\Form
      */
-    public function getForm() {
+    public function getForm()
+    {
         return $this->form;
     }
 
@@ -136,7 +142,8 @@ abstract class Field
      *
      * @return \FormBundle\Entity\Field
      */
-    public function setOrder($order) {
+    public function setOrder($order)
+    {
         $this->order = $order;
         return $this;
     }
@@ -144,7 +151,8 @@ abstract class Field
     /**
      * @return int
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return $this->order;
     }
 
@@ -153,7 +161,8 @@ abstract class Field
      *
      * @return \FormBundle\Entity\Field
      */
-    public function setRequired($required) {
+    public function setRequired($required)
+    {
         $this->required = $required;
         return $this;
     }
@@ -161,7 +170,8 @@ abstract class Field
     /**
      * @return boolean
      */
-    public function isRequired() {
+    public function isRequired()
+    {
         return $this->required;
     }
 
@@ -170,7 +180,8 @@ abstract class Field
      *
      * @return \FormBundle\Entity\Field
      */
-    public function setVisibilityDecissionField(Field $visibityDecisionField = null) {
+    public function setVisibilityDecissionField(Field $visibityDecisionField = null)
+    {
         $this->visibityDecisionField = $visibityDecisionField;
         return $this;
     }
@@ -178,7 +189,8 @@ abstract class Field
     /**
      * @return \FormBundle\Entity\Field
      */
-    public function getVisibilityDecissionField() {
+    public function getVisibilityDecissionField()
+    {
         return $this->visibityDecisionField;
     }
 
@@ -187,7 +199,8 @@ abstract class Field
      *
      * @return \FormBundle\Entity\Field
      */
-    public function setVisibilityValue($visibilityValue) {
+    public function setVisibilityValue($visibilityValue)
+    {
         $this->visibilityValue = $visibilityValue;
         return $this;
     }
@@ -195,7 +208,8 @@ abstract class Field
     /**
      * @return string
      */
-    public function getVisibilityValue() {
+    public function getVisibilityValue()
+    {
         return $this->visibilityValue;
     }
 
@@ -239,4 +253,6 @@ abstract class Field
     }
 
     abstract public function getValueString(Language $language, $value);
+
+    abstract public function getType();
 }

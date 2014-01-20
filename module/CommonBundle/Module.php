@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -27,10 +31,8 @@ class Module
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        /*
-        if ('production' == getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV'))
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
-        */
 
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);

@@ -1,4 +1,21 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
+
 return array(
     'Shifts' => 'Shiften',
     'Search' => 'Zoeken',
@@ -34,5 +51,6 @@ return array(
     'Shifts from %start% to %end%' => 'Shiften van %start% tot %end%',
     'Shifts for %unit%' => 'Shiften voor %unit%',
     'Shifts for %event%' => 'Shiften voor %event%',
-    'If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).' => 'Je inschrijven op een shift, hoe werkt dat? In de linkse kolom kan je de shiften kiezen per datum, evenement of per post (bijvoorbeeld Cursusdienst of Fakbar), maar dit hoeft niet. Rechts staan alle shiften waarop je je kan inschrijven. Als je op een bepaalde shift klikt, tover je alle informatie tevoorschijn i.v.m. die shift. Als je op sign in klikt, ben je ingeschreven! Je kan je maximaal 24h op voorhand weer uitschrijven! Ook als een shift al volledig volzet is, kan je je meestal toch nog op die shift inschrijven door praesidium uit te schrijven. Zo verlicht je het werk van dat praesidiumlid, waarvoor die je eeuwig dankbaar gaat zijn :).'
+    'If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).' => 'Je inschrijven op een shift, hoe werkt dat? In de linkse kolom kan je de shiften kiezen per datum, evenement of per post (bijvoorbeeld Cursusdienst of Fakbar), maar dit hoeft niet. Rechts staan alle shiften waarop je je kan inschrijven. Als je op een bepaalde shift klikt, tover je alle informatie tevoorschijn i.v.m. die shift. Als je op sign in klikt, ben je ingeschreven! Je kan je maximaal 24h op voorhand weer uitschrijven! Ook als een shift al volledig volzet is, kan je je meestal toch nog op die shift inschrijven door praesidium uit te schrijven. Zo verlicht je het werk van dat praesidiumlid, waarvoor die je eeuwig dankbaar gaat zijn :).',
+    'Shifts on' => 'Shiften op'
 );

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -50,48 +54,81 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 ),
                 array(
                     'key'         => 'shift.praesidium_removed_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Shift Signout',
+                                'content' => 'Dear,
 
 You have been removed from the following shift by a non-praesidium volunteer:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Shift Afmelding',
+                                'content' => 'Beste,
+
+U bent verwijderd van de volgende shift door een niet-praesidium vrijwilliger:
+{{ shift }}
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent to a praesidium member when a volunteer removes him from a shift.',
                 ),
                 array(
-                    'key'         => 'shift.praesidium_removed_mail_subject',
-                    'value'       => 'Shift Signout',
-                    'description' => 'The subject of the mail sent to a praesidium member when a volunteer removes him from a shift.',
-                ),
-                array(
                     'key'         => 'shift.shift_deleted_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Shift Deleted',
+                                'content' => 'Dear,
 
 The following shift to which you were subscribed has been deleted:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Shift Verwijderd',
+                                'content' => 'Beste,
+
+De volgende shift waar je was op ingeschreven is verwijderd:
+{{ shift }}
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent to a shift subscriber when the shift is deleted.',
                 ),
                 array(
-                    'key'         => 'shift.shift_deleted_mail_subject',
-                    'value'       => 'Shift Deleted',
-                    'description' => 'The subject of the mail sent to a shift subscriber when the shift is deleted.',
-                ),
-                array(
                     'key'         => 'shift.subscription_deleted_mail',
-                    'value'       => 'Dear,
+                    'value'       => serialize(
+                        array(
+                            'en' => array(
+                                'subject' => 'Shift Signout',
+                                'content' => 'Dear,
 
 You have been removed from the following shift by an administrator:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --',
+-- This is an automatically generated email, please do not reply --'
+                            ),
+                            'nl' => array(
+                                'subject' => 'Shift Afmelding',
+                                'content' => 'Beste,
+
+U bent verwijderd van de volgende shift door een administrator:
+{{ shift }}
+
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+                            ),
+                        )
+                    ),
                     'description' => 'The mail sent to a shift subscriber when he is removed from the shift.',
-                ),
-                array(
-                    'key'         => 'shift.subscription_deleted_mail_subject',
-                    'value'       => 'Shift Signout',
-                    'description' => 'The subject of the mail sent to a shift subscriber when he is removed from the shift.',
                 ),
                 array(
                     'key'         => 'shift.pdf_generator_path',
@@ -129,7 +166,7 @@ You have been removed from the following shift by an administrator:
             array(
                 'shiftbundle' => array(
                     'shift_admin_shift' => array(
-                        'add', 'delete', 'edit', 'manage', 'old'
+                        'add', 'delete', 'edit', 'manage', 'old', 'search'
                     ),
                     'shift_admin_shift_counter' => array(
                         'delete', 'index', 'payed', 'search', 'units', 'view'
@@ -155,9 +192,6 @@ You have been removed from the following shift by an administrator:
                         'guest',
                     ),
                     'actions' => array(
-                        'shift' => array(
-                            'export', 'index', 'responsible', 'signout', 'volunteer'
-                        ),
                     ),
                 ),
             )

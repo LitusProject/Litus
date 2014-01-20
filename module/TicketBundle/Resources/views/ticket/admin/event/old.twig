@@ -10,6 +10,7 @@
                 <tr>
                     <th>Activity</th>
                     <th width="200px">Close Date</th>
+                    <th width="70px">Active</th>
                     <th width="200px">Number Sold</th>
                     <th width="70px">Action</th>
                 </tr>
@@ -20,6 +21,7 @@
                     <tr class="item item-{{ event.getId() }}">
                         <td>{{ event.getActivity().getTitle(language) }}</td>
                         <td>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}
+                        <td>{% if event.isActive() %}&times;{% endif %}</td>
                         <td>{{ event.getNumberSold() }}</td>
                         <td class="actions">
                             {% if hasAccess('ticket_admin_event', 'edit') %}

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,10 +19,6 @@
 namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form;
@@ -26,12 +26,11 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\String")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\String")
  * @ORM\Table(name="forms.fields_strings")
  */
 class String extends Field
 {
-
     /**
      * @var int The maximum length per line of this string field.
      *
@@ -152,5 +151,13 @@ class String extends Field
      */
     public function getValueString(Language $language, $value) {
         return $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'string';
     }
 }

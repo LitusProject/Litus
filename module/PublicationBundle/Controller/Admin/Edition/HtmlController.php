@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,10 +41,10 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Edition\Html')
-                ->findAllByPublicationAndAcademicYear($publication, $this->getCurrentAcademicYear()),
+                ->findAllByPublicationAndAcademicYearQuery($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
@@ -93,18 +97,54 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
-            $edition = new HtmlEdition($publication, $this->getCurrentAcademicYear(), $formData['title'], $formData['html'], DateTime::createFromFormat('d/m/Y', $formData['date']));
 
-            if (!file_exists($edition->getImagesDirectory()))
-                mkdir($edition->getImagesDirectory(), 0775, true);
+            $publicFilePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('publication.public_html_directory');
+            $filePath = 'public' . $publicFilePath;
 
-            $filename = $upload->getFileName();
+            $publicFilePathPdf = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('publication.public_pdf_directory');
+
+            $fileName = '';
+            do{
+                $fileName = sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+
+            $pdfVersion = $this->getEntityManager()
+                ->getRepository('PublicationBundle\Entity\Edition\Pdf')
+                ->findOneById($formData['pdf_version']);
+
+            $html = preg_replace(
+                '/{{[ ]*pdfVersion[ ]*}}/',
+                ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePathPdf . $pdfVersion->getFileName(),
+                preg_replace(
+                    '/{{[ ]*imageUrl[ ]*}}/',
+                    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePath . $fileName,
+                    $formData['html']
+                )
+            );
+
+            $edition = new HtmlEdition(
+                $publication,
+                $this->getCurrentAcademicYear(),
+                $formData['title'],
+                $html,
+                DateTime::createFromFormat('d/m/Y', $formData['date']),
+                $fileName
+            );
+
+            if (!file_exists($filePath . $fileName))
+                mkdir($filePath . $fileName, 0775, true);
+
+            $zipFileName = $upload->getFileName();
             $upload->receive();
 
             $zip = new ZipArchive;
 
-            if (true === $zip->open($filename)) {
-                $zip->extractTo($edition->getImagesDirectory());
+            if (true === $zip->open($zipFileName)) {
+                $zip->extractTo($filePath . $fileName);
                 $zip->close();
             } else {
                 $this->flashMessenger()->addMessage(
@@ -241,6 +281,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         return $edition;
     }
+
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {

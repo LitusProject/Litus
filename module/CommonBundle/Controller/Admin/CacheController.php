@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -26,9 +30,22 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $paginator = $this->paginator()->createFromArray(
+                $this->getCache()->getOptions()->getResourceManager()->getResource($this->getCache()->getOptions()->getResourceId())->getAllKeys(),
+                $this->getParam('page')
+            );
+        } else {
+            $paginator = $this->paginator()->createFromArray(
+                array(),
+                $this->getParam('page')
+            );
+        }
+
         return new ViewModel(
             array(
-                'cache' => $this->getCache(),
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

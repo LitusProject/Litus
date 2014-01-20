@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -96,9 +100,12 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             }
         }
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleAndAcademicYear($article, $academicYear);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                ->findAllByArticleAndAcademicYearQuery($article, $academicYear),
+            $this->getParam('page')
+        );
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -110,7 +117,8 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
                 'article' => $article,
-                'mappings' => $mappings,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

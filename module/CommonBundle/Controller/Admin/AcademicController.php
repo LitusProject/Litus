@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,7 +41,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         if (null !== $this->getParam('field')) {
             $academics = $this->_search();
 
-            $paginator = $this->paginator()->createFromArray(
+            $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
             );
@@ -100,6 +104,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ('' == $formData['university_identification'] ? null : $formData['university_identification'])
                 );
 
+                $this->getEntityManager()->persist($academic);
+
                 if ('' != $formData['organization_status']) {
                     $academic->addOrganizationStatus(
                         new OrganizationStatus(
@@ -113,7 +119,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 if ('' != $formData['barcode']) {
                     $this->getEntityManager()->persist(
                         new Barcode(
-                            $registration->getAcademic(), $formData['barcode']
+                            $academic, $formData['barcode']
                         )
                     );
                 }
@@ -134,7 +140,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     !$formData['activation_code']
                 );
 
-                $this->getEntityManager()->persist($academic);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -227,6 +232,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             )
                         );
                     }
+                } else {
+                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $status = $academic->getOrganizationStatus($this->getCurrentAcademicYear());
+
+                        $academic->removeOrganizationStatus($status);
+                        $this->getEntityManager()->remove($status);
+                    }
                 }
 
                 if ('' != $formData['barcode']) {
@@ -241,8 +253,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 if ('' != $formData['university_status']) {
-                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $status->setStatus($formData['university_status']);
+                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                        $academic->getUniversityStatus($this->getCurrentAcademicYear())
+                            ->setStatus($formData['university_status']);
                     } else {
                         $academic->addUniversityStatus(
                             new UniversityStatus(
@@ -252,9 +265,16 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             )
                         );
                     }
+                } else {
+                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
+                        $status = $academic->getUniversityStatus($this->getCurrentAcademicYear());
+
+                        $academic->removeUniversityStatus($status);
+                        $this->getEntityManager()->remove($status);
+                    }
                 }
 
-                if ($formData['primary_address_address_city'] != 'other') {
+                if ('other' != $formData['primary_address_address_city'] && '' != $formData['primary_address_address_city']) {
                     $primaryCity = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Address\City')
                         ->findOneById($formData['primary_address_address_city']);
@@ -408,9 +428,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $result = array();
         foreach($academics as $academic) {
+            $identification = $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : $academic->getUserName();
+
             $item = (object) array();
             $item->id = $academic->getId();
-            $item->value = $academic->getFullName() . ' - ' . $academic->getUniversityIdentification();
+            $item->name = $academic->getFullName();
+            $item->universityIdentification = $identification;
+            $item->value = $academic->getFullName() . ' - ' . $identification;
             $result[] = $item;
         }
 
@@ -425,13 +449,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $academics = $this->_search();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($academics, $numResults);
+        $academics = $this->_search()
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach($academics as $academic) {
@@ -456,21 +480,25 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     *
+     * @return \Doctrine\ORM\Query
+     */
     private function _search()
     {
         switch($this->getParam('field')) {
             case 'username':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByUsername($this->getParam('string'));
+                    ->findAllByUsernameQuery($this->getParam('string'));
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByName($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
             case 'university_identification':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllByUniversityIdentification($this->getParam('string'));
+                    ->findAllByUniversityIdentificationQuery($this->getParam('string'));
         }
     }
 

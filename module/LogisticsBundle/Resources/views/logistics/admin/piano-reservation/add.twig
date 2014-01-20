@@ -1,0 +1,30 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/piano-reservation/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#playerSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('#playerId').val($(this).data('value').id);
+                } else {
+                    $('#playerId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

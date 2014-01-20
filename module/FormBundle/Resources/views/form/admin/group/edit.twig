@@ -1,0 +1,75 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('form_admin_group', 'forms') %}
+            <div class="sidebox">
+                <div class="title">Manage Group Forms</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the forms of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group', {"action": "forms", "id": group.getId()}) }}">&rarr; Manage Forms</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_group', 'view') %}
+            <div class="sidebox">
+                <div class="title">View Group</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this form group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_group', {"action": "view", "id": group.getId()}) }}">&rarr; View Group</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_admin_form_viewer', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage View Access</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage who can view the results of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_admin_group_viewer', {"action": "manage", "id": group.getId()}) }}">&rarr; Edit Result Viewers</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('form_manage_group', 'view') and group.canBeViewedBy(authenticatedPerson) %}
+            <div class="sidebox">
+                <div class="title">View Results</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the results of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('form_manage_group', {"action": "view", "id": group.getId()}) }}">&rarr; View Results</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+    </script>
+{% endblock %}

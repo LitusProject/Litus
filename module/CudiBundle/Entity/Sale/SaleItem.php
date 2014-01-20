@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -24,6 +28,13 @@ use CudiBundle\Entity\Sale\Article,
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem")
  * @ORM\Table(name="cudi.sales_sale_items", indexes={@ORM\Index(name="sales_sale_item_time", columns={"timestamp"})})
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "regular" = "CudiBundle\Entity\Sale\SaleItem",
+ *     "prof" = "CudiBundle\Entity\Sale\SaleItem\Prof",
+ *     "external" = "CudiBundle\Entity\Sale\SaleItem\External"
+ * })
  */
 class SaleItem
 {
@@ -65,6 +76,13 @@ class SaleItem
      * @ORM\Column(type="integer")
      */
     private $number;
+
+    /**
+     * @var integer The price of the purchase
+     *
+     * @ORM\Column(name="purchase_price", type="integer")
+     */
+    private $purchasePrice;
 
     /**
      * @var integer The price of the selling
@@ -113,6 +131,7 @@ class SaleItem
         $this->price = $price * 100;
         $this->timestamp = new DateTime();
         $this->discountType = $discountType;
+        $this->purchasePrice = $article->getPurchasePrice() * $number;
     }
 
     /**
@@ -165,6 +184,7 @@ class SaleItem
      */
     public function setNumber($number)
     {
+        $this->purchasePrice = round($this->purchasePrice * $number / $this->number);
         $this->price = round($this->price * $number / $this->number);
         $this->number = $number;
         return $this;
@@ -176,6 +196,22 @@ class SaleItem
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * @return integer
+     */
+    public function setPurchasePrice($price)
+    {
+        $this->purchasePrice = $price;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPurchasePrice()
+    {
+        return $this->purchasePrice;
     }
 
     /**
@@ -209,5 +245,13 @@ class SaleItem
     {
         if (isset(Discount::$POSSIBLE_TYPES[$this->discountType]))
             return Discount::$POSSIBLE_TYPES[$this->discountType];
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'regular';
     }
 }

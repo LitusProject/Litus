@@ -4,7 +4,7 @@ namespace CommonBundle\Repository\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * AcademicYearMap
@@ -27,12 +27,10 @@ class AcademicYearMap extends EntityRepository
             )
             ->setParameter('academic', $academic->getId())
             ->setParameter('academicYear', $academicYear)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

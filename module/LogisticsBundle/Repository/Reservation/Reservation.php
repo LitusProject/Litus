@@ -2,7 +2,9 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime,
+    LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 
 /**
  * Reservation
@@ -12,19 +14,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class Reservation extends EntityRepository
 {
-
-    public function findAll() {
+    public function findAllQuery()
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
-        ->getQuery()
-        ->getResult();
+            ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllConflicting($startDate, $endDate, $resource) {
-
+    public function findAllConflictingQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
@@ -38,8 +39,7 @@ class Reservation extends EntityRepository
             ->setParameter('resource', $resource)
             ->setParameter('start_date', $startDate)
             ->setParameter('end_date', $endDate)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -54,25 +54,24 @@ class Reservation extends EntityRepository
      * @param int $ignoreId
      * @return array
      */
-    public function findAllConflictingIgnoringId($startDate, $endDate, $resource, $ignoreId) {
+    public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('r')
-        ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
-        ->where(
-            $query->expr()->andx(
-                $query->expr()->eq('r.resource', ':resource'),
-                $query->expr()->lt('r.startDate', ':end_date'),
-                $query->expr()->gt('r.endDate', ':start_date'),
-                $query->expr()->neq('r.id', ':id')
+            ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.resource', ':resource'),
+                    $query->expr()->lt('r.startDate', ':end_date'),
+                    $query->expr()->gt('r.endDate', ':start_date'),
+                    $query->expr()->neq('r.id', ':id')
+                )
             )
-        )
-        ->setParameter('resource', $resource)
-        ->setParameter('start_date', $startDate)
-        ->setParameter('end_date', $endDate)
-        ->setParameter('id', $ignoreId)
-        ->getQuery()
-        ->getResult();
+            ->setParameter('resource', $resource)
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('id', $ignoreId)
+            ->getQuery();
 
         return $resultSet;
     }

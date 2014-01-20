@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -110,6 +114,19 @@ class QueueItem
     private $saleItems;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection The return items
+     *
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\ReturnItem", mappedBy="queueItem")
+     */
+    private $returnItems;
+
+    /**
+     * @var boolean Flag whether collect ticket was already printed
+     * @ORM\Column(name="collect_printed", type="boolean")
+     */
+    private $collectPrinted;
+
+    /**
      * @var array The possible states of a queue item
      */
     private static $POSSIBLE_STATUSES = array(
@@ -140,6 +157,7 @@ class QueueItem
         $this->person = $person;
         $this->session = $session;
         $this->setStatus('signed_in');
+        $this->collectPrinted = false;
 
         $this->queueNumber = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -321,5 +339,32 @@ class QueueItem
     public function getSaleItems()
     {
         return $this->saleItems;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getReturnItems()
+    {
+        return $this->returnItems;
+    }
+
+    /**
+     * @param boolean $collectPrinted
+     *
+     * @return \CudiBundle\Entity\Sale\QueueItem
+     */
+    public function setCollectPrinted($collectPrinted = true)
+    {
+        $this->collectPrinted = $collectPrinted;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getCollectPrinted()
+    {
+        return $this->collectPrinted;
     }
 }

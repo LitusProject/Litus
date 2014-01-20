@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -111,6 +115,19 @@ class Order
     public function getSupplier()
     {
         return $this->supplier;
+    }
+
+    /**
+     * Get the number of this order
+     *
+     * @return integer
+     */
+    public function getTotalNumber()
+    {
+        $number = 0;
+        foreach($this->items as $item)
+            $number += $item->getNumber();
+        return $number;
     }
 
     /**

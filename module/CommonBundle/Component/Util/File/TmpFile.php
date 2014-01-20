@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,7 +35,7 @@ class TmpFile
     /**
      * @var resource The file handler
      */
-    protected $fileHandler;
+    protected $fileHandle;
 
     /**
      * @param string $tmpDirectory The path to the directory that holds the temporary files
@@ -40,47 +44,18 @@ class TmpFile
     public function __construct($tmpDirectory = '/tmp')
     {
         $filename = '';
-        do{
+        do {
             $filename = '/.' . uniqid();
-        } while (
-            file_exists($tmpDirectory . $filename)
-        );
+        } while (file_exists($tmpDirectory . $filename));
 
         $this->_filename = FileUtil::getRealFilename($tmpDirectory . $filename);
-        $this->fileHandler = fopen($this->_filename, 'w+b');
+        $this->fileHandle = fopen($this->_filename, 'wb');
 
-        if(!$this->fileHandler) {
-            throw new Exception\FailedtoOpenException(
-                'Failed to open file ' . $this->_filename
+        if(false === $this->fileHandle) {
+            throw new Exception\FailedToOpenException(
+                'Failed to open file "' . $this->_filename . '"'
             );
         }
-    }
-
-    /**
-     * Returns this file's content.
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        $this->checkOpen();
-        fseek($this->fileHandler, 0);
-
-        return fread(
-            $this->fileHandler, filesize($this->_filename)
-        );
-    }
-
-    /**
-     * Append content to the file.
-     *
-     * @param string $content The content that should be appended
-     * @return void
-     */
-    public function appendContent($content)
-    {
-        $this->checkOpen();
-        fwrite($this->fileHandler, $content);
     }
 
     /**
@@ -95,13 +70,31 @@ class TmpFile
     }
 
     /**
-     * Check whether or not this file is open.
+     * Returns this file's content.
      *
-     * @return bool
+     * @return string
      */
-    public function isOpen()
+    public function getContent()
     {
-        return $this->fileHandler !== null;
+        $this->checkOpen();
+
+        $handle = fopen($this->_filename, 'r');
+        $data = fread($handle, filesize($this->_filename));
+        fclose($handle);
+
+        return $data;
+    }
+
+    /**
+     * Append content to the file.
+     *
+     * @param string $content The content that should be appended
+     * @return void
+     */
+    public function appendContent($content)
+    {
+        $this->checkOpen();
+        fwrite($this->fileHandle, $content);
     }
 
     /**
@@ -111,11 +104,11 @@ class TmpFile
      */
     public function destroy()
     {
-        if ($this->isOpen()) {
-            $fileHandler = $this->fileHandler;
-            $this->_fileHanlder = null;
+        if ($this->_isOpen()) {
+            $fileHandle = $this->fileHandle;
+            $this->_fileHandle = null;
 
-            fclose($fileHandler);
+            fclose($fileHandle);
             if (file_exists($this->_filename))
                 unlink($this->_filename);
         }
@@ -133,11 +126,24 @@ class TmpFile
      * Checks whether or not this file is open, throwing an exception if it is not.
      *
      * @return void
-     * @throws \CommonBundle\Component\Util\File\Exception\TmpFileClosedException If the file is not open
+     * @throws \CommonBundle\Component\Util\File\Exception\TmpFileClosedException
      */
     protected function checkOpen()
     {
-        if (!$this->isOpen())
-            throw new Exception\TmpFileClosedException($this);
+        if (!$this->_isOpen()) {
+            throw new Exception\TmpFileClosedException(
+                'The file "' . $this->_filename . '" has already been closed'
+            );
+        }
+    }
+
+    /**
+     * Check whether or not this file is open.
+     *
+     * @return bool
+     */
+    private function _isOpen()
+    {
+        return null !== $this->fileHandle;
     }
 }

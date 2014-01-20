@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\Stock\Period\Value;
 
 use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Delta
@@ -29,6 +29,25 @@ class Delta extends EntityRepository
             ->setParameter('period', $period->getId())
             ->getQuery()
             ->getSingleScalarResult();
+
+       return $resultSet;
+    }
+
+    public function findAllByArticleAndPeriodQuery(Article $article, Period $period)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v')
+            ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.article', ':article'),
+                    $query->expr()->eq('v.period', ':period')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('period', $period->getId())
+            ->orderBy('v.timestamp', 'DESC')
+            ->getQuery();
 
        return $resultSet;
     }

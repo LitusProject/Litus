@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -29,15 +33,12 @@ use CommonBundle\Entity\General\Language,
  */
 class Notification extends \CommonBundle\Entity\Node
 {
-
     /**
-     * @var The reservation's unique identifier
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this notification item
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
+     * @ORM\OneToMany(targetEntity="NotificationBundle\Entity\Node\Translation", mappedBy="notification", cascade={"persist", "remove"})
      */
-    private $id;
+    private $translations;
 
     /**
      * @var DateTime The start date and time of this reservation.
@@ -54,13 +55,6 @@ class Notification extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @var string The title of this notification
-     *
-     * @ORM\Column(type="text")
-     */
-    private $content;
-
-    /**
      * @var boolean The flag whether the notification is active or not.
      *
      * @ORM\Column(type="boolean")
@@ -71,31 +65,13 @@ class Notification extends \CommonBundle\Entity\Node
      * @param \CommonBundle\Entity\User\Person $person
      * @param string $category
      */
-    public function __construct(Person $person, $content, DateTime $startDate, DateTime $endDate, $active )
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active )
     {
         parent::__construct($person);
-
-        $this->content = $content;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->active = $active;
-    }
-
-    /**
-     * @param string $content
-     *
-     * @return \NotificationBundle\Entity\Node\Notification
-     */
-    public function setContent($content) {
-        $this->content = $content;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContent() {
-        return $this->content;
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -148,4 +124,66 @@ class Notification extends \CommonBundle\Entity\Node
     public function isActive() {
         return $this->active;
     }
+
+    /**
+     * @param \NotificationBundle\Entity\Node\Translation $translation
+     * @return \NotificationBundle\Entity\Node\Notification
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $this->translations->add($translation);
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return \NotificationBundle\Entity\Node\Translation
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+        foreach($this->translations as $translation) {
+            if (null !== $language && $translation->getLanguage() == $language)
+                return $translation;
+
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+                $fallbackTranslation = $translation;
+        }
+
+        if ($allowFallback)
+            return $fallbackTranslation;
+
+        return null;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getContent(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getContent();
+
+        return '';
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getSummary($length = 200, Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if (null !== $translation)
+            return $translation->getSummary($length);
+
+        return '';
+    }
+
 }

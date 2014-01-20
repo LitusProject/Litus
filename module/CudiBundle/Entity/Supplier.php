@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,6 +19,9 @@
 namespace CudiBundle\Entity;
 
 use CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,11 +76,23 @@ class Supplier
     private $template;
 
     /**
+     * @var boolean Is this supplier the contactperson
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $contact;
+
+    /**
      * @var array The possible templates
      */
     public static $POSSIBLE_TEMPLATES = array(
         'default' => 'Default',
     );
+
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager;
 
     /**
      * @param string $name
@@ -82,7 +101,7 @@ class Supplier
      * @param string $vatNumber
      * @param strign $template
      */
-    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template)
+    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
     {
         if (!self::isValidTemplate($template))
             throw new \InvalidArgumentException('The template is not valid.');
@@ -91,7 +110,8 @@ class Supplier
             ->setPhoneNumber($phoneNumber)
             ->setAddress($address)
             ->setVatNumber($vatNumber)
-            ->setTemplate($template);
+            ->setTemplate($template)
+            ->setContact($contact);
     }
 
     /**
@@ -205,6 +225,94 @@ class Supplier
             throw new \InvalidArgumentException('The template is not valid.');
 
         $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findNumberBySupplier($this, $academicYear, $organization);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return integer
+     */
+    public function getNumberDelivered(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Delivery')
+            ->findNumberBySupplier($this, $academicYear);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return integer
+     */
+    public function getNumberOrdered(AcademicYear $academicYear)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+            ->findNumberBySupplier($this, $academicYear);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findTotalRevenueBySupplier($this, $academicYear, $organization);
+    }
+
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getTotalPurchase(AcademicYear $academicYear, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findTotalPurchaseBySupplier($this, $academicYear, $organization);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @param boolean
+     *
+     * @return \CudiBundle\Entity\Supplier
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
         return $this;
     }
 }

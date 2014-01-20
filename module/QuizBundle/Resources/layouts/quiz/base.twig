@@ -1,0 +1,56 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+
+    {{ headMeta() }}
+	{{ headTitle('Quiz', 'PREPEND') }}
+
+	{{ headLink() }}
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a href="{{ unionUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
+			<ul class="nav">
+                {% if hasAccess('quiz_quiz', 'manage') %}
+                    <li {% if 'manage' == getParam('action') %} class="active" {% endif %}>
+                        <a href="{{ url('quiz_quiz', {'action': 'manage', 'quizid': quiz.getId()}) }}">Enter Points</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('quiz_quiz', 'view') %}
+                    <li {% if 'view' == getParam('action') %} class="active" {% endif %}>
+                        <a href="{{ url('quiz_quiz', {'action': 'view', 'quizid': quiz.getId()}) }}">View Points</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('quiz_quiz', 'results') %}
+                    <li {% if 'results' == getParam('action') %} class="active" {% endif %}>
+                        <a href="{{ url('quiz_quiz', {'action': 'results', 'quizid': quiz.getId()}) }}">Results</a>
+                    </li>
+                {% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="container">
+	{% include 'quiz/partials/flashMessenger.twig' %}
+
+	<div id="content_controller">
+	    {% block content %} {% endblock %}
+	</div>
+    <hr>
+	<footer>
+	    Litus Quiz | Code by <a href="http://litus.cc">Litus</a>
+	</footer>
+</div>
+
+{{ inlineScript() }}
+
+{% block content_script %} {% endblock %}
+
+</body>
+</html>

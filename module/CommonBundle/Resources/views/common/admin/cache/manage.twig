@@ -10,12 +10,14 @@
             <tr>
                 <th>Name</th>
             </tr>
-            {% for item in cache.getIterator() %}
+            {% for key in paginator %}
                 <tr>
-                    <td>{{ item }}</td>
+                    <td>{{ key }}</td>
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     {% if hasAccess('common_admin_cache', 'flush') %}

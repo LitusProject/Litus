@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,23 +35,18 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
         $this->installConfig(
             array(
                 array(
-                    'key'         => 'syllabus.update_socket_port',
-                    'value'       => '8898',
-                    'description' => 'The port used for the websocket of the syllabus update',
+                    'key'         => 'syllabus.update_socket_file',
+                    'value'       => 'tcp://127.0.0.1:8898',
+                    'description' => 'The file used for the websocket of the syllabus update',
                 ),
                 array(
-                    'key'         => 'syllabus.update_socket_remote_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The remote host for the websocket of the syllabus update',
-                ),
-                array(
-                    'key'         => 'syllabus.update_socket_host',
-                    'value'       => '127.0.0.1',
-                    'description' => 'The host used for the websocket of the syllabus update',
+                    'key'         => 'syllabus.update_socket_public',
+                    'value'       => '127.0.0.1:8898',
+                    'description' => 'The public address for the websocket of the syllabus update',
                 ),
                 array(
                     'key'         => 'syllabus.queue_socket_key',
-                    'value'       => '2wA25hTrkiUIWUIGNedstXSWYhKSr30p',
+                    'value'       => md5(uniqid(rand(), true)),
                     'description' => 'The key used for the websocket of the queue',
                 ),
                 array(
@@ -98,7 +97,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'addStudy', 'addSubject', 'deleteStudy', 'deleteSubject', 'edit', 'manage', 'search'
                     ),
                     'syllabus_admin_group' => array(
-                        'add', 'delete', 'deleteStudy', 'edit', 'manage', 'studies'
+                        'add', 'delete', 'deleteStudy', 'edit', 'export', 'manage', 'studies'
                     ),
                     'syllabus_admin_study' => array(
                         'edit', 'manage', 'search', 'searchSubject', 'typeahead'
@@ -127,6 +126,14 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                         'guest',
                     ),
                     'actions' => array(
+                    ),
+                ),
+                'guest' => array(
+                    'system' => true,
+                    'actions' => array(
+                        'syllabus_subject' => array(
+                            'typeahead'
+                        ),
                     ),
                 ),
             )

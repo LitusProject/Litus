@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -18,19 +22,23 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown,
+    FormBundle\Entity\Field\Dropdown as DropdownField,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Entry,
+    FormBundle\Entity\Node\GuestInfo,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\Validator\File\Size as SizeValidator;
 
 /**
  * Specifield Form Add
@@ -40,7 +48,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var \FormBundle\Entity\Node\Form
      */
     protected $_form;
 
@@ -95,16 +103,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 if ($fieldSpecification->hasLengthSpecification()) {
                     $field->setAttribute('class', $field->getAttribute('class') . ' count')
+                        ->setAttribute('maxlength', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
 
-            } elseif ($fieldSpecification instanceof Dropdown) {
+            } elseif ($fieldSpecification instanceof DropdownField) {
                 $field = new Select('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
                     ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
             } elseif ($fieldSpecification instanceof CheckboxField) {
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
+                $field->setLabel($fieldSpecification->getLabel($language));
+            } elseif ($fieldSpecification instanceof FileField) {
+                $field = new File('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language));
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
@@ -117,13 +129,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
+        $field = new Submit('save_as_draft');
+        $field->setValue('Save as Draft')
+            ->setAttribute('class', 'btn btn-info');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue($form->getSubmitText($language))
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }
 
-    public function populateFromEntry(Entry $entry) {
+    public function populateFromEntry(Entry $entry)
+    {
         $formData = array();
 
         if ($entry->isGuestEntry()) {
@@ -137,6 +155,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($formData);
+    }
+
+    public function hasDraft($hasDraft)
+    {
+        if ($hasDraft) {
+            $this->get('save_as_draft')->setAttribute('disabled', 'disabled');
+        } else {
+            $this->get('save_as_draft')->setAttribute('disabled', null);
+        }
+    }
+
+    public function populateFromGuestInfo(GuestInfo $guestInfo)
+    {
+        $data = array(
+            'first_name' => $guestInfo->getFirstName(),
+            'last_name' => $guestInfo->getLastName(),
+            'email' => $guestInfo->getEmail(),
+        );
+
+        $this->setData($data);
     }
 
     public function getInputFilter()
@@ -167,8 +205,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         )
                     )
                 );
-            } elseif ($fieldSpecification instanceof Dropdown) {
+            } elseif ($fieldSpecification instanceof DropdownField) {
             } elseif ($fieldSpecification instanceof CheckboxField) {
+            } elseif ($fieldSpecification instanceof FileField) {
+                $inputFilter->add(
+                    $factory->createInput(
+                        array(
+                            'name'     => 'field-' . $fieldSpecification->getId(),
+                            'required' => $fieldSpecification->isRequired(),
+                            'validators' => array(
+                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                            ),
+                        )
+                    )
+                );
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }

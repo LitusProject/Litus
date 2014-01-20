@@ -3,8 +3,7 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr\Join,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -15,7 +14,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class StudySubjectMap extends EntityRepository
 {
-    public function findAllByStudyAndAcademicYear(StudyEntity $study, AcademicYear $academicYear)
+    public function findAllByStudyAndAcademicYearQuery(StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
@@ -32,13 +31,12 @@ class StudySubjectMap extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByNameAndStudyAndAcademicYear($name, StudyEntity $study, AcademicYear $academicYear)
+    public function findAllByNameAndStudyAndAcademicYearQuery($name, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
@@ -48,24 +46,22 @@ class StudySubjectMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.name'), ':name')
-            )
+            ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
                     $query->expr()->in('m.study', $parentIds),
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
             )
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByCodeAndStudyAndAcademicYear($code, StudyEntity $study, AcademicYear $academicYear)
+    public function findAllByCodeAndStudyAndAcademicYearQuery($code, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
         foreach($study->getParents() as $parent) {
@@ -75,24 +71,22 @@ class StudySubjectMap extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's', Join::WITH,
-                $query->expr()->like($query->expr()->lower('s.code'), ':code')
-            )
+            ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code'),
                     $query->expr()->in('m.study', $parentIds),
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
             )
             ->setParameter('code', '%' . strtolower($code) . '%')
             ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByAcademicYear(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -116,13 +110,12 @@ class StudySubjectMap extends EntityRepository
                 $query->expr()->in('s.id', $ids)
             )
             ->orderBy('s.code', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByNameAndAcademicYear($name, AcademicYear $academicYear)
+    public function findAllByNameAndAcademicYearQuery($name, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -150,13 +143,12 @@ class StudySubjectMap extends EntityRepository
                 $query->expr()->in('s.id', $ids)
             )
             ->orderBy('s.code', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByCodeAndAcademicYear($code, AcademicYear $academicYear)
+    public function findAllByCodeAndAcademicYearQuery($code, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s.id')
@@ -184,8 +176,7 @@ class StudySubjectMap extends EntityRepository
                 $query->expr()->in('s.id', $ids)
             )
             ->orderBy('s.code', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

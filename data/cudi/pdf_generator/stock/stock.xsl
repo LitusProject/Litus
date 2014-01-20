@@ -22,7 +22,7 @@
     <xsl:template match="stock">
         <fo:root font-size="10pt">
             <fo:layout-master-set>
-                <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="55mm" margin-bottom="40mm" margin-left="15mm" margin-right="15mm">
+                <fo:simple-page-master master-name="page-master" page-height="297mm" page-width="210mm" margin-top="55mm" margin-bottom="10mm" margin-left="15mm" margin-right="15mm">
                     <fo:region-body margin-bottom="8mm"/>
                     <fo:region-before region-name="header-block" extent="-35mm"/>
                 </fo:simple-page-master>
@@ -75,7 +75,18 @@
                             </fo:table-header>
 
                             <fo:table-body>
-                                <xsl:apply-templates select="items"/>
+                                <xsl:choose>
+                                    <xsl:when test="count($items_count) != 0">
+                                        <xsl:apply-templates select="items"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <fo:table-row>
+                                            <fo:table-cell number-columns-spanned="6">
+                                                <fo:block></fo:block>
+                                            </fo:table-cell>
+                                        </fo:table-row>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </fo:table-body>
                         </fo:table>
                     </fo:block>
@@ -83,6 +94,8 @@
             </fo:page-sequence>
         </fo:root>
     </xsl:template>
+
+    <xsl:param name="items_count" select="/stock/items/*"/>
 
     <xsl:template name="date" match="date">
         <xsl:value-of select="/stock/@date"/>

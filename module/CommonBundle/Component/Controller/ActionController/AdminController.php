@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,12 +19,8 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
-    DateInterval,
-    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -83,6 +83,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $result->servedBy = null;
+        if (false !== getenv('SERVED_BY'))
+            $result->servedBy = ucfirst(getenv('SERVED_BY'));
+
         $e->setResult($result);
 
         return $result;
@@ -140,47 +144,6 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getCurrentAcademicYear($organization = true)
     {
-        if (!$organization)
-            return parent::getCurrentAcademicYear();
-
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $now = new DateTime();
-        $start = new DateTime(
-            str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.prof_start_academic_year')
-            )
-        );
-        $start->add(new DateInterval('P1Y'));
-
-        if ($now > $start) {
-            $startAcademicYear->add(new DateInterval('P1Y2M'));
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
-        }
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        return $academicYear;
+        return parent::getCurrentAcademicYear($organization);
     }
 }

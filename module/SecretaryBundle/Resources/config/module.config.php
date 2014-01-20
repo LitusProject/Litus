@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -41,6 +45,24 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'secretary_admin_registration',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'secretary_admin_promotion' => array(
+                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/secretary/promotion[/:action[/:id][/page/:page]][/:academicyear][/:field/:string][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                        'page'         => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                        'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string'       => '[%a-zA-Z0-9:.,_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'secretary_admin_promotion',
                         'action'     => 'manage',
                     ),
                 ),
@@ -100,6 +122,7 @@ return array(
         'invokables' => array(
             'secretary_install'              => 'SecretaryBundle\Controller\Admin\InstallController',
             'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
+            'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
 
             'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
         ),

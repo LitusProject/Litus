@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -51,7 +55,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         $form = new AddForm($this->getEntityManager());
@@ -158,7 +162,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addFromSubjectAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         if (!($subject = $this->_getSubject()))
@@ -454,7 +458,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         $article = $this->getEntityManager()
@@ -478,7 +482,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
 
-            return new ViewModel();
+            return;
         }
 
         return $article;
@@ -486,7 +490,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {

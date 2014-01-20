@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,12 +34,13 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllUncompleted(),
+                ->findAllUncompletedQuery(),
             $this->getParam('page')
         );
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -46,10 +51,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function completedAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllCompleted(),
+                ->findAllCompletedQuery(),
             $this->getParam('page')
         );
         return new ViewModel(
@@ -62,10 +67,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refusedAction()
     {
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllRefused(),
+                ->findAllRefusedQuery(),
             $this->getParam('page')
         );
         return new ViewModel(

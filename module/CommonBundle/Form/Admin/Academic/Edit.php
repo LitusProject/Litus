@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -61,11 +65,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             ->setAttribute('placeholder', 'dd/mm/yyyy');
         $this->add($field);
 
-        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
+        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
         $field->setLabel('Primary Address&mdash;Student Room or Home');
         $this->add($field);
 
-        $field = new AddressForm('secondary_address', 'secondary_address');
+        $field = new AddressForm('secondary_address', 'secondary_address', false);
         $field->setLabel('Secondary Address&mdash;Home');
         $this->add($field);
 

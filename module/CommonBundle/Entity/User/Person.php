@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -85,14 +89,14 @@ abstract class Person
     /**
      * @var string The persons first name
      *
-     * @ORM\Column(name="first_name", type="string", length=30)
+     * @ORM\Column(name="first_name", type="string", length=50)
      */
     private $firstName;
 
     /**
      * @var string The persons last name
      *
-     * @ORM\Column(name="last_name", type="string", length=30)
+     * @ORM\Column(name="last_name", type="string", length=50)
      */
     private $lastName;
 
@@ -104,7 +108,7 @@ abstract class Person
     private $email;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The address of the supplier
+     * @var \CommonBundle\Entity\General\Address The address of the user
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
@@ -241,11 +245,11 @@ abstract class Person
     }
 
     /**
-     * @return string
+     * @return \CommonBundle\Entity\User\Credential
      */
     public function getCredential()
     {
-        return $this->credential->getCredential();
+        return $this->credential;
     }
 
     /**
@@ -526,6 +530,16 @@ abstract class Person
     }
 
     /**
+     * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function removeOrganizationStatus(OrganizationStatus $organizationStatus)
+    {
+        $this->organizationStatuses->removeElement($organizationStatus);
+        return $this;
+    }
+
+    /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \CommonBundle\Entity\User\Status\Organization
      */
@@ -535,6 +549,8 @@ abstract class Person
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
+
+        return null;
     }
 
     /**
@@ -568,9 +584,10 @@ abstract class Person
         if (null !== $this->getOrganizationStatus($academicYear)) {
             if ($this->getOrganizationStatus($academicYear) == 'non_member')
                 return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -596,7 +613,7 @@ abstract class Person
      *
      * @return \CommonBundle\Entity\User\Person
      */
-    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $subjectConfig = 'common.account_activated_subject', $time = 86400)
+    public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 604800)
     {
         if ($onlyShibboleth) {
             $this->canlogin = true;
@@ -612,13 +629,19 @@ abstract class Person
             $entityManager->persist($code);
             $this->setCode($code);
 
-            $message = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue($messageConfig);
+            if (!($language = $this->getLanguage())) {
+                $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev('en');
+            }
 
-            $subject = $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue($subjectConfig);
+            $mailData = unserialize(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue($messageConfig)
+            );
+
+            $message = $mailData[$language->getAbbrev()]['content'];
+            $subject = $mailData[$language->getAbbrev()]['subject'];
 
             $mailAddress = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

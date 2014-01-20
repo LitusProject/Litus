@@ -1,0 +1,111 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/sold/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="sold_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="title">Title</option>
+                    <option value="barcode">Barcode</option>
+                    <option value="author">Author</option>
+                    <option value="publisher">Publisher</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Title</th>
+                    <th width="170px">Author</th>
+                    <th width="100px" class="widest">Publisher</th>
+                    <th width="100px" class="wider">Barcode</th>
+                    <th width="100px">Purchase Price</th>
+                    <th width="90px">Sell Price</th>
+                    <th width="90px">Number Sold</th>
+                    <th width="70px">Action</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Title</th>
+                    <th width="170px">Author</th>
+                    <th width="100px" class="widest">Publisher</th>
+                    <th width="100px" class="wider">Barcode</th>
+                    <th width="100px">Purchase Price</th>
+                    <th width="90px">Sell Price</th>
+                    <th width="90px">Number Sold</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for item in paginator %}
+                    <tr class="item">
+                        <td>{{ item.getMainArticle().getTitle() }}</td>
+                        <td>{{ item.getMainArticle().getAuthors() }}</td>
+                        <td class="widest">{{ item.getMainArticle().getPublishers() }}</td>
+                        <td class="wider">{{ item.getBarcode() }}</td>
+                        <td>&euro; {{ (item.getPurchasePrice()/100)|number_format(2) }}</td>
+                        <td>&euro; {{ (item.getSellPrice()/100)|number_format(2) }}</td>
+                        <td>{{ item.getNumberSold(activeAcademicYear) }}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
+                                <a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'article', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('cudi_admin_sales_financial_sold', 'articlesSearch') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#sold_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('cudi_admin_sales_financial_sold', {'action': 'articles', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_sold', {'action': 'articlesSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#sold_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#sold_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.title + '</td>')
+                            .append('<td>' + this.author + '</td>')
+                            .append('<td class="widest">' + this.publishers + '</td>')
+                            .append('<td class="wider">' + this.barcode + '</td>')
+                            .append('<td>&euro; ' + this.sellPrice + '</td>')
+                            .append('<td>&euro; ' + this.purchasePrice + '</td>')
+                            .append('<td>' + this.numberSold + '</td>')
+                            .append('<td>' + {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
+                                '<a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'article'}) }}' + this.id + '/{{ activeAcademicYear.getCode() }}" class="view">View</a>'
+                            {% endif %} + '</td>');
+                    });
+                    $('#sold_search table').change();
+                },
+                clear: function () {
+                    $('#sold_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -54,7 +58,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function failedAction($result)
     {
-        if (null === $result->getPersonObject())
+        if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential())
             return;
 
         $result->getPersonObject()
@@ -74,13 +78,19 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $result->getPersonObject()
                 ->setCode($code);
 
-            $email = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_deactivated_mail');
+            if (!($language = $result->getPersonObject()->getLanguage())) {
+                $language = $this->_entityManager->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev('en');
+            }
 
-            $subject = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.account_deactivated_subject');
+            $mailData = unserialize(
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.account_deactivated_mail')
+            );
+
+            $message = $mailData[$language->getAbbrev()]['content'];
+            $subject = $mailData[$language->getAbbrev()]['subject'];
 
             $mailaddress = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -91,7 +101,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->getConfigValue('system_mail_name');
 
             $mail = new Message();
-            $mail->setBody(str_replace('{{ code }}', $code->getCode() , $email))
+            $mail->setBody(str_replace('{{ code }}', $code->getCode() , $message))
                 ->setFrom($mailaddress, $mailname)
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);

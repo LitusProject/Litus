@@ -13,29 +13,49 @@
             <p>Bookings Close Date: <b>{{ event.getBookingsCloseDate().format('d/m/Y H:i') }}</b></p>
         {% endif %}
         <p>Number Sold: <b>{{ event.getNumberSold() }}</b></p>
+        <p>Number Booked: <b>{{ event.getNumberBooked() }}</b></p>
+        {% if event.getNumberOfTickets() > 0 %}
+            <p>Number Free: <b>{{ event.getNumberFree() }}</b></b>
+        {% endif %}
+        <br />
+        {% if event.getOptions()|length > 0 %}
+            {% for option in event.getOptions() %}
+                <p>{{ option.getName() }}: <b>{{ event.getNumberSoldByOption(option, true) }} / {{ event.getNumberBookedByOption(option, true) }}</b></p>
+                {% if not event.isOnlyMembers() %}
+                    <p>{{ option.getName() }} (Not Member): <b>{{ event.getNumberSoldByOption(option, false) }} / {{ event.getNumberBookedByOption(option, false) }}</b></p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Member: <b>{{ event.getNumberSoldByOption(null, true) }} / {{ event.getNumberBookedByOption(null, true) }}</b></p>
+            {% if not event.isOnlyMembers() %}
+                <p>Not Member: <b>{{ event.getNumberSoldByOption(null, false) }} / {{ event.getNumberBookedByOption(null, false) }}</b></p>
+            {% endif %}
+        {% endif %}
         <br />
 
         <table class="full_width manage">
             <thead>
                 <tr>
                     <th>Person</th>
-                    <th width="150px">Status</th>
-                    <th width="200px">Number</th>
-                    <th width="130px">Book Date</th>
-                    <th width="130px">Sold Date</th>
-                    <th width="100px">Member</th>
+                    <th width="100px">Status</th>
+                    <th width="150px">Option</th>
+                    <th width="170px">Number</th>
+                    <th width="110px">Book Date</th>
+                    <th width="110px">Sold Date</th>
+                    <th width="70px">Member</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% for ticket in paginator %}
                     <tr class="item item-{{ ticket.getId() }}">
-                        <td>{% if ticket.getPerson() %}{{ ticket.getPerson().getFullName() }}{% else %}(none){% endif %}</td>
+                        <td>{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
                         <td>{{ ticket.getStatus() }}</td>
+                        <td>{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
                         <td>{{ ticket.getNumber() }}</td>
                         <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
                         <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
-                        <td>{% if ticket.isMember() %}yes{% else %}no{% endif %}</td>
+                        <td>{% if ticket.isMember() %}&times;{% endif %}</td>
                     </tr>
                 {% endfor %}
             </tbody>

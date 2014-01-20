@@ -2,7 +2,7 @@
 
 namespace QuizBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Quiz
@@ -12,14 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class Quiz extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
 
-        return $query->select('quiz')
-            ->from('QuizBundle\Entity\Quiz', 'quiz')
-            ->orderBy('quiz.timestamp', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $resultSet = $query->select('q')
+            ->from('QuizBundle\Entity\Quiz', 'q')
+            ->orderBy('q.timestamp', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,6 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Entity\Sale\Article,
+    DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -35,9 +40,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     private $_article;
 
     /**
-     * Create a new Article Front Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Article $article The article
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
      */
@@ -47,8 +50,8 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.pdf_generator_path');
 
-           parent::__construct(
-               $entityManager,
+        parent::__construct(
+            $entityManager,
             $filePath . '/article/front.xsl',
             $file->getFilename()
         );
@@ -96,20 +99,20 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
-        $configs = $this->getConfigRepository();
+        $configuration = $this->getConfigRepository();
 
         $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
-        $union_url = $configs->getConfigValue('union_url');
-        $union_mail = $configs->getConfigValue('cudi.mail');
-        $university = $configs->getConfigValue('university');
-        $faculty = $configs->getConfigValue('faculty');
-        $address_name = $configs->getConfigValue('cudi.front_address_name');
+        $organization_short_name = $configuration->getConfigValue('organization_short_name');
+        $organization_name = $configuration->getConfigValue('organization_name');
+        $organization_logo = $configuration->getConfigValue('organization_logo');
+        $organization_url = $configuration->getConfigValue('organization_url');
+        $organization_mail = $configuration->getConfigValue('cudi.mail');
+        $university = $configuration->getConfigValue('university');
+        $faculty = $configuration->getConfigValue('faculty');
+        $address_name = $configuration->getConfigValue('cudi.front_address_name');
         $address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
-            ->findOneById($configs->getConfigValue('cudi.billing_address'));
+            ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
         $academicYear = $this->_getCurrentAcademicYear();
 
@@ -167,18 +170,18 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $union_short_name
+                            'short_name' => $organization_short_name
                         ),
                         array(
                             new Object(
                                 'name',
                                 null,
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 null,
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),
@@ -219,12 +222,12 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                             new Object(
                                 'site',
                                 null,
-                                $union_url
+                                $organization_url
                             ),
                             new Object(
                                 'email',
                                 null,
-                                $union_mail
+                                $organization_mail
                             )
                         )
                     ),
@@ -265,11 +268,6 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        return AcademicYear::getOrganizationYear($this->getEntityManager());
     }
 }

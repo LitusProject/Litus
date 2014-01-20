@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -60,10 +64,11 @@ return array(
             'cudi_admin_article_comment' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article/comment[/:action[/:id[/:article]]][/]',
+                    'route' => '/admin/article/comment[/:action[/:id[/:article]][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_article_comment',
@@ -74,10 +79,11 @@ return array(
             'cudi_admin_article_file' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/article/file[/:action[/:id]][/]',
+                    'route' => '/admin/article/file[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_article_file',
@@ -118,6 +124,20 @@ return array(
                     ),
                 ),
             ),
+            'cudi_admin_sales_article_sale' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/article/sale[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'           => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_article_sale',
+                        'action'     => 'sale',
+                    ),
+                ),
+            ),
             'cudi_admin_sales_article_discount' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -128,6 +148,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'cudi_admin_sales_article_discount',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_article_discount_template' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/article/discount/template[/:action[/:id]][/]',
+                    'constraints' => array(
+                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'      => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_article_discount_template',
                         'action'     => 'manage',
                     ),
                 ),
@@ -226,15 +260,87 @@ return array(
             'cudi_admin_sales_financial' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/sales/financial[/:action[/:id][/page/:page]][/]',
+                    'route' => '/admin/sales/financial[/:action[/:id][/:academicyear]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial',
+                        'action'     => 'overview',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_sold' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
                     ),
                     'defaults' => array(
-                        'controller' => 'cudi_admin_sales_financial',
-                        'action'     => 'sales',
+                        'controller' => 'cudi_admin_sales_financial_sold',
+                        'action'     => 'individual',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_returned' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/returned[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial_returned',
+                        'action'     => 'individual',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_ordered' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial_ordered',
+                        'action'     => 'individual',
+                    ),
+                ),
+            ),
+            'cudi_admin_sales_financial_delivered' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                        'page'   => '[0-9]*',
+                        'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'string' => '[%a-zA-Z0-9:.,_-]*',
+                        'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_sales_financial_delivered',
+                        'action'     => 'individual',
                     ),
                 ),
             ),
@@ -747,51 +853,57 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'cudi_install'                         => 'CudiBundle\Controller\Admin\InstallController',
+            'cudi_install'                                  => 'CudiBundle\Controller\Admin\InstallController',
 
-            'cudi_admin_article'                   => 'CudiBundle\Controller\Admin\ArticleController',
-            'cudi_admin_article_subject'           => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
-            'cudi_admin_article_comment'           => 'CudiBundle\Controller\Admin\Article\CommentController',
-            'cudi_admin_article_file'              => 'CudiBundle\Controller\Admin\Article\FileController',
-            'cudi_admin_sales_article'             => 'CudiBundle\Controller\Admin\Sale\ArticleController',
-            'cudi_admin_sales_article_barcode'     => 'CudiBundle\Controller\Admin\Sale\Article\BarcodeController',
-            'cudi_admin_sales_article_discount'    => 'CudiBundle\Controller\Admin\Sale\Article\DiscountController',
-            'cudi_admin_sales_article_restriction' => 'CudiBundle\Controller\Admin\Sale\Article\RestrictionController',
-            'cudi_admin_sales_booking'             => 'CudiBundle\Controller\Admin\Sale\BookingController',
-            'cudi_admin_sales_session'             => 'CudiBundle\Controller\Admin\Sale\SessionController',
-            'cudi_admin_sales_session_restriction' => 'CudiBundle\Controller\Admin\Sale\Session\RestrictionController',
-            'cudi_admin_sales_session_openinghour' => 'CudiBundle\Controller\Admin\Sale\Session\OpeningHourController',
-            'cudi_admin_sales_financial'           => 'CudiBundle\Controller\Admin\Sale\FinancialController',
-            'cudi_admin_supplier'                  => 'CudiBundle\Controller\Admin\SupplierController',
-            'cudi_admin_supplier_user'             => 'CudiBundle\Controller\Admin\Supplier\UserController',
-            'cudi_admin_stock'                     => 'CudiBundle\Controller\Admin\StockController',
-            'cudi_admin_stock_period'              => 'CudiBundle\Controller\Admin\Stock\PeriodController',
-            'cudi_admin_stock_delivery'            => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
-            'cudi_admin_stock_retour'              => 'CudiBundle\Controller\Admin\Stock\RetourController',
-            'cudi_admin_stock_order'               => 'CudiBundle\Controller\Admin\Stock\OrderController',
-            'cudi_admin_prof_action'               => 'CudiBundle\Controller\Admin\Prof\ActionController',
-            'cudi_admin_mail'                      => 'CudiBundle\Controller\Admin\MailController',
+            'cudi_admin_article'                            => 'CudiBundle\Controller\Admin\ArticleController',
+            'cudi_admin_article_subject'                    => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
+            'cudi_admin_article_comment'                    => 'CudiBundle\Controller\Admin\Article\CommentController',
+            'cudi_admin_article_file'                       => 'CudiBundle\Controller\Admin\Article\FileController',
+            'cudi_admin_sales_article'                      => 'CudiBundle\Controller\Admin\Sale\ArticleController',
+            'cudi_admin_sales_article_sale'                 => 'CudiBundle\Controller\Admin\Sale\Article\SaleController',
+            'cudi_admin_sales_article_barcode'              => 'CudiBundle\Controller\Admin\Sale\Article\BarcodeController',
+            'cudi_admin_sales_article_discount'             => 'CudiBundle\Controller\Admin\Sale\Article\DiscountController',
+            'cudi_admin_sales_article_discount_template'    => 'CudiBundle\Controller\Admin\Sale\Article\Discount\TemplateController',
+            'cudi_admin_sales_article_restriction'          => 'CudiBundle\Controller\Admin\Sale\Article\RestrictionController',
+            'cudi_admin_sales_booking'                      => 'CudiBundle\Controller\Admin\Sale\BookingController',
+            'cudi_admin_sales_session'                      => 'CudiBundle\Controller\Admin\Sale\SessionController',
+            'cudi_admin_sales_session_restriction'          => 'CudiBundle\Controller\Admin\Sale\Session\RestrictionController',
+            'cudi_admin_sales_session_openinghour'          => 'CudiBundle\Controller\Admin\Sale\Session\OpeningHourController',
+            'cudi_admin_sales_financial'                    => 'CudiBundle\Controller\Admin\Sale\FinancialController',
+            'cudi_admin_sales_financial_sold'               => 'CudiBundle\Controller\Admin\Sale\Financial\SoldController',
+            'cudi_admin_sales_financial_returned'           => 'CudiBundle\Controller\Admin\Sale\Financial\ReturnedController',
+            'cudi_admin_sales_financial_delivered'          => 'CudiBundle\Controller\Admin\Sale\Financial\DeliveredController',
+            'cudi_admin_sales_financial_ordered'            => 'CudiBundle\Controller\Admin\Sale\Financial\OrderedController',
+            'cudi_admin_supplier'                           => 'CudiBundle\Controller\Admin\SupplierController',
+            'cudi_admin_supplier_user'                      => 'CudiBundle\Controller\Admin\Supplier\UserController',
+            'cudi_admin_stock'                              => 'CudiBundle\Controller\Admin\StockController',
+            'cudi_admin_stock_period'                       => 'CudiBundle\Controller\Admin\Stock\PeriodController',
+            'cudi_admin_stock_delivery'                     => 'CudiBundle\Controller\Admin\Stock\DeliveryController',
+            'cudi_admin_stock_retour'                       => 'CudiBundle\Controller\Admin\Stock\RetourController',
+            'cudi_admin_stock_order'                        => 'CudiBundle\Controller\Admin\Stock\OrderController',
+            'cudi_admin_prof_action'                        => 'CudiBundle\Controller\Admin\Prof\ActionController',
+            'cudi_admin_mail'                               => 'CudiBundle\Controller\Admin\MailController',
 
-            'cudi_sale_sale'                       => 'CudiBundle\Controller\Sale\SaleController',
-            'cudi_sale_queue'                      => 'CudiBundle\Controller\Sale\QueueController',
+            'cudi_sale_sale'                                => 'CudiBundle\Controller\Sale\SaleController',
+            'cudi_sale_queue'                               => 'CudiBundle\Controller\Sale\QueueController',
 
-            'cudi_supplier_index'                  => 'CudiBundle\Controller\Supplier\IndexController',
-            'cudi_supplier_article'                => 'CudiBundle\Controller\Supplier\ArticleController',
-            'cudi_supplier_auth'                   => 'CudiBundle\Controller\Supplier\AuthController',
+            'cudi_supplier_index'                           => 'CudiBundle\Controller\Supplier\IndexController',
+            'cudi_supplier_article'                         => 'CudiBundle\Controller\Supplier\ArticleController',
+            'cudi_supplier_auth'                            => 'CudiBundle\Controller\Supplier\AuthController',
 
-            'cudi_prof_index'                      => 'CudiBundle\Controller\Prof\IndexController',
-            'cudi_prof_auth'                       => 'CudiBundle\Controller\Prof\AuthController',
-            'cudi_prof_article'                    => 'CudiBundle\Controller\Prof\ArticleController',
-            'cudi_prof_article_mapping'            => 'CudiBundle\Controller\Prof\Article\MappingController',
-            'cudi_prof_file'                       => 'CudiBundle\Controller\Prof\Article\FileController',
-            'cudi_prof_article_comment'            => 'CudiBundle\Controller\Prof\Article\CommentController',
-            'cudi_prof_prof'                       => 'CudiBundle\Controller\Prof\ProfController',
-            'cudi_prof_subject'                    => 'CudiBundle\Controller\Prof\SubjectController',
-            'cudi_prof_subject_comment'            => 'CudiBundle\Controller\Prof\Subject\CommentController',
-            'cudi_prof_help'                       => 'CudiBundle\Controller\Prof\HelpController',
+            'cudi_prof_index'                               => 'CudiBundle\Controller\Prof\IndexController',
+            'cudi_prof_auth'                                => 'CudiBundle\Controller\Prof\AuthController',
+            'cudi_prof_article'                             => 'CudiBundle\Controller\Prof\ArticleController',
+            'cudi_prof_article_mapping'                     => 'CudiBundle\Controller\Prof\Article\MappingController',
+            'cudi_prof_file'                                => 'CudiBundle\Controller\Prof\Article\FileController',
+            'cudi_prof_article_comment'                     => 'CudiBundle\Controller\Prof\Article\CommentController',
+            'cudi_prof_prof'                                => 'CudiBundle\Controller\Prof\ProfController',
+            'cudi_prof_subject'                             => 'CudiBundle\Controller\Prof\SubjectController',
+            'cudi_prof_subject_comment'                     => 'CudiBundle\Controller\Prof\Subject\CommentController',
+            'cudi_prof_help'                                => 'CudiBundle\Controller\Prof\HelpController',
 
-            'cudi_booking'                         => 'CudiBundle\Controller\BookingController',
-            'cudi_opening_hour'                   => 'CudiBundle\Controller\OpeningHourController',
+            'cudi_booking'                                  => 'CudiBundle\Controller\BookingController',
+            'cudi_opening_hour'                             => 'CudiBundle\Controller\OpeningHourController',
         ),
     ),
     'assetic_configuration' => array(
@@ -837,11 +949,6 @@ return array(
                         ),
                         'options' => array(
                             'output' => 'supplier_css.css',
-                        ),
-                    ),
-                    'supplier_nav' => array(
-                        'assets' => array(
-                            'admin/js/supplierNavigation.js',
                         ),
                     ),
                     'queue_js' => array(

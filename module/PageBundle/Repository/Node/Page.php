@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository\Node;
 
-use Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     PageBundle\Entity\Node\Page as PageEntity;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository,
  */
 class Page extends EntityRepository
 {
-    public function findAll()
+    public function findAllQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -21,8 +21,7 @@ class Page extends EntityRepository
             ->where(
                 $query->expr()->isNull('p.endTime')
             )
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
@@ -45,7 +44,7 @@ class Page extends EntityRepository
             return $this->findOneByName($name, null);
 
         $query = $this->_em->createQueryBuilder();
-        $query->select('p')
+        $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->innerJoin('p.parent', 'par')
             ->where(
@@ -56,16 +55,12 @@ class Page extends EntityRepository
                 )
             )
             ->setParameter('name', $name)
-            ->setParameter('parentName', $parentName);
-
-        $resultSet = $query->setMaxResults(1)
+            ->setParameter('parentName', $parentName)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
     public function findOneByName($name, PageEntity $parent = null)
@@ -89,11 +84,8 @@ class Page extends EntityRepository
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 }

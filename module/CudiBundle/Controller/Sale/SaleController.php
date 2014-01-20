@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,9 +19,9 @@
 namespace CudiBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Returned as ReturnedLog,
     CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Form\Sale\Sale\ReturnSale as ReturnSaleForm,
+    CudiBundle\Entity\Sale\ReturnItem,
+    CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -56,6 +60,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     ->getConfigValue('cudi.queue_socket_key'),
                 'paydesks' => $paydesks,
                 'membershipArticles' => $membershipArticles,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -66,7 +71,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        $form = new ReturnSaleForm($this->getEntityManager());
+        $form = new ReturnForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -81,53 +86,35 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneByBarcode($formData['article']);
+                    ->findOneById($formData['article_id']);
 
-                $booking = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldByPersonAndArticle($person, $article);
+                $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
+                $queueItem->setStatus('sold');
+                $this->getEntityManager()->persist($queueItem);
 
-                if ($booking) {
-                    $saleItem = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                        ->findOneByPersonAndArticle($person, $article);
+                $saleItem = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findOneByPersonAndArticle($person, $article);
 
-                    if ($saleItem) {
-                        if ($saleItem->getNumber() == 1) {
-                            $this->getEntityManager()->remove($saleItem);
-                        } else {
-                            $saleItem->setNumber($saleItem->getNumber() - 1);
-                        }
-                    }
-
-                    if ($booking->getNumber() == 1) {
-                        $this->getEntityManager()->remove($booking);
-                    } else {
-                        $booking->setNumber($booking->getNumber() - 1);
-                    }
-
-                    $article->setStockValue($article->getStockValue() + 1);
-
-                    $this->getEntityManager()->persist(new ReturnedLog($this->getAuthentication()->getPersonObject(), $article));
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The sale was successfully returned!'
-                        )
-                    );
+                if ($saleItem) {
+                    $price = $saleItem->getPrice() / $saleItem->getNumber();
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The sale could not be returned!'
-                        )
-                    );
+                    $price = $article->getSellPrice();
                 }
+
+                $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
+
+                $article->setStockValue($article->getStockValue() + 1);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The sale was successfully returned!'
+                    )
+                );
 
                 $this->redirect()->toRoute(
                     'cudi_sale_sale',
@@ -144,7 +131,48 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         return new ViewModel(
             array(
                 'form' => $form,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );
+    }
+
+    public function returnPriceAction()
+    {
+        $this->initAjax();
+
+        if($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+
+            if (!isset($data['person']) || !isset($data['article']))
+                return new ViewModel();
+
+            $person = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person')
+                ->findOneById($data['person']);
+
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($data['article']);
+
+            $saleItem = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                ->findOneByPersonAndArticle($person, $article);
+
+            if ($saleItem) {
+                $price = $saleItem->getPrice() / $saleItem->getNumber();
+            } else {
+                $price = $article->getSellPrice();
+            }
+
+            return new ViewModel(
+                array(
+                    'result' => array(
+                        'price' => $price,
+                    ),
+                )
+            );
+        }
+
+        return new ViewModel();
     }
 }

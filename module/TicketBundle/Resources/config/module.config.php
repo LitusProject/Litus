@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -43,10 +47,11 @@ return array(
             'ticket_admin_ticket' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/admin/ticket/ticket[/:action[/:id]][/]',
+                    'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',
+                        'page'    => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'ticket_admin_ticket',
@@ -71,7 +76,7 @@ return array(
             'ticket_sale_ticket' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/ticket/sale/ticket[/:action[/:id[/:ticket]]][/page/:page][/]',
+                    'route' => '/ticket/sale/ticket[/:action[/:id[/:ticket]][/page/:page]][/]',
                     'constraints' => array(
                         'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'      => '[0-9]*',

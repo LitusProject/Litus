@@ -3,7 +3,7 @@
 namespace BrBundle\Repository\Company;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Page
@@ -13,7 +13,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Page extends EntityRepository
 {
-
     public function findOneActiveBySlug($slug, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
@@ -30,16 +29,14 @@ class Page extends EntityRepository
             )
             ->setParameter('slug', $slug)
             ->setParameter('year', $academicYear)
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllActive(AcademicYear $academicYear)
+    public function findAllActiveQuery(AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -53,16 +50,15 @@ class Page extends EntityRepository
                 )
             )
             ->setParameter('year', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllActiveBySearch(AcademicYear $academicYear, $string)
+    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $string)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('p')
+        $resultSet = $query->select('p, c')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
             ->innerJoin('p.company', 'c')
@@ -76,8 +72,7 @@ class Page extends EntityRepository
             ->orderBy('c.name', 'ASC')
             ->setParameter('name', strtolower($string))
             ->setParameter('year', $academicYear)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -61,7 +65,21 @@ return array(
             '@bootstrap_js_modal',
             '@common_download_file',
         ),
+        'cudi_admin_sales_article_sale' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'cudi_admin_sales_article_discount' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'cudi_admin_sales_article_discount_template' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -112,16 +130,57 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'cudi_admin_sales_financial' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
+            '@common_download_file',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'cudi_admin_sales_financial_sold' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'cudi_admin_sales_financial_returned' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'cudi_admin_sales_financial_ordered' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'cudi_admin_sales_financial_delivered' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'cudi_admin_supplier' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'cudi_admin_supplier_user' => array(
             '@common_jquery',
@@ -153,7 +212,6 @@ return array(
             '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
         ),
         'cudi_admin_stock_delivery' => array(
@@ -162,7 +220,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
             '@common_download_file',
         ),
@@ -172,7 +229,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@supplier_nav',
             '@common_remote_typeahead',
             '@common_download_file',
         ),
@@ -181,6 +237,8 @@ return array(
             '@admin_css',
             '@admin_js',
             '@common_download_file',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
         'cudi_sale_sale' => array(
             '@common_jquery',

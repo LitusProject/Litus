@@ -2,7 +2,7 @@
 
 namespace CudiBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Log
@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class Log extends EntityRepository
 {
-    public function findBookingLogs()
+    public function findBookingLogsQuery()
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -26,8 +26,7 @@ class Log extends EntityRepository
             ->setParameter('assignments', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Assignments'))
             ->setParameter('cancellations', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Cancellations'))
             ->orderBy('l.timestamp', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

@@ -5,14 +5,18 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Document\Pdf;
+namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Cv\Util,
     BrBundle\Entity\Cv\Entry,
@@ -80,9 +84,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
         }
 
-        $logoPath = $this->_entityManager
+        $organization_logo = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_logo');
+            ->getConfigValue('organization_logo');
 
         $foreword = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -92,7 +96,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'cvbook',
                 array(
-                    'logo' => $logoPath,
+                    'logo' => $organization_logo,
                     'index' => $this->_translator->translate('Alphabetical Index'),
                     'toc' => $this->_translator->translate('Table of Contents'),
                 ),
@@ -132,8 +136,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 
     private function _generateCv(Entry $cv)
     {
-
-        $picturePath = $this->getEntityManager()
+        $picturePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path');
 
@@ -143,6 +146,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'id'        => $cv->getId(),
                 'firstname' => $cv->getFirstName(),
                 'lastname'  => $cv->getLastName(),
+                'birthday'  => $cv->getBirthDay()->format('d/m/Y'),
                 'email'     => $cv->getEmail(),
                 'phone'     => $cv->getPhoneNumber(),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),

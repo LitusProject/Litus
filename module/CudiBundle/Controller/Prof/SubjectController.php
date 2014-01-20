@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,12 +34,12 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getAcademicYear());
+            ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
@@ -50,7 +54,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         if (!($subject = $this->_getSubject()))
             return new ViewModel();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear();
 
         $articleMappings = $this->_getArticlesFromMappings(
             $this->getEntityManager()
@@ -138,7 +142,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return new ViewModel();
 
         $subjects = $this->getEntityManager()
@@ -192,7 +196,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {

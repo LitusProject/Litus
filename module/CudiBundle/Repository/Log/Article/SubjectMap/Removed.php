@@ -3,7 +3,7 @@
 namespace CudiBundle\Repository\Log\Article\SubjectMap;
 
 use DateTime,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Removed
@@ -13,7 +13,7 @@ use DateTime,
  */
 class Removed extends EntityRepository
 {
-    public function findAllAfter(DateTime $date)
+    public function findAllAfterQuery(DateTime $date)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -22,8 +22,7 @@ class Removed extends EntityRepository
                 $query->expr()->gt('l.timestamp', ':date')
             )
             ->setParameter('date', $date)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $resultSet;
     }

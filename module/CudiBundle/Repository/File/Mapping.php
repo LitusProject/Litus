@@ -4,7 +4,7 @@ namespace CudiBundle\Repository\File;
 
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File as FileEntity,
-    Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Mapping
@@ -25,19 +25,16 @@ class Mapping extends EntityRepository
                     $query->expr()->eq('m.article', ':article')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->setParameter('file', $file->getId())
+            ->setParameter('article', $article)
+            ->setParameter('file', $file)
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
-        if (isset($resultSet[0]))
-            return $resultSet[0];
-
-        return null;
+        return $resultSet;
     }
 
-    public function findAllPrintableByArticle(Article $article, $isProf = false)
+    public function findAllPrintableByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -50,14 +47,13 @@ class Mapping extends EntityRepository
                     $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('article', $article)
+            ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByArticle(Article $article, $isProf = false)
+    public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -69,9 +65,8 @@ class Mapping extends EntityRepository
                     $isProf ? '1=1' : $query->expr()->eq('m.isProf', 'false')
                 )
             )
-            ->setParameter('article', $article->getId())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('article', $article)
+            ->getQuery();
 
         return $resultSet;
     }

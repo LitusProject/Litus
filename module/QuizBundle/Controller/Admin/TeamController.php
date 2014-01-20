@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace QuizBundle\Controller\Admin;
 
@@ -13,37 +29,42 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  *
  * Controller for /admin/quiz/:quizid/team[/:action[/:id]][/page/:page][/]
  *
- * @author Lars Vierbergen <vierbergenlars@gmail.com>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class TeamController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+        if (!($quiz = $this->_getQuiz()))
+            return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->findByQuiz($quiz),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'QuizBundle\Entity\Team',
+            $this->getParam('page'),
+            array(
+                'quiz' => $quiz
+            ),
+            array(
+                'number' => 'ASC'
+            )
         );
 
         return new ViewModel(
             array(
                 'quiz' => $quiz,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }
 
     public function addAction()
     {
-        if(!($quiz = $this->_getQuiz()))
-            return new ViewModel;
+        if (!($quiz = $this->_getQuiz()))
+            return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = new AddForm($this->getEntityManager(), $quiz);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -77,8 +98,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $next_team_number = $this->getEntityManager()
-                ->getRepository('QuizBundle\Entity\Team')
-                ->getNextTeamNumberForQuiz($quiz);
+            ->getRepository('QuizBundle\Entity\Team')
+            ->getNextTeamNumberForQuiz($quiz);
 
         $form->get('number')
             ->setValue($next_team_number);
@@ -93,8 +114,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if(!($team = $this->_getTeam()))
-            return new ViewModel;
+        if (!($team = $this->_getTeam()))
+            return new ViewModel();
 
         $form  = new EditForm($this->getEntityManager(), $team);
 
@@ -105,8 +126,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $team->setName($formData['name']);
-                $team->setNumber($formData['number']);
+                $team->setName($formData['name'])
+                    ->setNumber($formData['number']);
 
                 $this->getEntityManager()->flush();
 
@@ -140,7 +161,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($team = $this->_getTeam()))
-            return new ViewModel;
+            return new ViewModel();
 
         $this->getEntityManager()->remove($team);
 
@@ -160,7 +181,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getQuiz()
     {
-        if($this->getParam('quizid') === null) {
+        if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -183,12 +204,32 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Quiz')
             ->findOneById($this->getParam('quizid'));
 
-        if($quiz === null) {
+        if ($quiz === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
                     'No quiz with the given id was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+
+        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
                 )
             );
 
@@ -210,7 +251,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getTeam()
     {
-        if($this->getParam('id') === null) {
+        if ($this->getParam('id') === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -234,7 +275,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Team')
             ->findOneById($this->getParam('id'));
 
-        if($team === null) {
+        if ($team === null) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -254,7 +295,25 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
+        if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You do not have the permissions to modify this quiz!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
         return $team;
     }
-
 }

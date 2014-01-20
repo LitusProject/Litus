@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -65,9 +69,13 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($units as $unit)
             $unitsArray[$unit->getId()] = $unit->getName();
 
+        $now = new DateTime();
         $result = array();
         foreach ($shifts as $shift) {
             if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
+                continue;
+
+            if ($shift->getStartDate() > $now)
                 continue;
 
             foreach ($shift->getResponsibles() as $responsible) {
@@ -120,7 +128,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
-                    $payed[$shift->getId()] = $volunteer->getPayed();
+                    $payed[$shift->getId()] = $volunteer->isPayed();
             }
         }
 
@@ -258,15 +266,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
-            return $this->getCurrentAcademicYear();
-
-        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $start->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+        $date = null;
+        if (null !== $this->getParam('academicyear'))
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
@@ -280,7 +283,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'manage'
+                    'action' => 'index'
                 )
             );
 

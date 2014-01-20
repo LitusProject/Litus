@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -36,41 +40,10 @@ class Pdf extends \PublicationBundle\Entity\Edition
      * @param \CommonBundle\Entity\General\AcademicYear
      * @param string $title The title of this edition
      * @param \DateTime $date The date of this edition
+     * @param string $fileName The file name of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date, $fileName)
     {
-        parent::__construct($publication, $academicYear, $title, $date);
-    }
-
-    private function getBase()
-    {
-        return '_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/pdf/' . Url::createSlug($this->getPublication()->getTitle());
-    }
-
-    private function getFile()
-    {
-        return Url::createSlug($this->getTitle()) . '.pdf';
-    }
-
-    public function getDirectory()
-    {
-        return 'public/' . $this->getBase();
-    }
-
-    /**
-     * @return string The pdf file of this edition
-     */
-    public function getFileName()
-    {
-        return $this->getDirectory() . '/' . $this->getFile();
-    }
-
-    /**
-     * @return string The url of the file of this edition
-     */
-    public function getUrl()
-    {
-        return $this->getBase() . '/' . $this->getFile();
+        parent::__construct($publication, $academicYear, $title, $date, $fileName);
     }
 }

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -21,7 +25,7 @@ use CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Articles\Restriction")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction")
  * @ORM\Table(name="cudi.sales_articles_restrictions")
  */
 class Restriction
@@ -152,7 +156,7 @@ class Restriction
             ->findOneByUniversityStart($startAcademicYear);
 
         if ('member' == $this->type) {
-            return ('1' == $this->value && $person->isMember($academicYear) || '0' == $this->value && !$person->isMember($academicYear));
+            return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
         } elseif ('amount' == $this->type) {
             $amount = sizeof($entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')

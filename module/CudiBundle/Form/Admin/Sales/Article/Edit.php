@@ -5,17 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
+use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -53,6 +56,16 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
         $this->add($field);
 
         $this->populateFromArticle($article);
+
+        $membershipArticles = unserialize(
+            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        if (in_array($article->getId(), $membershipArticles)) {
+            $this->get('bookable')->setAttribute('disabled', 'disabled');
+            $this->get('unbookable')->setAttribute('disabled', 'disabled');
+        }
     }
 
     public function getInputFilter()

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -35,11 +39,12 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         if (!($company = $this->_getCompany()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company\Logo')
-                ->findAllByCompany($company),
-            $this->getParam('page')
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Company\Logo',
+            $this->getParam('page'),
+            array(
+                'company' => $company,
+            )
         );
 
         $filePath = $this->getEntityManager()
@@ -89,6 +94,22 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     $original = clone $image;
 
                     $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
+
+                    $color = 0;
+                    $iterator = $image->getPixelIterator();
+                    $nbPixels = 0;
+                    foreach ($iterator as $pixels) {
+                        foreach ($pixels as $pixel){
+                            if ($pixel->getColor()['a'] == 1)
+                                continue;
+
+                            $pixel_color = $pixel->getColor(true);
+                            $nbPixels++;
+                            $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
+                        }
+                    }
+                    if ($nbPixels != 0 && $color/$nbPixels < 0.5)
+                        $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
 
                     $all = new Imagick();
                     $all->addImage($image);

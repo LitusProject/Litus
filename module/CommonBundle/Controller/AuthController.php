@@ -5,18 +5,22 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -137,23 +141,53 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null === $code->getRedirect()) {
-                            $this->redirect()->toRoute(
-                                'common_index'
-                            );
-                        } else {
+                        $registrationEnabled = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('secretary.enable_registration');
+
+                        if ($registrationEnabled) {
+                            $academic = $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                                ->findOneByUniversityIdentification($this->getParam('identification'));
+
+                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                                $this->redirect()->toRoute(
+                                    'secretary_registration'
+                                );
+
+                                return new ViewModel();
+                            }
+                        }
+
+                        if (null !== $code->getRedirect()) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
+
+                            return new ViewModel();
                         }
                     } else {
                         $this->redirect()->toRoute(
                             'secretary_registration'
                         );
+
+                        return new ViewModel();
                     }
                 }
             }
         }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'common_index'
+        );
 
         return new ViewModel();
     }

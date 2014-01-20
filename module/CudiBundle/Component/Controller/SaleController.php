@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -33,6 +37,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
+        if (isset($_SERVER['HTTPS']) && '' != $_SERVER['HTTPS'])
+            $this->redirect()->toUrl('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
@@ -53,10 +60,10 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (null == $session || !$session->isOpen())
-            throw new Exception('No valid session is given');
-
         $result = parent::onDispatch($e);
+
+        if (null == $session || !$session->isOpen())
+            $result->invalidSession = true;
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -66,9 +73,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result->session = $session;
 
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $result->lightVersion = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -79,36 +86,14 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * Initializes the localization
-     *
-     * @return void
-     */
-    protected function initLocalization()
-    {
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        $this->getTranslator()->setCache($this->getCache());
-        $this->getTranslator()->setLocale($language->getAbbrev());
-
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
-    }
-
-    /**
      * Returns the WebSocket URL.
      *
      * @return string
      */
     protected function getSocketUrl()
     {
-        $address = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_remote_host');
-        $port = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_port');
-
-        return 'ws://' . $address . ':' . $port;
+            ->getConfigValue('cudi.queue_socket_public');
     }
 }

@@ -1,0 +1,40 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+    {% if authenticatedPerson is not null %}
+        <h2>{{ translate('Your Forms') }}</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ translate("Title") }}</th>
+                    <th width="150px">{{ translate("Start Date") }}</th>
+                    <th width="150px">{{ translate("End Date") }}</th>
+                    <th width="150px">{{ translate("Active") }}</th>
+                    <th width="150px">{{ translate("Actions") }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for group in groups %}
+                <tr class="item item-{{ group.getId() }}">
+                    <td>{{ group.getTitle(language) }}</td>
+                    <td>{{ dateLocalized(group.getStartDate(), 'dd/MM/y HH:mm') }}</td>
+                    <td>{{ dateLocalized(group.getEndDate(), 'dd/MM/y HH:mm') }}</td>
+                    <td>{% if group.isActive() %}&times;{% endif %}</td>
+                    <td>
+                        {% if hasAccess('form_manage_group', 'view') %}
+                          <a href="{{ url("form_manage_group", {"action" : "view", "id" : group.getId()}) }}" class="btn btn-info btn-mini">{{ translate("View") }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center;">
+            <img src="/img/litus.png" alt="Litus" />
+            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+        </div>
+    {% endif %}
+{% endblock %}

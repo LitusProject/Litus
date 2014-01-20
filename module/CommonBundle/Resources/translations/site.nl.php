@@ -5,16 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 return array(
-    'Vlaamse Technische Kring Leuven' => 'Vlaamse Technische Kring Leuven',
-    'VTK Leuven vzw' => 'VTK Leuven vzw',
+    'Vlaamse Technische Kring' => 'Vlaamse Technische Kring',
+    'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
     'Dutch' => 'Nederlands',
@@ -47,6 +51,7 @@ return array(
     'You have been successfully logged in!' => 'Je bent succesvol aangemeld!',
     'The given username and password did not match. Please try again.' => 'De gebruikersnaam en het wachtwoord komen niet overeen. Probeer het nog een keer.',
     'You have been successfully logged out!' => 'Je bent succesvol afgemeld!',
+    'Something went wrong while logging you in. Please try again later.' => 'Er liep iets mis tijdens het aanmelden. Probeer het later nog een keer.',
 
     'Activate' => 'Activeren',
     'Password' => 'Wachtwoord',
@@ -57,7 +62,7 @@ return array(
     'Choose Your Study' => 'Kies Je Studierichting',
     'Subjects' => 'Vakken',
     'Choose Your Subjects' => 'Kies Je Vakken',
-    'Your data was succesfully updated!' => 'Je gegevens zijn succesvol geupdate!',
+    'Your data was succesfully updated!' => 'Je gegevens zijn succesvol aangepast!',
     'Sessions' => 'Sessies',
     'Expire' => 'Vervallen',
     'The session was successfully expired!' => 'De sessie is succesvol vervallen!',
@@ -65,7 +70,7 @@ return array(
 
     'Other' => 'Andere',
 
-    '24h-Run' => '24-Urenloop',
+    '24h Run' => '24 Urenloop',
     'We have run already %laps% laps and we are the first team.' => 'We hebben al %laps% ronden gelopen en we zijn het eerste team.',
     'We have run already %laps% laps and we are %behind% laps behind the first team.' => 'We hebben al %laps% ronden gelopen en we zijn %behind% ronden achter op het eerste team.',
     'Current Runner:' => 'Huidige Loper:',
@@ -92,4 +97,10 @@ return array(
     'Opening Hours' => 'Openingsuren',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
+
+    'Praesidium' => 'Praesidium',
+    'Groupcoordinator' => 'Groepscoördinator',
+
+    'Enroll' => 'Schrijf In',
+    'Unsubscribe' => 'Schrijf Uit',
 );

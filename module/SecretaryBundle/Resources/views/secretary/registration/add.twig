@@ -10,9 +10,17 @@
     <div class="row page">
         <div class="span12">
             {% if form %}
-                {% if organizations|length > 1 %}
+                {% if organizations|length > 1 or enableOtherOrganization %}
                     <div id="organizationSelector">
+                        <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
                         <ul style="list-style: none; width: 300px; margin: 0 auto;">
+                            {% if enableOtherOrganization %}
+                                <li style="margin-bottom: 10px;">
+                                    <a class="thumbnail" id="organization-0" data-id="0" href="#" style="padding: 20px;text-decoration: none;">
+                                        {{ translate('Other') }}
+                                    </a>
+                                </li>
+                            {% endif %}
                             {% for organization in organizations %}
                                 <li style="margin-bottom: 10px;">
                                     <a class="thumbnail" id="organization-{{ organization.getId() }}" data-id="{{ organization.getId() }}" href="#" style="padding: 20px;text-decoration: none;">
@@ -23,7 +31,7 @@
                         </ul>
                     </div>
                 {% endif %}
-                <div id="registerForm"{% if organizations|length > 1 %} style="display: none;"{% endif %}>
+                <div id="registerForm"{% if organizations|length > 1 or enableOtherOrganization %} style="display: none;"{% endif %}>
                     {% import 'site/partials/form.twig' as forms %}
                     {{ forms.renderForm(form) }}
                 </div>
@@ -31,7 +39,7 @@
                 <div style="text-align: center;">
                     <p style="text-align: center;">
                         {% autoescape false %}
-                            {{ translate('To register, please login first with your KU Leuven account') }}
+                            {{ translate('To register, please login first with your KU Leuven account.') }}
                         {% endautoescape %}
                     </p>
                     <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
@@ -43,7 +51,7 @@
     <div id="modalMemberWarning" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Become A Member') }}</h3>
+            <h3>{{ translate('Become a Member') }}</h3>
         </div>
         <div class="modal-body">
             <p>
@@ -62,7 +70,7 @@
     <div id="modalTermsAndCoditions" class="modal fade hide">
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Terms And Conditions') }}</h3>
+            <h3>{{ translate('Terms and Conditions') }}</h3>
         </div>
         <div class="modal-body">
             <p>
@@ -78,13 +86,31 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if organizations|length > 1 %}
+            var membershipArticles = {
+                {% for organization, membershipArticle in membershipArticles %}
+                    '{{ organization }}': {{ (membershipArticle.getSellPrice()/100)|number_format(2) }},
+                {% endfor %}
+            };
+
+            {% if organizations|length > 1 or enableOtherOrganization %}
                 $('#organizationSelector a').click(function (e) {
                     e.preventDefault();
                     $('#organizationSelector').hide();
                     $('#registerForm').show();
                     $('#registerForm #organization').val($(this).data('id')).closest('.control-group').hide();
+
+                    if ($(this).data('id') == 0) {
+                        $('#registerForm #become_member').closest('.control-group').hide();
+                        $('#registerForm #become_member').prop('checked', false);
+                    } else {
+                        $('#registerForm #become_member').prop('checked', true);
+                        $('#registerForm #become_member').closest('.control-group').show();
+                        $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$(this).data('id')]));
+                    }
                 });
+            {% else %}
+                $('#registerForm #organization').closest('.control-group').hide();
+                $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
             {% endif %}
 
             $('#conditions').parent().append(
@@ -98,7 +124,7 @@
             $('#register').click(function (e) {
                 e.preventDefault();
 
-                if (!$('#become_member').is(':checked')) {
+                if (!$('#become_member').is(':checked') && $('#registerForm #organization').val() != 0) {
                     $('#modalMemberWarning').modal();
                     $('#modalMemberWarning .confirm').one('click', function () {
                         $('#register_form').submit();
@@ -112,6 +138,12 @@
             $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
+
+            {% if selectedOrganization %}
+                $('#organization-{{ selectedOrganization.getId() }}').click();
+            {% elseif isPost %}
+                $('#organization-0').click();
+            {% endif %}
 
             $('#university_email').wrap('<div class=\"input-append\" />');
             $('#university_email').after('<span class=\"add-on\">{{ studentDomain }}</span>');
@@ -137,6 +169,7 @@
             else
                 $('#organization_info .control-group').hide();
             $('#become_member, #conditions, #bakske').closest('.control-group').show();
+            $('#registerForm #organization').closest('.control-group').hide();
         }
     </script>
 {% endblock %}

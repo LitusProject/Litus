@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -71,6 +75,14 @@ class Comment
      * @ORM\Column(type="string")
      */
     private $type;
+
+    /**
+     * @var boolean Flag whether this comment was read
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="read_by", referencedColumnName="id")
+     */
+    private $readBy;
 
     /**
      * @var \Doctrine\Common\Collection\ArrayCollection
@@ -169,6 +181,32 @@ class Comment
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRead()
+    {
+        return null !== $this->readBy;
+    }
+
+    /**
+     * @param \CommonBundle\Entity\User\Person|null $readBy
+     * @return \SyllabusBundle\Entity\Subject\Comment
+     */
+    public function setReadBy(Person $readBy = null)
+    {
+        $this->readBy = $readBy;
+        return $this;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function getReadBy()
+    {
+        return $this->readBy;
     }
 
     /**

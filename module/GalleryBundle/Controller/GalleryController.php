@@ -1,8 +1,25 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
+    DateInterval,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -21,7 +38,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach($albums as $album) {
-            $year = AcademicYear::getAcademicYear($album->getDate());
+            $date = $album->getDate();
+            $date->add(new DateInterval('P1W'));
+            $year = AcademicYear::getAcademicYear($date);
             if (!isset($sorted[$year])) {
                 $sorted[$year] = (object) array(
                     'year' => $year,
@@ -54,6 +73,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $start = AcademicYear::getDateTime($this->getParam('name'));
         $end = clone $start;
         $end = AcademicYear::getStartOfAcademicYear($end->modify('+1year +2months'));
+
+        $start->sub(new DateInterval('P1W'));
+        $end->sub(new DateInterval('P1W'));
 
         $albums = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')

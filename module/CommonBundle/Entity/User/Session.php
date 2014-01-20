@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -208,14 +212,12 @@ class Session
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)
     {
-        if ($userAgent != $this->userAgent || !$this->active) {
+        if ($userAgent != $this->userAgent || !$this->active)
             return false;
-        }
 
         $now = new DateTime();
-        if ($this->expirationTime < $now) {
+        if ($this->expirationTime < $now)
             return false;
-        }
 
         if ($ip != $this->ip) {
             $this->deactivate();

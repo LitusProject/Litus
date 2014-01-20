@@ -41,7 +41,7 @@
                     </dd>
                     <dt>{{ translate('Profile Picture') }}</dt>
                     <dd>
-                        <img width="200" src="{{ url('common_account', {'action':'photo', 'image': authenticatedPerson.getPhotoPath()}) }}" alt=""/>
+                        <img width="200" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt=""/>
                     </dd>
                 </dl>
 

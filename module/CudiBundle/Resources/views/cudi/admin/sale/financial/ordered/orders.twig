@@ -1,0 +1,100 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/sale/financial/partials/navigation.twig' %}
+
+    {% include 'cudi/admin/sale/financial/ordered/partials/years.twig' %}
+
+    {% include 'cudi/admin/sale/financial/ordered/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="ordered_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="supplier">Supplier</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th>Person</th>
+                    <th width="70px">Supplier</th>
+                    <th width="70px">Number</th>
+                    <th width="70px">Price</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th width="100px">Date</th>
+                    <th>Person</th>
+                    <th width="70px">Supplier</th>
+                    <th width="70px">Number</th>
+                    <th width="70px">Price</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for item in paginator %}
+                    <tr class="item">
+                        <td>{{ item.getDateOrdered().format('d/m/Y H:i') }}</td>
+                        <td>{{ item.getPerson().getFullName() }}</td>
+                        <td>{{ item.getSupplier().getName() }}</td>
+                        <td>{{ item.getTotalNumber() }}</td>
+                        <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_sales_financial_ordered', 'order') %}
+                                <a href="{{ url('cudi_admin_sales_financial_ordered', {'action': 'order', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('cudi_admin_sales_financial_ordered', 'ordersSearch') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#ordered_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'orders', 'academicyear': activeAcademicYear.getCode()}) }}',
+                url: '{{ url('cudi_admin_sales_financial_ordered', {'action': 'ordersSearch', 'academicyear': activeAcademicYear.getCode()}) }}',
+                display: function (data) {
+                    $('#ordered_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#ordered_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.dateOrdered + '</td>')
+                            .append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.supplier + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>&euro; ' + this.price + '</td>')
+                            .append('<td>' + {% if hasAccess('cudi_admin_sales_financial_ordered', 'order') %}
+                                '<a href="{{ url('cudi_admin_sales_financial_ordered', {'action': 'order'}) }}' + this.id + '/{{ activeAcademicYear.getCode() }}" class="view">View</a>'
+                            {% endif %} + '</td>');
+                    });
+                    $('#ordered_search table').change();
+                },
+                clear: function () {
+                    $('#ordered_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -21,14 +25,17 @@ use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
-    Doctrine\ORM\EntityManager;
+    DateInterval,
+    DateTime,
+    Doctrine\ORM\EntityManager,
+    SecretaryBundle\Entity\Registration;
 
 /**
  * QueueItem Object
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class QueueItem extends \CommonBundle\Component\WebSocket\Server
+class QueueItem
 {
     /**
      * @var \CudiBundle\Entity\Sale\Session The sale session
@@ -245,6 +252,14 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     $registration = $this->_entityManager
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                    if (null === $registration) {
+                        $registration = new Registration(
+                            $booking->getPerson(),
+                            $this->_getCurrentAcademicYear()
+                        );
+                        $this->_entityManager->persist($registration);
+                    }
                     $registration->setPayed();
                 } catch(\Exception $e) {}
             }
@@ -266,7 +281,8 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                 $item->getPerson(),
                 $article,
                 'sold',
-                $number
+                $number,
+                true
             );
             $this->_entityManager->persist($booking);
 
@@ -277,6 +293,24 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
                     'article' => $booking->getArticle(),
                     'number' => $booking->getNumber(),
                 );
+            }
+
+            if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
+                try {
+                    $booking->getPerson()
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $booking->getPerson(),
+                                'member',
+                                $this->_getCurrentAcademicYear()
+                            )
+                        );
+
+                    $registration = $this->_entityManager
+                        ->getRepository('SecretaryBundle\Entity\Registration')
+                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    $registration->setPayed();
+                } catch(\Exception $e) {}
             }
         }
 
@@ -436,27 +470,6 @@ class QueueItem extends \CommonBundle\Component\WebSocket\Server
      */
     private function _getCurrentAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-            $this->_entityManager->flush();
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 }

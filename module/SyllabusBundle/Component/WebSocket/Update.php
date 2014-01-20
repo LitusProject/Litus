@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -49,14 +53,11 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
-        $address = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_host');
-        $port = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_port');
-
-        parent::__construct($address, $port);
+        parent::__construct(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('syllabus.update_socket_file')
+        );
 
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -79,43 +80,44 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         if (!isset($command->key) || $command->key != $key) {
             $this->removeUser($user);
             $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key' . PHP_EOL;
             return;
         }
 
-        if (!isset($command->authSession)) {
-            $this->removeUser($user);
-            $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-            return;
-        }
+        if ('development' != getenv('APPLICATION_ENV')) {
+            if (!isset($command->authSession)) {
+                $this->removeUser($user);
+                $now = new DateTime();
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
+                return;
+            }
 
-        $authSession = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\User\Session')
-            ->findOneById($command->authSession);
+            $authSession = $this->_entityManager
+                ->getRepository('CommonBundle\Entity\User\Session')
+                ->findOneById($command->authSession);
 
-        if ($authSession) {
-            $acl = new Acl($this->_entityManager);
+            if ($authSession) {
+                $acl = new Acl($this->_entityManager);
 
-            $allowed = false;
-            foreach ($authSession->getPerson()->getRoles() as $role) {
-                if (
-                    $role->isAllowed(
-                        $acl, 'syllabus_admin_update', 'updateNow'
-                    )
-                ) {
-                    $allowed = true;
+                $allowed = false;
+                foreach ($authSession->getPerson()->getRoles() as $role) {
+                    if (
+                        $role->isAllowed(
+                            $acl, 'syllabus_admin_update', 'updateNow'
+                        )
+                    ) {
+                        $allowed = true;
+                    }
                 }
             }
-        }
 
-        if (null == $authSession || !$allowed) {
-            $this->removeUser($user);
-            $now = new DateTime();
-            echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-            return;
+            if (null == $authSession || !$allowed) {
+                $this->removeUser($user);
+                $now = new DateTime();
+                echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
+                return;
+            }
         }
-
 
         $this->addAuthenticated($user->getSocket());
 

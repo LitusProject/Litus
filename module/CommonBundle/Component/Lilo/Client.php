@@ -5,16 +5,21 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Lilo;
 
-use CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
+use CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
     CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
@@ -30,6 +35,11 @@ use CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
 class Client
 {
     /**
+     * @var \CommonBundle\Component\Authentication\Authentication $_authentication The authentication instance
+     */
+    private $_authentication;
+
+    /**
      * @var \CommonBundle\Compnent\Lilo\Connection $_connection The connection to the Lilo server
      */
     private $_connection;
@@ -39,8 +49,9 @@ class Client
      *
      * @param \CommonBundle\Compnent\Lilo\Connection $connection The connection to the Lilo server
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, Authentication $authentication = null)
     {
+        $this->_authentication = $authentication;
         $this->_connection = $connection;
     }
 
@@ -67,7 +78,7 @@ class Client
     public function sendException(Exception $exception)
     {
         $this->_connection->send(
-            new ExceptionData($exception)
+            new ExceptionData($exception, $this->_authentication)
         );
     }
 

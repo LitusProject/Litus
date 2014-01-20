@@ -5,15 +5,22 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Entity\Reservation;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person,
+    DateTime,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a reservation.
@@ -25,7 +32,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "van"="LogisticsBundle\Entity\Reservation\VanReservation"
+ *      "van"="LogisticsBundle\Entity\Reservation\VanReservation",
+ *      "piano"="LogisticsBundle\Entity\Reservation\PianoReservation"
  * })
  */
 class Reservation
@@ -91,7 +99,8 @@ class Reservation
      * @param string $additionalInfo
      * @param \CommonBundle\Entity\User\Person $creator
      */
-    public function __construct($startDate, $endDate, $reason, ReservableResource $resource, $additionalInfo, $creator) {
+    public function __construct(DateTime $startDate, DateTime $endDate, $reason, ReservableResource $resource, $additionalInfo, Person $creator)
+    {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->reason = $reason;
@@ -103,21 +112,24 @@ class Reservation
     /**
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \LogisticsBundle\Entity\Reservation\ReservableResource
      */
-    public function getResource() {
+    public function getResource()
+    {
         return $this->resource;
     }
 
     /**
      * @return \CommonBundle\Entity\User\Person
      */
-    public function getCreator() {
+    public function getCreator()
+    {
         return $this->creator;
     }
 
@@ -126,7 +138,8 @@ class Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
-    public function setReason($reason) {
+    public function setReason($reason)
+    {
         $this->reason = $reason;
         return $this;
     }
@@ -134,7 +147,8 @@ class Reservation
     /**
      * @return string
      */
-    public function getReason() {
+    public function getReason()
+    {
         return $this->reason;
     }
 
@@ -143,7 +157,8 @@ class Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
-    public function setStartDate($startDate) {
+    public function setStartDate(DateTime $startDate)
+    {
         $this->startDate = $startDate;
         return $this;
     }
@@ -151,7 +166,8 @@ class Reservation
     /**
      * @return \DateTime
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDate;
     }
 
@@ -160,7 +176,8 @@ class Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
-    public function setEndDate($endDate) {
+    public function setEndDate(DateTime $endDate)
+    {
         $this->endDate = $endDate;
         return $this;
     }
@@ -168,7 +185,8 @@ class Reservation
     /**
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDate;
     }
 
@@ -177,7 +195,8 @@ class Reservation
      *
      * @return \LogisticsBundle\Entity\Reservation\Reservation
      */
-    public function setAdditionalInfo($additionalInfo) {
+    public function setAdditionalInfo($additionalInfo)
+    {
         $this->additionalInfo = $additionalInfo;
         return $this;
     }
@@ -185,7 +204,8 @@ class Reservation
     /**
      * @return string
      */
-    public function getAdditionalInfo() {
+    public function getAdditionalInfo()
+    {
         return $this->additionalInfo;
     }
 

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -39,9 +43,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_sortOrder;
 
     /**
-     * Create a new Order PDF Generator.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Stock\Order $order The order
      * @param string $sortOrder
      * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
@@ -70,10 +72,9 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configs = $this->getConfigRepository();
 
-        $now = new DateTime();
-        $union_short_name = $configs->getConfigValue('union_short_name');
-        $union_name = $configs->getConfigValue('union_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $organization_short_name = $configs->getConfigValue('organization_short_name');
+        $organization_name = $configs->getConfigValue('organization_name');
+        $organization_logo = $configs->getConfigValue('organization_logo');
         $cudi_name = $configs->getConfigValue('cudi.name');
         $cudi_mail = $configs->getConfigValue('cudi.mail');
         $person = $this->getEntityManager()
@@ -100,7 +101,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         } else {
             $items = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByOrderAlpha($this->_order);
+                ->findAllByOrderOnAlpha($this->_order);
         }
 
         foreach($items as $item) {
@@ -182,7 +183,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'order',
                 array(
-                    'date' => $now->format('d F Y'),
+                    'date' => $this->_order->getDateOrdered()->format('d F Y'),
                 ),
                 array(
                     new Object(
@@ -193,18 +194,18 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $union_short_name
+                            'short_name' => $organization_short_name
                         ),
                         array(
                             new Object(
                                 'name',
                                 null,
-                                $union_name
+                                $organization_name
                             ),
                             new Object(
                                 'logo',
                                 null,
-                                $logo
+                                $organization_logo
                             )
                         )
                     ),

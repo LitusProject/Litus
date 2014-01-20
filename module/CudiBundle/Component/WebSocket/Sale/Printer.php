@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -102,11 +106,11 @@ class Printer
         foreach($saleItems as $saleItem) {
             $articles[] = array(
                 'title' => $saleItem->getArticle()->getMainArticle()->getTitle(),
-                'price' => (string) number_format($saleItem->getArticle()->getSellPrice() / 100, 2),
+                'price' => (string) number_format($saleItem->getPrice() / 100, 2),
                 'barcode' => substr($saleItem->getArticle()->getBarcode(), 7),
                 'number' => $saleItem->getNumber(),
             );
-            $totalPrice += $saleItem->getArticle()->getSellPrice() * $saleItem->getNumber();
+            $totalPrice += $saleItem->getPrice();
         }
 
         $data = array(
@@ -126,6 +130,12 @@ class Printer
 
     private static function _print(EntityManager $entityManager, $printer, $data)
     {
+        $enablePrinters = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_printers');
+
+        if (!$enablePrinters)
+            return;
+
         $printers = unserialize(
             $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.printers')
@@ -134,13 +144,16 @@ class Printer
         if (!isset($printers[$printer]))
             return;
 
+        $data['title'] = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.ticket_title');
+
         $data = json_encode(
             (object) array(
                 'command' => 'PRINT',
                 'id' => $printers[$printer],
                 'ticket' => $data,
                 'key' => $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.queue_socket_key'),
+                    ->getConfigValue('cudi.printer_socket_key'),
             )
         );
 

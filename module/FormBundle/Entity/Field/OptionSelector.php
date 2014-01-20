@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -15,10 +19,6 @@
 namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form;
@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
 /**
  * An abstract class that stores a number of options.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Fields\OptionSelector")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\OptionSelector")
  * @ORM\Table(name="forms.fields_options")
  */
 abstract class OptionSelector extends Field
@@ -34,9 +34,9 @@ abstract class OptionSelector extends Field
     /**
      * @var array The translations of this field
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\OptionTranslation", mappedBy="field", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\Option", mappedBy="field", cascade={"remove"})
      */
-    private $option_translations;
+    private $optionTranslations;
 
     /**
      * @param FormBundle\Entity\Node\Form $form
@@ -48,8 +48,6 @@ abstract class OptionSelector extends Field
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
         parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-
-        $this->option_translations = new ArrayCollection();
     }
 
     /**
@@ -85,12 +83,12 @@ abstract class OptionSelector extends Field
     /**
      * @param \CommonBundle\Entity\General\Language $language
      * @param boolean $allowFallback
-     * @return \FormBundle\Entity\Field\Translation
+     * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
 
-        foreach($this->option_translations as $translation) {
+        foreach($this->optionTranslations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -110,6 +108,9 @@ abstract class OptionSelector extends Field
      * @return string
      */
     public function getValueString(Language $language, $value) {
-        return $this->getOptionsArray($language)[$value];
+        if (isset($this->getOptionsArray($language)[$value]))
+            return $this->getOptionsArray($language)[$value];
+
+        return '';
     }
 }

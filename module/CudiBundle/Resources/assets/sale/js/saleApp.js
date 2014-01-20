@@ -8,7 +8,9 @@ var currentView = 'selectPaydesk';
         authSession: 0,
         authKey: '',
         lightVersion: false,
-        membershipArticles: [0],
+        personTypeahead: '',
+        articleTypeahead: '',
+        membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
 
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
@@ -17,7 +19,7 @@ var currentView = 'selectPaydesk';
 
         paydesks: [],
         discounts: [],
-        translateStatus: function (status) {return status},
+        translateStatus: function (status) {return status;},
     };
 
     var firstAction = true;
@@ -51,6 +53,7 @@ var currentView = 'selectPaydesk';
 
         queue = $.queue({
             lightVersion: settings.lightVersion,
+            personTypeahead: settings.personTypeahead,
             translateStatus: settings.translateStatus,
             sendToSocket: function (command) {
                 $.webSocket('send', {name: settings.socketName, text: command});
@@ -59,6 +62,7 @@ var currentView = 'selectPaydesk';
 
         collect = $this.collect({
             lightVersion: settings.lightVersion,
+            articleTypeahead: settings.articleTypeahead,
             membershipArticles: settings.membershipArticles,
             saveComment: function (id, comment) {
                 $.webSocket('send', {name: settings.socketName, text:
@@ -97,13 +101,13 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             translateStatus: settings.translateStatus,
-            addArticle: function (id, barcode) {
+            addArticle: function (id, articleId) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'addArticle',
                         'id': id,
-                        'barcode': barcode,
+                        'articleId': articleId,
                     })
                 });
             },
@@ -111,6 +115,7 @@ var currentView = 'selectPaydesk';
 
         sale = $this.sale({
             lightVersion: settings.lightVersion,
+            articleTypeahead: settings.articleTypeahead,
             membershipArticles: settings.membershipArticles,
             discounts: settings.discounts,
             saveComment: function (id, comment) {
@@ -130,7 +135,7 @@ var currentView = 'selectPaydesk';
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'cancelSelling',
+                        'action': 'cancelSale',
                         'id': id,
                     })
                 });
@@ -142,7 +147,7 @@ var currentView = 'selectPaydesk';
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
-                        'action': 'concludeSelling',
+                        'action': 'concludeSale',
                         'id': id,
                         'articles': articles,
                         'discounts': discounts,
@@ -153,13 +158,13 @@ var currentView = 'selectPaydesk';
                 queue.queue('show');
             },
             translateStatus: settings.translateStatus,
-            addArticle: function (id, barcode) {
+            addArticle: function (id, articleId) {
                 $.webSocket('send', {name: settings.socketName, text:
                     JSON.stringify({
                         'command': 'action',
                         'action': 'addArticle',
                         'id': id,
-                        'barcode': barcode,
+                        'articleId': articleId,
                     })
                 });
             },

@@ -5,20 +5,24 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace BrBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    FormBundle\Component\Document\Generator\Csv as CsvGenerator,
-    BrBundle\Component\Document\Pdf\CvBook as CvBookGenerator,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -33,10 +37,10 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $academicYear = $this->getAcademicYear();
 
-        $paginator = $this->paginator()->createFromArray(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllByAcademicYear($academicYear),
+            ->findAllByAcademicYearQuery($academicYear),
             $this->getParam('page')
         );
 
@@ -114,7 +118,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             );
         }
 
-        $document = new CsvGenerator($this->getEntityManager(), $heading, $results);
+        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();

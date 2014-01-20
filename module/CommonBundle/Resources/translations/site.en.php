@@ -5,16 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 return array(
-    'Vlaamse Technische Kring Leuven' => 'Vlaamse Technische Kring Leuven',
-    'VTK Leuven vzw' => 'VTK Leuven vzw',
+    'Vlaamse Technische Kring' => 'Vlaamse Technische Kring',
+    'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
     'Dutch' => 'Nederlands',
@@ -47,6 +51,7 @@ return array(
     'You have been successfully logged in!' => 'You have been successfully logged in!',
     'The given username and password did not match. Please try again.' => 'The given username and password did not match. Please try again.',
     'You have been successfully logged out!' => 'You have been successfully logged out!',
+    'Something went wrong while logging you in. Please try again later.' => 'Something went wrong while logging you in. Please try again later.',
 
     'Activate' => 'Activate',
     'Password' => 'Password',
@@ -65,7 +70,7 @@ return array(
 
     'Other' => 'Other',
 
-    '24h-Run' => '24h-Run',
+    '24h Run' => '24h Run',
     'We have run already %laps% laps and we are the first team.' => 'We have run already %laps% laps and we are the first team.',
     'We have run already %laps% laps and we are %behind% laps behind the first team.' => 'We have run already %laps% laps and we are %behind% laps behind the first team.',
     'Current Runner:' => 'Current Runner:',
@@ -92,4 +97,10 @@ return array(
     'Opening Hours' => 'Opening Hours',
 
     'The value may not be zero' => 'The value may not be zero',
+
+    'Praesidium' => 'Praesidium',
+    'Groupcoordinator' => 'Groupcoordinator',
+
+    'Enroll' => 'Enroll',
+    'Unsubscribe' => 'Unsubscribe',
 );

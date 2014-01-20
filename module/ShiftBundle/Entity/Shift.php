@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -163,6 +167,18 @@ class Shift
      */
     private $description;
 
+	/**
+     * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this shift
+     *
+     * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
+     * @ORM\JoinTable(
+     *      name="shifts.shifts_roles_map",
+     *      joinColumns={@ORM\JoinColumn(name="shift", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
+     * )
+     */
+    private $editRoles;
+
     /**
      * @param \CommonBundle\Entity\User\Person $creationPerson
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
@@ -175,9 +191,10 @@ class Shift
      * @param \CommonBundle\Entity\General\Location $location
      * @param string $name
      * @param string $description
+	 * @param array $editRoles
      */
     public function __construct(
-        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description
+        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, array $editRoles
     )
     {
         $this->creationPerson = $creationPerson;
@@ -194,6 +211,7 @@ class Shift
 
         $this->responsibles = new ArrayCollection();
         $this->volunteers = new ArrayCollection();
+		$this->editRoles = new ArrayCollection($editRoles);
     }
 
     /**
@@ -555,6 +573,24 @@ class Shift
     }
 
     /**
+     * @return array
+     */
+    public function getEditRoles()
+    {
+        return $this->editRoles->toArray();
+    }
+
+	/**
+     * @param array $editRoles
+     * @return \PageBundle\Entity\Node\Page
+     */
+    public function setEditRoles(array $editRoles)
+    {
+        $this->editRoles = new ArrayCollection($editRoles);
+        return $this;
+    }
+
+    /**
      * Whether or not this shift's dates can be edited.
      *
      * @return boolean
@@ -643,8 +679,8 @@ class Shift
         if ($this->getCreationPerson()->getId() === $person->getId())
             return true;
 
-        foreach ($person->getFlattenedRoles() as $role) {
-            if ($role->getName() == 'editor')
+		foreach ($person->getFlattenedRoles() as $role) {
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
                 return true;
         }
 

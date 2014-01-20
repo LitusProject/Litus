@@ -1,13 +1,17 @@
 <?php
 /**
- * Litus is a project by a group of students from the K.U.Leuven. The goal is to create
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
  * various applications to support the IT needs of student unions.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -16,6 +20,7 @@ namespace TicketBundle\Form\Sale\Ticket;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     Doctrine\ORM\EntityManager,
@@ -55,9 +60,22 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
+        $field = new Checkbox('force');
+        $field->setLabel('Force (Ignore limits)');
+        $this->add($field);
+
+        $field = new Checkbox('is_guest');
+        $field->setLabel('Is Guest');
+        $this->add($field);
+
+        $personForm = new Collection('person_form');
+        $personForm->setLabel('Person')
+            ->setAttribute('id', 'person_form');
+        $this->add($personForm);
+
         $field = new Hidden('person_id');
         $field->setAttribute('id', 'personId');
-        $this->add($field);
+        $personForm->add($field);
 
         $field = new Text('person');
         $field->setLabel('Person')
@@ -66,7 +84,34 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
             ->setRequired();
-        $this->add($field);
+        $personForm->add($field);
+
+        $guestForm = new Collection('guest_form');
+        $guestForm->setLabel('Guest')
+            ->setAttribute('id', 'guest_form');
+        $this->add($guestForm);
+
+        $field = new Text('guest_first_name');
+        $field->setLabel('First Name')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setRequired();
+        $guestForm->add($field);
+
+        $field = new Text('guest_last_name');
+        $field->setLabel('Last Name')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setRequired();
+        $guestForm->add($field);
+
+        $field = new Text('guest_email');
+        $field->setLabel('Email')
+            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
+            ->setRequired();
+        $guestForm->add($field);
+
+        $optionsForm = new Collection('options_form');
+        $optionsForm->setLabel('Options');
+        $this->add($optionsForm);
 
         if (count($event->getOptions()) == 0) {
             $field = new Select('number_member');
@@ -74,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ->setAttribute('options', $this->_getNumberOptions())
                 ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
                 ->setAttribute('data-price', $event->getPriceMembers());
-            $this->add($field);
+            $optionsForm->add($field);
 
             if (!$event->isOnlyMembers()) {
                 $field = new Select('number_non_member');
@@ -82,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->setAttribute('options', $this->_getNumberOptions())
                     ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
                     ->setAttribute('data-price', $event->getPriceNonMembers());
-                $this->add($field);
+                $optionsForm->add($field);
             }
         } else {
             foreach($event->getOptions() as $option) {
@@ -91,7 +136,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->setAttribute('options', $this->_getNumberOptions())
                     ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
                     ->setAttribute('data-price', $option->getPriceMembers());
-                $this->add($field);
+                $optionsForm->add($field);
 
                 if (!$event->isOnlyMembers()) {
                     $field = new Select('option_' . $option->getId() . '_number_non_member');
@@ -99,14 +144,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ->setAttribute('options', $this->_getNumberOptions())
                         ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
                         ->setAttribute('data-price', $option->getPriceNonMembers());
-                    $this->add($field);
+                    $optionsForm->add($field);
                 }
             }
         }
 
         $field = new Checkbox('payed');
         $field->setLabel('Payed');
-        $this->add($field);
+        $optionsForm->add($field);
 
         $field = new Submit('sale_tickets');
         $field->setValue('Sale');
@@ -132,8 +177,68 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'force',
+                    'required' => false,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'is_guest',
+                    'required' => false,
+                )
+            )
+        );
+
+        $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
+        $force = isset($this->data['force']) && $this->data['force'];
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_first_name',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_last_name',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'guest_email',
+                    'required' => $isGuest,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'EmailAddress'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'person_id',
-                    'required' => true,
+                    'required' => !$isGuest,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -150,7 +255,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $factory->createInput(
                 array(
                     'name'     => 'person',
-                    'required' => true,
+                    'required' => !$isGuest,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -158,38 +263,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        if (count($this->_event->getOptions()) == 0) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'number_member',
-                        'required' => true,
-                        'validators' => array(
-                            new NumberTicketsValidator($this->_entityManager, $this->_event),
-                        )
-                    )
-                )
-            );
-
-            if (!$this->_event->isOnlyMembers()) {
+        if (!$force) {
+            if (count($this->_event->getOptions()) == 0) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
-                            'name'     => 'number_non_member',
-                            'required' => true,
-                            'validators' => array(
-                                new NumberTicketsValidator($this->_entityManager, $this->_event),
-                            )
-                        )
-                    )
-                );
-            }
-        } else {
-            foreach($this->_event->getOptions() as $option) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'option_' . $option->getId() . '_number_member',
+                            'name'     => 'number_member',
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->_entityManager, $this->_event),
@@ -202,7 +281,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $inputFilter->add(
                         $factory->createInput(
                             array(
-                                'name'     => 'option_' . $option->getId() . '_number_non_member',
+                                'name'     => 'number_non_member',
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->_entityManager, $this->_event),
@@ -210,6 +289,34 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             )
                         )
                     );
+                }
+            } else {
+                foreach($this->_event->getOptions() as $option) {
+                    $inputFilter->add(
+                        $factory->createInput(
+                            array(
+                                'name'     => 'option_' . $option->getId() . '_number_member',
+                                'required' => true,
+                                'validators' => array(
+                                    new NumberTicketsValidator($this->_entityManager, $this->_event),
+                                )
+                            )
+                        )
+                    );
+
+                    if (!$this->_event->isOnlyMembers()) {
+                        $inputFilter->add(
+                            $factory->createInput(
+                                array(
+                                    'name'     => 'option_' . $option->getId() . '_number_non_member',
+                                    'required' => true,
+                                    'validators' => array(
+                                        new NumberTicketsValidator($this->_entityManager, $this->_event),
+                                    )
+                                )
+                            )
+                        );
+                    }
                 }
             }
         }

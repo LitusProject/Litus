@@ -14,6 +14,12 @@
         <p>Credits: <b>{{ comment.getSubject().getCredits() }}</b></p>
         <br />
 
+        <div style="height: 20px;">
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(markAsReadForm) }}
+        </div>
+        <br />
+
         <b>{{ comment.getPerson().getFullName() }}</b> on <b>{{ comment.getDate().format('d M Y H:i') }}</b> :<br />
         <pre style="padding-left: 20px;">{{ comment.getText() }}</pre>
         <hr />
@@ -23,7 +29,6 @@
             <hr />
         {% endfor %}
 
-        {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}

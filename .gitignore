@@ -9,15 +9,18 @@ data/br/companies
 data/br/files
 data/cache
 data/calendar/posters
-data/common/profile
+data/certificates/private
 data/cudi/files
 data/hydrators
 data/page/files
 data/proxies
+data/form/files
 
 public/_assetic
+public/_common/profile
 public/_gallery/albums
-public/_publications
+public/_publications/pdf
+public/_publications/html
 public/_br/img
 
 # Exclude Composer configuration and dependencies

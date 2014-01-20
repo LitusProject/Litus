@@ -5,17 +5,20 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace NotificationBundle\Form\Admin\Notification;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     NotificationBundle\Entity\Node\Notification,
     Zend\Form\Element\Submit;
 
@@ -49,11 +52,14 @@ class Edit extends Add
     private function _populateFromNotification(Notification $notification)
     {
         $data = array(
-            'content'    => $notification->getContent(),
-            'start_date' => $notification->getStartDate()->format('d/m/Y H:i'),
-            'end_date'   => $notification->getEndDate()->format('d/m/Y H:i'),
-            'active'     => $notification->isActive(),
+            'start_date' => $notification->getEndDate() ? $notification->getStartDate()->format('d/m/Y H:i') : '',
+            'end_date' => $notification->getEndDate() ? $notification->getEndDate()->format('d/m/Y H:i') : '',
+            'active' => $notification->isActive(),
         );
+
+        foreach($this->getLanguages() as $language) {
+            $data['content_' . $language->getAbbrev()] = $notification->getContent($language, false);
+        }
 
         $this->setData($data);
     }

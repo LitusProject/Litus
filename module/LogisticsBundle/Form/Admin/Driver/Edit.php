@@ -5,24 +5,26 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    LogisticsBundle\Component\Validator\ReservationConflictValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * This form allows the user to edit the driver.
@@ -32,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Decorator\ButtonDecorator,
 class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 {
     /**
-     * @var \LogisticsBundle\\Entity\Driver
+     * @var \LogisticsBundle\Entity\Driver
      */
     private $_driver;
 
