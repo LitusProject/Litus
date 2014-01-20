@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -94,16 +98,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($company);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {
@@ -181,16 +190,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->setCountry($formData['address_country']);
 
                 $years = array();
+                $archiveYears = array();
                 if (count($formData['cvbook']) > 0) {
-                    $yearIds = $formData['cvbook'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
+                    foreach($formData['cvbook'] as $yearId) {
+                        if (strpos($yearId, 'archive-') === 0) {
+                            $archiveYears[] = substr($yearId, strlen('archive-'));
+                        } else {
+                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                        }
                     }
                 }
 
                 $company->setCvBookYears($years);
+                $company->setCvBookArchiveYears($archiveYears);
 
                 $years = array();
                 if (count($formData['years']) > 0) {

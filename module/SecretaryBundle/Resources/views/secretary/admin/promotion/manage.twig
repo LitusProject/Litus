@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'secretary/admin/promotion/partials/navigation.twig' %}
 
+    {% include 'secretary/admin/promotion/partials/years.twig' %}
+
     {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width promotion_removed_success hide">
         <div class="title">Success</div>
@@ -29,7 +31,7 @@
                 <input type="text" id="searchString" size="30" />
             </div>
 
-            <table class="manage">
+            <table class="manage full_width">
                 <tr>
                     <th width="200px">Identification</th>
                     <th>Name</th>
@@ -40,7 +42,7 @@
         </div>
 
         <div id="default_page">
-            <table class="manage">
+            <table class="manage full_width">
                 <thead>
                     <tr>
                         <th width="200px">Identification</th>
@@ -70,50 +72,6 @@
         </div>
     </div>
 
-    <aside>
-        {% if hasAccess('secretary_admin_promotion', 'add') %}
-            <div class="sidebox">
-                <div class="title">Add Promotion</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to add a promotion!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('secretary_admin_promotion', {'action': 'add', "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Add Promotion</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if hasAccess('secretary_admin_promotion', 'mail') %}
-            <div class="sidebox">
-                <div class="title">Mail Promotion</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to mail this promotion list!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('secretary_admin_promotion', {'action': 'mail', "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Mail Promotion</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if hasAccess('secretary_admin_promotion', 'update') %}
-            <div class="sidebox">
-                <div class="title">Update Promotion</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to update this promotion list!</i>
-                    </p>
-                    <p>
-                        <a href="#updatePromotion" data-toggle="modal">&rarr; Update Promotion</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-    </aside>
-
     <div class="modal hide fade" id="removePromotion">
         <div class="modal-header">
             <span>Litus Admin</span>
@@ -129,26 +87,6 @@
             </p>
             <div class="footer">
                 <input type="button" class="delete" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
-            </div>
-        </div>
-    </div>
-
-    <div class="modal hide fade" id="updatePromotion">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Update Promotion
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to update the following promotion: <b>{{ activeAcademicYear.getCode() }}</b>!
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <input type="button" class="update" value="Yes">
                 <input type="button" class="cancel" data-dismiss="modal" value="No">
             </div>
         </div>
@@ -187,9 +125,6 @@
             });
             {% endif %}
             $('.item .delete').click(openRemoveModal);
-            $('#updatePromotion').click(function () {
-                window.location.href = '{{ url('secretary_admin_promotion', {'action': 'update', 'academicyear': activeAcademicYear.getCode()}) }}';
-            });
         });
 
         function openRemoveModal(e) {

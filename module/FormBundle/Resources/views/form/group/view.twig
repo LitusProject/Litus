@@ -28,8 +28,12 @@
                         {% else %}
                             {{ form.getForm().getTitle(language) }}
                         {% endif %}
-                        {% if entries[form.getForm().getId()] %}
-                            <span class="badge badge-success pull-right">{{ translate('Completed') }}</span>
+                        {% if entries[form.getForm().getId()]['entry'] %}
+                            {% if entries[form.getForm().getId()]['draft'] %}
+                                <span class="badge badge-warning pull-right">{{ translate('In Progress') }}</span>
+                            {% else %}
+                                <span class="badge badge-success pull-right">{{ translate('Completed') }}</span>
+                            {% endif %}
                         {% else %}
                             <span class="badge badge-important pull-right">{{ translate('Not Completed') }}</span>
                         {% endif %}

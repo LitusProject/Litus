@@ -1,5 +1,5 @@
 <header id="controller_header">
-    <div class="title"><span class="pdf">PDF Editions</span></div>
+    <div class="title"><span class="pdf">Publications &raquo; PDF Editions</span></div>
 
     <nav id="controller_nav">
         <ul>
@@ -8,6 +8,9 @@
             {% endif %}
             {% if hasAccess('publication_admin_edition_pdf', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('publication_admin_edition_pdf', {"action": "manage", "id": publication.getId()}) }}">Manage</a></li>
+            {% endif %}
+            {% if hasAccess('publication_admin_publication', 'manage') %}
+                <li><a href="{{ url('publication_admin_publication', {"action": "manage", "id": publication.getId()}) }}">Publications</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -31,7 +35,7 @@ use CommonBundle\Entity\General\AcademicYear,
  *      "pdf"="PublicationBundle\Entity\Edition\Pdf"}
  * )
  */
-class Edition
+abstract class Edition
 {
     /**
      * @var integer The ID of this article
@@ -73,14 +77,22 @@ class Edition
     private $date;
 
     /**
+     * @var string The file name of this edition
+     *
+     * @ORM\Column(name="file_name", type="string", unique=true)
+     */
+    private $fileName;
+
+    /**
      * Creates a new edition with the given title
      *
      * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
      * @param \CommonBundle\Entity\General\AcademicYear
      * @param string $title The title of this edition
      * @param \DateTime $date The date of this edition
+     * @param string $fileName The file name of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date, $fileName)
     {
         $date->setTime(0, 0);
 
@@ -88,6 +100,7 @@ class Edition
         $this->academicYear = $academicYear;
         $this->title = $title;
         $this->date = $date;
+        $this->fileName = $fileName;
     }
 
     public function getId()
@@ -125,5 +138,13 @@ class Edition
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * @return string The file name of this edition
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
     }
 }

@@ -30,7 +30,7 @@
                 <li class="span3">
                     <div class="thumbnail" style="height: 250px; text-align: center;">
                         {% if member.getAcademic().getPhotoPath() %}
-                            <img class="profileImagePreloaded holderjs" data-url="{{ url('common_account', {'action': 'photo', 'image': member.getAcademic().getPhotoPath()}) }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ member.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
                         {% else %}
                             <img data-src="holder.js/180x135/auto/text:Image" alt="">
                         {% endif %}

@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -36,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 array(
                     'key'         => 'common.profile_path',
-                    'value'       => 'data/common/profile',
+                    'value'       => '/_common/profile',
                     'description' => 'The path for profile photo\'s',
                 ),
                 array(
@@ -334,7 +338,7 @@ Disallow: /admin/*
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'index', 'passbook', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -455,7 +459,7 @@ Disallow: /admin/*
                     ),
                     'actions' => array(
                         'common_account' => array(
-                            'edit', 'index', 'photo', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+                            'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
                         ),
                     ),
                 ),

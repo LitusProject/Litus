@@ -3,31 +3,19 @@
 {% block content %}
     <div class="flashmessage alert alert-success fade" id="mail_send_success">
         <a class="close">&times;</a>
-        <div class="title">{{ translate('Success') }}</div>
-        <div class="content">
-            <p>{{ translate('The mail was succesfully sent.') }}</p>
-        </div>
+        {{ translate('The mail was succesfully sent.') }}
     </div>
     <div class="flashmessage alert alert-error fade" id="mail_send_error">
         <a class="close">&times;</a>
-        <div class="title">{{ translate('Error') }}</div>
-        <div class="content">
-            <p>{{ translate('An error occurred while trying to send a mail.') }}</p>
-        </div>
+        {{ translate('An error occurred while trying to send a mail.') }}
     </div>
     <div class="flashmessage alert alert-success fade" id="entry_removed_success">
         <a class="close">&times;</a>
-        <div class="title">{{ translate('Success') }}</div>
-        <div class="content">
-            <p>{{ translate('The entry was succesfully removed.') }}</p>
-        </div>
+        {{ translate('The entry was succesfully removed.') }}
     </div>
     <div class="flashmessage alert alert-error fade" id="entry_removed_error">
         <a class="close">&times;</a>
-        <div class="title">{{ translate('Error') }}</div>
-        <div class="content">
-            <p>{{ translate('An error occurred while removing the entry.') }}</p>
-        </div>
+        {{ translate('An error occurred while removing the entry.') }}
     </div>
 
     {% if authenticatedPerson is not null %}
@@ -48,97 +36,97 @@
 
         <h2>{{ form.getTitle(language) }} ({{ entries|length }} {{ translate("subscriptions") }})</h2>
 
-        <table class="table">
-
-            <thead>
-                <tr>
-                    <th width="130px">{{ translate("Submitter") }}</th>
-
-                    {% if form.getType != 'doodle' %}
-                        {% for field in fields %}
-                            <th>{{ field.getLabel(language) }}</th>
-                        {% endfor %}
-                    {% else %}
-                        <th>{{ translate('Subscriptions') }}</th>
-                    {% endif %}
-
-                    {% if viewer.isEdit() %}
-                        <th width="175px">{{ translate("Actions") }}</th>
-                    {% endif %}
-
-                </tr>
-            </thead>
-
-            <tbody>
-            {% for entry in entries %}
-                <tr class="item item-{{ entry.getId() }}">
-                    <td>
-                        <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
-                            <dt>{{ translate('ID') }}</dt>
-                            <dd>{{ entry.getId() }}</dd>
-                            <dt>{{ translate('Name') }}</dt>
-                            <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
-                            <dt>{{ translate('Guest') }}</dt>
-                            <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                            {% if not entry.isGuestEntry() %}
-                                <dt>{{ translate('Phone Number') }}</dt>
-                                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
-                                {% if entry.getPersonInfo().getAddress() %}
-                                <dt>{{ translate('Address') }}</dt>
-                                    <dd>
-                                        <address>
-                                          {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
-                                          {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
-                                        </address>
-                                    </dd>
-                                {% endif %}
-                            {% endif %}
-                            <dt>{{ translate('Submitted') }}</dt>
-                            <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
-                            {% if viewer.isMail() %}
-                                <dt>{{ translate('Email') }}</dt>
-                                <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
-                            {% endif %}
-                        </dl>">
-                            {{ entry.getPersonInfo().getFullName() }}
-                        </a>
-                    </td>
-
-                    {% if form.getType != 'doodle' %}
-                        {% for field in fields %}
-                            {% if field.getType() == 'file' %}
-                                <td>
-                                    {% if form.getValueFor(entry, field, language) %}
-                                        {% if hasAccess('form_manage', 'downloadFile') %}
-                                            <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
-                                        {% endif %}
-                                    {% else %}
-                                        <i>{{ translate('(empty)') }}</i>
-                                    {% endif %}
-                                </td>
+        <div class="resultPlaceholder">
+            <div class="resultScroll">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="130px">{{ translate("Submitter") }}</th>
+                            {% if form.getType != 'doodle' %}
+                                {% for field in fields %}
+                                    <th>{{ field.getLabel(language) }}</th>
+                                {% endfor %}
                             {% else %}
-                                <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                                <th>{{ translate('Subscriptions') }}</th>
                             {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <td>
-                            {% for slot in entry.getFieldEntries() %}
-                                {{ slot.getField().getLabel(language) }}{% if not loop.last %},{% endif %}
-                            {% endfor %}
-                        </td>
-                    {% endif %}
+                            <th width="175px">{{ translate("Actions") }}</th>
+                        </tr>
+                    </thead>
 
-                    {% if viewer.isEdit() %}
-                        <td>
-                            <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
-                            <a href="#" class="btn btn-mini btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
-                        </td>
-                    {% endif %}
+                    <tbody>
+                    {% for entry in entries %}
+                        <tr class="item item-{{ entry.getId() }}" {% if entry.isDraft() %}style="background: #ccc"{% endif%}>
+                            <td>
+                                <a href="#" data-id="{{ entry.getId() }}" data-toggle="popover" title="" data-content="<dl class='dl-horizontal'>
+                                    <dt>{{ translate('ID') }}</dt>
+                                    <dd>{{ entry.getId() }}</dd>
+                                    <dt>{{ translate('Name') }}</dt>
+                                    <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
+                                    <dt>{{ translate('Guest') }}</dt>
+                                    <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+                                    {% if not entry.isGuestEntry() %}
+                                        <dt>{{ translate('Phone Number') }}</dt>
+                                        <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                                        {% if entry.getPersonInfo().getAddress() %}
+                                        <dt>{{ translate('Address') }}</dt>
+                                            <dd>
+                                                <address>
+                                                  {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                                                  {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
+                                                </address>
+                                            </dd>
+                                        {% endif %}
+                                    {% endif %}
+                                    <dt>{{ translate('Submitted') }}</dt>
+                                    <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+                                    {% if viewer.isMail() %}
+                                        <dt>{{ translate('Email') }}</dt>
+                                        <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+                                    {% endif %}
+                                    <dt>{{ translate('Draft') }}</dt>
+                                    <dd>{% if entry.isDraft() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+                                </dl>">
+                                    {{ entry.getPersonInfo().getFullName() }}
+                                </a>
+                            </td>
 
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                            {% if form.getType != 'doodle' %}
+                                {% for field in fields %}
+                                    {% if field.getType() == 'file' %}
+                                        <td>
+                                            {% if form.getValueFor(entry, field, language) %}
+                                                {% if hasAccess('form_manage', 'downloadFile') %}
+                                                    <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                                {% endif %}
+                                            {% else %}
+                                                <i>{{ translate('(empty)') }}</i>
+                                            {% endif %}
+                                        </td>
+                                    {% else %}
+                                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <td>
+                                    {% for slot in entry.getFieldEntries() %}
+                                        {{ slot.getField().getLabel(language) }}{% if not loop.last %},{% endif %}
+                                    {% endfor %}
+                                </td>
+                            {% endif %}
+
+                            <td class="actions">
+                                {% if viewer.isEdit() %}
+                                    <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
+                                    <a href="#" class="btn btn-mini btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     {% else %}
         <div style="text-align: center;">

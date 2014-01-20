@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -131,6 +135,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'academicYear' => $academicYear,
                 'entries' => $entries,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
@@ -213,6 +220,86 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    public function downloadArchiveAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'Please login to view the CV book.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $archive = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_archive_years')
+        );
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.file_path') . '/cv/';
+
+        $archiveYearKey = '';
+        foreach($archive as $key => $year) {
+            if ($year['full_year'] == $this->getParam('academicyear')) {
+                $archiveYear = $year;
+                $archiveYearKey = $key;
+                break;
+            }
+        }
+
+        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears())) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
+            'Content-Type' => 'application/octet-stream',
+            'Content-Length' => filesize($filePath . $archiveYear['file']),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $archiveYear['file'], 'r');
+        $data = fread($handle, filesize($filePath . $archiveYear['file']));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     private function _getList(AcademicYear $academicYear)
     {
         return $this->getEntityManager()
@@ -265,30 +352,5 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         return $result;
-    }
-
-    public function cvPhotoAction()
-    {
-        $imagePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.profile_path') . '/' . $this->getParam('image');
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $this->getParam('image') . '"',
-            'Content-Type' => mime_content_type($imagePath),
-            'Content-Length' => filesize($imagePath),
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($imagePath, 'r');
-        $data = fread($handle, filesize($imagePath));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
     }
 }

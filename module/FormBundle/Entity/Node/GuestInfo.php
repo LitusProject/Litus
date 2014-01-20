@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -103,11 +107,33 @@ class GuestInfo
     }
 
     /**
+     * @param string firstName
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
      * @return string lastName
      */
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
     }
 
     /**
@@ -119,11 +145,22 @@ class GuestInfo
     }
 
     /**
-     * @return string email
+     * @return string $email
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return \FormBundle\Entity\Node\GuestInfo
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
     }
 
     /**

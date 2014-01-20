@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -125,6 +129,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
+        $field = new Submit('save_as_draft');
+        $field->setValue('Save as Draft')
+            ->setAttribute('class', 'btn btn-info');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue($form->getSubmitText($language))
             ->setAttribute('class', 'btn btn-primary');
@@ -146,6 +155,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($formData);
+    }
+
+    public function hasDraft($hasDraft)
+    {
+        if ($hasDraft) {
+            $this->get('save_as_draft')->setAttribute('disabled', 'disabled');
+        } else {
+            $this->get('save_as_draft')->setAttribute('disabled', null);
+        }
     }
 
     public function populateFromGuestInfo(GuestInfo $guestInfo)
