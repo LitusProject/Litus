@@ -8,7 +8,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-        {% if piwik is not null %}
+        {% if piwik is not null and visitsGraph['dataset']|length > 1 %}
             <h1>Visits Summary</h1>
             <div class="chart">
                 <canvas id="visitsGraph" width="988" height="125"></canvas>
@@ -142,7 +142,7 @@
 	</div>
 
 	<aside>
-        {% if piwik is not null %}
+        {% if piwik is not null and piwik['uniqueVisitors'] is not null %}
             <div class="sidebox">
                 <div class="title">Piwik</div>
                 <div class="content">
@@ -181,7 +181,7 @@
         $(document).ready(function () {
             $('.item .delete').click(expireSession);
 
-            {% if piwik is not null %}
+            {% if piwik is not null and visitsGraph['dataset']|length > 1 %}
                 drawVisitsGraph();
             {% endif %}
 

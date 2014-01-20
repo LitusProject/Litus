@@ -48,9 +48,12 @@ class Period extends EntityRepository
             ->innerJoin('i.article', 'a')
             ->innerJoin('i.order', 'o')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->gt('o.dateOrdered', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                $query->expr()->orX(
+                    $query->expr()->andX(
+                        $query->expr()->gt('o.dateOrdered', ':startDate'),
+                        $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                    ),
+                    $query->expr()->isNull('o.dateOrdered')
                 )
             )
             ->groupBy('a.id')
@@ -118,9 +121,11 @@ class Period extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
+            ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->in('a.id', $this->_findAllArticleIds($period))
             )
+            ->orderBy('m.title', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -258,8 +263,13 @@ class Period extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->gt('o.dateOrdered', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->gt('o.dateOrdered', ':startDate'),
+                            $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                        ),
+                        $query->expr()->isNull('o.dateOrdered')
+                    )
                 )
             )
             ->setParameter('startDate', $period->getStartDate())

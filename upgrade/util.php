@@ -21,6 +21,11 @@ function addConfigKey($connection, $name, $value, $description)
     pg_query($connection, 'INSERT INTO general.config VALUES (\'' . $name . '\', \'' . $value . '\', \'' . $description . '\')');
 }
 
+function updateConfigKey($connection, $name, $value)
+{
+    pg_query($connection, 'UPDATE general.config SET value = \'' . $value . '\' WHERE key = \'' . $name . '\'');
+}
+
 function removeConfigKey($connection, $name)
 {
     pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');

@@ -63,6 +63,29 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    public function findDraftVersionByFormAndPerson(FormEntity $form, Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.creationPerson', ':person'),
+                    $query->expr()->eq('f.draft', 'true')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('person', $person)
+            ->orderBy('f.creationTime', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
     public function findOneByFormAndPerson(FormEntity $form, Person $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -104,6 +127,29 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    public function findDraftVersionByFormAndGuestInfo(FormEntity $form, GuestInfoEntity $guestInfo)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('f')
+            ->from('FormBundle\Entity\Node\Entry', 'f')
+            ->orderBy('f.creationTime', 'DESC')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('f.form', ':form'),
+                    $query->expr()->eq('f.guestInfo', ':guestInfo'),
+                    $query->expr()->eq('f.draft', 'true')
+                )
+            )
+            ->setParameter('form', $form)
+            ->setParameter('guestInfo', $guestInfo)
+            ->orderBy('f.creationTime', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
     public function findOneByFormAndGuestInfo(FormEntity $form, GuestInfoEntity $guestInfo)
     {
         $query = $this->_em->createQueryBuilder();
@@ -140,6 +186,8 @@ class Entry extends EntityRepository
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $entries = array();
         foreach($endEntries as $entry) {
+            if ($entry->isDraft())
+                continue;
             if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
                 $entries[] = $entry;
         }
@@ -162,7 +210,8 @@ class Entry extends EntityRepository
 
         $entries = array();
         foreach($startEntries as $entry) {
-            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
+            if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
+                    ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()))
                 $entries[] = $entry;
         }
 

@@ -127,9 +127,12 @@ class Item extends EntityRepository
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->gt('o.dateCreated', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+                $query->expr()->orX(
+                    $query->expr()->andX(
+                        $query->expr()->gt('o.dateOrdered', ':startDate'),
+                        $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                    ),
+                    $query->expr()->isNull('o.dateOrdered')
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')
@@ -154,8 +157,13 @@ class Item extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('m.title'), ':title'),
-                    $query->expr()->gt('o.dateCreated', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->gt('o.dateOrdered', ':startDate'),
+                            $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                        ),
+                        $query->expr()->isNull('o.dateOrdered')
+                    )
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')
@@ -180,8 +188,13 @@ class Item extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('s.name'), ':supplier'),
-                    $query->expr()->gt('o.dateCreated', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->gt('o.dateOrdered', ':startDate'),
+                            $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                        ),
+                        $query->expr()->isNull('o.dateOrdered')
+                    )
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')

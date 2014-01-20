@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -44,10 +48,11 @@ class Html extends \PublicationBundle\Entity\Edition
      * @param string $title The title of this edition
      * @param string $html The html of this edition
      * @param \DateTime $date The date of this edition
+     * @param string $fileName The file name of this edition
      */
-    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, DateTime $date)
+    public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, DateTime $date, $fileName)
     {
-        parent::__construct($publication, $academicYear, $title, $date);
+        parent::__construct($publication, $academicYear, $title, $date, $fileName);
         $this->html = $html;
     }
 
@@ -57,14 +62,5 @@ class Html extends \PublicationBundle\Entity\Edition
     public function getHtml()
     {
         return $this->html;
-    }
-
-    /**
-     * @return string The location of the images of this edition.
-     */
-    public function getImagesDirectory()
-    {
-        return 'public/_publications/' . $this->getAcademicYear()->getCode(true) .
-            '/html/' . Url::createSlug($this->getPublication()->getTitle()) . '/' . Url::createSlug($this->getTitle());
     }
 }

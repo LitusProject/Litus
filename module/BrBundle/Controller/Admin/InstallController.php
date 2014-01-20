@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -101,6 +105,20 @@ Het VTK Bedrijvenrelaties Team'
                         )
                     ),
                     'description' => 'The possible amounts of VAT'
+                ),
+                array(
+                    'key'         => 'br.cv_archive_years',
+                    'value'       => serialize(
+                        array(
+                            /*
+                            '0910' => array(
+                                'full_year' => '2009-2010',
+                                'file' => 'cvboek0910.pdf',
+                            ),
+                             */
+                        )
+                    ),
+                    'description' => 'The cv archive years'
                 )
             )
         );
@@ -159,7 +177,7 @@ Het VTK Bedrijvenrelaties Team'
                         'index',
                     ),
                     'br_corporate_cv' => array(
-                        'grouped', 'list', 'search', 'cvPhoto',
+                        'downloadArchive', 'grouped', 'list', 'search',
                     ),
                 )
             )

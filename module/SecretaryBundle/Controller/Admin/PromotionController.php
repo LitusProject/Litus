@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -64,7 +68,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -233,6 +237,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
+        exit;
         $academicYear = $this->_getAcademicYear();
 
         $promotions = $this->getEntityManager()
@@ -386,8 +391,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $date = null;
         if (null !== $this->getParam('academicyear'))
-            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
+            $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
+        $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
             $this->flashMessenger()->addMessage(
@@ -399,7 +404,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_article',
+                'secretary_admin_promotion',
                 array(
                     'action' => 'manage'
                 )

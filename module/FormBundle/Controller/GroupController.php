@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -57,13 +61,18 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $person = $this->getAuthentication()->getPersonObject();
 
             if (null !== $person) {
-                $entries[$form->getForm()->getId()] = current(
-                    $this->getEntityManager()
+                $entries[$form->getForm()->getId()] = array(
+                    'entry' => current(
+                        $this->getEntityManager()
+                            ->getRepository('FormBundle\Entity\Node\Entry')
+                            ->findAllByFormAndPerson($form->getForm(), $person)
+                    ),
+                    'draft' => $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
-                        ->findAllByFormAndPerson($form->getForm(), $person)
+                        ->findDraftVersionByFormAndPerson($form->getForm(), $person) !== null,
                 );
 
-                if ($entries[$form->getForm()->getId()]) {
+                if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
             } elseif(isset($_COOKIE['LITUS_form'])) {
@@ -73,13 +82,18 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $guestInfo->renew();
 
-                $entries[$form->getForm()->getId()] = current(
-                    $this->getEntityManager()
+                $entries[$form->getForm()->getId()] = array(
+                    'entry' => current(
+                        $this->getEntityManager()
+                            ->getRepository('FormBundle\Entity\Node\Entry')
+                            ->findAllByFormAndGuestInfo($form->getForm(), $guestInfo)
+                    ),
+                    'draft' => $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Node\Entry')
-                        ->findAllByFormAndGuestInfo($form->getForm(), $guestInfo)
+                        ->findDraftVersionByFormAndGuestInfo($form->getForm(), $guestInfo) !== null,
                 );
 
-                if ($entries[$form->getForm()->getId()]) {
+                if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
             }

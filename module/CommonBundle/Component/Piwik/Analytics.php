@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -55,7 +59,7 @@ class Analytics
      *
      * @param string $date The period over which we want to query
      * @param string $period The resolution of the date argument
-     * @return integer
+     * @return array|integer
      */
     public function getUniqueVisitors($date = 'today', $period = 'day')
     {
@@ -65,7 +69,8 @@ class Analytics
             'period' => $period
         );
 
-        $data = $this->_getData($parameters);
+        if (null === ($data = $this->_getData($parameters)))
+            return null;
 
         if (count($data) == 1)
             return $data['value'];
@@ -86,10 +91,15 @@ class Analytics
             'lastMinutes' => $lastMinutes
         );
 
-        $data = $this->_getData($parameters);
+        if (null === ($data = $this->_getData($parameters))) {
+            return array(
+                'visits'  => 'N/A',
+                'actions' => 'N/A'
+            );
+        }
 
         return array(
-            'visits' => $data[0]->visits,
+            'visits'  => $data[0]->visits,
             'actions' => $data[0]->actions
         );
     }
@@ -98,24 +108,34 @@ class Analytics
      * Retrieves the data at the given URI.
      *
      * @param array $parameters The request's parameters
-     * @return \Object
+     * @return array
      */
     private function _getData(array $parameters)
     {
-        $client = new Client($this->_url);
-
-        $client->setParameterGet(
-            array_merge(
+        try {
+            $client = new Client(
+                $this->_url,
                 array(
-                    'module'     => 'API',
-                    'format'     => 'json',
-                    'token_auth' => $this->_tokenAuth,
-                    'idSite'     => $this->_idSite
-                ),
-                $parameters
-            )
-        );
+                    'timeout' => 5
+                )
+            );
 
-        return (array) json_decode($client->send()->getBody());
+            $client->setParameterGet(
+                array_merge(
+                    array(
+                        'module'     => 'API',
+                        'format'     => 'json',
+                        'token_auth' => $this->_tokenAuth,
+                        'idSite'     => $this->_idSite
+                    ),
+                    $parameters
+                )
+            );
+
+
+            return (array) json_decode($client->send()->getBody());
+        } catch(\Exception $e) {
+            return null;
+        }
     }
 }

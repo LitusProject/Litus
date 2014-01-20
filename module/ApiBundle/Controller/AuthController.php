@@ -5,9 +5,13 @@
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -26,7 +30,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getPersonAction()
     {
-        if (null !== ($person = $this->_getPerson())) {
+        if (null === ($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
                     'result' => null

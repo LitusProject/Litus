@@ -27,8 +27,13 @@ class Order extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('o.supplier', ':supplier'),
-                    $query->expr()->gt('o.dateCreated', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateCreated', ':endDate')
+                    $query->expr()->orX(
+                        $query->expr()->andX(
+                            $query->expr()->gt('o.dateOrdered', ':startDate'),
+                            $period->isOpen() ? '1=1' : $query->expr()->lt('o.dateOrdered', ':endDate')
+                        ),
+                        $query->expr()->isNull('o.dateOrdered')
+                    )
                 )
             )
             ->setParameter('supplier', $supplier->getId())
