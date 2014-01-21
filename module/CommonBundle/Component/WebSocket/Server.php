@@ -67,6 +67,9 @@ class Server
         if ($isFile) {
             if (file_exists($fileName))
                 unlink($fileName);
+
+            if (!file_exists(dirname($fileName)))
+                mkdir(dirname($fileName));
         }
 
         $this->master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
