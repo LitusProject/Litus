@@ -32,7 +32,7 @@ class AcademicYear extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('y')
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
-            ->orderBy('y.universityStart')
+            ->orderBy('y.universityStart', 'DESC')
             ->getQuery();
 
         return $resultSet;

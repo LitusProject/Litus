@@ -1,5 +1,5 @@
-<header id="controller_sub_header">
-    <nav id="controller_sub_nav">
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
         <ul>
             <li><a {% if currentOrganization is null %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": "manage", "academicyear": activeAcademicYear.getCode()}) }}">All</a></li>
             {% for organization in organizations %}
