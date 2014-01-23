@@ -5,8 +5,8 @@
 
     {% include 'shift/admin/counter/partials/navigation.twig' %}
 
-    <header id="controller_sub_header">
-        <nav id="controller_sub_nav">
+    <header class="controller_sub_header">
+        <nav class="controller_sub_nav">
             <ul>
                 {% for academicYear in academicYears %}
                     <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("shift_admin_shift_counter", {"action": "index", "academicyear": academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
