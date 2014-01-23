@@ -330,7 +330,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $image->writeImage($filePath . $filename);
 
             $thumb->cropThumbnailImage(150, 150);
-            $image->writeImage($filePath . 'thumbs/'. $filename);
+            $thumb->writeImage($filePath . 'thumbs/'. $filename);
 
             $photo = new Photo($album, $filename);
             $this->getEntityManager()->persist($photo);
