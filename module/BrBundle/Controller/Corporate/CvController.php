@@ -135,7 +135,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
-                        'action' => 'grouped',
+                        'action' => 'list',
                         'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
