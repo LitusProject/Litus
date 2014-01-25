@@ -9,6 +9,9 @@ import datetime
 import json
 import pickle
 import requests
+import time
+
+import RPi.GPIO as GPIO
 
 # Parameters
 API_HOST        = 'http://litus'
@@ -16,6 +19,10 @@ API_KEY         = ''
 
 CACHE_FILE      = '/tmp/door_rules'
 LOG_TIME_FORMAT = '%x %H:%M:%S'
+
+# GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(15, GPIO.OUT)
 
 # Globals
 now = datetime.datetime.now()
@@ -26,6 +33,7 @@ def allowAccess(identification, academic):
     global now
 
     print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Opening door for ' + identification
+    openDoor
 
     data = {
         'key'     : API_KEY,
@@ -61,6 +69,11 @@ def getRules():
         rules = pickle.load(cacheFile)
 
     cacheFile.close()
+
+def openDoor():
+    GPIO.output(12, GPIO.HIGH)
+    time.sleep(5)
+    GPIO.output(12, GPIO.LOW)
 
 # Main
 getRules()
