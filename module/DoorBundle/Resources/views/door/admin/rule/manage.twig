@@ -40,7 +40,7 @@
 	                <tr class="item item-{{ rule.getId() }}">
 	                    <td>{{ rule.getAcademic(entityManager).getFullName() }}</td>
 	                    <td>{{ rule.getStartDate().format('d/m/Y H:i') }}</td>
-	                    <td>{{ rule.getStartDate().format('d/m/Y H:i') }}</td>
+	                    <td>{{ rule.getEndDate().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('door_admin_rule', 'edit') %}
 	                            <a href="{{ url('door_admin_rule', {"action": "edit", "id": rule.getId()}) }}" class="edit">Edit</a>
