@@ -135,12 +135,11 @@ class Key
     public function validate($ip)
     {
         $now = new DateTime();
-        if ($this->expirationTime < $now) {
+        if ($this->expirationTime < $now)
             return false;
-        }
 
-        if (gethostbyname($this->host) != $ip)
-            return false;
+        //if (gethostbyname($this->host) != $ip)
+        //    return false;
 
         return true;
     }
