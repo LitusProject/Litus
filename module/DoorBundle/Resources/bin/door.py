@@ -14,6 +14,8 @@ import time
 import RPi.GPIO as GPIO
 
 # Parameters
+GPIO_PORT       = 15
+
 API_HOST        = 'http://litus'
 API_KEY         = ''
 
@@ -22,7 +24,7 @@ LOG_TIME_FORMAT = '%x %H:%M:%S'
 
 # GPIO
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(15, GPIO.OUT)
+GPIO.setup(GPIO_PORT, GPIO.OUT)
 
 # Globals
 now = datetime.datetime.now()
@@ -33,7 +35,7 @@ def allowAccess(identification, academic):
     global now
 
     print '[' +  now.strftime(LOG_TIME_FORMAT) + '] Opening door for ' + identification
-    openDoor
+    openDoor()
 
     data = {
         'key'     : API_KEY,
@@ -71,9 +73,9 @@ def getRules():
     cacheFile.close()
 
 def openDoor():
-    GPIO.output(12, GPIO.HIGH)
+    GPIO.output(GPIO_PORT, GPIO.HIGH)
     time.sleep(5)
-    GPIO.output(12, GPIO.LOW)
+    GPIO.output(GPIO_PORT, GPIO.LOW)
 
 # Main
 getRules()

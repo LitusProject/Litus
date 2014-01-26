@@ -412,6 +412,9 @@ Disallow: /admin/*',
                     'cudi_install' => array(
                         'index'
                     ),
+                    'door_install' => array(
+                        'index'
+                    ),
                     'form_install' => array(
                         'index'
                     ),
