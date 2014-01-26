@@ -32,8 +32,8 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->installAcl(
             array(
-                'onbundle' => array(
-                    'on_admin_rule' => array(
+                'doorbundle' => array(
+                    'door_admin_rule' => array(
                         'add', 'delete', 'edit', 'manage'
                     ),
                 ),
