@@ -158,7 +158,7 @@ return array(
                     'route' => '/admin/role[/:action[/name/:name[/:id]][/page/:page]][/]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'name'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'name'   => '[a-zA-Z0-9_-]*',
                         'id'     => '[0-9]*',
                         'page'   => '[0-9]*',
                     ),
