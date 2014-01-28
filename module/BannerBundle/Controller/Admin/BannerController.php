@@ -43,6 +43,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     const BANNER_WIDTH = 940;
     const BANNER_HEIGHT = 100;
+    const BANNER_FILESIZE = '10MB';
 
     public function manageAction()
     {
@@ -106,10 +107,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     public function uploadAction()
     {
         $this->initAjax();
-        
+
         $upload = new FileUpload();
 
-        $upload->addValidator(new SizeValidator(array('max' => '10MB')));
+        $upload->addValidator(new SizeValidator(array('max' => $this::BANNER_FILESIZE)));
         $upload->addValidator(new ImageValidator());
         $validator = new ImageSizeValidator();
         $validator->setMinWidth($this::BANNER_WIDTH)

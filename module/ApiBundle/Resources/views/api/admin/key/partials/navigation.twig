@@ -4,10 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('api_admin_key', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("api_admin_key", {"action": "add"}) }}">Add</a></li>
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("api_admin_key", {"action": "add"}) }}" data-help="Add a API key to the system">Add</a></li>
             {% endif %}
             {% if hasAccess('api_admin_key', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("api_admin_key", {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("api_admin_key", {"action": "manage"}) }}" data-help="Manage the existing API keys">Manage</a></li>
             {% endif %}
         </ul>
     </nav>
