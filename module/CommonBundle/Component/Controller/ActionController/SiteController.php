@@ -271,7 +271,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl .= '%3Fsource=site';
 
         if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         return $shibbolethUrl;
     }
