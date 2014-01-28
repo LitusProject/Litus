@@ -12,7 +12,8 @@
                         'padding': '5px',
                         'cursor': 'pointer',
                         'border': '1px solid #000',
-                        'border-top': 'none'
+                        'border-top': 'none',
+                        'z-index': 1000
                     })
                 ).click(toggleHelp)
             );

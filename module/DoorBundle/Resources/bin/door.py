@@ -22,6 +22,7 @@ API_KEY         = ''
 
 CACHE_FILE      = '/tmp/door_rules'
 CACHE_TTL       = 900
+LOG_FILE        = '/tmp/door.log'
 LOG_TIME_FORMAT = '%x %H:%M:%S'
 
 # GPIO
@@ -72,7 +73,17 @@ def getRules():
     cacheFile.close()
 
 def log(message):
-    print '[' +  datetime.datetime.now().strftime(LOG_TIME_FORMAT) + '] ' + message
+    line = '[' +  datetime.datetime.now().strftime(LOG_TIME_FORMAT) + '] ' + message
+    try:
+        file = open(LOG_FILE, 'a')
+        try:
+            file.write(line + '\n')
+        finally:
+            file.close()
+    except IOError:
+        pass
+
+    print line
 
 def openDoor():
     GPIO.output(GPIO_PORT, GPIO.HIGH)

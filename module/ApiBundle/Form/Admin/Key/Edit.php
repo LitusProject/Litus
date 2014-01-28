@@ -39,6 +39,7 @@ class Edit extends Add
 
         $field = new Text('code');
         $field->setLabel('Code')
+            ->setAttribute('data-help', 'The API key for this host')
             ->setAttribute('disabled', 'disabled');
         $this->add($field);
 
