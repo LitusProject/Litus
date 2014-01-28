@@ -17,7 +17,7 @@ import RPi.GPIO as GPIO
 # Parameters
 GPIO_PORT       = 15
 
-API_HOST        = 'https://litus'
+API_HOST        = 'http://litus'
 API_KEY         = ''
 
 CACHE_FILE      = '/tmp/door_rules'
