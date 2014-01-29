@@ -597,6 +597,17 @@ return array(
                             'gollum/js/markdown.js',
                         ),
                     ),
+
+                    'jcrop_js' => array(
+                        'assets' => array(
+                            'common/js/jcrop.min.js',
+                        ),
+                    ),
+                    'jcrop_css' => array(
+                        'assets' => array(
+                            'common/css/jcrop.min.css',
+                        ),
+                    ),
                 ),
             ),
         ),

@@ -107,6 +107,9 @@ return array(
             '@common_download_file',
             '@common_remote_typeahead',
             '@common_holder_js',
+            '@jcrop_js',
+            '@jcrop_css',
+            '@common_jquery_form',
         ),
         'common_session' => array(
             '@common_jquery',
