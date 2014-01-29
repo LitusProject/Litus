@@ -116,7 +116,7 @@
         <div class="modal-body">
             <div class="imageCrop">
                 <div style="width: 320px; margin: 10px auto;">
-                    {% if not authenticatedPerson.getPhotoPath() %}
+                    {% if authenticatedPerson.getPhotoPath() %}
                         <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
                     {% else %}
                         <img class="image" />
@@ -127,20 +127,8 @@
                         {{ translate('The selected file is to large.') }}
                     </div>
                 </div>
-                <div class="fileupload fileupload-new" data-provides="fileupload">
-                    <div class="input-append">
-                        <div class="uneditable-input span3">
-                            <i class="icon-file fileupload-exists"></i>
-                            <span class="fileupload-preview"></span>
-                        </div>
-                        <span class="btn btn-file">
-                            <span class="fileupload-new">{{ translate('Select File') }}</span>
-                            <span class="fileupload-exists">{{ translate('Change File') }}</span>
-                            <input type="file" class="file_field" accept="image/gif, image/jpeg, image/png" />
-                        </span>
-                        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ translate('Remove') }}</a>
-                    </div>
-                </div>
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(profileForm) }}
             </div>
 
             <div class="imageForm" style="display: none;">
@@ -157,8 +145,8 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        var jcrop_api;
         $(document).ready(function () {
-            var jcrop_api;
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
@@ -166,10 +154,17 @@
             $('#passbook').downloadFile('{{ url('common_account', {"action": "passbook"}) }}');
 
             $('#editProfile').click(function () {
-                $('#modalProfileImage').modal();
+                var image = $('#modalProfileImage .image:first');
+                $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
+                    if (typeof jcrop_api != 'undefined')
+                        jcrop_api.destroy();
+
+                    if (image.attr('src'))
+                        enableJCrop(image);
+                });
 
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    $('#modalProfileImage .file_field').change(function () {
+                    $('#modalProfileImage input[type=file]').change(function () {
                         var oFile = $(this)[0].files[0];
 
                         $('#file_size_error').removeClass('in');
@@ -187,36 +182,39 @@
                             if (typeof jcrop_api != 'undefined')
                                 jcrop_api.destroy();
 
-                            var image = $('#modalProfileImage .image');
                             image.attr('src', e.target.result).attr('style', '');
                             image.load(function () {
-                                var w = image.outerWidth();
-                                var h = w*240/320;
-                                if (h > image.outerHeight()) {
-                                    h = image.outerHeight(),
-                                    w = h*320/240;
-                                }
-
-                                var x = image.outerWidth()/2 - w/2;
-                                var y = image.outerHeight()/2 - h/2;
-
-                                image.Jcrop({
-                                    aspectRatio: 320/240,
-                                    setSelect: [x, y, x+w, y+h],
-                                }, function () {
-                                    jcrop_api = this;
-                                });
+                                enableJCrop(image);
                             });
                         }
                         oReader.readAsDataURL(oFile);
 
+                    });
+
+                    $('#modalProfileImage .save').unbind('click').click(function () {
+                        $('#modalProfileImage .imageCrop form').ajaxSubmit({
+                            'error': function () {
+                                $('#profile_upload_error').addClass('in');
+                                $('#modalProfileImage').modal('hide');
+                            },
+                            'success': function (data) {
+                                if (data.status !== undefined && data.status == 'success') {
+                                    $('#accountProfileImage img').attr('src', data.profile);
+                                    $('#modalProfileImage').modal('hide');
+                                } else {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                }
+                            },
+                            'dataType': 'json'
+                        });
                     });
                 } else {
                     $('#modalProfileImage .imageCrop').hide();
                     $('#modalProfileImage .imageForm').show();
 
                     $('#modalProfileImage .save').unbind('click').click(function () {
-                        $('#modalProfileImage form').ajaxSubmit({
+                        $('#modalProfileImage .imageForm form').ajaxSubmit({
                             'error': function () {
                                 $('#profile_upload_error').addClass('in');
                                 $('#modalProfileImage').modal('hide');
@@ -236,5 +234,32 @@
                 }
             });
         });
+
+        function enableJCrop(image) {
+            var w = image.outerWidth();
+            var h = w*240/320;
+            if (h > image.outerHeight()) {
+                h = image.outerHeight(),
+                w = h*320/240;
+            }
+
+            var x = image.outerWidth()/2 - w/2;
+            var y = image.outerHeight()/2 - h/2;
+
+            image.Jcrop({
+                aspectRatio: 320/240,
+                setSelect: [x, y, x+w, y+h],
+                onChange: function (e) {
+                    $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
+                    $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
+                    $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
+                    $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
+                }
+            }, function () {
+                jcrop_api = this;
+            });
+        }
     </script>
 {% endblock %}

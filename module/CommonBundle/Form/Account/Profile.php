@@ -19,6 +19,7 @@
 namespace CommonBundle\Form\Account;
 
 use CommonBundle\Component\Form\Bootstrap\Element\File,
+    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
@@ -38,9 +39,33 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($name);
 
+        $this->setAttribute('class', 'form-inline');
+
+        $field = new Hidden('x');
+        $field->setValue(0);
+        $this->add($field);
+
+        $field = new Hidden('y');
+        $field->setValue(0);
+        $this->add($field);
+
+        $field = new Hidden('x2');
+        $field->setValue(0);
+        $this->add($field);
+
+        $field = new Hidden('y2');
+        $field->setValue(0);
+        $this->add($field);
+
+        $field = new Hidden('w');
+        $field->setValue(0);
+        $this->add($field);
+
+        $field = new Hidden('h');
+        $field->setValue(0);
+        $this->add($field);
+
         $field = new File('profile');
-        $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
         $this->add($field);
     }
 
@@ -48,6 +73,90 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'x',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'y',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'x2',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'y2',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'w',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'h',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(

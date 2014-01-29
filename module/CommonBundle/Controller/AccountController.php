@@ -602,7 +602,21 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                     $image = new Imagick($upload->getFileName());
                     unlink($upload->getFileName());
-                    $image->cropThumbnailImage(320, 240);
+
+                    if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                        $image->cropThumbnailImage(320, 240);
+                    } else {
+                        $ratio = $image->getImageWidth()/320;
+                        $x = $formData['x']*$ratio;
+                        $y = $formData['y']*$ratio;
+                        $x2 = $formData['x2']*$ratio;
+                        $y2 = $formData['y2']*$ratio;
+                        $w = $formData['w']*$ratio;
+                        $h = $formData['h']*$ratio;
+
+                        $image->cropImage($w, $h, $x, $y);
+                        $image->cropThumbnailImage(320, 240);
+                    }
 
                     if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                         $fileName = $academic->getPhotoPath();
