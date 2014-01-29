@@ -42,89 +42,64 @@ return array(
                             'output' => 'bootstrap_css.css',
                         ),
                     ),
-                    'bootstrap_responsive_css' => array(
-                        'assets' => array(
-                            'less/responsive.less',
-                        ),
-                        'filters' => array(
-                            'bootstrap_responsive_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => false,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_responsive_css.css',
-                        ),
-                    ),
                     'bootstrap_js_affix' => array(
                         'assets' => array(
-                            'js/bootstrap-affix.js',
+                            'js/affix.js',
                         ),
                     ),
                     'bootstrap_js_alert' => array(
                         'assets' => array(
-                            'js/bootstrap-alert.js',
+                            'js/alert.js',
                         ),
                     ),
                     'bootstrap_js_button' => array(
                         'assets' => array(
-                            'js/bootstrap-button.js',
+                            'js/button.js',
                         ),
                     ),
                     'bootstrap_js_carousel' => array(
                         'assets' => array(
-                            'js/bootstrap-carousel.js',
+                            'js/carousel.js',
                         ),
                     ),
                     'bootstrap_js_collapse' => array(
                         'assets' => array(
-                            'js/bootstrap-collapse.js',
+                            'js/collapse.js',
                         ),
                     ),
                     'bootstrap_js_dropdown' => array(
                         'assets' => array(
-                            'js/bootstrap-dropdown.js',
+                            'js/dropdown.js',
                         ),
                     ),
                     'bootstrap_js_modal' => array(
                         'assets' => array(
-                            'js/bootstrap-modal.js',
+                            'js/modal.js',
                         ),
                     ),
                     'bootstrap_js_popover' => array(
                         'assets' => array(
-                            'js/bootstrap-popover.js',
+                            'js/popover.js',
                         ),
                     ),
                     'bootstrap_js_scrollspy' => array(
                         'assets' => array(
-                            'js/bootstrap-scrollspy.js',
+                            'js/scrollspy.js',
                         ),
                     ),
                     'bootstrap_js_tab' => array(
                         'assets' => array(
-                            'js/bootstrap-tab.js',
+                            'js/tab.js',
                         ),
                     ),
                     'bootstrap_js_tooltip' => array(
                         'assets' => array(
-                            'js/bootstrap-tooltip.js',
+                            'js/tooltip.js',
                         ),
                     ),
                     'bootstrap_js_transition' => array(
                         'assets' => array(
-                            'js/bootstrap-transition.js',
-                        ),
-                    ),
-                    'bootstrap_js_typeahead' => array(
-                        'assets' => array(
-                            'js/bootstrap-typeahead.js',
+                            'js/transition.js',
                         ),
                     ),
                 ),

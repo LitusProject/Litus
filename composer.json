@@ -18,7 +18,7 @@
         "widmogrod/zf2-assetic-module": "@dev",
         "zf-commons/zfc-twig": "@dev",
 
-        "twitter/bootstrap": "2.3.*"
+        "twitter/bootstrap": "dev-master"
     },
     "autoload": {
         "psr-0": {
