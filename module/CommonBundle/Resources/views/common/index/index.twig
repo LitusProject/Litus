@@ -36,8 +36,12 @@
 
     <div class="row">
         <div class="col-md-4">
-            <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
-            <h2>{{ translate('Calendar') }}</h2>
+            <a class="heading" href="{{ url('calendar') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ translate('Calendar') }}
+                </h2>
+            </a>
 
             {% for day in calendarItems %}
                 <div class="item">
@@ -59,8 +63,12 @@
         </div>
 
         <div class="col-md-3">
-            <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
-            <h2>{{ translate('Bookstore') }}</h2>
+            <a class="heading" href="{{ url('cudi_booking') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-book"></span>
+                    {{ translate('Bookstore') }}
+                </h2>
+            </a>
 
             {% if hasAccess('cudi_booking', 'view') %}
                 <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">{{ translate('Reservations') }}</a></p>
@@ -102,9 +110,11 @@
                             </div>
                         {% endif %}
                         <div style="margin-left: 20px;">
-                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
                             {% if openingHour.getComment(language)|length > 0 %}
-                                <b>:</b><small>{{ openingHour.getComment(language) }}</small>
+                                <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
+                                <small>{{ openingHour.getComment(language) }}</small>
+                            {% else %}
+                                <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
                             {% endif %}
                         </div>
                         {% set previousDay = openingHour.getStart().format('d/M') %}
@@ -113,8 +123,12 @@
             {% endif %}
 
             {% if myShifts is not null and myShifts|length > 0 %}
-                <a href="{{ url('shift') }}"><img class="heading-icon" src="/_site/img/glyphicons-tasks.png" /></a>
-                <h2>{{ translate('Shifts') }}</h2>
+                <a class="heading" href="{{ url('shift') }}">
+                    <h2>
+                        <span class="glyphicon glyphicon-tasks"></span>
+                        {{ translate('Shifts') }}
+                    </h2>
+                </a>
 
                 {% for shift in myShifts %}
                     <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
@@ -151,20 +165,21 @@
         </div>
 
         <div class="col-md-5">
-            <a href="{{ url('news') }}"><img class="heading-icon" src="/_site/img/glyphicons-news.png" /></a>
-            <h2>{{ translate('News') }}</h2>
+            <a class="heading" href="{{ url('news') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-inbox"></span>
+                    {{ translate('News') }}
+                </h2>
+            </a>
 
             {% for item in newsItems %}
-                <div class="item">
-                    <span class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
+                <div class="item date-right">
+                    <h4 class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</h4>
 
                     <h3>{{ item.getTitle(language) }}</h3>
 
-                    <blockquote>
-                        {% autoescape false %}
-                            {{ hideEmail(markdown(item.getSummary(200, language))) }}
-                        {% endautoescape %}
-                        <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a></small>
+                    <blockquote>{{ hideEmail(markdown(item.getSummary(200, language)))|striptags }}
+                        &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                     </blockquote>
                 </div>
             {% else %}

@@ -21,6 +21,22 @@
 @cHeaderDark:                   #22325a;
 @cHeaderLight:                  #121b35;
 
+.rotate(@degrees) {
+    -webkit-transform: rotate(@degrees);
+       -moz-transform: rotate(@degrees);
+        -ms-transform: rotate(@degrees);
+         -o-transform: rotate(@degrees);
+            transform: rotate(@degrees);
+}
+
+.rotate-origin(@origin) {
+    -webkit-transform-origin: @origin;
+       -moz-transform-origin: @origin;
+        -ms-transform-origin: @origin;
+         -o-transform-origin: @origin;
+            transform-origin: @origin;
+}
+
 /*
 // Colors
 @black:                         #000;
@@ -108,22 +124,6 @@
        -moz-box-sizing: @boxmodel;
         -ms-box-sizing: @boxmodel;
             box-sizing: @boxmodel;
-}
-
-.rotate(@degrees) {
-    -webkit-transform: rotate(@degrees);
-       -moz-transform: rotate(@degrees);
-        -ms-transform: rotate(@degrees);
-         -o-transform: rotate(@degrees);
-            transform: rotate(@degrees);
-}
-
-.rotate-origin(@origin) {
-    -webkit-transform-origin: @origin;
-       -moz-transform-origin: @origin;
-        -ms-transform-origin: @origin;
-         -o-transform-origin: @origin;
-            transform-origin: @origin;
 }
 
 .transition(@transition) {
