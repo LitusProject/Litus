@@ -15,11 +15,8 @@
 
     {% if bookings is not null %}
         <div class="alert alert-success">
-            <p class="pull-right hidden-phone">
-                <a href="{{ url('cudi_booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
-            </p>
-
             <p>
+                <a class="pull-right hidden-xs hidden-sm" href="{{ url('cudi_booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
                 <b>{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</b>
             </p>
 
@@ -37,8 +34,8 @@
         </div>
     {% endfor %}
 
-    <div class="row-fluid">
-        <div class="span4">
+    <div class="row">
+        <div class="col-md-4">
             <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
             <h2>{{ translate('Calendar') }}</h2>
 
@@ -61,7 +58,7 @@
             {% endfor %}
         </div>
 
-        <div class="span3">
+        <div class="col-md-3">
             <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
             <h2>{{ translate('Bookstore') }}</h2>
 
@@ -153,7 +150,7 @@
             {% endif %}
         </div>
 
-        <div class="span5">
+        <div class="col-md-5">
             <a href="{{ url('news') }}"><img class="heading-icon" src="/_site/img/glyphicons-news.png" /></a>
             <h2>{{ translate('News') }}</h2>
 
