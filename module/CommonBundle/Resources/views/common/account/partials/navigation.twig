@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs hidden-phone">
+<ul class="nav nav-tabs hidden-xs">
     {% if hasAccess('common_account', 'index') %}
         <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
             <a href="{{ url('common_account', {'action': 'index'}) }}">

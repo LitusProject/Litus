@@ -9,7 +9,7 @@
 
     <h3>{{ translate('Personal') }}</h3>
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-sm-9">
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Name') }}</dt>
                 <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
@@ -27,7 +27,7 @@
                 <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
             </dl>
         </div>
-        <div class="col-lg-3">
+        <div class="col-sm-3">
             <div class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px;">
                 {% if authenticatedPerson.getPhotoPath() %}
                     <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
@@ -40,7 +40,7 @@
 
     <h3>{{ translate('Addresses') }}</h3>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-sm-6">
             <address>
                 <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br />
                 {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}<br />
@@ -48,7 +48,7 @@
                 {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
             </address>
         </div>
-        <div class="col-lg-6">
+        <div class="col-sm-6">
             <address>
                 <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br />
                 {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}<br />
@@ -60,7 +60,7 @@
 
     <h3>{{ translate('Student Association') }}</h3>
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-sm-9">
             <dl class="dl-horizontal wide">
                 <dt>{{ translate('Student Association') }}</dt>
                 <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
@@ -74,7 +74,7 @@
                 <dd>{{ metaData.getTshirtSizeName() }}</dd>
             </dl>
         </div>
-        <div class="col-lg-3" style="text-align: left;">
+        <div class="col-sm-3" style="text-align: left;">
             {% if hasAccess('common_account', 'passbook') %}
                 <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
             {% endif %}
