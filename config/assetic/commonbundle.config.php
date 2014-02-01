@@ -90,38 +90,71 @@ return array(
             '@common_remote_typeahead',
         ),
 
-        'common_account' => array_merge(
-            $base_site,
-            array(
-                '@bootstrap_js_tooltip',
-                '@bootstrap_js_popover',
-                '@bootstrap_js_modal',
-                '@secretary_css',
-                '@common_download_file',
-                '@common_remote_typeahead',
-                '@common_holder_js',
-            )
+        'common_account' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+            '@bootstrap_js_modal',
+            '@secretary_css',
+            '@common_download_file',
+            '@common_remote_typeahead',
+            '@common_holder_js',
         ),
-        'common_session' => $base_site,
-        'common_auth' => array_merge(
-            $base_site,
-            array(
-                '@bootstrap_js_tooltip',
-                '@bootstrap_js_popover',
-            )
+        'common_session' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
         ),
-        'common_index' => array_merge(
-            $base_site,
-            array(
-                '@bootstrap_js_tooltip',
-                '@bootstrap_js_popover',
-            )
+        'common_auth' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
         ),
-        'common_praesidium' => array_merge(
-            $base_site,
-            array(
-                '@common_holder_js',
-            )
+        'common_index' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+
+            '@bootstrap_js_tooltip',
+            '@bootstrap_js_popover',
+        ),
+        'common_praesidium' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
+
+            '@common_holder_js',
         ),
     ),
     'routes' => array(),

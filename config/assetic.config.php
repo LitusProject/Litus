@@ -21,10 +21,8 @@ $settings = array(
     'routes' => array(),
 );
 
-include __DIR__ . '/assetic/base.config.php';
-
 foreach(new DirectoryIterator(__DIR__ . '/assetic') as $fileInfo) {
-    if (!$fileInfo->isDot() && $fileInfo->getFilename() != 'README.md' && $fileInfo->getFilename() != 'base.config.php') {
+    if (!$fileInfo->isDot() && $fileInfo->getFilename() != 'README.md') {
         $moduleConfig = include __DIR__ . '/assetic/' . $fileInfo->getFilename();
 
         $settings['controllers'] = array_merge_recursive(
