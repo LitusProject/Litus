@@ -39,9 +39,10 @@ class Text extends \Zend\Form\Element\Text implements \CommonBundle\Component\Fo
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+        $this->setAttribute('class', 'form-control');
         $this->setLabelAttributes(
             array(
-                'class' => 'control-label',
+                'class' => 'col-sm-2 control-label',
             )
         );
     }

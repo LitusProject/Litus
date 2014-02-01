@@ -44,14 +44,18 @@
             </a>
 
             {% for day in calendarItems %}
-                <div class="item">
-                    <span class="date left">{{ dateLocalized(day.date, 'd MMM') }}</span>
+                <div class="item date-left">
+                    <h4 class="date left">{{ dateLocalized(day.date, 'd MMM') }}</h4>
 
-                    <p class="calendarItem">
+                    <div class="dayItem">
                         {% for event in day.events %}
-                            <i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+                            <div class="calendarItem">
+                                <span class="glyphicon glyphicon-time time"></span>
+                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+                                {{ event.getSummary(100, language) }}
+                            </div>
                         {% endfor %}
-                    </p>
+                    </div>
                 </div>
             {% else %}
                 <div class="heading-spacer"></div>
@@ -131,31 +135,26 @@
                 </a>
 
                 {% for shift in myShifts %}
-                    <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                                {{ shift.getName() }}
-                            </a>
-                        </div>
-                        <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <div>
-                                    <dl>
-                                        <dt>{{ translate('Name') }}</dt>
-                                        <dd>{{ shift.getName() }}</dd>
-                                        <dt>{{ translate('Start') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                        <dt>{{ translate('End') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                    </dl>
-                                </div>
-                                <div>
-                                    <dl>
-                                        <dt>{{ translate('Description') }}</dt>
-                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-                                        <dt>{{ translate('Location') }}</dt>
-                                        <dd>{{ shift.getLocation().getName() }}</dd>
-                                    </dl>
+                    <div class="panel-group" id="shift-{{ shift.getId() }}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="pannel-title" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                                    {{ shift.getName() }}
+                                </a>
+                            </div>
+                            <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <h5>{{ shift.getName() }}</h5>
+                                    <p>
+                                        {% if (shift.getStartDate().format('d/M/Y') == shift.getEndDate().format('d/M/Y')) %}
+                                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
+                                        {% else %}
+                                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}
+                                        {% endif %}
+                                    </p>
+                                    <p>
+                                        @ {{ shift.getLocation().getName() }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +194,6 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true});
+        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
     </script>
 {% endblock %}

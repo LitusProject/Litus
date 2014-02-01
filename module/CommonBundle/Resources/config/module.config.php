@@ -443,7 +443,7 @@ return array(
                     'common_jquery' => array(
                         'assets'  => array(
                             'common/js/jquery.min.js',
-                            'common/js/bootstrap-fileupload.min.js',
+                            'common/js/bootstrap-fileinput.min.js',
                         ),
                     ),
                     'common_jqueryui' => array(

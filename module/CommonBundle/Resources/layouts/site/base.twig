@@ -124,7 +124,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             Language <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu pull-right">
+                        <ul class="dropdown-menu dropdown-menu-right">
                             {% for language in languages %}
                                 <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
                             {% endfor %}
@@ -140,7 +140,7 @@
                                 </span>
                                 <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu pull-right">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
                                     {% if hasAccess('common_account', 'index') %}
                                     <a href="{{ url('common_account') }}">

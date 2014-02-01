@@ -22,54 +22,46 @@
                 </ul>
             {% elseif element.getAttribute('type') == 'file' %}
                 {% if element.getAttribute('data-type') == 'image' %}
-                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
-                        <div class="controls">
-                            <div class="fileupload fileupload-new" data-provides="fileupload">
-                                <div class="fileupload-new thumbnail" style="width: 180px; height: 135px;">
-                                    <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
-                                </div>
-                                <div class="fileupload-preview fileupload-exists thumbnail" style="width: 180px; height: 135px;"></div>
-                                <div>
-                                    <span class="btn btn-file">
-                                        <span class="fileupload-new">{{ translate('Select Image') }}</span>
-                                        <span class="fileupload-exists">{{ translate('Change Image') }}</span>
-                                        {{ formElement(element) }}
-                                    </span>
-                                </div>
-                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ translate('Remove') }}</a>
+                        <div class="fileinput fileinput-new col-sm-10" data-provides="fileinput">
+                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: {{ element.getAttribute('data-width') }}px; height: {{ element.getAttribute('data-height') }}px;">
+                                <img data-src="holder.js/{{ element.getAttribute('data-width') ~ 'x' ~ element.getAttribute('data-height') }}" alt="">
+                            </div>
+                            <div>
+                                <span class="btn btn-default btn-file">
+                                    <span class="fileinput-new">{{ translate('Select Image') }}</span>
+                                    <span class="fileinput-exists">{{ translate('Change Image') }}</span>
+                                    {{ formElement(element) }}
+                                </span>
+                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">{{ translate('Remove') }}</a>
                             </div>
                             {% if element.getMessages()|length > 0 %}
-                                <div class="help-inline">
+                                <div class="help-block">
                                     {{ formElementErrors(element) }}
                                 </div>
                             {% endif %}
                         </div>
                     </div>
                 {% else %}
-                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
-                        <div class="controls">
-                            <div class="fileupload fileupload-new" data-provides="fileupload">
-                                <div class="input-append">
-                                    <div class="uneditable-input span3">
-                                        <i class="icon-file fileupload-exists"></i>
-                                        <span class="fileupload-preview"></span>
-                                    </div>
-                                    <span class="btn btn-file">
-                                        <span class="fileupload-new">{{ translate('Select File') }}</span>
-                                        <span class="fileupload-exists">{{ translate('Change File') }}</span>
-                                        {{ formElement(element) }}
-                                    </span>
-                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ translate('Remove') }}</a>
-                              </div>
+                        <div class="fileinput fileinput-new col-sm-10" data-provides="fileinput">
+                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                            <div>
+                                <span class="btn btn-default btn-file">
+                                    <span class="fileinput-new">{{ translate('Select File') }}</span>
+                                    <span class="fileinput-exists">{{ translate('Change File') }}</span>
+                                    {{ formElement(element) }}
+                                </span>
+                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">{{ translate('Remove') }}</a>
                             </div>
                             {% if element.getMessages()|length > 0 %}
-                                <div class="help-inline">
+                                <div class="help-block">
                                     {{ formElementErrors(element) }}
                                 </div>
                             {% endif %}
@@ -77,14 +69,16 @@
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'checkbox' %}
-                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %} {% if element.isRequired() %}required{% endif %}">
-                    <div class="controls">
-                        {{ formLabel().openTag(element) }}
-                            {{ formElement(element) }}
-                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                        {{ formLabel().closeTag() }}
+                <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            {{ formLabel().openTag(element) }}
+                                {{ formElement(element) }}
+                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                            {{ formLabel().closeTag() }}
+                        </div>
                         {% if element.getMessages()|length > 0 %}
-                            <div class="help-inline">
+                            <div class="help-block">
                                 {{ formElementErrors(element) }}
                             </div>
                         {% endif %}
@@ -110,12 +104,14 @@
         {% endfor %}
         {% if buttons|length > 0 %}
             {% if fieldset.getDisplayFormActions() %}
-                <div class="form-actions">
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
             {% endif %}
                 {% for button in buttons %}
                     {{ formElement(button) }}
                 {% endfor %}
             {% if fieldset.getDisplayFormActions() %}
+                    </div>
                 </div>
             {% endif %}
         {% endif %}
@@ -124,14 +120,14 @@
 
 {% macro renderOther(element) %}
     {% autoescape false %}
-        <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %} {% if element.isRequired() %}required{% endif %}">
+        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
             {{ formLabel().openTag(element) }}
                 {% if element.getLabel != '' %}{{ translate(element.getLabel()) }}{% endif %}
             {{ formLabel().closeTag() }}
-            <div class="controls">
-                <div>{{ formElement(element) }}</div>
+            <div class="col-sm-10">
+                {{ formElement(element) }}
                 {% if element.getMessages()|length > 0 %}
-                    <div class="help-inline">
+                    <div class="help-block">
                         {{ formElementErrors(element) }}
                     </div>
                 {% endif %}

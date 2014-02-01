@@ -34,6 +34,5 @@ class Radio extends \Zend\Form\Element\Radio
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
-        $this->setLabelAttributes(array('class' => 'radio'));
     }
 }

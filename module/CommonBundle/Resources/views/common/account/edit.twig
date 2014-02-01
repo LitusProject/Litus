@@ -7,44 +7,48 @@
 
     {% include 'common/account/partials/navigation.twig' %}
 
-    <div class="row page">
-        <div class="span12">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+
+    <div id="modalMemberWarning" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Become a Member') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
+                    </p>
+                    <p>
+                        {{ translate('Are you sure you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalMemberWarning" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Become a Member') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
-            </p>
-            <p>
-                {{ translate('Are you sure you want to continue?') }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-        </div>
-    </div>
-
-    <div id="modalTermsAndCoditions" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Terms and Conditions') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ markdown(termsAndConditions) }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
+    <div id="modalTermsAndCoditions" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Terms and Conditions') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ markdown(termsAndConditions) }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -69,7 +73,7 @@
             $('#register').click(function (e) {
                 e.preventDefault();
 
-                if (!$('#become_member').is(':checked') && $('#register_form #organization').val() != 0) {
+                if (!$('#become_member').is(':checked') && !$('#become_member').is(':disabled') && $('#register_form #organization').val() != 0) {
                     $('#modalMemberWarning').modal();
                     $('#modalMemberWarning .confirm').one('click', function () {
                         $('#register_form').submit();
@@ -94,24 +98,24 @@
                 $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
             }
 
-            $('#university_email').wrap('<div class=\"input-append\" />');
-            $('#university_email').after('<span class=\"add-on\">{{ studentDomain }}</span>');
+            $('#university_email').wrap('<div class=\"input-group\" />');
+            $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
         });
 
         function cityChange() {
             var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.control-group').hide();
+            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.form-group').hide();
             if (city != 0)
-                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').show();
+                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.form-group').show();
         }
 
         function toggleMember() {
             if ($('#become_member').is(':checked'))
-                $('#organization_info .control-group').show();
+                $('#organization_info .form-group').show();
             else
-                $('#organization_info .control-group').hide();
-            $('#become_member, #conditions, #bakske').closest('.control-group').show();
-            $('#register_form #organization').closest('.control-group').hide();
+                $('#organization_info .form-group').hide();
+            $('#become_member, #conditions, #bakske').closest('.form-group').show();
+            $('#register_form #organization').closest('.form-group').hide();
         }
     </script>
 {% endblock %}
