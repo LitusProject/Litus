@@ -580,11 +580,6 @@ return array(
                             'common/js/bootstrap-rowlink.js',
                         ),
                     ),
-                    'bootstrap_js_custom_collapse' => array(
-                        'assets'  => array(
-                            'common/js/bootstrap-custom-collapse.js',
-                        ),
-                    ),
 
                     'gollum_css' => array(
                         'assets' => array(
