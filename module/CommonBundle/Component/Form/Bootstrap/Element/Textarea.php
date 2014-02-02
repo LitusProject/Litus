@@ -41,6 +41,11 @@ class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Comp
         $this->setAttribute('id', $name);
         $this->setAttribute('rows', 10);
         $this->setAttribute('class', 'form-control');
+        $this->setLabelAttributes(
+            array(
+                'class' => 'col-sm-2 control-label',
+            )
+        );
     }
 
     /**

@@ -92,5 +92,5 @@ return array(
     "Alphabetical Index" => "Alphabetical Index",
     "Table of Contents" => "Table of Contents",
     "Foreword" => "Foreword",
-
+    'Save Changes' => 'Save Changes',
 );

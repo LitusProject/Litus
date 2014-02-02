@@ -1,53 +1,50 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
+    <div class="row">
+        <div class="col-sm-2">
+            {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
+                <a href="{{ url('br_career_company',{ 'action': 'view', 'company': event.getCompany().getSlug() }) }}">
+            {% endif %}
 
-    <div class="span2">
-        {% if not event.getCompany().getLogo() %}
-            <div class="logo-replacement">
+            <div style="text-align: center">
+                {% if event.getCompany().getLogo() %}
+                    <img src="/{{ logoPath }}/{{ event.getCompany().getLogo() }}" alt="{{ event.getCompany().getName() }}" style="width: 100%; max-width: 120px">
+                {% else %}
+                    <h2><center class="company-name">{{ event.getCompany().getName() }}</center></h2>
+                {% endif %}
             </div>
-        {% endif %}
 
-        {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
-        <a href="{{ url('br_career_company',{ 'action': 'view', 'company': event.getCompany().getSlug() }) }}">
-        {% endif %}
+            {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
+                </a>
+            {% endif %}
 
             {% if event.getCompany().getLogo() %}
-                <img src="/{{ logoPath }}/{{ event.getCompany().getLogo() }}" alt="{{ event.getCompany().getName() }}">
-            {% else %}
-                <h2><center class="company-name">{{ event.getCompany().getName() }}</center></h2>
+                <center class="company-name">{{ event.getCompany().getName() }}</center>
             {% endif %}
-        
-        {% if event.getCompany().getPage().hasYear(currentAcademicYear) %}
-        </a>
-        {% endif %}
 
-        {% if event.getCompany().getLogo() %}
-            <center class="company-name">{{ event.getCompany().getName() }}</center>
-        {% endif %}
+            {% if event.getEvent().getPoster() %}
+                <hr/>
+                <img src="{{ url('calendar', {'action':'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}"/>
+            {% endif %}
 
-        {% if event.getEvent().getPoster() %}
-            <hr/>
-
-            <img src="{{ url('calendar', {'action':'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}"/>
-        {% endif %}
-
-    </div>
-    <div class="span10">
-        <h1>{{ event.getEvent().getTitle() }}</h1>
-        <div class="pull-right" style="margin-top:-35px;"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
-        <div class="accordion" id="accordion">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
-                        {{ translate('Description') }}
-                    </a>
-                </div>
-                <div id="about" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(event.getEvent().getContent(language)) }}
-                        {% endautoescape %}
+        </div>
+        <div class="col-sm-10">
+            <h1>{{ event.getEvent().getTitle() }}</h1>
+            <div class="pull-right" style="margin-top:-35px;"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#about">
+                            {{ translate('Description') }}
+                        </a>
+                    </div>
+                    <div id="about" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(event.getEvent().getContent(language)) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,29 +2,25 @@
 
 {% block page_content %}
 
-    <div class="flashmessage alert alert-error full_width search_error hide">
+    <div class="flashmessage alert alert-danger full_width search_error hide">
         <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while trying to perform the search.</p>
         </div>
     </div>
 
-    <div style="text-align:right;">
-        <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+    <div style="text-align:right;margin-bottom: 10px" class="form-inline">
+        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
     </div>
 
-    <div id="debug"></div>
-
-    <ul id="companies" class="thumbnails">
-
-    </ul>
+    <div id="companies" class="row">
+    </div>
 
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function() {
-
             $('#searchbox').bind("input propertychange", function(){
                 var $this = $(this);
                 var delay = 500;
@@ -49,18 +45,21 @@
             $.post('{{ url('br_career_company', {"action": "search"})}}' + text, function (data) {
                 $('#companies').html('');
                 $.each(data, function(index, element) {
-
                     $('#companies').append(
-                        '<li class="span2">\
-                            <a class="company-container thumbnail" href="{{ url("br_career_company", {"action": "view"}) }}' + element.slug + '">\
-                                    <div class="company-logo">'
-                                        + (element.logo ?
-                                            '<img src="/{{ logoPath }}/' + element.logo + '" alt="' + element.name + '"/>'
+                        $('<div>', {'class': 'col-xs-6 col-md-2'}).append(
+                            $('<div>', {'class': 'thumbnail'}).append(
+                                $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
+                                    $('<span>').append(
+                                        element.logo ?
+                                            $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '120px', 'max-width': '120px', 'vertical-align': 'middle'})
                                         :
-                                            '<h1 class="company-logo-replacement">' + element.name + '</h1>')
-                                        + '</div><div class="name-container"><center><span class="company-name">' + element.name + '</span></center></div></a></li>'
+                                            $('<h4>').html(element.name).css({'margin-top': '20px'}),
+                                        $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
+                                    ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
+                                )
+                            ).css({'text-align': 'center'})
+                        )
                     );
-
                 });
             }, 'json').error(errorSearch);
         }

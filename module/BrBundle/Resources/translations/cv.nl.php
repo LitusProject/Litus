@@ -91,5 +91,5 @@ return array(
     "Alphabetical Index" => "Alfabetische Index",
     "Table of Contents" => "Inhoudstafel",
     "Foreword" => "Voorwoord",
-
+    'Save Changes' => 'Sla Wijzigingen Op',
 );

@@ -132,7 +132,6 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@career_css',
         ),
         'br_career_company' => array(
             '@common_jquery',
@@ -147,7 +146,6 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_rowlink',
             '@common_spin_js',
-            '@career_css',
         ),
         'br_career_vacancy' => array(
             '@common_jquery',
@@ -158,10 +156,9 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
-            '@bootstrap_js_custom_collapse',
+            '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
             '@bootstrap_js_rowlink',
-            '@career_css',
         ),
         'br_career_internship' => array(
             '@common_jquery',
@@ -172,10 +169,9 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
-            '@bootstrap_js_custom_collapse',
+            '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
             '@bootstrap_js_rowlink',
-            '@career_css',
         ),
         'br_career_event' => array(
             '@common_jquery',
@@ -189,7 +185,6 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
             '@bootstrap_js_rowlink',
-            '@career_css',
         ),
         'br_cv_index' => array(
             '@common_jquery',
