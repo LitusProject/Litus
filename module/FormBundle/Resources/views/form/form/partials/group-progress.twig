@@ -1,26 +1,26 @@
 <div class="progress">
     {% if progressBarInfo.completed_before_current > 0 %}
         {% for completed in 0..progressBarInfo.completed_before_current-1 %}
-            <div class="bar bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
+            <div class="progress-bar progress-bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
                 <span data-toggle="tooltip" title="{{ translate('Completed') }}">{{ group.getForms()[completed].getForm().getTitle(language) }}</span>
             </div>
         {% endfor %}
     {% endif %}
 
-    <div class="bar {% if (progressBarInfo.current_completed and getParam('action') == 'edit') or progressBarInfo.current_draft %}bar-warning{% elseif progressBarInfo.current_completed %}bar-success{% endif %}" style="width: {{ 1/progressBarInfo.total_forms*100 }}%;">
+    <div class="progress-bar {% if (progressBarInfo.current_completed and getParam('action') == 'edit') or progressBarInfo.current_draft %}progress-bar-warning{% elseif progressBarInfo.current_completed %}progress-bar-success{% endif %}" style="width: {{ 1/progressBarInfo.total_forms*100 }}%;">
         <span data-toggle="tooltip" title="{% if progressBarInfo.current_completed and getParam('action') == 'edit' %}{{ translate('Editing') }}{% elseif progressBarInfo.current_completed %}{{ translate('Completed') }}{% elseif progressBarInfo.current_draft %}{{ translate('In Progress') }}{% else %}{{ translate('First Submittion') }}{% endif %}">{{ specification.getTitle(language) }}</span>
     </div>
 
     {% if progressBarInfo.completed_after_current > 0 %}
         {% for completed_after in 0..progressBarInfo.completed_after_current-1 %}
-            <div class="bar bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
+            <div class="progress-bar progress-bar-success" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
                 <span data-toggle="tooltip" title="{{ translate('Completed') }}">{{ group.getForms()[progressBarInfo.completed_before_current + completed_after + 1].getForm().getTitle(language) }}</span>
             </div>
         {% endfor %}
     {% endif %}
 
     {% for uncompleted in 0..(progressBarInfo.total_forms-(progressBarInfo.completed_before_current+progressBarInfo.completed_after_current + 1)-1) %}
-        <div class="bar bar-danger" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
+        <div class="progress-bar progress-bar-danger" style="width: {{ 1/progressBarInfo.total_forms*100 }}%">
             <span data-toggle="tooltip" title="{{ translate('Not Completed') }}">{{ group.getForms()[progressBarInfo.completed_before_current+progressBarInfo.completed_after_current + 1 + uncompleted].getForm().getTitle(language) }}</span>
         </div>
     {% endfor %}

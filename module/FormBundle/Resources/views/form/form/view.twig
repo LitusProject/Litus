@@ -16,7 +16,7 @@
     <hr/>
 
     {% if not form %}
-        <div class="alert">
+        <div class="alert alert-warning">
             {{ translate(message) }}
         </div>
     {% else %}
@@ -28,22 +28,26 @@
         <h2>{{ translate('Submissions') }}</h2>
 
         <table class="table table-striped">
-            <tr>
-                <th width="100px">{{ translate('Draft') }}</th>
-                <th>{{ translate('Submission Date') }}</th>
-                <th>{{ translate('Actions') }}</th>
-            </tr>
-            {% for entry in entries %}
+            <thead>
                 <tr>
-                    <td>{% if entry.isDraft() %}&times;{% endif %}</td>
-                    <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
-                    <td>
-                        {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
-                            <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
-                        {% endif %}
-                    </td>
+                    <th width="100px">{{ translate('Draft') }}</th>
+                    <th>{{ translate('Submission Date') }}</th>
+                    <th>{{ translate('Actions') }}</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                    <tr>
+                        <td>{% if entry.isDraft() %}&times;{% endif %}</td>
+                        <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
+                        <td>
+                            {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
+                                <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     {% endif %}
 {% endblock %}
@@ -56,13 +60,13 @@
             form.find('input, select').each(function () {
                 var $this = $(this);
                 if ($this.data('visible_if_element') !== undefined) {
-                    $this.closest('.control-group').hide();
+                    $this.closest('.form-group').hide();
                     form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
                         if ($(this).attr('type') == 'text') {
                             if ($(this).val() !== '') {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
@@ -72,17 +76,17 @@
                                     || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
                                 && $(this).is(':visible')
                             ) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
                         } else if ($(this).is('select')) {
                             if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');

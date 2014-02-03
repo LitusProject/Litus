@@ -33,7 +33,7 @@
         </dl>
 
         {% if doodleNotValid %}
-            <div class="flashmessage alert alert-error fade in">
+            <div class="flashmessage alert alert-danger fade in">
                 <a class="close" data-dismiss="alert">&times;</a>
                 {{ translate('Your subscriptions couldn\'t be saved.') }}
             </div>
@@ -41,50 +41,49 @@
         {% do form.prepare() %}
         {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
             <table class="table table-bordered table-striped" id="doodle">
-                <tr>
-                    <th>{{ translate('Date') }}</th>
-                    <th width="240px">{{ translate('Location') }}</th>
-                    <th width="250px">{{ translate('Info') }}</th>
-                    <th width="130px">{{ translate('Subscribe') }}</th>
-                </tr>
-                {% for field in formSpecification.getFields() %}
-                    <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
-                        <td>
-                            {{ field.getLabel(language) }}
-                        </td>
-                        <td>
-                            {{ field.getLocation(language) }}
-                        </td>
-                        <td>
-                            {{ field.getExtraInformation(language)|slice(1, 30) }}
-                            {% if field.getExtraInformation(language) %}
-                                <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="icon-info-sign"></i></a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if occupiedSlots[field.getId()] %}
-                                {% if formSpecification.getNamesVisibleForOthers() %}
-                                    <i>{{ occupiedSlots[field.getId()] }}</i>
-                                {% else %}
-                                    <i>{{ translate('Occupied') }}</i>
-                                {% endif %}
-                            {% else %}
-                                <label class="checkbox" style="margin: 2px 0">
-                                    {{ formElement(form.get('field-' ~ field.getId())) }}
-                                </label>
-                            {% endif %}
-                        </td>
+                <thead>
+                    <tr>
+                        <th>{{ translate('Date') }}</th>
+                        <th width="240px">{{ translate('Location') }}</th>
+                        <th width="250px">{{ translate('Info') }}</th>
+                        <th width="130px">{{ translate('Subscribe') }}</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for field in formSpecification.getFields() %}
+                        <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                            <td>
+                                {{ field.getLabel(language) }}
+                            </td>
+                            <td>
+                                {{ field.getLocation(language) }}
+                            </td>
+                            <td>
+                                {{ field.getExtraInformation(language)|slice(1, 30) }}
+                                {% if field.getExtraInformation(language) %}
+                                    <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                {% if occupiedSlots[field.getId()] %}
+                                    {% if formSpecification.getNamesVisibleForOthers() %}
+                                        <i>{{ occupiedSlots[field.getId()] }}</i>
+                                    {% else %}
+                                        <i>{{ translate('Occupied') }}</i>
+                                    {% endif %}
+                                {% else %}
+                                    <label class="checkbox" style="margin: 2px 0">
+                                        {{ formElement(form.get('field-' ~ field.getId())) }}
+                                    </label>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
 
-            <div class="form-actions">
-                <div class="row">
-                    <span class="label"></span>
-                    <span class="field">
-                        {{ formElement(form.get('submit')) }}
-                    </span>
-                </div>
+            <div style="clear: both;text-align: center;">
+                {{ formElement(form.get('submit')) }}
             </div>
         {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
     {% else %}
@@ -98,12 +97,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.extraInformation').popover({'trigger': 'hover'});
+            $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
 
             $('table label.checkbox').each(function () {
                 $(this).hide();
                 $(this).parent().append(
-                    $('<button>', {'class': 'btn btn-primary btn-small doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
+                    $('<button>', {'class': 'btn btn-primary btn-sm doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
                         e.preventDefault();
 
                         if ($(this).is(':disabled'))
