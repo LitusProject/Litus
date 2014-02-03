@@ -61,43 +61,43 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('start_date');
         $field->setLabel('Start Date')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium start')
+            ->setAttribute('class', $field->getAttribute('class') . ' start')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('end_date');
         $field->setLabel('End Date')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium end')
+            ->setAttribute('class', $field->getAttribute('class') . ' end')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('reason');
         $field->setLabel('Reason')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium reason')
+            ->setAttribute('class', $field->getAttribute('class') . ' reason')
             ->setRequired();
         $this->add($field);
 
         $field = new Text('load');
         $field->setLabel('Load')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium load');
+            ->setAttribute('class', $field->getAttribute('class') . ' load');
         $this->add($field);
 
         $field = new Textarea('additional_info');
         $field->setLabel('Additional Information')
-            ->setAttribute('style', 'width:150px;height:80px;resize:none;')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium additional');
+            ->setAttribute('style', 'height:80px;resize:none;')
+            ->setAttribute('class', $field->getAttribute('class') . ' additional');
         $this->add($field);
 
         $field = new Select('driver');
         $field->setLabel('Driver')
             ->setAttribute('options', $this->_populateDriversArray($currentYear))
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium driver');
+            ->setAttribute('class', $field->getAttribute('class') . ' driver');
         $this->add($field);
 
         $field = new Text('passenger');
         $field->setLabel('Passenger')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium passenger')
+            ->setAttribute('class', $field->getAttribute('class') . ' passenger')
             ->setAttribute('id', 'passengerSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead');
