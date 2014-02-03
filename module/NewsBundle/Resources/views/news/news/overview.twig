@@ -4,7 +4,7 @@
     <div class="page-header">
         {% if hasAccess('news', 'feed') %}
             <div class="pull-right" style="line-height: 50px">
-                <a href="{{ url('news', {'action': 'feed'}) }}" class="btn"><span class="icon-inbox"></span> {{ translate('RSS') }}</a>
+                <a href="{{ url('news', {'action': 'feed'}) }}" class="btn btn-default"><span class="glyphicon glyphicon-inbox"></span> {{ translate('RSS') }}</a>
             </div>
         {% endif %}
         <h2>{{ translate('News') }}</h2>
@@ -13,13 +13,10 @@
     {% for item in paginator %}
         <h3>{{ item.getTitle(language) }}</h3>
 
-        <div class="item">
-            <span class="date left">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
-            <blockquote>
-                {% autoescape false %}
-                    {{ hideEmail(markdown(item.getSummary(100, language))) }}
-                {% endautoescape %}
-                <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('View') }}</a></small>
+        <div class="item date-left">
+            <h4 class="date left">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</h4>
+            <blockquote>{{ hideEmail(markdown(item.getSummary(400, language)))|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
             </blockquote>
         </div>
     {% endfor %}
