@@ -1,21 +1,20 @@
 {% extends 'sale/base_no_nav.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade" id="add_queue_error">
-        <a class="close" data-dismiss="alert">&times;</a>
+    <div class="flashmessage alert alert-danger fade" id="add_queue_error">
+        <a class="close">&times;</a>
         <div class="content">
             There are no bookings for you.
         </div>
     </div>
 
     <div class="flashmessage alert alert-success fade" id="add_queue_success">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         You have been succesfully added to the queue. Your queue number is: <strong class="queueNumber"></strong>.
     </div>
 
-    <div class="flashmessage alert alert-error fade" id="socket_error">
-        <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">Error</div>
+    <div class="flashmessage alert alert-danger fade" id="socket_error">
+        <a class="close">&times;</a>
         <div class="content">
             <p>The connection with the server is down.</p>
         </div>
@@ -28,6 +27,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
             $('.flashmessage').autoHideFlashMessages({speed: 0, timeOut: 0});
 
             $('#username').keypress(function(e) {
@@ -39,56 +42,56 @@
             $('#signin').click(function() {
                 signIn();
             });
-        });
 
-        $.webSocket(
-            {
-                name: 'signInQueue',
-                url: '{{ socketUrl }}',
-                open: function (e) {
-                    $('#socket_error').removeClass('in');
-                    $.webSocket('send', {name: 'signInQueue', text:
-                        JSON.stringify({
-                            'command': 'initialize',
-                            'session': '{{ session.getId() }}',
-                            'key': '{{ key }}',
-                            'authSession': '{{ authSession.getId() }}',
-                        })
-                    });
-                },
-                message: function (e, data) {
-                    if (data.queueNumber) {
-                        $('#add_queue_error').removeClass('in');
-                        $('#add_queue_success').addClass('in')
-                            .find('.queueNumber').html(data.queueNumber);
-                        $('#username').val('');
-                    } else if (data.error) {
-                        if ('person' == data.error) {
-                            $('#add_queue_success').removeClass('in');
-                            $('#add_queue_error').addClass('in')
-                                .find('.content').html('The person you entered does not exist.');
-                        } else if ('noBookings' == data.error) {
-                            $('#add_queue_success').removeClass('in');
-                            $('#add_queue_error').addClass('in')
-                                .find('.content').html('There are no bookings for you.');
-                        } else if ('rejected' == data.error) {
-                            $('#add_queue_success').removeClass('in');
-                            $('#add_queue_error').addClass('in')
-                                .find('.content').html('You cannot buy your articles during this sale session.');
-                        } else {
-                            $('#add_queue_success').removeClass('in');
-                            $('#add_queue_error').addClass('in')
-                                .find('.content').html('An unexpected error occured.')
+            $.webSocket(
+                {
+                    name: 'signInQueue',
+                    url: '{{ socketUrl }}',
+                    open: function (e) {
+                        $('#socket_error').removeClass('in');
+                        $.webSocket('send', {name: 'signInQueue', text:
+                            JSON.stringify({
+                                'command': 'initialize',
+                                'session': '{{ session.getId() }}',
+                                'key': '{{ key }}',
+                                'authSession': '{{ authSession.getId() }}',
+                            })
+                        });
+                    },
+                    message: function (e, data) {
+                        if (data.queueNumber) {
+                            $('#add_queue_error').removeClass('in');
+                            $('#add_queue_success').addClass('in')
+                                .find('.queueNumber').html(data.queueNumber);
+                            $('#username').val('');
+                        } else if (data.error) {
+                            if ('person' == data.error) {
+                                $('#add_queue_success').removeClass('in');
+                                $('#add_queue_error').addClass('in')
+                                    .find('.content').html('The person you entered does not exist.');
+                            } else if ('noBookings' == data.error) {
+                                $('#add_queue_success').removeClass('in');
+                                $('#add_queue_error').addClass('in')
+                                    .find('.content').html('There are no bookings for you.');
+                            } else if ('rejected' == data.error) {
+                                $('#add_queue_success').removeClass('in');
+                                $('#add_queue_error').addClass('in')
+                                    .find('.content').html('You cannot buy your articles during this sale session.');
+                            } else {
+                                $('#add_queue_success').removeClass('in');
+                                $('#add_queue_error').addClass('in')
+                                    .find('.content').html('An unexpected error occured.')
+                            }
+                            $('#username').val('');
                         }
-                        $('#username').val('');
+                        $('.flashmessage').autoHideFlashMessages();
+                    },
+                    error: function (e) {
+                        $('#socket_error').addClass('in');
                     }
-                    $('.flashmessage').autoHideFlashMessages();
-                },
-                error: function (e) {
-                    $('#socket_error').addClass('in');
                 }
-            }
-        );
+            );
+        });
 
         function signIn() {
             $.webSocket('send', {name: 'signInQueue', text:

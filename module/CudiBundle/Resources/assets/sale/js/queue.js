@@ -100,43 +100,47 @@
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade queueModal').html('').append(
-            $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
-                $('<div>', {'class': 'form-search'}).append(
-                    $('<div>', {'class': 'input-append pull-right'}).append(
-                        filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
-                        clearFilter = $('<span>', {'class': 'add-on'}).css('cursor', 'pointer').append(
-                            $('<span>', {'class': 'icon-remove'})
-                        )
-                    )
-                ),
-                $('<h3>').html(settings.tQueueTitle)
-            ),
-            $('<div>', {'class': 'modal-body'}).append(
-                $('<table>', {'class': 'table table-striped table-bordered'}).append(
-                    $('<thead>').append(
-                        $('<tr>').append(
-                            $('<th>', {'class': 'number'}).html('Num'),
-                            $('<th>', {'class': 'name'}).html('Name'),
-                            $('<th>', {'class': 'status'}).html('Status'),
-                            $('<th>', {'class': 'actions'}).html('Action')
+            $('<div>', {'class': 'modal-dialog'}).append(
+                $('<div>', {'class': 'modal-content'}).append(
+                    $('<div>', {'class': 'modal-header'}).append(
+                        $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
+                        $('<div>', {'class': 'form-search'}).append(
+                            $('<div>', {'class': 'input-group pull-right col-md-6'}).append(
+                                filterText = $('<input>', {'type': 'text', 'class': 'form-control search-query filterText', 'placeholder': settings.tUniversityIdentification}),
+                                clearFilter = $('<span>', {'class': 'input-group-addon'}).css('cursor', 'pointer').append(
+                                    $('<span>', {'class': 'glyphicon glyphicon-remove'})
+                                )
+                            )
+                        ),
+                        $('<h4>').html(settings.tQueueTitle)
+                    ),
+                    $('<div>', {'class': 'modal-body'}).append(
+                        $('<table>', {'class': 'table table-striped'}).append(
+                            $('<thead>').append(
+                                $('<tr>').append(
+                                    $('<th>', {'class': 'number'}).html('Num'),
+                                    $('<th>', {'class': 'name'}).html('Name'),
+                                    $('<th>', {'class': 'status'}).html('Status'),
+                                    $('<th>', {'class': 'actions'}).html('Action')
+                                )
+                            ),
+                            $('<tbody>')
                         )
                     ),
-                    $('<tbody>')
-                )
-            ),
-            $('<div>', {'class': 'modal-footer'}).append(
-                $('<label>', {'class': 'checkbox pull-left'}).append(
-                    hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
-                    settings.tHideHold
-                ),
-                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
-                    $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSale + ' - F6'
-                ),
-                printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
-                    $('<i>', {'class': 'icon-print icon-white'}),
-                    settings.tPrintNext + ' - F7'
+                    $('<div>', {'class': 'modal-footer'}).append(
+                        $('<label>', {'class': 'checkbox pull-left'}).append(
+                            hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
+                            settings.tHideHold
+                        ),
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
+                            $('<i>', {'class': 'icon-arrow-left icon-white'}),
+                            settings.tUndoLastSale + ' - F6'
+                        ),
+                        printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
+                            $('<i>', {'class': 'icon-print icon-white'}),
+                            settings.tPrintNext + ' - F7'
+                        )
+                    )
                 )
             )
         );
@@ -230,28 +234,32 @@
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade').html('').append(
-            $('<div>', {'class': 'modal-header'}).append(
-                $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
-                $('<h3>').html(settings.tQueueTitleLightVersion)
-            ),
-            $('<div>', {'class': 'modal-body'}).append(
-                $('<div>', {'class': 'form-search'}).append(
-                    $('<div>', {'class': 'input-append'}).append(
-                        filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
-                        clearFilter = $('<span>', {'class': 'add-on'}).css('cursor', 'pointer').append(
-                            $('<span>', {'class': 'icon-remove'})
+            $('<div>', {'class': 'modal-dialog'}).append(
+                $('<div>', {'class': 'modal-content'}).append(
+                    $('<div>', {'class': 'modal-header'}).append(
+                        $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
+                        $('<h4>').html(settings.tQueueTitleLightVersion)
+                    ),
+                    $('<div>', {'class': 'modal-body'}).append(
+                        $('<div>', {'class': 'form-search'}).append(
+                            $('<div>', {'class': 'input-append'}).append(
+                                filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
+                                clearFilter = $('<span>', {'class': 'add-on'}).css('cursor', 'pointer').append(
+                                    $('<span>', {'class': 'icon-remove'})
+                                )
+                            )
+                        )
+                    ),
+                    $('<div>', {'class': 'modal-footer'}).append(
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
+                            $('<i>', {'class': 'icon-arrow-left icon-white'}),
+                            settings.tUndoLastSale + ' - F6'
+                        ),
+                        startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
+                            $('<i>', {'class': 'icon-print icon-white'}),
+                            settings.tSell + ' - F7'
                         )
                     )
-                )
-            ),
-            $('<div>', {'class': 'modal-footer'}).append(
-                undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
-                    $('<i>', {'class': 'icon-arrow-left icon-white'}),
-                    settings.tUndoLastSale + ' - F6'
-                ),
-                startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
-                    $('<i>', {'class': 'icon-print icon-white'}),
-                    settings.tSell + ' - F7'
                 )
             )
         );
@@ -584,7 +592,7 @@
         var settings = $this.data('queueSettings');
 
         $this.find('.modal-body').prepend(
-            $('<div>', {'class': 'flashmessage alert alert-error fade in'}).append(
+            $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
                 $('<div>', {'class': 'content'}).append('<p>').html(
                     settings.tErrorAddPerson + (error === undefined ? '' : ': ' + settings.tErrorAddPersonType[error])
                 )

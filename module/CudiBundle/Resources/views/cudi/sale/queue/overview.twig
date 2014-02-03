@@ -1,16 +1,15 @@
 {% extends 'sale/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade" id="loading_queue_error">
+    <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
         <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while loading the queue.</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="span3">
+        <div class="col-md-3">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -22,7 +21,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span3">
+        <div class="col-md-3">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -34,7 +33,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span3">
+        <div class="col-md-3">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -46,7 +45,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span3">
+        <div class="col-md-3">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -63,35 +62,41 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $.webSocket(
-            {
-                name: 'overviewQueue',
-                url: '{{ socketUrl }}',
-                open: function (e) {
-                    $('#loading_queue_error').removeClass('in');
-                    $.webSocket('send', {name: 'overviewQueue', text:
-                        JSON.stringify({
-                            'command': 'initialize',
-                            'queueType': 'queue',
-                            'session': '{{ session.getId() }}',
-                            'key': '{{ key }}',
-                            'authSession': '{{ authSession.getId() }}',
-                        })
-                    });
-                },
-                message: function (e, data) {
-                    $('#loading_queue_error').removeClass('in');
-                    displayItem($('#signed_in_list'), data.queue.signed_in);
-                    displayItem($('#collecting_list'), data.queue.collecting);
-                    displayItem($('#collected_list'), data.queue.collected);
-                    displayItem($('#selling_list'), data.queue.selling);
-                },
-                error: function (e) {
-                    $('#loading_queue_error').addClass('in');
-                    $('.queue_list').html('');
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $.webSocket(
+                {
+                    name: 'overviewQueue',
+                    url: '{{ socketUrl }}',
+                    open: function (e) {
+                        $('#loading_queue_error').removeClass('in');
+                        $.webSocket('send', {name: 'overviewQueue', text:
+                            JSON.stringify({
+                                'command': 'initialize',
+                                'queueType': 'queue',
+                                'session': '{{ session.getId() }}',
+                                'key': '{{ key }}',
+                                'authSession': '{{ authSession.getId() }}',
+                            })
+                        });
+                    },
+                    message: function (e, data) {
+                        $('#loading_queue_error').removeClass('in');
+                        displayItem($('#signed_in_list'), data.queue.signed_in);
+                        displayItem($('#collecting_list'), data.queue.collecting);
+                        displayItem($('#collected_list'), data.queue.collected);
+                        displayItem($('#selling_list'), data.queue.selling);
+                    },
+                    error: function (e) {
+                        $('#loading_queue_error').addClass('in');
+                        $('.queue_list').html('');
+                    }
                 }
-            }
-        );
+            );
+        });
 
         function displayItem(container, data) {
             container.html('');

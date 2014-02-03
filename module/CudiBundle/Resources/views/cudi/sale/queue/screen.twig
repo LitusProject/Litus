@@ -41,39 +41,37 @@
 <div class="container">
     {% include 'sale/partials/flashMessenger.twig' %}
 
-    <div class="flashmessage alert alert-error fade" id="loading_queue_error">
-        <a class="close" data-dismiss="alert">&times;</a>
-        <div class="title">Error</div>
+    <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
+        <a class="close">&times;</a>
         <div class="content">
             <p>An error occurred while loading the queue.</p>
         </div>
     </div>
 
-    <div class="row">
-        <table style="width: 100%">
-            <tr>
-                {% for payDesk in payDesks %}
-                    <td style="padding: 5px">
-                        <div class="well">
-                            <h3>{{ payDesk.getName() }}</h3>
-                            <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
-                                <tr>
-                                    <td></td>
-                                    <td><i>No Customer</i></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                {% endfor %}
-            </tr>
-        </table>
-    </div>
+    <table style="width: 100%">
+        <tr>
+            {% for payDesk in payDesks %}
+                <td style="padding: 5px">
+                    <div class="well">
+                        <h3>{{ payDesk.getName() }}</h3>
+                        <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
+                            <tr>
+                                <td></td>
+                                <td><i>No Customer</i></td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
 
     <div class="page-header">
         <h2>Queue:</h2>
     </div>
+
     <div class="row">
-        <div class="span4">
+        <div class="col-md-4">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -85,7 +83,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -97,7 +95,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -124,54 +122,60 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $.webSocket(
-            {
-                name: 'overviewQueue',
-                url: '{{ socketUrl }}',
-                open: function (e) {
-                    $('#loading_queue_error').removeClass('in');
-                    $.webSocket('send', {name: 'overviewQueue', text:
-                        JSON.stringify({
-                            'command': 'initialize',
-                            'queueType': 'queue',
-                            'session': '{{ session.getId() }}',
-                            'key': '{{ key }}',
-                            'authSession': '{{ authSession.getId() }}',
-                        })
-                    });
-                },
-                message: function (e, data) {
-                    $('#loading_queue_error').removeClass('in');
-                    displayItem($('#signed_in_list'), data.queue.signed_in);
-                    displayItem($('#collecting_list'), data.queue.collecting);
-                    displayItem($('#collected_list'), data.queue.collected);
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
 
-                    $('.paydesk').html(
-                        $('<tr>').append(
-                            $('<td>'),
-                            $('<td>').append(
-                                $('<i>').html('No Customer')
-                            )
-                        )
-                    );
+            $.webSocket(
+                {
+                    name: 'overviewQueue',
+                    url: '{{ socketUrl }}',
+                    open: function (e) {
+                        $('#loading_queue_error').removeClass('in');
+                        $.webSocket('send', {name: 'overviewQueue', text:
+                            JSON.stringify({
+                                'command': 'initialize',
+                                'queueType': 'queue',
+                                'session': '{{ session.getId() }}',
+                                'key': '{{ key }}',
+                                'authSession': '{{ authSession.getId() }}',
+                            })
+                        });
+                    },
+                    message: function (e, data) {
+                        $('#loading_queue_error').removeClass('in');
+                        displayItem($('#signed_in_list'), data.queue.signed_in);
+                        displayItem($('#collecting_list'), data.queue.collecting);
+                        displayItem($('#collected_list'), data.queue.collected);
 
-                    $(data.queue.selling).each(function () {
-                        $('#paydesk_' + this.payDeskId).html(
+                        $('.paydesk').html(
                             $('<tr>').append(
-                                $('<td>').html(this.number),
+                                $('<td>'),
                                 $('<td>').append(
-                                    (this.name ? this.name : 'guest ' + this.id)
+                                    $('<i>').html('No Customer')
                                 )
                             )
                         );
-                    });
-                },
-                error: function (e) {
-                    $('#loading_queue_error').addClass('in');
-                    $('.queue_list').html('');
+
+                        $(data.queue.selling).each(function () {
+                            $('#paydesk_' + this.payDeskId).html(
+                                $('<tr>').append(
+                                    $('<td>').html(this.number),
+                                    $('<td>').append(
+                                        (this.name ? this.name : 'guest ' + this.id)
+                                    )
+                                )
+                            );
+                        });
+                    },
+                    error: function (e) {
+                        $('#loading_queue_error').addClass('in');
+                        $('.queue_list').html('');
+                    }
                 }
-            }
-        );
+            );
+        });
 
         function displayItem(container, data) {
             container.html('');

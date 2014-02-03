@@ -79,64 +79,74 @@
 
         $('body').append(
             modal = $('<div>', {'class': 'modal fade'}).append(
-                $('<div>', {'class': 'modal-header'}).append(
-                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
-                    $('<h3>').html(settings.tConfirmSale)
-                ),
-                $('<div>', {'class': 'modal-body'}).append(
-                    $('<p>').html(settings.tConfirmText),
-                    $('<h4>').html(settings.tCalculateChange),
-                    $('<form>', {'class': 'form-horizontal'}).append(
-                        $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label', 'for': 'payedMoney'}).html(settings.tPayed),
-                            $('<div>', {'class': 'controls'}).append(
-                                $('<div>', {'class': 'input-prepend'}).append(
-                                    $('<span>', {'class': 'add-on'}).html('&euro;'),
-                                    payed = $('<input>', {'class': 'input-large', 'id': 'payedMoney', 'type': 'text'}).val('0.00')
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<h4>').html(settings.tConfirmSale)
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<p>').html(settings.tConfirmText),
+                            $('<h4>').html(settings.tCalculateChange),
+                            $('<form>').append(
+                                $('<div>', {'class': 'form-group'}).append(
+                                    $('<label>', {'for': 'payedMoney'}).html(settings.tPayed),
+                                    $('<div>').append(
+                                        $('<div>', {'class': 'input-group'}).append(
+                                            $('<span>', {'class': 'input-group-addon'}).html('&euro;'),
+                                            payed = $('<input>', {'class': 'form-control', 'id': 'payedMoney', 'type': 'text'}).val('0.00')
+                                        )
+                                    )
+                                ),
+                                $('<div>', {'class': 'form-group'}).append(
+                                    $('<label>').html(settings.tChange),
+                                    $('<div>').append(
+                                        $('<div>', {'class': 'input-group'}).append(
+                                            $('<span>', {'class': 'input-group-addon'}).html('&euro;'),
+                                            change = $('<input>', {'class': 'form-control uneditable-input', 'type': 'text'}).val('0.00')
+                                        )
+                                    )
+                                ),
+                                $('<div>', {'class': 'form-group'}).append(
+                                    $('<label>').html(settings.tPayMethod),
+                                    $('<div>').append(
+                                        method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons'}).append(
+                                            $('<label>', {'class': 'btn btn-default', 'data-key': '114', 'data-method': 'cash'}).append(
+                                                $('<input>', {'type': 'radio'}),
+                                                (settings.tCash + ' - F3')
+                                            ).click(function () {
+                                                payed.focus();
+                                            }),
+                                            $('<button>', {'class': 'btn btn-default', 'data-key': '115', 'data-method': 'bank'}).append(
+                                                $('<input>', {'type': 'radio'}),
+                                                (settings.tBank + ' - F3')
+                                            ).click(function () {
+                                                payed.focus();
+                                            })
+                                        )
+                                    )
                                 )
                             )
                         ),
-                        $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label'}).html(settings.tChange),
-                            $('<div>', {'class': 'controls'}).append(
-                                $('<div>', {'class': 'input-prepend'}).append(
-                                    $('<span>', {'class': 'add-on'}).html('&euro;'),
-                                    change = $('<input>', {'class': 'input-large uneditable-input', 'type': 'text'}).val('0.00')
-                                )
-                            )
-                        ),
-                        $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label'}).html(settings.tPayMethod),
-                            $('<div>', {'class': 'controls'}).append(
-                                method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons-radio'}).append(
-                                    $('<button>', {'class': 'btn active', 'type': 'button', 'data-key': '114', 'data-method': 'cash'}).html(settings.tCash + ' - F3').click(function () {
-                                        payed.focus();
-                                    }),
-                                    $('<button>', {'class': 'btn', 'type': 'button', 'data-key': '115', 'data-method': 'bank'}).html(settings.tBank + ' - F4').click(function () {
-                                        payed.focus();
-                                    })
-                                )
-                            )
+                        $('<div>', {'class': 'modal-footer'}).append(
+                            $('<button>', {'class': 'btn btn-success', 'data-key': '122'}).html(settings.tSell + ' - F11').click(function () {
+                                settings.finish(id, articles, $this.saleInterface('getSelectedDiscounts'), method.find('button.active').data('method'));
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    payed.calculateChange('destroy');
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                                $(this).closest('.modal').modal('hide').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            })
                         )
                     )
-                ),
-                $('<div>', {'class': 'modal-footer'}).append(
-                    $('<button>', {'class': 'btn btn-success', 'data-key': '122'}).html(settings.tSell + ' - F11').click(function () {
-                        settings.finish(id, articles, $this.saleInterface('getSelectedDiscounts'), method.find(' button.active').data('method'));
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            payed.calculateChange('destroy');
-                            $(this).remove();
-                        });
-                    }),
-                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
-                        $(this).closest('.modal').modal('hide').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    })
                 )
             )
         );

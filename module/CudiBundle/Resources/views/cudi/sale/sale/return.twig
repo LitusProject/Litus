@@ -2,9 +2,10 @@
 
 {% block content %}
     <div class="flashmessage alert alert-info fade" id="returnMessage">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         {% autoescape false %}{{ translate('You have to return this customer <b class="price"></b>.') }}{% endautoescape %}
     </div>
+
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
 {% endblock %}
@@ -12,6 +13,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
             $('#personSearch').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead")}}',
