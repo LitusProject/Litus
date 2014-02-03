@@ -197,7 +197,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 'type'     => 'page',
                 'name'     => $page->getName(),
                 'parent'   => $page->getParent()->getName(),
-                'title'    => $page->getTitle($this->getLanguage())
+                'title'    => $page->getTitle($this->getLanguage()),
             );
         }
 
@@ -205,7 +205,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             $submenu[] = array(
                 'type' => 'link',
                 'id'   => $link->getId(),
-                'name' => $link->getName($this->getLanguage())
+                'name' => $link->getName($this->getLanguage()),
+                'url'  => $link->getUrl($this->getLanguage()),
             );
         }
 
@@ -229,7 +230,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 $submenu[$i]['items'][] = array(
                     'type'  => 'page',
                     'name'  => $page->getName(),
-                    'title' => $page->getTitle($this->getLanguage())
+                    'title' => $page->getTitle($this->getLanguage()),
                 );
             }
 
@@ -237,7 +238,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 $submenu[$i]['items'][] = array(
                     'type' => 'link',
                     'id'   => $link->getId(),
-                    'name' => $link->getName($this->getLanguage())
+                    'name' => $link->getName($this->getLanguage()),
+                    'url'  => $link->getUrl($this->getLanguage()),
                 );
             }
 
