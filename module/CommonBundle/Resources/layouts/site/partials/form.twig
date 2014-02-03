@@ -51,14 +51,16 @@
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
                         {{ formLabel().closeTag() }}
                         <div class="fileinput fileinput-new col-sm-10" data-provides="fileinput">
-                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
-                            <div>
-                                <span class="btn btn-default btn-file">
+                            <div class="input-group">
+                                <div class="form-control uneditable-input span3" data-trigger="fileinput">
+                                    <span class="glyphicon glyphicon-file fileinput-exists"></span> <span class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-addon btn btn-default btn-file">
                                     <span class="fileinput-new">{{ translate('Select File') }}</span>
                                     <span class="fileinput-exists">{{ translate('Change File') }}</span>
                                     {{ formElement(element) }}
                                 </span>
-                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">{{ translate('Remove') }}</a>
+                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{ translate('Remove') }}</a>
                             </div>
                             {% if element.getMessages()|length > 0 %}
                                 <div class="help-block">

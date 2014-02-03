@@ -8,7 +8,7 @@
         {{ translate('Subject') }}: <b>{{ subject.getName() }} (<em>{{ subject.getCode() }}</em>)</b>
     </p>
     <div class="row">
-        <div class="span6 offset3" id="article_select">
+        <div class="col-md-6 col-md-offset-3" id="article_select">
             <ul style="list-style:none;">
                 <li style="margin-bottom: 10px;">
                     <a class="thumbnail" id="external_article" href="#" style="padding: 20px;text-decoration: none;">
@@ -82,7 +82,7 @@
         function toggleInternal() {
             if ($('#internal').is(':checked')) {
                 $('#internal_form').show();
-                $('#article_form #publisher').val({{ unionShortName }}).closest('.control-group').hide();
+                $('#article_form #publisher').val('{{ unionShortName }}').closest('.control-group').hide();
             } else {
                 $('#internal_form').hide();
                 $('#article_form #publisher').val('').closest('.control-group').show();

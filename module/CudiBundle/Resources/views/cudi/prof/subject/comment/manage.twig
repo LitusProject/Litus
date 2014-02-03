@@ -1,7 +1,7 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade" id="comment_removed_error">
+    <div class="flashmessage alert alert-danger fade" id="comment_removed_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the comment.') }}
@@ -29,95 +29,116 @@
         {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
     </p>
 
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th width="120px">{{ translate('Date') }}</th>
-            <th width="140px">{{ translate('Person') }}</th>
-            <th>{{ translate('Summary') }}</th>
-            <th width="170px">{{ translate('Actions') }}</th>
-        </tr>
-
-        {% for comment in comments %}
-            <tr class="item">
-                <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
-                <td>{{ comment.getPerson().getFullName() }}</td>
-                <td>{{ comment.getSummary(70) }}</td>
-                <td class="actions">
-                    <span class="text" style="display:none;">
-                        <pre>{{ comment.getText() }}</pre>
-                        {% for reply in comment.getReplies() %}
-                            <b>{{ reply.getPerson().getFullName() }}</b> on <b>{{ dateLocalized(reply.getDate(), 'd MMM Y HH:mm') }}</b> :
-                            <pre>{{ reply.getText() }}</pre>
-                        {% endfor %}
-                    </span>
-                    <a href="#" class="btn btn-primary view" data-id="{{ comment.getId() }}">{{ translate('View') }}</a>
-                    {% if comment.getPerson().getId() == authenticatedPerson.getId() %}
-                        <a href="#" class="btn btn-danger delete" data-id="{{ comment.getId() }}">{{ translate('Delete') }}</a>
-                    {% endif %}
-                </td>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="140px">{{ translate('Date') }}</th>
+                <th width="140px">{{ translate('Person') }}</th>
+                <th>{{ translate('Summary') }}</th>
+                <th width="170px">{{ translate('Actions') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for comment in comments %}
+                <tr class="item">
+                    <td>{{ comment.getDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ comment.getPerson().getFullName() }}</td>
+                    <td>{{ comment.getSummary(70) }}</td>
+                    <td class="actions">
+                        <span class="text" style="display:none;">
+                            <pre>{{ comment.getText() }}</pre>
+                            {% for reply in comment.getReplies() %}
+                                <b>{{ reply.getPerson().getFullName() }}</b> on <b>{{ dateLocalized(reply.getDate(), 'd MMM Y HH:mm') }}</b> :
+                                <pre>{{ reply.getText() }}</pre>
+                            {% endfor %}
+                        </span>
+                        <a href="#" class="btn btn-primary view" data-id="{{ comment.getId() }}">{{ translate('View') }}</a>
+                        {% if comment.getPerson().getId() == authenticatedPerson.getId() %}
+                            <a href="#" class="btn btn-danger delete" data-id="{{ comment.getId() }}">{{ translate('Delete') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
     <div class="pull-right">
         <a href="#addComment" class="btn btn-success" data-toggle="modal">{{ translate('Add Comment') }}</a>
     </div>
     <br class="clear" />
 
-    <div id="viewComment" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Comment') }}</h3>
-        </div>
-        <div class="modal-body">
-            <pre class="text"></pre>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success addReply">{{ translate('Reply') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
-        </div>
-    </div>
-
-    <div id="addComment" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Add Comment') }}</h3>
-        </div>
-        <div class="modal-body">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(commentForm) }}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success save">{{ translate('Save') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+    <div id="viewComment" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Comment') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <pre class="text"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success addReply">{{ translate('Reply') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="addReply" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Add Reply') }}</h3>
-        </div>
-        <div class="modal-body">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(replyForm) }}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success save">{{ translate('Reply') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
+    <div id="addComment" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Add Comment') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(commentForm) }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Cancel') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="removeComment" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Remove Comment') }}</h3>
+    <div id="addReply" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Add Reply') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(replyForm) }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Reply') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Cancel') }}</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            {{ translate('Are you sure you want to remove your comment?') }}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    </div>
+
+    <div id="removeComment" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Remove Comment') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove your comment?') }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
