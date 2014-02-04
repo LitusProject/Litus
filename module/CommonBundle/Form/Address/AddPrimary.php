@@ -75,46 +75,40 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
 
         $field = new Select($prefix . 'address_city');
         $field->setLabel('City')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setAttribute('options', $cities)
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal_other');
         $field->setLabel('Postal Code')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city_other');
         $field->setLabel('City')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_street_other');
         $field->setLabel('Street')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired($this->_required);
         $this->add($field);
 
         foreach($streets as $id => $collection) {
             $field = new Select($prefix . 'address_street_' . $id);
             $field->setLabel('Street')
-                ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge ' . $prefix . 'address_street')
+                ->setAttribute('class', $field->getAttribute('class') . ' ' . $prefix . 'address_street')
                 ->setAttribute('options', $collection);
             $this->add($field);
         }
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-small');
+        $field->setLabel('Mailbox');
         $this->add($field);
     }
 

@@ -1,198 +1,192 @@
 {{ doctype() }}
 
 <html lang="en">
-<head>
+    <head>
 
-    {{ headMeta() }}
-    {{ headTitle('Litus Sale', 'PREPEND') }}
+        {{ headMeta() }}
+        {{ headTitle('Litus Sale', 'PREPEND') }}
 
-    {{ headLink() }}
-    <style type="text/css">
-        @media (min-width: 1310px) {
-            body {
-                font-size: 25px;
+        {{ headLink() }}
+        <style type="text/css">
+            @media (min-width: 1310px) {
+                body {
+                    font-size: 25px;
+                }
+
+                .container {
+                    width: 1300px;
+                }
             }
 
-            .container {
-                width: 1300px;
+            h2, h3 {
+                margin: 0;
             }
 
-            .span4 {
-                width: 420px;
+            .well {
+                padding: 5px 10px;
             }
-        }
 
-        h2, h3 {
-            margin: 0;
-        }
+            .page-header {
+                margin: 10px 0 20px 0;
+            }
+        </style>
+    </head>
 
-        .well {
-            padding: 5px 10px;
-        }
+    <body>
+        <div class="container">
+            {% include 'sale/partials/flashMessenger.twig' %}
 
-        .page-header {
-            margin: 10px 0 20px 0;
-        }
-    </style>
-</head>
+            <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
+                <a class="close">&times;</a>
+                <div class="content">
+                    <p>An error occurred while loading the queue.</p>
+                </div>
+            </div>
 
-<body>
+            <table style="width: 100%">
+                <tr>
+                    {% for payDesk in payDesks %}
+                        <td style="padding: 5px">
+                            <div class="well">
+                                <h3>{{ payDesk.getName() }}</h3>
+                                <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
+                                    <tr>
+                                        <td></td>
+                                        <td><i>No Customer</i></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
 
-<div class="container">
-    {% include 'sale/partials/flashMessenger.twig' %}
+            <div class="page-header">
+                <h2>Queue:</h2>
+            </div>
 
-    <div class="flashmessage alert alert-danger fade" id="loading_queue_error">
-        <a class="close">&times;</a>
-        <div class="content">
-            <p>An error occurred while loading the queue.</p>
-        </div>
-    </div>
-
-    <table style="width: 100%">
-        <tr>
-            {% for payDesk in payDesks %}
-                <td style="padding: 5px">
-                    <div class="well">
-                        <h3>{{ payDesk.getName() }}</h3>
-                        <table class="table table-bordered table-striped paydesk" id="paydesk_{{ payDesk.getId() }}">
+            <div class="row">
+                <div class="col-md-4">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr>
-                                <td></td>
-                                <td><i>No Customer</i></td>
+                                <th></th>
+                                <th>Collected</th>
                             </tr>
-                        </table>
-                    </div>
-                </td>
-            {% endfor %}
-        </tr>
-    </table>
+                        </thead>
+                        <tbody class="queue_list" id="collected_list">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Collecting</th>
+                            </tr>
+                        </thead>
+                        <tbody class="queue_list" id="collecting_list">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Signed In</th>
+                            </tr>
+                        </thead>
+                        <tbody class="queue_list" id="signed_in_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <div class="page-header">
-        <h2>Queue:</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Collected</th>
-                    </tr>
-                </thead>
-                <tbody class="queue_list" id="collected_list">
-                </tbody>
-            </table>
+            <footer>
+                <p class="companies">
+                    {% for logo in logos %}
+                        <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
+                    {% endfor %}
+                </p>
+            </footer>
         </div>
-        <div class="col-md-4">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Collecting</th>
-                    </tr>
-                </thead>
-                <tbody class="queue_list" id="collecting_list">
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-4">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Signed In</th>
-                    </tr>
-                </thead>
-                <tbody class="queue_list" id="signed_in_list">
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <footer>
-        <p class="companies">
-            {% for logo in logos %}
-                <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 30px;width: {{ (logo.getWidth()*30/logo.getHeight())|number_format(0) }}px;"></a>
-            {% endfor %}
-        </p>
-    </footer>
-</div>
+        {{ inlineScript() }}
 
-{{ inlineScript() }}
+        {% block content_script %}
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.flashmessage .close').click(function () {
+                        $(this).closest('.flashmessage').removeClass('in');
+                    });
 
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.flashmessage .close').click(function () {
-                $(this).closest('.flashmessage').removeClass('in');
-            });
+                    $.webSocket(
+                        {
+                            name: 'overviewQueue',
+                            url: '{{ socketUrl }}',
+                            open: function (e) {
+                                $('#loading_queue_error').removeClass('in');
+                                $.webSocket('send', {name: 'overviewQueue', text:
+                                    JSON.stringify({
+                                        'command': 'initialize',
+                                        'queueType': 'queue',
+                                        'session': '{{ session.getId() }}',
+                                        'key': '{{ key }}',
+                                        'authSession': '{{ authSession.getId() }}',
+                                    })
+                                });
+                            },
+                            message: function (e, data) {
+                                $('#loading_queue_error').removeClass('in');
+                                displayItem($('#signed_in_list'), data.queue.signed_in);
+                                displayItem($('#collecting_list'), data.queue.collecting);
+                                displayItem($('#collected_list'), data.queue.collected);
 
-            $.webSocket(
-                {
-                    name: 'overviewQueue',
-                    url: '{{ socketUrl }}',
-                    open: function (e) {
-                        $('#loading_queue_error').removeClass('in');
-                        $.webSocket('send', {name: 'overviewQueue', text:
-                            JSON.stringify({
-                                'command': 'initialize',
-                                'queueType': 'queue',
-                                'session': '{{ session.getId() }}',
-                                'key': '{{ key }}',
-                                'authSession': '{{ authSession.getId() }}',
-                            })
-                        });
-                    },
-                    message: function (e, data) {
-                        $('#loading_queue_error').removeClass('in');
-                        displayItem($('#signed_in_list'), data.queue.signed_in);
-                        displayItem($('#collecting_list'), data.queue.collecting);
-                        displayItem($('#collected_list'), data.queue.collected);
-
-                        $('.paydesk').html(
-                            $('<tr>').append(
-                                $('<td>'),
-                                $('<td>').append(
-                                    $('<i>').html('No Customer')
-                                )
-                            )
-                        );
-
-                        $(data.queue.selling).each(function () {
-                            $('#paydesk_' + this.payDeskId).html(
-                                $('<tr>').append(
-                                    $('<td>').html(this.number),
-                                    $('<td>').append(
-                                        (this.name ? this.name : 'guest ' + this.id)
+                                $('.paydesk').html(
+                                    $('<tr>').append(
+                                        $('<td>'),
+                                        $('<td>').append(
+                                            $('<i>').html('No Customer')
+                                        )
                                     )
+                                );
+
+                                $(data.queue.selling).each(function () {
+                                    $('#paydesk_' + this.payDeskId).html(
+                                        $('<tr>').append(
+                                            $('<td>').html(this.number),
+                                            $('<td>').append(
+                                                (this.name ? this.name : 'guest ' + this.id)
+                                            )
+                                        )
+                                    );
+                                });
+                            },
+                            error: function (e) {
+                                $('#loading_queue_error').addClass('in');
+                                $('.queue_list').html('');
+                            }
+                        }
+                    );
+                });
+
+                function displayItem(container, data) {
+                    container.html('');
+                    $(data).each(function () {
+                        var item = $('<tr>').append(
+                                $('<td>').html(this.number),
+                                $('<td>').append(
+                                    (this.name ? this.name : 'guest ' + this.id),
+                                    ' ',
+                                    (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
                                 )
                             );
-                        });
-                    },
-                    error: function (e) {
-                        $('#loading_queue_error').addClass('in');
-                        $('.queue_list').html('');
-                    }
+                        container.append(item);
+                    });
                 }
-            );
-        });
-
-        function displayItem(container, data) {
-            container.html('');
-            $(data).each(function () {
-                var item = $('<tr>').append(
-                        $('<td>').html(this.number),
-                        $('<td>').append(
-                            (this.name ? this.name : 'guest ' + this.id),
-                            ' ',
-                            (this.payDesk ? $('<span>', {class: 'label label-info'}).html(this.payDesk) : '')
-                        )
-                    );
-                container.append(item);
-            });
-        }
-    </script>
-{% endblock %}
-
-</body>
+            </script>
+        {% endblock %}
+    </body>
 </html>

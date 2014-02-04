@@ -100,26 +100,26 @@
                         ),
                         $('<div>', {'class': 'row actions'}).append(
                             editComment = $('<button>', {'class': 'btn btn-info'}).append(
-                                $('<i>', {'class': 'icon-comment icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-comment'}),
                                 settings.tComments
                             ),
                             showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
-                                $('<i>', {'class': 'icon-eye-open icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
                                 settings.tQueue + ' - F8'
                             ),
                             conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
-                                $('<i>', {'class': 'icon-ok-circle icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-ok-circle'}),
                                 settings.tConclude + ' - F9'
                             ),
                             cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
-                                $('<i>', {'class': 'icon-remove icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-remove'}),
                                 settings.tCancel + ' - F10'
                             )
                         )
                     ),
                     $('<div>', {'class': 'col-md-12'}).append(
                         addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 118}).append(
-                            $('<i>', {'class': 'icon-plus-sign icon-white'}),
+                            $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
                             settings.tAddArticle + ' - F7'
                         )
                     )

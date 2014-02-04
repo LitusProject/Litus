@@ -34,7 +34,7 @@
 
         {% if doodleNotValid %}
             <div class="flashmessage alert alert-danger fade in">
-                <a class="close" data-dismiss="alert">&times;</a>
+                <a class="close">&times;</a>
                 {{ translate('Your subscriptions couldn\'t be saved.') }}
             </div>
         {% endif %}
@@ -97,6 +97,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+            
             $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
 
             $('table label.checkbox').each(function () {

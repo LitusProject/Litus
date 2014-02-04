@@ -57,30 +57,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
 
         $field = new Text($prefix . 'address_street');
         $field->setLabel('Street')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_number');
         $field->setLabel('Number')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
         $field->setLabel('Mailbox')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-small');
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal');
         $field->setLabel('Postal Code')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setRequired($this->_required);
         $this->add($field);
 
         $field = new Text($prefix . 'address_city');
         $field->setLabel('City')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setRequired($this->_required);
         $this->add($field);
 

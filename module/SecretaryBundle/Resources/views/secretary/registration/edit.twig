@@ -7,11 +7,9 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    <div class="row page" id="studies">
-        <div class="span12">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        </div>
+    <div id="studies">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 
     <div id="modalMemberWarning" class="modal fade">

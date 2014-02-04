@@ -69,6 +69,7 @@
         },
         setLastSold : function (data) {
             lastSold = data;
+            console.log(data);
             $(this).find('.undoLastSale').toggle(lastSold > 0);
             return this;
         },
@@ -132,12 +133,12 @@
                             hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                             settings.tHideHold
                         ),
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
-                            $('<i>', {'class': 'icon-arrow-left icon-white'}),
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'
-                        ),
+                        ).hide(),
                         printNext = $('<button>', {'class': 'btn btn-success', 'data-key': '118'}).append(
-                            $('<i>', {'class': 'icon-print icon-white'}),
+                            $('<i>', {'class': 'glyphicon glyphicon-print'}),
                             settings.tPrintNext + ' - F7'
                         )
                     )
@@ -234,7 +235,7 @@
         var settings = $this.data('queueSettings');
 
         $this.addClass('modal fade').html('').append(
-            $('<div>', {'class': 'modal-dialog'}).append(
+            $('<div>', {'class': 'modal-dialog modal-lg'}).append(
                 $('<div>', {'class': 'modal-content'}).append(
                     $('<div>', {'class': 'modal-header'}).append(
                         $('<a>', {'class': 'close'}).html('&times;').click(function () {$this.modal('hide');}),
@@ -242,29 +243,27 @@
                     ),
                     $('<div>', {'class': 'modal-body'}).append(
                         $('<div>', {'class': 'form-search'}).append(
-                            $('<div>', {'class': 'input-append'}).append(
-                                filterText = $('<input>', {'type': 'text', 'class': 'input-medium search-query filterText', 'placeholder': settings.tUniversityIdentification}),
-                                clearFilter = $('<span>', {'class': 'add-on'}).css('cursor', 'pointer').append(
-                                    $('<span>', {'class': 'icon-remove'})
+                            $('<div>', {'class': 'input-group'}).append(
+                                filterText = $('<input>', {'type': 'text', 'class': 'form-control search-query filterText', 'placeholder': settings.tUniversityIdentification}),
+                                clearFilter = $('<span>', {'class': 'input-group-addon'}).css('cursor', 'pointer').append(
+                                    $('<span>', {'class': 'glyphicon glyphicon-remove'})
                                 )
                             )
                         )
                     ),
                     $('<div>', {'class': 'modal-footer'}).append(
-                        undoLastSale = $('<button>', {'class': 'btn btn-danger hide undoLastSale', 'data-key': '117'}).append(
-                            $('<i>', {'class': 'icon-arrow-left icon-white'}),
+                        undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'
-                        ),
+                        ).hide(),
                         startSale = $('<button>', {'class': 'btn btn-success disabled startSale', 'data-key': '118'}).append(
-                            $('<i>', {'class': 'icon-print icon-white'}),
+                            $('<i>', {'class': 'glyphicon glyphicon-print'}),
                             settings.tSell + ' - F7'
                         )
                     )
                 )
             )
         );
-
-        filterText.css('width', '250px');
 
         filterText.keyup(function (e) {
             $(this).removeData('value');

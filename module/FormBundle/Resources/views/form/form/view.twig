@@ -42,7 +42,7 @@
                         <td>{{ dateLocalized(entry.getCreationTime(), 'd MMMM Y H:mm') }}</td>
                         <td>
                             {% if specification.isEditableByUser() and hasAccess('form_view', 'edit') %}
-                                <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-mini">{{ translate("Edit") }}</a>
+                                <a href="{{ url("form_view", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-xs">{{ translate("Edit") }}</a>
                             {% endif %}
                         </td>
                     </tr>

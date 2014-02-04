@@ -115,8 +115,8 @@
                                     $('<label>').html(settings.tPayMethod),
                                     $('<div>').append(
                                         method = $('<div>', {'class': 'btn-group', 'data-toggle': 'buttons'}).append(
-                                            $('<label>', {'class': 'btn btn-default', 'data-key': '114', 'data-method': 'cash'}).append(
-                                                $('<input>', {'type': 'radio'}),
+                                            $('<button>', {'class': 'btn btn-default active', 'data-key': '114', 'data-method': 'cash'}).append(
+                                                $('<input>', {'type': 'radio', 'value': 1}),
                                                 (settings.tCash + ' - F3')
                                             ).click(function () {
                                                 payed.focus();

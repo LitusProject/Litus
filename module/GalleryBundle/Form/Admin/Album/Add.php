@@ -66,7 +66,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
 		    $field = new Text('title_' . $language->getAbbrev());
 		    $field->setLabel('Title')
-		        ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
 		        ->setRequired($language->getAbbrev() == \Locale::getDefault());
 		    $pane->add($field);
 
@@ -77,7 +76,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
 		$field = new Text('date');
 		$field->setLabel('Date')
-		    ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setAttribute('placeholder', 'dd/mm/yyyy')
 		    ->setRequired();
 		$this->add($field);

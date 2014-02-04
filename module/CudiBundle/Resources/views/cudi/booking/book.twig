@@ -44,9 +44,9 @@
                         <tr>
                             <th>{{ translate('Title') }}</th>
                             <th class="hidden-xs">{{ translate('Authors') }}</th>
-                            <th class="span2">{{ translate('Price / Piece') }}</th>
-                            <th class="span1 hidden-xs">{{ translate('Remarks') }}</th>
-                            <th class="span1"></th>
+                            <th>{{ translate('Price / Piece') }}</th>
+                            <th class="hidden-xs">{{ translate('Remarks') }}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -307,7 +307,7 @@
                                             $('<td>', {'class': 'hidden-xs'}).html(this.authors),
                                             price = $('<td>'),
                                             comments = $('<td>', {'class': 'hidden-xs'}),
-                                            book = $('<td>', {'class': 'span1', 'style': 'text-align: center;'})
+                                            book = $('<td>', {'style': 'text-align: center;'})
                                         )
                                     );
 

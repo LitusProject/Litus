@@ -96,7 +96,7 @@
                                         <td>
                                             {% if form.getValueFor(entry, field, language) %}
                                                 {% if hasAccess('form_manage', 'downloadFile') %}
-                                                    <button class="btn btn-default btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                                    <button class="btn btn-default btn-xs download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
                                                 {% endif %}
                                             {% else %}
                                                 <i>{{ translate('(empty)') }}</i>
