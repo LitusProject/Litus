@@ -7,7 +7,7 @@
             {{ translate('The ticket was succesfully deleted.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="ticket_delete_error">
+    <div class="flashmessage alert alert-danger fade" id="ticket_delete_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while deleting the ticket.') }}
@@ -18,82 +18,104 @@
         <h1>{{ event.getActivity().getTitle(language) }}</h1>
     </div>
 
-    <div class="item">
-        <span class="date left">{{ dateLocalized(event.getActivity().getStartDate(), 'd MMM') }}</span>
+    <div class="item date-left">
+        <h4 class="date left">{{ dateLocalized(event.getActivity().getStartDate(), 'd MMM') }}</h4>
 
-        <i class="icon-time"></i> {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
+        <div class="calendarItem">
+            <p>
+                <span class="glyphicon glyphicon-time time"></span>
+                {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
+            </p>
+            <p>
+                <span class="glyphicon glyphicon-home time"></span>
+                {{ translate('Location') }}: {{ event.getActivity().getLocation(language) }}
+            </p>
 
-        <div style="padding-left: 10px">
-            <h2>{{ translate('Prices') }}</h2>
-            {% if event.getOptions()|length == 0 %}
-                <dl class="dl-horizontal">
-                    <dt>{{ translate('Member') }}</dt>
-                    <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
-                    {% if not event.isOnlyMembers() %}
-                        <dt>{{ translate('Non Member') }}</dt>
-                        <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
-                    {% endif %}
-                </dl>
-            {% else %}
-                <dl class="dl-horizontal">
-                    {% for option in event.getOptions() %}
-                        <dt>{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
-                        <dd>&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+            <div style="text-indent: 0">
+                <div class="page-header">
+                    <h2>{{ translate('Prices') }}</h2>
+                </div>
+                {% if event.getOptions()|length == 0 %}
+                    <dl class="dl-horizontal">
+                        <dt>{{ translate('Member') }}</dt>
+                        <dd>&euro;{{ (event.getPriceMembers()/100)|number_format(2) }}</dd>
                         {% if not event.isOnlyMembers() %}
-                            <dt>{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
-                            <dd>&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                            <dt>{{ translate('Non Member') }}</dt>
+                            <dd>&euro;{{ (event.getPriceNonMembers()/100)|number_format(2) }}</dd>
                         {% endif %}
-                    {% endfor %}
-                </dl>
-            {% endif %}
-
-            {% if event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium) %}
-                <h2>{{ translate('Book Tickets') }}</h2>
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(form) }}
-            {% endif %}
-
-            <h2>{{ translate('Your Tickets') }}</h2>
-
-            <table class="table table-bordered table-striped">
-                <tr>
-                    <th width="80px">{{ translate('Status') }}</th>
-                    <th width="160px">{{ translate('Option') }}</th>
-                    <th>{{ translate('Number') }}</th>
-                    <th width="120px">{{ translate('Book Date') }}</th>
-                    <th width="120px">{{ translate('Sold Date') }}</th>
-                    <th width="90px">{{ translate('Actions') }}</th>
-                </tr>
-
-                {% for ticket in tickets %}
-                    <tr class="item">
-                        <td>{{ translate(ticket.getStatus()) }}</td>
-                        <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}{{ translate('Member') }}{% else %}{{ translate('Non Member') }}{% endif %})</td>
-                        <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
-                        <td>{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
-                        <td>{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
-                        <td class="actions">
-                            {% if hasAccess('ticket', 'delete') and canRemoveReservations %}
-                                <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger deleteTicket">{{ translate('Remove') }}</a>
+                    </dl>
+                {% else %}
+                    <dl class="dl-horizontal">
+                        {% for option in event.getOptions() %}
+                            <dt>{{ option.getName() }}&mdash;{{ translate('Member') }}</dt>
+                            <dd>&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
+                            {% if not event.isOnlyMembers() %}
+                                <dt>{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                                <dd>&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
                             {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+
+                {% if event.isStillBookable() or (event.isStillBookablePraesidium() and isPraesidium) %}
+                    <div class="page-header">
+                        <h2>{{ translate('Book Tickets') }}</h2>
+                    </div>
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(form) }}
+                {% endif %}
+
+                <div class="page-header">
+                    <h2>{{ translate('Your Tickets') }}</h2>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="80px">{{ translate('Status') }}</th>
+                            <th width="160px">{{ translate('Option') }}</th>
+                            <th class="hidden-sm hidden-xs">{{ translate('Number') }}</th>
+                            <th width="150px" class="hidden-xs">{{ translate('Book Date') }}</th>
+                            <th width="150px" class="hidden-xs">{{ translate('Sold Date') }}</th>
+                            <th width="90px">{{ translate('Actions') }}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for ticket in tickets %}
+                            <tr class="item">
+                                <td>{{ translate(ticket.getStatus()) }}</td>
+                                <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}{{ translate('Member') }}{% else %}{{ translate('Non Member') }}{% endif %})</td>
+                                <td class="hidden-sm hidden-xs">{{ "%010d"|format(ticket.getNumber()) }}</td>
+                                <td class="hidden-xs">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                                <td class="hidden-xs">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                                <td class="actions">
+                                    {% if hasAccess('ticket', 'delete') and canRemoveReservations %}
+                                        <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Remove') }}</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div id="modalDelete" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Delete Ticket') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to delete the ticket') }}?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    <div id="modalDelete" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Delete Ticket') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to delete the ticket') }}?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -103,6 +125,13 @@
         $(document).ready(function () {
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.control-label').each(function () {
+                var html = $(this).html();
+                html = html.replace('Non Member', '{{ translate('Non Member') }}')
+                           .replace('Member', '{{ translate('Member') }}');
+                $(this).html(html);
             });
 
             $('.deleteTicket').click(openDeleteModal);

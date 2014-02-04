@@ -7,7 +7,7 @@
             {{ translate('The ticket was succesfully unassigned.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="ticket_unassign_error">
+    <div class="flashmessage alert alert-danger fade" id="ticket_unassign_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while unassigning the ticket.') }}
@@ -19,7 +19,7 @@
             {{ translate('The ticket was succesfully deleted.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="ticket_delete_error">
+    <div class="flashmessage alert alert-danger fade" id="ticket_delete_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while deleting the ticket.') }}
@@ -31,7 +31,7 @@
             {{ translate('The ticket was succesfully sold.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="ticket_sale_error">
+    <div class="flashmessage alert alert-danger fade" id="ticket_sale_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while selling the ticket.') }}
@@ -43,105 +43,125 @@
             {{ translate('The ticket was succesfully undid the sale.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="ticket_undo_sale_error">
+    <div class="flashmessage alert alert-danger fade" id="ticket_undo_sale_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while undoing the sale the ticket.') }}
         </div>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>{{ translate('Person') }}</th>
-            <th width="60px">{{ translate('Status') }}</th>
-            <th width="140px">{{ translate('Option') }}</th>
-            <th width="90px">{{ translate('Number') }}</th>
-            <th width="120px">{{ translate('Book Date') }}</th>
-            <th width="120px">{{ translate('Sold Date') }}</th>
-            <th width="190px">{{ translate('Action') }}</th>
-        </tr>
-
-        {% for ticket in paginator %}
-            <tr class="item" id="item-{{ ticket.getId() }}">
-                <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
-                <td class="status">{{ ticket.getStatus() }}</td>
-                <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
-                <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
-                <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
-                <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
-                <td class="actions">
-                    {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
-                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger unassignTicket">{{ translate('Unassign') }}</a>
-                    {% endif %}
-                    {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
-                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger deleteTicket">{{ translate('Delete') }}</a>
-                    {% endif %}
-                    {% if hasAccess('ticket_sale_ticket', 'sale') %}
-                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-success saleTicket" {% if ticket.getStatusCode() != 'booked' %}style="display: none"{% endif %}>{{ translate('Sale') }}</a>
-                    {% endif %}
-                    {% if hasAccess('ticket_sale_ticket', 'unsale') %}
-                        <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
-                    {% endif %}
-                </td>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ translate('Person') }}</th>
+                <th width="60px">{{ translate('Status') }}</th>
+                <th width="140px">{{ translate('Option') }}</th>
+                <th width="90px">{{ translate('Number') }}</th>
+                <th width="120px">{{ translate('Book Date') }}</th>
+                <th width="120px">{{ translate('Sold Date') }}</th>
+                <th width="190px">{{ translate('Action') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for ticket in paginator %}
+                <tr class="item" id="item-{{ ticket.getId() }}">
+                    <td class="person">{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
+                    <td class="status">{{ ticket.getStatus() }}</td>
+                    <td class="status">{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
+                    <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                    <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
+                    <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
+                    <td class="actions">
+                        {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
+                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
+                        {% endif %}
+                        {% if hasAccess('ticket_sale_ticket', 'delete') and not event.areTicketsGenerated() %}
+                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Delete') }}</a>
+                        {% endif %}
+                        {% if hasAccess('ticket_sale_ticket', 'sale') %}
+                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-success btn-sm saleTicket" {% if ticket.getStatusCode() != 'booked' %}style="display: none"{% endif %}>{{ translate('Sale') }}</a>
+                        {% endif %}
+                        {% if hasAccess('ticket_sale_ticket', 'unsale') %}
+                            <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-info btn-sm undoSaleTicket" {% if ticket.getStatusCode() != 'sold' %}style="display: none"{% endif %}>{{ translate('Undo Sale') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     {% include 'site/partials/paginationControl.twig' %}
 
-    <div id="modalUnassign" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Unassign Ticket') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to unassign the ticket of') }}: <b><span class="person"></span></b>?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-        </div>
-    </div>
-
-    <div id="modalDelete" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Delete Ticket') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to delete the ticket of') }}: <b><span class="person"></span></b>?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    <div id="modalUnassign" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Unassign Ticket') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to unassign the ticket of') }}: <b><span class="person"></span></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalSale" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Sale Ticket') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to sale the ticket of') }}: <b><span class="person"></span></b>?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    <div id="modalDelete" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Delete Ticket') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to delete the ticket of') }}: <b><span class="person"></span></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalUndoSale" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Undo Sale Ticket') }}</h3>
+    <div id="modalSale" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Sale Ticket') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to sale the ticket of') }}: <b><span class="person"></span></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to undo the sale the ticket of') }}: <b><span class="person"></span></b>?</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    </div>
+
+    <div id="modalUndoSale" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Undo Sale Ticket') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to undo the sale the ticket of') }}: <b><span class="person"></span></b>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
