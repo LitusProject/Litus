@@ -8,12 +8,12 @@
     {% include 'common/account/partials/navigation.twig' %}
 
     {% if noUniversityIdentification %}
-        <div class="alert alert-error">
+        <div class="alert alert-danger">
             {{ translate('Unfortunately, there is no record of your university identification and we cannot create an account for you.') }}
         </div>
     {% else %}
         {% if not hasPayed %}
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 {{ translate('You have to be a member of our organization to be able to request an account on the file server.') }}
             </div>
         {% else %}

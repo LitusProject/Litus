@@ -96,12 +96,12 @@
                                                             </label>
                                                         </div>
                                                     {% else %}
-                                                        <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                        <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
                                                             <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                            <div class="controls">
+                                                            <div>
                                                                 <div>{{ formElement(element) }}</div>
                                                                 {% if element.getMessages()|length > 0 %}
-                                                                    <div class="help-inline">
+                                                                    <div class="help-block">
                                                                         {{ formElementErrors(element) }}
                                                                     </div>
                                                                 {% endif %}

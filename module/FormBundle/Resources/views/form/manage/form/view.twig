@@ -96,7 +96,7 @@
                                         <td>
                                             {% if form.getValueFor(entry, field, language) %}
                                                 {% if hasAccess('form_manage', 'downloadFile') %}
-                                                    <button class="btn btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                                    <button class="btn btn-default btn-mini download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
                                                 {% endif %}
                                             {% else %}
                                                 <i>{{ translate('(empty)') }}</i>
@@ -251,13 +251,13 @@
                         if (data.errors) {
                             $('.flashmessage').addClass('hide');
                             sendMail.find('ul.errors').remove();
-                            sendMail.find('.control-group').removeClass('error');
+                            sendMail.find('.form-group').removeClass('error');
                             for(element in data.errors) {
                                 var list = $('<ul>', {'class': 'errors'});
                                 for (error in data.errors[element])
                                     list.append($('<li>').html(data.errors[element][error]));
-                                var div = $('<div>', {'class': 'help-inline'}).append(list);
-                                sendMail.find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                                var div = $('<div>', {'class': 'help-block'}).append(list);
+                                sendMail.find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
                             }
                         } else {
                             $('.flashmessage').removeClass('in');

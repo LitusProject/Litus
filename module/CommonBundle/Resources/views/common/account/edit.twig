@@ -88,13 +88,13 @@
             toggleMember();
             cityChange();
 
-            $('#register_form #organization').closest('.control-group').hide();
+            $('#register_form #organization').closest('.form-group').hide();
             if ($('#register_form #organization').val() == 0) {
-                $('#register_form #become_member').closest('.control-group').hide();
+                $('#register_form #become_member').closest('.form-group').hide();
                 $('#register_form #become_member').prop('checked', false);
             } else {
                 $('#register_form #become_member').prop('checked', true);
-                $('#register_form #become_member').closest('.control-group').show();
+                $('#register_form #become_member').closest('.form-group').show();
                 $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
             }
 

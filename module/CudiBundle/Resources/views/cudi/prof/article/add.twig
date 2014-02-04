@@ -43,7 +43,7 @@
                 e.preventDefault();
 
                 $('#article_select').hide();
-                $('#internal').prop('checked', false).closest('.control-group').hide();
+                $('#internal').prop('checked', false).closest('.form-group').hide();
                 toggleInternal();
             });
 
@@ -51,7 +51,7 @@
                 e.preventDefault();
 
                 $('#article_select').hide();
-                $('#internal').prop('checked', true).closest('.control-group').hide();
+                $('#internal').prop('checked', true).closest('.form-group').hide();
                 toggleInternal();
             });
 
@@ -79,10 +79,10 @@
         function toggleInternal() {
             if ($('#internal').is(':checked')) {
                 $('#internal_form').show();
-                $('#article_form #publisher').val('{{ unionShortName }}').closest('.control-group').hide();
+                $('#article_form #publisher').val('{{ unionShortName }}').closest('.form-group').hide();
             } else {
                 $('#internal_form').hide();
-                $('#article_form #publisher').val('').closest('.control-group').show();
+                $('#article_form #publisher').val('').closest('.form-group').show();
             }
 
             $('#article_form').show();
