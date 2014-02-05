@@ -413,14 +413,7 @@ return array(
                         ),
                         'filters' => array(
                             'corporate_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -433,14 +426,7 @@ return array(
                         ),
                         'filters' => array(
                             'cv_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(

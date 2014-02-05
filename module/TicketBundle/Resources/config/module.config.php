@@ -177,14 +177,7 @@ return array(
                         ),
                         'filters' => array(
                             'ticket_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(

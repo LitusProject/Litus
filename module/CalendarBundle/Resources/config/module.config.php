@@ -142,14 +142,7 @@ return array(
                         ),
                         'filters' => array(
                             'calendar_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -159,6 +152,14 @@ return array(
                     'calendar_js' => array(
                         'assets' => array(
                             'calendar/js/calendar.js',
+                        ),
+                        'filters' => array(
+                            'calendar_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'calendar_js.js',
                         ),
                     ),
                 ),

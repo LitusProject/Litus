@@ -917,14 +917,7 @@ return array(
                         ),
                         'filters' => array(
                             'sale_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -937,14 +930,7 @@ return array(
                         ),
                         'filters' => array(
                             'supplier_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -955,10 +941,26 @@ return array(
                         'assets' => array(
                             'queue/js/*.js',
                         ),
+                        'filters' => array(
+                            'queue_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'queue_js.js',
+                        ),
                     ),
                     'sale_js' => array(
                         'assets' => array(
                             'sale/js/*.js',
+                        ),
+                        'filters' => array(
+                            'sale_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'sale_js.js',
                         ),
                     ),
                     'prof_css' => array(
@@ -967,14 +969,7 @@ return array(
                         ),
                         'filters' => array(
                             'prof_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -987,14 +982,7 @@ return array(
                         ),
                         'filters' => array(
                             'booking_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -1007,14 +995,7 @@ return array(
                         ),
                         'filters' => array(
                             'opening_hour_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -1024,6 +1005,14 @@ return array(
                     'opening_hour_js' => array(
                         'assets' => array(
                             'opening-hour/js/*.js',
+                        ),
+                        'filters' => array(
+                            'opening_hour_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'opening_hour_js.js',
                         ),
                     ),
                 ),
