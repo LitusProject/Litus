@@ -158,9 +158,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'calendar_js.js',
-                        ),
                     ),
                 ),
             ),

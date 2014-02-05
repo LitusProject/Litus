@@ -257,9 +257,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'logistics_js.js',
-                        ),
                     ),
                     'minicolor_css' => array(
                         'assets' => array(
@@ -282,9 +279,6 @@ return array(
                             'minicolor_js_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'minicolor_js.js',
                         ),
                     ),
                 ),

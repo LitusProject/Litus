@@ -946,9 +946,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'queue_js.js',
-                        ),
                     ),
                     'sale_js' => array(
                         'assets' => array(
@@ -958,9 +955,6 @@ return array(
                             'sale_js_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'sale_js.js',
                         ),
                     ),
                     'prof_css' => array(
@@ -1010,9 +1004,6 @@ return array(
                             'opening_hour_js_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'opening_hour_js.js',
                         ),
                     ),
                 ),

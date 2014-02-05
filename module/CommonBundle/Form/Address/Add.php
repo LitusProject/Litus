@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox')
+        $field->setLabel('Mailbox');
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal');

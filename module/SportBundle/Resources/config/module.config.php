@@ -178,9 +178,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'run_js.js',
-                        ),
                     ),
                 ),
             ),

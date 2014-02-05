@@ -44,9 +44,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_affix.js',
-                        ),
                     ),
                     'bootstrap_js_alert' => array(
                         'assets' => array(
@@ -56,9 +53,6 @@ return array(
                             'bootstrap_js_alert_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_alert.js',
                         ),
                     ),
                     'bootstrap_js_button' => array(
@@ -70,9 +64,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_button.js',
-                        ),
                     ),
                     'bootstrap_js_carousel' => array(
                         'assets' => array(
@@ -82,9 +73,6 @@ return array(
                             'bootstrap_js_carousel_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_carousel.js',
                         ),
                     ),
                     'bootstrap_js_collapse' => array(
@@ -96,9 +84,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_collapse.js',
-                        ),
                     ),
                     'bootstrap_js_dropdown' => array(
                         'assets' => array(
@@ -108,9 +93,6 @@ return array(
                             'bootstrap_js_dropdown_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_dropdown.js',
                         ),
                     ),
                     'bootstrap_js_modal' => array(
@@ -122,9 +104,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_modal.js',
-                        ),
                     ),
                     'bootstrap_js_popover' => array(
                         'assets' => array(
@@ -134,9 +113,6 @@ return array(
                             'bootstrap_js_popover_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_popover.js',
                         ),
                     ),
                     'bootstrap_js_scrollspy' => array(
@@ -148,9 +124,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_scrollspy.js',
-                        ),
                     ),
                     'bootstrap_js_tab' => array(
                         'assets' => array(
@@ -160,9 +133,6 @@ return array(
                             'bootstrap_js_tab_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_tab.js',
                         ),
                     ),
                     'bootstrap_js_tooltip' => array(
@@ -174,9 +144,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_tooltip.js',
-                        ),
                     ),
                     'bootstrap_js_transition' => array(
                         'assets' => array(
@@ -186,9 +153,6 @@ return array(
                             'bootstrap_js_transition_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_transition.js',
                         ),
                     ),
                 ),

@@ -132,9 +132,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'gallery_js.js',
-                        ),
                     ),
                     'plupload_js' => array(
                         'assets'  => array(
@@ -145,9 +142,6 @@ return array(
                             'plupload_js_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'plupload_js.js',
                         ),
                     ),
                     'plupload_css' => array(

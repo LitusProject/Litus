@@ -450,9 +450,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_jquery_js.js',
-                        ),
                     ),
                     'common_jqueryui' => array(
                         'assets'  => array(
@@ -462,9 +459,6 @@ return array(
                             'common_jqueryui_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_jqueryui_js.js',
                         ),
                     ),
                     'common_jqueryui_css' => array(
@@ -489,9 +483,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_jqueryui_datepicker_js.js',
-                        ),
                     ),
                     'common_jqueryui_datepicker_css' => array(
                         'assets' => array(
@@ -515,9 +506,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_jquery_table_sort_js.js',
-                        ),
                     ),
                     'common_jquery_form' => array(
                         'assets'  => array(
@@ -527,9 +515,6 @@ return array(
                             'common_jquery_form_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_jquery_form_js.js',
                         ),
                     ),
                     'common_form_upload_progress' => array(
@@ -541,9 +526,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_form_upload_progress_js.js',
-                        ),
                     ),
                     'common_permanent_modal' => array(
                         'assets'  => array(
@@ -553,9 +535,6 @@ return array(
                             'common_permanent_modal_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_permanent_modal_js.js',
                         ),
                     ),
                     'common_socket' => array(
@@ -567,9 +546,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_socket_js.js',
-                        ),
                     ),
                     'common_download_file' => array(
                         'assets'  => array(
@@ -579,9 +555,6 @@ return array(
                             'common_download_file_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_download_file_js.js',
                         ),
                     ),
                     'common_fieldcount' => array(
@@ -593,9 +566,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_fieldcount_js.js',
-                        ),
                     ),
                     'common_remote_typeahead' => array(
                         'assets'  => array(
@@ -605,9 +575,6 @@ return array(
                             'common_remote_typeahead_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_remote_typeahead_js.js',
                         ),
                     ),
                     'common_spin_js' => array(
@@ -619,9 +586,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_spin_js.js',
-                        ),
                     ),
                     'common_holder_js' => array(
                         'assets'  => array(
@@ -631,9 +595,6 @@ return array(
                             'common_holder_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_holder_js.js',
                         ),
                     ),
                     'common_chart_js' => array(
@@ -645,9 +606,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'common_chart_js.js',
-                        ),
                     ),
                     'common_serialize_js' => array(
                         'assets'  => array(
@@ -658,9 +616,6 @@ return array(
                             'common_serialize_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'common_serialize_js.js',
                         ),
                     ),
 
@@ -685,9 +640,6 @@ return array(
                             'admin_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'admin_js.js',
                         ),
                     ),
 
@@ -714,9 +666,6 @@ return array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
                         ),
-                        'options' => array(
-                            'output' => 'bootstrap_js_rowlink.js',
-                        ),
                     ),
 
                     'gollum_css' => array(
@@ -741,9 +690,6 @@ return array(
                             'gollum_yui' => array(
                                 'name' => '\CommonBundle\Component\Assetic\Filter\Js',
                             ),
-                        ),
-                        'options' => array(
-                            'output' => 'gollum_js.js',
                         ),
                     ),
                 ),
