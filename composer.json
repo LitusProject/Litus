@@ -18,7 +18,9 @@
         "widmogrod/zf2-assetic-module": "@dev",
         "zf-commons/zfc-twig": "@dev",
 
-        "twitter/bootstrap": "dev-master"
+        "twitter/bootstrap": "dev-master",
+
+        "packagist/yuicompressor-bin": "dev-master"
     },
     "autoload": {
         "psr-0": {
