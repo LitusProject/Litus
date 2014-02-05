@@ -76,7 +76,7 @@
         $(document).ready(function () {
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
-                    $(this).closest('.fileupload').append(
+                    $(this).closest('.fileinput').append(
                         $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
                             '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
                         )
