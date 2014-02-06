@@ -247,9 +247,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         foreach($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getRawType() == 'amount') {
-                                $amount = sizeof($this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                    ->findOneSoldOrAssignedOrBookedByArticleAndPerson($saleArticle, $this->getAuthentication()->getPersonObject()));
+                                $amount = sizeof(
+                                    $this->getEntityManager()
+                                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                        ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                                            $saleArticle,
+                                            $this->getAuthentication()->getPersonObject(),
+                                            $this->getCurrentAcademicYear()
+                                    )
+                                );
                                 if ($amount + $formValue > $restriction->getValue())
                                     $formValue = $restriction->getValue() - $amount;
                             }

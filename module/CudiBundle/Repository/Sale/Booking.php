@@ -2,8 +2,8 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\User\Person,
-    Exception,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
@@ -12,6 +12,7 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Stock\Period,
     DateTime,
     DateInterval,
+    Exception,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Zend\Mail\Transport\TransportInterface;
 
@@ -536,8 +537,18 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
+        return $this->findOneSoldOrAssignedOrBookedByArticleAndPersonBetween($article, $person, $period->getStartDate(), $period->getEndDate());
+    }
+
+    public function findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
+    {
+        return $this->findOneSoldOrAssignedOrBookedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function findOneSoldOrAssignedOrBookedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('b')
+        $query->select('b')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(
@@ -549,17 +560,18 @@ class Booking extends EntityRepository
                         $query->expr()->eq('b.status', '\'booked\'')
                     ),
                     $query->expr()->gte('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    null === $end ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
-            ->setParameter(':person', $person->getId())
-            ->setParameter(':article', $article->getId())
-            ->setParameter('startDate', $period->getStartDate());
+            ->setParameter('person', $person->getId())
+            ->setParameter('article', $article->getId())
+            ->setParameter('startDate', $start);
 
-        if (!$period->isOpen())
+        if (null !== $end)
             $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->setMaxResults(1)
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
 
