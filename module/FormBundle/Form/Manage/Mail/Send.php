@@ -44,13 +44,11 @@ class Send extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('subject');
         $field->setLabel('Mail Subject')
-            ->setAttribute('style', 'width: 250px')
             ->setRequired();
         $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setAttribute('style', 'width: 300px')
             ->setRequired();
         $this->add($field);
     }

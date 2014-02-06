@@ -33,6 +33,7 @@
       this.$menu.css({
         top: pos.top + pos.height
       , left: pos.left
+      , zIndex: 2000
       })
 
       this.$menu.show()

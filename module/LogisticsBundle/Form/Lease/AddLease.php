@@ -52,7 +52,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('item');
         $field->setLabel('Item')
-            ->setAttribute('class', 'js-item-search')
+            ->setAttribute('class', $field->getAttribute('class') . ' js-item-search')
             ->setAttribute('autocomplete', false);
         $this->add($field);
 
@@ -67,19 +67,18 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('leased_to');
         $field->setLabel('Leased To')
-                ->setAttribute('autocomplete', false)
-                ->setRequired();
+            ->setAttribute('autocomplete', false)
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('leased_pawn');
         $field->setLabel('Received Pawn')
-                ->setRequired();
+            ->setRequired();
         $this->add($field);
 
         $field = new Textarea('comment');
         $field->setLabel('Comment')
-                ->setAttribute('class', 'input-xlarge')
-                ->setAttribute('rows', 3);
+            ->setAttribute('rows', 3);
         $this->add($field);
 
         $field = new Submit('lease');

@@ -42,12 +42,12 @@
 
         $this.addClass('calendarBrowser')
             .html('').append(
-                $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn1'}),
-                $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn2'}),
-                $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn3'}),
-                $('<div>', {'class': 'span3 calendarColumn', 'id': 'calendarColumn4'}),
-                $('<div>', {'class': 'span12 hr clearFix'}),
-                $('<ul>', {'class': 'span12 pager'}).append(
+                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn1'}),
+                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn2'}),
+                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn3'}),
+                $('<div>', {'class': 'col-md-3 calendarColumn', 'id': 'calendarColumn4'}),
+                $('<div>', {'class': 'col-md-12 hr clearFix'}),
+                $('<ul>', {'class': 'col-md-12 pager'}).append(
                     $('<li>', {'class': 'previous'}).append(
                         $('<a>', {'href': '#'}).html('&larr; ' + $this.data('calendar').previousText).click(function () {$this.calendar('previous'); return false;})
                     ),
@@ -89,14 +89,15 @@
 
             $.each(data.days, function (key, value) {
                 column.append(
-                    day = $('<div>', {'class': 'item'}).html(
-                        $('<span>', {'class': 'date left'}).html(value.date)
+                    day = $('<div>', {'class': 'item date-left'}).append(
+                        $('<h4>', {'class': 'date left'}).html(value.date),
+                        dayItem = $('<div>', {'class': 'dayItem'})
                     )
                 );
                 $(value.events).each(function () {
-                    day.append(
+                    dayItem.append(
                         $('<p>', {'class': 'calendarItem'}).append(
-                            $('<i>', {'class': 'icon-time'}), ' ',
+                            $('<span>', {'class': 'glyphicon glyphicon-time time'}), ' ',
                             $('<a>', {'href': this.url, 'rel': 'popover', 'data-original-title': this.title, 'data-content': this.content}).append(
                                 this.startDate, '&mdash;', this.title
                             )
@@ -105,7 +106,7 @@
                 });
             });
 
-            $('a[rel=popover]').popover({'trigger': 'hover', 'html': true});
+            $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
         }, 'json');
     }
 

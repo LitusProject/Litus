@@ -3,7 +3,7 @@
 namespace LogisticsBundle\Repository\Lease;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    LogisticsBundle\Entity\Lease\Item;
+    LogisticsBundle\Entity\Lease\Item as ItemEntity;
 
 /**
  * Lease
@@ -19,7 +19,7 @@ class Lease extends EntityRepository
      * @param \LogisticsBundle\Entity\Lease\Item $item
      * @return array
      */
-    public function findUnreturnedByItemQuery(Item $item)
+    public function findUnreturnedByItemQuery(ItemEntity $item)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('l')
@@ -30,7 +30,7 @@ class Lease extends EntityRepository
                     $query->expr()->eq('l.item', ':item')
                 )
             )
-            ->setParameter('item')
+            ->setParameter('item', $item)
             ->getQuery();
 
         return $resultSet;
@@ -47,9 +47,22 @@ class Lease extends EntityRepository
         $resultSet = $query->select('l')
             ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
             ->where(
-                $query->expr()->eq('l.returned', 'false'),
+                $query->expr()->eq('l.returned', 'false')
             )
-            ->setParameter('item')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findByItemQuery(ItemEntity $item)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
+            ->where(
+                $query->expr()->eq('l.item', ':item')
+            )
+            ->setParameter('item', $item)
             ->getQuery();
 
         return $resultSet;

@@ -5,7 +5,7 @@
         <h1>{{ translate('Account') }}</h1>
     </div>
 
-    <div class="flashmessage alert alert-error fade" id="profile_upload_error">
+    <div class="flashmessage alert alert-danger fade" id="profile_upload_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while uploading your profile image.') }}
@@ -14,131 +14,131 @@
 
     {% include 'common/account/partials/navigation.twig' %}
 
-    <div class="row page">
-        <div class="span12">
-            <h3>{{ translate('Personal') }}</h3>
-            <div class="row">
-                <div class="span9">
-                    <dl class="dl-horizontal wide">
-                        <dt>{{ translate('Name') }}</dt>
-                        <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
-                        <dt>{{ translate('Birthday') }}</dt>
-                        <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
-                        <dt>{{ translate('Sex') }}</dt>
-                        <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
-                        <dt>{{ translate('Phone Number') }}</dt>
-                        <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-                        <dt>{{ translate('University Identification') }}</dt>
-                        <dd>{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</dd>
-                        <dt>{{ translate('University E-mail') }}</dt>
-                        <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
-                        <dt>{{ translate('Personal E-mail') }}</dt>
-                        <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-                    </dl>
-                </div>
-                <div class="span3">
-                    <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
-                        {% if authenticatedPerson.getPhotoPath() %}
-                            <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                        {% else %}
-                            <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
-                        {% endif %}
-                        <button id="editProfile" class="btn btn-small" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
-                    </div>
-                </div>
-            </div>
-
-            <h3>{{ translate('Addresses') }}</h3>
-            <div class="row">
-                <div class="span6">
-                    <address>
-                        <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br />
-                        {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}<br />
-                        {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}<br />
-                        {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
-                    </address>
-                </div>
-                <div class="span6">
-                    <address>
-                        <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br />
-                        {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}<br />
-                        {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br />
-                        {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
-                    </address>
-                </div>
-            </div>
-
-            <h3>{{ translate('Student Association') }}</h3>
-            <div class="row">
-                <div class="span9">
-                    <dl class="dl-horizontal wide">
-                        <dt>{{ translate('Student Association') }}</dt>
-                        <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
-                        <dt>{{ translate('Membership') }}</dt>
-                        <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
-                        <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                        <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
-                        <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                        <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
-                        <dt>{{ translate('T-shirt Size') }}</dt>
-                        <dd>{{ metaData.getTshirtSizeName() }}</dd>
-                    </dl>
-                </div>
-                <div class="span3" style="text-align: left;">
-                    {% if hasAccess('common_account', 'passbook') %}
-                        <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
-                    {% endif %}
-                </div>
-            </div>
-
-            <h3>{{ translate('Studies') }}</h3>
-            {% for study in studies %}
-                <h4>{{ study.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
-                {% for subject in study.subjects %}
-                    <ul>
-                        {% if subject.getSubject().getId() in subjects %}
-                            <li>{{ subject.getSubject().getName() }}</li>
-                        {% endif %}
-                    </ul>
-                {% endfor %}
-            {% endfor %}
-            <div class="form-actions hidden-phone" style="text-align: center;">
-                <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+    <h3>{{ translate('Personal') }}</h3>
+    <div class="row">
+        <div class="col-sm-9">
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Name') }}</dt>
+                <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
+                <dt>{{ translate('Birthday') }}</dt>
+                <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
+                <dt>{{ translate('Sex') }}</dt>
+                <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
+                <dt>{{ translate('Phone Number') }}</dt>
+                <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
+                <dt>{{ translate('University Identification') }}</dt>
+                <dd>{{ authenticatedPerson.getUniversityIdentification() }}&nbsp;</dd>
+                <dt>{{ translate('University E-mail') }}</dt>
+                <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
+                <dt>{{ translate('Personal E-mail') }}</dt>
+                <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+            </dl>
+        </div>
+        <div class="col-sm-3">
+            <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
+                {% if authenticatedPerson.getPhotoPath() %}
+                    <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
+                {% else %}
+                    <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
+                {% endif %}
+                <button id="editProfile" class="btn btn-default btn-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
             </div>
         </div>
     </div>
 
-    <div id="modalProfileImage" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Profile Image') }}</h3>
+    <h3>{{ translate('Addresses') }}</h3>
+    <div class="row">
+        <div class="col-sm-6">
+            <address>
+                <strong>{{ translate('Primary Address&mdash;Student Room or Home') }}</strong><br />
+                {{ authenticatedPerson.getPrimaryAddress().getStreet() }} {{ authenticatedPerson.getPrimaryAddress().getNumber() }}{% if '' != authenticatedPerson.getPrimaryAddress().getMailbox() %}/{{ authenticatedPerson.getPrimaryAddress().getMailbox() }}{% endif %}<br />
+                {{ authenticatedPerson.getPrimaryAddress().getPostal() }} {{ authenticatedPerson.getPrimaryAddress().getCity() }}<br />
+                {{ authenticatedPerson.getPrimaryAddress().getCountry() }}
+            </address>
         </div>
-        <div class="modal-body">
-            <div class="imageCrop">
-                <div style="width: 320px; margin: 10px auto;">
-                    {% if authenticatedPerson.getPhotoPath() %}
-                        <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
-                    {% else %}
-                        <img class="image" />
-                    {% endif %}
+        <div class="col-sm-6">
+            <address>
+                <strong>{{ translate('Secondary Address&mdash;Home') }}</strong><br />
+                {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}{% if '' != authenticatedPerson.getSecondaryAddress().getMailbox() %}/{{ authenticatedPerson.getSecondaryAddress().getMailbox() }}{% endif %}<br />
+                {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br />
+                {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+            </address>
+        </div>
+    </div>
+
+    <h3>{{ translate('Student Association') }}</h3>
+    <div class="row">
+        <div class="col-sm-9">
+            <dl class="dl-horizontal wide">
+                <dt>{{ translate('Student Association') }}</dt>
+                <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
+                <dt>{{ translate('Membership') }}</dt>
+                <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
+                <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
+                <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
+                <dt>{{ translate('T-shirt Size') }}</dt>
+                <dd>{{ metaData.getTshirtSizeName() }}&nbsp;</dd>
+            </dl>
+        </div>
+        <div class="col-sm-3" style="text-align: left;">
+            {% if hasAccess('common_account', 'passbook') %}
+                <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3>{{ translate('Studies') }}</h3>
+    {% for study in studies %}
+        <h4>{{ study.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ study.enrollment.getStudy().getPhase() }}</small></h4>
+        {% for subject in study.subjects %}
+            <ul>
+                {% if subject.getSubject().getId() in subjects %}
+                    <li>{{ subject.getSubject().getName() }}</li>
+                {% endif %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+    <div class="hidden-sm hidden-xs" style="text-align: center;">
+        <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+    </div>
+
+    <div id="modalProfileImage" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Profile Image') }}</h4>
                 </div>
-                <div class="flashmessage alert alert-error fade" id="file_size_error">
-                    <div class="content">
-                        {{ translate('The selected file is to large.') }}
+                <div class="modal-body">
+                    <div class="imageCrop">
+                        <div style="width: 320px; margin: 10px auto;">
+                            {% if authenticatedPerson.getPhotoPath() %}
+                                <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="" width="320">
+                            {% else %}
+                                <img class="image" width="320" />
+                            {% endif %}
+                        </div>
+                        <div class="flashmessage alert alert-error fade" id="file_size_error">
+                            <div class="content">
+                                {{ translate('The selected file is to large.') }}
+                            </div>
+                        </div>
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
+                    </div>
+
+                    <div class="imageForm" style="display: none;">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
                     </div>
                 </div>
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(profileForm) }}
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
             </div>
-
-            <div class="imageForm" style="display: none;">
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(profileForm) }}
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success save">{{ translate('Save') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
         </div>
     </div>
 {% endblock %}

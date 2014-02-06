@@ -443,7 +443,7 @@ return array(
                     'common_jquery' => array(
                         'assets'  => array(
                             'common/js/jquery.min.js',
-                            'common/js/bootstrap-fileupload.min.js',
+                            'common/js/bootstrap-fileinput.min.js',
                         ),
                     ),
                     'common_jqueryui' => array(
@@ -578,11 +578,6 @@ return array(
                     'bootstrap_js_rowlink' => array(
                         'assets'  => array(
                             'common/js/bootstrap-rowlink.js',
-                        ),
-                    ),
-                    'bootstrap_js_custom_collapse' => array(
-                        'assets'  => array(
-                            'common/js/bootstrap-custom-collapse.js',
                         ),
                     ),
 

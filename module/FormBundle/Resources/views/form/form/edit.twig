@@ -16,7 +16,7 @@
     <hr/>
 
     {% if not form %}
-        <div class="alert">
+        <div class="alert alert-warning">
             {{ translate(message) }}
         </div>
     {% else %}
@@ -35,8 +35,8 @@
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
-                    $(this).closest('.fileupload').append(
-                        $('<button>', {'class': 'btn btn-mini'}).html('{{ translate('Download') }}').downloadFile(
+                    $(this).closest('.fileinput').append(
+                        $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
                             '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
                         )
                     );
@@ -47,13 +47,13 @@
             form.find('input, select').each(function () {
                 var $this = $(this);
                 if ($this.data('visible_if_element') !== undefined) {
-                    $this.closest('.control-group').hide();
+                    $this.closest('.form-group').hide();
                     form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
                         if ($(this).attr('type') == 'text') {
                             if ($(this).val() !== '') {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
@@ -63,17 +63,17 @@
                                     || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
                                 && $(this).is(':visible')
                             ) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
                         } else if ($(this).is('select')) {
                             if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');

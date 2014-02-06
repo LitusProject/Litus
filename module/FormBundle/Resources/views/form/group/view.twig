@@ -12,37 +12,39 @@
     <hr/>
 
     {% if message %}
-        <div class="alert">
+        <div class="alert alert-warning">
             {{ translate(message) }}
         </div>
     {% else %}
-        <table class="table table-bordered span5">
-            {% for form in group.getForms() %}
-                <tr>
-                    <td>
-                        {% if hasAccess('form_view', 'view') %}
-                            <a href="{{ url('form_view', {'id': form.getForm().getId()}) }}">
-                                {{ form.getForm().getTitle(language) }}
-                                <i class="icon-chevron-right pull-right" style="margin-left: 10px"></i>
-                            </a>
-                        {% else %}
-                            {{ form.getForm().getTitle(language) }}
-                        {% endif %}
-                        {% if entries[form.getForm().getId()]['entry'] %}
-                            {% if entries[form.getForm().getId()]['draft'] %}
-                                <span class="badge badge-warning pull-right">{{ translate('In Progress') }}</span>
+        <div class="col-md-5">
+            <table class="table table-bordered">
+                {% for form in group.getForms() %}
+                    <tr>
+                        <td>
+                            {% if hasAccess('form_view', 'view') %}
+                                <a href="{{ url('form_view', {'id': form.getForm().getId()}) }}">
+                                    {{ form.getForm().getTitle(language) }}
+                                    <i class="glyphicon glyphicon-chevron-right pull-right" style="margin-left: 10px"></i>
+                                </a>
                             {% else %}
-                                <span class="badge badge-success pull-right">{{ translate('Completed') }}</span>
+                                {{ form.getForm().getTitle(language) }}
                             {% endif %}
-                        {% else %}
-                            <span class="badge badge-important pull-right">{{ translate('Not Completed') }}</span>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+                            {% if entries[form.getForm().getId()]['entry'] %}
+                                {% if entries[form.getForm().getId()]['draft'] %}
+                                    <span class="label label-warning pull-right">{{ translate('In Progress') }}</span>
+                                {% else %}
+                                    <span class="label label-success pull-right">{{ translate('Completed') }}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="label label-important pull-right">{{ translate('Not Completed') }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
         {% if hasAccess('form_view', 'view') %}
-            <div class="form-actions" style="clear: both;text-align: center;">
+            <div style="clear: both;text-align: center;">
                 <a href="{{ url('form_view', {'id': startForm.getId()}) }}" class="btn btn-primary">{% if isFirstForm %}{{ translate('Start') }}{% else %}{{ translate('Continue') }}{% endif %}</a>
             </div>
         {% endif %}

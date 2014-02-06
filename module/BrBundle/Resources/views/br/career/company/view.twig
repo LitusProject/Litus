@@ -1,138 +1,139 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-
-    <div class="span2">
-        {% if page.getCompany().getLogo() %}
-            <img src="/{{ logoPath }}/{{ page.getCompany().getLogo() }}" alt="{{ page.getCompany().getName() }}">
-
-        <hr/>
-        {% else %}
-            <div class="logo-replacement">
+    <div class="row">
+        <div class="col-sm-2">
+            <div style="text-align: center">
+                {% if page.getCompany().getLogo() %}
+                    <img src="/{{ logoPath }}/{{ page.getCompany().getLogo() }}" alt="{{ page.getCompany().getName() }}" style="width: 100%; max-width: 120px">
+                    <hr/>
+                {% else %}
+                    <div style="height: 60px">
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
 
+            <center>
+                <address><strong>
+                    {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
+                        {% if page.getCompany().getAddress().getMailbox() %}
+                            / {{ page.getCompany().getAddress().getMailbox() }}
+                        {% endif %}<br>
+                    {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}<br>
+                    {{ page.getCompany().getAddress().getCountry() }}
+                </strong></address>
+            </center>
 
-        <center>
-            <address><strong>
-                {{ page.getCompany().getAddress().getStreet() }} {{ page.getCompany().getAddress().getNumber() }}
-                    {% if page.getCompany().getAddress().getMailbox() %}
-                        / {{ page.getCompany().getAddress().getMailbox() }}
-                    {% endif %}<br>
-                {{ page.getCompany().getAddress().getPostal() }} {{ page.getCompany().getAddress().getCity() }}<br>
-                {{ page.getCompany().getAddress().getCountry() }}
-            </strong></address>
-        </center>
-
-        <hr/>
-
-        <center>
-            <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
-        </center>
-
-        {% if page.getSummary() != "" %}
             <hr/>
 
-            {% autoescape false %}
-                {{ markdown(page.getSummary()) }}
-            {% endautoescape %}
-        {% endif %}
+            <center>
+                <a style="word-wrap: break-word;" href="{{ page.getCompany().getFullWebsite() }}">{{ page.getCompany().getWebsite() }}</a>
+            </center>
 
-    </div>
-    <div class="span10">
-        <h1>{{ page.getCompany().getName() }}</h1>
+            {% if page.getSummary() != "" %}
+                <hr/>
 
-        <div class="accordion" id="accordion">
-            {% if events|length > 0 %}
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#events">
-                        {{ translate('Events') }}
-                    </a>
+                {% autoescape false %}
+                    {{ markdown(page.getSummary()) }}
+                {% endautoescape %}
+            {% endif %}
+
+        </div>
+        <div class="col-sm-10">
+            <h1>{{ page.getCompany().getName() }}</h1>
+
+            <div class="panel-group" id="accordion">
+                {% if events|length > 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#events">
+                            {{ translate('Events') }}
+                        </a>
+                    </div>
+                    <div id="events" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                                <tbody>
+                                    {% for event in events %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
+                                                    <strong>{{ event.getEvent().getTitle(language) }}</strong>
+                                                    <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div id="events" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-                            <tbody>
-                                {% for event in events %}
+                {% endif %}
+                {% if vacancies|length > 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#vacancies">
+                            {{ translate('Vacancies') }}
+                        </a>
+                    </div>
+                    <div id="vacancies" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                                {% for vacancy in vacancies %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
-                                                <strong>{{ event.getEvent().getTitle(language) }}</strong>
-                                                <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
+                                            <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                                                <strong>{{ vacancy.getName() }}</strong>
+                                                <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                             </a>
                                         </td>
                                     </tr>
+
                                 {% endfor %}
-                            </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if vacancies|length > 0 %}
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#vacancies">
-                        {{ translate('Vacancies') }}
-                    </a>
-                </div>
-                <div id="vacancies" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-                            {% for vacancy in vacancies %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                                            <strong>{{ vacancy.getName() }}</strong>
-                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                                        </a>
-                                    </td>
-                                </tr>
+                {% endif %}
+                {% if internships|length > 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#internships">
+                            {{ translate('Internships') }}
+                        </a>
+                    </div>
+                    <div id="internships" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                                {% for internship in internships %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                                <strong>{{ internship.getName() }}</strong>
+                                                <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                                            </a>
+                                        </td>
+                                    </tr>
 
-                            {% endfor %}
-                        </table>
+                                {% endfor %}
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if internships|length > 0 %}
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#internships">
-                        {{ translate('Internships') }}
-                    </a>
-                </div>
-                <div id="internships" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-                            {% for internship in internships %}
-                                <tr>
-                                    <td>
-                                        <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
-                                            <strong>{{ internship.getName() }}</strong>
-                                            <div class="pull-right">{{ translate('Last updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                            {% endfor %}
-                        </table>
+                {% endif %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#about">
+                            {{ translate('About') }}
+                        </a>
                     </div>
-                </div>
-            </div>
-            {% endif %}
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
-                        {{ translate('About') }}
-                    </a>
-                </div>
-                <div id="about" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(page.getDescription()) }}
-                        {% endautoescape %}
+                    <div id="about" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(page.getDescription()) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
             </div>

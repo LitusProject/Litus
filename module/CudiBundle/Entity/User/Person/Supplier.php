@@ -73,4 +73,15 @@ class Supplier extends \CommonBundle\Entity\User\Person
         $this->supplier = $supplier;
         return $this;
     }
+
+    /**
+     * Retrieves all the roles from the academic's units for the
+     * latest academic year.
+     *
+     * @return array
+     */
+    public function getUnitRoles()
+    {
+        return array();
+    }
 }

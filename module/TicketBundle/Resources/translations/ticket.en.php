@@ -36,6 +36,8 @@ return array(
     'Are you sure you want to delete the ticket' => 'Are you sure you want to delete the ticket',
     'Yes' => 'Yes',
     'No' => 'No',
+    'Number Member' => 'Number Member',
+    'Number Non Member' => 'Number Non Member',
 
     'The tickets were succesfully booked' => 'The tickets were succesfully booked',
     'There were not enough tickets available' => 'There were not enough tickets available',

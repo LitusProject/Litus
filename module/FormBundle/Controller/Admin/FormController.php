@@ -189,7 +189,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_admin_form',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $form->getId(),
                     )
                 );
 

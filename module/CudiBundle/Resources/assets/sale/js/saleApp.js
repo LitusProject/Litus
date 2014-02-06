@@ -222,19 +222,25 @@ var currentView = 'selectPaydesk';
         var settings = $this.data('saleAppSettings');
 
         var modal = $('<div>', {'class': 'modal ' + (firstAction ? '' : 'fade')}).append(
-            $('<div>', {'class': 'modal-header'}).append(
-                $('<h3>').html(settings.tPaydeskSelectTitle)
-            ),
-            body = $('<div>', {'class': 'modal-body'}),
-            $('<div>', {'class': 'modal-footer'})
+            $('<div>', {'class': 'modal-dialog'}).append(
+                $('<div>', {'class': 'modal-content'}).append(
+                    $('<div>', {'class': 'modal-header'}).append(
+                        $('<h4>').html(settings.tPaydeskSelectTitle)
+                    ),
+                    $('<div>', {'class': 'modal-body'}).append(
+                        body = $('<div>', {'class': 'row'})
+                    ),
+                    $('<div>', {'class': 'modal-footer'})
+                )
+            )
         );
 
         $(settings.paydesks).each(function () {
             body.append(
-                $('<div>', {'class': 'span2'}).append(
+                $('<div>', {'class': 'col-md-4'}).append(
                     $('<h3>').html(this.name),
                     $('<br>'),
-                    $('<button>', {'class': 'btn'}).data('code', this.code).html(settings.tPaydeskChoose)
+                    $('<button>', {'class': 'btn btn-default'}).data('code', this.code).html(settings.tPaydeskChoose)
                 ).css('text-align', 'center')
             );
         });
@@ -268,7 +274,7 @@ var currentView = 'selectPaydesk';
         $('.modal-backdrop').remove();
 
         $this.html('').append(
-            $('<div>', {'class': 'flashmessage alert alert-error fade'}).append(
+            $('<div>', {'class': 'flashmessage alert alert-danger fade'}).append(
                 $('<div>', {'class': 'title'}).html(settings.tErrorTitle),
                 $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorSocket)
             ).addClass('in')

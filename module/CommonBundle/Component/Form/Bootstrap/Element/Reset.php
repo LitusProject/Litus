@@ -43,6 +43,6 @@ class Reset extends \Zend\Form\Element\Submit
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
-        $this->setAttribute('class', 'btn');
+        $this->setAttribute('class', 'btn btn-default');
     }
 }

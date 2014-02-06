@@ -72,7 +72,7 @@
                 searchDiv: $('#booking_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_booking', {'action': 'inactive', 'type': 'active'}) }}',
+                searchPage: '{{ url('cudi_admin_sales_booking', {'action': 'inactive'}) }}',
                 url: '{{ url('cudi_admin_sales_booking', {'action': 'search', 'period': activePeriod.getId(), 'type': 'inactive'}) }}',
                 display: function (data) {
                     $('#booking_search table').find('tr.item').remove();

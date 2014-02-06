@@ -91,7 +91,7 @@
         $this.append(
             $('<div>', {'class': 'saleScreen'}).append(
                 wrapper = $('<div>', {'class': 'row wrapper'}).append(
-                    customer = $('<div>', {'class': 'span7 customer'}).append(
+                    customer = $('<div>', {'class': 'col-md-7 customer'}).append(
                         $('<div>', {'class': 'row title'}).html(settings.tCurrentCustomer),
                         $('<div>', {'class': 'row customerName'}).append(
                             $('<span>', {'class': 'name'}).html(data.person.name),
@@ -100,31 +100,31 @@
                         ),
                         $('<div>', {'class': 'row actions'}).append(
                             editComment = $('<button>', {'class': 'btn btn-info'}).append(
-                                $('<i>', {'class': 'icon-comment icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-comment'}),
                                 settings.tComments
                             ),
                             showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
-                                $('<i>', {'class': 'icon-eye-open icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
                                 settings.tQueue + ' - F8'
                             ),
                             conclude = $('<button>', {'class': 'btn btn-success', 'data-key': 120}).append(
-                                $('<i>', {'class': 'icon-ok-circle icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-ok-circle'}),
                                 settings.tConclude + ' - F9'
                             ),
                             cancel = $('<button>', {'class': 'btn btn-danger', 'data-key': 121}).append(
-                                $('<i>', {'class': 'icon-remove icon-white'}),
+                                $('<i>', {'class': 'glyphicon glyphicon-remove'}),
                                 settings.tCancel + ' - F10'
                             )
                         )
                     ),
-                    $('<div>', {'class': 'span12'}).append(
+                    $('<div>', {'class': 'col-md-12'}).append(
                         addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 118}).append(
-                            $('<i>', {'class': 'icon-plus-sign icon-white'}),
+                            $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
                             settings.tAddArticle + ' - F7'
                         )
                     )
                 ),
-                $('<table>', {'class': 'table table-striped table-bordered'}).append(
+                $('<table>', {'class': 'table table-striped'}).append(
                     $('<thead>').append(
                         $('<tr>').append(
                             $('<th>', {'class': 'barcode'}).html(settings.tBarcode),
@@ -146,11 +146,11 @@
 
         if (settings.isSell) {
             customer.after(
-                $('<div>', {'class': 'span2 discounts'}).append(
+                $('<div>', {'class': 'col-md-2 discounts'}).append(
                     'Discounts:',
                     options = $('<div>', {'class': 'options'})
                 ),
-                $('<div>', {'class': 'span3 money'}).append(
+                $('<div>', {'class': 'col-md-3 money'}).append(
                     $('<div>', {'class': 'total'}).append(
                         '&euro; 0.00'
                     )
@@ -207,30 +207,34 @@
 
         $('body').append(
             modal = $('<div>', {'class': 'modal fade'}).append(
-                $('<div>', {'class': 'modal-header'}).append(
-                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
-                    $('<h3>').html(settings.tComments)
-                ),
-                $('<div>', {'class': 'modal-body'}).append(
-                    $('<textarea>', {'style': 'width: 97%', 'rows': 10}).val($this.data('data').comment)
-                ),
-                $('<div>', {'class': 'modal-footer'}).append(
-                    $('<button>', {'class': 'btn btn-primary'}).html(settings.tSave).click(function () {
-                        $this.data('data').comment = $(this).closest('.modal').find('textarea').val();
-                        settings.saveComment($this.data('data').id, $this.data('data').comment);
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
-                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
-                        $(this).closest('.modal').modal('hide').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    })
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<h4>').html(settings.tComments)
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<textarea>', {'style': 'width: 97%', 'rows': 10, 'class': 'form-control'}).val($this.data('data').comment)
+                        ),
+                        $('<div>', {'class': 'modal-footer'}).append(
+                            $('<button>', {'class': 'btn btn-primary'}).html(settings.tSave).click(function () {
+                                $this.data('data').comment = $(this).closest('.modal').find('textarea').val();
+                                settings.saveComment($this.data('data').id, $this.data('data').comment);
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                                $(this).closest('.modal').modal('hide').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            })
+                        )
+                    )
                 )
             )
         );
@@ -323,10 +327,10 @@
             if ($(this).data('info').currentNumber < $(this).data('info').number) {
                 $(this).data('info').currentNumber++;
                 _updateRow($this, $(this));
-                $(this).addClass('success').removeClass('error');
+                $(this).addClass('success').removeClass('danger');
                 return false;
             } else {
-                $(this).addClass('error').removeClass('success');
+                $(this).addClass('danger').removeClass('success');
             }
         });
 
@@ -343,9 +347,9 @@
             if ($(this).data('info').currentNumber > 0) {
                 $(this).data('info').currentNumber--;
                 _updateRow($this, $(this));
-                $(this).removeClass('error success');
+                $(this).removeClass('danger success');
             } else {
-                $(this).addClass('error').removeClass('success');
+                $(this).addClass('danger').removeClass('success');
             }
         });
 
@@ -424,32 +428,36 @@
 
         $('body').append(
             modal = $('<div>', {'class': 'modal fade'}).append(
-                $('<div>', {'class': 'modal-header'}).append(
-                    $('<a>', {'class': 'close'}).html('&times;').click(function () {
-                        $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    }),
-                    $('<h3>').html(settings.tAddArticle)
-                ),
-                $('<div>', {'class': 'modal-body'}).append(
-                    $('<div>', {'class': 'form-horizontal'}).append(
-                        $('<div>', {'class': 'control-group'}).append(
-                            $('<label>', {'class': 'control-label', 'for': 'article'}).html(settings.tArticle),
-                            $('<div>', {'class': 'controls'}).append(
-                                articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
-                                article = $('<input>', {'type': 'text', 'id': 'articleAddTypeahead', 'class': 'input-xlarge', 'placeholder': settings.tArticle})
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<h4>').html(settings.tAddArticle)
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<div>').append(
+                                $('<div>', {'class': 'form-group'}).append(
+                                    $('<label>', {'for': 'article'}).html(settings.tArticle),
+                                    $('<div>').append(
+                                        articleId = $('<input>', {'type': 'hidden', 'id': 'articleAddTypeaheadId'}),
+                                        article = $('<input>', {'type': 'text', 'id': 'articleAddTypeahead', 'class': 'form-control', 'placeholder': settings.tArticle})
+                                    )
+                                )
                             )
+                        ),
+                        $('<div>', {'class': 'modal-footer'}).append(
+                            addButton = $('<button>', {'class': 'btn btn-primary disabled'}).html(settings.tAdd),
+                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                                $(this).closest('.modal').modal('hide').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            })
                         )
                     )
-                ),
-                $('<div>', {'class': 'modal-footer'}).append(
-                    addButton = $('<button>', {'class': 'btn btn-primary disabled'}).html(settings.tAdd),
-                    $('<button>', {'class': 'btn'}).html(settings.tClose).click(function () {
-                        $(this).closest('.modal').modal('hide').on('hidden', function () {
-                            $(this).remove();
-                        });
-                    })
                 )
             )
         );
@@ -481,7 +489,7 @@
         if (data.error) {
             $this.find('.saleScreen .flashmessage').remove();
             $this.find('.saleScreen').prepend(
-                $('<div>', {'class': 'flashmessage alert alert-error fade'}).append(
+                $('<div>', {'class': 'flashmessage alert alert-danger fade'}).append(
                     $('<div>', {'class': 'title'}).html(settings.tErrorTitle),
                     $('<div>', {'class': 'content'}).append('<p>').html(settings.tErrorExtraArticle)
                 ).addClass('in')

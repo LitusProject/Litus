@@ -1,46 +1,16 @@
-body {
-    margin-top: 50px;
-}
+/**
+ * Logistics
+ *
+ * Copyright 2011 Litus
+ * Licensed under the
+ *
+ * Author: Kristof Mariën <kristof.marien@litus.cc>
+ */
 
-header {
-    margin: 30px 0;
-}
+// Variables and Global Definitions
+@import "../../../../../../vendor/twitter/bootstrap/less/variables.less";
+@import "../../../../../../vendor/twitter/bootstrap/less/mixins.less";
+@import "variables.less";
 
-.brand {
-    padding: 3px 20px 5px !important;
-}
-
-#results {
-    font-size: 30px;
-    width: 700px;
-    margin: 0 auto;
-    th, td {
-        line-height: 35px;
-    }
-    .rank, .total {
-        width: 150px;
-    }
-}
-
-#view_rounds {
-    .rank {
-        width: 50px;
-    }
-    .round {
-        text-align: center;
-    }
-
-}
-
-#rounds_tab-content label {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-table .team {
-    max-width: 140px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+// Layout
+@import "layout.less";

@@ -427,26 +427,6 @@ return array(
                             'output' => 'corporate_css.css',
                         ),
                     ),
-                    'career_css' => array(
-                        'assets' => array(
-                            'career/less/career.less',
-                        ),
-                        'filters' => array(
-                            'career_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'career_css.css',
-                        ),
-                    ),
                     'cv_css' => array(
                         'assets' => array(
                             'cv/less/cv.less',

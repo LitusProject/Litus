@@ -148,20 +148,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($user);
 
         $field = new Text('university_identification_' . $memberNb);
-        $field->setLabel('University Identification')
-            ->setAttribute('class', $field->getAttribute('class') . 'large');
+        $field->setLabel('University Identification');
         $user->add($field);
 
         $field = new Text('first_name_' . $memberNb);
         $field->setLabel('First Name')
-            ->setRequired($required)
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge');
+            ->setRequired($required);
         $user->add($field);
 
         $field = new Text('last_name_' . $memberNb);
         $field->setLabel('Last Name')
-            ->setRequired($required)
-            ->setAttribute('class', $field->getAttribute('class') . 'xlarge');
+            ->setRequired($required);
         $user->add($field);
 
         $field = new Select('department_' . $memberNb);
