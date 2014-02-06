@@ -4,10 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('banner_admin_banner', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("banner_admin_banner", {"action": "add"}) }}">Add</a></li>
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("banner_admin_banner", {"action": "add"}) }}" data-help="Add a banner (shown on the top of the website)">Add</a></li>
             {% endif %}
             {% if hasAccess('banner_admin_banner', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("banner_admin_banner", {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("banner_admin_banner", {"action": "manage"}) }}" data-help="Manage all existing banners">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

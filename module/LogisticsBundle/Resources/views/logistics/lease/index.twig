@@ -2,213 +2,214 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
-<div class="row">
-    <div class="span6">
-        <div class="page-header">
-            <h1>{{ translate('Lease') }}</h1>
-        </div>
-        {{ forms.renderForm(leaseForm) }}
-    </div>
-    <div class="span6">
-        <div class="page-header">
-            <h1>{{ translate('Return') }}</h1>
-        </div>
-        {{ forms.renderForm(returnForm) }}
-    </div>
-</div>
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>{{ translate('Leases') }}</h1>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ translate('Item Name') }}</th>
-                    <th>{{ translate('Barcode') }}</th>
-                    <th>{{ translate('Amount') }}</th>
-                    <th>{{ translate('Leased To') }}</th>
-                    <th>{{ translate('Leased On') }}</th>
-                    <th>{{ translate('Pawn') }}</th>
-                    <th>{{ translate('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for lease in leases %}
-                    <tr data-barcode="{{ lease.getItem().getBarcode() }}" data-amount="{{ lease.getLeasedAmount() }}" data-pawn="{{ lease.getLeasedPawn() }}">
-                        <td>{{ lease.getItem().getName() }}</td>
-                        <td>{{ lease.getItem().getBarcode() }}</td>
-                        <td>{{ lease.getLeasedAmount() }}</td>
-                        <td>{{ lease.getLeasedTo() }}</td>
-                        <td>{{ lease.getLeasedDate()|date }}</td>
-                        <td>{{ lease.getLeasedPawn()|number_format(2) }}</td>
-                        <td>
-                            <span class="js-item-return btn btn-mini">{{ translate('Return') }}</span>
-                            <a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}" class="btn btn-mini">{{ translate('Details') }}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% include 'site/partials/paginationControl.twig' %}
-    </div>
-</div>
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>{{ translate('Item Search') }}</h1>
-        </div>
-        <form action="{{ url('logistics_lease', {'action': 'history' }) }}" id="search">
-            <div class="input-append">
-                <input class="js-item-search" type="text">
-                <input type="hidden" class="js-item-barcode" name="barcode">
-                <button class="btn">{{ translate('Search') }}</button>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="page-header">
+                <h1>{{ translate('Lease') }}</h1>
             </div>
-        </form>
+            {{ forms.renderForm(leaseForm) }}
+        </div>
+        <div class="col-md-6">
+            <div class="page-header">
+                <h1>{{ translate('Return') }}</h1>
+            </div>
+            {{ forms.renderForm(returnForm) }}
+        </div>
     </div>
-</div>
+
+    <div class="page-header">
+        <h1>{{ translate('Leases') }}</h1>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ translate('Item Name') }}</th>
+                <th>{{ translate('Barcode') }}</th>
+                <th>{{ translate('Amount') }}</th>
+                <th>{{ translate('Leased To') }}</th>
+                <th>{{ translate('Leased On') }}</th>
+                <th>{{ translate('Pawn') }}</th>
+                <th>{{ translate('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in leases %}
+                <tr data-barcode="{{ lease.getItem().getBarcode() }}" data-amount="{{ lease.getLeasedAmount() }}" data-pawn="{{ lease.getLeasedPawn() }}">
+                    <td>{{ lease.getItem().getName() }}</td>
+                    <td>{{ lease.getItem().getBarcode() }}</td>
+                    <td>{{ lease.getLeasedAmount() }}</td>
+                    <td>{{ lease.getLeasedTo() }}</td>
+                    <td>{{ lease.getLeasedDate()|date }}</td>
+                    <td>{{ lease.getLeasedPawn()|number_format(2) }}</td>
+                    <td>
+                        <span class="js-item-return btn btn-default btn-xs">{{ translate('Return') }}</span>
+                        <a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}" class="btn btn-default btn-xs">{{ translate('Details') }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'site/partials/paginationControl.twig' %}
+
+    <div class="page-header">
+        <h1>{{ translate('Item Search') }}</h1>
+    </div>
+    <form action="{{ url('logistics_lease', {'action': 'history' }) }}" id="search" class="form-horizontal" role="form">
+        <div class="form-group col-md-6">
+            <div class="input-group">
+                <input type="hidden" class="js-item-barcode" name="barcode">
+                <input class="form-control js-item-search" type="text">
+                <span class="btn btn-default input-group-addon">{{ translate('Search') }}</span>
+            </div>
+        </div>
+    </form>
 {% endblock %}
 
 {% block content_script %}
-<script>
-    (function() {
-        /*
-         * Monkey-patch of typeaheadRemote to prevent sending search queries when
-         * a barcode is being entered in the field.
-         */
-        var origLookup = $.fn.typeaheadRemote.Constructor.prototype.lookup;
-        $.fn.typeaheadRemote.Constructor.prototype.lookup = function(event) {
-            if(/^[0-9]{1,12}$/.test(this.$element.val())) {
-                return this.shown? this.hide(): this;
-            } else {
-                return origLookup.call(this, event)
-            }
-        };
-
-    })();
-
-    (function() {
-        /*
-         * Item search and barcode validation
-         */
-
-        /* Utility functions */
-        function error($control_group, $submit, text) {
-            // Error happened.
-            //  Color .control-group, disable submit, add error description to the field.
-            $control_group.addClass('error');
-            $submit.attr({disabled: true});
-            $control_group.find('.controls').append('<div class="help-inline"><ul><li>'+text+'</li></ul></div>');
-        }
-        function success($control_group, $submit, text) {
-            // Validation success.
-            //  Color .control-group, enable submit, add additional info to the field.
-            $control_group.addClass('success');
-            $submit.attr({disabled: false});
-            $control_group.find('.controls').append('<span class="help-block js-additional_info">'+text+'</span>');
-        }
-        function reset($control_group) {
-            // Reset error/success state and remove errors/additional info.
-            $control_group.removeClass('success')
-                    .removeClass('error')
-                    .find('.help-inline, .help-block').detach();
-        }
-
-        /* Item search or barcode input. Triggers change() on .js-item-barcode only if barcode is manually entered. */
-        $('.js-item-search').change(function() {
-            var $this = $(this);
-            var $form = $this.parents('form');
-            $form.find('.js-additional_info').remove();
-            var $barcode = $form.find('.js-item-barcode');
-            if(/^[0-9]{12}$/.test($this.val())) {
-                // Full barcode entered
-                $barcode.val($this.val()).change();
-            } else if ($this.data('value')) {
-                // Typeahead item clicked
-                $barcode.val($this.data('value').id);
-                success($this.parents('.control-group'), $form.find('.btn'), $this.data('value').additional_info);
-            } else {
-                // Something else, blank barcode
-                $barcode.val('');
-            }
-        }).focus(function() {
-            reset($(this).parents('.control-group'));
-        });
-
-        /* Manually entered barcode validation */
-        $('.js-item-barcode').change(function() {
-            var $this = $(this);
-            var $control_group = $this.prev();
-            $control_group.removeClass('error').removeClass('success');
-            $control_group.find('.controls').find('.help-inline, .help-block').detach();
-            var $form = $control_group.parents('form');
-            var $submit = $form.find('.btn');
-            $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
-                if(!data)
-                    return;
-                switch(data.status) {
-                    case 'noSuchItem':
-                        // Barcode not linked to any item at all
-                        error($control_group, $submit, '{{ translate('No lease item with this barcode exists') }}');
-                        break;
-                    case 'leased':
-                        // Barcode linked to an item that is currently leased
-                        if($form.attr('id') === 'lease') {
-                            // This is an error when someone is trying to lease an item
-                            error($control_group, $submit, '{{ translate('This item is already leased') }}');
-                        } else {
-                            // But a success if it is being returned, or searched
-                            success($control_group, $submit, data.additional_info);
-                        }
-                        break;
-                    case 'returned':
-                        // Barcode linked to an item that is currently not leased
-                        if($form.attr('id') === 'return') {
-                            // This is an error when someone is trying to return this item
-                            error($control_group, $submit, '{{ translate('This item is already returned') }}');
-                        } else {
-                            // But a success if it is being leased, or searched
-                            success($control_group, $submit, data.additional_info);
-                        }
-                        break;
+    <script>
+        (function() {
+            /*
+             * Monkey-patch of typeaheadRemote to prevent sending search queries when
+             * a barcode is being entered in the field.
+             */
+            var origLookup = $.fn.typeaheadRemote.Constructor.prototype.lookup;
+            $.fn.typeaheadRemote.Constructor.prototype.lookup = function(event) {
+                if(/^[0-9]{1,12}$/.test(this.$element.val())) {
+                    return this.shown? this.hide(): this;
+                } else {
+                    return origLookup.call(this, event)
                 }
-            }, 'json');
+            };
+
+        })();
+
+        (function() {
+            /*
+             * Item search and barcode validation
+             */
+
+            /* Utility functions */
+            function error($control_group, $submit, text) {
+                // Error happened.
+                //  Color .form-group, disable submit, add error description to the field.
+                $control_group.addClass('error');
+                $submit.attr({disabled: true});
+                $control_group.find('.controls').append('<div class="help-block"><ul><li>'+text+'</li></ul></div>');
+            }
+            function success($control_group, $submit, text) {
+                // Validation success.
+                //  Color .form-group, enable submit, add additional info to the field.
+                $control_group.addClass('success');
+                $submit.attr({disabled: false});
+                $control_group.find('.controls').append('<span class="help-block js-additional_info">'+text+'</span>');
+            }
+            function reset($control_group) {
+                // Reset error/success state and remove errors/additional info.
+                $control_group.removeClass('success')
+                        .removeClass('error')
+                        .find('.help-block').detach();
+            }
+
+            /* Item search or barcode input. Triggers change() on .js-item-barcode only if barcode is manually entered. */
+            $('.js-item-search').change(function() {
+                var $this = $(this);
+                var $form = $this.parents('form');
+                $form.find('.js-additional_info').remove();
+                var $barcode = $form.find('.js-item-barcode');
+                if(/^[0-9]{12}$/.test($this.val())) {
+                    // Full barcode entered
+                    $barcode.val($this.val()).change();
+                } else if ($this.data('value')) {
+                    // Typeahead item clicked
+                    $barcode.val($this.data('value').id);
+                    success($this.parents('.form-group'), $form.find('.btn'), $this.data('value').additional_info);
+                } else {
+                    // Something else, blank barcode
+                    $barcode.val('');
+                }
+            }).focus(function() {
+                reset($(this).parents('.form-group'));
+            });
+
+            /* Manually entered barcode validation */
+            $('.js-item-barcode').change(function() {
+                var $this = $(this);
+                var $control_group = $this.prev();
+                $control_group.removeClass('error').removeClass('success');
+                $control_group.find('.controls').find('.help-block').detach();
+                var $form = $control_group.parents('form');
+                var $submit = $form.find('.btn');
+                $.get("{{ url('logistics_lease', {'action':'availabilityCheck'}) }}"+$this.val(), function(data) {
+                    if(!data)
+                        return;
+                    switch(data.status) {
+                        case 'noSuchItem':
+                            // Barcode not linked to any item at all
+                            error($control_group, $submit, '{{ translate('No lease item with this barcode exists') }}');
+                            break;
+                        case 'leased':
+                            // Barcode linked to an item that is currently leased
+                            if($form.attr('id') === 'lease') {
+                                // This is an error when someone is trying to lease an item
+                                error($control_group, $submit, '{{ translate('This item is already leased') }}');
+                            } else {
+                                // But a success if it is being returned, or searched
+                                success($control_group, $submit, data.additional_info);
+                            }
+                            break;
+                        case 'returned':
+                            // Barcode linked to an item that is currently not leased
+                            if($form.attr('id') === 'return') {
+                                // This is an error when someone is trying to return this item
+                                error($control_group, $submit, '{{ translate('This item is already returned') }}');
+                            } else {
+                                // But a success if it is being leased, or searched
+                                success($control_group, $submit, data.additional_info);
+                            }
+                            break;
+                    }
+                }, 'json');
+            });
+        })();
+
+        $(document).ready(function () {
+            /*
+             * Item search typeaheads
+             */
+            $('#lease .js-item-search').typeaheadRemote({
+                source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=lease&q="
+            });
+
+            $('#return .js-item-search').typeaheadRemote({
+                source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=return&q="
+            });
+
+            $('#search .js-item-search').typeaheadRemote({
+                source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=search&q="
+            });
+
+            $('#search .btn').click(function () {
+                $(this).closest('form').submit();
+            })
+
+            /*
+             * Person typeahead
+             */
+            $('#leased_to, #returned_by').typeaheadRemote({
+                source: "{{ url('common_admin_academic_typeahead') }}"
+            });
+
+            /*
+             * Item return prefill on button click
+             */
+            $('.js-item-return').click(function() {
+                var $tr =  $(this).parents('tr');
+
+                $('#return .js-item-barcode, #return .js-item-search').val($tr.data('barcode'));
+                $('#returned_amount').val($tr.data('amount'));
+                $('#returned_pawn').val($tr.data('pawn'));
+                $('#returned_by').focus();
+            });
         });
-    })();
-
-    /*
-     * Item search typeaheads
-     */
-    $('#lease .js-item-search').typeaheadRemote({
-        source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=lease&q="
-    });
-
-    $('#return .js-item-search').typeaheadRemote({
-        source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=return&q="
-    });
-
-    $('#search .js-item-search').typeaheadRemote({
-        source: "{{ url('logistics_lease', { 'action': 'typeahead' }) }}?purpose=search&q="
-    });
-
-    /*
-     * Person typeahead
-     */
-    $('#leased_to, #returned_by').typeaheadRemote({
-        source: "{{ url('common_admin_academic_typeahead') }}"
-    });
-
-    /*
-     * Item return prefill on button click
-     */
-    $('.js-item-return').click(function() {
-        var $tr =  $(this).parents('tr');
-
-        $('#return .js-item-barcode, #return .js-item-search').val($tr.data('barcode'));
-        $('#returned_amount').val($tr.data('amount'));
-        $('#returned_pawn').val($tr.data('pawn'));
-        $('#returned_by').focus();
-    });
-
-</script>
+    </script>
 {% endblock %}

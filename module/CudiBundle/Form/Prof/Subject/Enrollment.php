@@ -41,7 +41,6 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('students');
         $field->setLabel('Students')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setAttribute('autocomplete', 'off')
             ->setRequired();
         $this->add($field);

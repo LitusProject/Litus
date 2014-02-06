@@ -1,83 +1,87 @@
 {{ doctype() }}
 
 <html lang="en">
-<head>
+    <head>
 
-    {{ headMeta() }}
-    {{ headTitle('24h Run', 'PREPEND') }}
+        {{ headMeta() }}
+        {{ headTitle('24h Run', 'PREPEND') }}
 
-    {{ headLink() }}
-</head>
+        {{ headLink() }}
+    </head>
 
-<body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a href="{{ unionUrl }}" class="brand"><img src="/_run/img/logo.png" /></a>
-            <ul class="nav">
-                {% if hasAccess('sport_run_index', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'sport_run_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("sport_run_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('sport_run_group', 'add') %}
-                    <li {% if 'add' == getParam('action') and 'sport_run_group' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("sport_run_group", {"language": language.getAbbrev()}) }}">{{ translate('Group of Friends') }}</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('sport_run_queue', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'sport_run_queue' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("sport_run_queue", {"language": language.getAbbrev()}) }}">{{ translate('Queue') }}</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('sport_run_screen', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'sport_run_screen' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("sport_run_screen", {"language": language.getAbbrev()}) }}">{{ translate('Screen') }}</a>
-                    </li>
-                {% endif %}
-            </ul>
-            <ul class="nav pull-right lang-nav visible-desktop">
-                <li class="dropdown" id="langDropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Language <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% for language in languages %}
-                            <li>
-                                <a href="{{ url("sport_run_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{{ organizationUrl }}" class="brand"><img src="/_run/img/logo.png" /></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        {% if hasAccess('sport_run_index', 'index') %}
+                            <li {% if 'index' == getParam('action') and 'sport_run_index' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("sport_run_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                             </li>
-                        {% endfor %}
+                        {% endif %}
+                        {% if hasAccess('sport_run_group', 'add') %}
+                            <li {% if 'add' == getParam('action') and 'sport_run_group' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("sport_run_group", {"language": language.getAbbrev()}) }}">{{ translate('Group of Friends') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('sport_run_queue', 'index') %}
+                            <li {% if 'index' == getParam('action') and 'sport_run_queue' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("sport_run_queue", {"language": language.getAbbrev()}) }}">{{ translate('Queue') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('sport_run_screen', 'index') %}
+                            <li {% if 'index' == getParam('action') and 'sport_run_screen' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("sport_run_screen", {"language": language.getAbbrev()}) }}">{{ translate('Screen') }}</a>
+                            </li>
+                        {% endif %}
                     </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+                    <ul class="nav navbar-nav pull-right lang-nav hidden-sm hidden-xs">
+                        <li class="dropdown" id="langDropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Language <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                {% for language in languages %}
+                                    <li>
+                                        <a href="{{ url("sport_run_index", {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-<header>
-    <div class="inner">
+        <header>
+            <div class="container">
+                <h1>{{ translate('24h Run') }}</h1>
+            </div>
+        </header>
+
         <div class="container">
-            <h1>{{ translate('24h Run') }}</h1>
+            {% include 'run/partials/flashMessenger.twig' %}
+
+            <div id="content_controller">
+                {% block content %} {% endblock %}
+            </div>
         </div>
-    </div>
-</header>
 
-<div class="container">
-    {% include 'run/partials/flashMessenger.twig' %}
+        <footer>
+            Litus 24h Run | Code by <a href="http://litus.cc">Litus</a>
+        </footer>
 
-    <div id="content_controller">
-        {% block content %} {% endblock %}
-    </div>
+        {{ inlineScript() }}
 
-    <footer>
-        Litus 24h Run | Code by <a href="http://litus.cc">Litus</a>
-    </footer>
-</div>
-
-{{ inlineScript() }}
-
-{% block content_script %}{% endblock %}
-
-</body>
+        {% block content_script %}{% endblock %}
+    </body>
 </html>

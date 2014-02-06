@@ -3,27 +3,26 @@
 {% block page_content %}
     <h1>{{ translate('Events') }}</h1>
 
-        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-            {% for event in paginator %}
-                <tr>
-                    <td width="120">
-                        <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
-                            {% if event.getEvent().getPoster() %}
-                                    <img width="120" src="{{ url('calendar', {'action': 'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
-                            {% endif %}
-                        </a>
-                    </td>
+    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+        {% for event in paginator %}
+            <tr>
+                <td width="120">
+                    <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
+                        {% if event.getEvent().getPoster() %}
+                            <img width="120" src="{{ url('calendar', {'action': 'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
+                        {% endif %}
+                    </a>
+                </td>
 
-                    <td>
-                        <strong>{{ event.getCompany().getName() }} - {{ event.getEvent().getTitle(language) }}</strong>
-                        <div class="pull-right"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
-                        <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
-                    </td>
-                </tr>
+                <td>
+                    <strong>{{ event.getCompany().getName() }} - {{ event.getEvent().getTitle(language) }}</strong>
+                    <div class="pull-right hidden-xs"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
+                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
+                </td>
+            </tr>
 
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
 
-        {% include 'site/partials/paginationControl.twig' %}
-
+    {% include 'site/partials/paginationControl.twig' %}
 {% endblock %}

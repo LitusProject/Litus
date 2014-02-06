@@ -99,12 +99,15 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $menu = array();
 
+        $activeItem = -1;
+
         $i = 0;
         foreach ($categories as $category) {
             $menu[$i] = array(
                 'type'  => 'category',
                 'name'  => $category->getName($this->getLanguage()),
-                'items' => array()
+                'items' => array(),
+                'active' => false,
             );
 
             $pages = $this->getEntityManager()
@@ -132,14 +135,21 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     'name'  => $page->getName(),
                     'title' => $page->getTitle($this->getLanguage())
                 );
+
+                if ($activeItem < 0 && $this->getParam('controller') == 'page' && $this->getParam('name') == $page->getName())
+                    $activeItem = $i;
             }
 
             foreach ($links as $link) {
                 $menu[$i]['items'][] = array(
                     'type' => 'link',
                     'id'   => $link->getId(),
-                    'name' => $link->getName($this->getLanguage())
+                    'name' => $link->getName($this->getLanguage()),
+                    'url' => $link->getUrl($this->getLanguage()),
                 );
+
+                if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0)
+                    $activeItem = $i;
             }
 
             $sort = array();
@@ -150,6 +160,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             $i++;
         }
+
+        if ($activeItem >= 0)
+            $menu[$activeItem]['active'] = true;
 
         $sort = array();
         foreach ($menu as $key => $value)
@@ -186,7 +199,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 'type'     => 'page',
                 'name'     => $page->getName(),
                 'parent'   => $page->getParent()->getName(),
-                'title'    => $page->getTitle($this->getLanguage())
+                'title'    => $page->getTitle($this->getLanguage()),
             );
         }
 
@@ -194,7 +207,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             $submenu[] = array(
                 'type' => 'link',
                 'id'   => $link->getId(),
-                'name' => $link->getName($this->getLanguage())
+                'name' => $link->getName($this->getLanguage()),
+                'url'  => $link->getUrl($this->getLanguage()),
             );
         }
 
@@ -218,7 +232,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 $submenu[$i]['items'][] = array(
                     'type'  => 'page',
                     'name'  => $page->getName(),
-                    'title' => $page->getTitle($this->getLanguage())
+                    'title' => $page->getTitle($this->getLanguage()),
                 );
             }
 
@@ -226,7 +240,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 $submenu[$i]['items'][] = array(
                     'type' => 'link',
                     'id'   => $link->getId(),
-                    'name' => $link->getName($this->getLanguage())
+                    'name' => $link->getName($this->getLanguage()),
+                    'url'  => $link->getUrl($this->getLanguage()),
                 );
             }
 
@@ -273,7 +288,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl .= '%3Fsource=site';
 
         if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode(((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

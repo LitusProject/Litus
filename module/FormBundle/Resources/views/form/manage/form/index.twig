@@ -5,7 +5,6 @@
         <h2>{{ translate('Your Forms') }}</h2>
 
         <table class="table">
-
             <thead>
                 <tr>
                     <th>{{ translate("Title") }}</th>
@@ -25,10 +24,10 @@
                     <td>{% if form.isActive() %}&times;{% endif %}</td>
                     <td>
                         {% if hasAccess('form_manage', 'view') %}
-                          <a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-info btn-mini">{{ translate("View") }}</a>
+                          <a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-info btn-xs">{{ translate("View") }}</a>
                         {% endif %}
                         {% if hasAccess('form_manage', 'download') %}
-                            <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download btn btn-primary btn-mini">{{ translate("Download") }}</a>
+                            <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download btn btn-primary btn-xs">{{ translate("Download") }}</a>
                         {% endif %}
                     </td>
                 </tr>

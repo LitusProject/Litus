@@ -36,6 +36,8 @@ return array(
     'Are you sure you want to delete the ticket' => 'Ben je zeker dat je het ticket wil verwijderen',
     'Yes' => 'Ja',
     'No' => 'Neen',
+    'Number Member' => 'Aantal Lid',
+    'Number Non Member' => 'Aantal Geen Lid',
 
     'The tickets were succesfully booked' => 'De tickets zijn succesvol gereserveerd',
     'There were not enough tickets available' => 'Er waren onvoldoende tickets beschikbaar',

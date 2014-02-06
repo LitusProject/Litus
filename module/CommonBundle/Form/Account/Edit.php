@@ -55,7 +55,9 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
 
         $field = new File('profile');
         $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
+            ->setAttribute('data-type', 'image')
+            ->setAttribute('data-width', '320')
+            ->setAttribute('data-height', '240');
         $this->get('personal')->add($field);
 
         if (

@@ -1,33 +1,22 @@
 /**
-* Layout
-*
-* Copyright 2011 Litus
-*
-* Author: Kristof Mariën <kristof.marien@litus.cc>
-*/
+ * Layout
+ *
+ * Copyright 2011 Litus
+ *
+ * Author: Kristof Mariën <kristof.marien@litus.cc>
+ */
 
-header {
-    padding-top: 40px;
-    .verticalGradient(@cFormDark, @cFormLight);
-    margin-bottom: 15px;
-
-    h1 {
-        color: @cWhite;
-        text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    }
-
-    .inner {
-        background: transparent url(/_form/img/grid-18px.png) top center;
-        padding: 45px 0;
-        .box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
-    }
+body {
+    padding-top: 50px;
 }
 
 .navbar {
-    z-index: 2000;
-
     .brand {
         padding: 3px 20px 5px;
+
+        img {
+            margin-top: 7px;
+        }
     }
 
     .auth-nav {
@@ -77,48 +66,85 @@ header {
                         margin: 0;
                     }
 
-                    a.btn {
-                        color: #fff;
+                    form {
+                        width: 200px;
+                    }
+
+                    input[type="submit"] {
+                        margin-top: 5px;
                     }
 
                     .remember_me {
                         float: left;
-                        margin-top: 8px;
+                        margin-top: 13px;
                     }
-
                 }
             }
         }
     }
 }
 
-footer {
-    margin-top: 45px;
-    padding: 35px 10px 36px;
-    border-top: 1px solid #E5E5E5;
-    color: #555;
+header {
+    padding: 10px 15px 20px;
+    #gradient > .vertical(@cFormDark, @cFormLight);
+    margin-bottom: 20px;
 
-    .development_information {
-        float: right;
+    h1 {
+        color: #fff;
     }
 }
 
-.alert .title {
-    font-weight: bold;
+footer {
+    padding-top: 40px;
+    padding-bottom: 30px;
+    margin-top: 50px;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
 }
 
-.flashmessage.fade {
-    .transition(all .15s linear);
+.alert {
+    .title {
+        font-weight: bold;
+    }
+
+    &.fade {
         height: 0;
         margin-bottom: 0px;
         padding-top: 0px;
         padding-bottom: 0px;
         overflow: hidden;
+        border-width: 0px;
+
         &.in {
-        height: auto;
-        margin-bottom: 18px;
-        padding-top: 8px;
-        padding-bottom: 8px;
+            height: auto;
+            margin-bottom: @line-height-computed;
+            padding: @alert-padding;
+            border-width: 1px;
+        }
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+#content_controller {
+    table {
+        td.actions {
+            padding: 3px 8px;
+        }
+    }
+
+    div.action {
+        margin: 5px 0;
+        padding: 5px 10px;
+        border-bottom: 1px solid #ccc;
+
+        div.info {
+            padding-left: 30px;
+            color: #999;
+        }
     }
 }
 
@@ -132,7 +158,7 @@ hr {
     .resultScroll {
         overflow-x: scroll;
         margin-left: 150px;
-        margin-right: 150px;
+        margin-right: 160px;
         border-left: #dddddd 1px solid;
         border-right: #dddddd 1px solid;
     }
@@ -149,7 +175,7 @@ hr {
         th:last-child,
         td:last-child {
             position: absolute;
-            width: 134px;
+            width: 144px;
             right: 0;
             top: auto;
         }

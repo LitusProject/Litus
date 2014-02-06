@@ -47,16 +47,12 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_entityManager = $entityManager;
 
+        $this->setAttribute('class', 'form-inline');
+
         $today = new DateTime();
         $field = new Text('date');
-        $field->setAttribute('class', 'input-large')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
+        $field->setAttribute('placeholder', 'dd/mm/yyyy')
             ->setValue($today->format('d/m/Y'));
-        $this->add($field);
-
-        $field = new Submit('search');
-        $field->setValue('Search')
-            ->setAttribute('class', 'btn');
         $this->add($field);
     }
 

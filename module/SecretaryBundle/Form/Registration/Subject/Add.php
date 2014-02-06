@@ -44,7 +44,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('subject');
         $field->setLabel('Subject')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
             ->setAttribute('id', 'subjectSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')

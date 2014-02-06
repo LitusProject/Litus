@@ -1,25 +1,29 @@
 {% extends 'supplier/base.twig' %}
 
 {% block content %}
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>{{ translate('Title') }}</th>
-            <th width="120px">{{ translate('Authors') }}</th>
-            <th width="220px">{{ translate('Publisher') }}</th>
-            <th width="100px">{{ translate('Publish Year') }}</th>
-            <th width="100px">{{ translate('Barcode') }}</th>
-            <th width="70px">{{ translate('In Stock') }}</th>
-        </tr>
-
-        {% for article in articles %}
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ article.getMainArticle().getTitle() }}</td>
-                <td>{{ article.getMainArticle().getAuthors() }}</td>
-                <td>{{ article.getMainArticle().getPublishers() }}</td>
-                <td>{{ article.getMainArticle().getYearPublished() }}</td>
-                <td>{{ article.getBarcode() }}</td>
-                <td>{{ article.getStockValue() }}</td>
+                <th>{{ translate('Title') }}</th>
+                <th width="120px" class="hidden-xs">{{ translate('Authors') }}</th>
+                <th width="220px" class="hidden-xs hidden-sm">{{ translate('Publisher') }}</th>
+                <th width="100px" class="visible-lg">{{ translate('Publish Year') }}</th>
+                <th width="100px" class="hidden-xs hidden-sm">{{ translate('Barcode') }}</th>
+                <th width="90px">{{ translate('In Stock') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.getMainArticle().getTitle() }}</td>
+                    <td class="hidden-xs">{{ article.getMainArticle().getAuthors() }}</td>
+                    <td class="hidden-xs hidden-sm">{{ article.getMainArticle().getPublishers() }}</td>
+                    <td class="visible-lg">{{ article.getMainArticle().getYearPublished() }}</td>
+                    <td class="hidden-xs hidden-sm">{{ article.getBarcode() }}</td>
+                    <td>{{ article.getStockValue() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

@@ -53,9 +53,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
 
-        $result->unionUrl = $this->getEntityManager()
+        $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('union_url');
+            ->getConfigValue('organization_url');
 
         $e->setResult($result);
         return $result;

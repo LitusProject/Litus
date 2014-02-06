@@ -5,30 +5,34 @@
         <h2>{{ translate('Your Subjects') }}</h2>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th width="80px">{{ translate('Code') }}</th>
-            <th>{{ translate('Name') }}</th>
-            <th width="80px">{{ translate('Semester') }}</th>
-            <th width="80px">{{ translate('Credits') }}</th>
-            <th width="190px">{{ translate('Actions') }}</th>
-        </tr>
-
-        {% for subject in subjects %}
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ subject.getSubject().getCode() }}</td>
-                <td>{{ subject.getSubject().getName() }}</td>
-                <td>{{ subject.getSubject().getSemester() }}</td>
-                <td>{{ subject.getSubject().getCredits() }}</td>
-                <td class="actions">
-                    {% if hasAccess('cudi_prof_subject_comment', 'manage') %}
-                        <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
-                    {% endif %}
-                    {% if hasAccess('cudi_prof_subject', 'subject') %}
-                        <a href="{{ url("cudi_prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
-                    {% endif %}
-                </td>
+                <th width="80px">{{ translate('Code') }}</th>
+                <th>{{ translate('Name') }}</th>
+                <th width="80px">{{ translate('Semester') }}</th>
+                <th width="80px">{{ translate('Credits') }}</th>
+                <th width="220px">{{ translate('Actions') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for subject in subjects %}
+                <tr>
+                    <td>{{ subject.getSubject().getCode() }}</td>
+                    <td>{{ subject.getSubject().getName() }}</td>
+                    <td>{{ subject.getSubject().getSemester() }}</td>
+                    <td>{{ subject.getSubject().getCredits() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_prof_subject_comment', 'manage') %}
+                            <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
+                        {% endif %}
+                        {% if hasAccess('cudi_prof_subject', 'subject') %}
+                            <a href="{{ url("cudi_prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

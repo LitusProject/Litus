@@ -59,11 +59,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('name');
         $field->setLabel('Name')
+            ->setAttribute('data-help', 'The name of the banner (only shown in the admin)')
             ->setRequired(true);
         $this->add($field);
 
         $field = new Text('start_date');
         $field->setLabel('Start Date')
+            ->setAttribute('data-help', 'The start date for showing this banner, overrulled by "active"')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true)
@@ -72,6 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('end_date');
         $field->setLabel('End Date')
+            ->setAttribute('data-help', 'The end date for showing this banner, overrulled by "active"')
             ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true)
@@ -79,16 +82,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('active');
-        $field->setLabel('Active');
+        $field->setLabel('Active')
+            ->setAttribute('data-help', 'Flag whether the banner will be shown on the website');
         $this->add($field);
 
         $field = new File('file');
         $field->setLabel('Image (' . BannerController::BANNER_WIDTH . ' x ' . BannerController::BANNER_HEIGHT . ')')
+            ->setAttribute('data-help', 'The image for the banner.<br> Maximum file size is ' . BannerController::BANNER_FILESIZE . '.<br> This must be a valid image (jpg, png, ...).<br> Image must have a width of  ' . BannerController::BANNER_WIDTH . 'px and a height of ' . BannerController::BANNER_HEIGHT . 'px')
             ->setRequired(true);
         $this->add($field);
 
         $field = new Text('url');
-        $field->setLabel('URL');
+        $field->setLabel('URL')
+            ->setAttribute('data-help', 'The url to open after clicking on the banner');
         $this->add($field);
 
         $field = new Submit('submit');

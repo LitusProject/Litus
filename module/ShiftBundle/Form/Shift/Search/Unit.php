@@ -46,13 +46,10 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_entityManager = $entityManager;
 
+        $this->setAttribute('class', 'form-inline');
+
         $field = new Select('unit');
         $field->setAttribute('options', $this->_createUnitsArray());
-        $this->add($field);
-
-        $field = new Submit('search');
-        $field->setValue('Search')
-            ->setAttribute('class', 'btn');
         $this->add($field);
     }
 

@@ -6,12 +6,12 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 function backgroundTask() {
-	if ps aux | grep -v grep | grep "$1" > /dev/null; then
-		return 0
-	fi
+    if ps aux | grep -v grep | grep "$1" > /dev/null; then
+        return 0
+    fi
 
-	echo "Starting: $1"
-	$1 &
+    echo "Starting: $1"
+    $1 &
 }
 
 # Starting the WebSockets
