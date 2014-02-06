@@ -158,9 +158,15 @@ class Restriction
         if ('member' == $this->type) {
             return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
         } elseif ('amount' == $this->type) {
-            $amount = sizeof($entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson($this->article, $person));
+            $amount = sizeof(
+                $entityManager
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                        $this->article,
+                        $person,
+                        $academicYear
+                )
+            );
             return $amount < $this->value;
         } else {
             return false;

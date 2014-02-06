@@ -310,9 +310,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                     $membershipArticle,
-                                    $academic
+                                    $academic,
+                                    $academicYear
                                 );
 
                             if (null !== $booking)

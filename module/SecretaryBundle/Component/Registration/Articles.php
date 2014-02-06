@@ -51,9 +51,10 @@ class Articles
 
             $booking = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                     $membershipArticle,
-                    $academic
+                    $academic,
+                    $academicYear
                 );
 
             if (null === $booking) {
@@ -90,11 +91,12 @@ class Articles
         foreach ($registrationArticles as $registrationArticle) {
             $booking = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                     $entityManager
                         ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($registrationArticle),
-                    $academic
+                    $academic,
+                    $academicYear
                 );
 
             if (null !== $booking)
