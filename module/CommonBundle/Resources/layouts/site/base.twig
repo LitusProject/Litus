@@ -292,21 +292,25 @@
             <div class="container">
                 {% autoescape false %}
                     <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="view-cookie-policy">our cookiepolicy</a> here.') }}</p>
-                    <button type="button" class="btn cookie-permission">{{ translate('Continue') }}</button>
+                    <button type="button" class="btn btn-default cookie-permission">{{ translate('Continue') }}</button>
                 {% endautoescape %}
             </div>
         </div>
 
-        <div id="cookie-policy" class="modal fade hide" style="width:700px;margin-left:-350px">
-            <div class="modal-header">
-                <a class="close" data-dismiss="modal">&times;</a>
-                <h3>{{ translate('Cookie Policy') }}</h3>
-            </div>
-            <div class="modal-body">
-                {{ translate('text') }}
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
+        <div id="cookie-policy" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Cookie Policy') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ translate('text') }}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    </div>
+                </div>
             </div>
         </div>
     {% endif %}
