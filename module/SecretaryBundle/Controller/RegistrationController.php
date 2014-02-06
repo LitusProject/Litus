@@ -568,9 +568,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                     $membershipArticle,
-                                    $academic
+                                    $academic,
+                                    $this->getCurrentAcademicYear()
                                 );
 
                             if (null !== $booking)
