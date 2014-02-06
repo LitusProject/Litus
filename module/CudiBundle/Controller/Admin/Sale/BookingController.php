@@ -560,7 +560,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $bookings = $this->_search($activePeriod, 'active')
+        $bookings = $this->_search($activePeriod, $this->getParam('type'))
             ->setMaxResults($numResults)
             ->getResult();
 

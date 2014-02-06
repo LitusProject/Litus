@@ -820,6 +820,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 } while (file_exists($filePath . '/' . $fileName));
                             } else {
                                 $fileName = $fieldEntry->getValue();
+                                if (file_exists($filePath . '/' . $fileName))
+                                    unlink($filePath . '/' . $fileName);
                             }
 
                             if (file_exists($filePath . '/' . $fileName))

@@ -189,6 +189,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                                 } while (file_exists($filePath . '/' . $fileName));
                             } else {
                                 $fileName = $fieldEntry->getValue();
+                                if (file_exists($filePath . '/' . $fileName))
+                                    unlink($filePath . '/' . $fileName);
                             }
 
                             $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
