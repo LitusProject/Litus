@@ -165,7 +165,6 @@
                     $('#doodle tr.error').removeClass('error');
                     if (data !== undefined && data.errors) {
                         $.each(data.errors, function (key, value) {
-                            console.log(key);
                             $('#' + key).closest('tr').addClass('error');
                         });
                     }

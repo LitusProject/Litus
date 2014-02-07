@@ -215,7 +215,7 @@
                     var m = matches[2] - 1;
                     var y = matches[3];
                     var composedDate = new Date(y, m, d);
-                    console.log(composedDate);
+
                     if (composedDate.getDate() != d || composedDate.getMonth() != m || composedDate.getFullYear() != y) {
                         modal.find('.errors').removeClass('hide');
                         return;
