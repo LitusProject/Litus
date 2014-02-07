@@ -568,7 +568,7 @@ class Booking extends EntityRepository
             ->setParameter('startDate', $start);
 
         if (null !== $end)
-            $query->setParameter('endDate', $period->getEndDate());
+            $query->setParameter('endDate', $end);
 
         $resultSet = $query->setMaxResults(1)
             ->setMaxResults(1)
