@@ -697,10 +697,23 @@ return array(
                         'assets' => array(
                             'common/js/jcrop.min.js',
                         ),
+                        'filters' => array(
+                            'jcrop_js' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
                     ),
                     'jcrop_css' => array(
                         'assets' => array(
                             'common/css/jcrop.min.css',
+                        ),
+                        'filters' => array(
+                            'jcrop_css' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Css',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'jcrop_css.css',
                         ),
                     ),
                 ),
