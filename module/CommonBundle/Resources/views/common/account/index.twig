@@ -249,6 +249,7 @@
             var y = image.outerHeight()/2 - h/2;
 
             image.Jcrop({
+                keySupport: false,
                 aspectRatio: 320/240,
                 setSelect: [x, y, x+w, y+h],
                 onChange: function (e) {

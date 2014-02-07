@@ -45,6 +45,26 @@
                             {% endif %}
                         </div>
                     </div>
+                {% elseif element.getAttribute('data-type') == 'small' %}
+                    <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}" style="width: 100%">
+                        {{ formLabel().openTag(element) }}
+                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                        {{ formLabel().closeTag() }}
+                        <div class="fileinput fileinput-new col-sm-10" data-provides="fileinput">
+                            <div>
+                                <span class="btn btn-default btn-file">
+                                    <span class="fileinput-new">{{ translate('Select File') }}</span>
+                                    <span class="fileinput-exists">{{ translate('Change File') }}</span>
+                                    {{ formElement(element) }}
+                                </span>
+                            </div>
+                            {% if element.getMessages()|length > 0 %}
+                                <div class="help-block">
+                                    {{ formElementErrors(element) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% else %}
                     <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
                         {{ formLabel().openTag(element) }}

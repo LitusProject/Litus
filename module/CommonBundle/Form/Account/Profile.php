@@ -66,6 +66,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
 
         $field = new File('profile');
+        $field->setAttribute('data-type', 'small');
         $this->add($field);
     }
 
