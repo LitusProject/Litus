@@ -804,59 +804,73 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($entry, $field);
+                    $removed = false;
 
                     if ($field instanceof FileField) {
                         $filePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('form.file_upload_path');
 
-                        $upload = new FileUpload();
-                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid('field-' . $field->getId())) {
-                            if ($fieldEntry->getValue() == '') {
-                                $fileName = '';
-                                do{
-                                    $fileName = sha1(uniqid());
-                                } while (file_exists($filePath . '/' . $fileName));
-                            } else {
-                                $fileName = $fieldEntry->getValue();
+                        if (isset($formData['field-' . $field->getId() . '-removed'])) {
+                            $removed = true;
+
+                            if (isset($fieldEntry)) {
+                                if (file_exists($filePath . '/' . $fieldEntry->getValue()))
+                                    unlink($filePath . '/' . $fieldEntry->getValue());
+
+                                $this->getEntityManager()->remove($fieldEntry);
+                            }
+                        } else {
+                            $upload = new FileUpload();
+                            $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                            if ($upload->isValid('field-' . $field->getId())) {
+                                if (null === $fieldEntry || $fieldEntry->getValue() == '') {
+                                    $fileName = '';
+                                    do{
+                                        $fileName = sha1(uniqid());
+                                    } while (file_exists($filePath . '/' . $fileName));
+                                } else {
+                                    $fileName = $fieldEntry->getValue();
+                                    if (file_exists($filePath . '/' . $fileName))
+                                        unlink($filePath . '/' . $fileName);
+                                }
+
                                 if (file_exists($filePath . '/' . $fileName))
                                     unlink($filePath . '/' . $fileName);
+                                $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
+                                $upload->receive('field-' . $field->getId());
+
+                                $value = $fileName;
                             }
 
-                            if (file_exists($filePath . '/' . $fileName))
-                                unlink($filePath . '/' . $fileName);
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                            $upload->receive('field-' . $field->getId());
+                            $errors = $upload->getMessages();
 
-                            $value = $fileName;
-                        }
+                            if (isset($errors['fileUploadErrorNoFile']))
+                                unset($errors['fileUploadErrorNoFile']);
 
-                        $errors = $upload->getMessages();
+                            if (sizeof($errors) > 0) {
+                                $form->setMessages(array('field-' . $field->getId() => $errors));
 
-                        if (isset($errors['fileUploadErrorNoFile']))
-                            unset($errors['fileUploadErrorNoFile']);
-
-                        if (sizeof($errors) > 0) {
-                            $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                            return new ViewModel(
-                                array(
-                                    'specification' => $entry->getForm(),
-                                    'form'          => $form,
-                                )
-                            );
-                        } elseif ($value == '') {
-                            $value = $fieldEntry->getValue();
+                                return new ViewModel(
+                                    array(
+                                        'specification' => $entry->getForm(),
+                                        'form'          => $form,
+                                    )
+                                );
+                            } elseif ($value == '') {
+                                $value = $fieldEntry->getValue();
+                            }
                         }
                     }
 
-                    if ($fieldEntry) {
-                        $fieldEntry->setValue($value);
-                    } else {
-                        $fieldEntry = new FieldEntry($entry, $field, $value);
-                        $entry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
+                    if (!$removed) {
+                        if ($fieldEntry) {
+                            $fieldEntry->setValue($value);
+                        } else {
+                            $fieldEntry = new FieldEntry($entry, $field, $value);
+                            $entry->addFieldEntry($fieldEntry);
+                            $this->getEntityManager()->persist($fieldEntry);
+                        }
                     }
                 }
 

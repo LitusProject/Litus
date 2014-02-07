@@ -77,8 +77,17 @@
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
                     $(this).closest('.fileinput').append(
-                        $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
-                            '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                        $('<div>', {'class': 'fileActions'}).append(
+                            $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
+                                '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                            ), ' ',
+                            $('<button>', {'class': 'btn btn-xs btn-danger'}).html('{{ translate('Remove') }}').click(function (e) {
+                                e.preventDefault();
+                                $(this).closest('.fileinput').append(
+                                    $('<input>', {'type': 'hidden', 'name': $(this).closest('.fileinput').find('input[type="file"]').attr('id') + '-removed'}).val(1)
+                                );
+                                $(this).closest('.fileActions').remove();
+                            })
                         )
                     );
                 }
