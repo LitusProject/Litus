@@ -41,7 +41,7 @@
                 {% else %}
                     <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
                 {% endif %}
-                <button id="editProfile" class="btn btn-default btn-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
+                <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
             </div>
         </div>
     </div>
@@ -191,7 +191,7 @@
 
                     });
 
-                    $('#modalProfileImage .save').unbind('click').click(function () {
+                    $('#modalProfileImage .save').one('click', function () {
                         $('#modalProfileImage .imageCrop form').ajaxSubmit({
                             'error': function () {
                                 $('#profile_upload_error').addClass('in');
@@ -199,7 +199,8 @@
                             },
                             'success': function (data) {
                                 if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile);
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
                                     $('#modalProfileImage').modal('hide');
                                 } else {
                                     $('#profile_upload_error').addClass('in');
@@ -213,7 +214,7 @@
                     $('#modalProfileImage .imageCrop').hide();
                     $('#modalProfileImage .imageForm').show();
 
-                    $('#modalProfileImage .save').unbind('click').click(function () {
+                    $('#modalProfileImage .save').one('click', function () {
                         $('#modalProfileImage .imageForm form').ajaxSubmit({
                             'error': function () {
                                 $('#profile_upload_error').addClass('in');
@@ -221,7 +222,8 @@
                             },
                             'success': function (data) {
                                 if (data.status !== undefined && data.status == 'success') {
-                                    $('#accountProfileImage img').attr('src', data.profile);
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
                                     $('#modalProfileImage').modal('hide');
                                 } else {
                                     $('#profile_upload_error').addClass('in');

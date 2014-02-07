@@ -591,45 +591,48 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid() && $upload->isValid()) {
-                $academic = $this->getAuthentication()->getPersonObject();
+            $academic = $this->getAuthentication()->getPersonObject();
+            $filePath = 'public' . $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.profile_path');
 
-                $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path');
+            if ($form->isValid()) {
+                if ($upload->isValid()) {
+                    if ($upload->isUploaded()) {
+                        $upload->receive();
 
-                if ($upload->isUploaded()) {
-                    $upload->receive();
-
-                    $image = new Imagick($upload->getFileName());
-                    unlink($upload->getFileName());
-
-                    if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
-                        $image->cropThumbnailImage(320, 240);
-                    } else {
-                        $ratio = $image->getImageWidth()/320;
-                        $x = $formData['x']*$ratio;
-                        $y = $formData['y']*$ratio;
-                        $x2 = $formData['x2']*$ratio;
-                        $y2 = $formData['y2']*$ratio;
-                        $w = $formData['w']*$ratio;
-                        $h = $formData['h']*$ratio;
-
-                        $image->cropImage($w, $h, $x, $y);
-                        $image->cropThumbnailImage(320, 240);
+                        $image = new Imagick($upload->getFileName());
+                        unlink($upload->getFileName());
                     }
-
-                    if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                        $fileName = $academic->getPhotoPath();
-                    } else {
-                        $fileName = '';
-                        do{
-                            $fileName = sha1(uniqid());
-                        } while (file_exists($filePath . '/' . $fileName));
-                    }
-                    $image->writeImage($filePath . '/' . $fileName);
-                    $academic->setPhotoPath($fileName);
+                } else {
+                    $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
+
+                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                    $image->cropThumbnailImage(320, 240);
+                } else {
+                    $ratio = $image->getImageWidth()/320;
+                    $x = $formData['x']*$ratio;
+                    $y = $formData['y']*$ratio;
+                    $x2 = $formData['x2']*$ratio;
+                    $y2 = $formData['y2']*$ratio;
+                    $w = $formData['w']*$ratio;
+                    $h = $formData['h']*$ratio;
+
+                    $image->cropImage($w, $h, $x, $y);
+                    $image->cropThumbnailImage(320, 240);
+                }
+
+                if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                    $fileName = $academic->getPhotoPath();
+                } else {
+                    $fileName = '';
+                    do{
+                        $fileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $fileName));
+                }
+                $image->writeImage($filePath . '/' . $fileName);
+                $academic->setPhotoPath($fileName);
 
                 $this->getEntityManager()->flush();
 
