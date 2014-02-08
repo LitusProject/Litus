@@ -18,11 +18,11 @@
 
                 <td>
                     <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                    <br/>
                     <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                     <br/>{% autoescape false %}{{ vacancy.getSummary(200) }}{% endautoescape %}
                 </td>
             </tr>
-
         {% endfor %}
     </table>
 
