@@ -46,7 +46,8 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         parent::__construct($entityManager, $name);
 
         $field = new Checkbox('activation_code');
-        $field->setLabel('Activation Code');
+        $field->setLabel('Activation Code')
+            ->setAttribute('data-help', 'With this activation code the user as the ability to login without shibboleth. A mail will be send with an activation code.');
         $this->add($field);
 
         $collection = new Collection('organization');
@@ -63,12 +64,20 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     ),
                     OrganizationStatus::$possibleStatuses
                 )
-            );
+            )
+            ->setAttribute('data-help', 'The user status in the organiation: <ul>
+                <li><b>Member:</b> a regular member</li>
+                <li><b>Non-member:</b> a regular non member</li>
+                <li><b>Honorary member:</b> a member due to special earnings</li>
+                <li><b>Supportive member:</b> a member, but not a student</li>
+                <li><b>Praesidium:</b> a member of the board</li>
+            </ul>');
         $collection->add($field);
 
         $field = new Text('barcode');
         $field->setLabel('Barcode')
-            ->setAttribute('class', 'disableEnter');
+            ->setAttribute('class', 'disableEnter')
+            ->setAttribute('data-help', 'The barcode used to identify the user in this organization.');
         $collection->add($field);
 
         $collection = new Collection('university');
@@ -85,11 +94,20 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     ),
                     UniversityStatus::$possibleStatuses
                 )
-            );
+            )
+            ->setAttribute('data-help', 'The user status in the university: <ul>
+                <li><b>Alumnus:</b> Old student</li>
+                <li><b>Assistant Professor:</b> Assistant of a professor</li>
+                <li><b>Administrative Assistant:</b> Assistant</li>
+                <li><b>External Student:</b> A external student currently studying at this university</li>
+                <li><b>Professor:</b> A professor</li>
+                <li><b>Student:</b> A student</li>
+            </ul>');
         $collection->add($field);
 
         $field = new Text('university_identification');
-        $field->setLabel('Identification');
+        $field->setLabel('Identification')
+            ->setAttribute('data-help', 'The unique user identification of the university.');
         $collection->add($field);
 
         $field = new Submit('submit');
