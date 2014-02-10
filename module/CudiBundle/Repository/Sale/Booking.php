@@ -473,6 +473,16 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
+        return $this->findOneAssignedByArticleAndPersonBetween($article, $person, $period->getStartDate(), $period->getEndDate());
+    }
+
+    public function findOneAssignedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
+    {
+        return $this->findOneAssignedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function findOneAssignedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
@@ -482,15 +492,15 @@ class Booking extends EntityRepository
                     $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('b.status', '\'assigned\''),
                     $query->expr()->gte('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    null === $end ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
             ->setParameter(':person', $person->getId())
             ->setParameter(':article', $article->getId())
-            ->setParameter('startDate', $period->getStartDate());
+            ->setParameter('startDate', $start);
 
-        if (!$period->isOpen())
-            $query->setParameter('endDate', $period->getEndDate());
+        if (null !== $end)
+            $query->setParameter('endDate', $end);
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
