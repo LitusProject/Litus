@@ -79,7 +79,11 @@ if (isset($opts->a)) {
 
         if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
             $booking = $em->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPerson($article, $person->getAcademic());
+                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                    $article,
+                    $person->getAcademic(),
+                    $academicYear
+                );
 
             if (null === $booking) {
                 $number++;

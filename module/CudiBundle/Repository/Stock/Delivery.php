@@ -22,11 +22,10 @@ class Delivery extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Delivery', 'o')
-            ->innerJoin('o.article', 'a', Join::WITH,
-                   $query->expr()->eq('a.supplier', ':supplier')
-            )
+            ->innerJoin('o.article', 'a')
             ->where(
                 $query->expr()->andX(
+                    $query->expr()->eq('a.supplier', ':supplier'),
                     $query->expr()->gt('o.timestamp', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('o.timestamp', ':endDate')
                 )

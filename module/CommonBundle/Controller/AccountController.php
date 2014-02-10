@@ -271,11 +271,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         if (null !== $metaData->getTshirtSize()) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->findOneAssignedByArticleAndPerson(
+                                ->findOneAssignedByArticleAndPersonInAcademicYear(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Article')
                                         ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                                    $academic
+                                    $academic,
+                                    $this->getCurrentAcademicYear()
                                 );
 
                             if ($booking !== null)
@@ -340,9 +341,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         foreach($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->findOneSoldOrAssignedOrBookedByArticleAndPerson(
+                                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                     $membershipArticle,
-                                    $academic
+                                    $academic,
+                                    $this->getCurrentAcademicYear()
                                 );
 
                             if (null !== $booking)

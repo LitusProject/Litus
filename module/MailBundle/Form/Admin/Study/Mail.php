@@ -65,6 +65,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             $field = new Select('studies');
             $field->setLabel('Studies')
                 ->setAttribute('multiple', true)
+                ->setAttribute('style', 'max-width: 100%;')
                 ->setAttribute('options', $studyNames);
             $this->add($field);
         }
@@ -103,6 +104,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
             $field = new Select('stored_message');
             $field->setLabel('Stored Message')
+                ->setAttribute('style', 'max-width: 100%;')
                 ->setAttribute('options', $storedMessagesTitles);
             $collection->add($field);
         }

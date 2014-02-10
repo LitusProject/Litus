@@ -109,8 +109,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     {
         return $this->createFromArray(
             (0 == count($conditions)) ?
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy(array(), $orderBy)->toArray() :
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy($conditions, $orderBy)->toArray(),
+                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy(array(), $orderBy) :
+                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy($conditions, $orderBy),
             $currentPage
         );
     }
