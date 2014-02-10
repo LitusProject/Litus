@@ -98,7 +98,7 @@ class Template
     public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, $organization = null)
     {
         $this->name = $name;
-        $this->value = $value * 100;
+        $this->value = str_replace(',', '.', $value) * 100;
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
