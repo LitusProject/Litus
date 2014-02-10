@@ -313,7 +313,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                 ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                     $membershipArticle,
                                     $academic,
-                                    $academicYear
+                                    $this->getCurrentAcademicYear()
                                 );
 
                             if (null !== $booking)
