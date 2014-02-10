@@ -174,7 +174,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '2MB',
+                                'max' => '2MB',
                             ),
                         ),
                     ),
