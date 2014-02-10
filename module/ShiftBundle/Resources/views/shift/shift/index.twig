@@ -62,7 +62,9 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(dateSearchForm.get('date'))|raw }}
-                            <span class="btn btn-default input-group-addon">{{ translate('Search') }}</span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
                         </div>
                     </div>
                 {{ form().closeTag()|raw }}
@@ -76,7 +78,9 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(eventSearchForm.get('event'))|raw }}
-                            <span class="btn btn-default input-group-addon">{{ translate('Search') }}</span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
                         </div>
                     </div>
                 {{ form().closeTag()|raw }}
@@ -90,7 +94,9 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(unitSearchForm.get('unit'))|raw }}
-                            <span class="btn btn-default input-group-addon">{{ translate('Search') }}</span>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
                         </div>
                     </div>
                 {{ form().closeTag()|raw }}
@@ -125,10 +131,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.shiftSearchForms form .btn').click(function () {
-                $(this).closest('form').submit();
-            });
-
             $('.responsible').click(function () {
                 var button = $(this);
                 var count = parseInt(button.data('count'), 10);
