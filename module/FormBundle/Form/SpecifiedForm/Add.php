@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         // Create guest fields
-        if ($person === null) {
+        if (null === $person) {
             $field = new Text('first_name');
             $field->setLabel('First Name')
                 ->setRequired(true);

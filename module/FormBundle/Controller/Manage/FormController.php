@@ -302,18 +302,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
 
-        $occupiedSlots = array();
-        foreach($formEntries as $entry) {
-            if ($entry->getCreationPerson() == $formEntry->getCreationPerson())
-                continue;
-
-            foreach($entry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $entry->getPersonInfo()->getFullName();
-            }
-        }
-
         $notValid = false;
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, $occupiedSlots, true);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -321,24 +311,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                    $this->getEntityManager()->remove($fieldEntry);
-                }
-                $this->getEntityManager()->flush();
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
+                Doodle::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getEntityManager());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -367,7 +340,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'formEntry'         => $formEntry,
                 'formSpecification' => $formSpecification,
                 'form'              => $form,
-                'occupiedSlots'     => $occupiedSlots,
                 'doodleNotValid'    => $notValid,
             )
         );

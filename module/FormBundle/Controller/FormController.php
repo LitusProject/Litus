@@ -20,6 +20,7 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Component\Form\Doodle,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\GuestInfo,
@@ -86,12 +87,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $entries = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
         $group = $this->_getGroup($formSpecification);
@@ -395,20 +398,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
-        $occupiedSlots = array();
-        foreach($formEntries as $formEntry) {
-            if ($formEntry->getCreationPerson() == $person)
-                continue;
-
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
-            }
-        }
-
+        $formEntry = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
@@ -418,12 +408,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $formEntry = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $formEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -433,55 +425,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
-                    );
-                    $this->getEntityManager()->persist($guestInfo);
-                }
-
-                if (null === $formEntry) {
-                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
-                    $this->getEntityManager()->persist($formEntry);
-                } else {
-                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                        $this->getEntityManager()->remove($fieldEntry);
-                    }
-                    $this->getEntityManager()->flush();
-                }
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
-
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
-
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
-                }
+                Doodle::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getEntityManager(), $this->getMailTransport());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -529,7 +473,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'specification'   => $formSpecification,
                 'form'            => $form,
-                'occupiedSlots'   => $occupiedSlots,
                 'doodleNotValid'  => $notValid,
                 'formEntry'       => $formEntry,
                 'group'           => $group,
@@ -596,16 +539,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
 
-        $occupiedSlots = array();
-        foreach($formEntries as $formEntry) {
-            if ($formEntry->getCreationPerson() == $person)
-                continue;
-
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
-            }
-        }
-
+        $formEntry = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
@@ -615,12 +549,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $formEntry = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $formEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -630,55 +566,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
-                    );
-                    $this->getEntityManager()->persist($guestInfo);
-                }
-
-                if (null === $formEntry) {
-                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
-                    $this->getEntityManager()->persist($formEntry);
-                } else {
-                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                        $this->getEntityManager()->remove($fieldEntry);
-                    }
-                    $this->getEntityManager()->flush();
-                }
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
-
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
-
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
-                }
+                Doodle::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getEntityManager(), $this->getMailTransport());
 
                 return new ViewModel(
                     array(
@@ -774,9 +662,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            if ($guestInfo) {
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            }
         }
 
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
