@@ -119,21 +119,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
-        }
-
-        $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification));
-
-        if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
-            return new ViewModel(
-                array(
-                    'message'       => 'This form has reached the maximum number of submissions.',
-                    'specification' => $formSpecification,
-                    'entries'       => $entries,
-                )
-            );
         }
 
         if (null === $person && !$formSpecification->isNonMember()) {
@@ -151,6 +139,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'entries'       => $entries,
                     'group'           => $group,
                     'progressBarInfo' => $progressBarInfo,
+                )
+            );
+        }
+
+        $entriesCount = count($this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification));
+
+        if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'This form has reached the maximum number of submissions.',
+                    'specification' => $formSpecification,
+                    'entries'       => $entries,
                 )
             );
         }
@@ -280,33 +282,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                if ($group && !isset($formData['save_as_draft'])) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $formSpecification->getId(),
-                        )
-                    );
-                }
+                $this->__redirectFormComplete($group, $progressBarInfo, $formSpecification, isset($formData['save_as_draft']));
 
                 return new ViewModel();
             }
@@ -386,6 +362,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
         }
 
@@ -435,33 +413,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                if ($group) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $formSpecification->getId(),
-                        )
-                    );
-                }
+                $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification);
 
                 return new ViewModel();
             } else {
@@ -647,6 +599,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
         }
 
@@ -786,33 +740,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                if ($group && !isset($formData['save_as_draft'])) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $entry->getForm()->getId(),
-                        )
-                    );
-                }
+                $this->_redirectFormComplete($group, $progressBarInfo, $entry->getForm(), isset($formData['save_as_draft']));
 
                 return new ViewModel();
             }
@@ -1027,5 +955,36 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $data;
+    }
+
+    private function _redirectFormComplete(Group $group, $progressBarInfo, Form $formSpecification, $draft = false)
+    {
+        if ($group && !$draft) {
+            if ($progressBarInfo['next_form'] == 0) {
+                $this->redirect()->toRoute(
+                    'form_group',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $group->getId(),
+                    )
+                );
+            } else {
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $progressBarInfo['next_form'],
+                    )
+                );
+            }
+        } else {
+            $this->redirect()->toRoute(
+                'form_view',
+                array(
+                    'action'   => 'view',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+        }
     }
 }
