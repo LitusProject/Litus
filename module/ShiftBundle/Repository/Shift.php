@@ -146,6 +146,10 @@ class Shift extends EntityRepository
             ->getQuery()
             ->getResult();
 
+        $shifts = array();
+        foreach($responsibleResultSet as $result)
+            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+
         $query = $this->_em->createQueryBuilder();
         $volunteerResultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
@@ -162,9 +166,12 @@ class Shift extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        return array_merge(
-            $responsibleResultSet, $volunteerResultSet
-        );
+        foreach($volunteerResultSet as $result)
+            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+
+        ksort($shifts);
+
+        return array_values($shifts);
     }
 
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
