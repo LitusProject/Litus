@@ -79,10 +79,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         else
             $description = $descriptions[\Locale::getDefault()];
 
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
-            $serverName = 'https://' . $_SERVER['SERVER_NAME'];
-        else
-            $serverName = 'http://' . $_SERVER['SERVER_NAME'];
+        $serverName = 'http://' . str_replace(',', '', $_SERVER['SERVER_NAME']);
 
         $data = array(
             new XmlObject(
