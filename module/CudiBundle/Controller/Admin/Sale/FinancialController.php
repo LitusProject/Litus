@@ -104,6 +104,9 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'data' => $data,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'otherOrganizationEnabled' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.enable_other_organization'),
             )
         );
     }
@@ -196,6 +199,9 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 'activeAcademicYear' => $academicYear,
                 'organizationsList' => $organizationsList,
                 'data' => $data,
+                'otherOrganizationEnabled' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.enable_other_organization'),
             )
         );
     }
