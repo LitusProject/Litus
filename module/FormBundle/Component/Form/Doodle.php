@@ -18,7 +18,8 @@
 
 namespace FormBundle\Component\Form;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Node\Form,
@@ -34,7 +35,7 @@ use CommonBundle\Entity\User\Person,
  */
 class Doodle
 {
-    static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, EntityManager $entityManager, MailTransport $mailTransport = null)
+    static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -73,7 +74,7 @@ class Doodle
             $mailAddress = $formSpecification->getMail()->getFrom();
 
             $mail = new Message();
-            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
+            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language))
                 ->setFrom($mailAddress)
                 ->setSubject($formSpecification->getMail()->getSubject())
                 ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());

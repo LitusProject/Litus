@@ -20,19 +20,14 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
-    FormBundle\Component\Form\Doodle,
+    FormBundle\Component\Form\Form as FormHelper,
+    FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\GuestInfo,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -185,86 +180,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $formSpecification,
+                            'form'          => $form,
+                            'entries'       => $entries,
+                        )
                     );
-                    $this->getEntityManager()->persist($guestInfo);
                 }
-
-                $formEntry = new FormEntry($person, $guestInfo, $formSpecification, isset($formData['save_as_draft']));
-
-                $this->getEntityManager()->persist($formEntry);
-
-                foreach ($formSpecification->getFields() as $field) {
-                    $value = $formData['field-' . $field->getId()];
-
-                    if ($field instanceof FileField) {
-                        $value = '';
-                        $filePath = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('form.file_upload_path');
-
-                        $upload = new FileUpload();
-                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid('field-' . $field->getId())) {
-                            $fileName = '';
-                            do{
-                                $fileName = sha1(uniqid());
-                            } while (file_exists($filePath . '/' . $fileName));
-
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                            $upload->receive('field-' . $field->getId());
-
-                            $value = $fileName;
-                        }
-                        $errors = $upload->getMessages();
-
-                        if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
-                            unset($errors['fileUploadErrorNoFile']);
-
-                        if (sizeof($errors) > 0) {
-                            $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                            return new ViewModel(
-                                array(
-                                    'specification' => $formSpecification,
-                                    'form'          => $form,
-                                    'entries'       => $entries,
-                                )
-                            );
-                        }
-                    }
-
-                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
-
-                    $formEntry->addFieldEntry($fieldEntry);
-
-                    $this->getEntityManager()->persist($fieldEntry);
-                }
-
-                $this->getEntityManager()->flush();
 
                 if (!isset($formData['save_as_draft'])) {
-                    if ($formSpecification->hasMail()) {
-                        $mailAddress = $formSpecification->getMail()->getFrom();
-
-                        $mail = new Message();
-                        $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                            ->setFrom($mailAddress)
-                            ->setSubject($formSpecification->getMail()->getSubject())
-                            ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                        if ($formSpecification->getMail()->getBcc())
-                            $mail->addBcc($mailAddress);
-
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-                    }
-
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -282,7 +210,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                $this->__redirectFormComplete($group, $progressBarInfo, $formSpecification, isset($formData['save_as_draft']));
+                $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification, isset($formData['save_as_draft']));
 
                 return new ViewModel();
             }
@@ -403,7 +331,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                Doodle::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -518,7 +446,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                Doodle::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
 
                 return new ViewModel(
                     array(
@@ -631,98 +559,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid() || isset($formData['save_as_draft'])) {
-                if ($entry->isGuestEntry()) {
-                    $entry->getGuestInfo()
-                        ->setFirstName($formData['first_name'])
-                        ->setLastName($formData['last_name'])
-                        ->setEmail($formData['email']);
-                }
-
                 $formData = $form->getFormData($formData);
 
-                $entry->setDraft(isset($formData['save_as_draft']));
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
 
-                foreach ($entry->getForm()->getFields() as $field) {
-                    $value = $formData['field-' . $field->getId()];
-
-                    $fieldEntry = $this->getEntityManager()
-                        ->getRepository('FormBundle\Entity\Entry')
-                        ->findOneByFormEntryAndField($entry, $field);
-
-                    if ($field instanceof FileField) {
-                        $filePath = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('form.file_upload_path');
-
-                        $upload = new FileUpload();
-                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid('field-' . $field->getId())) {
-                            if ($fieldEntry->getValue() == '') {
-                                $fileName = '';
-                                do{
-                                    $fileName = sha1(uniqid());
-                                } while (file_exists($filePath . '/' . $fileName));
-                            } else {
-                                $fileName = $fieldEntry->getValue();
-                                if (file_exists($filePath . '/' . $fileName))
-                                    unlink($filePath . '/' . $fileName);
-                            }
-
-                            if (file_exists($filePath . '/' . $fileName))
-                                unlink($filePath . '/' . $fileName);
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                            $upload->receive('field-' . $field->getId());
-
-                            $value = $fileName;
-                        }
-
-                        $errors = $upload->getMessages();
-
-                        if (isset($errors['fileUploadErrorNoFile']))
-                            unset($errors['fileUploadErrorNoFile']);
-
-                        if (sizeof($errors) > 0) {
-                            $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                            return new ViewModel(
-                                array(
-                                    'specification' => $entry->getForm(),
-                                    'form'          => $form,
-                                )
-                            );
-                        } elseif ($value == '') {
-                            $value = $fieldEntry->getValue();
-                        }
-                    }
-
-                    if ($fieldEntry) {
-                        $fieldEntry->setValue($value);
-                    } else {
-                        $fieldEntry = new FieldEntry($entry, $field, $value);
-                        $entry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-                    }
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $formSpecification,
+                            'form'          => $form,
+                        )
+                    );
                 }
 
-                $this->getEntityManager()->flush();
-
                 if (!isset($formData['save_as_draft'])) {
-                    if ($entry->getForm()->hasMail()) {
-                        $mailAddress = $entry->getForm()->getMail()->getFrom();
-
-                        $mail = new Message();
-                        $mail->setBody($entry->getForm()->getCompletedMailBody($entry, $this->getLanguage()))
-                            ->setFrom($mailAddress)
-                            ->setSubject($entry->getForm()->getMail()->getSubject())
-                            ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
-
-                        if ($entry->getForm()->getMail()->getBcc())
-                            $mail->addBcc($mailAddress);
-
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-                    }
-
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
