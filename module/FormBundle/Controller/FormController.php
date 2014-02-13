@@ -685,7 +685,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = $this->getAuthentication()->getPersonObject();
         $guestInfo = null;
-        if(isset($_COOKIE['LITUS_form'])) {
+        if(isset($_COOKIE['LITUS_form']) && null === $person) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
