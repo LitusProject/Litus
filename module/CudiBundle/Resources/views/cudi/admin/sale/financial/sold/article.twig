@@ -20,6 +20,7 @@
 
         {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
         <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear) }}</b></p>
+        <p>Number Sold to Members: <b>{{ article.getNumberSoldToMembers(activeAcademicYear) }}</b></p>
         <p>Total Purchase: <b>&euro; {{ (article.getNumberSold(activeAcademicYear)*article.getPurchasePrice()/100)|number_format(2) }}</b></p>
         <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear)/100)|number_format(2) }}</b></p>
 
@@ -27,6 +28,7 @@
             {% for organization in organizations %}
                 <h2>{{ organization.getName() }}</h2>
                 <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear, organization) }}</b></p>
+                <p>Number Sold to Members: <b>{{ article.getNumberSoldToMembers(activeAcademicYear, organization) }}</b></p>
                 <p>Total Purchase: <b>&euro; {{ (article.getNumberSold(activeAcademicYear, organization)*article.getPurchasePrice()/100)|number_format(2) }}</b></p>
                 <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
             {% endfor %}
