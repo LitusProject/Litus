@@ -85,7 +85,7 @@ class Form
                         if (file_exists($filePath . '/' . $fieldEntry->getValue()))
                             unlink($filePath . '/' . $fieldEntry->getValue());
 
-                        $this->getEntityManager()->remove($fieldEntry);
+                        $entityManager->remove($fieldEntry);
                     }
                 } else {
                     $upload = new FileUpload();
