@@ -70,6 +70,7 @@ class Form
             $fieldEntry = $entityManager
                 ->getRepository('FormBundle\Entity\Entry')
                 ->findOneByFormEntryAndField($formEntry, $field);
+            $removed = false;
 
             if ($field instanceof FileField) {
                 $value = '';
@@ -77,45 +78,58 @@ class Form
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('form.file_upload_path');
 
-                $upload = new FileUpload();
-                $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                if ($upload->isValid('field-' . $field->getId())) {
-                    if (null === $fieldEntry || $fieldEntry->getValue() == '') {
-                        $fileName = '';
-                        do{
-                            $fileName = sha1(uniqid());
-                        } while (file_exists($filePath . '/' . $fileName));
-                    } else {
-                        $fileName = $fieldEntry->getValue();
-                        if (file_exists($filePath . '/' . $fileName))
-                            unlink($filePath . '/' . $fileName);
+                if (isset($formData['field-' . $field->getId() . '-removed'])) {
+                    $removed = true;
+
+                    if (isset($fieldEntry)) {
+                        if (file_exists($filePath . '/' . $fieldEntry->getValue()))
+                            unlink($filePath . '/' . $fieldEntry->getValue());
+
+                        $this->getEntityManager()->remove($fieldEntry);
+                    }
+                } else {
+                    $upload = new FileUpload();
+                    $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                    if ($upload->isValid('field-' . $field->getId())) {
+                        if (null === $fieldEntry || $fieldEntry->getValue() == '') {
+                            $fileName = '';
+                            do{
+                                $fileName = sha1(uniqid());
+                            } while (file_exists($filePath . '/' . $fileName));
+                        } else {
+                            $fileName = $fieldEntry->getValue();
+                            if (file_exists($filePath . '/' . $fileName))
+                                unlink($filePath . '/' . $fileName);
+                        }
+
+                        $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
+                        $upload->receive('field-' . $field->getId());
+
+                        $value = $fileName;
                     }
 
-                    $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                    $upload->receive('field-' . $field->getId());
+                    $errors = $upload->getMessages();
 
-                    $value = $fileName;
-                }
+                    if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
+                        unset($errors['fileUploadErrorNoFile']);
 
-                $errors = $upload->getMessages();
-
-                if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
-                    unset($errors['fileUploadErrorNoFile']);
-
-                if (sizeof($errors) > 0) {
-                    $form->setMessages(array('field-' . $field->getId() => $errors));
-                    return false;
-                } elseif ($value == '' && null !== $fieldEntry) {
-                    $value = $fieldEntry->getValue();
+                    if (sizeof($errors) > 0) {
+                        $form->setMessages(array('field-' . $field->getId() => $errors));
+                        return false;
+                    } elseif ($value == '' && null !== $fieldEntry) {
+                        $value = $fieldEntry->getValue();
+                    }
                 }
             }
 
-            if ($fieldEntry) {
-                $fieldEntry->setValue($value);
-            } else {
-                $fieldEntry = new FieldEntry($formEntry, $field, $value);
-                $formEntry->addFieldEntry($fieldEntry);
-                $entityManager->persist($fieldEntry);
+            if (!$removed) {
+                if ($fieldEntry) {
+                    $fieldEntry->setValue($value);
+                } else {
+                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
+                    $formEntry->addFieldEntry($fieldEntry);
+                    $entityManager->persist($fieldEntry);
+                }
             }
         }
 
