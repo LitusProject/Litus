@@ -2,9 +2,9 @@
 
 namespace FormBundle\Repository\Field;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityRepository,
     FormBundle\Entity\Node\Form;
 
 /**
