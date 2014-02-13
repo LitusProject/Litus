@@ -20,18 +20,14 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Component\Form\Form as FormHelper,
+    FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\GuestInfo,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -86,12 +82,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $entries = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByFormAndGuestInfo($formSpecification, $guestInfo);
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
         $group = $this->_getGroup($formSpecification);
@@ -116,21 +114,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
-        }
-
-        $entriesCount = count($this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification));
-
-        if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
-            return new ViewModel(
-                array(
-                    'message'       => 'This form has reached the maximum number of submissions.',
-                    'specification' => $formSpecification,
-                    'entries'       => $entries,
-                )
-            );
         }
 
         if (null === $person && !$formSpecification->isNonMember()) {
@@ -148,6 +134,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'entries'       => $entries,
                     'group'           => $group,
                     'progressBarInfo' => $progressBarInfo,
+                )
+            );
+        }
+
+        $entriesCount = count($this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($formSpecification));
+
+        if ($formSpecification->getMax() != 0 && $entriesCount >= $formSpecification->getMax()) {
+            return new ViewModel(
+                array(
+                    'message'       => 'This form has reached the maximum number of submissions.',
+                    'specification' => $formSpecification,
+                    'entries'       => $entries,
                 )
             );
         }
@@ -180,86 +180,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $formSpecification,
+                            'form'          => $form,
+                            'entries'       => $entries,
+                        )
                     );
-                    $this->getEntityManager()->persist($guestInfo);
                 }
-
-                $formEntry = new FormEntry($person, $guestInfo, $formSpecification, isset($formData['save_as_draft']));
-
-                $this->getEntityManager()->persist($formEntry);
-
-                foreach ($formSpecification->getFields() as $field) {
-                    $value = $formData['field-' . $field->getId()];
-
-                    if ($field instanceof FileField) {
-                        $value = '';
-                        $filePath = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('form.file_upload_path');
-
-                        $upload = new FileUpload();
-                        $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                        if ($upload->isValid('field-' . $field->getId())) {
-                            $fileName = '';
-                            do{
-                                $fileName = sha1(uniqid());
-                            } while (file_exists($filePath . '/' . $fileName));
-
-                            $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                            $upload->receive('field-' . $field->getId());
-
-                            $value = $fileName;
-                        }
-                        $errors = $upload->getMessages();
-
-                        if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
-                            unset($errors['fileUploadErrorNoFile']);
-
-                        if (sizeof($errors) > 0) {
-                            $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                            return new ViewModel(
-                                array(
-                                    'specification' => $formSpecification,
-                                    'form'          => $form,
-                                    'entries'       => $entries,
-                                )
-                            );
-                        }
-                    }
-
-                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
-
-                    $formEntry->addFieldEntry($fieldEntry);
-
-                    $this->getEntityManager()->persist($fieldEntry);
-                }
-
-                $this->getEntityManager()->flush();
 
                 if (!isset($formData['save_as_draft'])) {
-                    if ($formSpecification->hasMail()) {
-                        $mailAddress = $formSpecification->getMail()->getFrom();
-
-                        $mail = new Message();
-                        $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                            ->setFrom($mailAddress)
-                            ->setSubject($formSpecification->getMail()->getSubject())
-                            ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                        if ($formSpecification->getMail()->getBcc())
-                            $mail->addBcc($mailAddress);
-
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-                    }
-
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -277,33 +210,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                if ($group && !isset($formData['save_as_draft'])) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $formSpecification->getId(),
-                        )
-                    );
-                }
+                $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification, isset($formData['save_as_draft']));
 
                 return new ViewModel();
             }
@@ -383,6 +290,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
         }
 
@@ -395,20 +304,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
-        $occupiedSlots = array();
-        foreach($formEntries as $formEntry) {
-            if ($formEntry->getCreationPerson() == $person)
-                continue;
-
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
-            }
-        }
-
+        $formEntry = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
@@ -418,12 +314,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $formEntry = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $formEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -433,55 +331,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
-                    );
-                    $this->getEntityManager()->persist($guestInfo);
-                }
-
-                if (null === $formEntry) {
-                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
-                    $this->getEntityManager()->persist($formEntry);
-                } else {
-                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                        $this->getEntityManager()->remove($fieldEntry);
-                    }
-                    $this->getEntityManager()->flush();
-                }
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
-
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
-
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
-                }
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -491,33 +341,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
 
-                if ($group) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $formSpecification->getId(),
-                        )
-                    );
-                }
+                $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification);
 
                 return new ViewModel();
             } else {
@@ -529,7 +353,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'specification'   => $formSpecification,
                 'form'            => $form,
-                'occupiedSlots'   => $occupiedSlots,
                 'doodleNotValid'  => $notValid,
                 'formEntry'       => $formEntry,
                 'group'           => $group,
@@ -596,16 +419,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
 
-        $occupiedSlots = array();
-        foreach($formEntries as $formEntry) {
-            if ($formEntry->getCreationPerson() == $person)
-                continue;
-
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
-            }
-        }
-
+        $formEntry = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
@@ -615,12 +429,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $formEntry = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            if ($guestInfo) {
+                $formEntry = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findOneByFormAndGuestInfo($formSpecification, $guestInfo);
+            }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry, $occupiedSlots);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
         if (isset($guestInfo))
             $form->populateFromGuestInfo($guestInfo);
 
@@ -630,55 +446,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                if ($person === null && $guestInfo == null) {
-                    $guestInfo = new GuestInfo(
-                        $this->getEntityManager(),
-                        $formData['first_name'],
-                        $formData['last_name'],
-                        $formData['email']
-                    );
-                    $this->getEntityManager()->persist($guestInfo);
-                }
-
-                if (null === $formEntry) {
-                    $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
-                    $this->getEntityManager()->persist($formEntry);
-                } else {
-                    foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                        $this->getEntityManager()->remove($fieldEntry);
-                    }
-                    $this->getEntityManager()->flush();
-                }
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-
-                if ($formSpecification->hasMail()) {
-                    $mailAddress = $formSpecification->getMail()->getFrom();
-
-                    $mail = new Message();
-                    $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $this->getLanguage()))
-                        ->setFrom($mailAddress)
-                        ->setSubject($formSpecification->getMail()->getSubject())
-                        ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                    if ($formSpecification->getMail()->getBcc())
-                        $mail->addBcc($mailAddress);
-
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
-                }
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
 
                 return new ViewModel(
                     array(
@@ -759,6 +527,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
+
+                return new ViewModel();
             }
         }
 
@@ -774,9 +544,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
 
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            if ($guestInfo) {
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            }
         }
 
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
@@ -787,112 +559,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid() || isset($formData['save_as_draft'])) {
-                if ($entry->isGuestEntry()) {
-                    $entry->getGuestInfo()
-                        ->setFirstName($formData['first_name'])
-                        ->setLastName($formData['last_name'])
-                        ->setEmail($formData['email']);
-                }
-
                 $formData = $form->getFormData($formData);
 
-                $entry->setDraft(isset($formData['save_as_draft']));
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
 
-                foreach ($entry->getForm()->getFields() as $field) {
-                    $value = $formData['field-' . $field->getId()];
-
-                    $fieldEntry = $this->getEntityManager()
-                        ->getRepository('FormBundle\Entity\Entry')
-                        ->findOneByFormEntryAndField($entry, $field);
-                    $removed = false;
-
-                    if ($field instanceof FileField) {
-                        $filePath = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('form.file_upload_path');
-
-                        if (isset($formData['field-' . $field->getId() . '-removed'])) {
-                            $removed = true;
-
-                            if (isset($fieldEntry)) {
-                                if (file_exists($filePath . '/' . $fieldEntry->getValue()))
-                                    unlink($filePath . '/' . $fieldEntry->getValue());
-
-                                $this->getEntityManager()->remove($fieldEntry);
-                            }
-                        } else {
-                            $upload = new FileUpload();
-                            $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                            if ($upload->isValid('field-' . $field->getId())) {
-                                if (null === $fieldEntry || $fieldEntry->getValue() == '') {
-                                    $fileName = '';
-                                    do{
-                                        $fileName = sha1(uniqid());
-                                    } while (file_exists($filePath . '/' . $fileName));
-                                } else {
-                                    $fileName = $fieldEntry->getValue();
-                                    if (file_exists($filePath . '/' . $fileName))
-                                        unlink($filePath . '/' . $fileName);
-                                }
-
-                                if (file_exists($filePath . '/' . $fileName))
-                                    unlink($filePath . '/' . $fileName);
-                                $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                                $upload->receive('field-' . $field->getId());
-
-                                $value = $fileName;
-                            }
-
-                            $errors = $upload->getMessages();
-
-                            if (isset($errors['fileUploadErrorNoFile']))
-                                unset($errors['fileUploadErrorNoFile']);
-
-                            if (sizeof($errors) > 0) {
-                                $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                                return new ViewModel(
-                                    array(
-                                        'specification' => $entry->getForm(),
-                                        'form'          => $form,
-                                    )
-                                );
-                            } elseif ($value == '') {
-                                $value = $fieldEntry->getValue();
-                            }
-                        }
-                    }
-
-                    if (!$removed) {
-                        if ($fieldEntry) {
-                            $fieldEntry->setValue($value);
-                        } else {
-                            $fieldEntry = new FieldEntry($entry, $field, $value);
-                            $entry->addFieldEntry($fieldEntry);
-                            $this->getEntityManager()->persist($fieldEntry);
-                        }
-                    }
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $formSpecification,
+                            'form'          => $form,
+                        )
+                    );
                 }
 
-                $this->getEntityManager()->flush();
-
                 if (!isset($formData['save_as_draft'])) {
-                    if ($entry->getForm()->hasMail()) {
-                        $mailAddress = $entry->getForm()->getMail()->getFrom();
-
-                        $mail = new Message();
-                        $mail->setBody($entry->getForm()->getCompletedMailBody($entry, $this->getLanguage()))
-                            ->setFrom($mailAddress)
-                            ->setSubject($entry->getForm()->getMail()->getSubject())
-                            ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName());
-
-                        if ($entry->getForm()->getMail()->getBcc())
-                            $mail->addBcc($mailAddress);
-
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-                    }
-
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                             FlashMessage::SUCCESS,
@@ -910,33 +590,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                if ($group && !isset($formData['save_as_draft'])) {
-                    if ($progressBarInfo['next_form'] == 0) {
-                        $this->redirect()->toRoute(
-                            'form_group',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $group->getId(),
-                            )
-                        );
-                    } else {
-                        $this->redirect()->toRoute(
-                            'form_view',
-                            array(
-                                'action'   => 'view',
-                                'id'       => $progressBarInfo['next_form'],
-                            )
-                        );
-                    }
-                } else {
-                    $this->redirect()->toRoute(
-                        'form_view',
-                        array(
-                            'action'   => 'view',
-                            'id'       => $entry->getForm()->getId(),
-                        )
-                    );
-                }
+                $this->_redirectFormComplete($group, $progressBarInfo, $entry->getForm(), isset($formData['save_as_draft']));
 
                 return new ViewModel();
             }
@@ -1151,5 +805,36 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $data;
+    }
+
+    private function _redirectFormComplete(Group $group, $progressBarInfo, Form $formSpecification, $draft = false)
+    {
+        if ($group && !$draft) {
+            if ($progressBarInfo['next_form'] == 0) {
+                $this->redirect()->toRoute(
+                    'form_group',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $group->getId(),
+                    )
+                );
+            } else {
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $progressBarInfo['next_form'],
+                    )
+                );
+            }
+        } else {
+            $this->redirect()->toRoute(
+                'form_view',
+                array(
+                    'action'   => 'view',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+        }
     }
 }

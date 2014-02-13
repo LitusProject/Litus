@@ -46,7 +46,6 @@ class Round extends EntityRepository
             ->where(
                 $query->expr()->eq('r.quiz', ':quiz')
             )
-            ->orderBy('r.order', 'DESC')
             ->setParameter('quiz', $quiz)
             ->getQuery()
             ->getSingleScalarResult();

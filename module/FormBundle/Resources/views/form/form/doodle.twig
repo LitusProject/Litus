@@ -44,7 +44,14 @@
         {% do form.prepare() %}
         {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
             {{ formElement(form.get('csrf')) }}
+            {% import 'site/partials/form.twig' as forms %}
+            {% if authenticatedPerson is null %}
+                {{ forms.renderOther(form.get('first_name')) }}
+                {{ forms.renderOther(form.get('last_name')) }}
+                {{ forms.renderOther(form.get('email')) }}
+            {% endif %}
             <table class="table table-bordered table-striped" id="doodle">
+<<<<<<< HEAD
                 <thead>
                     <tr>
                         <th>{{ translate('Date') }}</th>
@@ -126,7 +133,9 @@
 
                         toggleButton($(this), checkbox, !checkbox.is(':checked'));
 
+                        {% if authenticatedPerson is not null %}
                         saveRegistration();
+                        {% endif %}
                     })
                 );
 
@@ -146,6 +155,7 @@
             }
         }
 
+        {% if authenticatedPerson is not null %}
         function saveRegistration() {
             var data = {};
             $('#doodle input[type=checkbox]').each(function () {
@@ -174,5 +184,6 @@
                 $('#entry_saved_error').addClass('in');
             });
         }
+        {% endif %}
     </script>
 {% endblock %}

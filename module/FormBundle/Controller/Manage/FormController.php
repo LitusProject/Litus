@@ -21,6 +21,8 @@ namespace FormBundle\Controller\Manage;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    FormBundle\Component\Form\Form as FormHelper,
+    FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
@@ -167,74 +169,16 @@ class FormController extends \FormBundle\Component\Controller\FormController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                foreach ($formSpecification->getFields() as $field) {
-                    $value = $formData['field-' . $field->getId()];
+                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager());
 
-                    $fieldEntry = $this->getEntityManager()
-                        ->getRepository('FormBundle\Entity\Entry')
-                        ->findOneByFormEntryAndField($formEntry, $field);
-                    $removed = false;
-
-                    if (isset($formData['field-' . $field->getId() . '-removed'])) {
-                        $removed = true;
-
-                        if (isset($fieldEntry)) {
-                            if (file_exists($filePath . '/' . $fieldEntry->getValue()))
-                                unlink($filePath . '/' . $fieldEntry->getValue());
-
-                            $this->getEntityManager()->remove($fieldEntry);
-                        }
-                    } else {
-                        if ($field instanceof FileField) {
-                            $filePath = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('form.file_upload_path');
-
-                            $upload = new FileUpload();
-                            $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
-                            if ($upload->isValid('field-' . $field->getId())) {
-                                if (null === $fieldEntry || $fieldEntry->getValue() == '') {
-                                    $fileName = '';
-                                    do{
-                                        $fileName = sha1(uniqid());
-                                    } while (file_exists($filePath . '/' . $fileName));
-                                } else {
-                                    $fileName = $fieldEntry->getValue();
-                                    if (file_exists($filePath . '/' . $fileName))
-                                        unlink($filePath . '/' . $fileName);
-                                }
-
-                                $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                                $upload->receive('field-' . $field->getId());
-
-                                $value = $fileName;
-                            } elseif (!(sizeof($upload->getMessages()) == 1 && isset($upload->getMessages()['fileUploadErrorNoFile']))) {
-                                $form->setMessages(array('field-' . $field->getId() => $upload->getMessages()));
-
-                                return new ViewModel(
-                                    array(
-                                        'specification' => $entry->getForm(),
-                                        'form'          => $form,
-                                    )
-                                );
-                            } else {
-                                $value = $fieldEntry->getValue();
-                            }
-                        }
-                    }
-
-                    if (!$removed) {
-                        if ($fieldEntry) {
-                            $fieldEntry->setValue($value);
-                        } else {
-                            $fieldEntry = new FieldEntry($entry, $field, $value);
-                            $entry->addFieldEntry($fieldEntry);
-                            $this->getEntityManager()->persist($fieldEntry);
-                        }
-                    }
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $entry->getForm(),
+                            'form'          => $form,
+                        )
+                    );
                 }
-
-                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -316,18 +260,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($formSpecification);
 
-        $occupiedSlots = array();
-        foreach($formEntries as $entry) {
-            if ($entry->getCreationPerson() == $formEntry->getCreationPerson())
-                continue;
-
-            foreach($entry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $entry->getPersonInfo()->getFullName();
-            }
-        }
-
         $notValid = false;
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, $occupiedSlots, true);
+        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -335,24 +269,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-
-                foreach($formEntry->getFieldEntries() as $fieldEntry) {
-                    $this->getEntityManager()->remove($fieldEntry);
-                }
-                $this->getEntityManager()->flush();
-
-                foreach ($formSpecification->getFields() as $field) {
-                    if (isset($formData['field-' . $field->getId()]) && $formData['field-' . $field->getId()]) {
-                        $fieldEntry = new FieldEntry($formEntry, $field, '1');
-                        $formEntry->addFieldEntry($fieldEntry);
-                        $this->getEntityManager()->persist($fieldEntry);
-
-                        if (!$formSpecification->isMultiple())
-                            break;
-                    }
-                }
-
-                $this->getEntityManager()->flush();
+                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -381,7 +298,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'formEntry'         => $formEntry,
                 'formSpecification' => $formSpecification,
                 'form'              => $form,
-                'occupiedSlots'     => $occupiedSlots,
                 'doodleNotValid'    => $notValid,
             )
         );
