@@ -124,24 +124,20 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'link',
                         array(),
-                        $serverName
+                        $serverName . $this->url()->fromRoute(
+                            'news',
+                            array(
+                                'feed',
+                            )
+                        )
                     ),
                 )
             ),
         );
 
-        $formatter = new IntlDateFormatter(
-            $this->getTranslator()->getLocale(),
-            IntlDateFormatter::NONE,
-            IntlDateFormatter::NONE,
-            date_default_timezone_get(),
-            IntlDateFormatter::GREGORIAN,
-            'E, d MMMM yyyy H:mm:ss'
-        );
-
         $news = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findAll(100);
+            ->findAllSite();
 
         foreach($news as $item) {
             $data[] = new XmlObject(
@@ -172,12 +168,18 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     new XmlObject(
                         'guid',
                         array(),
-                        $item->getName($this->getLanguage())
+                        $serverName . $this->url()->fromRoute(
+                            'news',
+                            array(
+                                'action' => 'view',
+                                'name' => $item->getName($this->getLanguage()),
+                            )
+                        )
                     ),
                     new XmlObject(
-                        'pubdate',
+                        'pubDate',
                         array(),
-                        $formatter->format($item->getCreationTime())
+                        $item->getCreationTime()->format('D, d M Y H:i:s O')
                     ),
                 )
             );
@@ -185,15 +187,22 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
 
         $feed = new XmlObject(
-            'channel',
-            array(),
-            $data
+            'rss',
+            array(
+                'version' => '2.0',
+            ),
+            array(
+                new XmlObject(
+                    'channel',
+                    array(),
+                    $data
+                ),
+            )
         );
 
         return new ViewModel(
             array(
-                'header' => '<?xml version="1.0" encoding="ISO-8859-1"?>
-<rss version="2.0">',
+                'header' => '<?xml version="1.0" encoding="ISO-8859-1"?>',
                 'feed' => $feed,
             )
         );
