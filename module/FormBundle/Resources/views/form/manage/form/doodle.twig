@@ -62,7 +62,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if occupiedSlots[field.getId()] %}
+                            {% if form.getOccupiedSlots()[field.getId()] %}
                                 {% if formSpecification.getNamesVisibleForOthers() %}
                                     <i>{{ occupiedSlots[field.getId()] }}</i>
                                 {% else %}

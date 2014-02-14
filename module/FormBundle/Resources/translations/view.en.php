@@ -33,6 +33,7 @@ return array(
     'Submission Date' => 'Submission Date',
     'Actions' => 'Actions',
     'Edit' => 'Edit',
+    'Occupied' => 'Occupied',
 
     'Please submit these forms in order.' => 'Please submit these forms in order.',
     'This form group is currently closed.' => 'This form group is currently closed.',
