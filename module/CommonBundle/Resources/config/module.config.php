@@ -289,7 +289,10 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'translator' => 'CommonBundle\Component\I18n\TranslatorServiceFactory',
+            'translator' => function ($serviceManager) {
+                $config = $serviceManager->get('Config');
+                return new \Zend\Mvc\I18n\Translator($config['translator']);
+            },
 
             'authentication' => function ($serviceManager) {
                 return new \CommonBundle\Component\Authentication\Authentication(
