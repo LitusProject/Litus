@@ -338,36 +338,21 @@ return array(
         ),
     ),
     'translator' => array(
-        'translation_files' => array(
+        'translation_file_patterns' => array(
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.en.php',
-                'locale'   => 'en'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern' => 'site.%s.php',
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.nl.php',
-                'locale'   => 'nl'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'countries.%s.php',
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/countries.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/countries.nl.php',
-                'locale'   => 'nl'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => './vendor/zendframework/zendframework/resources/languages/en/Zend_Validate.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => './vendor/zendframework/zendframework/resources/languages/nl/Zend_Validate.php',
-                'locale'   => 'nl'
+                'base_dir' => './vendor/zendframework/zendframework/resources/languages',
+                'pattern'  => '%s/Zend_Validate.php',
             ),
         ),
     ),

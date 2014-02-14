@@ -107,16 +107,11 @@ return array(
         ),
     ),
     'translator' => array(
-        'translation_files' => array(
+        'translation_file_patterns' => array(
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/run.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/run.nl.php',
-                'locale'   => 'nl'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'run.%s.php',
             ),
         ),
     ),

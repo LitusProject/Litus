@@ -798,36 +798,21 @@ return array(
         ),
     ),
     'translator' => array(
-        'translation_files' => array(
+        'translation_file_patterns' => array(
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/supplier.en.php',
-                'locale'   => 'en'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'site.%s.php',
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/supplier.nl.php',
-                'locale'   => 'nl'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'supplier.%s.php',
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/site.nl.php',
-                'locale'   => 'nl'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/prof.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/prof.nl.php',
-                'locale'   => 'nl'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'prof.%s.php',
             ),
         ),
     ),

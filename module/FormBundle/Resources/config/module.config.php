@@ -237,26 +237,16 @@ return array(
         ),
     ),
     'translator' => array(
-        'translation_files' => array(
+        'translation_file_patterns' => array(
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/manage.en.php',
-                'locale'   => 'en'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'manage.%s.php',
             ),
             array(
                 'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/manage.nl.php',
-                'locale'   => 'nl'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/view.en.php',
-                'locale'   => 'en'
-            ),
-            array(
-                'type'     => 'phparray',
-                'filename' => __DIR__ . '/../translations/view.nl.php',
-                'locale'   => 'nl'
+                'base_dir' => __DIR__ . '/../translations',
+                'pattern'  => 'view.%s.php',
             ),
         ),
     ),
