@@ -8,7 +8,7 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-        {% if piwik is not null and visitsGraph['dataset']|length > 1 %}
+        {% if piwik is not null and piwik['visitsGraph']['dataset']|length > 1 %}
             <h1>Visits Summary</h1>
             <div class="chart">
                 <canvas id="visitsGraph" width="988" height="125"></canvas>
