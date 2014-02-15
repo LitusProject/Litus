@@ -73,7 +73,7 @@ class LeaseController extends LogisticsController
         if(!($item = $this->_getItem($this->getRequest()->getQuery('barcode'))))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromAuery(
+        $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findByItemQuery($item),

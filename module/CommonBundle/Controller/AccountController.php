@@ -28,6 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
+    CommonBundle\Form\Account\Profile as ProfileForm,
     CudiBundle\Entity\Sale\Booking,
     DateTime,
     Imagick,
@@ -91,15 +92,27 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         foreach($subjects as $enrollment)
             $subjectIds[] = $enrollment->getSubject()->getId();
 
+        $profileForm = new ProfileForm();
+        $profileForm->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'common_account',
+                array(
+                    'action' => 'uploadProfileImage',
+                )
+            )
+        );
+
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
                 'metaData' => $metaData,
                 'studies' => $mappings,
                 'subjects' => $subjectIds,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'profileForm' => $profileForm,
             )
         );
     }
@@ -175,11 +188,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
             $form->setData($formData);
 
-            $upload = new FileUpload(array('ignoreNoFile' => true));
-            $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-            $upload->addValidator(new ImageValidator());
-
-            if ($form->isValid() && $upload->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
@@ -237,7 +246,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $academic->addUniversityStatus($status);
                 }
 
-                $this->_uploadProfileImage($upload, $academic);
                 if (isset($formData['organization'])) {
                     if (0 == $formData['organization'] && $enableOtherOrganization) {
                         $organization = null;
@@ -383,8 +391,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->_doRedirect();
 
                 return new ViewModel();
-            } else {
-                $form->get('personal')->get('profile')->setMessages($upload->getMessages());
             }
         }
 
@@ -574,6 +580,105 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
+    public function uploadProfileImageAction()
+    {
+        $form = new ProfileForm();
+
+        $upload = new FileUpload();
+        $upload->addValidator(new SizeValidator(array('max' => '3MB')));
+        $upload->addValidator(new ImageValidator());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            $academic = $this->getAuthentication()->getPersonObject();
+            $filePath = 'public' . $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.profile_path');
+
+            if ($form->isValid()) {
+                if ($upload->isValid()) {
+                    if ($upload->isUploaded()) {
+                        $upload->receive();
+
+                        $image = new Imagick($upload->getFileName());
+                        unlink($upload->getFileName());
+                    }
+                } else {
+                    $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
+                }
+
+                if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
+                    $image->cropThumbnailImage(320, 240);
+                } else {
+                    $ratio = $image->getImageWidth()/320;
+                    $x = $formData['x']*$ratio;
+                    $y = $formData['y']*$ratio;
+                    $x2 = $formData['x2']*$ratio;
+                    $y2 = $formData['y2']*$ratio;
+                    $w = $formData['w']*$ratio;
+                    $h = $formData['h']*$ratio;
+
+                    $image->cropImage($w, $h, $x, $y);
+                    $image->cropThumbnailImage(320, 240);
+                }
+
+                if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
+                    $fileName = $academic->getPhotoPath();
+                } else {
+                    $fileName = '';
+                    do{
+                        $fileName = sha1(uniqid());
+                    } while (file_exists($filePath . '/' . $fileName));
+                }
+                $image->writeImage($filePath . '/' . $fileName);
+                $academic->setPhotoPath($fileName);
+
+                $this->getEntityManager()->flush();
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'success',
+                            'profile' => $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('common.profile_path') . '/' . $fileName,
+                        ),
+                    )
+                );
+            } else {
+                $errors = $form->getMessages();
+                $formErrors = array();
+
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
+
+                if (sizeof($upload->getMessages()) > 0)
+                    $formErrors['profile'] = $upload->getMessages();
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'status' => 'error',
+                            'form' => array(
+                                'errors' => $formErrors
+                            ),
+                        ),
+                    )
+                );
+            }
+        }
+    }
+
     private function _getUser()
     {
         if (null === $this->getParam('code')) {
@@ -624,32 +729,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $this->redirect()->toRoute(
                 $this->getParam('return')
             );
-        }
-    }
-
-    private function _uploadProfileImage(FileUpload $upload, Academic $academic)
-    {
-        $filePath = 'public' . $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.profile_path');
-
-        if ($upload->isUploaded()) {
-            $upload->receive();
-
-            $image = new Imagick($upload->getFileName());
-            unlink($upload->getFileName());
-            $image->cropThumbnailImage(320, 240);
-
-            if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
-                $fileName = $academic->getPhotoPath();
-            } else {
-                $fileName = '';
-                do{
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . '/' . $fileName));
-            }
-            $image->writeImage($filePath . '/' . $fileName);
-            $academic->setPhotoPath($fileName);
         }
     }
 }

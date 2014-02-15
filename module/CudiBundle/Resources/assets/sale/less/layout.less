@@ -6,57 +6,57 @@
  * Author: Kristof Mariën <kristof.marien@litus.cc>
  */
 
-header {
-    padding-top: 40px;
-    .verticalGradient(@cSaleDark, @cSaleLight);
-    margin-bottom: 15px;
-
-    h1 {
-        color: @cWhite;
-        text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    }
-
-    .inner {
-        background: transparent url(/_cudi/img/grid-18px.png) top center;
-        padding: 10px 0;
-        .box-shadow(inset 0 10px 30px rgba(0,0,0,.3));
-    }
- }
+body {
+    padding-top: 50px;
+}
 
 .navbar {
-    z-index: 2000;
-
     .brand {
         padding: 3px 20px 5px;
+
+        img {
+            margin-top: 7px;
+        }
     }
- }
+}
+
+header {
+    padding: 10px 15px 20px;
+    #gradient > .vertical(@cSaleDark, @cSaleLight);
+    margin-bottom: 20px;
+
+    h1 {
+        color: #fff;
+    }
+}
 
 footer {
-    margin-top: 45px;
-    padding: 35px 10px 36px;
-    border-top: 1px solid #E5E5E5;
-    color: #555;
+    padding-top: 40px;
+    padding-bottom: 30px;
+    margin-top: 50px;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
 
-    .development_information {
-        float: right;
+.alert {
+    .title {
+        font-weight: bold;
     }
-}
 
-.alert .title {
-    font-weight: bold;
-}
+    &.fade {
+        height: 0;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: hidden;
+        border-width: 0px;
 
-.flashmessage.fade {
-    .transition(all .15s linear);
-    height: 0;
-    margin-bottom: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    overflow: hidden;
-    &.in {
-        height: auto;
-        margin-bottom: 18px;
-        padding-top: 8px;
-        padding-bottom: 8px;
+        &.in {
+            height: auto;
+            margin-bottom: @line-height-computed;
+            padding: @alert-padding;
+            border-width: 1px;
+        }
     }
 }

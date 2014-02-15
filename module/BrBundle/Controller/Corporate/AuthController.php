@@ -63,6 +63,14 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                         )
                     );
                 }
+            } else {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'The given username and password did not match. Please try again.'
+                    )
+                );
             }
         }
 

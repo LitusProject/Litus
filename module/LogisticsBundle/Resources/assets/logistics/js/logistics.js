@@ -248,8 +248,8 @@
                             var list = $('<ul>', {'class': 'errors'});
                             for (var error in data.errors[element])
                                 list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-inline'}).append(list);
-                            $('.popover form').find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                            var div = $('<div>', {'class': 'help-block'}).append(list);
+                            $('.popover form').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
                         }
                     }
                 }
@@ -457,8 +457,8 @@
                             var list = $('<ul>', {'class': 'errors'});
                             for (error in data.errors[element])
                                 list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-inline'}).append(list);
-                            $('.popover form').find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                            var div = $('<div>', {'class': 'help-block'}).append(list);
+                            $('.popover form').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
                         }
                     }
                 }

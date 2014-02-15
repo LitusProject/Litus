@@ -4,7 +4,9 @@
     <div class="page-header">
         {% if hasAccess('calendar', 'export') %}
             <div class="pull-right" style="line-height: 50px">
-                <a href="{{ url('calendar_export') }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
+                <a href="{{ url('calendar_export') }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}
+                </a>
             </div>
         {% endif %}
         <h1>{{ translate('Calendar') }}</h1>

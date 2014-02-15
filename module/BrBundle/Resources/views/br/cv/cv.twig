@@ -1,78 +1,67 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="row-fluid page">
-        <div class="span12">
-            <div class="page-header">
-                <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
-            </div>
-
-            {% if not form %}
-                {% for message in messages %}
-                {% autoescape false %}
-                    {{ translate(message)|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})}) }}
-                {% endautoescape %}
-                {% endfor %}
-            {% else %}
-
-                {% block intro_message %}
-                    {{ translate('The following data from your account will be used in the CV Book:') }}
-                {% endblock %}
-
-                <dl class="dl-horizontal wide">
-                    <dt>{{ translate('Name') }}</dt>
-                    <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
-                    <dt>{{ translate('Birthday') }}</dt>
-                    <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
-                    <dt>{{ translate('Sex') }}</dt>
-                    <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
-                    <dt>{{ translate('Phone Number') }}</dt>
-                    <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-                    <dt>{{ translate('E-mail') }}</dt>
-                    <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-                    <dt>{{ translate('Secondary Address&mdash;Home') }}</dt>
-                    <dd>
-                        {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
-                        {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
-                            / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
-                        {% endif %}<br>
-                        {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
-                        {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
-                    </dd>
-                    <dt>{{ translate('Profile Picture') }}</dt>
-                    <dd>
-                        <img width="200" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt=""/>
-                    </dd>
-                </dl>
-
-                <strong>
-
-                    <p>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.')}}</p>
-
-                    <p>{{ translate('You are advised to use your mother tongue for your CV.') }}</p>
-                </strong>
-
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(form) }}
-            {% endif %}
-
-
-        </div>
+    <div class="page-header">
+        <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
     </div>
+
+    {% if not form %}
+        {% for message in messages %}
+        {% autoescape false %}
+            {{ translate(message)|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})}) }}
+        {% endautoescape %}
+        {% endfor %}
+    {% else %}
+        {% block intro_message %}
+            {{ translate('The following data from your account will be used in the CV Book:') }}
+        {% endblock %}
+
+        <dl class="dl-horizontal wide">
+            <dt>{{ translate('Name') }}</dt>
+            <dd>{{ authenticatedPerson.getFullName() }}&nbsp;</dd>
+            <dt>{{ translate('Birthday') }}</dt>
+            <dd>{{ dateLocalized(authenticatedPerson.getBirthday(), 'd MMMM y') }}&nbsp;</dd>
+            <dt>{{ translate('Sex') }}</dt>
+            <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
+            <dt>{{ translate('Phone Number') }}</dt>
+            <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
+            <dt>{{ translate('E-mail') }}</dt>
+            <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+            <dt>{{ translate('Secondary Address&mdash;Home') }}</dt>
+            <dd>
+                {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
+                {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
+                    / {{ authenticatedPerson.getSecondaryAddress().getMailbox() }}
+                {% endif %}<br>
+                {{ authenticatedPerson.getSecondaryAddress().getPostal() }} {{ authenticatedPerson.getSecondaryAddress().getCity() }}<br>
+                {{ authenticatedPerson.getSecondaryAddress().getCountry() }}
+            </dd>
+            <dt>{{ translate('Profile Picture') }}</dt>
+            <dd>
+                <img width="200" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt=""/>
+            </dd>
+        </dl>
+
+        <strong>
+            <p>{{ translate('Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.')}}</p>
+
+            <p>{{ translate('You are advised to use your mother tongue for your CV.') }}</p>
+        </strong>
+
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
-
         function addRemoveButton(i) {
-            $('#lang_delete' + i).click(function() {
+            $('#lang_delete' + i).unbind('click').click(function() {
                 $('.lang_control' + i).remove();
             });
         }
 
         $(document).ready(function() {
-
             {% if languageError %}
                 $('#language_add').after('\
                     <div class="help-block" style="margin-left:221px;">\
@@ -85,61 +74,48 @@
             // Add delete buttons to existing language fields
             var count = parseInt($('#lang_count').val());
             for (i = 1; i < count; i++) {
-                $('#lang_name' + i).after('\
-                    <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">Remove Language</button>'
+                $('#lang_name' + i).after(
+                    $('<button>', {'type': 'button', 'id': 'lang_delete' + i, 'class': 'btn btn-danger'}).html('{{ translate("Remove Language") }}')
                 );
 
-                $('#lang_name' + i).parent().parent().parent().addClass('lang_control' + i);
-                $('#lang_oral' + i).parent().parent().parent().addClass('lang_control' + i);
-                $('#lang_written' + i).parent().parent().parent().addClass('lang_control' + i);
+                $('#lang_name' + i).closest('.form-group').addClass('lang_control' + i);
+                $('#lang_oral' + i).closest('.form-group').addClass('lang_control' + i);
+                $('#lang_written' + i).closest('.form-group').addClass('lang_control' + i);
 
                 addRemoveButton(i);
             }
 
             $('#language_add').click(function() {
-
                 var i = parseInt($('#lang_count').val());
 
-                $('#language_add').before('\
-                    <div class="control-group lang_control' + i + '">\
-                        <label class="control-label" for="lang_name' + i + '">\
-                            {{ translate("Language") }}\
-                        </label>\
-                        <div class="controls">\
-                            <div>\
-                                <input type="text" class"count" data-count=30 name="lang_name' + i + '" id="lang_name' + i + '" value=""/>\
-                                <button type="button" id="lang_delete' + i + '" class="btn btn-danger" value="">{{ translate("Remove Language") }}</button>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="control-group lang_control' + i + '">\
-                        <label class="control-label" for="lang_oral' + i + '">\
-                            {{ translate("Oral Skills") }}\
-                        </label>\
-                        <div class="controls">\
-                            <div>\
-                                <select name="lang_oral' + i + '" id="lang_oral' + i + '">\
-                                    {% for key,value in oral_skills %}
-                                        <option value="{{key}}">{{ translate(value) }}</option>\
-                                    {% endfor %}
-                                </select>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="control-group lang_control' + i + '">\
-                        <label class="control-label" for="lang_written' + i + '">\
-                            {{ translate("Written Skills") }}\
-                        </label>\
-                        <div class="controls">\
-                            <div>\
-                                <select name="lang_written' + i + '" id="lang_written' + i + '">\
-                                    {% for key,value in written_skills %}
-                                        <option value="{{key}}">{{ translate(value) }}</option>\
-                                    {% endfor %}
-                                </select>\
-                            </div>\
-                        </div>\
-                    </div>'
+                $('#language_add').before(
+                    $('<div>', {'class': 'form-group lang_control' + i}).append(
+                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_name' + i}).html('{{ translate("Language") }} '),
+                        $('<div>', {'class': 'col-sm-10'}).append(
+                            $('<input>', {'type': 'text', 'name': 'lang_name' + i, 'id': 'lang_name' + i, 'class': 'form-control count', 'required': 'required', 'data-count': '30'}),
+                            $('<button>', {'type': 'button', 'id': 'lang_delete' + i, 'class': 'btn btn-danger'}).html('{{ translate("Remove Language") }}')
+                        )
+                    ),
+                    $('<div>', {'class': 'form-group lang_control' + i}).append(
+                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_oral' + i}).html('{{ translate("Language") }}'),
+                        $('<div>', {'class': 'col-sm-10'}).append(
+                            $('<select>', {'name': 'lang_oral' + i, 'id': 'lang_oral' + i, 'class': 'form-control', 'required': 'required'}).append(
+                                {% for key,value in oral_skills %}
+                                    $('<option>', {'value': '{{key}}'}).html('{{ translate(value) }}'){% if not loop.last %},{% endif %}
+                                {% endfor %}
+                            )
+                        )
+                    ),
+                    $('<div>', {'class': 'form-group lang_control' + i}).append(
+                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_written' + i}).html('{{ translate("Language") }}'),
+                        $('<div>', {'class': 'col-sm-10'}).append(
+                            $('<select>', {'name': 'lang_written' + i, 'id': 'lang_written' + i, 'class': 'form-control', 'required': 'required'}).append(
+                                {% for key,value in written_skills %}
+                                    $('<option>', {'value': '{{key}}'}).html('{{ translate(value) }}'){% if not loop.last %},{% endif %}
+                                {% endfor %}
+                            )
+                        )
+                    )
                 );
 
                 addLabel($('#lang_name' + i));
@@ -150,7 +126,5 @@
             });
 
         });
-
     </script>
-
 {% endblock %}

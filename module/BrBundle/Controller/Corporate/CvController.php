@@ -99,6 +99,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 'academicYear' => $academicYear,
                 'studies' => $result,
                 'onlyArchive' => $onlyArchive,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }

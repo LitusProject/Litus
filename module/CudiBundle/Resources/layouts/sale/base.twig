@@ -1,81 +1,85 @@
 {{ doctype() }}
 
 <html lang="en">
-<head>
-    {{ headMeta() }}
-    {{ headTitle('Sale', 'PREPEND') }}
+    <head>
+        {{ headMeta() }}
+        {{ headTitle('Sale', 'PREPEND') }}
 
-    {{ headLink() }}
-</head>
+        {{ headLink() }}
+    </head>
 
-<body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
-            <ul class="nav">
-                {% if hasAccess('cudi_sale_sale', 'sale') %}
-                    <li {% if 'sale' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("cudi_sale_sale", {"action": "sale", "session": session.getId()}) }}">Sale</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('cudi_sale_sale', 'return') %}
-                    <li {% if 'return' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("cudi_sale_sale", {"action": "return", "session": session.getId()}) }}">Return</a>
-                    </li>
-                {% endif %}
-                {% if not lightVersion %}
-                    {% if hasAccess('cudi_sale_queue', 'overview') %}
-                        <li {% if 'overview' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                            <a href="{{ url("cudi_sale_queue", {"action": "overview", "session": session.getId()}) }}">Queue</a>
-                        </li>
-                    {% endif %}
-                    {% if hasAccess('cudi_sale_queue', 'screen') %}
-                        <li {% if 'screen' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                            <a href="{{ url("cudi_sale_queue", {"action": "screen", "session": session.getId()}) }}">Queue Screen</a>
-                        </li>
-                    {% endif %}
-                    {% if hasAccess('cudi_sale_queue', 'signin') %}
-                        <li {% if 'signin' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
-                            <a href="{{ url("cudi_sale_queue", {"action": "signin", "session": session.getId()}) }}">Queue Sign In</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<header>
-    <div class="inner">
-        <div class="container">
-            <h1>Sale</h1>
-        </div>
-    </div>
-</header>
-
-<div class="container">
-    {% include 'sale/partials/flashMessenger.twig' %}
-
-    <div id="content_controller">
-        {% if invalidSession %}
-            <div class="flashmessage alert alert-error fade in">
-                Invalid Sale Session
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        {% if hasAccess('cudi_sale_sale', 'sale') %}
+                            <li {% if 'sale' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("cudi_sale_sale", {"action": "sale", "session": session.getId()}) }}">Sale</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('cudi_sale_sale', 'return') %}
+                            <li {% if 'return' == getParam('action') and 'cudi_sale_sale' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("cudi_sale_sale", {"action": "return", "session": session.getId()}) }}">Return</a>
+                            </li>
+                        {% endif %}
+                        {% if not lightVersion %}
+                            {% if hasAccess('cudi_sale_queue', 'overview') %}
+                                <li {% if 'overview' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("cudi_sale_queue", {"action": "overview", "session": session.getId()}) }}">Queue</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('cudi_sale_queue', 'screen') %}
+                                <li {% if 'screen' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("cudi_sale_queue", {"action": "screen", "session": session.getId()}) }}">Queue Screen</a>
+                                </li>
+                            {% endif %}
+                            {% if hasAccess('cudi_sale_queue', 'signin') %}
+                                <li {% if 'signin' == getParam('action') and 'cudi_sale_queue' == getParam('controller') %} class="active" {% endif %}>
+                                    <a href="{{ url("cudi_sale_queue", {"action": "signin", "session": session.getId()}) }}">Queue Sign In</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-        {% else %}
-            {% block content %} {% endblock %}
-        {% endif %}
-    </div>
+        </nav>
 
-    <footer>
-        Litus CuDi | Code by <a href="http://litus.cc">Litus</a>
-    </footer>
-</div>
+        <header>
+            <div class="container">
+                <h1>Sale</h1>
+            </div>
+        </header>
 
-{{ inlineScript() }}
+        <div class="container">
+            {% include 'sale/partials/flashMessenger.twig' %}
 
-{% block content_script %} {% endblock %}
+            <div id="content_controller">
+                {% if invalidSession %}
+                    <div class="flashmessage alert alert-danger fade in">
+                        Invalid Sale Session
+                    </div>
+                {% else %}
+                    {% block content %} {% endblock %}
+                {% endif %}
+            </div>
+        </div>
 
-</body>
+        <footer>
+            Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+        </footer>
+
+        {{ inlineScript() }}
+
+        {% block content_script %} {% endblock %}
+    </body>
 </html>

@@ -62,7 +62,6 @@
     }
 
     function _show(options, schedule) {
-
         var hourWidth = options.timelineWidth / ( options.endHour - options.startHour );
 
         for (var i = 0 ; i < 5 ; i++) {

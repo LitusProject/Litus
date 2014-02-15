@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="flashmessage alert alert-success fade" id="added_success">
-        <a class="close" data-dismiss="alert">&times;</a>
+        <a class="close">&times;</a>
         {{ translate('You have been succesfully added to the queue.') }}
     </div>
 
@@ -11,10 +11,10 @@
     </div>
 
     <div class="row">
-        <div class="span3 columns justify">
+        <div class="col-md-3 justify">
             <p>{{ translate('When you want to run a lap, you should first fill out this form and you will then be added to the runner queue.') }}</p>
         </div>
-        <div class="span9 columns">
+        <div class="col-md-9">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         </div>

@@ -4,33 +4,61 @@
     {% if authenticatedPerson is not null %}
         <h2>{{ formSpecification.getTitle(language) }}</h2>
 
-        <dl class='dl-horizontal'>
-            <dt>{{ translate('ID') }}</dt>
-            <dd>{{ entry.getId() }}</dd>
-            <dt>{{ translate('Name') }}</dt>
-            <dd>{{ entry.getPersonInfo().getFullName() }}</dd>
-            <dt>{{ translate('Guest') }}</dt>
-            <dd>{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ translate('ID') }}</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{ entry.getId() }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ translate('Name') }}</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{ entry.getPersonInfo().getFullName() }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ translate('Guest') }}</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{% if entry.isGuestEntry() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</p>
+                </div>
+            </div>
             {% if not entry.isGuestEntry() %}
-                <dt>{{ translate('Phone Number') }}</dt>
-                <dd>{{ entry.getPersonInfo().getPhoneNumber() }}&nbsp;</dd>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ translate('Phone Number') }}</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{ entry.getPersonInfo().getPhoneNumber() }}</p>
+                    </div>
+                </div>
                 {% if entry.getPersonInfo().getAddress() %}
-                <dt>{{ translate('Address') }}</dt>
-                    <dd>
-                        <address>
-                          {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
-                          {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}<br>
-                        </address>
-                    </dd>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ translate('Address') }}</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">
+                                <address>
+                                    {{ entry.getPersonInfo().getAddress().getStreet() }} {{ entry.getPersonInfo().getAddress().getNumber() }}<br>
+                                    {{ entry.getPersonInfo().getAddress().getCountry() }}-{{ entry.getPersonInfo().getAddress().getPostal() }} {{ entry.getPersonInfo().getAddress().getCity() }}
+                                </address>
+                            </p>
+                        </div>
+                    </div>
                 {% endif %}
             {% endif %}
-            <dt>{{ translate('Submitted') }}</dt>
-            <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{ translate('Submitted') }}</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</p>
+                </div>
+            </div>
             {% if viewer.isMail() %}
-                <dt>{{ translate('Email') }}</dt>
-                <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ translate('Email') }}</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{ entry.getPersonInfo().getEmail() }}</p>
+                    </div>
+                </div>
             {% endif %}
-        </dl>
+        </div>
 
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
@@ -48,9 +76,18 @@
         $(document).ready(function () {
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
-                    $(this).closest('.fileupload').append(
-                        $('<button>', {'class': 'btn btn-mini'}).html('{{ translate('Download') }}').downloadFile(
-                            '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                    $(this).closest('.fileinput').append(
+                        $('<div>', {'class': 'fileActions'}).append(
+                            $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
+                                '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
+                            ), ' ',
+                            $('<button>', {'class': 'btn btn-xs btn-danger'}).html('{{ translate('Remove') }}').click(function (e) {
+                                e.preventDefault();
+                                $(this).closest('.fileinput').append(
+                                    $('<input>', {'type': 'hidden', 'name': $(this).closest('.fileinput').find('input[type="file"]').attr('id') + '-removed'}).val(1)
+                                );
+                                $(this).closest('.fileActions').remove();
+                            })
                         )
                     );
                 }
@@ -60,13 +97,13 @@
             form.find('input, select').each(function () {
                 var $this = $(this);
                 if ($this.data('visible_if_element') !== undefined) {
-                    $this.closest('.control-group').hide();
+                    $this.closest('.form-group').hide();
                     form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
                         if ($(this).attr('type') == 'text') {
                             if ($(this).val() !== '') {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
@@ -76,17 +113,17 @@
                                     || (!$(this).is(':checked') && $this.data('visible_if_value') == '0')
                                 && $(this).is(':visible')
                             ) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');
                         } else if ($(this).is('select')) {
                             if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
-                                $this.closest('.control-group').show();
+                                $this.closest('.form-group').show();
                             } else {
-                                $this.closest('.control-group').hide();
+                                $this.closest('.form-group').hide();
                                 resetElement($this);
                             }
                             $this.trigger('change');

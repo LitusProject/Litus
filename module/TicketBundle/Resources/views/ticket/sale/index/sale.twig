@@ -5,27 +5,31 @@
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
 
-    <div id="saleConfirmModal" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Sale Confirmation') }}</h3>
-        </div>
-        <div class="modal-body">
-            <div class="flashmessage alert alert-error fade" id="sale_invalid">
-                <div class="content">
-                    {{ translate('The form is not valid.') }}
+    <div id="saleConfirmModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Sale Confirmation') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="flashmessage alert alert-danger fade" id="sale_invalid">
+                        <div class="content">
+                            {{ translate('The form is not valid.') }}
+                        </div>
+                    </div>
+                    <p>
+                        {% autoescape false %}{{ translate('You are going to sell <span class="numberTickets"></span> tickets.') }}{% endautoescape %}
+                    </p>
+                    <p>
+                        {% autoescape false %}{{ translate('Price: <b class="price"></b>') }}{% endautoescape %}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="sale_confirm">{{ translate('Sale') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Cancel') }}</button>
                 </div>
             </div>
-            <p>
-                {% autoescape false %}{{ translate('You are going to sell <span class="numberTickets"></span> tickets.') }}{% endautoescape %}
-            </p>
-            <p>
-                {% autoescape false %}{{ translate('Price: <b class="price"></b>') }}{% endautoescape %}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
-            <button class="btn btn-success" id="sale_confirm">{{ translate('Sale') }}</button>
         </div>
     </div>
 {% endblock %}
@@ -84,18 +88,18 @@
                         if (data.status == 'success') {
                             $('#sale_invalid').removeClass('in');
                             $('#sale_confirm').removeClass('disabled').prop('disabled', false);
-                            $('.control-group').removeClass('error');
-                            $('div.help-inline').remove();
+                            $('.form-group').removeClass('has-error');
+                            $('div.help-block').remove();
                         } else {
                             $('#sale_invalid').addClass('in');
-                            $('div.help-inline').remove();
-                            $('.control-group').removeClass('error');
+                            $('div.help-block').remove();
+                            $('.form-group').removeClass('has-error');
                             for(element in data.errors) {
                                 var list = $('<ul>', {'class': 'errors'});
                                 for (error in data.errors[element])
                                     list.append($('<li>').html(data.errors[element][error]));
-                                var div = $('<div>', {'class': 'help-inline'}).append(list);
-                                $('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                                var div = $('<div>', {'class': 'help-block'}).append(list);
+                                $('#' + element).closest('.form-group').addClass('has-error').find('input').after(div);
                             }
                         }
                     },

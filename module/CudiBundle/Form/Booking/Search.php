@@ -35,10 +35,10 @@ class Search extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct($name = null)
     {
         parent::__construct($name);
+        $this->setAttribute('class', 'form-horizontal pull-right col-md-10');
 
         $field = new Text('search_string');
         $field->setLabel('Search String')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xxlarge')
             ->setAttribute('pattern', '.{3}.*')
             ->setRequired();
         $this->add($field);

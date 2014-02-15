@@ -7,12 +7,8 @@
 
     <h3>{{ news.getTitle(language) }}</h3>
 
-    <div class="item">
-        <span class="date left">{{ dateLocalized(news.getCreationTime(), 'd MMM') }}</span>
-        <blockquote>
-            {% autoescape false %}
-                {{ hideEmail(markdown(news.getContent(language))) }}
-            {% endautoescape %}
-        </blockquote>
+    <div class="item date-left">
+        <h4 class="date left">{{ dateLocalized(news.getCreationTime(), 'd MMM') }}</h4>
+        <blockquote>{{ hideEmail(markdown(news.getContent(language)))|raw }}</blockquote>
     </div>
 {% endblock %}
