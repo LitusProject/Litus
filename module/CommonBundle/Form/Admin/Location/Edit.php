@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\General\Location,
+use CommonBundle\Entity\General\Location,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -40,21 +38,9 @@ class Edit extends \CommonBundle\Form\Admin\Location\Add
     {
         parent::__construct($name);
 
-        $geographical = new Collection('greographical');
-        $geographical->setLabel('Geographical');
-        $this->add($geographical);
+        $this->remove('add');
 
-        $field = new Text('latitude');
-        $field->setLabel('Latitude')
-            ->setRequired();
-        $geographical->add($field);
-
-        $field = new Text('longitude');
-        $field->setLabel('Longitude')
-            ->setRequired();
-        $geographical->add($field);
-
-        $field = new Submit('submit');
+        $field = new Submit('edit');
         $field->setValue('Save')
             ->setAttribute('class', 'location_edit');
         $this->add($field);
