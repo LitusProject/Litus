@@ -199,6 +199,10 @@ footer {
     .light {
         padding: 16px 0 16px 0;
         background: @grayDark;
+
+        h3 {
+            color: @white;
+        }
     }
 
     .dark {
@@ -206,6 +210,7 @@ footer {
 
         h3 {
             line-height: 30px;
+            color: @gray
         }
 
         img {
@@ -215,9 +220,12 @@ footer {
 
     h3 {
         margin: 0;
+
         font-weight: normal;
         font-size: 18px;
-        color: @gray
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+
+        line-height: 40px;
     }
 
     .nav-list {
@@ -243,6 +251,8 @@ footer {
 }
 
 .alert {
+    margin-bottom: 0px;
+
     .title {
         font-weight: bold;
     }
