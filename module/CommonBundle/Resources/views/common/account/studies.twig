@@ -2,13 +2,13 @@
 
 {% block content %}
     <div class="page-alert">
-        <div class="flashmessage alert alert-success fade" id="studies_saved_success">
+        <div class="flashmessage alert alert-success alert-fixed-top fade" id="studies_saved_success">
             <button type="button" class="close">&times;</button>
             <div class="content">
                 {{ translate('Your studies were successfully saved!') }}
             </div>
         </div>
-        <div class="flashmessage alert alert-error fade" id="studies_saved_error">
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="studies_saved_error">
             <button type="button" class="close">&times;</button>
             <div class="content">
                 {{ translate('An error occurred while saving your studies!') }}
@@ -22,41 +22,39 @@
 
     {% include 'common/account/partials/navigation.twig' %}
 
-    <div class="row page" id="studies">
-        <div class="span12">
-            <h2>
-                {{ translate('Choose Your Study') }}
-                <div class="pull-right">
-                    <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
-                </div>
-            </h2>
-            {{ _self.displayStudies(studies, enrollments) }}
-            <div class="form-actions" style="text-align: center;">
-                <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
-            </div>
+    <h2>
+        {{ translate('Choose Your Study') }}
+        <div class="pull-right">
+            <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
         </div>
+    </h2>
+    <div id="studies">
+        {{ _self.displayStudies(studies, enrollments) }}
+    </div>
+    <div style="text-align: center;">
+        <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
     </div>
 {% endblock %}
 
 {% macro displayStudies(studies, enrollments) %}
     {% for study in studies %}
-        <div class="accordion" id="studies-{{ study.getId() }}">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
+        <div class="panel-group" id="studies-{{ study.getId() }}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
                         <span class="title">{{ study.getTitle() }}</span><span class="phase">&mdash;{{ translate('Phase') }} {{ study.getPhase() }}</span>
-
+                        &nbsp;
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">
-                                <button class="btn btn-mini btn-info study_enroll {% if study.getId() in enrollments %}active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">{% if study.getId() in enrollments %}{{ translate('Unsubscribe') }}{% else %}{{ translate('Enroll') }}{% endif %}</button>
+                                <button class="btn btn-xs btn-info study_enroll {% if study.getId() in enrollments %}active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">{% if study.getId() in enrollments %}{{ translate('Unsubscribe') }}{% else %}{{ translate('Enroll') }}{% endif %}</button>
                             </span>
                         {% else %}
-                            <span class="pull-right icon-arrow-down collapse-icon" style="margin-top: 6px;"></span>
+                            <span class="pull-right glyphicon glyphicon-arrow-down collapse-icon" style="margin-top: 2px;"></span>
                         {% endif %}
                     </a>
                 </div>
-                <div id="collapse_study-{{ study.getId() }}" class="accordion-body collapse">
-                    <div class="accordion-inner">
+                <div id="collapse_study-{{ study.getId() }}" class="panel-collapse collapse">
+                    <div class="panel-body">
                         <p>{{ study.getTitle() }}</p>
                         {% if study.getChildren()|length > 0 %}
                             {{ _self.displayStudies(study.getChildren(), enrollments) }}
@@ -71,9 +69,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-
             $('.study_enroll').click(function () {
-                console.log($(this));
                 if ( $(this).html() === '{{ translate('Enroll') }}')
                     $(this).text('{{ translate('Unsubscribe') }}');
                 else
@@ -93,20 +89,20 @@
             });
             updateHeadings();
 
-            $('.accordion-toggle').click(function () {
-                if ($(this).find('.collapse-icon').has('.icon-arrow-down')) {
-                    $(this).find('.collapse-icon').removeClass('icon-arrow-down').addClass('icon-arrow-up');
+            $('.panel-toggle').click(function () {
+                if ($(this).find('.collapse-icon').hasClass('glyphicon-arrow-down')) {
+                    $(this).find('.collapse-icon').removeClass('glyphicon-arrow-down').addClass('glyphicon-arrow-up');
                 } else {
-                    $(this).find('.collapse-icon').removeClass('icon-arrow-up').addClass('icon-arrow-down');
+                    $(this).find('.collapse-icon').removeClass('glyphicon-arrow-up').addClass('glyphicon-arrow-down');
                 }
             });
         });
 
         function updateHeadings() {
-            $('#studies .accordion-heading').removeClass('childSelected selected');
+            $('#studies .panel').removeClass('panel-info panel-success');
             $('.study_enroll').each(function () {
                 if ($(this).hasClass('active')) {
-                    $('#studies-' + $(this).data('id') + ' .accordion-heading').addClass('selected');
+                    $('#studies-' + $(this).data('id') + ' .panel').addClass('panel-success');
                     selectParent($('#studies-' + $(this).data('id')));
                 }
             });
@@ -115,8 +111,8 @@
         function selectParent(child) {
             if (child.length == 0)
                 return;
-            var parent = $(child.find('.accordion-toggle').data('parent')).closest('.accordion-group');
-            parent.find('.accordion-heading:first').addClass('childSelected');
+            var parent = $(child).closest('.panel-group').parent().closest('.panel-group');
+            parent.find('.panel:first').addClass('panel-info');
             selectParent(parent);
         }
 

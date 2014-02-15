@@ -1,9 +1,9 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    <div class="row-fluid">
-        <span class="span4"></span>
-        <span class="span4">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
             <h1 class="page-header">{{ translate('Login') }}</h1>
 
             <div class="well" style="text-align: center;">
@@ -14,7 +14,6 @@
                 <div class="login-container">
                     {% do form.prepare() %}
                     {% autoescape false %}
-                        {% set buttons = [] %}
                         {{ form().openTag(form) }}
                             {% for element in form.getElements() %}
                                 {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
@@ -29,24 +28,23 @@
                                         </label>
                                     </div>
                                 {% else %}
-                                    <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
-                                        <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                        <div class="controls">
-                                            <div>{{ formElement(element) }}</div>
-                                            {% if element.getMessages()|length > 0 %}
-                                                <div class="help-inline">
-                                                    {{ formElementErrors(element) }}
-                                                </div>
-                                            {% endif %}
-                                        </div>
+                                    <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                        <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                        <div>{{ formElement(element) }}</div>
+                                        {% if element.getMessages()|length > 0 %}
+                                            <div class="help-block">
+                                                {{ formElementErrors(element) }}
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}
                         {{ form().closeTag() }}
                     {% endautoescape %}
+                    <br style="clear: both" />
                 </div>
             </div>
-        </span>
-        <span class="span4"></span>
+        </div>
+        <div class="col-sm-3"></div>
     </div>
 {% endblock %}

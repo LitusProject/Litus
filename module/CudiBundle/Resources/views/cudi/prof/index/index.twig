@@ -3,7 +3,7 @@
 {% block content %}
     {% if authenticated %}
         <div class="row">
-            <div class="span9">
+            <div class="col-md-9">
                 <div class="page-header">
                     <h2>{{ translate('Your Recent Activity') }}</h2>
                 </div>
@@ -62,7 +62,7 @@
                     <h2>{{ translate('Your Recent Conversations') }}</h2>
                     {% for conversation in recentConversations %}
                         <div class="action">
-                            <b>{{ conversation['content'].getPerson().getFullName() }}</b> 
+                            <b>{{ conversation['content'].getPerson().getFullName() }}</b>
                             {% if conversation['type'] == 'reply' %}
                                 {{ translate('replied on') }}
                             {% else %}
@@ -71,14 +71,14 @@
                             <b>{{ dateLocalized(conversation['content'].getDate(), 'd MMM Y HH:mm') }}</b>
                             <div class="info">
                                 {{ translate('Subject') }}: <b>{{ conversation['content'].getSubject().getName() }}</b><br />
-                                <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": conversation['content'].getSubject().getId()}) }}">{{ translate('View') }}</a>
+                                <a class="btn btn-sm btn-default" href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": conversation['content'].getSubject().getId()}) }}">{{ translate('View') }}</a>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 {% if hasAccess('cudi_prof_help', 'index') %}
                     <div class="page-header">
                         <h3>{{ translate('How To Start') }}</h3>
@@ -86,7 +86,7 @@
                     <p>
                         {{ translate('Your first time here?') }}
                     </p>
-                    <a href="{{ url('cudi_prof_help') }}" class="btn">&rarr; {{ translate('Help') }}</a>
+                    <a href="{{ url('cudi_prof_help') }}" class="btn btn-default">&rarr; {{ translate('Help') }}</a>
                 {% endif %}
             </div>
         </div>

@@ -43,7 +43,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setAttribute('action', $action);
 
         $this->setAttribute('id', 'login')
-            ->setAttribute('class', 'form-inline');
+            ->setAttribute('class', 'form-horizontal');
 
         $field = new Text('username');
         $field->setLabel('Username')
@@ -61,7 +61,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Submit('submit');
         $field->setValue('Login')
-            ->setAttribute('class', 'btn pull-right');
+            ->setAttribute('class', 'btn btn-default pull-right');
         $this->add($field);
     }
 

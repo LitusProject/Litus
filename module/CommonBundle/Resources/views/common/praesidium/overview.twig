@@ -5,16 +5,18 @@
         <h1>{{ translate('Praesidium') }}</h1>
     </div>
 
-    <div class="navbar">
-        <div class="navbar-inner">
-            <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".subnav">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="brand hidden-desktop" href="#">{{ translate('Academic Years') }}</a>
-            <div class="subnav nav-collapse">
-                <ul class="nav">
+    <div class="navbar navbar-default"  role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#academicYearSubNav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="academicYearSubNav">
+                <ul class="nav navbar-nav">
                     {% for academicYear in academicYears %}
                         <li {% if academicYear.getCode() == activeAcademicYear.getCode() %}class="active"{% endif %}><a href="{{ url('common_praesidium', {'academicyear': academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
                     {% endfor %}
@@ -25,10 +27,10 @@
 
     {% for unit in units %}
         <h3>{{ unit['unit'].getName() }}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small></h3>
-        <ul class="thumbnails">
+        <div class="row">
             {% for member in unit['members'] %}
-                <li class="span3">
-                    <div class="thumbnail" style="height: 250px; text-align: center;">
+                <div class="col-xs-6 col-md-3">
+                    <div class="thumbnail" style="height: 250px; text-align: center">
                         {% if member.getAcademic().getPhotoPath() %}
                             <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ member.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
                         {% else %}
@@ -42,9 +44,9 @@
                             <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
                         {% endfor %}
                     </div>
-                </li>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% endfor %}
 {% endblock %}
 

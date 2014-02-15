@@ -1,14 +1,14 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade load_error">
+    <div class="flashmessage alert alert-danger fade load_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('There was an error while loading the reservations.') }}
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade remove_error">
+    <div class="flashmessage alert alert-danger fade remove_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('There was an error while deleting the reservation.') }}
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade add_error">
+    <div class="flashmessage alert alert-danger fade add_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('There was an error while adding the reservation.') }}
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-error fade update_error">
+    <div class="flashmessage alert alert-danger fade update_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('There was an error while updating the reservation.') }}
@@ -52,7 +52,7 @@
 
     {% if hasAccess('logistics_index', 'export') %}
         <div class="pull-right" style="line-height: 50px">
-            <a href="{{ url('logistics_export') }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
+            <a href="{{ url('logistics_export') }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
         </div>
     {% endif %}
 
@@ -72,6 +72,7 @@
             $('.flashmessage .close').click(function () {
                 $(this).parent().removeClass('in');
             });
+
             $('#calendar').logisticsCalendar({
                 fetchUrl: '{{ url('logistics_reservation_fetch') }}',
                 moveUrl: '{{ url('logistics_index', {'action': 'move'}) }}',

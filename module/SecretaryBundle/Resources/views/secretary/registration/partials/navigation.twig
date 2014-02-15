@@ -4,17 +4,17 @@
             {{ translate('Start') }}
         </a>
     </li>
-    <li {% if getParam('action') == 'studies' %}class="active"{% endif %}>
+    <li class="{% if getParam('action') == 'studies' %}active{% endif %} {% if getParam('action') == 'add' %}disabled{% endif %}">
         <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'studies'}) }}"{% endif %}>
             {{ translate('Studies') }}
         </a>
     </li>
-    <li {% if getParam('action') == 'subjects' %}class="active"{% endif %}>
+    <li class="{% if getParam('action') == 'subjects' %}active{% endif %} {% if getParam('action') == 'add' %}disabled{% endif %}">
         <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'subjects'}) }}"{% endif %}>
             {{ translate('Subjects') }}
         </a>
     </li>
-    <li {% if getParam('action') == 'complete' %}class="active"{% endif %}>
+    <li class="{% if getParam('action') == 'complete' %}active{% endif %} {% if getParam('action') == 'add' %}disabled{% endif %}">
         <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'complete'}) }}"{% endif %}>
             {{ translate('Complete') }}
         </a>

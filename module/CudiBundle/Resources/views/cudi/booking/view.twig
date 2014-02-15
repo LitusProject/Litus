@@ -5,88 +5,88 @@
         <h1>{{ translate('My Bookings') }}</h1>
     </div>
 
-    <div class="flashmessage error_message full_width booking_canceled_error hide">
+    <div class="flashmessage alert alert-danger booking_canceled_error fade">
         <div class="title">Error</div>
         <div class="content">
             <p>An error occurred while trying to cancel the booking. Please try again later.</p>
         </div>
     </div>
 
-    <div class="row page">
-        <div class="span12">
-            {% if authenticatedPerson == null %}
-                {{ translate('Please login to view your bookings.') }}
-            {% else %}
-                <table class="table">
-                    <tr>
-                        <th>{{ translate('Article') }}</th>
-                        <th class="hidden-phone">{{ translate('Authors') }}</th>
-                        <th>{{ translate('Price / Piece') }}</th>
-                        <th>#</th>
-                        <th class="hidden-phone">{{ translate('Expiration Date') }}</th>
-                        <th class="hidden-phone">{{ translate('Status') }}</th>
-                        <th class="visible-phone">{{ translate('Assigned') }}</th>
-                        <th class="hidden-phone">{{ translate('Actions') }}</th>
-                    </tr>
-                    {% for booking in bookings %}
-                        <tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %} succes {% endif %}">
-                            <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
-                            <td class="hidden-phone">{{ booking.getArticle().getMainArticle().getAuthors() }}</td>
-                            <td>
-                                {% if booking.getArticle().getDiscounts()|length > 0 %}
-                                    <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
-                                    {% for discount in booking.getArticle().getDiscounts() %}
-                                        <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(booking.getArticle().getSellPrice())/100)|number_format(2) }}<br/>
-                                    {% endfor %}
-                                " data-placement="right" style="cursor: pointer">&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
-                                {% else %}
-                                    <span>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ booking.getNumber() }}</td>
-                            <td class="hidden-phone">{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</td>
-                            <td class="hidden-phone">{{ translate(booking.getStatus()) }}</td>
-                            <td class="visible-phone">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
-                            <td class="hidden-phone">
-                                {% if booking.getArticle().isUnbookable() %}
-                                    <a href="#" class="cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
-                                        {{ translate('Cancel') }}
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
+    {% if authenticatedPerson == null %}
+        {{ translate('Please login to view your bookings.') }}
+    {% else %}
+        <table class="table">
+            <tr>
+                <th>{{ translate('Article') }}</th>
+                <th class="hidden-xs">{{ translate('Authors') }}</th>
+                <th>{{ translate('Price / Piece') }}</th>
+                <th>#</th>
+                <th class="hidden-xs">{{ translate('Expiration Date') }}</th>
+                <th class="hidden-xs">{{ translate('Status') }}</th>
+                <th class="visible-xs">{{ translate('Assigned') }}</th>
+                <th class="hidden-xs">{{ translate('Actions') }}</th>
+            </tr>
+            {% for booking in bookings %}
+                <tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %}success{% endif %}" data-price="{{ booking.getArticle().getSellPrice() * booking.getNumber() }}">
+                    <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
+                    <td class="hidden-xs">{{ booking.getArticle().getMainArticle().getAuthors() }}</td>
+                    <td>
+                        {% if booking.getArticle().getDiscounts()|length > 0 %}
+                            <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
+                            {% for discount in booking.getArticle().getDiscounts() %}
+                                <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(booking.getArticle().getSellPrice())/100)|number_format(2) }}<br/>
+                            {% endfor %}
+                        " data-placement="right" style="cursor: pointer">&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
+                        {% else %}
+                            <span>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ booking.getNumber() }}</td>
+                    <td class="hidden-xs">{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</td>
+                    <td class="hidden-xs">{{ translate(booking.getStatus()) }}</td>
+                    <td class="visible-xs">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
+                    <td class="hidden-xs actions">
+                        {% if booking.getArticle().isUnbookable() %}
+                            <a href="#" class="btn btn-default btn-sm cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
+                                {{ translate('Cancel') }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
 
-                    <tr class="total">
-                        <td>{{ translate('Total') }}</td>
-                        <td class="hidden-phone"></td>
-                        <td>&euro; {{ (total/100)|number_format(2) }}</td>
-                        <td></td>
-                        <td class="hidden-phone"></td>
-                        <td class="hidden-phone"></td>
-                        <td class="visible-phone"></td>
-                        <td class="hidden-phone"></td>
-                    </tr>
-                </table>
+            <tr class="total">
+                <td>{{ translate('Total') }}</td>
+                <td class="hidden-xs"></td>
+                <td>&euro; <span id="totalPrice">{{ (total/100)|number_format(2) }}</span></td>
+                <td></td>
+                <td class="hidden-xs"></td>
+                <td class="hidden-xs"></td>
+                <td class="visible-xs"></td>
+                <td class="hidden-xs"></td>
+            </tr>
+        </table>
 
-                <a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
+        <a href={{ url('cudi_booking', {"action" : 'book', "language" : language.getAbbrev()}) }} class="btn btn-primary pull-right">{{ translate('Book Textbooks') }}</a>
 
-            {% endif %}
-        </div>
-    </div>
+    {% endif %}
 
-    <div class="modal hide fade" id="cancelBooking">
-        <div class="modal-header">
-            <h3>Cursusdienst</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
-            </p>
-        </div>
-        <div class="modal-footer">
-            <input type="button" class="btn btn-danger continue" value="Yes">
-            <input type="button" class="btn cancel" data-dismiss="modal" value="No">
+    <div class="modal fade" id="cancelBooking">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Cursusdienst</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Are you sure you want to cancel the following article:') }} <b class="articleTitle"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-danger continue" value="Yes">
+                    <input type="button" class="btn btn-default cancel" data-dismiss="modal" value="No">
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -109,6 +109,7 @@
                 $.post('{{ url('cudi_booking', {"action": "cancel"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
+                        $('#totalPrice').html(($('#totalPrice').html() - $('.item-' + id).data('price')/100).toFixed(2));
                         $('.item-' + id).remove();
                         $('#cancelBooking').modal('hide');
                     } else {

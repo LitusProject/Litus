@@ -39,9 +39,10 @@ class Select extends \Zend\Form\Element\Select implements \CommonBundle\Componen
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+        $this->setAttribute('class', 'form-control');
         $this->setLabelAttributes(
             array(
-                'class' => 'control-label',
+                'class' => 'col-sm-2 control-label',
             )
         );
     }

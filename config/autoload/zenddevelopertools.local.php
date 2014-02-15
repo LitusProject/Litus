@@ -30,7 +30,7 @@ return array(
             ),
         ),
         'toolbar' => array(
-            'enabled'       => ('development' == getenv('APPLICATION_ENV')),
+            'enabled'       => ('developmendt' == getenv('APPLICATION_ENV')),
             'auto_hide'     => true,
             'position'      => 'bottom',
             'version_check' => false,

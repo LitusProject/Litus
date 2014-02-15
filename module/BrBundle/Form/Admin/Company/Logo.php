@@ -70,7 +70,7 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '2MB',
+                                'max' => '2MB',
                             ),
                         ),
                     ),

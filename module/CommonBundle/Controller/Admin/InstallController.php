@@ -373,7 +373,7 @@ Disallow: /admin/*',
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'fileServer', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'fileServer', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
                     ),
                     'common_session' => array(
                         'manage', 'expire'

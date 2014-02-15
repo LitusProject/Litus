@@ -1,55 +1,56 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-<dl>
-    <dt>{{ translate('Item Name') }}</dt>
-    <dd>{{ lease.getItem().getName() }}</dd>
-    <dt>{{ translate('Barcode') }}</dt>
-    <dd>{{ lease.getItem().getBarcode() }}</dd>
-    <dt>{{ translate('Additional Info') }}</dt>
-    <dd>{{ lease.getItem().getAdditionalInfo() }}</dd>
-    <dt>{{ translate('Leased') }}</dt>
-    <dd>
+    <dl class="dl-horizontal">
+        <dt>{{ translate('Item Name') }}</dt>
+        <dd>{{ lease.getItem().getName() }}&nbsp;</dd>
+        <dt>{{ translate('Barcode') }}</dt>
+        <dd>{{ lease.getItem().getBarcode() }}&nbsp;</dd>
+        <dt>{{ translate('Additional Info') }}</dt>
+        <dd>{{ lease.getItem().getAdditionalInfo() }}&nbsp;</dd>
+    </dl>
+
+    <div class="page-header">
+        <h2>{{ translate('Leases') }}</h2>
+    </div>
+    <dl class="dl-horizontal">
+        <dt>{{ translate('From') }}</dt>
+        <dd>{{ lease.getLeasedBy().getFullName() }}&nbsp;</dd>
+        <dt>{{ translate('To') }}</dt>
+        <dd>{{ lease.getLeasedTo() }}&nbsp;</dd>
+        <dt>{{ translate('Amount') }}</dt>
+        <dd>{{ lease.getLeasedAmount() }}&nbsp;</dd>
+        <dt>{{ translate('Date') }}</dt>
+        <dd>{{ lease.getLeasedDate()|date }}&nbsp;</td>
+        <dt>{{ translate('Pawn') }}</dt>
+        <dd>{{ lease.getLeasedPawn()|number_format(2) }}&nbsp;</dd>
+        {% if lease.getLeasedComment() %}
+            <dt>{{ translate('Comment') }}</dt>
+            <dd>{{ lease.getLeasedComment()|nl2br }}&nbsp;</dd>
+        {% endif %}
+    </dl>
+
+    <div class="page-header">
+        <h2>{{ translate('Returned') }}</h2>
+    </div>
+    {% if lease.isReturned() %}
         <dl class="dl-horizontal">
             <dt>{{ translate('From') }}</dt>
-            <dd>{{ lease.getLeasedBy().getFullName() }}</dd>
+            <dd>{{ lease.getReturnedBy() }}&nbsp;</dd>
             <dt>{{ translate('To') }}</dt>
-            <dd>{{ lease.getLeasedTo() }}</dd>
+            <dd>{{ lease.getReturnedTo().getFullName() }}&nbsp;</dd>
             <dt>{{ translate('Amount') }}</dt>
-            <dd>{{ lease.getLeasedAmount() }}</dd>
+            <dd>{{ lease.getReturnedAmount() }}&nbsp;</dd>
             <dt>{{ translate('Date') }}</dt>
-            <dd>{{ lease.getLeasedDate()|date }}</td>
+            <dd>{{ lease.getReturnedDate()|date }}&nbsp;</td>
             <dt>{{ translate('Pawn') }}</dt>
-            <dd>{{ lease.getLeasedPawn()|number_format(2) }}</dd>
-            {% if lease.getLeasedComment() %}
+            <dd>{{ lease.getReturnedPawn()|number_format(2) }}&nbsp;</dd>
+            {% if lease.getReturnedComment() %}
                 <dt>{{ translate('Comment') }}</dt>
-                <dd>{{ lease.getLeasedComment()|nl2br }}</dd>
+                <dd>{{ lease.getReturnedComment()|nl2br }}&nbsp;</dd>
             {% endif %}
         </dl>
-    </dd>
-    <dt>{{ translate('Returned') }}</dt>
-    <dd>
-        {% if lease.isReturned() %}
-            <dl class="dl-horizontal">
-                <dt>{{ translate('From') }}</dt>
-                <dd>{{ lease.getReturnedBy() }}</dd>
-                <dt>{{ translate('To') }}</dt>
-                <dd>{{ lease.getReturnedTo().getFullName() }}</dd>
-                <dt>{{ translate('Amount') }}</dt>
-                <dd>{{ lease.getReturnedAmount() }}</dd>
-                <dt>{{ translate('Date') }}</dt>
-                <dd>{{ lease.getReturnedDate()|date }}</td>
-                <dt>{{ translate('Pawn') }}</dt>
-                <dd>{{ lease.getReturnedPawn()|number_format(2) }}</dd>
-                {% if lease.getReturnedComment() %}
-                    <dt>{{ translate('Comment') }}</dt>
-                    <dd>{{ lease.getReturnedComment()|nl2br }}</dd>
-                {% endif %}
-            </dl>
-        {% else %}
-            {{ translate('Not Yet Returned') }}
-        {% endif %}
-    </dd>
-
-</dl>
+    {% else %}
+        {{ translate('Not Yet Returned') }}
+    {% endif %}
 {% endblock %}

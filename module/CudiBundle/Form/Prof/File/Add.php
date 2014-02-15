@@ -39,7 +39,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('description');
         $field->setLabel('Description')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $this->add($field);
 
@@ -75,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '256MB',
+                                'max' => '256MB',
                             ),
                         ),
                     ),

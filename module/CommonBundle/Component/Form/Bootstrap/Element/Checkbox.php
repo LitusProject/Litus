@@ -39,11 +39,6 @@ class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Comp
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);
-        $this->setLabelAttributes(
-            array(
-                'class' => 'checkbox',
-            )
-        );
     }
 
     /**

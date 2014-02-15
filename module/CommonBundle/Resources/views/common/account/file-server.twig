@@ -7,28 +7,24 @@
 
     {% include 'common/account/partials/navigation.twig' %}
 
-    <div class="row page">
-        <div class="span12">
-            {% if noUniversityIdentification %}
-                <div class="alert alert-error">
-                    {{ translate('Unfortunately, there is no record of your university identification and we cannot create an account for you.') }}
-                </div>
-            {% else %}
-                {% if not hasPayed %}
-                    <div class="alert alert-error">
-                        {{ translate('You have to be a member of our organization to be able to request an account on the file server.') }}
-                    </div>
-                {% else %}
-                    {% if accountExists %}
-                        <div class="alert alert-info">
-                            {{ translate('You have already activated your account on our server. You can use the form below to change your password.') }}
-                        </div>
-                    {% endif %}
-
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(form) }}
-                {% endif %}
-            {% endif %}
+    {% if noUniversityIdentification %}
+        <div class="alert alert-danger">
+            {{ translate('Unfortunately, there is no record of your university identification and we cannot create an account for you.') }}
         </div>
-    </div>
+    {% else %}
+        {% if not hasPayed %}
+            <div class="alert alert-danger">
+                {{ translate('You have to be a member of our organization to be able to request an account on the file server.') }}
+            </div>
+        {% else %}
+            {% if accountExists %}
+                <div class="alert alert-info">
+                    {{ translate('You have already activated your account on our server. You can use the form below to change your password.') }}
+                </div>
+            {% endif %}
+
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        {% endif %}
+    {% endif %}
 {% endblock %}

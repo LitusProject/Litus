@@ -20,12 +20,11 @@ namespace CommonBundle\Form\Account;
 
 use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\Factory as InputFactory;;
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Registration
@@ -53,11 +52,6 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
     {
         parent::__construct($academic, $academicYear, $metaData, $cache, $entityManager, $identification, $enableOtherOrganization, $name);
 
-        $field = new File('profile');
-        $field->setLabel('Profile Image')
-            ->setAttribute('data-type', 'image');
-        $this->get('personal')->add($field);
-
         if (
             null !== $academic->getOrganizationStatus($academicYear)
             && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
@@ -76,36 +70,5 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
         $this->add($field);
 
         $this->populateFromAcademic($academic, $academicYear, $metaData);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
-                        ),
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'extension' => '2MB',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }
