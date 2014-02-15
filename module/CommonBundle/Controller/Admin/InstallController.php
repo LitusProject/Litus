@@ -323,7 +323,7 @@ Disallow: /admin/*
                         'index'
                     ),
                     'common_admin_location' => array(
-                        'add', 'edit', 'delete', 'manage'
+                        'add', 'edit', 'delete', 'geocoding', 'manage'
                     ),
                     'common_admin_person' => array(
                         'typeahead'
