@@ -105,9 +105,6 @@ return Config::create(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug' => false,
             'webPath' => __DIR__ . '/../../../../public/_assetic',
-            'rendererToStrategy' => array(
-                'Zend\View\Renderer\PhpRenderer' => 'AsseticBundle\View\ViewHelperStrategy'
-            ),
             'cacheEnabled' => true,
             'cachePath' => __DIR__ . '/../../../../data/cache',
             'basePath' => '/_assetic/',
