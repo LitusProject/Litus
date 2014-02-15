@@ -72,6 +72,8 @@ return Config::create(
                 'common_sessionstorage' => function($serviceManager) {
                     return new Zend\Session\Container('Litus_Common');
                 },
+
+                'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
             ),
             'invokables' => array(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
@@ -108,6 +110,13 @@ return Config::create(
             'cacheEnabled' => true,
             'cachePath' => __DIR__ . '/../../../../data/cache',
             'basePath' => '/_assetic/',
+        ),
+        'assetic_filters' => array(
+            'invokables' => array(
+                'css'  => 'CommonBundle\Component\Assetic\Filter\Css',
+                'js'   => 'CommonBundle\Component\Assetic\Filter\Js',
+                'less' => 'CommonBundle\Component\Assetic\Filter\Less',
+            ),
         ),
         'authentication_sessionstorage' => array(
             'namespace' => 'Litus_Auth',

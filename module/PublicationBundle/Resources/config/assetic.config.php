@@ -80,11 +80,7 @@ return array(
             'assets' => array(
                 'archive/less/archive.less'
             ),
-            'filters' => array(
-                'archive_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'archive_css.css',
             ),

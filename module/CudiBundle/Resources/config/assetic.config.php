@@ -391,11 +391,7 @@ return array(
             'assets' => array(
                 'sale/less/base.less',
             ),
-            'filters' => array(
-                'sale_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'sale_css.css',
             ),
@@ -404,11 +400,7 @@ return array(
             'assets' => array(
                 'supplier/less/base.less',
             ),
-            'filters' => array(
-                'supplier_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'supplier_css.css',
             ),
@@ -417,31 +409,19 @@ return array(
             'assets' => array(
                 'queue/js/*.js',
             ),
-            'filters' => array(
-                'queue_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
         'sale_js' => array(
             'assets' => array(
                 'sale/js/*.js',
             ),
-            'filters' => array(
-                'sale_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
         'prof_css' => array(
             'assets' => array(
                 'prof/less/base.less',
             ),
-            'filters' => array(
-                'prof_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'prof_css.css',
             ),
@@ -450,11 +430,7 @@ return array(
             'assets' => array(
                 'booking/less/base.less',
             ),
-            'filters' => array(
-                'booking_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'booking_css.css',
             ),
@@ -463,11 +439,7 @@ return array(
             'assets' => array(
                 'opening-hour/less/schedule.less',
             ),
-            'filters' => array(
-                'opening_hour_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'opening_hour_css.css',
             ),
@@ -476,11 +448,7 @@ return array(
             'assets' => array(
                 'opening-hour/js/*.js',
             ),
-            'filters' => array(
-                'opening_hour_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
     ),
 );

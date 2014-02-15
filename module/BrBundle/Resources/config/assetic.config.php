@@ -206,11 +206,7 @@ return array(
             'assets' => array(
                 'corporate/less/base.less',
             ),
-            'filters' => array(
-                'corporate_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'corporate_css.css',
             ),
@@ -219,11 +215,7 @@ return array(
             'assets' => array(
                 'cv/less/cv.less',
             ),
-            'filters' => array(
-                'cv_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'cv_css.css',
             ),

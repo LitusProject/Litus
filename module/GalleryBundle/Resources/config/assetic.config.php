@@ -58,11 +58,7 @@ return array(
                 'common/less/gallery.less',
                 'common/less/imageGallery.min.css',
             ),
-            'filters' => array(
-                'gallery_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'gallery_css.css',
             ),
@@ -71,32 +67,20 @@ return array(
             'assets'  => array(
                 'common/js/imageGallery.js',
             ),
-            'filters' => array(
-                'gallery_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
         'plupload_js' => array(
             'assets'  => array(
                 'plupload/js/plupload.full.js',
                 'plupload/js/bootstrap/uploadkit.js',
             ),
-            'filters' => array(
-                'plupload_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
         'plupload_css' => array(
             'assets'  => array(
                 'plupload/js/bootstrap/uploadkit.css',
             ),
-            'filters' => array(
-                'plupload_css_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Css',
-                ),
-            ),
+            'filters' => array('css'),
             'options' => array(
                 'output' => 'plupload_css.css',
             ),

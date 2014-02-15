@@ -143,11 +143,7 @@ return array(
             'assets' => array(
                 'manage/less/base.less',
             ),
-            'filters' => array(
-                'form_manage_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'form_manage_css.css',
             ),

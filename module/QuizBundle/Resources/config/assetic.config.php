@@ -60,11 +60,7 @@ return array(
             'assets' => array(
                 'quiz/less/base.less',
             ),
-            'filters' => array(
-                'quiz_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'quiz_css.css',
             ),

@@ -77,11 +77,7 @@ return array(
             'assets' => array(
                 'ticket/less/base.less',
             ),
-            'filters' => array(
-                'ticket_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'ticket_css.css',
             ),

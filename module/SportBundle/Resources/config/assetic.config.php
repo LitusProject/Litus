@@ -73,11 +73,7 @@ return array(
             'assets' => array(
                 'run/less/base.less',
             ),
-            'filters' => array(
-                'run_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'run_css.css',
             ),
@@ -86,11 +82,7 @@ return array(
             'assets' => array(
                 'run/js/*.js',
             ),
-            'filters' => array(
-                'run_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
     ),
 );

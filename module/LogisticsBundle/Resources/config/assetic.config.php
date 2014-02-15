@@ -91,11 +91,7 @@ return array(
             'assets' => array(
                 'logistics/less/base.less',
             ),
-            'filters' => array(
-                'logistics_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'logistics_css.css',
             ),
@@ -104,11 +100,7 @@ return array(
             'assets' => array(
                 'logistics/fullcalendar/fullcalendar.css',
             ),
-            'filters' => array(
-                'fullcalendar_css_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Css',
-                ),
-            ),
+            'filters' => array('css'),
             'options' => array(
                 'output' => 'fullcalendar_css.css',
             ),
@@ -118,21 +110,13 @@ return array(
                 'logistics/js/logistics.js',
                 'logistics/fullcalendar/fullcalendar.js',
             ),
-            'filters' => array(
-                'logistics_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
         'minicolor_css' => array(
             'assets' => array(
                 'logistics/minicolor/jquery.miniColors.css',
             ),
-            'filters' => array(
-                'minicolor_css_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Css',
-                ),
-            ),
+            'filters' => array('css'),
             'options' => array(
                 'output' => 'minicolor_css.css',
             ),
@@ -141,11 +125,7 @@ return array(
             'assets' => array(
                 'logistics/minicolor/jquery.miniColors.min.js',
             ),
-            'filters' => array(
-                'minicolor_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
     ),
 );

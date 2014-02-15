@@ -59,11 +59,7 @@ return array(
             'assets' => array(
                 'secretary/less/study.less',
             ),
-            'filters' => array(
-                'secretary_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'secretary.css',
             ),

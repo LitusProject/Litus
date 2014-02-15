@@ -73,11 +73,7 @@ return array(
             'assets' => array(
                 'calendar/less/calendar.less'
             ),
-            'filters' => array(
-                'calendar_less' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Less',
-                ),
-            ),
+            'filters' => array('less'),
             'options' => array(
                 'output' => 'calendar_css.css',
             ),
@@ -86,11 +82,7 @@ return array(
             'assets' => array(
                 'calendar/js/calendar.js',
             ),
-            'filters' => array(
-                'calendar_js_yui' => array(
-                    'name' => '\CommonBundle\Component\Assetic\Filter\Js',
-                ),
-            ),
+            'filters' => array('js'),
         ),
     ),
 );
