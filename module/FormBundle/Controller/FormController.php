@@ -807,7 +807,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return $data;
     }
 
-    private function _redirectFormComplete(Group $group, $progressBarInfo, Form $formSpecification, $draft = false)
+    private function _redirectFormComplete(Group $group = null, $progressBarInfo, Form $formSpecification, $draft = false)
     {
         if ($group && !$draft) {
             if ($progressBarInfo['next_form'] == 0) {
