@@ -25,6 +25,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
+    Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -36,12 +37,21 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
+
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
+
+        $this->_entityManager = $entityManager;
 
         $this->setAttribute('accept-charset', 'utf-8');
 
@@ -49,6 +59,12 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('From')
             ->setAttribute('style', 'width: 400px;')
             ->setRequired();
+        $this->add($field);
+
+        $field = new Select('to');
+        $field->setLabel('Volunteers From And Above')
+            ->setRequired()
+            ->setAttribute('options', $this->_createVolunteerArray());
         $this->add($field);
 
         $field = new Text('subject');
@@ -114,5 +130,19 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
+    }
+
+    private function _createVolunteerArray()
+    {
+        $rankingCriteria = unserialize($this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.ranking_criteria')
+        );
+        $volunteers = array();
+        $volunteers[0] = "bronze";
+        for ($i = 0; isset($rankingCriteria[$i]); $i++) {
+            $volunteers[$i+1] = $rankingCriteria[$i]["name"];
+        }
+        return $volunteers;
     }
 }
