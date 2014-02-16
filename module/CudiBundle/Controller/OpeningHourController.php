@@ -93,8 +93,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 'startHour' => $startHour,
                 'endHour' => $endHour,
                 'submenu' => isset($submenu) ? $submenu : null,
-                'page' => isset($page) ? $page : null,
-                'link' => isset($link) ? $link : null,
+                'page' => isset($link) ? $link : null,
             )
         );
     }
