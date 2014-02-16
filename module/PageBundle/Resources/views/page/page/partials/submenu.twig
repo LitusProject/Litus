@@ -42,13 +42,13 @@
                     {% else %}
                         {% if 'page' == item.type %}
                             {% if hasAccess('page', 'view') %}
-                                <li><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
+                                <li {% if item.id == page.getId() %}class="active"{% endif %}><a href="{{ url('page', {"parent": item.parent, "name": item.name}) }}">{{ item.title }}</a></li>
                             {% endif %}
                         {% endif %}
 
                         {% if 'link' == item.type %}
                             {% if hasAccess('page_link', 'view') %}
-                                <li {% if item.id == link.getId() %}class="active"{% endif %}><a href="{{ item.url }}">{{ item.name }}</a></li>
+                                <li {% if item.id == page.getId() %}class="active"{% endif %}><a href="{{ item.url }}">{{ item.name }}</a></li>
                             {% endif %}
                         {% endif %}
                     {% endif %}

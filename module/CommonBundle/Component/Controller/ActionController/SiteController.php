@@ -130,6 +130,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($pages as $page) {
                 $menu[$i]['items'][] = array(
                     'type'  => 'page',
+                    'id'    => $page->getId(),
                     'name'  => $page->getName(),
                     'title' => $page->getTitle($this->getLanguage())
                 );
@@ -143,7 +144,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     'type' => 'link',
                     'id'   => $link->getId(),
                     'name' => $link->getName($this->getLanguage()),
-                    'url' => $link->getUrl($this->getLanguage()),
+                    'url'  => $link->getUrl($this->getLanguage()),
                 );
 
                 if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0)
@@ -195,6 +196,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         foreach ($pages as $page) {
             $submenu[] = array(
                 'type'     => 'page',
+                'id'       => $page->getId(),
                 'name'     => $page->getName(),
                 'parent'   => $page->getParent()->getName(),
                 'title'    => $page->getTitle($this->getLanguage()),
