@@ -116,14 +116,7 @@ return array(
                         ),
                         'filters' => array(
                             'gallery_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -134,16 +127,34 @@ return array(
                         'assets'  => array(
                             'common/js/imageGallery.js',
                         ),
+                        'filters' => array(
+                            'gallery_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
                     ),
                     'plupload_js' => array(
                         'assets'  => array(
                             'plupload/js/plupload.full.js',
                             'plupload/js/bootstrap/uploadkit.js',
                         ),
+                        'filters' => array(
+                            'plupload_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
                     ),
                     'plupload_css' => array(
                         'assets'  => array(
                             'plupload/js/bootstrap/uploadkit.css',
+                        ),
+                        'filters' => array(
+                            'plupload_css_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Css',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'plupload_css.css',
                         ),
                     ),
                 ),

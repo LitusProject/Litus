@@ -1,44 +1,50 @@
 {{ doctype() }}
 
 <html lang="en">
-<head>
-    {{ headMeta() }}
-	{{ headTitle('Sale', 'PREPEND') }}
+    <head>
+        {{ headMeta() }}
+        {{ headTitle('Sale', 'PREPEND') }}
 
-	{{ headLink() }}
-</head>
+        {{ headLink() }}
+    </head>
 
-<body>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{{ organizationUrl }}" class="brand"><img src="/_cudi/img/logo.png" /></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<span class="brand"><img src="/_cudi/img/logo.png" /></span>
-		</div>
-	</div>
-</nav>
+        <header>
+            <div class="container">
+                <h1>Sale</h1>
+            </div>
+        </header>
 
-<header>
-	<div class="inner">
-		<div class="container">
-			<h1>Sale</h1>
-		</div>
-	</div>
-</header>
+        <div class="container">
+            {% include 'sale/partials/flashMessenger.twig' %}
 
-<div class="container">
-	{% include 'sale/partials/flashMessenger.twig' %}
+            {% block content %} {% endblock %}
+        </div>
 
-    {% block content %} {% endblock %}
+        <footer>
+            Litus Cudi | Code by <a href="http://litus.cc">Litus</a>
+        </footer>
 
-	<footer>
-	    Litus CuDi | Code by <a href="http://litus.cc">Litus</a>
-	</footer>
-</div>
+        {{ inlineScript() }}
 
-{{ inlineScript() }}
-
-{% block content_script %} {% endblock %}
-
-</body>
+        {% block content_script %} {% endblock %}
+    </body>
 </html>

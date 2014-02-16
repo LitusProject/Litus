@@ -1,8 +1,6 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
-    {% import 'site/partials/form.twig' as forms %}
-
     <div class="flashmessage alert alert-success fade" id="responsible_success">
         <div class="content">
             {{ translate('You were signed in as a responsible for the selected shift!') }}
@@ -18,25 +16,29 @@
             {{ translate('You were singed out from the selected shift!') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="error">
+    <div class="flashmessage alert alert-danger fade" id="error">
         <div class="content">
             {{ translate('An error occurred while processing your request!') }}
         </div>
     </div>
 
-    <div id="modalSignInWarning" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Sign In') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('You are about to sign yourself in for a shift. Do you want to continue?') }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-            <button class="btn deny">{{ translate('No') }}</button>
+    <div id="modalSignInWarning" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Sign In') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You are about to sign yourself in for a shift. Do you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -44,40 +46,68 @@
         <h1>{{ translate('Shifts') }}</h1>
     </div>
 
-    <div class="row-fluid">
-        <span class="span12" style="text-align: justify;">
-            {{ translate('If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
-        </span>
+    <div style="text-align: justify;">
+        {{ translate('If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).') }}
     </div>
 
-    <div class="row-fluid">
-        <span class="span4">
+    <div class="row">
+        <div class="col-md-4 shiftSearchForms">
             <h2>{{ translate('Search') }}</h2>
 
-            <div class="well well-small">
+            <div class="well">
                 <h4>{{ translate('By Date') }}</h4>
 
-                {{ forms.renderForm(dateSearchForm) }}
+                {% do form.prepare() %}
+                {{ form().openTag(dateSearchForm)|raw }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(dateSearchForm.get('date'))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form().closeTag()|raw }}
             </div>
 
-            <div class="well well-small">
+            <div class="well">
                 <h4>{{ translate('By Event') }}</h4>
 
-                {{ forms.renderForm(eventSearchForm) }}
+                {% do form.prepare() %}
+                {{ form().openTag(eventSearchForm)|raw }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(eventSearchForm.get('event'))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form().closeTag()|raw }}
             </div>
 
-            <div class="well well-small">
+            <div class="well">
                 <h4>{{ translate('By Unit') }}</h4>
 
-                {{ forms.renderForm(unitSearchForm) }}
+                {% do form.prepare() %}
+                {{ form().openTag(unitSearchForm)|raw }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(unitSearchForm.get('unit'))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form().closeTag()|raw }}
             </div>
 
-        </span>
-        <span class="span8">
+        </div>
+        <div class="col-md-8">
             <h2>
                 {% if authenticatedPerson != null and hasAccess('shift', 'export') %}
-                    <div class="pull-right visible-desktop">
-                        <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn"><span class="icon-arrow-down"></span> {{ translate('Download') }}</a>
+                    <div class="pull-right hidden-xs hidden-sm">
+                        <a href="{{ url('shift_export', { 'token' : token.getHash() }) }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
                     </div>
                 {% endif %}
 
@@ -94,7 +124,7 @@
                     {{ translate('There are no shifts to be shown yet; please use the search functions on the left.') }}
                 </div>
             {% endif %}
-        </span>
+        </div>
     </div>
 {% endblock %}
 
@@ -159,6 +189,13 @@
                                     $('#responsible_volunteer').addClass('in');
 
                                     updateButton(button, parseInt(data.ratio, 10), count);
+                                    var panel = $(button.data('panel')).clone();
+                                    panel.find('.buttons').html('').css('display', 'none');
+
+                                    $('#shifts-myShifts .alert').remove();
+                                    $('#shifts-myShifts').prepend(panel);
+                                    panel.fadeIn();
+                                    $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                                 } else {
                                     errorSave();
                                 }
@@ -193,7 +230,13 @@
                             $('.flashmessage').removeClass('in');
                             $('#signout').addClass('in');
 
-                            $(button.data('accordion')).fadeOut();
+                            var panel = $(button.data('panel')).clone();
+                            panel.find('.buttons').html('').css('display', 'none');
+
+                            $('#shifts-search .alert').remove();
+                            $('#shifts-search').prepend(panel);
+                            panel.fadeIn();
+                            $('#shifts-myShifts ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                         } else {
                             errorSave();
                         }
@@ -226,7 +269,7 @@
 
 {% macro displayShifts(entityManager, authenticatedPerson, shifts, accordionName) %}
     {% set previousShift = null %}
-    <div class="accordion" id="shifts-{{ accordionName }}">
+    <div class="panel-group" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
                 <h3>{{translate('Shifts on')}} {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
@@ -234,67 +277,46 @@
 
             {% set previousShift = shift %}
 
-            <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                        <span class="pull-right visible-desktop">
-                            {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                        </span>
+            <div class="panel panel-default" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
+                <div class="panel-heading">
+                    <span class="buttons pull-right hidden-xs hidden-sm">
+                        {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                    </span>
+                    <a class="panel-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
                         {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}&mdash;{{ shift.getName() }}
                     </a>
                 </div>
-                <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <span class="pull-right hidden-desktop">
+                <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="buttons hidden-md hidden-lg" style="text-align: right">
                             {{ _self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
-                        </span>
-                        <div class="row-fluid">
-                            <span class="span8">
-                                <div class="row-fluid">
-                                    <span class="span6">
-                                        <dl>
-                                            <dt>{{ translate('Name') }}</dt>
-                                            <dd>{{ shift.getName() }}</dd>
-                                            <dt>{{ translate('Start') }}</dt>
-                                            <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                            <dt>{{ translate('End') }}</dt>
-                                            <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                        </dl>
-                                    </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <dl>
+                                    <dt>{{ translate('Name') }}</dt>
+                                    <dd>{{ shift.getName() }}</dd>
+                                    <dt>{{ translate('Start') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
+                                    <dt>{{ translate('End') }}</dt>
+                                    <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-4">
+                                <dl>
+                                    <dt>{{ translate('Manager') }}</dt>
+                                    <dd>{{ shift.getManager().getFullName() }}</dd>
 
-                                    <span class="span6">
-                                        <dl>
-                                            <dt>{{ translate('Manager') }}</dt>
-                                            <dd>{{ shift.getManager().getFullName() }}</dd>
+                                    {% if shift.getEvent() is not null %}
+                                        <dt>{{ translate('Event') }}</dt>
+                                        <dd>{{ shift.getEvent().getTitle(language) }}</dd>
+                                    {% endif %}
 
-                                            {% if shift.getEvent() is not null %}
-                                                <dt>{{ translate('Event') }}</dt>
-                                                <dd>{{ shift.getEvent().getTitle(language) }}</dd>
-                                            {% endif %}
-
-                                            <dt>{{ translate('Unit') }}</dt>
-                                            <dd>{{ shift.getUnit().getName() }}</dd>
-                                        </dl>
-                                    </span>
-                                </div>
-                                <div class="row-fluid">
-                                    <span class="span12">
-                                        <dl>
-                                            <dt>{{ translate('Description') }}</dt>
-                                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-
-                                            <dt>{{ translate('Location') }}</dt>
-                                            <dd>
-                                                {{ shift.getLocation().getName() }}
-                                            </dd>
-                                            <dd style="margin-top: 5px;">
-                                                <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
-                                            </dd>
-                                        </dl>
-                                    </span>
-                                </div>
-                            </span>
-                            <span class="span4">
+                                    <dt>{{ translate('Unit') }}</dt>
+                                    <dd>{{ shift.getUnit().getName() }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-sm-4">
                                 {% if 0 != shift.getNbResponsibles() %}
                                     <dl>
                                         <dt>{{ translate('Responsibles') }}</dt>
@@ -314,8 +336,20 @@
                                         {% endfor %}
                                     </dl>
                                 {% endif %}
-                            </span>
+                            </div>
                         </div>
+                        <dl>
+                            <dt>{{ translate('Description') }}</dt>
+                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+
+                            <dt>{{ translate('Location') }}</dt>
+                            <dd>
+                                {{ shift.getLocation().getName() }}
+                            </dd>
+                            <dd style="margin-top: 5px;">
+                                <img class="img-rounded" src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}" />
+                            </dd>
+                        </dl>
                     </div>
                 </div>
             </div>
@@ -354,18 +388,18 @@
         {% endif %}
 
         {% if shift.canHaveAsResponsible(entityManager, authenticatedPerson) and 0 != shift.getNbResponsibles() %}
-            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" type="button">
+            <button class="btn btn-default btn-xs {{ _self.buttonStyle(shift, 'responsibles') }} responsible" data-id="{{ shift.getId() }}" data-count="{{ shift.countResponsibles() }}" data-max="{{ shift.getNbResponsibles() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Responsible') }} (<span class="count">{{ shift.countResponsibles() }}</span>/{{ shift.getNbResponsibles() }})
             </button>
         {% endif %}
         {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-            <button class="btn btn-mini {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" type="button">
+            <button class="btn btn-default btn-xs {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
             </button>
         {% endif %}
     {% else %}
         {% if shift.canSignout(entityManager, authenticatedPerson) %}
-            <button class="btn btn-mini signout" data-id="{{ shift.getId() }}" data-accordion="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+            <button class="btn btn-default btn-xs signout" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Signout') }}
             </button>
         {% endif %}

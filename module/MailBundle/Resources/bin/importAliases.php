@@ -17,7 +17,7 @@
  */
 
 /**
- * Assign an Ir.Reëel to all users who receive one at CuDi.
+ * Import Aliases
  *
  * Usage:
  * --flush|-f      Flush

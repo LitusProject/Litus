@@ -2,34 +2,30 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
-<div class="row">
-    <div class="span12">
-        <div class="page-header">
-            <h1>{{ translate('Lease History') }} <small>{{ item.getName() }} ({{ item.getBarcode() }})</small></h1>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ translate('Leased To') }}</th>
-                    <th>{{ translate('Leased On') }}</th>
-                    <th>{{ translate('Returned By') }}</th>
-                    <th>{{ translate('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for lease in leases %}
-                    <tr>
-                        <td>{{ lease.getLeasedTo() }}</td>
-                        <td>{{ lease.getLeasedDate()|date }}</td>
-                        <td>{{ lease.getReturnedBy() }}</td>
-                        <td>
-                            <a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}" class="btn btn-mini">{{ translate('Details') }}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% include 'site/partials/paginationControl.twig' %}
+    <div class="page-header">
+        <h1>{{ translate('Lease History') }} <small>{{ item.getName() }} ({{ item.getBarcode() }})</small></h1>
     </div>
-</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ translate('Leased To') }}</th>
+                <th>{{ translate('Leased On') }}</th>
+                <th>{{ translate('Returned By') }}</th>
+                <th>{{ translate('Actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lease in leases %}
+                <tr>
+                    <td>{{ lease.getLeasedTo() }}</td>
+                    <td>{{ lease.getLeasedDate()|date }}</td>
+                    <td>{{ lease.getReturnedBy() }}</td>
+                    <td>
+                        <a href="{{ url('logistics_lease',{ 'action': 'show', 'id': lease.getId() }) }}" class="btn btn-default btn-xs">{{ translate('Details') }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'site/partials/paginationControl.twig' %}
 {% endblock %}

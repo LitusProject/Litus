@@ -5,17 +5,13 @@
         <h1>{{ translate('Archive') }}</h1>
     </div>
 
-    <div class="row page">
-        <div class="span12">
-            <ul class="thumbnails">
-                {% for publication in publications %}
-                    <li>
-                        <center>
-                            <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('publication_archive', { 'action': 'year', 'publication': publication.getId() }) }}">{{ publication.getTitle() }}</a>
-                        </center>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    <div class="row">
+        {% for publication in publications %}
+            <div class="col-xs-6 col-md-2">
+                <div class="thumbnail" style="height: 70px;line-height: 60px;text-align: center">
+                    <a href="{{ url('publication_archive', { 'action': 'year', 'publication': publication.getId() }) }}">{{ publication.getTitle() }}</a>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

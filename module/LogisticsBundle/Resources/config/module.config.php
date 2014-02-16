@@ -227,14 +227,7 @@ return array(
                         ),
                         'filters' => array(
                             'logistics_less' => array(
-                                'name' => 'Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Less',
                             ),
                         ),
                         'options' => array(
@@ -245,21 +238,47 @@ return array(
                         'assets' => array(
                             'logistics/fullcalendar/fullcalendar.css',
                         ),
+                        'filters' => array(
+                            'fullcalendar_css_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Css',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'fullcalendar_css.css',
+                        ),
                     ),
                     'logistics_js' => array(
                         'assets' => array(
                             'logistics/js/logistics.js',
                             'logistics/fullcalendar/fullcalendar.js',
                         ),
+                        'filters' => array(
+                            'logistics_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
+                        ),
                     ),
                     'minicolor_css' => array(
                         'assets' => array(
                             'logistics/minicolor/jquery.miniColors.css',
                         ),
+                        'filters' => array(
+                            'minicolor_css_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Css',
+                            ),
+                        ),
+                        'options' => array(
+                            'output' => 'minicolor_css.css',
+                        ),
                     ),
                     'minicolor_js' => array(
                         'assets' => array(
                             'logistics/minicolor/jquery.miniColors.min.js',
+                        ),
+                        'filters' => array(
+                            'minicolor_js_yui' => array(
+                                'name' => '\CommonBundle\Component\Assetic\Filter\Js',
+                            ),
                         ),
                     ),
                 ),

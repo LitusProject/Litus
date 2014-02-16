@@ -2,13 +2,13 @@
 
 {% block content %}
     <div class="page-alert">
-        <div class="flashmessage alert alert-success fade" id="entry_saved_success">
+        <div class="flashmessage alert alert-success alert-fixed-top fade" id="entry_saved_success">
             <button type="button" class="close">&times;</button>
             <div class="content">
                 {{ translate('Your entry has been recorded.') }}
             </div>
         </div>
-        <div class="flashmessage alert alert-error fade" id="entry_saved_error">
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="entry_saved_error">
             <button type="button" class="close">&times;</button>
             <div class="content">
                 {{ translate('Your entry couldn\'t be recorded.') }}
@@ -31,65 +31,71 @@
     <hr/>
 
     {% if not form %}
-        <div class="alert">
+        <div class="alert alert-warning">
             {{ translate(message) }}
         </div>
     {% else %}
         {% if doodleNotValid %}
-            <div class="flashmessage alert alert-error fade in">
-                <a class="close" data-dismiss="alert">&times;</a>
+            <div class="flashmessage alert alert-danger fade in">
+                <a class="close">&times;</a>
                 {{ translate('Your subscriptions couldn\'t be saved.') }}
             </div>
         {% endif %}
         {% do form.prepare() %}
         {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
             {{ formElement(form.get('csrf')) }}
+            {% import 'site/partials/form.twig' as forms %}
+            {% if authenticatedPerson is null %}
+                {{ forms.renderOther(form.get('first_name')) }}
+                {{ forms.renderOther(form.get('last_name')) }}
+                {{ forms.renderOther(form.get('email')) }}
+            {% endif %}
             <table class="table table-bordered table-striped" id="doodle">
-                <tr>
-                    <th>{{ translate('Date') }}</th>
-                    <th width="240px">{{ translate('Location') }}</th>
-                    <th width="250px">{{ translate('Info') }}</th>
-                    <th width="130px">{{ translate('Subscribe') }}</th>
-                </tr>
-                {% for field in specification.getFields() %}
-                    <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
-                        <td>
-                            {{ field.getLabel(language) }}
-                        </td>
-                        <td>
-                            {{ field.getLocation(language) }}
-                        </td>
-                        <td>
-                            {{ field.getExtraInformation(language)|slice(1, 30) }}
-                            {% if field.getExtraInformation(language) %}
-                                <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="icon-info-sign"></i></a>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if occupiedSlots[field.getId()] %}
-                                {% if specification.getNamesVisibleForOthers() %}
-                                    <i>{{ occupiedSlots[field.getId()] }}</i>
-                                {% else %}
-                                    <i>{{ translate('Occupied') }}</i>
-                                {% endif %}
-                            {% else %}
-                                <label class="checkbox" style="margin: 2px 0">
-                                    {{ formElement(form.get('field-' ~ field.getId())) }}
-                                </label>
-                            {% endif %}
-                        </td>
+<<<<<<< HEAD
+                <thead>
+                    <tr>
+                        <th>{{ translate('Date') }}</th>
+                        <th width="240px" class="hidden-xs">{{ translate('Location') }}</th>
+                        <th width="250px" class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
+                        <th width="130px">{{ translate('Subscribe') }}</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for field in specification.getFields() %}
+                        <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                            <td>
+                                {{ field.getLabel(language) }}
+                            </td>
+                            <td class="hidden-xs">
+                                {{ field.getLocation(language) }}
+                            </td>
+                            <td class="hidden-xs hidden-sm">
+                                {{ field.getExtraInformation(language)|slice(1, 30) }}
+                                {% if field.getExtraInformation(language) %}
+                                    <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                {% if occupiedSlots[field.getId()] %}
+                                    {% if specification.getNamesVisibleForOthers() %}
+                                        <i>{{ occupiedSlots[field.getId()] }}</i>
+                                    {% else %}
+                                        <i>{{ translate('Occupied') }}</i>
+                                    {% endif %}
+                                {% else %}
+                                    <label class="checkbox" style="margin: 2px 0">
+                                        {{ formElement(form.get('field-' ~ field.getId())) }}
+                                    </label>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
 
             {% if specification.canBeSavedBy(authenticatedPerson) %}
-                <div class="form-actions">
-                    <div class="row">
-                        <span class="label"></span>
-                        <span class="field">
-                            {{ formElement(form.get('submit')) }}
-                        </span>
-                    </div>
+                <div style="clear: both;text-align: center;">
+                    {{ formElement(form.get('submit')) }}
                 </div>
             {% endif %}
         {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
@@ -104,12 +110,12 @@
             });
 
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
-            $('.extraInformation').popover({'trigger': 'hover'});
+            $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
 
             $('#doodle label.checkbox').each(function () {
                 $(this).hide();
                 $(this).parent().append(
-                    $('<button>', {'class': 'btn btn-primary btn-small doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
+                    $('<button>', {'class': 'btn btn-primary btn-sm doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
                         e.preventDefault();
 
                         if ($(this).is(':disabled'))
@@ -127,7 +133,9 @@
 
                         toggleButton($(this), checkbox, !checkbox.is(':checked'));
 
+                        {% if authenticatedPerson is not null %}
                         saveRegistration();
+                        {% endif %}
                     })
                 );
 
@@ -147,6 +155,7 @@
             }
         }
 
+        {% if authenticatedPerson is not null %}
         function saveRegistration() {
             var data = {};
             $('#doodle input[type=checkbox]').each(function () {
@@ -166,7 +175,6 @@
                     $('#doodle tr.error').removeClass('error');
                     if (data !== undefined && data.errors) {
                         $.each(data.errors, function (key, value) {
-                            console.log(key);
                             $('#' + key).closest('tr').addClass('error');
                         });
                     }
@@ -176,5 +184,6 @@
                 $('#entry_saved_error').addClass('in');
             });
         }
+        {% endif %}
     </script>
 {% endblock %}

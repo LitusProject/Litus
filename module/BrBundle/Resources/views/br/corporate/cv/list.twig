@@ -1,29 +1,23 @@
 {% extends 'corporate/partials/cv.twig' %}
 
 {% block cv_content %}
-
-    {% for entry in entries %}
-
-        <div class="accordion-group accordion-group-entry" id="accordion-group-{{ entry.getId() }}">
-            <div class="accordion-heading">
-                <a class="accordion-toggle entry-toggle" data-toggle="collapse" data-parent="#accordion-study-{{ study.id }}" href="#body-entry-{{ entry.getId() }}">
-                    {{ entry.getFirstName() }} {{ entry.getLastName() }}
-                </a>
-            </div>
-            <div id="body-entry-{{ entry.getId() }}" class="accordion-body collapse">
-                <div class="accordion-inner">
-
-                    <div class="accordion" data-collapse-type="manual">
-
-                        {% import 'corporate/partials/showcv.twig' as cv %}
-                        {{ cv.displayEntry(entry) }}
-
+    <div class="panel-group" id="accordion">
+        {% for entry in entries %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="pannel-title entry-toggle" data-toggle="collapse" href="#body-entry-{{ entry.getId() }}">
+                        {{ entry.getFirstName() }} {{ entry.getLastName() }}
+                    </a>
+                </div>
+                <div id="body-entry-{{ entry.id }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="panel-group">
+                            {% import 'corporate/partials/showcv.twig' as cv %}
+                            {{ cv.displayEntry(entry, profilePath) }}
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
-
-    {% endfor %}
-
+        {% endfor %}
+    </div>
 {% endblock %}

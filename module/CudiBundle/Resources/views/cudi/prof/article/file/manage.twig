@@ -7,7 +7,7 @@
             {{ translate('The file was successfully uploaded!') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="file_upload_error">
+    <div class="flashmessage alert alert-danger fade" id="file_upload_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while uploading the file.') }}
@@ -19,7 +19,7 @@
             {{ translate('The file was successfully removed.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="file_removed_error">
+    <div class="flashmessage alert alert-danger fade" id="file_removed_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the file.') }}
@@ -39,7 +39,7 @@
         {{ translate('ISBN') }}: <b>{{ article.getISBN() }}</b>
     </p>
 
-    <table class="table table-bordered table-striped" id="articleFiles">
+    <table class="table table-striped" id="articleFiles">
         <thead>
             <tr>
                 <th width="200px">{{ translate('Name') }}</th>
@@ -70,54 +70,66 @@
     </div>
     <br class="clear" />
 
-    <div id="addFile" class="modal fade hide" style="width:700px;margin-left:-350px">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Add File') }}</h3>
-        </div>
-        <div class="modal-body">
-            {% import 'site/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success save">{{ translate('Save') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('Cancel') }}</button>
-        </div>
-    </div>
-
-    <div class="modal fade hide" id="progressModal">
-        <div class="modal-header">
-            <h3>{{ translate('Upload File') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('Your files are being uploaded.') }}
-            </p>
-            <p>
-                <div class="progress progress-striped active">
-                    <div class="bar" style="width: 100%;"></div>
+    <div id="addFile" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Add File') }}</h4>
                 </div>
-            </p>
+                <div class="modal-body">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(form) }}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Cancel') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="modal fade hide" id="removeFile">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Delete File') }}</h3>
+    <div class="modal fade" id="progressModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Upload File') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Your files are being uploaded.') }}
+                    </p>
+                    <p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
+                        </div>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('You are about to delete the following file') }}: <b class="fileName"></b> (<b class="fileDescription"></b>)!<br />
-                {{ translate('Please note that this operation cannot be undone!') }}
-            </p>
-            <p>
-                {{ translate('Are you sure you want to continue?') }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+    </div>
+
+    <div class="modal fade" id="removeFile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Delete File') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You are about to delete the following file') }}: <b class="fileName"></b> (<b class="fileDescription"></b>)!<br />
+                        {{ translate('Please note that this operation cannot be undone!') }}
+                    </p>
+                    <p>
+                        {{ translate('Are you sure you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -141,7 +153,7 @@
 
             $('#uploadFile').formUploadProgress({
                 onProgress: function (data) {
-                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
+                    $('#progressModal').find('.progress-bar').width(((data.current / data.total) * 100) + '%');
                 },
                 onSubmitted: function (data) {
                     if (data == undefined) {
@@ -151,13 +163,13 @@
                         $('.flashmessage').removeClass('in');
                         $('#file_upload_error').addClass('in');
                         $('#uploadFile').find('ul.errors').remove();
-                        $('#uploadFile').find('.control-group').removeClass('error');
+                        $('#uploadFile').find('.form-group').removeClass('error');
                         for(element in data.errors) {
                             var list = $('<ul>', {'class': 'errors'});
                             for (error in data.errors[element])
                                 list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-inline'}).append(list);
-                            $('#uploadFile').find('#' + element).closest('.control-group').addClass('error').find('.controls').append(div);
+                            var div = $('<div>', {'class': 'help-block'}).append(list);
+                            $('#uploadFile').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
                         }
                         $('#progressModal').permanentModal('hide');
                         $('#addFile').permanentModal('open');
@@ -186,7 +198,7 @@
                         {% endif %}
                         $('#progressModal').permanentModal('hide');
                         $('#addFile form')[0].reset();
-                        $('.fileupload').fileupload('clear');
+                        $('.fileinput').fileinput('clear');
                     }
                 },
                 onSubmit: function () {

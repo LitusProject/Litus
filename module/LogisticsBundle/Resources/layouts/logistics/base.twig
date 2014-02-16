@@ -1,161 +1,161 @@
 {{ doctype() }}
 
 <html lang="en">
-<head>
-    {{ headMeta() }}
-    {{ headTitle('Litus Logistics', 'PREPEND') }}
+    <head>
+        {{ headMeta() }}
+        {{ headTitle('Litus Logistics', 'PREPEND') }}
 
-    {{ headLink() }}
-</head>
+        {{ headLink() }}
+    </head>
 
-<body>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a href="{{ organizationUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
-            <ul class="nav">
-                {% if hasAccess('logistics_index', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('logistics_piano', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'logistics_piano' == getParam('controller') %} class="active" {% endif %}>
-                        <a href="{{ url("logistics_piano", {"language": language.getAbbrev()}) }}">{{ translate('Piano') }}</a>
-                    </li>
-                {% endif %}
-                {% if hasAccess('logistics_lease', 'index') %}
-                    <li {% if 'index' == getParam('action') and 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>
-                        <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
-                    </li>
-                {% endif %}
-            </ul>
-            <ul class="nav pull-right lang-nav visible-desktop">
-                <li class="dropdown" id="langDropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Language <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        {% for language in languages %}
-                            <li>
-                                <a href="{{ url(getParam('controller'), {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{{ organizationUrl }}" class="brand"><img src="/_logistics/img/logo.png" /></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        {% if hasAccess('logistics_index', 'index') %}
+                            <li {% if 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
                             </li>
-                        {% endfor %}
+                        {% endif %}
+                        {% if hasAccess('logistics_piano', 'index') %}
+                            <li {% if 'logistics_piano' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("logistics_piano", {"language": language.getAbbrev()}) }}">{{ translate('Piano') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('logistics_lease', 'index') %}
+                            <li {% if 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>
+                            </li>
+                        {% endif %}
                     </ul>
-                </li>
-            </ul>
-            <ul class="nav pull-right auth-nav">
-                {% if authenticatedPerson is not null %}
-                    <li class="dropdown" id="accountDropdown">
+                    <ul class="nav navbar-nav pull-right lang-nav hidden-sm hidden-xs">
+                        <li class="dropdown" id="langDropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Language <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                {% for language in languages %}
+                                    <li>
+                                        <a href="{{ url(getParam('controller'), {"language": language.getAbbrev()}) }}">{{ translate(language.getName()) }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right auth-nav">
+                        {% if authenticatedPerson is not null %}
+                            <li class="dropdown" id="accountDropdown">
 
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <span class="profile-wrapper">
-                                <i class="profile"></i>
-                            </span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="">
-                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="profile-wrapper">
+                                        <i class="profile"></i>
+                                    </span>
+                                    <span class="caret"></span>
                                 </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="">
+                                            <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="{{ url("logistics_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="{{ url("logistics_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                            </li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="dropdown" id="loginDropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            {{ translate('Login') }} <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
+                        {% else %}
+                            <li class="dropdown" id="loginDropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    {{ translate('Login') }} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-meny-right">
+                                    <li>
+                                        <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}
+                                            {{ translate('KU Leuven&mdash;Central Login') }}
+                                        {% endautoescape %}</a>
+                                    </li>
+                                    <hr/>
 
-
-                            <li>
-
-                                <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}
-                                    {{ translate('KU Leuven&mdash;Central Login') }}
-                                {% endautoescape %}</a>
-
-                            </li>
-                            <hr/>
-
-                            <li>
-                                {% do loginForm.prepare() %}
-                                {% autoescape false %}
-                                    {% set buttons = [] %}
-                                    {{ form().openTag(loginForm) }}
-                                        {% for element in loginForm.getElements() %}
-                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                                {{ formElement(element) }}
-                                            {% elseif element.getAttribute('type') == 'checkbox' %}
-                                                <div class="remember_me">
-                                                    <label>
+                                    <li>
+                                        {% do loginForm.prepare() %}
+                                        {% autoescape false %}
+                                            {% set buttons = [] %}
+                                            {{ form().openTag(loginForm) }}
+                                                {% for element in loginForm.getElements() %}
+                                                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
                                                         {{ formElement(element) }}
-                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                                    </label>
-                                                </div>
-                                            {% else %}
-                                                <div class="control-group {% if element.getMessages()|length > 0 %}error{% endif %}">
-                                                    <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                    <div class="controls">
-                                                        <div>{{ formElement(element) }}</div>
-                                                        {% if element.getMessages()|length > 0 %}
-                                                            <div class="help-inline">
-                                                                {{ formElementErrors(element) }}
+                                                    {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                        <div class="remember_me">
+                                                            <label>
+                                                                {{ formElement(element) }}
+                                                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                            </label>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                            <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                            <div>
+                                                                <div>{{ formElement(element) }}</div>
+                                                                {% if element.getMessages()|length > 0 %}
+                                                                    <div class="help-block">
+                                                                        {{ formElementErrors(element) }}
+                                                                    </div>
+                                                                {% endif %}
                                                             </div>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {{ form().closeTag() }}
-                                {% endautoescape %}
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {{ form().closeTag() }}
+                                        {% endautoescape %}
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>
-                    </li>
-                {% endif %}
-            </ul>
+                        {% endif %}
+                    </ul>
 
-        </div>
-    </div>
-</nav>
+                </div>
+            </div>
+        </nav>
 
-<header>
-    <div class="inner">
+        <header>
+            <div class="container">
+                <h1>{{ translate('Logistics') }}</h1>
+            </div>
+        </header>
+
         <div class="container">
-            <h1>{{ translate('Logistics') }}</h1>
+            {% include 'logistics/partials/flashMessenger.twig' %}
+
+            <div id="content_controller">
+                {% block content %} {% endblock %}
+            </div>
         </div>
-    </div>
-</header>
 
-<div class="container">
-    {% include 'logistics/partials/flashMessenger.twig' %}
+        <footer>
+            Litus Logistics | Code by <a href="http://litus.cc">Litus</a>
+        </footer>
 
-    <div id="content_controller">
-        {% block content %} {% endblock %}
-    </div>
+        {{ inlineScript() }}
 
-    <footer>
-        Litus Logistics | Code by <a href="http://litus.cc">Litus</a>
-    </footer>
-</div>
-
-{{ inlineScript() }}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.dropdown form').on('click', function (e) {
-                e.stopPropagation()
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.dropdown form').on('click', function (e) {
+                    e.stopPropagation()
+                });
             });
-        });
-    </script>
-{% endblock %}
+        </script>
 
-</body>
+        {% block content_script %}{% endblock %}
+    </body>
 </html>

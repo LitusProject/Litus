@@ -51,7 +51,8 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('username');
         $field->setLabel('Username')
-            ->setRequired();
+            ->setRequired()
+            ->setAttribute('data-help', 'The unique user name.');
         $this->add($field);
 
         $field = new Text('first_name');
@@ -89,7 +90,8 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('roles');
         $field->setLabel('Groups')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->createRolesArray());
+            ->setAttribute('options', $this->createRolesArray())
+            ->setAttribute('data-help', 'The roles of this user, gives this user access to parts of the website.');
         $this->add($field);
     }
 

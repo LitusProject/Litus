@@ -41,7 +41,7 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
         $this->setAttribute('id', $name);
         $this->setLabelAttributes(
             array(
-                'class' => 'control-label',
+                'class' => 'col-sm-2 control-label',
             )
         );
     }

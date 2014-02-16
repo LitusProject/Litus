@@ -3,28 +3,28 @@
 {% block page_content %}
     <h1>{{ translate('Internships') }}</h1>
 
-        <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-            {% for internship in paginator %}
-                <tr>
-                    <td width="120">
-                        <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
-                            {% if internship.getCompany().getLogo() is not empty %}
-                                <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
-                            {% else %}
-                                <center class="company-name">{{ internship.getCompany().getName() }}</center>
-                            {% endif %}
-                        </a>
-                    </td>
+    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+        {% for internship in paginator %}
+            <tr>
+                <td width="120">
+                    <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                        {% if internship.getCompany().getLogo() is not empty %}
+                            <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                        {% else %}
+                            <center class="company-name">{{ internship.getCompany().getName() }}</center>
+                        {% endif %}
+                    </a>
+                </td>
 
-                    <td>
-                        <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
-                        <div class="pull-right">{{ translate('Last updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                        <br/>{% autoescape false %}{{ internship.getSummary(200) }}{% endautoescape %}
-                    </td>
-                </tr>
+                <td>
+                    <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
+                    <br/>
+                    <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                    <br/>{% autoescape false %}{{ internship.getSummary(200) }}{% endautoescape %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 
-            {% endfor %}
-        </table>
-
-        {% include 'site/partials/paginationControl.twig' %}
+    {% include 'site/partials/paginationControl.twig' %}
 {% endblock %}

@@ -79,7 +79,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('person');
         $field->setLabel('Person')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
@@ -93,19 +92,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('guest_first_name');
         $field->setLabel('First Name')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $guestForm->add($field);
 
         $field = new Text('guest_last_name');
         $field->setLabel('Last Name')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $guestForm->add($field);
 
         $field = new Text('guest_email');
         $field->setLabel('Email')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $guestForm->add($field);
 

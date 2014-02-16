@@ -55,24 +55,41 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $academicYear = $this->getAcademicYear();
+        $onlyArchive = false;
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the CVs of this year.'
-                )
-            );
+            if (null === $this->getParam('academicyear')
+                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+                $this->redirect()->toRoute(
+                    'br_corporate_cv',
+                    array(
+                        'action' => 'grouped',
+                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                    )
+                );
 
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
+                return new ViewModel();
+            } elseif (null === $this->getParam('academicyear')
+                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                $onlyArchive = true;
+            } else {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'You don\'t have access to the CVs of this year.'
+                    )
+                );
 
-            return new ViewModel();
+                $this->redirect()->toRoute(
+                    'br_corporate_index',
+                    array(
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+
+                return new ViewModel();
+            }
         }
 
         $result = Util::getGrouped($this->getEntityManager(), $academicYear);
@@ -81,6 +98,10 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'academicYear' => $academicYear,
                 'studies' => $result,
+                'onlyArchive' => $onlyArchive,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
@@ -109,24 +130,41 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $academicYear = $this->getAcademicYear();
+        $onlyArchive = false;
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the CVs of this year.'
-                )
-            );
+            if (null === $this->getParam('academicyear')
+                    && sizeof($person->getCompany()->getCvBookYears()) > 0) {
+                $this->redirect()->toRoute(
+                    'br_corporate_cv',
+                    array(
+                        'action' => 'list',
+                        'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
+                    )
+                );
 
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
+                return new ViewModel();
+            } elseif (null === $this->getParam('academicyear')
+                    && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
+                $onlyArchive = true;
+            } else {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'You don\'t have access to the CVs of this year.'
+                    )
+                );
 
-            return new ViewModel();
+                $this->redirect()->toRoute(
+                    'br_corporate_index',
+                    array(
+                        'language' => $this->getLanguage()->getAbbrev(),
+                    )
+                );
+
+                return new ViewModel();
+            }
         }
 
         $entries = $this->_getList($academicYear);
@@ -138,6 +176,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 'profilePath' =>$this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
+                'onlyArchive' => $onlyArchive,
             )
         );
     }

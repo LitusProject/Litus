@@ -1,12 +1,9 @@
 {% extends 'site/base.twig' %}
-{% block content %}
-    <div class="row-fluid page">
-        <div class="span12">
-            <div class="page-header">
-                <h1>{{ translate('CV Book') }}</h1>
-            </div>
 
-            {{ translate('Your entry has been recorded in the CV Book.') }}
-        </div>
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('CV Book') }}</h1>
     </div>
+
+    {{ translate('Your entry has been recorded in the CV Book.') }}
 {% endblock %}

@@ -323,7 +323,7 @@ Disallow: /admin/*
                         'index'
                     ),
                     'common_admin_location' => array(
-                        'add', 'edit', 'delete', 'manage'
+                        'add', 'edit', 'delete', 'geocoding', 'manage'
                     ),
                     'common_admin_person' => array(
                         'typeahead'
@@ -338,7 +338,7 @@ Disallow: /admin/*
                         'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
                     ),
                     'common_account' => array(
-                        'activate', 'edit', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                        'activate', 'edit', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
                     ),
                     'common_session' => array(
                         'manage', 'expire'
@@ -375,6 +375,9 @@ Disallow: /admin/*
                         'index'
                     ),
                     'cudi_install' => array(
+                        'index'
+                    ),
+                    'door_install' => array(
                         'index'
                     ),
                     'form_install' => array(

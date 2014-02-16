@@ -98,7 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '256MB',
+                                'max' => '256MB',
                             ),
                         ),
                     ),
