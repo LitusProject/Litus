@@ -487,6 +487,20 @@ return array(
                     ),
                 ),
             ),
+            'cudi_admin_special_action' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/admin/cudi/special[/:action[/:id]][/]',
+                    'contraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'cudi_admin_special_action',
+                        'action'     => 'manage',
+                    ),
+                ),
+            ),
             'cudi_admin_mail' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -882,6 +896,7 @@ return array(
             'cudi_admin_stock_retour'                       => 'CudiBundle\Controller\Admin\Stock\RetourController',
             'cudi_admin_stock_order'                        => 'CudiBundle\Controller\Admin\Stock\OrderController',
             'cudi_admin_prof_action'                        => 'CudiBundle\Controller\Admin\Prof\ActionController',
+            'cudi_admin_special_action'                     => 'CudiBundle\Controller\Admin\SpecialActionController',
             'cudi_admin_mail'                               => 'CudiBundle\Controller\Admin\MailController',
 
             'cudi_sale_sale'                                => 'CudiBundle\Controller\Sale\SaleController',

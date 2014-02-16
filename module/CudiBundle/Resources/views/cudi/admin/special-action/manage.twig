@@ -1,0 +1,26 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/special-action/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+    </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_special_action', 'irreeel') %}
+            <div class="sidebox">
+                <div class="title">Assign Ir.Reëel</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to assign Ir.Reëel article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_special_action', {"action": "irreeel"}) }}">&rarr; Assign Ir.Reëel</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
