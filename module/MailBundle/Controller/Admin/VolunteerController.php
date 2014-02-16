@@ -42,7 +42,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
     {
         $currentYear = $this->getCurrentAcademicYear();
 
-        $form = new MailForm();
+        $form = new MailForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -68,9 +68,16 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 
                 $mail->addTo($formData['from']);
 
+                $minimumShiftAmount = 1;
+
+                foreach ($rankingCriteria as $criteria) {
+                    if($criteria["name"] == $formData['to'])
+                        $minimumShiftAmount = $criteria["limit"];
+                }
+
                 $volunteers = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                    ->findAllByCountMinimum($currentYear, 1);
+                    ->findAllByCountMinimum($currentYear, $minimumShiftAmount);
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()

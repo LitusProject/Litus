@@ -10,11 +10,13 @@
         </div>
         <div class="collapse navbar-collapse subnav-collapse">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="{{ url('page', {"parent": page.getParent().getName(), "name": page.getName()}) }}">
-                        <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span> {{ page.getTitle(language) }}
-                    </a>
-                </li>
+                {% if page.getParent() is not null %}
+                    <li>
+                        <a href="{{ url('page', {"parent": page.getParent().getParent().getName(), "name": page.getParent().getName()}) }}">
+                            <span class="glyphicon glyphicon-home" style="margin-right: 10px;"></span> {{ page.getParent().getTitle(language) }}
+                        </a>
+                    </li>
+                {% endif %}
                 {% for item in submenu %}
                     {% if 'category' == item.type %}
                         <li class="dropdown">
