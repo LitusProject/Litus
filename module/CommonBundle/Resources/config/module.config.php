@@ -77,6 +77,7 @@ return Config::create(
             ),
             'invokables' => array(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
+                'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
             ),
         ),
         'translator' => array(
