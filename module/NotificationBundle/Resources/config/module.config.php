@@ -16,61 +16,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'notification_install' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/install/notification[/]',
-                    'constraints' => array(
-                    ),
-                    'defaults' => array(
-                        'controller' => 'notification_install',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'notification_admin_notification' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/site/notification[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'notification_admin_notification',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            'notification_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            'orm_default' => array(
-                'drivers' => array(
-                    'NotificationBundle\Entity' => 'orm_annotation_driver'
-                ),
-            ),
-            'orm_annotation_driver' => array(
-                'paths' => array(
-                    'notificationbundle' => __DIR__ . '/../../Entity',
-                ),
-            ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'notification_install'            => 'NotificationBundle\Controller\Admin\InstallController',
-            'notification_admin_notification' => 'NotificationBundle\Controller\Admin\NotificationController',
-        ),
-    ),
+namespace NotificationBundle;
+
+use CommonBundle\Component\Module\Config;
+
+return Config::create(
+    array(
+        'namespace'         => __NAMESPACE__,
+        'directory'         => __DIR__,
+    )
 );
