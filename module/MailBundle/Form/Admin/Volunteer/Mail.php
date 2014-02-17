@@ -62,9 +62,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Select('to');
-        $field->setLabel('Volunteers From And Above')
+        $field->setLabel('Minimum Rank')
             ->setRequired()
-            ->setAttribute('options', $this->_createVolunteerArray());
+            ->setAttribute('options', $this->_createRankArray());
         $this->add($field);
 
         $field = new Text('subject');
@@ -132,7 +132,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         return $inputFilter;
     }
 
-    private function _createVolunteerArray()
+    private function _createRankArray()
     {
         $rankingCriteria = unserialize($this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -140,7 +140,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
         $volunteers = array();
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
-            $volunteers[$i+1] = $rankingCriteria[$i]["name"];
+            $volunteers[$i+1] = ucfirst($rankingCriteria[$i]['name']);
         }
         return $volunteers;
     }
