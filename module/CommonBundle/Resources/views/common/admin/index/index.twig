@@ -181,7 +181,7 @@
         $(document).ready(function () {
             $('.item .delete').click(expireSession);
 
-            {% if piwik is not null and visitsGraph['dataset']|length > 1 %}
+            {% if piwik is not null and piwik['visitsGraph']['dataset']|length > 1 %}
                 drawVisitsGraph();
             {% endif %}
 
