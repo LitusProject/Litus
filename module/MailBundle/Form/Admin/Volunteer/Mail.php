@@ -139,7 +139,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->getConfigValue('shift.ranking_criteria')
         );
         $volunteers = array();
-        $volunteers[0] = "bronze";
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             $volunteers[$i+1] = $rankingCriteria[$i]["name"];
         }
