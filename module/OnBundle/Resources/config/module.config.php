@@ -16,76 +16,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'on_install' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/install/on[/]',
-                    'constraints' => array(
-                    ),
-                    'defaults' => array(
-                        'controller' => 'on_install',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'on_admin_slug' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/on/slug[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[a-z0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'on_admin_slug',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'on_redirect' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/on[/:name][/]',
-                    'constraints' => array(
-                        'name'  => '[a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'on_redirect',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            'on_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            'odm_default' => array(
-                'drivers' => array(
-                    'OnBundle\Document' => 'odm_annotation_driver'
-                ),
-            ),
-            'odm_annotation_driver' => array(
-                'paths' => array(
-                    'onbundle' => __DIR__ . '/../../Document',
-                ),
-            ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'on_install'    => 'OnBundle\Controller\Admin\InstallController',
-            'on_admin_slug' => 'OnBundle\Controller\Admin\SlugController',
+namespace OnBundle;
 
-            'on_redirect'   => 'OnBundle\Controller\RedirectController',
-        ),
-    ),
+use CommonBundle\Component\Module\Config;
+
+return Config::create(
+    array(
+        'namespace'         => __NAMESPACE__,
+        'directory'         => __DIR__,
+        'has_entities'      => false,
+        'has_documents'     => true,
+    )
 );

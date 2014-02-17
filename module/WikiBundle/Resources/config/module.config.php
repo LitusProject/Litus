@@ -16,48 +16,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'wiki_install' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/install/wiki[/]',
-                    'constraints' => array(
-                    ),
-                    'defaults' => array(
-                        'controller' => 'wiki_install',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'wiki_auth' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/wiki/auth[/:action[/identification/:identification[/hash/:hash]][/redirect/:redirect]][/]',
-                    'constraints' => array(
-                        'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'identification' => '[mrsu][0-9]{7}',
-                        'hash'           => '[a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'wiki_auth',
-                        'action'     => 'login',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            'wiki_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'wiki_install' => 'WikiBundle\Controller\Admin\InstallController',
+namespace WikiBundle;
 
-            'wiki_auth'    => 'WikiBundle\Controller\AuthController',
-        ),
-    ),
+use CommonBundle\Component\Module\Config;
+
+return Config::create(
+    array(
+        'namespace'         => __NAMESPACE__,
+        'directory'         => __DIR__,
+        'has_entities'      => false,
+    )
 );
