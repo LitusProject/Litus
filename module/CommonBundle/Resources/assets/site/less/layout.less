@@ -248,6 +248,10 @@ footer {
             }
         }
     }
+
+    .icons {
+        text-align: right;
+    }
 }
 
 .alert {
@@ -302,4 +306,14 @@ table {
 
 .disabled {
     cursor: not-allowed;
+}
+
+@media(min-width: @screen-md-min) {
+    header {
+        .site-link {
+            display: block;
+            width: 940px;
+            margin: 0px auto;
+        }
+    }
 }
