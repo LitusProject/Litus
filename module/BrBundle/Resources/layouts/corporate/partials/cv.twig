@@ -135,23 +135,23 @@
 
         function performSearch(text) {
             $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
+                $('.panel-group-entry').hide().removeClass('shown');
+                $('.panel-study').show();
                 $.each(data, function(index, element) {
-                    $('#accordion-group-' + element).show();
+                    $('#accordion-group-' + element).show().addClass('shown');
                 });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+                $('.panel-study:not(:has(.panel-group-entry.shown))').hide();
             }, 'json').error(errorSearch);
         }
 
         function filterGrade(min, max) {
             $.post('{{ url('br_corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
+                $('.panel-group-entry').hide().removeClass('shown');
+                $('.panel-study').show();
                 $.each(data, function(index, element) {
-                    $('#accordion-group-' + element).show();
+                    $('#accordion-group-' + element).show().addClass('shown');
                 });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+                $('.panel-study:not(:has(.panel-group-entry.shown))').hide();
             }, 'json').error(errorSearch);
         }
 

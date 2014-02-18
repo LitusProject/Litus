@@ -9,11 +9,11 @@
         </div>
     </div>
 
-    <div style="text-align:right;margin-bottom: 10px" class="form-inline">
+    <div style="text-align:right;margin-bottom: 10px;" class="form-inline">
         <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
     </div>
 
-    <div id="companies" class="row">
+    <div id="companies" class="row" style="min-height: 30px">
     </div>
 
 {% endblock %}
@@ -46,7 +46,7 @@
                 $('#companies').html('');
                 $.each(data, function(index, element) {
                     $('#companies').append(
-                        $('<div>', {'class': 'col-xs-6 col-md-2'}).append(
+                        $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
                             $('<div>', {'class': 'thumbnail'}).append(
                                 $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
                                     $('<span>').append(

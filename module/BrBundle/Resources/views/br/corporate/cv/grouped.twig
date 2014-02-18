@@ -3,7 +3,7 @@
 {% block cv_content %}
     <div class="panel-group" id="accordion">
         {% for study in studies %}
-            <div class="panel panel-default">
+            <div class="panel panel-default panel-study">
                 <div class="panel-heading">
                     <a class="pannel-title" data-toggle="collapse" href="#body-study-{{ study.id }}">
                         {{ study.name }}
@@ -13,7 +13,7 @@
                     <div class="panel-body">
                         <div class="panel-group" id="accordion-study-{{ study.id }}">
                             {% for entry in study.entries %}
-                                <div class="panel panel-default" id="accordion-group-{{ entry.getId() }}">
+                                <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">
                                     <div class="panel-heading">
                                         <a class="pannel-title entry-toggle" data-toggle="collapse" href="#body-entry-{{ entry.getId() }}">
                                             {{ entry.getFirstName() }} {{ entry.getLastName() }}
