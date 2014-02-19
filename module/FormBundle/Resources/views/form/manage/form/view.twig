@@ -20,6 +20,12 @@
 
     {% if authenticatedPerson is not null %}
         <div class="pull-right">
+            {% if hasAccess('form_manage', 'add') and viewer.isEdit() %}
+                <a href="{{ url("form_manage", {"action" : "add", "id" : form.getId()}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    {{ translate("Add") }}
+                </a>
+            {% endif %}
             {% if hasAccess('form_manage', 'download') %}
                 <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download-file btn btn-default">
                     <span class="glyphicon glyphicon-arrow-down"></span>

@@ -26,6 +26,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
+    FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -109,6 +110,68 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'entries'  => $entries,
                 'viewer'   => $viewerMap,
                 'mailForm' => $mailForm,
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if(!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'doodle') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'doodle',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $formSpecification);
+
+        if (!$viewerMap || !$viewerMap->isEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to edit the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'view',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new SpecifiedFormAdd($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'formSpecification' => $formSpecification,
             )
         );
     }
