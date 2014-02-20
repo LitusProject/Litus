@@ -21,6 +21,7 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Form\Admin\Study\Add as AddForm,
     SyllabusBundle\Entity\Study,
     Zend\View\Model\ViewModel;
 
@@ -60,6 +61,17 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 'currentAcademicYear' => $academicYear,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        $form = new AddForm($this->getEntityManager());
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }
