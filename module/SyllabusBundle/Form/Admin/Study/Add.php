@@ -171,5 +171,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
+
+        return $inputFilter;
     }
 }

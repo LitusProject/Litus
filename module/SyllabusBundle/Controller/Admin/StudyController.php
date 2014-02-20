@@ -67,11 +67,24 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
         $form = new AddForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                
+            }
+        }
 
         return new ViewModel(
             array(
                 'form' => $form,
+                'currentAcademicYear' => $academicYear,
             )
         );
     }
