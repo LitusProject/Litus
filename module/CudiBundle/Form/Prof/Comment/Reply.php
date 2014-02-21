@@ -42,7 +42,6 @@ class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Textarea('reply');
         $field->setLabel('Reply')
-            ->setAttribute('class', 'input-xlarge')
             ->setAttribute('rows', 5)
             ->setRequired();
         $this->add($field);

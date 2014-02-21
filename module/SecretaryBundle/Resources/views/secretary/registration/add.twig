@@ -7,78 +7,82 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    <div class="row page">
-        <div class="span12">
-            {% if form %}
-                {% if organizations|length > 1 or enableOtherOrganization %}
-                    <div id="organizationSelector">
-                        <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
-                        <ul style="list-style: none; width: 300px; margin: 0 auto;">
-                            {% if enableOtherOrganization %}
-                                <li style="margin-bottom: 10px;">
-                                    <a class="thumbnail" id="organization-0" data-id="0" href="#" style="padding: 20px;text-decoration: none;">
-                                        {{ translate('Other') }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% for organization in organizations %}
-                                <li style="margin-bottom: 10px;">
-                                    <a class="thumbnail" id="organization-{{ organization.getId() }}" data-id="{{ organization.getId() }}" href="#" style="padding: 20px;text-decoration: none;">
-                                        {{ organization.getName() }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-                <div id="registerForm"{% if organizations|length > 1 or enableOtherOrganization %} style="display: none;"{% endif %}>
-                    {% import 'site/partials/form.twig' as forms %}
-                    {{ forms.renderForm(form) }}
+    {% if form %}
+        {% if organizations|length > 1 or enableOtherOrganization %}
+            <div id="organizationSelector">
+                <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
+                <ul style="list-style: none; width: 300px; margin: 0 auto;">
+                    {% if enableOtherOrganization %}
+                        <li style="margin-bottom: 10px;">
+                            <a class="thumbnail" id="organization-0" data-id="0" href="#" style="padding: 20px;text-decoration: none;">
+                                {{ translate('Other') }}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for organization in organizations %}
+                        <li style="margin-bottom: 10px;">
+                            <a class="thumbnail" id="organization-{{ organization.getId() }}" data-id="{{ organization.getId() }}" href="#" style="padding: 20px;text-decoration: none;">
+                                {{ organization.getName() }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div id="registerForm"{% if organizations|length > 1 or enableOtherOrganization %} style="display: none;"{% endif %}>
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    {% else %}
+        <div style="text-align: center;">
+            <p style="text-align: center;">
+                {% autoescape false %}
+                    {{ translate('To register, please login first with your KU Leuven account.') }}
+                {% endautoescape %}
+            </p>
+            <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
+        </div>
+    {% endif %}
+
+    <div id="modalMemberWarning" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Become a Member') }}</h4>
                 </div>
-            {% else %}
-                <div style="text-align: center;">
-                    <p style="text-align: center;">
-                        {% autoescape false %}
-                            {{ translate('To register, please login first with your KU Leuven account.') }}
-                        {% endautoescape %}
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
                     </p>
-                    <a class="btn btn-info" href="{{ registerShibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape  %}</a>
+                    <p>
+                        {{ translate('Are you sure you want to continue?') }}
+                    </p>
                 </div>
-            {% endif %}
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalMemberWarning" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Become a Member') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ translate('You haven\'t checked the option to become a member. Being a member has many advantages.') }}
-            </p>
-            <p>
-                {{ translate('Are you sure you want to continue?') }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
-        </div>
-    </div>
-
-    <div id="modalTermsAndCoditions" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Terms and Conditions') }}</h3>
-        </div>
-        <div class="modal-body">
-            <p>
-                {{ markdown(termsAndConditions) }}
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">{{ translate('Close') }}</button>
+    <div id="modalTermsAndCoditions" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Terms and Conditions') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ markdown(termsAndConditions) }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -97,19 +101,19 @@
                     e.preventDefault();
                     $('#organizationSelector').hide();
                     $('#registerForm').show();
-                    $('#registerForm #organization').val($(this).data('id')).closest('.control-group').hide();
+                    $('#registerForm #organization').val($(this).data('id')).closest('.form-group').hide();
 
                     if ($(this).data('id') == 0) {
-                        $('#registerForm #become_member').closest('.control-group').hide();
+                        $('#registerForm #become_member').closest('.form-group').hide();
                         $('#registerForm #become_member').prop('checked', false);
                     } else {
                         $('#registerForm #become_member').prop('checked', true);
-                        $('#registerForm #become_member').closest('.control-group').show();
+                        $('#registerForm #become_member').closest('.form-group').show();
                         $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$(this).data('id')]));
                     }
                 });
             {% else %}
-                $('#registerForm #organization').closest('.control-group').hide();
+                $('#registerForm #organization').closest('.form-group').hide();
                 $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
             {% endif %}
 
@@ -145,8 +149,8 @@
                 $('#organization-0').click();
             {% endif %}
 
-            $('#university_email').wrap('<div class=\"input-append\" />');
-            $('#university_email').after('<span class=\"add-on\">{{ studentDomain }}</span>');
+            $('#university_email').wrap('<div class=\"input-group\" />');
+            $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
 
             $('#first_name').blur(nameChange);
             $('#last_name').blur(nameChange);
@@ -158,18 +162,18 @@
 
         function cityChange() {
             var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.control-group').hide();
+            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.form-group').hide();
             if (city != 0)
-                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.control-group').show();
+                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.form-group').show();
         }
 
         function toggleMember() {
             if ($('#become_member').is(':checked'))
-                $('#organization_info .control-group').show();
+                $('#organization_info .form-group').show();
             else
-                $('#organization_info .control-group').hide();
-            $('#become_member, #conditions').closest('.control-group').show();
-            $('#registerForm #organization').closest('.control-group').hide();
+                $('#organization_info .form-group').hide();
+            $('#become_member, #conditions').closest('.form-group').show();
+            $('#registerForm #organization').closest('.form-group').hide();
         }
     </script>
 {% endblock %}

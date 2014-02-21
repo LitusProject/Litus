@@ -9,9 +9,9 @@
 
             $(this).find('.modal-header .close').toggle(options.closable);
 
-            if ($(this).data('modal')) {
-                $(this).data('modal').options.keyboard = options.closable;
-                $(this).data('modal').options.backdrop = options.closable ? true : 'static';
+            if ($(this).data('bs.modal')) {
+                $(this).data('bs.modal').options.keyboard = options.closable;
+                $(this).data('bs.modal').options.backdrop = options.closable ? true : 'static';
                 $(this).modal();
             } else {
                 $(this).modal({

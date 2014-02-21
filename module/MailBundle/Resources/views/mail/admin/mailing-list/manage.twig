@@ -32,7 +32,7 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th>Action</th>
+                    <th width="70px">Action</th>
                 </tr>
             </table>
         </div>
@@ -133,7 +133,7 @@
             var $this = $(this);
             e.preventDefault();
             var removeList = $('#removeList');
-            removeList.find('.listName').html($(this).data('listName'));
+            removeList.find('.listName').html($(this).data('name'));
             removeList.find('.cancel').one('click', function () {
                 removeList.modal('hide');
             });

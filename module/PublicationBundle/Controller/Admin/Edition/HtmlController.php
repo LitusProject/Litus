@@ -224,7 +224,13 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
-        $this->_rrmdir($edition->getImagesDirectory());
+        $publicFilePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_html_directory');
+        $filePath = 'public' . $publicFilePath;
+
+        if (file_exists($filePath . $edition->getFileName()))
+            $this->_rrmdir($filePath . $edition->getFileName());
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 

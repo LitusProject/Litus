@@ -20,7 +20,7 @@ namespace CommonBundle\Component\FlashMessenger;
 
 class FlashMessage
 {
-    const ERROR = 'error';
+    const ERROR = 'danger';
     const WARNING = 'warning';
     const SUCCESS = 'success';
     const NOTICE = 'info';

@@ -3,10 +3,10 @@
         $('.count').each(function() {
             if (getRemaining($(this)) < 0) {
                 enabled = false;
-                $(this).closest('.control-group').addClass('error');
+                $(this).closest('.form-group').addClass('error');
             } else {
-                if ($(this).closest('.control-group').find('.help-inline ul li').length == 0)
-                    $(this).closest('.control-group').removeClass('error');
+                if ($(this).closest('.form-group').find('.help-block ul li').length == 0)
+                    $(this).closest('.form-group').removeClass('error');
             }
         });
         if (enabled) {

@@ -1,10 +1,18 @@
 {% extends 'corporate/base.twig' %}
 
 {% block content %}
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div class="subnav nav-collapse">
-                <ul class="nav" id="cvYearNav">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".academic_year_navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse academic_year_navbar-collapse">
+                <ul class="nav navbar-nav" id="cvYearNav">
                     {% if authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0 %}
                         <li {% if onlyArchive %}class="active"{% endif %}><a href="#" id="cvArchiveNav">{{ translate('Archive') }}</a></li>
                     {% endif %}
@@ -18,10 +26,18 @@
 
     {% if not onlyArchive %}
         <div id="cvYearContent">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="subnav nav-collapse">
-                        <ul class="nav">
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".cv_style_navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse cv_style_navbar-collapse">
+                        <ul class="nav navbar-nav">
                             {% if hasAccess('br_corporate_cv', 'grouped') %}
                                 <li {% if getParam("action") == "grouped" %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": "grouped", "academicyear": getParam('year')}) }}">{{ translate('By Study') }}</a></li>
                             {% endif %}
@@ -33,19 +49,19 @@
                 </div>
             </div>
 
-            <div class="flashmessage alert alert-error full_width search_error hide">
+            <div class="flashmessage alert alert-danger full_width search_error hide">
                 <div class="title">{{ translate('Error') }}</div>
                 <div class="content">
                     <p>{{ translate('An error occurred while trying to perform the search.') }}</p>
                 </div>
             </div>
 
-            <div style="margin-bottom: 20px; text-align: right;">
-                <select style="margin-bottom: 0px" id="searchtype" name="searchtype">
+            <div style="margin-bottom: 20px; text-align: right;" class="form-inline">
+                <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
                     <option value="text">{{ translate('By Name') }}</option>
                     <option value="grade">{{ translate('By Minimum Grade') }}</option>
                 </select>
-                <input id="searchbox" type="text" class="search-query" placeholder="{{ translate('Search') }}">
+                <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
             </div>
 
             {% block cv_content %} {% endblock %}
@@ -54,17 +70,17 @@
 
     <div id="cvArchive" {% if not onlyArchive %}style="display: none;"{% endif %}>
         <p>{{ translate('The following years are available from the CV Book archive:') }}</p>
-        <ul class="thumbnails">
+        <div class="row">
             {% for key,archiveYear in cvArchiveYears %}
                 {% if key in authenticatedPerson.getCompany().getCvBookArchiveYears() %}
-                    <li>
-                        <center>
-                            <a class="thumbnail span2" style="height: 70px;line-height: 70px" href="{{ url('br_corporate_cv', {'action': 'downloadArchive', 'academicyear': archiveYear.full_year}) }}">{{ archiveYear.full_year }}</a>
-                        </center>
-                    </li>
+                    <div class="col-xs-6 col-md-3">
+                        <div class="thumbnail" style="text-align: center">
+                            <a style="height: 70px; line-height: 70px; display: block;" href="{{ url('br_corporate_cv', {'action': 'downloadArchive', 'academicyear': archiveYear.full_year}) }}">{{ archiveYear.full_year }}</a>
+                        </div>
+                    </div>
                 {% endif %}
             {% endfor %}
-        </ul>
+        </div>
     </div>
 {% endblock %}
 
@@ -119,23 +135,23 @@
 
         function performSearch(text) {
             $.post('{{ url('br_corporate_cv', {"action": "search"})}}string/' + text, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
+                $('.panel-group-entry').hide().removeClass('shown');
+                $('.panel-study').show();
                 $.each(data, function(index, element) {
-                    $('#accordion-group-' + element).show();
+                    $('#accordion-group-' + element).show().addClass('shown');
                 });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+                $('.panel-study:not(:has(.panel-group-entry.shown))').hide();
             }, 'json').error(errorSearch);
         }
 
         function filterGrade(min, max) {
             $.post('{{ url('br_corporate_cv', {"action": "search"})}}min/' + min + '/max/' + max, function (data) {
-                $('.accordion-group-entry').hide();
-                $('.accordion-group-study').show();
+                $('.panel-group-entry').hide().removeClass('shown');
+                $('.panel-study').show();
                 $.each(data, function(index, element) {
-                    $('#accordion-group-' + element).show();
+                    $('#accordion-group-' + element).show().addClass('shown');
                 });
-                $('.accordion-group-study:not(:has(.accordion-group-entry:visible))').hide();
+                $('.panel-study:not(:has(.panel-group-entry.shown))').hide();
             }, 'json').error(errorSearch);
         }
 

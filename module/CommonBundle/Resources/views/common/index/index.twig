@@ -3,11 +3,8 @@
 {% block content %}
     {% if bookings is not null %}
         <div class="alert alert-success">
-            <p class="pull-right hidden-phone">
-                <a href="{{ url('cudi_booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
-            </p>
-
             <p>
+                <a class="pull-right hidden-xs hidden-sm" href="{{ url('cudi_booking') }}" style="color:inherit">{{ translate('View Bookings') }}</a>
                 <b>{{ translate('New bookings have been assigned to you, and you can go and collect them.') }}</b>
             </p>
 
@@ -25,20 +22,28 @@
         </div>
     {% endfor %}
 
-    <div class="row-fluid">
-        <div class="span4">
-            <a href="{{ url('calendar') }}"><img class="heading-icon" src="/_site/img/glyphicons-calendar.png" /></a>
-            <h2>{{ translate('Calendar') }}</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <a class="heading" href="{{ url('calendar') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ translate('Calendar') }}
+                </h2>
+            </a>
 
             {% for day in calendarItems %}
-                <div class="item">
-                    <span class="date left">{{ dateLocalized(day.date, 'd MMM') }}</span>
+                <div class="item date-left">
+                    <h4 class="date left">{{ dateLocalized(day.date, 'd MMM') }}</h4>
 
-                    <p class="calendarItem">
+                    <div class="dayItem">
                         {% for event in day.events %}
-                            <i class="icon-time"></i> <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+                            <div class="calendarItem">
+                                <span class="glyphicon glyphicon-time time"></span>
+                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+                                {{ event.getSummary(100, language) }}
+                            </div>
                         {% endfor %}
-                    </p>
+                    </div>
                 </div>
             {% else %}
                 <div class="heading-spacer"></div>
@@ -49,9 +54,13 @@
             {% endfor %}
         </div>
 
-        <div class="span3">
-            <a href="{{ url('cudi_booking') }}"><img class="heading-icon" src="/_site/img/glyphicons-cudi.png" /></a>
-            <h2>{{ translate('Bookstore') }}</h2>
+        <div class="col-md-3">
+            <a class="heading" href="{{ url('cudi_booking') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-book"></span>
+                    {{ translate('Bookstore') }}
+                </h2>
+            </a>
 
             {% if hasAccess('cudi_booking', 'view') %}
                 <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">{{ translate('Reservations') }}</a></p>
@@ -61,7 +70,7 @@
                 <h3>{{ translate('Open Session') }}</h3>
                 {% autoescape false %}
                     <p>
-                        {{ translate('Cudi is open until <span class="badge badge-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                        {{ translate('Cudi is open until <span class="label label-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
                         {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
                             <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
                         {% endif %}
@@ -72,9 +81,9 @@
                     {% autoescape false %}
                         <p>
                             {% if cudi.currentStudents == 1 %}
-                                {{ translate('Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                {{ translate('Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
                             {% else %}
-                                {{ translate('Currently there are <span class="badge badge-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                {{ translate('Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
                             {% endif %}
                         </p>
                     {% endautoescape %}
@@ -93,9 +102,11 @@
                             </div>
                         {% endif %}
                         <div style="margin-left: 20px;">
-                            <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
                             {% if openingHour.getComment(language)|length > 0 %}
-                                <b>:</b><small>{{ openingHour.getComment(language) }}</small>
+                                <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
+                                <small>{{ openingHour.getComment(language) }}</small>
+                            {% else %}
+                                <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
                             {% endif %}
                         </div>
                         {% set previousDay = openingHour.getStart().format('d/M') %}
@@ -104,35 +115,34 @@
             {% endif %}
 
             {% if myShifts is not null and myShifts|length > 0 %}
-                <a href="{{ url('shift') }}"><img class="heading-icon" src="/_site/img/glyphicons-tasks.png" /></a>
-                <h2>{{ translate('Shifts') }}</h2>
+                <a class="heading" href="{{ url('shift') }}">
+                    <h2>
+                        <span class="glyphicon glyphicon-tasks"></span>
+                        {{ translate('Shifts') }}
+                    </h2>
+                </a>
 
                 {% for shift in myShifts %}
-                    <div class="accordion-group" id="group_{{ accordionName }}_shift-{{ shift.getId() }}">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                                {{ shift.getName() }}
-                            </a>
-                        </div>
-                        <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <div>
-                                    <dl>
-                                        <dt>{{ translate('Name') }}</dt>
-                                        <dd>{{ shift.getName() }}</dd>
-                                        <dt>{{ translate('Start') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
-                                        <dt>{{ translate('End') }}</dt>
-                                        <dd>{{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}</dd>
-                                    </dl>
-                                </div>
-                                <div>
-                                    <dl>
-                                        <dt>{{ translate('Description') }}</dt>
-                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
-                                        <dt>{{ translate('Location') }}</dt>
-                                        <dd>{{ shift.getLocation().getName() }}</dd>
-                                    </dl>
+                    <div class="panel-group" id="shift-{{ shift.getId() }}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="pannel-title" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                                    {{ shift.getName() }}
+                                </a>
+                            </div>
+                            <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <h5>{{ shift.getName() }}</h5>
+                                    <p>
+                                        {% if (shift.getStartDate().format('d/M/Y') == shift.getEndDate().format('d/M/Y')) %}
+                                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
+                                        {% else %}
+                                            {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}
+                                        {% endif %}
+                                    </p>
+                                    <p>
+                                        @ {{ shift.getLocation().getName() }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -141,21 +151,22 @@
             {% endif %}
         </div>
 
-        <div class="span5">
-            <a href="{{ url('news') }}"><img class="heading-icon" src="/_site/img/glyphicons-news.png" /></a>
-            <h2>{{ translate('News') }}</h2>
+        <div class="col-md-5">
+            <a class="heading" href="{{ url('news') }}">
+                <h2>
+                    <span class="glyphicon glyphicon-inbox"></span>
+                    {{ translate('News') }}
+                </h2>
+            </a>
 
             {% for item in newsItems %}
-                <div class="item">
-                    <span class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</span>
+                <div class="item date-right">
+                    <h4 class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</h4>
 
                     <h3>{{ item.getTitle(language) }}</h3>
 
-                    <blockquote>
-                        {% autoescape false %}
-                            {{ hideEmail(markdown(item.getSummary(200, language))) }}
-                        {% endautoescape %}
-                        <small><a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a></small>
+                    <blockquote>{{ hideEmail(markdown(item.getSummary(400, language)))|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                        &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                     </blockquote>
                 </div>
             {% else %}
@@ -171,6 +182,6 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true});
+        $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
     </script>
 {% endblock %}

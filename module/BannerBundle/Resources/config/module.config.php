@@ -16,77 +16,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'router' => array(
-        'routes' => array(
-            'banner_install' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/install/banner[/]',
-                    'constraints' => array(
-                    ),
-                    'defaults' => array(
-                        'controller' => 'banner_install',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'banner_admin_banner' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/admin/site/banner[/:action[/:id][/page/:page]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'      => '[0-9]*',
-                        'page'    => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'banner_admin_banner',
-                        'action'     => 'manage',
-                    ),
-                ),
-            ),
-            'banner' => array(
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/banner[/:action[/image/:image]][/]',
-                    'constraints' => array(
-                        'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'image'    => '[a-zA-Z0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'banner',
-                        'action'     => 'view',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
-            'banner_view' => __DIR__ . '/../views',
-        ),
-    ),
-    'doctrine' => array(
-        'driver' => array(
-            'orm_default' => array(
-                'drivers' => array(
-                    'BannerBundle\Entity' => 'orm_annotation_driver'
-                ),
-            ),
-            'orm_annotation_driver' => array(
-                'paths' => array(
-                    'BannerBundle' => __DIR__ . '/../../Entity',
-                ),
-            ),
-        ),
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'banner_install'      => 'BannerBundle\Controller\Admin\InstallController',
-            'banner_admin_banner' => 'BannerBundle\Controller\Admin\BannerController',
+namespace BannerBundle;
 
-            'banner'              => 'BannerBundle\Controller\BannerController'
-        ),
-    ),
+use CommonBundle\Component\Module\Config;
+
+return Config::create(
+    array(
+        'namespace'         => __NAMESPACE__,
+        'directory'         => __DIR__,
+    )
 );

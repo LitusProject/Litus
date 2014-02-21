@@ -16,111 +16,99 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-fixed-top main-navbar main-navbar-fixed-top">
-        <div class="navbar-inner main-navbar-inner">
-            <div class="container">
-                <button type="button"class="btn btn-navbar" data-toggle="collapse" data-target=".main-nav">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-main" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="title hidden-desktop" href="{{ url('common_index') }}">{{ translate('VTK') }}</a>
-                <div class="main-nav nav-collapse collapse">
-                    <ul class="nav">
-                        {% for item in menu %}
-                            {% if 'category' == item.type %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
-                                        {{ item.name }} <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        {% for categoryItem in item.items %}
-                                            {% if 'page' == categoryItem.type %}
-                                                {% if hasAccess('page', 'view') %}
-                                                    <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
-                                                {% endif %}
-                                            {% endif %}
-
-                                            {% if 'link' == categoryItem.type %}
-                                                {% if hasAccess('page_link', 'view') %}
-                                                    <li><a href="{{ url('page_link', {"id": categoryItem.id}) }}">{{ categoryItem.name }}</a></li>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if authenticatedPerson is not null %}
-                            <li class="dropdown hidden-desktop" id="accountDropdown">
-                                <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
-                                    Account <span class="caret"></span>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    {% for item in menu %}
+                        {% if 'category' == item.type %}
+                            <li class="dropdown {% if item.active %}active{% endif %}">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    {{ item.name }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        {% if hasAccess('common_account', 'index') %}
-                                            <a href="{{ url('common_account') }}">
-                                        {% else %}
-                                            <div style="padding: 3px 20px;">
+                                    {% for categoryItem in item.items %}
+                                        {% if 'page' == categoryItem.type %}
+                                            {% if hasAccess('page', 'view') %}
+                                                <li><a href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></li>
+                                            {% endif %}
                                         {% endif %}
-                                        <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                        <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
-                                        {% if hasAccess('common_account', 'index') %}
-                                            </a>
-                                        {% else %}
-                                            </div>
+
+                                        {% if 'link' == categoryItem.type %}
+                                            {% if hasAccess('page_link', 'view') %}
+                                                <li><a href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></li>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if authenticatedPerson is not null %}
+                        <li class="dropdown hidden-lg hidden-md {% if getParam('controller') == 'common_account' %}active{% endif %}" id="accountDropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Account <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    {% if hasAccess('common_account', 'index') %}
+                                        <a href="{{ url('common_account') }}">
+                                    {% else %}
+                                        <div style="padding: 3px 20px;">
+                                    {% endif %}
+                                    <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
+                                    <small class="metadata">{{ authenticatedPerson.getUniversityIdentification() }}</small>
+                                    {% if hasAccess('common_account', 'index') %}
+                                        </a>
+                                    {% else %}
+                                        </div>
+                                    {% endif %}
+                                </li>
+
+                                <li class="divider"></li>
+
+                                {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
+                                    <li>
+                                        {% if hasAccess('cudi_booking', 'view') %}
+                                            <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
+                                        {% endif %}
+                                        {% if hasAccess('shift', 'index') %}
+                                            <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
                                         {% endif %}
                                     </li>
 
                                     <li class="divider"></li>
+                                {% endif %}
 
-                                    {% if hasAccess('cudi_booking', 'view') or hasAccess('shift', 'index') %}
-                                        <li>
-                                            {% if hasAccess('cudi_booking', 'view') %}
-                                                <a href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
-                                            {% endif %}
-                                            {% if hasAccess('shift', 'index') %}
-                                                <a href="{{ url('shift') }}">{{ translate('My Shifts') }}</a>
-                                            {% endif %}
-                                        </li>
-
-                                        <li class="divider"></li>
-                                    {% endif %}
-
-                                    {% if hasAccess('common_admin_index', 'index') %}
-                                        <li>
-                                            <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
-                                        </li>
-
-                                        <li class="divider"></li>
-                                    {% endif %}
-
+                                {% if hasAccess('common_admin_index', 'index') %}
                                     <li>
-                                        <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                        <a href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
                                     </li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li class="hidden-desktop">
-                                <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
-                            </li>
-                        {% endif %}
 
-                        <li class="dropdown hidden-desktop" id="langDropdown">
-                            <a class="dropdown-toggle highlighted" data-toggle="dropdown" href="#">
-                                Language <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                {% for language in languages %}
-                                    <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
-                                {% endfor %}
+                                    <li class="divider"></li>
+                                {% endif %}
+
+                                <li>
+                                    <a href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                </li>
                             </ul>
                         </li>
-                    </ul>
-                </div>
-                <ul class="nav pull-right lang-nav visible-desktop">
-                    <li class="dropdown" id="langDropdown">
+                    {% else %}
+                        <li class="hidden-lg hidden-md">
+                            <a href="{{ shibbolethUrl }}">{{ translate('Login') }}</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="dropdown hidden-lg hidden-md" id="langDropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             Language <span class="caret"></span>
                         </a>
@@ -131,16 +119,28 @@
                         </ul>
                     </li>
                 </ul>
-                <ul class="nav pull-right auth-nav visible-desktop">
+                <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
+                    <li class="dropdown" id="langDropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Language <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            {% for language in languages %}
+                                <li><a href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-right auth-nav hidden-xs hidden-sm">
                     {% if authenticatedPerson is not null %}
-                        <li class="dropdown" id="accountDropdown">
+                        <li class="dropdown {% if getParam('controller') == 'common_account' %}active{% endif %}" id="accountDropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 <span class="profile-wrapper">
                                     <i class="profile"></i>
                                 </span>
                                 <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 <li>
                                     {% if hasAccess('common_account', 'index') %}
                                     <a href="{{ url('common_account') }}">
@@ -190,70 +190,60 @@
         </div>
     </nav>
 
-    <div id="page">
-        <header>
-            <div class="inner">
-                <div class="container">
-                    <a class="site-link" href="{{ url('common_index') }}">
-                        <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
-                    </a>
+    <header>
+        <div class="container">
+            <a class="site-link" href="{{ url('common_index') }}">
+                <img class="site-logo" src="/_site/img/logo.png" />
+                <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
+            </a>
 
-                    {% if banners|length > 0 %}
-                        <div id="carouselHeader" class="carousel slide visible-desktop">
-                            <div class="carousel-inner">
-                                {% for key, banner in banners %}
-                                    <div class="item item-{{ key }}">
-                                        {% if banner.getUrl() != '' %}
-                                        <a href="{{ banner.getUrl() }}">
+            {% if banners|length > 0 %}
+                <div id="carouselHeader" class="carousel slide hidden-sm hidden-xs" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for key, banner in banners %}
+                            <div class="item item-{{ key }}">
+                                {% if banner.getUrl() != '' %}
+                                    <a href="{{ banner.getUrl() }}">
                                         {% endif %}
                                             <img src="/banner/view/image{{ banner.getImage() }}" alt="">
                                         {% if banner.getUrl() != '' %}
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
+                                    </a>
+                                {% endif %}
                             </div>
+                        {% endfor %}
+                    </div>
 
-                            {% if banners|length > 1 %}
-                                <a class="carousel-control left" href="#carouselHeader" data-slide="prev">&lsaquo;</a>
-                                <a class="carousel-control right" href="#carouselHeader" data-slide="next">&rsaquo;</a>
-                            {% endif %}
-                        </div>
+                    {% if banners|length > 1 %}
+                        <a class="left carousel-control" href="#carouselHeader" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carouselHeader" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
                     {% endif %}
                 </div>
-            </div>
-        </header>
+            {% endif %}
+        </div>
+    </header>
 
-        <div id="content">
-            <div class="container">
-                {% include 'site/partials/flashMessenger.twig' %}
+    <div id="page">
+        <div id="content" class="container">
+            {% include 'site/partials/flashMessenger.twig' %}
 
-                {% block content %} {% endblock %}
-            </div>
+            {% block content %} {% endblock %}
         </div>
     </div>
 
     <hr>
     <footer>
-        <div class="row-fluid copyright">
-            <div class="container">
-                <div class="span12">
-                    <p class="pull-right">&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</p>
-                </div>
-            </div>
-        </div>
+        <p>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</p>
     </footer>
 
     {{ inlineScript() }}
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.dropdown form').on('click', function (e) {
-                e.stopPropagation();
-            });
-
-            $('.item-0').addClass('active');
-
+            $('#carouselHeader .item-0').addClass('active');
             $('.carousel').carousel();
         });
     </script>

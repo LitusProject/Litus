@@ -82,14 +82,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('first_name');
         $field->setLabel('First Name')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setValue(isset($extraInfo['first_name']) ? $extraInfo['first_name'] : '')
             ->setRequired();
         $personal->add($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setValue(isset($extraInfo['last_name']) ? $extraInfo['last_name'] : '')
             ->setRequired();
         $personal->add($field);
@@ -97,13 +95,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('birthday');
         $field->setLabel('Birthday')
             ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setRequired();
         $personal->add($field);
 
         $field = new Select('sex');
         $field->setLabel('Sex')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-small')
             ->setAttribute(
                 'options',
                 array(
@@ -120,7 +116,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('university_identification');
         $field->setLabel('University Identification')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-large')
             ->setAttribute('disabled', true)
             ->setValue($identification);
         $personal->add($field);
@@ -144,14 +139,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('university_email');
         $field->setLabel('University E-mail')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium')
             ->setValue($universityEmail)
             ->setRequired();
         $internet->add($field);
 
         $field = new Text('personal_email');
         $field->setLabel('Personal E-mail')
-            ->setAttribute('class', $field->getAttribute('class') . ' input-xlarge')
             ->setRequired();
         $internet->add($field);
 

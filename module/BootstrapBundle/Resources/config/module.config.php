@@ -20,112 +20,88 @@ return array(
     'assetic_configuration' => array(
         'modules' => array(
             'bootstrapbundle' => array(
-                'root_path' => __DIR__ . '/../../../../vendor/twitter/bootstrap/',
+                'root_path' => __DIR__ . '/../assets',
                 'collections' => array(
                     'bootstrap_css' => array(
                         'assets' => array(
                             'less/bootstrap.less',
                         ),
-                        'filters' => array(
-                            'bootstrap_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => true,
-                                ),
-                            ),
-                        ),
+                        'filters' => array('less'),
                         'options' => array(
                             'output' => 'bootstrap_css.css',
                         ),
                     ),
-                    'bootstrap_responsive_css' => array(
-                        'assets' => array(
-                            'less/responsive.less',
-                        ),
-                        'filters' => array(
-                            'bootstrap_responsive_less' => array(
-                                'name' => '\Assetic\Filter\LessFilter',
-                                'option' => array(
-                                    'nodeBin'   => '/usr/local/bin/node',
-                                    'nodePaths' => array(
-                                        '/usr/local/lib/node_modules',
-                                    ),
-                                    'compress'  => false,
-                                ),
-                            ),
-                        ),
-                        'options' => array(
-                            'output' => 'bootstrap_responsive_css.css',
-                        ),
-                    ),
                     'bootstrap_js_affix' => array(
                         'assets' => array(
-                            'js/bootstrap-affix.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/affix.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_alert' => array(
                         'assets' => array(
-                            'js/bootstrap-alert.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/alert.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_button' => array(
                         'assets' => array(
-                            'js/bootstrap-button.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/button.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_carousel' => array(
                         'assets' => array(
-                            'js/bootstrap-carousel.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/carousel.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_collapse' => array(
                         'assets' => array(
-                            'js/bootstrap-collapse.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/collapse.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_dropdown' => array(
                         'assets' => array(
-                            'js/bootstrap-dropdown.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/dropdown.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_modal' => array(
                         'assets' => array(
-                            'js/bootstrap-modal.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/modal.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_popover' => array(
                         'assets' => array(
-                            'js/bootstrap-popover.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/popover.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_scrollspy' => array(
                         'assets' => array(
-                            'js/bootstrap-scrollspy.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/scrollspy.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_tab' => array(
                         'assets' => array(
-                            'js/bootstrap-tab.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/tab.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_tooltip' => array(
                         'assets' => array(
-                            'js/bootstrap-tooltip.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/tooltip.js',
                         ),
+                        'filters' => array('js'),
                     ),
                     'bootstrap_js_transition' => array(
                         'assets' => array(
-                            'js/bootstrap-transition.js',
+                            __DIR__ . '/../../../../vendor/twitter/bootstrap/js/transition.js',
                         ),
-                    ),
-                    'bootstrap_js_typeahead' => array(
-                        'assets' => array(
-                            'js/bootstrap-typeahead.js',
-                        ),
+                        'filters' => array('js'),
                     ),
                 ),
             ),

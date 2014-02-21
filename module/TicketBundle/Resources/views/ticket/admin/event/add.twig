@@ -16,7 +16,6 @@
         var currentCount = 0;
         $(document).ready(function () {
             while ($('input[name="options[' + (currentCount) + '][option]"]').length) {
-                console.log("check:" + currentCount);
                 currentCount++;
             }
 
@@ -52,7 +51,6 @@
         }
 
         function addOption() {
-                console.log("add:" + currentCount);
             var template = $('#data-template').data('template');
             template = template.replace(/__index__/g, currentCount);
             currentCount++;

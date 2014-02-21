@@ -38,7 +38,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Textarea('text');
         $field->setLabel('Comment')
-            ->setAttribute('class', 'input-xlarge')
             ->setAttribute('rows', 5)
             ->setRequired();
         $this->add($field);

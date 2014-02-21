@@ -46,7 +46,6 @@ class Team extends EntityRepository
             ->where(
                 $query->expr()->eq('t.quiz', ':quiz')
             )
-            ->orderBy('t.number', 'DESC')
             ->setParameter('quiz', $quiz->getId())
             ->getQuery()
             ->getSingleScalarResult();

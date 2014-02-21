@@ -1,114 +1,107 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-
-    <div class="span2">
-        {% if not vacancy.getCompany().getLogo() %}
-            <div class="logo-replacement">
-            </div>
-        {% endif %}
-
-        {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
-        <a href="{{ url('br_career_company',{ 'action': 'view', 'company': vacancy.getCompany().getSlug() }) }}">
-        {% endif %}
-            {% if vacancy.getCompany().getLogo() %}
-
-                    <img src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
-            {% else %}
-
-                <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
+    <div class="row">
+        <div class="col-sm-2">
+            {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
+                <a href="{{ url('br_career_company',{ 'action': 'view', 'company': vacancy.getCompany().getSlug() }) }}">
             {% endif %}
-        {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
-        </a>
-        {% endif %}
 
-        {% if vacancy.getCompany().getLogo() %}
-            <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
-        {% endif %}
+            <div style="text-align: center">
+                {% if vacancy.getCompany().getLogo() %}
+                    <img src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}" style="width: 100%; max-width: 120px">
+                {% else %}
+                    <h2><center class="company-name">{{ vacancy.getCompany().getName() }}</center></h2>
+                {% endif %}
+            </div>
 
-        {% if vacancy.getSector() %}
+            {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}
+                </a>
+            {% endif %}
 
-            <hr/>
+            {% if vacancy.getCompany().getLogo() %}
+                <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+            {% endif %}
 
-            <center>
-                <strong>
-                    {{ translate('Sector') }}: {{ vacancy.getSector() }}<br/>
-                </strong>
-            </center>
+            {% if vacancy.getSector() %}
+                <hr/>
+                <center>
+                    <strong>
+                        {{ translate('Sector') }}: {{ vacancy.getSector() }}<br/>
+                    </strong>
+                </center>
+            {% endif %}
 
-        {% endif %}
-
-        {% if vacancy.getCity() %}
-
-            <hr/>
-
-            <center>
-                <strong>
-                    {{ translate('Location') }}: {{ vacancy.getCity() }}<br/>
-                </strong>
-            </center>
-
-        {% endif %}
-
-    </div>
-    <div class="span10">
-        <h1>{{ vacancy.getName() }}</h1>
-        <br/>
-        <div class="pull-right" style="margin-top:-35px;">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-        <div class="accordion" id="accordion" data-collapse-type="manual">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#about">
-                        {{ translate('Description') }}
-                    </a>
-                </div>
-                <div id="about" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(vacancy.getDescription()) }}
-                        {% endautoescape %}
+            {% if vacancy.getCity() %}
+                <hr/>
+                <center>
+                    <strong>
+                        {{ translate('Location') }}: {{ vacancy.getCity() }}<br/>
+                    </strong>
+                </center>
+            {% endif %}
+        </div>
+        <div class="col-sm-10">
+            <h1>{{ vacancy.getName() }}</h1>
+            <br/>
+            <div class="pull-right hidden-xs" style="margin-top:-35px;">
+                {{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong>
+            </div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#about">
+                            {{ translate('Description') }}
+                        </a>
+                    </div>
+                    <div id="about" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(vacancy.getDescription()) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#benefits">
-                        {{ translate('Benefits') }}
-                    </a>
-                </div>
-                <div id="knowledge" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(vacancy.getBenefits()) }}
-                        {% endautoescape %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#benefits">
+                            {{ translate('Benefits') }}
+                        </a>
+                    </div>
+                    <div id="benefits" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(vacancy.getBenefits()) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#profile">
-                        {{ translate('Wanted Profile') }}
-                    </a>
-                </div>
-                <div id="profile" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(vacancy.getProfile()) }}
-                        {% endautoescape %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#profile">
+                            {{ translate('Wanted Profile') }}
+                        </a>
+                    </div>
+                    <div id="profile" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(vacancy.getProfile()) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#contact">
-                        {{ translate('Contact Information') }}
-                    </a>
-                </div>
-                <div id="contact" class="accordion-body collapse in">
-                    <div class="accordion-inner">
-                        {% autoescape false %}
-                            {{ markdown(vacancy.getContact()) }}
-                        {% endautoescape %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#contact">
+                            {{ translate('Contact Information') }}
+                        </a>
+                    </div>
+                    <div id="contact" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            {% autoescape false %}
+                                {{ markdown(vacancy.getContact()) }}
+                            {% endautoescape %}
+                        </div>
                     </div>
                 </div>
             </div>

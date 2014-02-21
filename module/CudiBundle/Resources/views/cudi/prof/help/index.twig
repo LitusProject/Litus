@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="span3 bs-docs-sidebar">
+        <div class="col-md-3 bs-docs-sidebar">
             <ul class="nav nav-list bs-docs-sidenav affix">
                 <li>
                     <a href="#start">{{ translate('Start') }}</a>
@@ -15,7 +15,7 @@
                 </li>
             </ul>
         </div>
-        <div class="span9" style="margin-top: -20px">
+        <div class="col-md-9" style="margin-top: -20px">
             <section id="start" style="padding-top: 30px">
                 <div class="page-header">
                     <h1>{{ translate('Start') }}</h1>
@@ -89,7 +89,7 @@
         $(document).ready(function () {
             $('.bs-docs-sidenav').affix({
                 offset: {
-                    top: 160
+                    top: 130
                 }
             })
         });

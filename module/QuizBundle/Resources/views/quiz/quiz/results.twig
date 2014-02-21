@@ -1,15 +1,16 @@
 {% extends 'quiz/base.twig' %}
 
 {% block content %}
-    <header class="subhead">
+    <div class="page-header">
         <form action="" method="GET" class="pull-right">
-            <select name="order" id="order">
+            <select name="order" id="order" class="form-control">
                 <option value="ASC"{% if order == 'ASC' %} selected{% endif %}>Best Last</option>
                 <option value="DESC"{% if order == 'DESC' %} selected{% endif %}>Best First</option>
             </select>
         </form>
         <h1>{{ quiz.getName() }}</h1>
-    </header>
+    </div>
+
     <table id="results" class="table table-bordered">
         <tr class="head">
             <th class="rank">Rank</th>
@@ -47,8 +48,8 @@
                 $('#results tr:not(.head):visible:first').hide();
                 e.preventDefault();
             } else if (e.keyCode == 39 || e.keyCode == 40) {
-                $('#results tr:not(.head):visible:first').removeClass('alert');
-                $('#results tr:hidden:last').addClass('alert').show();
+                $('#results tr:not(.head):visible:first').removeClass('warning');
+                $('#results tr:hidden:last').addClass('warning').show();
                 e.preventDefault();
             }
         });

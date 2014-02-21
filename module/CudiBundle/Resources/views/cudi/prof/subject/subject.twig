@@ -1,7 +1,7 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
-    <div class="flashmessage alert alert-error fade" id="article_removed_error">
+    <div class="flashmessage alert alert-danger fade" id="article_removed_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the mapping between this subject and the article.') }}
@@ -13,7 +13,7 @@
             {{ translate('The mapping between this subject and the article was succesfully removed.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="prof_removed_error">
+    <div class="flashmessage alert alert-danger fade" id="prof_removed_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while removing the mapping between this subject and the docent.') }}
@@ -25,7 +25,7 @@
             {{ translate('The mapping between this subject and the docent was succesfully removed.') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-error fade" id="article_activate_error">
+    <div class="flashmessage alert alert-danger fade" id="article_activate_error">
         <a class="close">&times;</a>
         <div class="content">
             {{ translate('An error occurred while activating the mapping between this subject and the article.') }}
@@ -49,48 +49,52 @@
     {{ forms.renderForm(enrollmentForm) }}
 
     <h3>{{ translate('Articles') }}:</h3>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>{{ translate('Title') }}</th>
-            <th width="120px">{{ translate('Authors') }}</th>
-            <th width="120px">{{ translate('Publisher') }}</th>
-            <th width="90px">{{ translate('Publish Year') }}</th>
-            <th width="50px">{{ translate('Price') }}</th>
-            <th width="180px">{{ translate('Actions') }}</th>
-        </tr>
-
-        {% for mapping in previousArticleMappings %}
-            <tr style="color: #ccc;font-style: italic;">
-                <td>{{ mapping['article'].getTitle() }}</td>
-                <td>{{ mapping['article'].getAuthors() }}</td>
-                <td>{{ mapping['article'].getPublishers() }}</td>
-                <td>{{ mapping['article'].getYearPublished() }}</td>
-                <td>{% if mapping['article'].getSaleArticle() %}&euro;{{ (mapping['article'].getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
-                <td class="actions">
-                    {% if hasAccess('cudi_prof_article_mapping', 'activate') %}
-                        <a href="#" class="btn btn-info activateArticle" data-id="{{ mapping['mapping'].getId() }}" data-article="{{ mapping['article'].getTitle() }}">{{ translate('Activate') }}</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-
-        {% for mapping in articleMappings %}
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>{{ mapping['article'].getTitle() }}</td>
-                <td>{{ mapping['article'].getAuthors() }}</td>
-                <td>{{ mapping['article'].getPublishers() }}</td>
-                <td>{{ mapping['article'].getYearPublished() }}</td>
-                <td>{% if mapping['article'].getSaleArticle() %}&euro;{{ (mapping['article'].getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
-                <td class="actions">
-                    {% if hasAccess('cudi_prof_article', 'edit') %}
-                        <a href="{{ url('cudi_prof_article', {'action': 'edit', 'id': mapping['article'].getId()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
-                    {% endif %}
-                    {% if hasAccess('cudi_prof_article_mapping', 'delete') %}
-                        <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping['mapping'].getId() }}" data-article="{{ mapping['article'].getTitle() }}">{{ translate('Remove') }}</a>
-                    {% endif %}
-                </td>
+                <th>{{ translate('Title') }}</th>
+                <th width="120px">{{ translate('Authors') }}</th>
+                <th width="120px">{{ translate('Publisher') }}</th>
+                <th width="120px">{{ translate('Publish Year') }}</th>
+                <th width="90px">{{ translate('Price') }}</th>
+                <th width="180px">{{ translate('Actions') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for mapping in previousArticleMappings %}
+                <tr style="color: #ccc;font-style: italic;">
+                    <td>{{ mapping['article'].getTitle() }}</td>
+                    <td>{{ mapping['article'].getAuthors() }}</td>
+                    <td>{{ mapping['article'].getPublishers() }}</td>
+                    <td>{{ mapping['article'].getYearPublished() }}</td>
+                    <td>{% if mapping['article'].getSaleArticle() %}&euro;{{ (mapping['article'].getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_prof_article_mapping', 'activate') %}
+                            <a href="#" class="btn btn-info activateArticle" data-id="{{ mapping['mapping'].getId() }}" data-article="{{ mapping['article'].getTitle() }}">{{ translate('Activate') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% for mapping in articleMappings %}
+                <tr>
+                    <td>{{ mapping['article'].getTitle() }}</td>
+                    <td>{{ mapping['article'].getAuthors() }}</td>
+                    <td>{{ mapping['article'].getPublishers() }}</td>
+                    <td>{{ mapping['article'].getYearPublished() }}</td>
+                    <td>{% if mapping['article'].getSaleArticle() %}&euro;{{ (mapping['article'].getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_prof_article', 'edit') %}
+                            <a href="{{ url('cudi_prof_article', {'action': 'edit', 'id': mapping['article'].getId()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                        {% endif %}
+                        {% if hasAccess('cudi_prof_article_mapping', 'delete') %}
+                            <a href="#" class="btn btn-danger removeArticle" data-id="{{ mapping['mapping'].getId() }}" data-article="{{ mapping['article'].getTitle() }}">{{ translate('Remove') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_article', 'addFromSubject') %}
@@ -103,24 +107,28 @@
     <br class="clear" />
 
     <h3>{{ translate('Docents') }}</h3>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th width="90px">{{ translate('Identification') }}</th>
-            <th>{{ translate('Name') }}</th>
-            <th width="90px">{{ translate('Actions') }}</th>
-        </tr>
-
-        {% for mapping in profMappings %}
-            <tr class="item">
-                <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
-                <td>{{ mapping.getProf().getFullName() }}</td>
-                <td class="actions">
-                    {% if hasAccess('cudi_prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
-                        <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translate('Remove') }}</a>
-                    {% endif %}
-                </td>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th width="100px">{{ translate('Identification') }}</th>
+                <th>{{ translate('Name') }}</th>
+                <th width="100px">{{ translate('Actions') }}</th>
             </tr>
-        {% endfor %}
+        </thead>
+
+        <tbody>
+            {% for mapping in profMappings %}
+                <tr class="item">
+                    <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
+                    <td>{{ mapping.getProf().getFullName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('cudi_prof_prof', 'delete') and mapping.getProf().getId() != authenticatedPerson.getId() %}
+                            <a href="#" class="btn btn-danger removeProf" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getProf().getFullName() }}">{{ translate('Remove') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_prof', 'add') %}
@@ -139,7 +147,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
         </div>
     </div>
 
@@ -153,7 +161,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
         </div>
     </div>
 
@@ -174,7 +182,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn" data-dismiss="modal">{{ translate('No') }}</button>
+            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
         </div>
     </div>
 {% endblock %}
