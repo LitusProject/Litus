@@ -51,7 +51,6 @@ return array(
         ),
         'calendar' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',

@@ -63,7 +63,6 @@ return array(
         'ticket' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',

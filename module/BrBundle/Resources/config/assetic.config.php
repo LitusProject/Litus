@@ -124,7 +124,6 @@ return array(
         'br_career_index' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
@@ -137,7 +136,6 @@ return array(
         'br_career_company' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
@@ -152,7 +150,6 @@ return array(
         'br_career_vacancy' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
@@ -166,7 +163,6 @@ return array(
         'br_career_internship' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
@@ -180,7 +176,6 @@ return array(
         'br_career_event' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
@@ -193,7 +188,6 @@ return array(
         ),
         'br_cv_index' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',

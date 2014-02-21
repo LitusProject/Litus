@@ -92,7 +92,6 @@ return array(
 
         'common_account' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -114,7 +113,6 @@ return array(
         ),
         'common_session' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -125,7 +123,6 @@ return array(
         ),
         'common_auth' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -139,7 +136,6 @@ return array(
         ),
         'common_index' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -153,7 +149,6 @@ return array(
         ),
         'common_praesidium' => array(
             '@bootstrap_css',
-            '@flatly_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -341,16 +336,6 @@ return array(
             'filters' => array('css'),
             'options' => array(
                 'output' => 'jcrop_css.css',
-            ),
-        ),
-
-        'flatly_css' => array(
-            'assets' => array(
-                'site/css/flatly.css',
-            ),
-            'filters' => array('css'),
-            'options' => array(
-                'output' => 'flatly_css.css'
             ),
         ),
     ),
