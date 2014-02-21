@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
+    SyllabusBundle\Entity\Study,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -87,6 +88,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    public function populateFromStudy(Study $study)
+    {
+        $this->setData(
+            array(
+                'kul_id' => $study->getKulId(),
+                'title' => $study->getTitle(),
+                'phase' => $study->getPhase(),
+                'language' => $study->getLanguage(),
+                'parent_id' => $study->getParent() ? $study->getParent()->getId() : '',
+                'parent' => $study->getParent() ? $study->getParent()->getFullTitle() : '',
+            )
+        );
+    }
+
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
@@ -147,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'parent_id',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -164,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'parent',
-                    'required' => true,
+                    'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),

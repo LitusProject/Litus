@@ -22,11 +22,11 @@ use Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Study;
 
 /**
- * Matches the given study code against the database to check whether it exists or not.
+ * Matches the given parent against recursion
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class KulId extends \Zend\Validator\AbstractValidator
+class Recursion extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -38,7 +38,7 @@ class KulId extends \Zend\Validator\AbstractValidator
     /**
      * @var \SyllabusBundle\Entity\Study The study exluded from this check
      */
-    private $_exclude;
+    private $_study;
 
     /**
      * Error messages
@@ -46,7 +46,7 @@ class KulId extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The study id already exists'
+        self::NOT_VALID => 'The study cannot be chosen'
     );
 
     /**
@@ -55,12 +55,12 @@ class KulId extends \Zend\Validator\AbstractValidator
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Study $exclude = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Study $study, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_exclude = $exclude;
+        $this->_study = $study;
     }
 
 
@@ -76,14 +76,25 @@ class KulId extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $study = $this->_entityManager
+        $parent = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($value);
+            ->findOneByKulId($context['parent_id']);
 
-        if (null === $study || ($this->_exclude !== null && $study->getId() == $this->_exclude->getId()))
+        if (null === $parent)
             return true;
 
-        $this->error(self::NOT_VALID);
-        return false;
+        if ($parent->getId() == $this->_study->getId()) {
+            $this->error(self::NOT_VALID);
+            return false;
+        }
+
+        foreach($this->_study->getAllChildren() as $child) {
+            if ($child->getId() == $parent->getId()) {
+                $this->error(self::NOT_VALID);
+                return false;
+            }
+        }
+
+        return true;
     }
 }
