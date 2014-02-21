@@ -25,49 +25,8 @@ use CommonBundle\Entity\General\Language;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {
-        $this->installConfig(
-            array(
-                array(
-                    'key'         => 'banner.image_path',
-                    'value'       => 'data/banner/images',
-                    'description' => 'The path to the banner images',
-                ),
-            )
-        );
-    }
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'bannerbundle' => array(
-                    'banner' => array(
-                        'view'
-                    ),
-                    'banner_admin_banner' => array(
-                        'add', 'delete', 'edit', 'manage', 'progress', 'upload'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'banner' => array(
-                            'view'
-                        ),
-                    ),
-                ),
-            )
-        );
-    }
 }

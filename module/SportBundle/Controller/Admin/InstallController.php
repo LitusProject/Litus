@@ -18,120 +18,19 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language,
-    SportBundle\Entity\Department;
+use SportBundle\Entity\Department;
 
 /**
  * InstallController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig()
+    protected function postInstall()
     {
-        $this->installConfig(
-            array(
-                array(
-                    'key'         => 'sport.run_result_page',
-                    'value'       => 'http://live.24urenloop.be/tussenstand.json',
-                    'description' => 'The URL where the official result page can be found',
-                ),
-                array(
-                    'key'         => 'sport.run_team_id',
-                    'value'       => '4',
-                    'description' => 'The ID of the organization on the official result page',
-                ),
-                array(
-                    'key'         => 'sport.queue_socket_file',
-                    'value'       => 'tcp://127.0.0.1:8897',
-                    'description' => 'The file used for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'sport.queue_socket_public',
-                    'value'       => '127.0.0.1:8897',
-                    'description' => 'The public address for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'sport.queue_socket_key',
-                    'value'       => md5(uniqid(rand(), true)),
-                    'description' => 'The key used for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'sport.points_criteria',
-                    'value'       => serialize(
-                        array(
-                            array(
-                                'limit'  => '90',
-                                'points' => '1',
-                            ),
-                            array(
-                                'limit'  => '87',
-                                'points' => '3',
-                            ),
-                            array(
-                                'limit'  => '84',
-                                'points' => '4',
-                            ),
-                            array(
-                                'limit'  => '81',
-                                'points' => '5',
-                            ),
-                            array(
-                                'limit'  => '79',
-                                'points' => '6',
-                            ),
-                        )
-                    ),
-                    'description' => 'The criteria for the lap times that determine the number of points it is worth (times should decrease)',
-                ),
-            )
-        );
-
         $this->_installDepartments();
-    }
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'sportbundle' => array(
-                    'sport_admin_run' => array(
-                        'edit', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'pasta', 'queue', 'update'
-                    ),
-                    'sport_run_group' => array(
-                        'add', 'getName'
-                    ),
-                    'sport_run_index' => array(
-                        'index'
-                    ),
-                    'sport_run_queue' => array(
-                        'index', 'getName'
-                    ),
-                    'sport_run_screen' => array(
-                        'index'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'sport_run_group' => array(
-                            'add', 'getName'
-                        ),
-                        'sport_run_index' => array(
-                            'index'
-                        ),
-                    ),
-                ),
-            )
-        );
     }
 
     private function _installDepartments()
