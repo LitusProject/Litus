@@ -1,39 +1,39 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-	    <h1>Form</h1>
+    <div id="controller_action">
+        <h1>Form</h1>
 
-	    <p>Name: <b>{{ formSpecification.getTitle() }}</b></p>
-	    <br />
+        <p>Name: <b>{{ formSpecification.getTitle() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
 
-	<script type="text/javascript">
-		$(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-			$('#personSearch').typeaheadRemote(
-				{
-					source: '{{ url("common_admin_person_typeahead", {}) }}',
-				}
-			).change(function(e) {
-				if ($(this).data('value')) {
-					$('#personId').val($(this).data('value').id);
-				} else {
-					$('#personId').val('');
-				}
-			});
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_person_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
 
-		});
-	</script>
+        });
+    </script>
 
 {% endblock %}

@@ -165,39 +165,39 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function _getAlbumByName()
     {
-    	if (null === $this->getParam('name')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneByName($this->getParam('name'));
 
-    	if (null === $album) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 
     public function _getPhoto()
     {
-    	if (null === $this->getParam('name')) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('name'));
 
-    	if (null === $album) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 }

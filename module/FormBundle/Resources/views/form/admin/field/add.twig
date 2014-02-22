@@ -1,19 +1,19 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-	    <h1>Form</h1>
+    <div id="controller_action">
+        <h1>Form</h1>
 
-	    <p>Name: <b>{{ formSpecification.getTitle(language) }}</b></p>
-	    <br />
+        <p>Name: <b>{{ formSpecification.getTitle(language) }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 
     <aside>
         {% if hasAccess('form_admin_form', 'edit') %}
@@ -46,7 +46,7 @@
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
             $('#dropdown_languages a:first').click();

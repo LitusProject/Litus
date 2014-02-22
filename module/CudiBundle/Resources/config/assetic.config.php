@@ -269,6 +269,12 @@ return array(
             '@bootstrap_js_alert',
             '@common_socket',
         ),
+        'cudi_sale_auth' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@sale_css',
+            '@queue_js',
+        ),
         'cudi_supplier_index' => array(
             '@common_jquery',
             '@bootstrap_css',

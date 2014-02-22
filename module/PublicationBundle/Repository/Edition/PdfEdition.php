@@ -4,7 +4,7 @@ namespace PublicationBundle\Repository\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-	PublicationBundle\Entity\Publication as PublicationEntity;
+    PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**
  * PdfEdition
@@ -14,14 +14,14 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class PdfEdition extends EntityRepository
 {
-	public function findAllByPublicationAndAcademicYearQuery(PublicationEntity $publication, AcademicYear $academicYear)
-	{
+    public function findAllByPublicationAndAcademicYearQuery(PublicationEntity $publication, AcademicYear $academicYear)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Edition\Pdf', 'p')
             ->where(
                 $query->expr()->andX(
-            	   $query->expr()->eq('p.publication', ':publication'),
+                   $query->expr()->eq('p.publication', ':publication'),
                    $query->expr()->eq('p.academicYear', ':year')
                )
             )
@@ -31,7 +31,7 @@ class PdfEdition extends EntityRepository
             ->getQuery();
 
         return $resultSet;
-	}
+    }
 
     public function findOneByPublicationTitleAndAcademicYear(PublicationEntity $publication, $title, AcademicYear $academicYear)
     {

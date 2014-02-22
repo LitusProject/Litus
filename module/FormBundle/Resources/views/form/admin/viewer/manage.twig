@@ -1,29 +1,29 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'form/admin/form/partials/navigation.twig' %}
+    {% include 'form/admin/form/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width viewer_removed_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The viewer was successfully removed!</p>
-    	</div>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The viewer was successfully removed!</p>
+        </div>
     </div>
     <div class="flashmessage error_message full_width viewer_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete a viewer.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a viewer.</p>
+        </div>
     </div>
 
-	<div id="controller_action">
-	    <h1>Form</h1>
+    <div id="controller_action">
+        <h1>Form</h1>
 
-	    <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
-	    <br/>
+        <p>Title: <b>{{ formSpecification.getTitle(language) }}</b></p>
+        <br/>
 
-	    <table class="manage">
+        <table class="manage">
             <tr>
                 <th>Name</th>
                 <th width="70px">Can Edit</th>
@@ -43,81 +43,81 @@
                     </td>
                 </tr>
             {% endfor %}
-	    </table>
+        </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 
-	<aside>
-	    {% if hasAccess('form_admin_form_viewer', 'add') and not hasGroup %}
-    		<div class="sidebox">
-    	        <div class="title">Add Viewer</div>
-    	       	<div class="content">
-    		    	<p>
-    		        	<i>Please hit the link below to add a viewer!</i>
-    		        </p>
-    		        <p>
-    		           	<a href="{{ url('form_admin_form_viewer', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Viewer</a>
-    		        </p>
-    		    </div>
-    		</div>
-    	{% endif %}
-	</aside>
+    <aside>
+        {% if hasAccess('form_admin_form_viewer', 'add') and not hasGroup %}
+            <div class="sidebox">
+                <div class="title">Add Viewer</div>
+                   <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a viewer!</i>
+                    </p>
+                    <p>
+                           <a href="{{ url('form_admin_form_viewer', {"action": "add", "id": formSpecification.getId() }) }}">&rarr; Add Viewer</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 
-	<div class="modal hide fade" id="removeViewer">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Viewer
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following viewer: <b class="fullName"></b> of <b class="formSpecification"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeViewer">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Viewer
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the following viewer: <b class="fullName"></b> of <b class="formSpecification"></b>!
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('.item .delete').click(openModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
 
-		function openModal(e) {
-			var $this = $(this);
+        function openModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeViewer = $('#removeViewer');
-			removeViewer.find('.fullName').html($(this).data('name'));
-			removeViewer.find('.formSpecification').html($(this).data('form'));
-			var id = $this.data('id');
-			removeViewer.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('form_admin_form_viewer', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').hide();
-    					$('.viewer_removed_success').show();
-						$('.item-' + id).remove();
-    					removeViewer.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeViewer.modal();
-		}
+            e.preventDefault();
+            var removeViewer = $('#removeViewer');
+            removeViewer.find('.fullName').html($(this).data('name'));
+            removeViewer.find('.formSpecification').html($(this).data('form'));
+            var id = $this.data('id');
+            removeViewer.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('form_admin_form_viewer', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').hide();
+                        $('.viewer_removed_success').show();
+                        $('.item-' + id).remove();
+                        removeViewer.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeViewer.modal();
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').hide();
-		    $('.viewer_removed_error').show();
-		    $('#removeViewer').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').hide();
+            $('.viewer_removed_error').show();
+            $('#removeViewer').modal('hide');
+        }
+    </script>
 {% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'door/admin/rule/partials/navigation.twig' %}
+    {% include 'door/admin/rule/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
     <div class="flashmessage info_message full_width">
         <div class="title">Info</div>
@@ -12,10 +12,10 @@
         </div>
     </div>
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
