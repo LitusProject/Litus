@@ -93,4 +93,21 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_public');
     }
+
+    /**
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
+     *
+     * @return array
+     */
+    public function getAuthenticationHandler()
+    {
+        return array(
+            'action'         => 'index',
+            'controller'     => 'common_index',
+
+            'auth_route'     => 'cudi_sale_auth',
+            'redirect_route' => 'cudi_sale_sale'
+        );
+    }
 }

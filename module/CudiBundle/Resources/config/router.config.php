@@ -541,6 +541,22 @@ return array(
                 ),
             ),
         ),
+        'cudi_sale_auth' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/cudi/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
+                'constraints' => array(
+                    'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'identification' => '[mrsu][0-9]{7}',
+                    'hash'           => '[a-zA-Z0-9_-]*',
+                    'language'       => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_sale_auth',
+                    'action'     => 'login',
+                ),
+            ),
+        ),
         'cudi_supplier_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -845,6 +861,7 @@ return array(
 
         'cudi_sale_sale'                                => 'CudiBundle\Controller\Sale\SaleController',
         'cudi_sale_queue'                               => 'CudiBundle\Controller\Sale\QueueController',
+        'cudi_sale_auth'                                => 'CudiBundle\Controller\Sale\AuthController',
 
         'cudi_supplier_index'                           => 'CudiBundle\Controller\Supplier\IndexController',
         'cudi_supplier_article'                         => 'CudiBundle\Controller\Supplier\ArticleController',
