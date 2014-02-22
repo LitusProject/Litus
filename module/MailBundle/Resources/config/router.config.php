@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'mail_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/mail[/]',
-                'defaults' => array(
-                    'controller' => 'mail_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'mail_admin_alias' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -146,8 +136,6 @@ return array(
     ),
 
     'controllers' => array(
-        'mail_install'         => 'MailBundle\Controller\Admin\InstallController',
-
         'mail_admin_alias'     => 'MailBundle\Controller\Admin\AliasController',
         'mail_admin_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
         'mail_admin_group'     => 'MailBundle\Controller\Admin\GroupController',

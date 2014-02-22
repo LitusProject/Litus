@@ -18,10 +18,14 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
-    Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface,
+    Zend\ModuleManager\Feature\ConsoleBannerProviderInterface,
+    Zend\ModuleManager\Feature\ConfigProviderInterface,
+    CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
+    Zend\Mvc\MvcEvent,
+    Zend\Console\Adapter\AdapterInterface as Console;
 
-class Module
+class Module implements ConfigProviderInterface, ConsoleUsageProviderInterface, ConsoleBannerProviderInterface
 {
     public function onBootstrap($event)
     {
@@ -40,5 +44,17 @@ class Module
     public function getConfig()
     {
         return include __DIR__ . '/Resources/config/module.config.php';
+    }
+
+    public function getConsoleBanner(Console $console)
+    {
+        return 'Litus';
+    }
+
+    public function getConsoleUsage(Console $console)
+    {
+        return array(
+            '' // TODO
+        );
     }
 }

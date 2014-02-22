@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'shift_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/shift[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'shift_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'shift_admin_shift' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -99,7 +87,7 @@ return array(
         'shift' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/shift[/:action[/:id][]][/]',
+                'route' => '/shift[/:action[/:id][]][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -114,7 +102,7 @@ return array(
         'shift_export' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/shift/export/:token/ical.ics',
+                'route' => '/shift/export/:token/ical.ics',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'token'    => '[a-zA-Z0-9_-]*',
@@ -126,9 +114,8 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
-        'shift_install'                  => 'ShiftBundle\Controller\Admin\InstallController',
         'shift_admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',
         'shift_admin_shift_counter'      => 'ShiftBundle\Controller\Admin\CounterController',
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',

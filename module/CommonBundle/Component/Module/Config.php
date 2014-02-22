@@ -226,14 +226,25 @@ class Config
     {
         $directory = $settings['directory'];
         $namespace = $settings['namespace'];
+
         $routerConfig = self::_load($directory, 'router.config.php');
+        $consoleConfig = self::_load($directory, 'console.config.php');
 
         return array_merge_recursive(array(
             'router' => array(
                 'routes' => array_key_exists('routes', $routerConfig) ? $routerConfig['routes'] : array(),
             ),
+            'console' => array(
+                'router' => array(
+                    'routes' => array_key_exists('routes', $consoleConfig) ? $consoleConfig['routes'] : array(),
+                ),
+            ),
             'controllers' => array(
-                'invokables' => array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
+                'invokables' =>
+                    array_merge(
+                        array_key_exists('controllers', $routerConfig) ? $routerConfig['controllers'] : array(),
+                        array_key_exists('controllers', $consoleConfig) ? $consoleConfig['controllers'] : array()
+                    ),
             ),
 
             'translator' => array(
