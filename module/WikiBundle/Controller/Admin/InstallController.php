@@ -27,44 +27,4 @@ namespace WikiBundle\Controller\Admin;
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig()
-    {
-        $this->installConfig(
-            array(
-                array(
-                    'key'         => 'wiki.url',
-                    'value'       => 'https://wiki.vtk.be/wiki/index.php?title=Special:Login&returnto=Main_Page',
-                    'description' => 'The URL to the organization\'s wiki\'s login page',
-                ),
-            )
-        );
-    }
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'wikibundle' => array(
-                    'wiki_auth' => array(
-                        'login', 'logout', 'shibboleth'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'wiki_auth' => array(
-                            'login', 'logout', 'shibboleth'
-                        ),
-                    ),
-                ),
-            )
-        );
-    }
 }
