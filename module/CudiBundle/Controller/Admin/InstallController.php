@@ -577,6 +577,9 @@ VTK Cudi
                     'cudi_sale_sale' => array(
                         'return', 'returnPrice', 'sale'
                     ),
+                    'cudi_sale_auth' => array(
+                        'login', 'logout', 'shibboleth'
+                    ),
                     'cudi_supplier_article' => array(
                         'manage'
                     ),

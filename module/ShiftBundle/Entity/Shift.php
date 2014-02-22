@@ -167,7 +167,7 @@ class Shift
      */
     private $description;
 
-	/**
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this shift
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
@@ -192,7 +192,7 @@ class Shift
      * @param \CommonBundle\Entity\General\Location $location
      * @param string $name
      * @param string $description
-	 * @param array $editRoles
+     * @param array $editRoles
      */
     public function __construct(
         Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, array $editRoles
@@ -212,7 +212,7 @@ class Shift
 
         $this->responsibles = new ArrayCollection();
         $this->volunteers = new ArrayCollection();
-		$this->editRoles = new ArrayCollection($editRoles);
+        $this->editRoles = new ArrayCollection($editRoles);
     }
 
     /**
@@ -581,7 +581,7 @@ class Shift
         return $this->editRoles->toArray();
     }
 
-	/**
+    /**
      * @param array $editRoles
      * @return \PageBundle\Entity\Node\Page
      */
@@ -680,7 +680,7 @@ class Shift
         if ($this->getCreationPerson()->getId() === $person->getId())
             return true;
 
-		foreach ($person->getFlattenedRoles() as $role) {
+        foreach ($person->getFlattenedRoles() as $role) {
             if ($this->editRoles->contains($role) || $role->getName() == 'editor')
                 return true;
         }

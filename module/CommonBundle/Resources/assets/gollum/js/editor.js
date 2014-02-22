@@ -24,70 +24,70 @@
     };
 
     var methods = {
-    	init : function (options) {
-    	    this.each(function () {
-    	        _init($(this), options);
-    	    });
-    		return this;
-    	},
-    	replaceSelection: function (replaceText) {
-    	    _replaceFieldSelection($(this), replaceText);
-    	    return this;
-    	},
+        init : function (options) {
+            this.each(function () {
+                _init($(this), options);
+            });
+            return this;
+        },
+        replaceSelection: function (replaceText) {
+            _replaceFieldSelection($(this), replaceText);
+            return this;
+        },
     };
 
     $.fn.gollum = function (method) {
-    	if (methods[method]) {
-    		return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-    	} else if (typeof method === 'object' || ! method) {
-    		return methods.init.apply(this, arguments);
-    	} else {
-    		$.error('Method ' +  method + ' does not exist on $.gollum');
-    	}
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' +  method + ' does not exist on $.gollum');
+        }
     };
 
     _init = function ($that, options) {
         options = $.extend(defaults, options);
 
-	    $that.data('gollum-editor', options)
-	        .addClass('gollum-editor-body')
-	        .wrap($('<div>', {'class': 'gollum-editor'}));
+        $that.data('gollum-editor', options)
+            .addClass('gollum-editor-body')
+            .wrap($('<div>', {'class': 'gollum-editor'}));
 
-	    var wrapper = $that.closest('.gollum-editor');
-	    wrapper.css('width', options.width);
+        var wrapper = $that.closest('.gollum-editor');
+        wrapper.css('width', options.width);
 
-	    var functionbar = $('<div>', {'class': 'gollum-editor-function-bar'});
-	    wrapper.prepend(functionbar);
+        var functionbar = $('<div>', {'class': 'gollum-editor-function-bar'});
+        wrapper.prepend(functionbar);
 
-	    var buttons = $('<div>', {'class': 'gollum-editor-function-buttons'});
-	    functionbar.append(buttons);
+        var buttons = $('<div>', {'class': 'gollum-editor-function-buttons'});
+        functionbar.append(buttons);
 
-	    $.each(options.toolbar, function(key, val){
+        $.each(options.toolbar, function(key, val){
             if (val[2] == 'download-media' && options.uploadURL == '')
                 return;
-	        if (key == 'divider')
-	            button = $('<span>', {'class': 'function-divider'}).html('&nbsp;');
-	        else
-	            button = $('<a>', {'href': '#', 'class': 'function-button function-' + val[0], 'title': val[1], 'tabindex': -1})
-	                .append($('<span>', {'class': 'mini-icon '+val[2]}))
-	                .data('function', 'function-' + val[0]);
-	        buttons.append(button);
-	    });
+            if (key == 'divider')
+                button = $('<span>', {'class': 'function-divider'}).html('&nbsp;');
+            else
+                button = $('<a>', {'href': '#', 'class': 'function-button function-' + val[0], 'title': val[1], 'tabindex': -1})
+                    .append($('<span>', {'class': 'mini-icon '+val[2]}))
+                    .data('function', 'function-' + val[0]);
+            buttons.append(button);
+        });
 
-	    functionbar.after('<div class="gollum-editor-help"><ul class="gollum-editor-help-parent"><li></li></ul><ul class="gollum-editor-help-list"><li></li></ul><div class="gollum-editor-help-wrapper"><div class="gollum-editor-help-content"><p></p></div></div></div>');
+        functionbar.after('<div class="gollum-editor-help"><ul class="gollum-editor-help-parent"><li></li></ul><ul class="gollum-editor-help-list"><li></li></ul><div class="gollum-editor-help-wrapper"><div class="gollum-editor-help-content"><p></p></div></div></div>');
 
 
-	    functionbar.find('a.function-button').each(function() {
-	        if (_getDefinitionFor($(this).data('function'))) {
-	            $(this).click(_functionButtonClick);
-	            $(this).removeClass('disabled');
-	        }
-	        else if ($(this).data('function') != 'function-help') {
-	            $(this).addClass('disabled');
-	        }
-	    });
+        functionbar.find('a.function-button').each(function() {
+            if (_getDefinitionFor($(this).data('function'))) {
+                $(this).click(_functionButtonClick);
+                $(this).removeClass('disabled');
+            }
+            else if ($(this).data('function') != 'function-help') {
+                $(this).addClass('disabled');
+            }
+        });
 
-	    _defineHelp(functionbar.find('a.function-help'));
+        _defineHelp(functionbar.find('a.function-help'));
     };
 
     _functionButtonClick = function (e) {

@@ -4,7 +4,7 @@ namespace ShiftBundle\Repository\Shift;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-	ShiftBundle\Entity\Shift;
+    ShiftBundle\Entity\Shift;
 
 /**
  * Volunteer

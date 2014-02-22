@@ -1,23 +1,23 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'br/admin/company/partials/navigation.twig' %}
+    {% include 'br/admin/company/partials/navigation.twig' %}
 
-	<div id="controller_action">
-	    <h1>Company</h1>
+    <div id="controller_action">
+        <h1>Company</h1>
 
-	    <p>Name: <b>{{ company.getName() }}</b></p>
-	    <p>Description: <b>{{ company.getDescription() }}</b></p>
-	    <p>Sector: <b>{{ company.getSector() }}</b></p>
-	    <br />
-	    <h1>Current Logo</h1>
-	    {% if company.getLogo() %}
-	        <img src="/{{ logoPath }}/{{ company.getLogo() }}" alt="{{ company.getName() }}">
-	    {% else %}
-	        <i>This company currently has no logo.</i>
-	    {% endif %}
-	    <h1>Change Logo</h1>
+        <p>Name: <b>{{ company.getName() }}</b></p>
+        <p>Description: <b>{{ company.getDescription() }}</b></p>
+        <p>Sector: <b>{{ company.getSector() }}</b></p>
+        <br />
+        <h1>Current Logo</h1>
+        {% if company.getLogo() %}
+            <img src="/{{ logoPath }}/{{ company.getLogo() }}" alt="{{ company.getName() }}">
+        {% else %}
+            <i>This company currently has no logo.</i>
+        {% endif %}
+        <h1>Change Logo</h1>
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
