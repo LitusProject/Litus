@@ -8,12 +8,12 @@
             {% endif %}
             {% if hasAccess('br_admin_company_event', 'manage') %}
                 <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}"
-                	>
-                		Manage
-                	</a>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}"
+                    >
+                        Manage
+                    </a>
                 </li>
             {% endif %}
         </ul>
