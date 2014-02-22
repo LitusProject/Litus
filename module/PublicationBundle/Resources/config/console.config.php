@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'publication_install' => 'PublicationBundle\Controller\Console\InstallController',
-    ),
+    'install.publication' => 'PublicationBundle\Command\Install',
 );

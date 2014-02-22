@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'api_install' => 'ApiBundle\Controller\Console\InstallController',
-    ),
+    'install.api' => 'ApiBundle\Command\Install',
 );

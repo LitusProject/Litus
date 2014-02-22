@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'secretary_install' => 'SecretaryBundle\Controller\Console\InstallController',
-    ),
+    'install.secretary' => 'SecretaryBundle\Command\Install',
 );

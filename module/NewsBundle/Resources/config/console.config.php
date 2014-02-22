@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'news_install' => 'NewsBundle\Controller\Console\InstallController',
-    ),
+    'install.news' => 'NewsBundle\Command\Install',
 );

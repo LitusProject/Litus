@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'mail_install' => 'MailBundle\Controller\Console\InstallController',
-    ),
+    'install.mail' => 'MailBundle\Command\Install',
 );

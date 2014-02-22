@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'wiki_install' => 'WikiBundle\Controller\Console\InstallController',
-    ),
+    'install.wiki' => 'WikiBundle\Command\Install',
 );

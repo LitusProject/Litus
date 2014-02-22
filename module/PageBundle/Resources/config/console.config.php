@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'page_install' => 'PageBundle\Controller\Console\InstallController',
-    ),
+    'install.page' => 'PageBundle\Command\Install',
 );

@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'sport_install' => 'SportBundle\Controller\Console\InstallController',
-    ),
+    'install.sport' => 'SportBundle\Command\Install',
 );

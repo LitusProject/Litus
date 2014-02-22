@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'ticket_install' => 'TicketBundle\Controller\Console\InstallController',
-    ),
+    'install.ticked' => 'TicketBundle\Command\Install',
 );

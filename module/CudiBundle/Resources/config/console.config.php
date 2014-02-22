@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'cudi_install' => 'CudiBundle\Controller\Console\InstallController',
-    ),
+    'install.cudi' => 'CudiBundle\Command\Install',
 );

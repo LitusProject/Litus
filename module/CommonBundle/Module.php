@@ -18,16 +18,16 @@
 
 namespace CommonBundle;
 
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface,
-    Zend\ModuleManager\Feature\ConsoleBannerProviderInterface,
-    Zend\ModuleManager\Feature\ConfigProviderInterface,
-    CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
+use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
     Zend\Mvc\MvcEvent,
-    Zend\Console\Adapter\AdapterInterface as Console;
+    Zend\Console\Request as ConsoleRequest,
+    Zend\EventManager\EventInterface,
+    Zend\ServiceManager\ServiceLocatorInterface,
+    Symfony\Component\Console\Application as ConsoleApplication;
 
-class Module implements ConfigProviderInterface, ConsoleUsageProviderInterface, ConsoleBannerProviderInterface
+class Module
 {
-    public function onBootstrap($event)
+    public function onBootstrap(MvcEvent $event)
     {
         $application  = $event->getApplication();
         $services     = $application->getServiceManager();
@@ -39,6 +39,11 @@ class Module implements ConfigProviderInterface, ConsoleUsageProviderInterface, 
 
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
+
+        if ($event->getRequest() instanceof ConsoleRequest) {
+            $event->setRouter($services->get('litus.console_router'));
+            $this->initializeConsole($services->get('doctrine.cli'), $services);
+        }
     }
 
     public function getConfig()
@@ -46,15 +51,18 @@ class Module implements ConfigProviderInterface, ConsoleUsageProviderInterface, 
         return include __DIR__ . '/Resources/config/module.config.php';
     }
 
-    public function getConsoleBanner(Console $console)
+    public function initializeConsole(ConsoleApplication $application, ServiceLocatorInterface $serviceLocator)
     {
-        return 'Litus';
-    }
+        $config = $serviceLocator->get('Config');
+        $config = $config['litus']['console'];
 
-    public function getConsoleUsage(Console $console)
-    {
-        return array(
-            '' // TODO
-        );
+        $commands = array();
+
+        foreach ($config as $name => $invokable) {
+            $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
+            $commands[] = $serviceLocator->get('litus.console.' . $name);
+        }
+
+        $application->addCommands($commands);
     }
 }

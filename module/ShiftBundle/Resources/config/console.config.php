@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'shift_install' => 'ShiftBundle\Controller\Console\InstallController',
-    ),
+    'install.shift' => 'ShiftBundle\Command\Install',
 );

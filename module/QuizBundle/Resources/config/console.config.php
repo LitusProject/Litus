@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'quiz_install' => 'QuizBundle\Controller\Console\InstallController',
-    ),
+    'install.quiz' => 'QuizBundle\Command\Install',
 );

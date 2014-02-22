@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'on_install' => 'OnBundle\Controller\Console\InstallController',
-    ),
+    'install.on' => 'OnBundle\Command\Install',
 );

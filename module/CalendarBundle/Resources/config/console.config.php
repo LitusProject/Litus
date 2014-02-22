@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'calendar_install' => 'CalendarBundle\Controller\Console\InstallController',
-    ),
+    'install.calendar' => 'CalendarBundle\Command\Install',
 );

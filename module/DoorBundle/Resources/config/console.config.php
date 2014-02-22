@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'door_install' => 'DoorBundle\Controller\Console\InstallController',
-    ),
+    'install.door' => 'DoorBundle\Command\Install',
 );

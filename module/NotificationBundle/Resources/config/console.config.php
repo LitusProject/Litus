@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'notification_install' => 'NotificationBundle\Controller\Console\InstallController',
-    ),
+    'install.notification' => 'NotificationBundle\Command\Install',
 );

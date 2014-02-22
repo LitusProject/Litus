@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'form_install' => 'FormBundle\Controller\Console\InstallController',
-    ),
+    'install.form' => 'FormBundle\Command\Install',
 );

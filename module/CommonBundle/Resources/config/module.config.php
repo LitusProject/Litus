@@ -69,11 +69,14 @@ return Config::create(
                     return new \Zend\Authentication\Storage\Session('Litus_Auth');
                 },
 
-                'common_sessionstorage' => function($serviceManager) {
+                'common_sessionstorage' => function ($serviceManager) {
                     return new Zend\Session\Container('Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
+
+                'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
+                'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
             ),
             'invokables' => array(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
@@ -122,6 +125,21 @@ return Config::create(
         'authentication_sessionstorage' => array(
             'namespace' => 'Litus_Auth',
             'member'    => 'storage',
+        ),
+        'route_manager' => array(
+            'factories' => array(
+                'litus_cli' => function ($serviceManager) {
+                    $application = $serviceLocator->getServiceLocator()->get('litus.cli');
+
+                    return new \DoctrineModule\Mvc\Router\Console\SymfonyCli(
+                        $application,
+                        array(
+                            'controller' => 'DoctrineModule\Controller\Cli',
+                            'action'     => 'cli',
+                        )
+                    );
+                },
+            ),
         ),
     )
 );

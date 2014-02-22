@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'logistics_install' => 'LogisticsBundle\Controller\Console\InstallController',
-    ),
+    'install.logistics' => 'LogisticsBundle\Command\Install',
 );

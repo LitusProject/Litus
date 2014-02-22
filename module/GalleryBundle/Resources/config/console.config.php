@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'gallery_install' => 'GalleryBundle\Controller\Console\InstallController',
-    ),
+    'install.gallery' => 'GalleryBundle\Command\Install',
 );

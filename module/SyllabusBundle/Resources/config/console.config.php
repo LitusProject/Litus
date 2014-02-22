@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'syllabus_install' => 'SyllabusBundle\Controller\Console\InstallController',
-    ),
+    'install.syllabus' => 'SyllabusBundle\Command\Install',
 );

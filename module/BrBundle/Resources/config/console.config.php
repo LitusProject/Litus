@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'br_install' => 'BrBundle\Controller\Console\InstallController',
-    ),
+    'install.br' => 'BrBundle\Command\Install',
 );

@@ -17,7 +17,5 @@
  */
 
 return array(
-    'controllers' => array(
-        'banner_install' => 'BannerBundle\Controller\Console\InstallController',
-    ),
+    'install.banner' => 'BannerBundle\Command\Install',
 );

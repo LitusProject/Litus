@@ -17,20 +17,8 @@
  */
 
 return array(
-    'routes' => array(
-        'all_install' => array(
-            'options' => array(
-                'route' => 'litus install',
-                'defaults' => array(
-                    'controller' => 'all_install',
-                    'action' => 'index',
-                ),
-            ),
-        ),
-    ),
+    'install.all'    => 'CommonBundle\Command\AllInstall',
+    'install.common' => 'CommonBundle\Command\Install',
 
-    'controllers' => array(
-        'all_install'    => 'CommonBundle\Controller\Console\AllInstallController',
-        'common_install' => 'CommonBundle\Controller\Console\InstallController',
-    ),
+    'common.gc'      => 'CommonBundle\Command\GarbageCollect',
 );
