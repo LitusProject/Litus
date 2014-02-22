@@ -18,4 +18,7 @@
 
 return array(
     'install.cudi' => 'CudiBundle\Command\Install',
+
+    'cudi.expire-warning' => 'CudiBundle\Command\ExpireWarning',
+    'cudi.catalog-update' => 'CudiBundle\Command\CatalogUpdate',
 );
