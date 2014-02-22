@@ -188,6 +188,23 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($mapping = $this->_getMapping()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();
@@ -206,6 +223,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $result = array();
         foreach($mappings as $mapping) {
             $item = (object) array();
+            $item->mappingId = $mapping->getId();
             $item->id = $mapping->getStudy()->getId();
             $item->title = $mapping->getStudy()->getFullTitle();
             $item->phase = $mapping->getStudy()->getPhase();
@@ -305,6 +323,53 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
                     ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
         }
+    }
+
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the mapping!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No mapping with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $mapping;
     }
 
     private function _getStudy()
