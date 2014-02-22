@@ -137,7 +137,6 @@
             removeMapping.find('.title').html($(this).data('title'));
             var id = $this.data('id');
             removeMapping.find('.delete').unbind('click').click(function () {
-                console.log($this.data());
                 $.post($this.data('url'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
