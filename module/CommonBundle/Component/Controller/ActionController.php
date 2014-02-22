@@ -38,7 +38,7 @@ use CommonBundle\Component\Acl\Acl,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ActionController extends AbstractActionController implements AuthenticationAware
+class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
      * @var \CommonBundle\Entity\General\Language
@@ -359,6 +359,20 @@ class ActionController extends AbstractActionController implements Authenticatio
     }
 
     /**
+     * We want an easy method to retrieve the Cache from
+     * the DI container.
+     *
+     * @return \Zend\Cache\Storage\Adapter\Apc
+     */
+    public function getCache()
+    {
+        if ($this->getServiceLocator()->has('cache'))
+            return $this->getServiceLocator()->get('cache');
+
+        return null;
+    }
+
+    /**
      * Get the current academic year.
      *
      * @return \CommonBundle\Entity\General\AcademicYear
@@ -369,6 +383,28 @@ class ActionController extends AbstractActionController implements Authenticatio
             return AcademicYear::getOrganizationYear($this->getEntityManager());
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
+    }
+
+    /**
+     * We want an easy method to retrieve the DocumentManager from
+     * the DI container.
+     *
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     */
+    public function getDocumentManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+    }
+
+    /**
+     * We want an easy method to retrieve the EntityManager from
+     * the DI container.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
     /**
@@ -418,6 +454,39 @@ class ActionController extends AbstractActionController implements Authenticatio
             $result->persistentFlashMessages,
             array($flashMessage)
         );
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        return $this->getServiceLocator()->get('mail_transport');
+    }
+
+    /**
+     * Gets a parameter from a GET request.
+     *
+     * @param string $param The parameter's key
+     * @param mixed $default The default value, returned when the parameter is not found
+     * @return string
+     */
+    public function getParam($param, $default = null)
+    {
+        return $this->getEvent()->getRouteMatch()->getParam($param, $default);
+    }
+
+    /**
+     * Retrieve the common session storage from the DI container.
+     *
+     * @return \Zend\Session\Container
+     */
+    public function getSessionStorage()
+    {
+        return $this->getServiceLocator()->get('common_sessionstorage');
     }
 
     /**
