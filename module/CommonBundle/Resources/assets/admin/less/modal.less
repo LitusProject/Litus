@@ -2,29 +2,29 @@
 // ------
 
 .modal-open {
-	.dropdown-menu {  z-index: @zindexDropdown + @zindexModal; }
-	.dropdown.open { *z-index: @zindexDropdown + @zindexModal; }
-	.popover       {  z-index: @zindexPopover  + @zindexModal; }
-	.tooltip       {  z-index: @zindexTooltip  + @zindexModal; }
+    .dropdown-menu {  z-index: @zindexDropdown + @zindexModal; }
+    .dropdown.open { *z-index: @zindexDropdown + @zindexModal; }
+    .popover       {  z-index: @zindexPopover  + @zindexModal; }
+    .tooltip       {  z-index: @zindexTooltip  + @zindexModal; }
 }
 
 .modal {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	z-index: @zindexModal;
-	max-height: 500px;
-	overflow: auto;
-	width: 560px;
-	margin: -250px 0 0 -280px;
-	&.fade {
-		.transition(e('opacity .3s linear, top .3s ease-out'));
-		top: -25%;
-	}
-	&.fade.in { top: 50%; }
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: @zindexModal;
+    max-height: 500px;
+    overflow: auto;
+    width: 560px;
+    margin: -250px 0 0 -280px;
+    &.fade {
+        .transition(e('opacity .3s linear, top .3s ease-out'));
+        top: -25%;
+    }
+    &.fade.in { top: 50%; }
 
-	.form {
-		.row {
+    .form {
+        .row {
             clear: both;
             padding-top: 2 * @defaultSpacing;
             width: 560px;
@@ -61,58 +61,58 @@
         .required:after {
             content: @formRequired;
         }
-	}
+    }
 }
 
 .modal-backdrop {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: @zindexModalBackdrop;
-	background-color: @cBlack;
-	// Fade for backdrop
-	&.fade { opacity: 0; }
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: @zindexModalBackdrop;
+    background-color: @cBlack;
+    // Fade for backdrop
+    &.fade { opacity: 0; }
 }
 
 .modal-backdrop,
 .modal-backdrop.fade.in {
-	.opacity(80);
+    .opacity(80);
 }
 
 .modal-header {
-	margin: 0 6px 5px 0;
-	font-weight: bold;
-	color: white;
-	text-align: right;
+    margin: 0 6px 5px 0;
+    font-weight: bold;
+    color: white;
+    text-align: right;
 
-	span {
-		color: #FFAE00;
-	}
+    span {
+        color: #FFAE00;
+    }
 }
 
 .modal-body {
-	padding: 12px;
-	background: #EEE;
-	border: 5px solid #D7D4D4;
+    padding: 12px;
+    background: #EEE;
+    border: 5px solid #D7D4D4;
 
-	p {
-		margin-bottom: 10px;
-	}
+    p {
+        margin-bottom: 10px;
+    }
 
-	table.full-width {
-		width: 526px;
-	}
+    table.full-width {
+        width: 526px;
+    }
 
-	.footer {
-		input[type="button"], button {
-			cursor: pointer;
-			margin: 0 5px;
-			padding: 2px 10px;
-			background: @cWhite;
-		}
-	}
+    .footer {
+        input[type="button"], button {
+            cursor: pointer;
+            margin: 0 5px;
+            padding: 2px 10px;
+            background: @cWhite;
+        }
+    }
 
     input[type=button], button {
         text-indent: 0;
