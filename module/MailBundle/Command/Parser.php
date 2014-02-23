@@ -23,7 +23,7 @@ use MailBundle\Document\Message,
     MailBundle\Component\Parser\Message as MessageParser;
 
 /**
- * InstallController
+ * Parser
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>

@@ -18,4 +18,6 @@
 
 return array(
     'install.form' => 'FormBundle\Command\Install',
+
+    'form.mail' => 'FormBundle\Command\Mail',
 );
