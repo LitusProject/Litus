@@ -36,7 +36,7 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
             ->setDescription('Warn users when reservations are about to expire.')
             ->addOption('mail', 'm', null, 'Send the users a warning e-mail.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> warns users when their reservations are about to expire.
+The <info>%command.name%</info> command warns users when their reservations are about to expire.
 EOT
         );
     }

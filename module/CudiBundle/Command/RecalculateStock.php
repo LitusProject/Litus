@@ -36,7 +36,7 @@ class RecalculateStock extends \CommonBundle\Component\Console\Command
             ->setDescription('Recalculate the stock.')
             ->addOption('flush', 'f', null, 'Stores the result in the database.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> recalculates the stock and stores it if <comment>--flush</comment> is given.
+The <info>%command.name%</info> command recalculates the stock and stores it if <comment>--flush</comment> is given.
 EOT
         );
     }

@@ -36,7 +36,7 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
             ->setDescription('Update the catalog.')
             ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> updates the catalog and notifies the users of the changes.
+The <info>%command.name%</info> command updates the catalog and notifies the users of the changes.
 EOT
         );
     }

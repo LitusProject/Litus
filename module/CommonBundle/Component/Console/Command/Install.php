@@ -49,7 +49,7 @@ abstract class Install extends \CommonBundle\Component\Console\Command
             ->setName('install:' . str_replace(array('bundle', 'module'), '', strtolower($module)))
             ->setDescription('Install the ' . $module . '.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> installs the $module module.
+The <info>%command.name%</info> command installs the $module module.
 EOT
         );
     }

@@ -35,7 +35,7 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
             ->addOption('run', 'r', null, 'Run the WebSocket')
             ->setDescription('Runs the ' . $name . ' websocket.')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> runs the $name websocket.
+The <info>%command.name%</info> command runs the $name websocket.
 EOT
         );
     }
