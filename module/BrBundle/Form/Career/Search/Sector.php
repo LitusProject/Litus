@@ -34,19 +34,12 @@ use BrBundle\Entity\Company,
 class Sector extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name, false, false);
-
-        $this->_entityManager = $entityManager;
 
         $this->setAttribute('class', 'form-inline');
 
@@ -58,6 +51,7 @@ class Sector extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _createSectionArray()
     {
         $sectorArray = array();
+        $sectorArray["All"] = "All";
         foreach (Company::$possibleSectors as $key => $sector)
             $sectorArray[$key] = $sector;
 

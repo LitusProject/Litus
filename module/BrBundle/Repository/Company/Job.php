@@ -77,6 +77,31 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllActiveByTypeAndSectorQuery($type, $sector)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.sector', ':sector')
+                )
+            )
+            ->setParameter('type', $type)
+            ->setParameter('sector', $sector)
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
     public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
         $query = $this->_em->createQueryBuilder();

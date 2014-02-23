@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use BrBundle\Entity\Company,
+    BrBundle\Form\Career\Search\Sector as SectorSearchForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,12 +32,43 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
+        $sectorSearchForm = new SectorSearchForm($this->getEntityManager());
+
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
             ->findAllActiveByTypeQuery('vacancy'),
             $this->getParam('page')
         );
+
+        $searchResults = null;
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if (isset($formData['sector'])) {
+                $sectorSearchForm->setData($formData);
+
+                if ($sectorSearchForm->isValid() && '' != $formData['sector']) {
+                    $formData = $sectorSearchForm->getFormData($formData);
+
+                    if($formData['sector'] != "All")
+                        $searchResults = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Company\Job')
+                            ->findAllActiveByTypeAndSector('vacancy',$formData['sector']);
+                    else
+                        $searchResults = $paginator;
+
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The given search query was invalid!'
+                        )
+                    );
+                }
+            }
+        }
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -46,6 +79,8 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'sectorSearchForm' => $sectorSearchForm,
+                'searchResults' => $searchResults,
             )
         );
     }
@@ -111,5 +146,14 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $vacancy;
+    }
+
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector)
+            $sectorArray[$key] = $sector;
+
+        return $sectorArray;
     }
 }

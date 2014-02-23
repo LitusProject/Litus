@@ -22,26 +22,49 @@
     </div><br>
 
     <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-        {% for vacancy in paginator %}
-            <tr>
-                <td width="120">
-                    <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                        {% if vacancy.getCompany().getLogo() is not empty %}
-                            <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
-                        {% else %}
-                            <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
-                        {% endif %}
-                    </a>
-                </td>
+        {% if searchResults is null %}
+            {% for vacancy in paginator %}
+                <tr>
+                    <td width="120">
+                        <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                            {% if vacancy.getCompany().getLogo() is not empty %}
+                                <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                            {% else %}
+                                <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+                            {% endif %}
+                        </a>
+                    </td>
 
-                <td>
-                    <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
-                    <br/>
-                    <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                    <br/>{% autoescape false %}{{ vacancy.getSummary(200) }}{% endautoescape %}
-                </td>
-            </tr>
-        {% endfor %}
+                    <td>
+                        <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                        <br/>
+                        <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                        <br/>{% autoescape false %}{{ vacancy.getSummary(200) }}{% endautoescape %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for vacancy in searchResults %}
+                <tr>
+                    <td width="120">
+                        <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                            {% if vacancy.getCompany().getLogo() is not empty %}
+                                <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                            {% else %}
+                                <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+                            {% endif %}
+                        </a>
+                    </td>
+
+                    <td>
+                        <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                        <br/>
+                        <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                        <br/>{% autoescape false %}{{ vacancy.getSummary(200) }}{% endautoescape %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
     </table>
 
     {% include 'site/partials/paginationControl.twig' %}
