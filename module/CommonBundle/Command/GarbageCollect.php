@@ -18,11 +18,6 @@
 
 namespace CommonBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Console\Input\InputOption,
-    RuntimeException;
-
 /**
  * Performs garbage collection on the sessions.
  */
@@ -42,27 +37,32 @@ EOT
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand()
     {
         $doneSomething = false;
 
-        if ($input->getOption('all') || $input->getOption('sessions')) {
-            $this->_gcSessions($output);
+        if ($this->getOption('all') || $this->getOption('sessions')) {
+            $this->_gcSessions();
             $doneSomething = true;
         }
 
-        if ($input->getOption('all') || $input->getOption('shibboleth')) {
-            $this->_gcShibboleth($output);
+        if ($this->getOption('all') || $this->getOption('shibboleth')) {
+            $this->_gcShibboleth();
             $doneSomething = true;
         }
 
         if (!$doneSomething) {
-            $output->writeln('<error>Error:</error> you must give at least one option.');
+            $this->writeln('<error>Error:</error> you must give at least one option.');
             return 1;
         }
     }
 
-    private function _gcSessions(OutputInterface $output)
+    protected function getLogName()
+    {
+        return 'GarbageCollect';
+    }
+
+    private function _gcSessions()
     {
         $em = $this->getEntityManager();
         $sessions = $em->getRepository('CommonBundle\Entity\User\Session')
@@ -71,12 +71,12 @@ EOT
         foreach($sessions as $session)
             $em->remove($session);
 
-        $output->writeln('Removed <comment>' . count($sessions) . '</comment> expired sessions');
+        $this->writeln('Removed <comment>' . count($sessions) . '</comment> expired sessions');
 
         $em->flush();
     }
 
-    private function _gcShibboleth(OutputInterface $output)
+    private function _gcShibboleth()
     {
         $em = $this->getEntityManager();
         $sessions = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
@@ -85,7 +85,7 @@ EOT
         foreach($sessions as $session)
             $em->remove($session);
 
-        $output->writeln('Removed <comment>' . count($sessions) . '</comment> expired Shibboleth codes');
+        $this->writeln('Removed <comment>' . count($sessions) . '</comment> expired Shibboleth codes');
 
         $em->flush();
     }

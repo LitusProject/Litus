@@ -2,11 +2,126 @@
 
 namespace CommonBundle\Component\Console;
 
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorAwareTrait,
+    Symfony\Component\Console\Input\InputInterface as Input,
+    Symfony\Component\Console\Output\OutputInterface as Output;
 
-class Command extends \Symfony\Component\Console\Command\Command implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+abstract class Command extends \Symfony\Component\Console\Command\Command implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
+
+    /**
+     * @var \Symfony\Component\Console\Input\InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var \Symfony\Component\Console\Output\OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var string
+     */
+    private $_logName;
+
+    /**
+     * @var string
+     */
+    private $_logNameTag;
+
+    /**
+     * @return int|void
+     */
+    public function execute(Input $input, Output $output)
+    {
+        $this->input = $input;
+        $this->output = $output;
+        $this->_logName = $this->getLogName();
+        $this->_logNameTag = $this->getLogNameTag();
+
+        return $this->executeCommand();
+    }
+
+    /**
+     * @return int|void
+     */
+    protected abstract function executeCommand();
+
+    /**
+     * @return string
+     */
+    protected abstract function getLogName();
+
+    /**
+     * @return string
+     */
+    protected function getLogNameTag()
+    {
+        return 'fg=green;options=bold';
+    }
+
+    /**
+     * @param string $string the string to write
+     * @param boolean $raw whether to output the string raw
+     */
+    public function write($string, $raw = false)
+    {
+        if ($raw) {
+            $this->output->write($string);
+        } else {
+            $this->output->write(
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+            );
+        }
+    }
+
+    /**
+     * @param string $string the string to write
+     * @param boolean $raw whether to output the string raw
+     */
+    public function writeln($string, $raw = false)
+    {
+        if ($raw) {
+            $this->output->writeln($string);
+        } else {
+            $this->output->writeln(
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+            );
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        return $this->input->getOption($name);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasOption($name)
+    {
+        return $this->input->hasOption($name);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArgument($name)
+    {
+        return $this->input->getArgument($name);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasArgument($name)
+    {
+        return $this->input->hasArgument($name);
+    }
 
     /**
      * We want an easy method to retrieve the DocumentManager from

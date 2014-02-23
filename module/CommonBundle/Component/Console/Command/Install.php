@@ -37,39 +37,16 @@ use CommonBundle\Component\Acl\Acl,
 abstract class Install extends \CommonBundle\Component\Console\Command
 {
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface the output
-     */
-    private $output;
-
-    /**
      * @var string the module name
      */
     private $module;
-
-    protected function write($str, $raw = false)
-    {
-        if ($raw) {
-            $this->output->write($str);
-        } else {
-            $this->output->write('[<comment>' . $this->module . '</comment>] ' . $str);
-        }
-    }
-
-    protected function writeln($str, $raw = false)
-    {
-        if ($raw) {
-            $this->output->writeln($str);
-        } else {
-            $this->output->writeln('[<comment>' . $this->module . '</comment>] ' . $str);
-        }
-    }
 
     protected function configure()
     {
         $module = $this->_getModule();
 
         $this
-            ->setName('install:' . str_replace('bundle', '', strtolower($module)))
+            ->setName('install:' . str_replace(array('bundle', 'module'), '', strtolower($module)))
             ->setDescription('Install the ' . $module . '.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> installs the $module module.
@@ -82,9 +59,8 @@ EOT
      *
      * @return void
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand()
     {
-        $this->output = $output;
         $this->module = $this->_getModule();
 
         $configuration = $this->_getConfiguration();
@@ -110,6 +86,16 @@ EOT
         }
 
         $this->postInstall();
+    }
+
+    protected function getLogName()
+    {
+        return $this->_getModule();
+    }
+
+    protected function getLogNameTag()
+    {
+        return 'fg=blue';
     }
 
     private function _getModule()

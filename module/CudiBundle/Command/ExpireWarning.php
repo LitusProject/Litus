@@ -19,9 +19,6 @@
 namespace CudiBundle\Command;
 
 use CudiBundle\Component\Mail\Booking,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Console\Input\InputOption,
     RuntimeException,
     DateTime,
     DateInterval;
@@ -35,7 +32,7 @@ class ExpireWarning extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('cudi:expire-warning')
-            ->setAliases(array('cudi:warn-expire', 'cudi:expire'))
+            ->setAliases(array('cudi:warn-expire'))
             ->setDescription('Warn users when reservations are about to expire.')
             ->addOption('mail', 'm', null, 'Send the users a warning e-mail.')
             ->setHelp(<<<EOT
@@ -44,7 +41,7 @@ EOT
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand()
     {
         $em = $this->getEntityManager();
         $interval = new DateInterval(
@@ -58,7 +55,7 @@ EOT
         $end = clone $start;
         $end->add(new DateInterval('P1D'));
 
-        $output->writeln('Looking for bookings expiring between <comment>'
+        $this->writeln('Looking for bookings expiring between <comment>'
             . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
 
         $bookings = $em->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -72,22 +69,27 @@ EOT
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
-        $output->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
+        $this->writeln('Found <comment>' . count($bookings) . '</comment> bookings belonging to <comment>'
             . count($persons) . '</comment> people.');
 
-        if ($input->getOption('mail')) {
-            $output->writeln('Sending mails...');
+        if ($this->getOption('mail')) {
+            $this->write('Sending mails...');
             $count = 0;
 
             foreach($persons as $person) {
                 $count++;
                 if ($count % 3 === 0)
-                    $output->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
+                    $this->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
 
                 Booking::sendExpireWarningMail($em, $mailTransport, $person['bookings'], $person['person']);
             }
 
-            $output->writeln("\r" . 'Done.                                        ');
+            $this->writeln("\r" . 'Done.                                        ');
         }
+    }
+
+    protected function getLogName()
+    {
+        return 'ExpireWarning';
     }
 }

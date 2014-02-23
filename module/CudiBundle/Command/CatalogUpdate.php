@@ -18,10 +18,7 @@
 
 namespace CudiBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
-    Symfony\Component\Console\Input\InputOption,
-    DateTime,
+use ComDateTime,
     DateInterval,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear;
@@ -44,7 +41,7 @@ EOT
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand()
     {
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));
@@ -52,21 +49,26 @@ EOT
         $academicYear = $this->_getCurrentAcademicYear();
         $subjects = array();
 
-        $this->_findAllBookable($subjects, $date, $academicYear, $output);
-        $this->_findAllUnbookable($subjects, $date, $academicYear, $output);
-        $this->_findAllAdded($subjects, $date, $academicYear, $output);
-        $this->_findAllRemoved($subjects, $date, $academicYear, $output);
+        $this->_findAllBookable($subjects, $date, $academicYear);
+        $this->_findAllUnbookable($subjects, $date, $academicYear);
+        $this->_findAllAdded($subjects, $date, $academicYear);
+        $this->_findAllRemoved($subjects, $date, $academicYear);
 
-        $output->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
+        $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
 
-        $this->_notifySubscribers($subjects, $academicYear, $output, $input->getOption('mail'));
+        $this->_notifySubscribers($subjects, $academicYear);
     }
 
-    private function _findAllBookable(array $subjects, DateTime $date, AcademicYear $academicYear, OutputInterface $output)
+    protected function getLogName()
+    {
+        return 'CatalogUpdate';
+    }
+
+    private function _findAllBookable(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
-        $output->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Bookable.');
 
         foreach($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -92,11 +94,11 @@ EOT
         }
     }
 
-    private function _findAllUnbookable(array $subjects, DateTime $date, AcademicYear $academicYear, OutputInterface $output)
+    private function _findAllUnbookable(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
             ->findAllAfter($date);
-        $output->writeln('Found <comment>' . count($logs) . '</comment> log entries for Unbookable.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Unbookable.');
 
         foreach($logs as $log) {
             $article = $log->getArticle($this->getEntityManager());
@@ -122,11 +124,11 @@ EOT
         }
     }
 
-    private function _findAllAdded(array $subjects, DateTime $date, AcademicYear $academicYear, OutputInterface $output)
+    private function _findAllAdded(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
-        $output->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
 
         foreach($logs as $log) {
             $subjectMap= $log->getSubjectMap($this->getEntityManager());
@@ -147,11 +149,11 @@ EOT
         }
     }
 
-    private function _findAllRemoved(array $subjects, DateTime $date, AcademicYear $academicYear, OutputInterface $output)
+    private function _findAllRemoved(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
             ->findAllAfter($date);
-        $output->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
+        $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
 
         foreach($logs as $log) {
             $subjectMap= $log->getSubjectMap($this->getEntityManager());
@@ -172,7 +174,7 @@ EOT
         }
     }
 
-    private function _notifySubscribers(array $subjects, AcademicYear $academicYear, OutputInterface $output, $sendMails)
+    private function _notifySubscribers(array $subjects, AcademicYear $academicYear)
     {
         $subscribers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
@@ -188,9 +190,10 @@ EOT
 
         $counter = 0;
 
+        $sendMails = $this->getOption('mail');
         if ($sendMails && 'development' == getenv('APPLICATION_ENV')) {
             $sendMails = false;
-            $output->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');
+            $this->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');
         }
 
         foreach($subscribers as $subscription) {
@@ -268,9 +271,9 @@ EOT
         }
 
         if ($sendMails)
-            $output->writeln('<comment>' . $counter . '</comment> mails have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails have been sent.');
         else
-            $output->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
+            $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
     }
 
     private function _getCurrentAcademicYear()

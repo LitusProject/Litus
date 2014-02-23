@@ -18,14 +18,13 @@
 
 namespace CommonBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
-    RuntimeException;
+use RuntimeException;
 
 /**
  * AllInstallController calls all other installations.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class AllInstall extends \CommonBundle\Component\Console\Command
 {
@@ -36,7 +35,6 @@ class AllInstall extends \CommonBundle\Component\Console\Command
     {
         $this
             ->setName('install:all')
-            ->setAliases(array('install'))
             ->setDescription('Install all modules.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> installs all the modules.
@@ -44,12 +42,17 @@ EOT
         );
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function executeCommand()
     {
         foreach ($this->_getModules() as $module)
-            $this->_installModule($input, $output, $module);
+            $this->_installModule($module);
 
-        $output->writeln('Installation completed successfully!');
+        $this->writeln('Installation completed successfully!');
+    }
+
+    protected function getLogName()
+    {
+        return 'AllInstall';
     }
 
     private function _getModules()
@@ -58,15 +61,16 @@ EOT
             ->get('Config');
         $config = $config['litus']['install'];
 
+        // CommonBundle has to be first
         return array_merge(
             array('CommonBundle'),
             array_filter(array_keys($config), function ($v) { return $v != 'CommonBundle'; })
         );
     }
 
-    private function _installModule(InputInterface $input, OutputInterface $output, $module)
+    private function _installModule($module)
     {
-        $output->writeln('Installing module <comment>' . $module . '</comment>');
+        $this->writeln('Installing module <comment>' . $module . '</comment>');
 
         $moduleName = str_replace('bundle', '', strtolower($module));
 
@@ -75,6 +79,6 @@ EOT
         if (null === $command)
             throw new RuntimeException('Unknown command install:' . $moduleName . ' for module ' . $module);
 
-        $command->execute($input, $output);
+        $command->execute($this->input, $this->output);
     }
 }
