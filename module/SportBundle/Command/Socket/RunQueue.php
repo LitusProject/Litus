@@ -16,8 +16,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'install.syllabus' => 'SyllabusBundle\Command\Install',
+namespace SportBundle\Command\Socket;
 
-    'syllabus.socket.update' => 'SyllabusBundle\Command\Socket\Update',
-);
+use SportBundle\Component\WebSocket\Run\Queue as RunQueueSocket;
+
+class RunQueue extends \CommonBundle\Component\Console\Command\WebSocket
+{
+    protected function createSocket()
+    {
+        return new RunQueueSocket($this->getEntityManager());
+    }
+
+    protected function getCommandName()
+    {
+        return 'run-queue';
+    }
+}

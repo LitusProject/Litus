@@ -16,8 +16,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'install.syllabus' => 'SyllabusBundle\Command\Install',
+namespace CudiBundle\Command\Socket;
 
-    'syllabus.socket.update' => 'SyllabusBundle\Command\Socket\Update',
-);
+use CudiBundle\Component\WebSocket\Sale\Server as SaleQueueSocket;
+
+class SaleQueue extends \CommonBundle\Component\Console\Command\WebSocket
+{
+    protected function createSocket()
+    {
+        return new SaleQueueSocket($this->getEntityManager());
+    }
+
+    protected function getCommandName()
+    {
+        return 'sale-queue';
+    }
+}

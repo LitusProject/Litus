@@ -16,8 +16,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'install.syllabus' => 'SyllabusBundle\Command\Install',
+namespace SyllabusBundle\Command\Socket;
 
-    'syllabus.socket.update' => 'SyllabusBundle\Command\Socket\Update',
-);
+use SyllabusBundle\Component\WebSocket\Update as UpdateSocket;
+
+class Update extends \CommonBundle\Component\Console\Command\WebSocket
+{
+    protected function createSocket()
+    {
+        return new UpdateSocket($this->getEntityManager(), $this->getMailTransport());
+    }
+
+    protected function getCommandName()
+    {
+        return 'update';
+    }
+}

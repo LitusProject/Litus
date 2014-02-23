@@ -21,4 +21,6 @@ return array(
 
     'cudi.expire-warning' => 'CudiBundle\Command\ExpireWarning',
     'cudi.catalog-update' => 'CudiBundle\Command\CatalogUpdate',
+
+    'cudi.socket.sale' => 'CudiBundle\Command\Socket\SaleQueue',
 );

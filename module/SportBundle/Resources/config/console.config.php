@@ -18,4 +18,6 @@
 
 return array(
     'install.sport' => 'SportBundle\Command\Install',
+
+    'sport.socket.run' => 'SportBundle\Command\Socket\RunQueue',
 );
