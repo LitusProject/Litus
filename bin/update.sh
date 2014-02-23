@@ -19,7 +19,6 @@ checkAndMakeExecutable "bin/upgrade.sh"
 checkAndMakeExecutable "bin/CommonBundle/gc.sh"
 checkAndMakeExecutable "bin/CudiBundle/catalogUpdate.sh"
 checkAndMakeExecutable "bin/CudiBundle/expireWarning.sh"
-checkAndMakeExecutable "bin/Doctrine/doctrine-module"
 checkAndMakeExecutable "bin/MailBundle/parser.sh"
 
 # Upgrade script
