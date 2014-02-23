@@ -275,7 +275,7 @@ return array(
 
         'admin_css' => array(
             'assets' => array(
-                'admin/less/admin.less',
+                'admin/less/base.less',
             ),
             'filters' => array('less'),
             'options' => array(
