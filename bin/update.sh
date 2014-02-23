@@ -29,8 +29,6 @@ checkAndMakeExecutable "bin/MailBundle/parser.sh"
 php public/index.php orm:schema-tool:update --force
 php public/index.php orm:generate-proxies data/proxies/
 
-php public/index.php orm:generate:proxies data/proxies/
-
 # Making sure our LESS stylesheets are recompiled
 touch module/Corporate/Resources/assets/corporate/less/base.less
 
