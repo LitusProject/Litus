@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace CommonBundle\Component\Mvc\Router\Console;
 
@@ -33,39 +49,43 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
      * @param  string  $name
      * @param  mixed   $route
      * @param  int $priority
-     * @return RouteStackInterface
+     * @return RouteStack
      */
     public function addRoute($name, $route, $priority = null)
     {
+        return $this;
     }
 
     /**
      * Add multiple routes to the stack.
      *
      * @param  array|\Traversable $routes
-     * @return RouteStackInterface
+     * @return RouteStack
      */
     public function addRoutes($routes)
     {
+        return $this;
     }
 
     /**
      * Remove a route from the stack.
      *
      * @param  string $name
-     * @return RouteStackInterface
+     * @return RouteStack
      */
     public function removeRoute($name)
     {
+        return $this;
     }
 
     /**
      * Remove all routes from the stack and set new ones.
      *
      * @param  array|\Traversable $routes
-     * @return RouteStackInterface
+     * @return RouteStack
      */
     public function setRoutes($routes)
     {
+        return $this;
     }
 }

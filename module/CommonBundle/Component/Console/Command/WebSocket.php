@@ -62,12 +62,12 @@ EOT
     /**
      * @return string the name of this websocket, used in the commands.
      */
-    protected abstract function getCommandName();
+    abstract protected function getCommandName();
 
     /**
      * @return \CommonBundle\Component\WebSocket\Server|null
      */
-    protected abstract function createSocket();
+    abstract protected function createSocket();
 
     /**
      * @return string the name of the bundle of this websocket.

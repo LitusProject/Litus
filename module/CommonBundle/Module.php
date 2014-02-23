@@ -51,6 +51,13 @@ class Module
         return include __DIR__ . '/Resources/config/module.config.php';
     }
 
+    /**
+     * Adds the console routes to the $application.
+     *
+     * @param \Symfony\Component\Console\Application $application the console application
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator the ZF2 service locator
+     * @return void
+     */
     public function initializeConsole(ConsoleApplication $application, ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Config');
