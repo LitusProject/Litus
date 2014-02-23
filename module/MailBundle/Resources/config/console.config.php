@@ -20,4 +20,5 @@ return array(
     'install.mail' => 'MailBundle\Command\Install',
 
     'mail.import-aliases' => 'MailBundle\Command\ImportAliases',
+    'mail.parse'          => 'MailBundle\Command\Parser',
 );
