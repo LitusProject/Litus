@@ -26,7 +26,6 @@ php public/index.php orm:schema-tool:update --force
 php public/index.php orm:generate-proxies data/proxies/
 
 # Making sure our LESS stylesheets are recompiled
-touch module/CommonBundle/Resources/assets/admin/less/admin.less
 find module/ -name base.less | xargs touch
 
 php public/index.php assetic build
