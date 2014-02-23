@@ -13,9 +13,26 @@
             </div>
         </div>
 
-        {% if hasAccess('mail_admin_bakske', 'send') %}
-            {% import 'admin/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#send_mail').click(function () {
+                if ($(this).prop('disabled'))
+                    return false;
+
+                $(this).prop('disabled', true);
+                $(this).css('color', '#ccc');
+
+                $this = $(this);
+                setTimeout(function () {
+                    $this.closest('form').submit();
+                }, 10);
+            });
+        });
+    </script>
 {% endblock %}
