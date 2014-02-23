@@ -16,12 +16,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'install.all'    => 'CommonBundle\Command\AllInstall',
-    'install.common' => 'CommonBundle\Command\Install',
+namespace CommonBundle\Command\Assetic;
 
-    'common.gc'      => 'CommonBundle\Command\GarbageCollect',
-
-    'assetic.build'  => 'CommonBundle\Command\Assetic\Build',
-    'assetic.setup'  => 'CommonBundle\Command\Assetic\Setup',
-);
+class Build extends \CommonBundle\Component\Console\Command\Assetic
+{
+    protected function getCommandName()
+    {
+        return 'build';
+    }
+}
