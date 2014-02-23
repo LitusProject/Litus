@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Command;
 
-use ComDateTime,
+use DateTime,
     DateInterval,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear;
@@ -31,7 +31,7 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
     protected function configure()
     {
         $this
-            ->setName('cudi:catalog-update')
+            ->setName('cudi:catalog:update')
             ->setAliases(array('cudi:update-catalog'))
             ->setDescription('Update the catalog.')
             ->addOption('mail', 'm', null, 'Send mails to users to notify them of the update.')
