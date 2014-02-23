@@ -75,7 +75,7 @@ var LanguageDefinition = {
                                             $('<div>', {'class': 'bar', 'style': 'width: 100%'})
                                         ),
                                         footer = $('<div>', {'class': 'footer'}).append(
-                                        	ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
+                                          ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
                                             $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
                                         )
                                     )
@@ -165,7 +165,7 @@ var LanguageDefinition = {
                                             $('<div>', {'class': 'bar', 'style': 'width: 100%'})
                                         ),
                                         footer = $('<div>', {'class': 'footer'}).append(
-                                        	ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
+                                          ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
                                             $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
                                         )
                                     )

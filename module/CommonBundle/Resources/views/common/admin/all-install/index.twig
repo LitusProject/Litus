@@ -1,35 +1,35 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="flashmessages" class="full_width"></div>
+    <div id="flashmessages" class="full_width"></div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			{% for key, bundle in bundles %}
-				$.post('{{ url(bundle ~ '_install', {'action' : 'index'}) }}', function (data) {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% for key, bundle in bundles %}
+                $.post('{{ url(bundle ~ '_install', {'action' : 'index'}) }}', function (data) {
                     if (data && 'success' == data.status) {
-                    	success('{{ bundle|capitalize }}');
+                        success('{{ bundle|capitalize }}');
                     } else {
                         error('{{ bundle|capitalize }}');
                     }
                 }, 'json').error('{{ bundle|capitalize }}');
-			{% endfor %}
-		});
+            {% endfor %}
+        });
 
-		function success(bundleName) {
-			$('#flashmessages').append(
-				'<div class="flashmessage success_message full_width"><div class="title">Success</div><div class="content"><p>The ' + bundleName + 'Bundle was successfully installed.</p></div></div>'
-			);
-		}
+        function success(bundleName) {
+            $('#flashmessages').append(
+                '<div class="flashmessage success_message full_width"><div class="title">Success</div><div class="content"><p>The ' + bundleName + 'Bundle was successfully installed.</p></div></div>'
+            );
+        }
 
-		function error(bundleName) {
-			$('#flashmessages').append(
-				'<div class="flashmessage error_message full_width"><div class="title">Error</div><div class="content"><p>The ' + bundleName + 'Bundle failed to install.</p></div></div>'
-			);
-		}
-	</script>
+        function error(bundleName) {
+            $('#flashmessages').append(
+                '<div class="flashmessage error_message full_width"><div class="title">Error</div><div class="content"><p>The ' + bundleName + 'Bundle failed to install.</p></div></div>'
+            );
+        }
+    </script>
 {% endblock %}

@@ -4,7 +4,7 @@ namespace PublicationBundle\Repository\Edition;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-	PublicationBundle\Entity\Publication as PublicationEntity;
+    PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**
  * HtmlEdition
@@ -15,7 +15,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class HtmlEdition extends EntityRepository
 {
     public function findAllByPublicationAndAcademicYearQuery(PublicationEntity $publication, AcademicYear $academicYear)
-	{
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Edition\Html', 'p')

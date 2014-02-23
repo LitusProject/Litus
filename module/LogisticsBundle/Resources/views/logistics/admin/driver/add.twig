@@ -1,13 +1,13 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'logistics/admin/driver/partials/navigation.twig' %}
+    {% include 'logistics/admin/driver/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
 
-		{% import 'admin/partials/form.twig' as forms %}
+        {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 
     </div>
@@ -15,24 +15,24 @@
 
 {% block content_script %}
 
-	<script type="text/javascript">
-		$(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
 
-			$('#personSearch').typeaheadRemote(
-				{
-					source: '{{ url("common_admin_academic_typeahead", {}) }}',
-				}
-			).change(function(e) {
-				if ($(this).data('value')) {
-					$('#personId').val($(this).data('value').id);
-				} else {
-					$('#personId').val('');
-				}
-			});
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead", {}) }}',
+                }
+            ).change(function(e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
 
-			$("#color").minicolors({});
+            $("#color").minicolors({});
 
-		});
-	</script>
+        });
+    </script>
 
 {% endblock %}

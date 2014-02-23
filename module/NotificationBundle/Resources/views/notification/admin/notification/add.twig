@@ -1,14 +1,14 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'notification/admin/notification/partials/navigation.twig' %}
+    {% include 'notification/admin/notification/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -16,11 +16,11 @@
         $(document).ready(function () {
             $('#languages a:first').click();
         });
-	    $(document).ready(function () {
-	        $('textarea').gollum({
-	            toolbar: {
-					"bold": ["bold", "Bold", "bold"],
-					"italic": ["italic", "Italic", "italic"],
+        $(document).ready(function () {
+            $('textarea').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
                     "divider": "-",
                     "link": ["link", "Link", "link"],
                     "divider": "-",
@@ -31,7 +31,7 @@
                     "divider": "-",
                     "help": ["help", "Help", "help"],
                 },
-	        });
-	    });
+            });
+        });
     </script>
 {% endblock %}

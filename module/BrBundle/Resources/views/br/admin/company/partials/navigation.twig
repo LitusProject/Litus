@@ -8,12 +8,12 @@
             {% endif %}
             {% if hasAccess('br_admin_company', 'manage') %}
                 <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_company', {"action": "manage"}) }}"
-                	>
-                		Manage
-                	</a>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_company', {"action": "manage"}) }}"
+                    >
+                        Manage
+                    </a>
                 </li>
             {% endif %}
         </ul>

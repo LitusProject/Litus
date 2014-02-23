@@ -193,6 +193,29 @@ class Config
         return $result;
     }
 
+    private static function _createInstallConfig(array $settings)
+    {
+        $directory = $settings['directory'] . '/install';
+        $namespace = $settings['namespace'];
+
+        // returning an empty array here will ensure an error is thrown in the
+        // installcontroller.
+        if (!file_exists($directory))
+            return array();
+
+        $result = array();
+
+        foreach (array('configuration', 'acl', 'roles') as $name) {
+            $file = $directory . '/' . $name . '.config.php';
+            if (file_exists($file))
+                $result[$name] = $file;
+        }
+
+        return array(
+            $namespace => $result,
+        );
+    }
+
     /**
      *
      * @param string $namespace the namespace of the module
@@ -224,6 +247,10 @@ class Config
             'assetic_configuration' => self::_createAsseticConfig($settings),
 
             'view_manager' => self::_createViewManagerConfig($settings),
+
+            'litus' => array(
+                'install' => self::_createInstallConfig($settings),
+            ),
         ), $override);
     }
 }
