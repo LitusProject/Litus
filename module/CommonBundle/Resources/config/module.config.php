@@ -82,6 +82,9 @@ return Config::create(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
             ),
+            'aliases' => array(
+                'litus.console_application' => 'doctrine.cli',
+            ),
         ),
         'translator' => array(
             'translation_file_patterns' => array(

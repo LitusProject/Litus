@@ -42,7 +42,7 @@ class Module
 
         if ($event->getRequest() instanceof ConsoleRequest) {
             $event->setRouter($services->get('litus.console_router'));
-            $this->initializeConsole($services->get('doctrine.cli'), $services);
+            $this->initializeConsole($services->get('litus.console_application'), $services);
         }
     }
 
@@ -65,11 +65,13 @@ class Module
 
         $commands = array();
 
+        // Use the $serviceLocator here because it injects dependencies of the instantiated classes.
+        // Added bonus: allows commands to be overriden!
         foreach ($config as $name => $invokable) {
             $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
-            $commands[] = $serviceLocator->get('litus.console.' . $name);
+            $commands[$name] = $serviceLocator->get('litus.console.' . $name);
         }
 
-        $application->addCommands($commands);
+        $application->addCommands(array_values($commands));
     }
 }
