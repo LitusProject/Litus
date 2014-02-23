@@ -29,9 +29,7 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
             ->setName($module . ':' . $name . '-socket')
             ->setAliases(
                 array(
-                    $module . ':socket:' . $name,
                     'socket:' . $module . ':' . $name,
-                    'socket:' . $module . '-' . $name,
                 )
             )
             ->addOption('run', 'r', null, 'Run the WebSocket')
