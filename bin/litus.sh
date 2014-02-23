@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd $(dirname "$0"); cd ..;
-php public/index.php "$@";
+pwd=$(cd $(dirname "$0"); cd ..; pwd);
+php "$pwd"/public/index.php "$@";
