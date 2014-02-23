@@ -22,52 +22,8 @@ namespace TicketBundle\Controller\Admin;
  * InstallController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig()
-    {
-        $this->installConfig(
-            array(
-                array(
-                    'key'         => 'ticket.remove_reservation_treshold',
-                    'value'       => 'P2D',
-                    'description' => 'The date interval after which a person cannot remove a ticket reservation',
-                ),
-                array(
-                    'key'         => 'ticket.pdf_generator_path',
-                    'value'       => 'data/ticket/pdf_generator',
-                    'description' => 'The path to the PDF generator files',
-                ),
-            )
-        );
-    }
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'ticketbundle' => array(
-                    'ticket_admin_event' => array(
-                        'add', 'delete', 'edit', 'manage', 'old'
-                    ),
-                    'ticket_admin_ticket' => array(
-                        'export', 'manage', 'print'
-                    ),
-                    'ticket_sale_index' => array(
-                        'sale', 'validate'
-                    ),
-                    'ticket_sale_ticket' => array(
-                        'delete', 'overview', 'sale', 'unassign', 'undoSale'
-                    ),
-                    'ticket_sale_person' => array(
-                        'typeahead'
-                    ),
-                    'ticket' => array(
-                        'delete', 'event'
-                    ),
-                )
-            )
-        );
-    }
 }

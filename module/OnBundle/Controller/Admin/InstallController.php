@@ -23,39 +23,8 @@ namespace OnBundle\Controller\Admin;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'onbundle' => array(
-                    'on_admin_slug' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                    'on_redirect' => array(
-                        'index'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'on_redirect' => array(
-                            'index'
-                        ),
-                    ),
-                ),
-            )
-        );
-    }
 }
