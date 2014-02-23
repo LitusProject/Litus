@@ -58,7 +58,7 @@ class Option
     /**
      * @var string The options of this tanslation
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $options;
 
