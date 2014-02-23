@@ -152,8 +152,8 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $ranks = array();
-        foreach ($rankingCriteria as $criterium)
-            $ranks[$criterium['name']] = ucfirst($criterium['name']);
+        foreach ($rankingCriteria as $key => $criterium)
+            $ranks[$key] = ucfirst($criterium['name']);
 
         return $ranks;
     }
