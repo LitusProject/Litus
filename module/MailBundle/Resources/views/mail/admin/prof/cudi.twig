@@ -12,10 +12,9 @@
                 The following mail will be sent to all the professors who have a course in the <b>{% if 1 == semester %} first {% else %} second {% endif %}</b> semester.
             </div>
         </div>
-        {% if hasAccess('mail_admin_prof', 'send') %}
-            {% import 'admin/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
 
