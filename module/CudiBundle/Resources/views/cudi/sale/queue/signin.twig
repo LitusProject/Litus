@@ -31,7 +31,7 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            $('.flashmessage').autoHideFlashMessages({speed: 0, timeOut: 0});
+            $('.flashmessage:not(#invalidSession)').autoHideFlashMessages({speed: 0, timeOut: 0});
 
             $('#username').keypress(function(e) {
                 if (e.keyCode == 13) {
