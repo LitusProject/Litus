@@ -24,7 +24,7 @@ use CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager;
 
 /**
- * This entity represents an access rule for our door.
+ * This document represents an access rule for our door.
  *
  * @ODM\Document(
  *     collection="doorbundle_log",

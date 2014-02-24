@@ -68,7 +68,7 @@ if (isset($opts->r)) {
         ->findAllArticlesByPeriod($period);
 
     $membership = unserialize(
-        $this->getem()
+        $em
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.membership_article')
     );
