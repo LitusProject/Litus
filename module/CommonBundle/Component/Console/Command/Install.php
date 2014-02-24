@@ -59,7 +59,7 @@ EOT
      *
      * @return void
      */
-    public function executeCommand()
+    protected function executeCommand()
     {
         $this->module = $this->_getModule();
 

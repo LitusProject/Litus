@@ -41,7 +41,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));

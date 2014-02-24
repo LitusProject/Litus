@@ -49,7 +49,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return int|void
      */
-    public function execute(Input $input, Output $output)
+    protected function execute(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
@@ -81,7 +81,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string $string the string to write
      * @param boolean $raw whether to output the string raw
      */
-    public function write($string, $raw = false)
+    protected function write($string, $raw = false)
     {
         if ($raw) {
             $this->output->write($string);
@@ -96,7 +96,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string $string the string to write
      * @param boolean $raw whether to output the string raw
      */
-    public function writeln($string, $raw = false)
+    protected function writeln($string, $raw = false)
     {
         if ($raw) {
             $this->output->writeln($string);
@@ -110,7 +110,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return mixed
      */
-    public function getOption($name)
+    protected function getOption($name)
     {
         return $this->input->getOption($name);
     }
@@ -118,7 +118,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return mixed
      */
-    public function hasOption($name)
+    protected function hasOption($name)
     {
         return $this->input->hasOption($name);
     }
@@ -126,7 +126,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return mixed
      */
-    public function getArgument($name)
+    protected function getArgument($name)
     {
         return $this->input->getArgument($name);
     }
@@ -134,7 +134,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return mixed
      */
-    public function hasArgument($name)
+    protected function hasArgument($name)
     {
         return $this->input->hasArgument($name);
     }
@@ -145,7 +145,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      *
      * @return \Doctrine\ODM\MongoDB\DocumentManager
      */
-    public function getDocumentManager()
+    protected function getDocumentManager()
     {
         return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
     }
@@ -156,7 +156,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      *
      * @return \Doctrine\ORM\EntityManager
      */
-    public function getEntityManager()
+    protected function getEntityManager()
     {
         return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
@@ -167,7 +167,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      *
      * @return \Zend\Cache\Storage\Adapter\Apc
      */
-    public function getCache()
+    protected function getCache()
     {
         if ($this->getServiceLocator()->has('cache'))
             return $this->getServiceLocator()->get('cache');
@@ -181,7 +181,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      *
      * @return \Zend\Mail\Transport\TransportInterface
      */
-    public function getMailTransport()
+    protected function getMailTransport()
     {
         return $this->getServiceLocator()->get('mail_transport');
     }
@@ -191,7 +191,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      *
      * @return \Zend\Session\Container
      */
-    public function getSessionStorage()
+    protected function getSessionStorage()
     {
         return $this->getServiceLocator()->get('common_sessionstorage');
     }
@@ -199,7 +199,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     /**
      * @return \Zend\Console\Console
      */
-    public function getConsole()
+    protected function getConsole()
     {
         return $this->getServiceLocator()->get('Console');
     }

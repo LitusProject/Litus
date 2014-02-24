@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestPrinter extends \CommonBundle\Component\Console\Command
 {
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('cudi:test-printer')
@@ -42,7 +42,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         if (false === ($printer = $this->_getPrinter()))
             return 1;

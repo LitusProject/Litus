@@ -37,7 +37,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $doneSomething = false;
 

@@ -46,7 +46,7 @@ class Parser extends \CommonBundle\Component\Console\Command
      */
     private $_lilo;
 
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('mail:parse')
@@ -58,7 +58,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         if ($this->getServiceLocator()->has('lilo'))
             $this->_lilo = $this->getServiceLocator()->get('lilo');
@@ -74,7 +74,7 @@ EOT
         return 'MailParser';
     }
 
-    public function write($str, $raw = false)
+    protected function write($str, $raw = false)
     {
         if (null !== $this->_lilo) {
             $this->_sendToLilo($str);
@@ -83,7 +83,7 @@ EOT
         }
     }
 
-    public function writeln($str, $raw = false)
+    protected function writeln($str, $raw = false)
     {
         if (null !== $this->_lilo) {
             $this->_sendToLilo($str);

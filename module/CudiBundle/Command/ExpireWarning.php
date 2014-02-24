@@ -41,7 +41,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $em = $this->getEntityManager();
         $interval = new DateInterval(

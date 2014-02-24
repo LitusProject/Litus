@@ -33,7 +33,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $controllerLoader = $this->getServiceLocator()->get('controllerloader');
 

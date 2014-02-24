@@ -40,7 +40,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         if (!$this->getOption('run')) {
             $this->writeln('Please add -r or --run to run the socket');

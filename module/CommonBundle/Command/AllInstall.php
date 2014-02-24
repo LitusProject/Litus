@@ -42,7 +42,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         foreach ($this->_getModules() as $module)
             $this->_installModule($module);

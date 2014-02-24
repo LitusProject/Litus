@@ -18,8 +18,6 @@
 
 namespace BrBundle\Command;
 
-use Exception;
-
 /**
  * InstallController
  *

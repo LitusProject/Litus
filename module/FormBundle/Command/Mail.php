@@ -31,7 +31,7 @@ use DateTime,
  */
 class Mail extends \CommonBundle\Component\Console\Command
 {
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('form:mail')
@@ -46,7 +46,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         if ($this->getOption('mail') && 'development' == getenv('APPLICATION_ENV')) {
             $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');

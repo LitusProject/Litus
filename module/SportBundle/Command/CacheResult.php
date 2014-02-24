@@ -28,7 +28,7 @@ use DateTime;
  */
 class CacheResult extends \CommonBundle\Component\Console\Command
 {
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('sport:cache-result')
@@ -73,7 +73,7 @@ EOT
         return 'CacheSportResult';
     }
 
-    public function write($str, $raw = false)
+    protected function write($str, $raw = false)
     {
         $now = new DateTime();
         return parent::write(
@@ -82,7 +82,7 @@ EOT
         );
     }
 
-    public function writeln($str, $raw = false)
+    protected function writeln($str, $raw = false)
     {
         $now = new DateTime();
         return parent::writeln(

@@ -39,7 +39,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')

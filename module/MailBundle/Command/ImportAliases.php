@@ -30,7 +30,7 @@ use Symfony\Component\Console\Input\InputArgument,
  */
 class ImportAliases extends \CommonBundle\Component\Console\Command
 {
-    public function configure()
+    protected function configure()
     {
         $this
             ->setName('mail:import-aliases')
@@ -45,7 +45,7 @@ EOT
         );
     }
 
-    public function executeCommand()
+    protected function executeCommand()
     {
         $files = $this->getArgument('file');
         if (!is_array($files))
