@@ -522,7 +522,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_sale_queue',
-                    'action'     => 'index',
+                    'action'     => 'signin',
                 ),
             ),
         ),
