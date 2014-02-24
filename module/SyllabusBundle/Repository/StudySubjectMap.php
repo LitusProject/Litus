@@ -4,6 +4,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -176,6 +177,24 @@ class StudySubjectMap extends EntityRepository
                 $query->expr()->in('s.id', $ids)
             )
             ->orderBy('s.code', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('subject', $subject)
             ->getQuery();
 
         return $resultSet;

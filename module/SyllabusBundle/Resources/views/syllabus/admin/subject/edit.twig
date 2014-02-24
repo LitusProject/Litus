@@ -51,6 +51,7 @@
                     </tr>
                 {% endfor %}
             </table>
+
             <h1>Articles</h1>
             <table>
                 <tr>
@@ -73,6 +74,24 @@
                             {% if hasAccess('cudi_admin_article', 'edit') %}
                                 <a href="{{ url('cudi_admin_article', {"action": "edit", "id": mapping.getArticle().getId()}) }}" class="edit">Edit</a>
                             {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <h1>Studies</h1>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th width="100px">Mandatory</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for mapping in studyMappings %}
+                    <tr class="item">
+                        <td>{{ mapping.getStudy().getFullTitle() }}</td>
+                        <td>{% if mapping.getStudy().isMandatory() %}yes{% else %}no{% endif %}</td>
+                        <td class="actions">
                         </td>
                     </tr>
                 {% endfor %}

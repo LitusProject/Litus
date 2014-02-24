@@ -53,6 +53,7 @@ class KulId extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \SyllabusBundle\Entity\Study $exclude
      * @param mixed $opts The validator's options
      */
     public function __construct(EntityManager $entityManager, Study $exclude = null, $opts = null)

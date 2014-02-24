@@ -18,7 +18,8 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Matches the given subject code against the database to check whether it exists or not.
@@ -35,6 +36,11 @@ class Code extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
+     * @var \SyllabusBundle\Entity\Subject The subject exluded from this check
+     */
+    private $_exclude;
+
+    /**
      * Error messages
      *
      * @var array
@@ -47,13 +53,15 @@ class Code extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \SyllabusBundle\Entity\Subject $exclude
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, Subject $exclude = null, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
+        $this->_exclude = $exclude;
     }
 
 
@@ -73,7 +81,7 @@ class Code extends \Zend\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneByCode($value);
 
-        if (null !== $subject)
+        if (null === $subject || ($this->_exclude !== null && $subject->getId() == $this->_exclude->getId()))
             return true;
 
         $this->error(self::NOT_VALID);

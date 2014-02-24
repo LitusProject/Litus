@@ -21,6 +21,7 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Form\Admin\Subject\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -63,6 +64,26 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function addAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $form = new AddForm($this->getEntityManager());
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'form' => $form,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($subject = $this->_getSubject()))
@@ -79,6 +100,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findAllBySubjectAndAcademicYear($subject, $academicYear);
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
@@ -90,6 +115,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 'articleMappings' => $articles,
                 'currentAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
+                'studyMappings' => $studies,
             )
         );
     }
