@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace NotificationBundle\Entity\Node;
+namespace NotificationBundle\Repository\Node;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
