@@ -20,6 +20,7 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
     BrBundle\Form\Career\Search\Sector as SectorSearchForm,
+    BrBundle\Form\Career\Search\SearchType as SearchTypeForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -32,7 +33,8 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $sectorSearchForm = new SectorSearchForm($this->getEntityManager());
+        $sectorSearchForm = new SectorSearchForm();
+        $searchTypeForm = new SearchTypeForm();
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -80,6 +82,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
                 'sectorSearchForm' => $sectorSearchForm,
+                'searchTypeForm' => $searchTypeForm,
                 'searchResults' => $searchResults,
             )
         );

@@ -31,7 +31,7 @@ use BrBundle\Entity\Company,
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Sector extends \CommonBundle\Component\Form\Bootstrap\Form
+class SearchType extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -43,19 +43,18 @@ class Sector extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('class', 'form-inline');
 
-        $field = new Select('sector');
-        $field->setAttribute('options', $this->_createSectionArray());
+        $field = new Select('searchType');
+        $field->setAttribute('options', $this->_createSearchTypeArray());
         $this->add($field);
     }
 
-    private function _createSectionArray()
+    private function _createSearchTypeArray()
     {
-        $sectorArray = array();
-        $sectorArray["All"] = "All";
-        foreach (Company::$possibleSectors as $key => $sector)
-            $sectorArray[$key] = $sector;
+        $searchTypeArray = array();
+        $searchTypeArray["Alphabetical"] = "Alphabetical";
+        $searchTypeArray["Most Recent"] = "Most Recent";
 
-        return $sectorArray;
+        return $searchTypeArray;
     }
 
     public function getInputFilter()
@@ -66,7 +65,7 @@ class Sector extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'sector',
+                    'name'     => 'searchType',
                     'required' => true,
                 )
             )

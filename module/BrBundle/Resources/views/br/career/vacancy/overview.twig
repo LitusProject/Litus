@@ -2,10 +2,20 @@
 
 {% block page_content %}
     <h1>{{ translate('Vacancies') }}</h1>
-    
     <div class="row">
         <div class="col-md-4 shiftSearchForms">
             <h2>{{ translate('Search') }}</h2>
+                {% do form.prepare() %}
+                {{ form().openTag(searchTypeForm)|raw }}
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(searchTypeForm.get('searchType'))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form().closeTag()|raw }}
                 <h4>Sector</h4>
                 {% do form.prepare() %}
                 {{ form().openTag(sectorSearchForm)|raw }}
@@ -21,7 +31,7 @@
         </div>
     </div><br>
 
-    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width" id="trol">
         {% if searchResults is null %}
             {% for vacancy in paginator %}
                 <tr>
