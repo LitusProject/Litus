@@ -105,6 +105,16 @@ class Subject
     }
 
     /**
+     * @param string $code
+     * @return \SyllabusBundle\Entity\Subject
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -131,11 +141,31 @@ class Subject
     }
 
     /**
+     * @param integer $semester
+     * @return \SyllabusBundle\Entity\Subject
+     */
+    public function setSemester($semester)
+    {
+        $this->semester = $semester;
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getCredits()
     {
         return $this->credits;
+    }
+
+    /**
+     * @param integer $credits
+     * @return \SyllabusBundle\Entity\Subject
+     */
+    public function setCredits($credits)
+    {
+        $this->credits = $credits;
+        return $this;
     }
 
     /**

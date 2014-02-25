@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Form\Admin\Subject;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
@@ -76,6 +77,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('credits');
         $field->setLabel('Credits')
             ->setRequired();
+        $this->add($field);
+
+        $field = new Hidden('study_id');
+        $field->setAttribute('id', 'studyId');
+        $this->add($field);
+
+        $field = new Text('study');
+        $field->setLabel('Study')
+            ->setAttribute('style', 'width: 400px;')
+            ->setAttribute('id', 'studySearch')
+            ->setAttribute('autocomplete', 'off')
+            ->setAttribute('data-provide', 'typeahead')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Checkbox('mandatory');
+        $field->setLabel('Mandatory');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -147,6 +165,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int')
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'study_id',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'study',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 )
             )

@@ -30,6 +30,12 @@
         <p>Students: <b>{{ subject.getNbEnrollment(currentAcademicYear) }}</b></p>
         <br />
 
+        {% if hasAccess('syllabus_admin_subject', 'add') %}
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+            <br style="clear:both" />
+        {% endif %}
+
         <div>
             <h1>Docents</h1>
             <table class="manage">

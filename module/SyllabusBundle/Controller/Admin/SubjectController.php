@@ -21,7 +21,10 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Entity\Subject,
+    SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Form\Admin\Subject\Add as AddForm,
+    SyllabusBundle\Form\Admin\Subject\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -71,6 +74,42 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = new AddForm($this->getEntityManager());
 
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $study = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($formData['study_id']);
+
+                $subject = new Subject($formData['code'], $formData['name'], $formData['semester'], $formData['credits']);
+                $this->getEntityManager()->persist($subject);
+
+                $map = new StudySubjectMap($study, $subject, $formData['mandatory'], $academicYear);
+                $this->getEntityManager()->persist($map);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The subject was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_subject',
+                    array(
+                        'action' => 'edit',
+                        'id' => $subject->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+            }
+        }
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
@@ -92,6 +131,39 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
+        $form = new EditForm($this->getEntityManager(), $subject);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $subject->setCode($formData['code'])
+                    ->setName($formData['name'])
+                    ->setSemester($formData['semester'])
+                    ->setCredits($formData['credits']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The subject was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_subject',
+                    array(
+                        'action' => 'edit',
+                        'id' => $subject->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+            }
+        }
+
         $profs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
@@ -110,6 +182,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
+                'form' => $form,
                 'subject' => $subject,
                 'profMappings' => $profs,
                 'articleMappings' => $articles,
