@@ -8,7 +8,7 @@ return array(
         ),
         'actions' => array(
             'secretary_registration' => array(
-                'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
+                'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects','cancel'
             ),
         ),
     ),

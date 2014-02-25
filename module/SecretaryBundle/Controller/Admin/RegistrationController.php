@@ -287,10 +287,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
+            if ($formData['payed'] && $formData['cancel']) {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'ERROR',
+                            'The registration needs to be uncancelled before it can be payed !'
+                        )
+                    );
+            }else if ($form->isValid()) {
 
-            if ($form->isValid()) {
                 $registration->setPayed($formData['payed']);
-
+                $registration->setCancelled(false);
                 $organization = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization')
                     ->findOneById($formData['organization']);
@@ -341,7 +349,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-                $this->redirect()->toRoute(
+            }
+
+            $this->redirect()->toRoute(
                     'secretary_admin_registration',
                     array(
                         'action' => 'edit',
@@ -349,8 +359,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-                return new ViewModel();
-            }
+            return new ViewModel();
         }
 
         return new ViewModel(
@@ -363,6 +372,74 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'currentOrganization' => $this->_getOrganization(),
             )
         );
+    }
+
+    public function cancelAction()
+    {
+        if (!($registration = $this->_getRegistration()))
+            return new ViewModel();
+
+        $academic = $registration->getAcademic();
+        $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
+
+        $statusMessage = '';
+
+        if ($organizationStatus->getStatus()==='praesidium') {
+
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'ERROR',
+                    'Registration could not be cancelled as the person is part of the praesidium !'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_admin_registration',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+
+        } else if ($registration->isCancelled()) {
+            $statusMessage='The registration was already succesfully cancelled !';
+        } else {
+            $metaData = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+                ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
+
+            $registration->setPayed(false);
+
+            if (null != $metaData) {
+                $metaData->setBecomeMember(false);
+            }
+
+            $organizationStatus->setStatus('non_member');
+            $registration->setCancelled(true);
+            $this->getEntityManager()->flush();
+            $statusMessage = 'The registration was successfully cancelled for '.$academic->getFirstName().' '.$academic->getLastName().'!';
+        }
+
+        if ($statusMessage != '') {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCESS',
+                    $statusMessage
+                )
+            );
+        }
+
+        $this->redirect()->toRoute(
+            'secretary_admin_registration',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function searchAction()
@@ -421,6 +498,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->name = $registration->getAcademic()->getFullName();
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
+                $item->cancelled = $registration->isCancelled();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
                 $item->organization = $registration->getAcademic()->getOrganization($academicYear) ? $registration->getAcademic()->getOrganization($academicYear)->getName() : '';
                 $result[] = $item;

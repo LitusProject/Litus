@@ -61,6 +61,11 @@ class Edit extends Add
         $this->remove('person_id');
         $this->remove('person');
 
+        $field = new Checkbox('cancel');
+        $field->setLabel('Cancelled');
+        $this->add($field);
+        $field->setValue($registration->isCancelled());
+
         $this->get('payed')->setValue($registration->hasPayed());
         if ($metaData) {
             $this->get('irreeel')->setValue($metaData->receiveIrReeelAtCudi());

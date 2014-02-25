@@ -78,6 +78,14 @@ class Registration
     private $payedTimestamp;
 
     /**
+    *
+    * @var boolean Flag whether this registration has been cancelled
+    *
+    * @ORM\Column(type="boolean", nullable=true)
+    */
+    private $cancelled;
+
+    /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
@@ -87,6 +95,7 @@ class Registration
         $this->academicYear = $academicYear;
         $this->timestamp = new DateTime();
         $this->payed = false;
+        $this->cancelled = false;
     }
 
     /**
@@ -146,6 +155,17 @@ class Registration
     {
         $this->payed = $payed;
         $this->payedTimestamp = $payed ? new DateTime() : null;
+        return $this;
+    }
+
+    public function isCancelled()
+    {
+        return $this->cancelled;
+    }
+
+    public function setCancelled($cancel = false)
+    {
+        $this->cancelled = $cancel;
         return $this;
     }
 }

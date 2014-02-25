@@ -28,6 +28,7 @@
                     <th>Name</th>
                     <th width="120px">Date</th>
                     <th width="120px">Payed</th>
+                    <th width="120px">Cancelled</th>
                     <th width="120px">Barcode</th>
                     <th width="120px">Organization</th>
                     <th width="70px">Action</th>
@@ -54,6 +55,7 @@
                             .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.date + '</td>')
                             .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
+                            .append('<td>' + (this.cancelled ? '&times;' : '') + '</td>')
                             .append('<td>' + this.barcode + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
@@ -63,6 +65,9 @@
                         {% endif %}
                         {% if hasAccess('secretary_admin_registration', 'edit') %}
                             actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Edit</a>');
+                        {% endif %}
+                        {% if hasAccess('secretary_admin_registration', 'cancel') %}
+                            actions.append('<a href="{{ url('secretary_admin_registration', {"action": "cancel"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="delete">Cancel</a>');
                         {% endif %}
                     });
                     $('#registration_search table').change();
