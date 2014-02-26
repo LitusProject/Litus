@@ -199,4 +199,26 @@ class StudySubjectMap extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findOneByStudySubjectAndAcademicYear(StudyEntity $study, SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.study', ':study'),
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('study', $study)
+            ->setParameter('subject', $subject)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
 }

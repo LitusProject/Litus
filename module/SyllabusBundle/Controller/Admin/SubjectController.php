@@ -79,6 +79,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($formData['study_id']);
@@ -138,6 +140,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
                 $subject->setCode($formData['code'])
                     ->setName($formData['name'])
                     ->setSemester($formData['semester'])

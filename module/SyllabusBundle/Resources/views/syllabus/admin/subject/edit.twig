@@ -86,7 +86,7 @@
             </table>
 
             <h1>Studies</h1>
-            <table>
+            <table class="manage">
                 <tr>
                     <th>Title</th>
                     <th width="100px">Mandatory</th>
@@ -98,6 +98,12 @@
                         <td>{{ mapping.getStudy().getFullTitle() }}</td>
                         <td>{% if mapping.getStudy().isMandatory() %}yes{% else %}no{% endif %}</td>
                         <td class="actions">
+                            {% if hasAccess('syllabus_admin_subject_study', 'edit') %}
+                                <a href="{{ url('syllabus_admin_subject_study', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('syllabus_admin_subject_study', 'delete') %}
+                                <a href="#" data-title="{{ mapping.getStudy().getFullTitle() }}" data-id="{{ mapping.getId() }}" data-url="{{ url('syllabus_admin_subject_study', {'action': 'delete', 'id': mapping.getId()}) }}" class="delete">Delete</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -128,6 +134,19 @@
                     </p>
                     <p>
                         <a href="{{ url("syllabus_admin_subject_comment", {"action": "subject", "id": subject.getId()}) }}">&rarr; View Comments</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        {% if hasAccess('syllabus_admin_subject_study', 'add') %}
+            <div class="sidebox">
+                <div class="title">Add Study</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a study to this subject!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url("syllabus_admin_subject_study", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Study</a>
                     </p>
                 </div>
             </div>
