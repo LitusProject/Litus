@@ -30,6 +30,7 @@ return array(
             '@common_remote_typeahead',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_download_file',
         ),
         'secretary_admin_promotion' => array(
             '@common_jquery',

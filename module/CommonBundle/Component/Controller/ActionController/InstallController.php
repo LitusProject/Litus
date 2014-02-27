@@ -41,8 +41,20 @@ abstract class InstallController extends AdminController
      */
     public function indexAction()
     {
-        $this->initConfig();
-        $this->initAcl();
+        $configuration = $this->_getConfiguration();
+
+        $this->preInstall();
+
+        if (array_key_exists('configuration', $configuration))
+            $this->_installConfig($configuration['configuration']);
+
+        if (array_key_exists('acl', $configuration))
+            $this->_installAcl($configuration['acl']);
+
+        if (array_key_exists('roles', $configuration))
+            $this->_installRoles($configuration['roles']);
+
+        $this->postInstall();
 
         return new ViewModel(
             array(
@@ -51,27 +63,62 @@ abstract class InstallController extends AdminController
         );
     }
 
-    /**
-     * Initiliazes all configuration values for the bundle.
-     *
-     * @return void
-     */
-    abstract protected function initConfig();
+    private function _getConfiguration()
+    {
+        $calledClass = get_called_class();
+        $module = substr($calledClass, 0, strpos($calledClass, '\\', 1));
+
+        $configuration = $this->getServiceLocator()->get('Config');
+        $configuration = $configuration['litus']['install'];
+        $configuration = array_change_key_case($configuration);
+
+        $key = strtolower($module);
+        if (array_key_exists($key, $configuration)) {
+            $configuration = $configuration[$key];
+        } else if (array_key_exists(str_replace('bundle', '', $key), $configuration)) {
+            $key = str_replace('bundle', '', $key);
+            $configuration = $configuration[$key];
+        } else {
+            throw new \RuntimeException('Module ' . $module . ' does not have any configured installation files.');
+        }
+
+        return $configuration;
+    }
 
     /**
-     * Initializes the ACL tree for the bundle.
+     * Called prior to installation of the module.
      *
      * @return void
      */
-    abstract protected function initAcl();
+    protected function preInstall()
+    {
+    }
+
+    /**
+     * Called after the installation of the module.
+     *
+     * @return void
+     */
+    protected function postInstall()
+    {
+    }
+
+    private static function _loadConfig($config)
+    {
+        if (is_array($config))
+            return $config;
+        return require $config;
+    }
 
     /**
      * Install the config values
      *
      * @param array $config The configuration values
      */
-    protected function installConfig($config)
+    private function _installConfig($config)
     {
+        $config = self::_loadConfig($config);
+
         foreach($config as $item) {
             try {
                 $entry = $this->getEntityManager()
@@ -102,8 +149,10 @@ abstract class InstallController extends AdminController
      *
      * @param array $roles
      */
-    protected function installRoles($roles = array())
+    private function _installRoles($roles)
     {
+        $roles = self::_loadConfig($roles);
+
         foreach($roles as $roleName => $config) {
             $role = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -150,8 +199,10 @@ abstract class InstallController extends AdminController
      *
      * @param array $structure
      */
-    protected function installAcl($structure = array())
+    private function _installAcl($structure)
     {
+        $structure = self::_loadConfig($structure);
+
         foreach ($structure as $module => $routesArray) {
             $repositoryCheck = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Resource')

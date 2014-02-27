@@ -5,7 +5,7 @@
 <head>
 
     {{ headMeta() }}
-	{{ headTitle('Litus Admin', 'PREPEND') }}
+    {{ headTitle('Litus Admin', 'PREPEND') }}
 
     <style type="text/css">
         * {
@@ -115,7 +115,7 @@
 
     <section id="login_section">
         <div id="form_container">
-			<a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+            <a class="shibboleth" href="{{ shibbolethUrl }}">&rarr; {% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
             <div id="login_form" style="display: none;">
                 <div class="divider"></div>
                 {% do form.prepare() %}
@@ -176,7 +176,7 @@
 
         $('#password').keypress(function(e) {
             if (e.keyCode == 13) {
-            	e.preventDefault();
+                e.preventDefault();
                 doLogin();
             }
         });

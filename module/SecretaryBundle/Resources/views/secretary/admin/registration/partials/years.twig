@@ -2,7 +2,7 @@
     <nav class="controller_sub_nav">
         <ul>
             {% for academicYear in academicYears %}
-                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": "manage", "academicyear": academicYear.getCode(), "organization": currentOrganization.getId()}) }}">{{ academicYear.getCode() }}</a></li>
+                <li><a {% if academicYear.getCode() == activeAcademicYear.getCode() %} class="active" {% endif %}href="{{ url("secretary_admin_registration", {"action": getParam('action'), "academicyear": academicYear.getCode(), "organization": currentOrganization.getId()}) }}">{{ academicYear.getCode() }}</a></li>
             {% endfor %}
         </ul>
     </nav>

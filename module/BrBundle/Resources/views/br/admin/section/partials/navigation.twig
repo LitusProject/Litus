@@ -8,12 +8,12 @@
             {% endif %}
             {% if hasAccess('br_admin_section', 'manage') %}
                 <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_section', {"action": "manage"}) }}"
-                	>
-                		Manage
-                	</a>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_section', {"action": "manage"}) }}"
+                    >
+                        Manage
+                    </a>
                 </li>
             {% endif %}
         </ul>

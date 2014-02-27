@@ -1,23 +1,23 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'br/admin/company/partials/navigation.twig' %}
+    {% include 'br/admin/company/partials/navigation.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 
     <aside>
         {% if hasAccess('br_admin_company', 'editLogo') %}
             <div class="sidebox">
                 <div class="title">Edit General Logo</div>
-               	<div class="content">
-                	<p>
-                    	<i>Please hit the link below to edit the general logo of this company!</i>
+                   <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the general logo of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('br_admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit General Logo</a>
+                           <a href="{{ url('br_admin_company', {"action": "editLogo", "id": company.getId()}) }}">&rarr; Edit General Logo</a>
                     </p>
                 </div>
             </div>
@@ -38,12 +38,12 @@
         {% if hasAccess('br_admin_company_event', 'manage') %}
             <div class="sidebox">
                 <div class="title">Events</div>
-               	<div class="content">
-                	<p>
-                    	<i>Please hit the link below to view the events of this company!</i>
+                   <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the events of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
+                           <a href="{{ url('br_admin_company_event', {"action": "manage", "id": company.getId()}) }}">&rarr; Events</a>
                     </p>
                 </div>
             </div>
@@ -51,12 +51,12 @@
         {% if hasAccess('br_admin_company_job', 'manage') %}
             <div class="sidebox">
                 <div class="title">Jobs</div>
-               	<div class="content">
-                	<p>
-                    	<i>Please hit the link below to view the jobs of this company!</i>
+                   <div class="content">
+                    <p>
+                        <i>Please hit the link below to view the jobs of this company!</i>
                     </p>
                     <p>
-                       	<a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}">&rarr; Jobs</a>
+                           <a href="{{ url('br_admin_company_job', {"action": "manage", "id": company.getId()}) }}">&rarr; Jobs</a>
                     </p>
                 </div>
             </div>
@@ -79,7 +79,7 @@
 
 {% block content_script %}
     <script type="text/javascript">
-	    $(document).ready(function () {
+        $(document).ready(function () {
             $('textarea#description').gollum({
                 uploadURL: '{{ url('br_admin_company', {'action': 'upload'}) }}',
             });
@@ -99,6 +99,6 @@
                 },
                 width: '500px',
             });
-	    });
+        });
     </script>
 {% endblock %}

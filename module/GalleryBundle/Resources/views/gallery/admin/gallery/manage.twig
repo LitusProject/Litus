@@ -11,10 +11,10 @@
         </div>
     </div>
     <div class="flashmessage error_message full_width album_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete the album.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the album.</p>
+        </div>
     </div>
 
     <div id="controller_action">
@@ -49,7 +49,7 @@
                 {% endfor %}
             </tbody>
         </table>
-    	{% include 'admin/partials/paginationControl.twig' %}
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <div class="modal hide fade" id="removeAlbum">
@@ -74,37 +74,37 @@
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .delete').click(openRemoveModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
 
-		function openRemoveModal(e) {
-			var $this = $(this);
+        function openRemoveModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var removeAlbum = $('#removeAlbum');
-			removeAlbum.find('.title').html($(this).data('title'));
+            e.preventDefault();
+            var removeAlbum = $('#removeAlbum');
+            removeAlbum.find('.title').html($(this).data('title'));
             var id = $(this).data('id');
-			removeAlbum.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('gallery_admin_gallery', {"action": "delete"})}}' + $this.data('id'), function  (data) {
-				    if (data && 'success' == data.status) {
-    					$('.flashmessage').addClass('hide');
-    					$('.album_removed_success').removeClass('hide');
+            removeAlbum.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('gallery_admin_gallery', {"action": "delete"})}}' + $this.data('id'), function  (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.album_removed_success').removeClass('hide');
                         $('.item[data-id='+id+']').remove();
-    					removeAlbum.modal('hide');
-    				} else {
-    				    errorRemove();
-    				}
-				}, 'json').error(errorRemove);
-			});
-			removeAlbum.modal();
-		}
+                        removeAlbum.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeAlbum.modal();
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').addClass('hide');
-		    $('.album_removed_error').removeClass('hide');
-		    $('#removeAlbum').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.album_removed_error').removeClass('hide');
+            $('#removeAlbum').modal('hide');
+        }
+    </script>
 {% endblock %}

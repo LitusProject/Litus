@@ -109,7 +109,7 @@
                                             {% endif %}
                                         </td>
                                     {% else %}
-                                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}&nbsp;</td>
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -203,6 +203,7 @@
             $('[data-toggle="popover"]').popover(
                 {
                     html: true,
+                    container: 'body',
                 }
             ).click(function (e) {
                 e.preventDefault();

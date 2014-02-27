@@ -23,33 +23,8 @@ namespace DoorBundle\Controller\Admin;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'doorbundle' => array(
-                    'door_admin_rule' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                    ),
-                ),
-            )
-        );
-    }
 }

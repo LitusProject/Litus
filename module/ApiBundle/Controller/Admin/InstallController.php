@@ -23,45 +23,8 @@ namespace ApiBundle\Controller\Admin;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig() {}
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'apibundle' => array(
-                    'api_admin_key' => array(
-                        'add', 'delete', 'edit', 'manage'
-                    ),
-                    'api_auth' => array(
-                        'getPerson'
-                    ),
-                    'api_door' => array(
-                        'getRules', 'log'
-                    ),
-                    'api_mail' => array(
-                        'getAliases', 'getListsArchive'
-                    ),
-                ),
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'guest' => array(
-                    'system' => true,
-                    'parents' => array(
-                    ),
-                    'actions' => array(
-                        'api_auth' => array(
-                            'getPerson'
-                        ),
-                    ),
-                ),
-            )
-        );
-    }
 }

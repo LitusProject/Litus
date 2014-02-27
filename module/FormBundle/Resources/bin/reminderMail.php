@@ -100,7 +100,7 @@ if (isset($opts->r)) {
                 $mail->addBcc($mailAddress);
 
             if ('development' != getenv('APPLICATION_ENV') && isset($opts->m))
-                $this->getMailTransport()->send($mail);
+                $mt->send($mail);
         }
 
         echo '------------------------------------------------' . PHP_EOL;
