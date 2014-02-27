@@ -103,6 +103,24 @@ class Study
     }
 
     /**
+     * @return integer
+     */
+    public function getKulId()
+    {
+        return $this->kulId;
+    }
+
+    /**
+     * @param integer $kulId
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setKulId($kulId)
+    {
+        $this->kulId = $kulId;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -145,6 +163,16 @@ class Study
     }
 
     /**
+     * @param integer $phase
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setPhase($phase)
+    {
+        $this->phase = $phase;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLanguage()
@@ -153,11 +181,31 @@ class Study
     }
 
     /**
+     * @param string $language
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    /**
      * @return \SyllabusBundle\Entity\Study
      */
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param \SyllabusBundle\Entity\Study $parent
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setParent(Study $parent = null)
+    {
+        $this->parent = $parent;
+        return $this;
     }
 
     /**
