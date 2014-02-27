@@ -126,6 +126,20 @@ return array(
                 ),
             ),
         ),
+        'syllabus_admin_subject_study' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/syllabus/subject/study[/:action[/:id][/:academicyear]][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'           => '[0-9]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                ),
+                'defaults' => array(
+                    'controller' => 'syllabus_admin_subject_study',
+                ),
+            ),
+        ),
         'syllabus_admin_subject_comment' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -199,7 +213,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'syllabus_install'               => 'SyllabusBundle\Controller\Admin\InstallController',
 
@@ -209,6 +223,7 @@ return array(
         'syllabus_admin_study'           => 'SyllabusBundle\Controller\Admin\StudyController',
         'syllabus_admin_subject'         => 'SyllabusBundle\Controller\Admin\SubjectController',
         'syllabus_admin_subject_comment' => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
+        'syllabus_admin_subject_study'   => 'SyllabusBundle\Controller\Admin\Subject\StudyController',
         'syllabus_admin_prof'            => 'SyllabusBundle\Controller\Admin\ProfController',
         'syllabus_subject'               => 'SyllabusBundle\Controller\SubjectController',
     ),

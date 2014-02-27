@@ -21,6 +21,9 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Form\Admin\Study\Add as AddForm,
+    SyllabusBundle\Form\Admin\Study\Edit as EditForm,
+    SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study,
     Zend\View\Model\ViewModel;
 
@@ -64,6 +67,59 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function addAction()
+    {
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
+
+        $form = new AddForm($this->getEntityManager());
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $parent = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($formData['parent_id']);
+
+                $study = new Study($formData['title'], $formData['kul_id'], $formData['phase'], $formData['language'], $parent);
+                $this->getEntityManager()->persist($study);
+
+                $map = new AcademicYearMap($study, $academicYear);
+                $this->getEntityManager()->persist($map);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The study was successfully added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_study',
+                    array(
+                        'action' => 'edit',
+                        'id' => $study->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'currentAcademicYear' => $academicYear,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($study = $this->_getStudy()))
@@ -81,6 +137,46 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
         }
 
+        $form = new EditForm($this->getEntityManager(), $study);
+
+        if($this->getRequest()->isPost() && $this->hasAccess('syllabus_admin_study', 'add')) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $parent = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study')
+                    ->findOneById($formData['parent_id']);
+
+                $study->setKulId($formData['kul_id'])
+                    ->setTitle($formData['title'])
+                    ->setPhase($formData['phase'])
+                    ->setLanguage($formData['language'])
+                    ->setParent($parent);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The study was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_study',
+                    array(
+                        'action' => 'edit',
+                        'id' => $study->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+            }
+        }
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
@@ -91,6 +187,24 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 'mappings' => $mappings,
                 'currentAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
+                'form' => $form,
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($mapping = $this->_getMapping()))
+            return new ViewModel();
+
+        $this->getEntityManager()->remove($mapping);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array("status" => "success"),
             )
         );
     }
@@ -113,6 +227,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $result = array();
         foreach($mappings as $mapping) {
             $item = (object) array();
+            $item->mappingId = $mapping->getId();
             $item->id = $mapping->getStudy()->getId();
             $item->title = $mapping->getStudy()->getFullTitle();
             $item->phase = $mapping->getStudy()->getPhase();
@@ -212,6 +327,53 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
                     ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
         }
+    }
+
+    private function _getMapping()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the mapping!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $mapping = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $mapping) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No mapping with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $mapping;
     }
 
     private function _getStudy()

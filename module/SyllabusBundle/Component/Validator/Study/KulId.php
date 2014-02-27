@@ -16,17 +16,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\Validator\Subject;
+namespace SyllabusBundle\Component\Validator\Study;
 
 use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Subject;
+    SyllabusBundle\Entity\Study;
 
 /**
- * Matches the given subject code against the database to check whether it exists or not.
+ * Matches the given study code against the database to check whether it exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Code extends \Zend\Validator\AbstractValidator
+class KulId extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -36,7 +36,7 @@ class Code extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject exluded from this check
+     * @var \SyllabusBundle\Entity\Study The study exluded from this check
      */
     private $_exclude;
 
@@ -46,17 +46,17 @@ class Code extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The subject code does already exist'
+        self::NOT_VALID => 'The study id already exists'
     );
 
     /**
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $exclude
+     * @param \SyllabusBundle\Entity\Study $exclude
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Subject $exclude = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Study $exclude = null, $opts = null)
     {
         parent::__construct($opts);
 
@@ -77,11 +77,11 @@ class Code extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $subject = $this->_entityManager
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneByCode($value);
+        $study = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findOneByKulId($value);
 
-        if (null === $subject || ($this->_exclude !== null && $subject->getId() == $this->_exclude->getId()))
+        if (null === $study || ($this->_exclude !== null && $study->getId() == $this->_exclude->getId()))
             return true;
 
         $this->error(self::NOT_VALID);
