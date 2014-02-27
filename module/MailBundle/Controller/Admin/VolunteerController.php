@@ -73,9 +73,14 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     ->getConfigValue('shift.ranking_criteria')
                 );
 
-                $volunteers = $this->getEntityManager()
-                    ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                    ->findAllByCountMinimum($currentYear, $rankingCriteria[$formData['minimum_rank']]['limit']);
+                if($formData['minimum_rank'] == "empty")
+                    $volunteers = $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+                        ->findAllByCountMinimum($currentYear, 1);
+                else
+                    $volunteers = $this->getEntityManager()
+                        ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+                        ->findAllByCountMinimum($currentYear, $rankingCriteria[$formData['minimum_rank']]['limit']);
 
                 die(var_dump(count($volunteers)));
 

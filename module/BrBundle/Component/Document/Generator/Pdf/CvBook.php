@@ -80,9 +80,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         // Add the groups
         $groups = array();
 
-        foreach ($data as $studyData) {
+        foreach ($data as $studyData)
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
-        }
 
         $organization_logo = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -121,9 +120,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     private function _generateGroup($groupName, $entries)
     {
         $cvs = array();
-        foreach ($entries as $entry) {
+        foreach ($entries as $entry)
             $cvs[] = $this->_generateCv($entry);
-        }
 
         return new Object(
             'cvgroup',
@@ -213,9 +211,10 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
 
         // Erasmus
-        if ((null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation() )
-            || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod() ))
-        {
+        if (
+            (null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation())
+            || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod())
+        ) {
             $result[] = new Object(
                 'section',
                 array(
