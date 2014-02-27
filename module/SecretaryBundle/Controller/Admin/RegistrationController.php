@@ -287,18 +287,19 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
-            if ($formData['payed'] && $formData['cancel']) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'ERROR',
-                            'The registration needs to be uncancelled before it can be payed !'
-                        )
-                    );
-            }else if ($form->isValid()) {
 
-                $registration->setPayed($formData['payed']);
-                $registration->setCancelled(false);
+            if ($formData['payed'] && $formData['cancel']) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'ERROR',
+                        'The registration needs to be uncancelled before it can be payed !'
+                    )
+                );
+            } elseif ($form->isValid()) {
+                $registration->setPayed($formData['payed'])
+                    ->setCancelled(false);
+
                 $organization = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization')
                     ->findOneById($formData['organization']);
@@ -382,10 +383,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $academic = $registration->getAcademic();
         $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
 
-        $statusMessage = '';
-
         if ($organizationStatus->getStatus()==='praesidium') {
-
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -402,32 +400,32 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             return new ViewModel();
-
-        } else if ($registration->isCancelled()) {
-            $statusMessage='The registration was already succesfully cancelled !';
+        } elseif ($registration->isCancelled()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::SUCCESS,
+                    'SUCCESS',
+                    'The registration was already succesfully cancelled !'
+                )
+            );
         } else {
             $metaData = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                 ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
 
-            $registration->setPayed(false);
-
-            if (null != $metaData) {
+            if (null != $metaData)
                 $metaData->setBecomeMember(false);
-            }
 
             $organizationStatus->setStatus('non_member');
-            $registration->setCancelled(true);
+            $registration->setPayed(false)
+                ->setCancelled(true);
             $this->getEntityManager()->flush();
-            $statusMessage = 'The registration was successfully cancelled for '.$academic->getFirstName().' '.$academic->getLastName().'!';
-        }
 
-        if ($statusMessage != '') {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::SUCCESS,
                     'SUCCESS',
-                    $statusMessage
+                    'The registration was successfully cancelled for ' . $academic->getFirstName() . ' ' . $academic->getLastName() . '!'
                 )
             );
         }
