@@ -18,15 +18,16 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Subject;
 
 /**
- * Matches the given subject code against the database to check whether it exists or not.
+ * Matches the given subject against the database to check duplicate mappings.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Code extends \Zend\Validator\AbstractValidator
+class Study extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -36,9 +37,14 @@ class Code extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject exluded from this check
+     * @var \SyllabusBundle\Entity\Subject The subject
      */
-    private $_exclude;
+    private $_subject;
+
+    /**
+     * @var \CommonBundle\Entity\General\AcademicYear The academic year
+     */
+    private $_academicYear;
 
     /**
      * Error messages
@@ -46,22 +52,23 @@ class Code extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The subject code does already exist'
+        self::NOT_VALID => 'The mapping already exists'
     );
 
     /**
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $exclude
+     * @param \SyllabusBundle\Entity\Subject $subject
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, Subject $exclude = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Subject $subject = null, AcademicYear $academicYear, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_exclude = $exclude;
+        $this->_subject = $subject;
+        $this->_academicYear = $academicYear;
     }
 
 
@@ -77,11 +84,15 @@ class Code extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $subject = $this->_entityManager
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneByCode($value);
+        $study = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findOneById($context['study_id']);
 
-        if (null === $subject || ($this->_exclude !== null && $subject->getId() == $this->_exclude->getId()))
+        $mapping = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->findOneByStudySubjectAndAcademicYear($study, $this->_subject, $this->_academicYear);
+
+        if (null === $mapping)
             return true;
 
         $this->error(self::NOT_VALID);
