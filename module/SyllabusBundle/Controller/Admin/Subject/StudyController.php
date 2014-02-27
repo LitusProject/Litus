@@ -22,6 +22,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Form\Admin\Subject\Study\Add as AddForm,
+    SyllabusBundle\Form\Admin\Subject\Study\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,12 +93,40 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
-            return new ViewModel();
-
         if (!($mapping = $this->_getMapping()))
             return new ViewModel();
 
+        $form = new EditForm($this->getEntityManager(), $mapping);
+
+        if($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $mapping->setMandatory($formData['mandatory']);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'SUCCESS',
+                        'The study mapping was successfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_subject',
+                    array(
+                        'action' => 'edit',
+                        'id' => $mapping->getSubject()->getId(),
+                        'academicyear' => $mapping->getAcademicYear()->getCode(),
+                    )
+                );
+            }
+        }
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
@@ -105,7 +134,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'academicYears' => $academicYears,
-                'currentAcademicYear' => $academicYear,
+                'currentAcademicYear' => $mapping->getAcademicYear(),
+                'mapping' => $mapping,
+                'form' => $form,
             )
         );
     }
