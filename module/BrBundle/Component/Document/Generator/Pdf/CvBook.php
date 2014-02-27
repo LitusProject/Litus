@@ -20,12 +20,12 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Cv\Util,
     BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\I18n\Translator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Zend\Mvc\I18n\Translator;
 
 /**
  * Generates the CV Book for one academic year.
