@@ -121,6 +121,7 @@ return array(
             '@form_manage_css',
             '@common_jquery_form',
             '@common_download_file',
+            '@common_remote_typeahead',
         ),
         'form_manage_group' => array(
             '@common_jquery',
