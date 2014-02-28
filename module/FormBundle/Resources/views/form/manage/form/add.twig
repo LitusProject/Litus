@@ -8,8 +8,19 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+
             $('#is_guest').change(function () {
-                console.log($(this).is(':checked'));
                 if ($(this).is(':checked')) {
                     $('#person_form').hide();
                     $('#guest_form').show();

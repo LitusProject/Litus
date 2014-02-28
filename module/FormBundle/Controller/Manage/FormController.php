@@ -165,6 +165,41 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $person = null;
+                if ($formData['person_id']) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager());
+
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'specification' => $formSpecification,
+                            'form'          => $form,
+                        )
+                    );
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The entry was successfully added.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $formSpecification->getId(),
+                    )
+                );
             }
         }
 

@@ -40,7 +40,7 @@ return array(
             'view',
         ),
         'form_manage' => array(
-            'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
+            'add', 'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
         ),
         'form_manage_group' => array(
             'index', 'view',
