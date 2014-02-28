@@ -1,6 +1,10 @@
 {% extends 'manage/base.twig' %}
 
 {% block content %}
+    <div class="page-header">
+        <h1>{{ formSpecification.getTitle(language) }}</h1>
+    </div>
+
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(form) }}
 {% endblock %}

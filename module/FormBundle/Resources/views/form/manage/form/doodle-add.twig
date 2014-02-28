@@ -1,28 +1,10 @@
-{% extends 'site/base.twig' %}
+{% extends 'manage/base.twig' %}
 
 {% block content %}
-    <div class="page-alert">
-        <div class="flashmessage alert alert-success alert-fixed-top fade" id="entry_saved_success">
-            <button type="button" class="close">&times;</button>
-            <div class="content">
-                {{ translate('Your entry has been recorded.') }}
-            </div>
-        </div>
-        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="entry_saved_error">
-            <button type="button" class="close">&times;</button>
-            <div class="content">
-                {{ translate('Your entry couldn\'t be recorded.') }}
-            </div>
-        </div>
-    </div>
 
     <div class="page-header">
-        <h1>{% if group %}{{ group.getTitle(language) }}: {% endif %}{{ specification.getTitle(language) }}</h1>
+        <h1>{{ formSpecification.getTitle(language) }}</h1>
     </div>
-
-    {% if group %}
-        {% include 'form/form/partials/group-progress.twig' %}
-    {% endif %}
 
     {% autoescape false %}
         {{ markdown(specification.getIntroduction(language)) }}
@@ -43,13 +25,18 @@
         {% endif %}
         {% do form.prepare() %}
         {{ form().openTag(form)|raw }}
-            {{ formElement(form.get('csrf')) }}
             {% import 'site/partials/form.twig' as forms %}
-            {% if authenticatedPerson is null %}
-                {{ forms.renderOther(form.get('first_name')) }}
-                {{ forms.renderOther(form.get('last_name')) }}
-                {{ forms.renderOther(form.get('email')) }}
-            {% endif %}
+
+            {{ forms.renderCheckbox(form.get('is_guest')) }}
+            <fieldset class="{{ form.get('person_form').getAttribute('class') }}" id="{{ form.get('person_form').getAttribute('id') }}">
+                <legend>{{ translate(form.get('person_form').getLabel()) }}</legend>
+                {{ forms.renderFieldset(form.get('person_form')) }}
+            </fieldset>
+            <fieldset class="{{ form.get('guest_form').getAttribute('class') }}" id="{{ form.get('guest_form').getAttribute('id') }}">
+                <legend>{{ translate(form.get('guest_form').getLabel()) }}</legend>
+                {{ forms.renderFieldset(form.get('guest_form')) }}
+            </fieldset>
+
             <table class="table table-bordered table-striped" id="doodle">
                 <thead>
                     <tr>
@@ -60,8 +47,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for field in specification.getFields() %}
-                        <tr {% if formElementErrors(form.get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                    {% for field in formSpecification.getFields() %}
+                        <tr {% if formElementErrors(form.get('fields_form').get('field-' ~ field.getId())) %}class="error"{% endif %}>
                             <td>
                                 {{ field.getLabel(language) }}
                             </td>
@@ -83,7 +70,7 @@
                                     {% endif %}
                                 {% else %}
                                     <label class="checkbox" style="margin: 2px 0">
-                                        {{ formElement(form.get('field-' ~ field.getId())) }}
+                                        {{ formElement(form.get('fields_form').get('field-' ~ field.getId())) }}
                                     </label>
                                 {% endif %}
                             </td>
@@ -92,11 +79,9 @@
                 </tbody>
             </table>
 
-            {% if specification.canBeSavedBy(authenticatedPerson) %}
-                <div style="clear: both;text-align: center;">
-                    {{ formElement(form.get('submit')) }}
-                </div>
-            {% endif %}
+            <div style="clear: both;text-align: center;">
+                {{ formElement(form.get('submit')) }}
+            </div>
         {{ form().closeTag()|raw }}
     {% endif %}
 {% endblock %}
@@ -104,9 +89,27 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.flashmessage .close').click(function () {
-                $(this).closest('.flashmessage').removeClass('in');
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
             });
+
+            $('#is_guest').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#person_form').hide();
+                    $('#guest_form').show();
+                } else {
+                    $('#person_form').show();
+                    $('#guest_form').hide();
+                }
+            }).change();
 
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
@@ -131,10 +134,6 @@
                         {% endif %}
 
                         toggleButton($(this), checkbox, !checkbox.is(':checked'));
-
-                        {% if authenticatedPerson is not null %}
-                        saveRegistration();
-                        {% endif %}
                     })
                 );
 
@@ -153,36 +152,5 @@
                 button.html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
             }
         }
-
-        {% if authenticatedPerson is not null %}
-        function saveRegistration() {
-            var data = {};
-            $('#doodle input[type=checkbox]').each(function () {
-                if ($(this).is(':checked')) {
-                    data[$(this).attr('name')] = true;
-                }
-            });
-
-            $.post('{{ url('form_view', {'action': 'saveDoodle', 'id': specification.getId()}) }}', data, function (data) {
-                if (data !== undefined && data.status == 'success') {
-                    $('#entry_saved_error').removeClass('in');
-                    $('#entry_saved_success').addClass('in');
-                } else {
-                    $('#entry_saved_success').removeClass('in');
-                    $('#entry_saved_error').addClass('in');
-
-                    $('#doodle tr.error').removeClass('error');
-                    if (data !== undefined && data.errors) {
-                        $.each(data.errors, function (key, value) {
-                            $('#' + key).closest('tr').addClass('error');
-                        });
-                    }
-                }
-            }, 'json').error(function (data) {
-                $('#entry_saved_success').removeClass('in');
-                $('#entry_saved_error').addClass('in');
-            });
-        }
-        {% endif %}
     </script>
 {% endblock %}

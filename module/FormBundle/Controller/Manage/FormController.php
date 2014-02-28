@@ -27,6 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
+    FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -126,7 +127,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action'   => 'doodle',
+                    'action'   => 'doodleAdd',
                     'id'       => $formSpecification->getId(),
                 )
             );
@@ -179,7 +180,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 if (!$result) {
                     return new ViewModel(
                         array(
-                            'specification' => $formSpecification,
+                            'formSpecification' => $formSpecification,
                             'form'          => $form,
                         )
                     );
@@ -303,6 +304,67 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'form' => $form,
                 'formSpecification' => $formSpecification,
                 'entry' => $formEntry,
+            )
+        );
+    }
+
+    public function doodleAddAction()
+    {
+        if(!($formSpecification = $this->_getForm()))
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'form') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'add',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new DoodleAddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $person = null;
+                if ($formData['person_id']) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneById($formData['person_id']);
+                }
+
+                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The entry was successfully added.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $formSpecification->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'formSpecification' => $formSpecification,
             )
         );
     }
