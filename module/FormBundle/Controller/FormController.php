@@ -236,7 +236,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'doodle',
+                    'action'   => 'view',
                     'id'       => $formSpecification->getId(),
                 )
             );
