@@ -36,6 +36,9 @@ return array(
         'mail_admin_prof' => array(
             'cudi'
         ),
+        'mail_admin_promotion' => array(
+            'send'
+        ),
         'mail_admin_study' => array(
             'send'
         ),

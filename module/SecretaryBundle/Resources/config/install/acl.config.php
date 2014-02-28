@@ -25,7 +25,7 @@ return array(
             'add', 'barcode', 'download', 'edit', 'export', 'manage', 'search'
         ),
         'secretary_admin_promotion' => array(
-            'add', 'delete', 'mail', 'manage', 'search', 'update'
+            'add', 'delete', 'manage', 'search', 'update'
         ),
     ),
 );

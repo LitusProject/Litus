@@ -117,6 +117,19 @@ return array(
                 ),
             ),
         ),
+        'mail_admin_promotion' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/mail/promotion[/:action][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'mail_admin_promotion',
+                    'action'     => 'send',
+                ),
+            ),
+        ),
         'mail_admin_study' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -154,6 +167,7 @@ return array(
         'mail_admin_list'      => 'MailBundle\Controller\Admin\MailingListController',
         'mail_admin_message'   => 'MailBundle\Controller\Admin\MessageController',
         'mail_admin_prof'      => 'MailBundle\Controller\Admin\ProfController',
+        'mail_admin_promotion' => 'MailBundle\Controller\Admin\PromotionController',
         'mail_admin_study'     => 'MailBundle\Controller\Admin\StudyController',
         'mail_admin_volunteer' => 'MailBundle\Controller\Admin\VolunteerController',
     ),
