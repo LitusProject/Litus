@@ -377,6 +377,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function cancelAction()
     {
+
+        $this->initAjax();
+
         if (!($registration = $this->_getRegistration()))
             return new ViewModel();
 
@@ -384,28 +387,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
 
         if ($organizationStatus->getStatus()==='praesidium') {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'ERROR',
-                    'Registration could not be cancelled as the person is part of the praesidium !'
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'error'),
                 )
             );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_registration',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return new ViewModel();
         } elseif ($registration->isCancelled()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCESS',
-                    'The registration was already succesfully cancelled !'
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'success'),
                 )
             );
         } else {
@@ -421,23 +411,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->setCancelled(true);
             $this->getEntityManager()->flush();
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'SUCCESS',
-                    'The registration was successfully cancelled for ' . $academic->getFirstName() . ' ' . $academic->getLastName() . '!'
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'success'),
                 )
             );
         }
-
-        $this->redirect()->toRoute(
-            'secretary_admin_registration',
-            array(
-                'action' => 'manage',
-            )
-        );
-
-        return new ViewModel();
     }
 
     public function searchAction()
@@ -497,6 +476,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
                 $item->cancelled = $registration->isCancelled();
+                $item->name = $registration->getAcademic()->getFullName();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
                 $item->organization = $registration->getAcademic()->getOrganization($academicYear) ? $registration->getAcademic()->getOrganization($academicYear)->getName() : '';
                 $result[] = $item;
