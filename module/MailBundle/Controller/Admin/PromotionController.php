@@ -40,7 +40,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.mail');
 
-        $form = new MailForm($this->getEntityManager(), $from);
+        $form = new MailForm($this->getEntityManager());
 
         if($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -49,9 +49,20 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $promotions = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Promotion')
-                    ->findAllByAcademicYear($academicYear);
+                $people = array();
+
+                foreach ($formData['to'] as $to) {
+                    $academicYear = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                        ->findOneById($to);
+
+                    $people = array_merge(
+                        $people,
+                        $this->getEntityManager()
+                            ->getRepository('SecretaryBundle\Entity\Promotion')
+                            ->findAllByAcademicYear($academicYear)
+                    );
+                }
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -65,10 +76,10 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                 $emailValidator = new EmailAddressValidator();
                 $i = 0;
-                foreach($promotions as $promotion) {
-                    if (null !== $promotion->getEmailAddress() && $emailValidator->isValid($promotion->getEmailAddress())) {
+                foreach ($people as $person) {
+                    if (null !== $person->getEmailAddress() && $emailValidator->isValid($person->getEmailAddress())) {
                         $i++;
-                        $mail->addBcc($promotion->getEmailAddress(), $promotion->getFullName());
+                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
                     }
 
                     if ($i == 500) {

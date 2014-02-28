@@ -41,21 +41,13 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $from The mail address send from
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $from, $name = null)
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
-
-        $field = new Text('from');
-        $field->setLabel('From')
-            ->setValue($from)
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('disabled', 'disabled');
-        $this->add($field);
 
         $field = new Select('to');
         $field->setLabel('To')
@@ -99,18 +91,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'from',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
 
         $inputFilter->add(
             $factory->createInput(
