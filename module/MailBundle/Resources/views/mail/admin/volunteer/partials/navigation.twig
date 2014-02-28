@@ -1,10 +1,10 @@
 <header id="controller_header">
-    <div class="title"><span class="mail">Volunteer Mail</span></div>
+    <div class="title"><span class="mail">Volunteer</span></div>
 
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('mail_admin_volunteer', 'send') %}
-                <li><a{% if 'send' == getParam('action') %} class="active" {% endif %} href="{{ url('mail_admin_volunteer', {'action': 'send'}) }}">Volunteer</a></li>
+                <li><a{% if 'send' == getParam('action') %} class="active" {% endif %} href="{{ url('mail_admin_volunteer', {'action': 'send'}) }}">Send</a></li>
             {% endif %}
         </ul>
     </nav>

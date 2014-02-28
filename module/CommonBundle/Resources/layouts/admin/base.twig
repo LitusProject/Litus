@@ -238,6 +238,9 @@
                                     {% if hasAccess('mail_admin_prof', 'cudi') %}
                                         <li><a href="{{ url('mail_admin_prof', {'action': 'cudi'}) }}">Prof</a></li>
                                     {% endif %}
+                                    {% if hasAccess('mail_admin_promotion', 'send') %}
+                                        <li><a href="{{ url('mail_admin_promotion', {'action': 'send'}) }}">Promotions</a></li>
+                                    {% endif %}
                                     {% if hasAccess('mail_admin_message', 'manage') %}
                                         <li><a href="{{ url('mail_admin_message') }}">Stored Messages</a></li>
                                     {% endif %}
