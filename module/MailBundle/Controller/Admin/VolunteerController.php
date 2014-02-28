@@ -37,7 +37,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class VolunteerController extends \MailBundle\Component\Controller\AdminController
 {
-
     public function sendAction()
     {
         $currentYear = $this->getCurrentAcademicYear();
@@ -81,8 +80,6 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     $volunteers = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                         ->findAllByCountMinimum($currentYear, $rankingCriteria[$formData['minimum_rank']]['limit']);
-
-                die(var_dump(count($volunteers)));
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()
