@@ -16,10 +16,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Form\Admin\Promotion;
+namespace MailBundle\Form\Admin\Promotion;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
@@ -33,18 +35,33 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param string $from The mail address send from
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($from, $name = null)
+    public function __construct(EntityManager $entityManager, $from, $name = null)
     {
         parent::__construct($name);
+
+        $this->_entityManager = $entityManager;
 
         $field = new Text('from');
         $field->setLabel('From')
             ->setValue($from)
             ->setAttribute('style', 'width: 400px;')
             ->setAttribute('disabled', 'disabled');
+        $this->add($field);
+
+        $field = new Select('to');
+        $field->setLabel('To')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_createPromotionsArray())
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('subject');
@@ -65,10 +82,44 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    private function _createPromotionsArray()
+    {
+        $academicYears = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $promotionsArray = array();
+        foreach ($academicYears as $academicYear)
+            $promotionsArray[$academicYear->getId()] = $academicYear->getCode();
+
+        return $promotionsArray;
+    }
+
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'from',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'to',
+                    'required' => true,
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(

@@ -6,9 +6,6 @@
             {% if hasAccess('secretary_admin_promotion', 'update') %}
                 <li><a href="#updatePromotion" data-toggle="modal">Update</a></li>
             {% endif %}
-            {% if hasAccess('secretary_admin_promotion', 'mail') %}
-                <li><a {% if getParam('action') == 'mail' %} class="active" {% endif %}href="{{ url('secretary_admin_promotion', {'action': 'mail', "academicyear": activeAcademicYear.getCode()}) }}">Mail</a></li>
-            {% endif %}
             {% if hasAccess('secretary_admin_promotion', 'add') %}
                 <li><a {% if getParam('action') == 'add' %} class="active" {% endif %}href="{{ url('secretary_admin_promotion', {'action': 'add', "academicyear": activeAcademicYear.getCode()}) }}">Add</a></li>
             {% endif %}
