@@ -13,10 +13,8 @@
             </div>
         </div>
 
-        {% if hasAccess('mail_admin_study', 'send') %}
-            {% import 'admin/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-        {% endif %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
 

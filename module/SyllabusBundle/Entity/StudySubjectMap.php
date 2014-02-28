@@ -114,6 +114,16 @@ class StudySubjectMap
     }
 
     /**
+     * @param boolean $mandatory
+     * @return \SyllabusBundle\Entity\StudySubjectMap
+     */
+    public function setMandatory($mandatory)
+    {
+        $this->mandatory = $mandatory;
+        return $this;
+    }
+
+    /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function getAcademicYear()

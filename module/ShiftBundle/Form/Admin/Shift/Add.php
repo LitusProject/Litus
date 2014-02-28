@@ -369,7 +369,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $inputFilter;
     }
 
-	private function _createEditRolesArray()
+    private function _createEditRolesArray()
     {
         $roles = $this->_entityManager
             ->getRepository('CommonBundle\Entity\Acl\Role')

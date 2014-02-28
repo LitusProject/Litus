@@ -19,6 +19,7 @@
 namespace CommonBundle\Repository\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
@@ -46,6 +47,24 @@ class AcademicYearMap extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
+    public function findAllByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.organization', ':organization'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('organization', $organization)
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery();
 
         return $resultSet;
     }

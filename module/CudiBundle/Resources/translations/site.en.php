@@ -48,6 +48,7 @@ return array(
     'General' => 'General',
 
     'The textbooks have been booked!' => 'The textbooks have been booked!',
+    'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.' => 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.',
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'New bookings have been assigned to you, and you can go and collect them.',
     'View Bookings' => 'View Bookings',

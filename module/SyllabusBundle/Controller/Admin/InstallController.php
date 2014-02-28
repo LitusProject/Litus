@@ -27,117 +27,13 @@ use CommonBundle\Component\Util\AcademicYear,
  * InstallController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class InstallController extends \CommonBundle\Component\Controller\ActionController\InstallController
 {
-    protected function initConfig()
+    protected function postInstall()
     {
-        $this->installConfig(
-            array(
-                array(
-                    'key'         => 'syllabus.update_socket_file',
-                    'value'       => 'tcp://127.0.0.1:8898',
-                    'description' => 'The file used for the websocket of the syllabus update',
-                ),
-                array(
-                    'key'         => 'syllabus.update_socket_public',
-                    'value'       => '127.0.0.1:8898',
-                    'description' => 'The public address for the websocket of the syllabus update',
-                ),
-                array(
-                    'key'         => 'syllabus.queue_socket_key',
-                    'value'       => md5(uniqid(rand(), true)),
-                    'description' => 'The key used for the websocket of the queue',
-                ),
-                array(
-                    'key'         => 'search_max_results',
-                    'value'       => '30',
-                    'description' => 'The maximum number of search results shown',
-                ),
-                array(
-                    'key'         => 'syllabus.department_ids',
-                    'value'       => serialize(array(50000486)),
-                    'description' => 'The ids of the departments to be imported',
-                ),
-                array(
-                    'key'         => 'syllabus.root_xml',
-                    'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/index.xml',
-                    'description' => 'The root XML of KU Leuven',
-                ),
-                array(
-                    'key'         => 'syllabus.department_url',
-                    'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/{{ language }}/xml/CQ_{{ id }}.xml',
-                    'description' => 'The department url',
-                ),
-                array(
-                    'key'         => 'syllabus.study_url',
-                    'value'       => 'http://onderwijsaanbod.kuleuven.be/opleidingen/{{ language }}/xml/SC_{{ id }}.xml',
-                    'description' => 'The department url',
-                ),
-                array(
-                    'key'         => 'syllabus.enable_update',
-                    'value'       => '0',
-                    'description' => 'Enable Syllabus update',
-                ),
-            )
-        );
-
         $this->_installAcademicYear();
-    }
-
-    protected function initAcl()
-    {
-        $this->installAcl(
-            array(
-                'syllabusbundle' => array(
-                    'syllabus_admin_prof' => array(
-                        'add', 'delete', 'typeahead'
-                    ),
-                    'syllabus_admin_academic' => array(
-                        'addStudy', 'addSubject', 'deleteStudy', 'deleteSubject', 'edit', 'manage', 'search'
-                    ),
-                    'syllabus_admin_group' => array(
-                        'add', 'delete', 'deleteStudy', 'edit', 'export', 'manage', 'studies'
-                    ),
-                    'syllabus_admin_study' => array(
-                        'edit', 'manage', 'search', 'searchSubject', 'typeahead'
-                    ),
-                    'syllabus_admin_subject' => array(
-                        'edit', 'manage', 'search', 'typeahead'
-                    ),
-                    'syllabus_admin_subject_comment' => array(
-                        'delete', 'manage', 'subject', 'reply'
-                    ),
-                    'syllabus_admin_update' => array(
-                        'index', 'updateNow'
-                    ),
-                    'syllabus_subject' => array(
-                        'typeahead'
-                    ),
-                )
-            )
-        );
-
-        $this->installRoles(
-            array(
-                'prof' => array(
-                    'system' => true,
-                    'parents' => array(
-                        'guest',
-                    ),
-                    'actions' => array(
-                    ),
-                ),
-                'guest' => array(
-                    'system' => true,
-                    'actions' => array(
-                        'syllabus_subject' => array(
-                            'typeahead'
-                        ),
-                    ),
-                ),
-            )
-        );
     }
 
     private function _installAcademicYear()

@@ -1,40 +1,40 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'syllabus/admin/study/partials/navigation.twig' %}
+    {% include 'syllabus/admin/study/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	{% include 'syllabus/admin/study/partials/years.twig' %}
+    {% include 'syllabus/admin/study/partials/years.twig' %}
 
-	<div id="controller_action">
-	    <h1>Subject</h1>
+    <div id="controller_action">
+        <h1>Subject</h1>
 
-	    <p>Code: <b>{{ subject.getCode() }}</b></p>
-	    <p>Name: <b>{{ subject.getName() }}</b></p>
-	    <p>Semester: <b>{{ subject.getSemester() }}</b></p>
-	    <p>Credits: <b>{{ subject.getCredits() }}</b></p>
-	    <br />
+        <p>Code: <b>{{ subject.getCode() }}</b></p>
+        <p>Name: <b>{{ subject.getName() }}</b></p>
+        <p>Semester: <b>{{ subject.getSemester() }}</b></p>
+        <p>Credits: <b>{{ subject.getCredits() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-		    $('#profSearch').typeaheadRemote(
-			    {
-			        source: '{{ url("syllabus_admin_prof_typeahead")}}',
-			    }
-			).change(function (e) {
-			    if ($(this).data('value')) {
-			        $('#profId').val($(this).data('value').id);
-			    } else {
-			        $('#profId').val('');
-			    }
-			});
-		});
-	</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#profSearch').typeaheadRemote(
+                {
+                    source: '{{ url("syllabus_admin_prof_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#profId').val($(this).data('value').id);
+                } else {
+                    $('#profId').val('');
+                }
+            });
+        });
+    </script>
 {% endblock %}

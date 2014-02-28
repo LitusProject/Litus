@@ -54,7 +54,7 @@
                 </tr>
             {% endfor %}
         </table>
-    	{% include 'admin/partials/paginationControl.twig' %}
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     {% if hasAccess('gallery_admin_gallery', 'addPhotos') %}
@@ -108,24 +108,24 @@
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .view').click(openViewModal);
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .view').click(openViewModal);
             $('.item .deletePhoto').click(openRemoveModal);
-		});
+        });
 
-		function openViewModal(e) {
-			var $this = $(this);
+        function openViewModal(e) {
+            var $this = $(this);
 
-			e.preventDefault();
-			var viewPhoto = $('#viewPhoto');
-			viewPhoto.find('.photo').html('');
-			var photo = $('<img>', {src: $this.data('url')}).load(function () {
-			    $(this).height(300);
-			});
-			viewPhoto.find('.photo').html(photo).css('text-align', 'center');
-			viewPhoto.modal();
-		}
+            e.preventDefault();
+            var viewPhoto = $('#viewPhoto');
+            viewPhoto.find('.photo').html('');
+            var photo = $('<img>', {src: $this.data('url')}).load(function () {
+                $(this).height(300);
+            });
+            viewPhoto.find('.photo').html(photo).css('text-align', 'center');
+            viewPhoto.modal();
+        }
 
         function openRemoveModal(e) {
             var $this = $(this);
@@ -154,5 +154,5 @@
             $('.photo_removed_error').removeClass('hide');
             $('#removePhoto').modal('hide');
         }
-	</script>
+    </script>
 {% endblock %}

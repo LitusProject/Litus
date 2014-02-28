@@ -62,13 +62,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Textarea('extra_members');
-        $field->setLabel('Extra Members')
-            ->setRequired();
+        $field->setLabel('Extra Members');
         $this->add($field);
 
         $field = new Textarea('excluded_members');
-        $field->setLabel('Excluded Members')
-            ->setRequired();
+        $field->setLabel('Excluded Members');
         $this->add($field);
 
         $field = new Submit('submit');

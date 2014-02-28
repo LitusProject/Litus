@@ -5,12 +5,12 @@
         <ul>
             {% if hasAccess('common_admin_config', 'manage') %}
                 <li>
-                	<a
-                		{% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('common_admin_config', {"action": "manage"}) }}"
-                	>
-                		Manage
-                	</a>
+                    <a
+                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('common_admin_config', {"action": "manage"}) }}"
+                    >
+                        Manage
+                    </a>
                 </li>
             {% endif %}
         </ul>

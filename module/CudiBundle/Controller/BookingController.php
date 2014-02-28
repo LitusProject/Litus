@@ -228,6 +228,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $enableAssignment = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_assignment');
+
                 $total = 0;
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
@@ -270,10 +274,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         $this->getEntityManager()->persist($booking);
-
-                        $enableAssignment = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_automatic_assignment');
 
                         if ($enableAssignment) {
                             $currentPeriod = $this->getEntityManager()
@@ -318,7 +318,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'Success',
-                            'The textbooks have been booked!'
+                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.'
                         )
                     );
                 }

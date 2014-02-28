@@ -57,10 +57,10 @@ abstract class Pdf
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
-        if(($xslPath === null) || !is_string($xslPath))
+        if (($xslPath === null) || !is_string($xslPath))
             throw new \InvalidArgumentException('Invalid XSL');
 
-        if(($pdfPath === null) || !is_string($pdfPath))
+        if (($pdfPath === null) || !is_string($pdfPath))
             throw new \InvalidArgumentException('Invalid PDF');
 
         $this->_entityManager = $entityManager;
@@ -126,7 +126,7 @@ abstract class Pdf
 
         $pdfDir = dirname($this->_pdfPath);
         if (!file_exists($pdfDir)) {
-            if(!mkdir($pdfDir, 0770))
+            if (!mkdir($pdfDir, 0770))
                 throw new \RuntimeException('Failed to create the PDF directory');
         }
 
