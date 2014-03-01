@@ -75,7 +75,7 @@ if (isset($opts->r)) {
         ->findAllExpiringBetween($start, $end);
 
     $persons = array();
-    foreach($bookings as $booking) {
+    foreach ($bookings as $booking) {
         if (!isset($persons[$booking->getPerson()->getId()]))
             $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
 
@@ -84,7 +84,7 @@ if (isset($opts->r)) {
 
     $counter = 0;
     if (isset($opts->m)) {
-        foreach($persons as $person) {
+        foreach ($persons as $person) {
             \CudiBundle\Component\Mail\Booking::sendExpireWarningMail($em, $mailTransport, $person['bookings'], $person['person']);
             $counter++;
         }

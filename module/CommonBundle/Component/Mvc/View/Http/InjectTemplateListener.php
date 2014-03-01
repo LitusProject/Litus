@@ -122,6 +122,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
             $this->inflector = new CamelCaseToDashFilter();
         }
         $name = $this->inflector->filter($name);
+
         return strtolower($name);
     }
 
@@ -137,6 +138,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
             return '';
         }
         $module = substr($controller, 0, strpos($controller, 'Bundle\\'));
+
         return $module . '/';
     }
 

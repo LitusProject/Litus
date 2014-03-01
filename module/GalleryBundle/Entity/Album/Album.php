@@ -86,7 +86,7 @@ class Album
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime $date
+     * @param \DateTime                        $date
      */
     public function __construct(Person $person, DateTime $date)
     {
@@ -128,6 +128,7 @@ class Album
     public function setDate(DateTime $date)
     {
         $this->dateActivity = $date;
+
         return $this;
     }
 
@@ -146,7 +147,7 @@ class Album
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -198,7 +199,8 @@ class Album
     {
         do {
             $num = rand(0, count($this->photos) - 1);
-        } while($this->photos[$num]->isCensored());
+        } while ($this->photos[$num]->isCensored());
+
         return $this->photos[$num];
     }
 
@@ -211,6 +213,7 @@ class Album
     {
         $translation = $this->getTranslation();
         $this->name = $this->getDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+
         return $this;
     }
 }

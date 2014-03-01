@@ -52,7 +52,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Setting the number of items per page, defaults to 25.
      *
-     * @param int $itemsPerPage The number of items per page
+     * @param  int  $itemsPerPage The number of items per page
      * @return void
      */
     public function setItemsPerPage($itemsPerPage)
@@ -76,9 +76,9 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator from a given array.
      *
-     * @param array $records The array containing the paginated records
-     * @param int $currentPage The page we now are on
-     * @param int $itemsPerPage The number of items on each page
+     * @param  array                     $records      The array containing the paginated records
+     * @param  int                       $currentPage  The page we now are on
+     * @param  int                       $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
     public function createFromArray(array $records, $currentPage)
@@ -98,11 +98,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given document.
      *
-     * @param string $document The name of the document that should be paginated
-     * @param int $currentPage The page we now are on
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @param array $oderBy An array containing constraints on how to order the results
-     * @param int $itemsPerPage The number of items on each page
+     * @param  string                    $document     The name of the document that should be paginated
+     * @param  int                       $currentPage  The page we now are on
+     * @param  array                     $conditions   These conditions will be passed to the Repository call
+     * @param  array                     $oderBy       An array containing constraints on how to order the results
+     * @param  int                       $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
     public function createFromDocument($document, $currentPage, array $conditions = array(), array $orderBy = null)
@@ -118,11 +118,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given entity.
      *
-     * @param string $entity The name of the entity that should be paginated
-     * @param int $currentPage The page we now are on
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @param array $oderBy An array containing constraints on how to order the results
-     * @param int $itemsPerPage The number of items on each page
+     * @param  string                    $entity       The name of the entity that should be paginated
+     * @param  int                       $currentPage  The page we now are on
+     * @param  array                     $conditions   These conditions will be passed to the Repository call
+     * @param  array                     $oderBy       An array containing constraints on how to order the results
+     * @param  int                       $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
@@ -143,8 +143,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for the given Doctrine ORM query
      *
-     * @param \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query The query that should be paginated
-     * @param int $currentPage The page we now are on
+     * @param  \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query       The query that should be paginated
+     * @param  int                                            $currentPage The page we now are on
      * @return \Zend\Paginator\Paginator
      */
     public function createFromQuery($query, $currentPage)
@@ -162,11 +162,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given entity.
      *
-     * @param string $entity The name of the entity that should be paginated
-     * @param int $currentPage The page we now are on
-     * @param array $conditions These conditions will be passed to the Repository call
-     * @param array $oderBy An array containing constraints on how to order the results
-     * @param int $itemsPerPage The number of items on each page
+     * @param  string                    $entity       The name of the entity that should be paginated
+     * @param  int                       $currentPage  The page we now are on
+     * @param  array                     $conditions   These conditions will be passed to the Repository call
+     * @param  array                     $oderBy       An array containing constraints on how to order the results
+     * @param  int                       $itemsPerPage The number of items on each page
      * @return \Zend\Paginator\Paginator
      */
     public function createFromPaginatorRepository(array $records, $currentPage, $totalNumber)
@@ -202,20 +202,21 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * A method to quickly create the array needed to build the pagination control.
      *
-     * @param \Zend\Paginator\Paginator $paginator The paginator
-     * @param bool $fullWidth Whether the paginationControl should be displayed using the full width or not
+     * @param  \Zend\Paginator\Paginator $paginator The paginator
+     * @param  bool                      $fullWidth Whether the paginationControl should be displayed using the full width or not
      * @return array
      */
     public function createControl($fullWidth = false)
     {
         $params = $this->getController()->getEvent()->getRouteMatch()->getParams();
-        foreach($params as $key => $param) {
+        foreach ($params as $key => $param) {
             if ('' === $param)
                 unset($params[$key]);
 
             if (isset($params['page']))
                 unset($params['page']);
         }
+
         return array(
             'fullWidth' => $fullWidth,
             'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
@@ -246,6 +247,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             throw new Exception\DomainException('Paginator plugin requires controller composes Locator');
         }
         $this->locator = $locator;
+
         return $this->locator;
     }
 }

@@ -97,7 +97,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $originalName = $upload->getFileName(null, false);
 
             $fileName = '';
-            do{
+            do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
@@ -169,7 +169,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new EditForm($mapping);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

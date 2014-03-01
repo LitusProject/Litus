@@ -42,8 +42,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string $address The url for the websocket master socket
-     * @param integer $port The port to listen on
+     * @param string                     $address       The url for the websocket master socket
+     * @param integer                    $port          The port to listen on
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -70,7 +70,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * Parse received text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string $data
+     * @param string                                       $data
      */
     protected function gotText(User $user, $data)
     {
@@ -85,7 +85,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (null == $command)
             return;
 
-        switch($command->command) {
+        switch ($command->command) {
             case 'action':
                 if ($this->isAuthenticated($user->getSocket()))
                     $this->_gotAction($user, $command);
@@ -95,6 +95,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $this->removeUser($user);
                     $now = new DateTime();
                     echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+
                     return;
                 }
 
@@ -102,6 +103,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $this->removeUser($user);
                     $now = new DateTime();
                     echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+
                     return;
                 }
 
@@ -128,6 +130,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $this->removeUser($user);
                     $now = new DateTime();
                     echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+
                     return;
                 }
 
@@ -142,7 +145,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * Parse action text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string $command
+     * @param string                                       $command
      */
     private function _gotAction(User $user, $command)
     {

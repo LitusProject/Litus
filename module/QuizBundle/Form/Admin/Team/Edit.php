@@ -39,8 +39,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Team $team The quiz team to populate the form with
-     * @param null|string|int $name Optional name for the form
+     * @param \QuizBundle\Entity\Team     $team          The quiz team to populate the form with
+     * @param null|string|int             $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Team $team, $name = null)
     {

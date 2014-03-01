@@ -48,8 +48,8 @@ class Name extends \Zend\Validator\AbstractValidator
 
     /**
      * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \OnBundle\Document\Slug $slug The slug that should be ignored when checking for duplicate names
-     * @param mixed $opts The validator's options.
+     * @param \OnBundle\Document\Slug               $slug            The slug that should be ignored when checking for duplicate names
+     * @param mixed                                 $opts            The validator's options.
      */
     public function __construct(DocumentManager $documentManager, $slug = null, $opts = array())
     {
@@ -62,8 +62,8 @@ class Name extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if no publication with this title exists.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -76,6 +76,7 @@ class Name extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::TITLE_EXISTS);
+
         return false;
     }
 }

@@ -79,10 +79,10 @@ class Study
     private $children;
 
     /**
-     * @param string $title
-     * @param integer $kulId
-     * @param integer $phase
-     * @param string $language
+     * @param string                       $title
+     * @param integer                      $kulId
+     * @param integer                      $phase
+     * @param string                       $language
      * @param \SyllabusBundle\Entity\Study $parent
      */
     public function __construct($title, $kulId, $phase, $language, Study $parent = null)
@@ -111,12 +111,13 @@ class Study
     }
 
     /**
-     * @param integer $kulId
+     * @param  integer                      $kulId
      * @return \SyllabusBundle\Entity\Study
      */
     public function setKulId($kulId)
     {
         $this->kulId = $kulId;
+
         return $this;
     }
 
@@ -129,12 +130,13 @@ class Study
     }
 
     /**
-     * @param string $title
+     * @param  string                       $title
      * @return \SyllabusBundle\Entity\Study
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -163,12 +165,13 @@ class Study
     }
 
     /**
-     * @param integer $phase
+     * @param  integer                      $phase
      * @return \SyllabusBundle\Entity\Study
      */
     public function setPhase($phase)
     {
         $this->phase = $phase;
+
         return $this;
     }
 
@@ -181,12 +184,13 @@ class Study
     }
 
     /**
-     * @param string $language
+     * @param  string                       $language
      * @return \SyllabusBundle\Entity\Study
      */
     public function setLanguage($language)
     {
         $this->language = $language;
+
         return $this;
     }
 
@@ -199,12 +203,13 @@ class Study
     }
 
     /**
-     * @param \SyllabusBundle\Entity\Study $parent
+     * @param  \SyllabusBundle\Entity\Study $parent
      * @return \SyllabusBundle\Entity\Study
      */
     public function setParent(Study $parent = null)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -239,6 +244,7 @@ class Study
         }
 
         $result = array_merge($result, $directChildren);
+
         return $result;
     }
 }

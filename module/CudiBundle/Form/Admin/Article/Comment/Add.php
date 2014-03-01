@@ -61,7 +61,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-
         $inputFilter->add(
             $factory->createInput(
                 array(

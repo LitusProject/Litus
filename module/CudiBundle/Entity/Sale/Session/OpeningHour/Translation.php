@@ -63,8 +63,8 @@ class Translation
 
     /**
      * @param \CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour $openingHour
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string $comment
+     * @param \CommonBundle\Entity\General\Language                       $language
+     * @param string                                                      $comment
      */
     public function __construct(OpeningHour $openingHour, Language $language, $comment)
     {
@@ -105,6 +105,7 @@ class Translation
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 }

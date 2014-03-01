@@ -44,7 +44,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
             if (null !== $link)
                 $page = $link->getParent();
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         if (isset($page)) {
             $submenu = $this->_buildSubmenu($page);
@@ -69,13 +69,13 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         $week = array();
         $openingHoursArray = array();
         $start->sub(new DateInterval('P1D'));
-        for($i = 0 ; $i < 5 ; $i ++) {
+        for ($i = 0 ; $i < 5 ; $i ++) {
             $start->add(new DateInterval('P1D'));
             $week[] = clone $start;
             $openingHoursArray[$i] = array();
         }
 
-        foreach($openingHours as $openingHour) {
+        foreach ($openingHours as $openingHour) {
             if ($openingHour->getStart()->format('H') < $startHour)
                 $startHour = $openingHour->getStart()->format('H');
 

@@ -18,8 +18,6 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
-
 /**
  * InstallController
  *

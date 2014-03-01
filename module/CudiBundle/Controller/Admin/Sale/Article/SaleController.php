@@ -40,7 +40,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -80,7 +80,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findLastAssignedByArticle($article);
 
-                foreach($bookings as $booking) {
+                foreach ($bookings as $booking) {
                     if ($nbToMuchAssigned <= 0)
                         break;
                     $booking->setStatus('booked', $this->getEntityManager());

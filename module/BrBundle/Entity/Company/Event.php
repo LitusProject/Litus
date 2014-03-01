@@ -58,7 +58,7 @@ class Event
 
     /**
      * @param \CalendarBundle\Entity\Node\Event $event
-     * @param \BrBundle\Entity\Company $company The event's company
+     * @param \BrBundle\Entity\Company          $company The event's company
      */
     public function __construct(CommonEvent $event, Company $company)
     {

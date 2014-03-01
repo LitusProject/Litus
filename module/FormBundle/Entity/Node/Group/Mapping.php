@@ -86,12 +86,13 @@ class Mapping
     }
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
+     * @param  \FormBundle\Entity\Node\Form          $form
      * @return \FormBundle\Entity\Node\Group\Mapping
      */
     public function setForm(Form $form)
     {
         $this->form = $form;
+
         return $this;
     }
 
@@ -104,12 +105,13 @@ class Mapping
     }
 
     /**
-     * @param \FormBundle\Entity\Node\Group $group
+     * @param  \FormBundle\Entity\Node\Group         $group
      * @return \FormBundle\Entity\Node\Group\Mapping
      */
     public function setGroup(Group $group)
     {
         $this->group = $group;
+
         return $this;
     }
 
@@ -127,6 +129,7 @@ class Mapping
     public function setOrder($order)
     {
         $this->order = $order;
+
         return $this;
     }
 }

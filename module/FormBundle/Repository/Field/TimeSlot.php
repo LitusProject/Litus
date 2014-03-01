@@ -58,7 +58,7 @@ class TimeSlot extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($timeSlots as $timeSlot) {
+        foreach ($timeSlots as $timeSlot) {
             $ids[] = $timeSlot['id'];
         }
 

@@ -147,10 +147,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 
@@ -175,10 +176,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 
@@ -206,7 +208,7 @@ class Period extends EntityRepository
             ->getResult();
 
         $articles = array();
-        foreach($resultSet as $barcode) {
+        foreach ($resultSet as $barcode) {
             if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($barcode->getArticle()) <= 0)
                 continue;
             $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
@@ -233,10 +235,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 

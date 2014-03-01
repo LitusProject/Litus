@@ -30,8 +30,8 @@ use ApiBundle\Entity\Key,
 class Edit extends Add
 {
     /**
-     * @param \ApiBundle\Entity\Key $key The key we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \ApiBundle\Entity\Key $key  The key we're going to modify
+     * @param null|string|int       $name Optional name for the element
      */
     public function __construct(Key $key, $name = null)
     {

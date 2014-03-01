@@ -137,7 +137,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -162,7 +162,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -579,7 +579,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -737,7 +737,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -863,7 +863,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -1012,7 +1012,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 

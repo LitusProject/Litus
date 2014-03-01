@@ -52,13 +52,13 @@ class Doodle extends BaseForm
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param boolean $active
-     * @param boolean $multiple
-     * @param boolean $nonMember
-     * @param boolean $editableByUser
-     * @param boolean $namesVisibleForOthers
+     * @param \DateTime                        $startDate
+     * @param \DateTime                        $endDate
+     * @param boolean                          $active
+     * @param boolean                          $multiple
+     * @param boolean                          $nonMember
+     * @param boolean                          $editableByUser
+     * @param boolean                          $namesVisibleForOthers
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $namesVisibleForOthers)
     {
@@ -68,7 +68,7 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person|null $person
+     * @param  \CommonBundle\Entity\User\Person|null $person
      * @return boolean
      */
     public function canBeSavedBy(Person $person = null)
@@ -101,12 +101,13 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param boolean $namesVisibleForOthers
+     * @param  boolean                             $namesVisibleForOthers
      * @return \FormBundle\Entity\Node\Form\Doodle
      */
     public function setNamesVisibleForOthers($namesVisibleForOthers)
     {
         $this->namesVisibleForOthers = $namesVisibleForOthers;
+
         return $this;
     }
 
@@ -121,7 +122,8 @@ class Doodle extends BaseForm
     /**
      * @return boolean
      */
-    public function hasReminderMail() {
+    public function hasReminderMail()
+    {
         return null !== $this->reminderMail;
     }
 
@@ -130,15 +132,18 @@ class Doodle extends BaseForm
      *
      * @return \FormBundle\Entity\Node\Form\Doodle
      */
-    public function setReminderMail(Mail $reminderMail = null) {
+    public function setReminderMail(Mail $reminderMail = null)
+    {
         $this->reminderMail = $reminderMail;
+
         return $this;
     }
 
     /**
      * @return \FormBundle\Entity\Mail\Mail
      */
-    public function getReminderMail() {
+    public function getReminderMail()
+    {
         return $this->reminderMail;
     }
 
@@ -151,11 +156,12 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \FormBundle\Entity\Node\Entry         $entry
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getCompletedReminderMailBody(Entry $entry, Language $language) {
+    public function getCompletedReminderMailBody(Entry $entry, Language $language)
+    {
         $body = $this->getMail()->getContent($language);
         $body = str_replace('%id%', $entry->getId(), $body);
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
@@ -167,11 +173,12 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \FormBundle\Entity\Node\Entry         $entry
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    protected function _getSummary(Entry $entry, Language $language) {
+    protected function _getSummary(Entry $entry, Language $language)
+    {
         $fieldEntries = $this->_entityManager
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);

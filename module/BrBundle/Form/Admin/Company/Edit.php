@@ -39,8 +39,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \BrBundle\Entity\Company $company
-     * @param null|string|int $name Optional name for the element
+     * @param \BrBundle\Entity\Company    $company
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Company $company, $name = null)
     {

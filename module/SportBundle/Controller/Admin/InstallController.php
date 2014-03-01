@@ -92,7 +92,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             ),
         );
 
-        foreach($departments as $department) {
+        foreach ($departments as $department) {
             $repositoryCheck = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Department')
                 ->findOneByName($department['name']);

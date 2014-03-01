@@ -33,7 +33,7 @@ class CareerController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -44,6 +44,7 @@ class CareerController extends \CommonBundle\Component\Controller\ActionControll
         $result->currentAcademicYear = $this->getCurrentAcademicYear();
 
         $e->setResult($result);
+
         return $result;
     }
 }

@@ -87,9 +87,9 @@ class Banner extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $category
+     * @param string                           $category
      */
-    public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url )
+    public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url)
     {
         parent::__construct($person);
 
@@ -106,15 +106,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -123,15 +126,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setImage($image) {
+    public function setImage($image)
+    {
         $this->image = $image;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getImage() {
+    public function getImage()
+    {
         return $this->image;
     }
 
@@ -140,15 +146,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setStartDate($startDate) {
+    public function setStartDate($startDate)
+    {
         $this->startDate = $startDate;
+
         return $this;
     }
 
     /**
      * @return DateTime
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDate;
     }
 
@@ -157,15 +166,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setEndDate($endDate) {
+    public function setEndDate($endDate)
+    {
         $this->endDate = $endDate;
+
         return $this;
     }
 
     /**
      * @return DateTime
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDate;
     }
 
@@ -174,15 +186,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setActive($active) {
+    public function setActive($active)
+    {
         $this->active = $active;
+
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function isActive() {
+    public function isActive()
+    {
         return $this->active;
     }
 
@@ -191,15 +206,18 @@ class Banner extends \CommonBundle\Entity\Node
      *
      * @return \BannerBundle\Entity\Node\Notification
      */
-    public function setUrl($url) {
+    public function setUrl($url)
+    {
         $this->url = $url;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->url;
     }
 }

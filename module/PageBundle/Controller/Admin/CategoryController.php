@@ -77,7 +77,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['name_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $category,
@@ -143,7 +143,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $category->getTranslation($language, false);
 
                     if (null !== $translation) {

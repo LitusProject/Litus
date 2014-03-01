@@ -61,7 +61,7 @@ class Entry
 
     /**
      * @param \FormBundle\Entity\Node\Entry $formEntry
-     * @param \FormBundle\Entity\Field $field
+     * @param \FormBundle\Entity\Field      $field
      */
     public function __construct(NodeEntry $formEntry, Field $field, $value)
     {
@@ -73,37 +73,43 @@ class Entry
     /**
      * @return The form entry this entry belongs to.
      */
-    public function getFormEntry() {
+    public function getFormEntry()
+    {
         return $this->formEntry;
     }
 
     /**
      * @return The field this entry belongs to.
      */
-    public function getField() {
+    public function getField()
+    {
         return $this->field;
     }
 
     /**
      * @return string
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
     /**
      * @return string
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->value = $value;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getValueString(Language $language) {
+    public function getValueString(Language $language)
+    {
         return $this->getField()->getValueString($language, $this->getValue());
     }
 }

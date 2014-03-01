@@ -48,11 +48,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     private $_person = null;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\User\Person\Academic $person The person we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Zend\Cache\Storage\StorageInterface      $cache         The cache instance
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear  The academic year
+     * @param \CommonBundle\Entity\User\Person\Academic $person        The person we're going to modify
+     * @param null|string|int                           $name          Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, AcademicYear $academicYear, Academic $person, $name = null)
     {
@@ -183,8 +183,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             }
-            else {
+             } else {
                 $data['primary_address_address_city'] = 'other';
                 $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
                 $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();

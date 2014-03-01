@@ -32,8 +32,8 @@ class Edit extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \PageBundle\Entity\Link $link The link we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \PageBundle\Entity\Link     $link          The link we're going to modify
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Link $link, $name = null)
     {
@@ -52,7 +52,7 @@ class Edit extends Add
     private function _populateFromLink(Link $link)
     {
         $data = array();
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['name_' . $language->getAbbrev()] = $link->getName($language, false);
             $data['url_' . $language->getAbbrev()] = $link->getUrl($language, false);
         }

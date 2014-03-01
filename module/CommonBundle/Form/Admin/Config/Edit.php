@@ -35,7 +35,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing
-     * @param mixed $opts The form's options
+     * @param mixed                              $opts  The form's options
      */
     public function __construct(Config $entry, $opts = null)
     {

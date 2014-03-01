@@ -32,9 +32,9 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Organization\Unit $unit The unit we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager                    $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit          The unit we're going to modify
+     * @param null|string|int                                $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Unit $unit, $name = null)
     {
@@ -79,6 +79,7 @@ class Edit extends Add
 
             $rolesArray[] = $role->getName();
         }
+
         return $rolesArray;
     }
 }

@@ -18,8 +18,6 @@
 
 namespace FormBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks whether a field may be required or not (visibility)
  *
@@ -47,8 +45,8 @@ class Required extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if the required field is unchecked or checked if it is allowed
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -57,6 +55,7 @@ class Required extends \Zend\Validator\AbstractValidator
 
         if ('1' == $value && isset($context['visible_if']) && '0' != $context['visible_if']) {
             $this->error(self::MAY_NOT_BE_REQUIRED);
+
             return false;
         }
 

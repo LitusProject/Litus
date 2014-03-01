@@ -429,7 +429,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllActive();
 
-        foreach($reservations as $reservation) {
+        foreach ($reservations as $reservation) {
             $summary = array();
             if (strlen($reservation->getLoad()) > 0)
                 $summary[] = str_replace("\n", '', $reservation->getLoad());
@@ -464,6 +464,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -487,6 +488,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -496,6 +498,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         if (null == $reservation) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 

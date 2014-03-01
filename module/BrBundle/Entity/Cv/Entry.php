@@ -266,7 +266,7 @@ class Entry
 
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
+     * @param \CommonBundle\Entity\General\AcademicYear $year     The current academic year.
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,
         $sex, $phoneNumber, $email, Address $address, $priorStudy, $priorGrade, Study $study, $grade, $bachelorStart,
@@ -322,8 +322,10 @@ class Entry
      * @param firstName The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setFirstName($firstName) {
+    public function setFirstName($firstName)
+    {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -343,8 +345,10 @@ class Entry
      * @param lastName The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setLastName($lastName) {
+    public function setLastName($lastName)
+    {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -364,8 +368,10 @@ class Entry
      * @param birthday The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setBirthday($birthday) {
+    public function setBirthday($birthday)
+    {
         $this->birthday = $birthday;
+
         return $this;
     }
 
@@ -385,8 +391,10 @@ class Entry
      * @param sex The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setSex($sex) {
+    public function setSex($sex)
+    {
         $this->sex = $sex;
+
         return $this;
     }
 
@@ -406,8 +414,10 @@ class Entry
      * @param phoneNumber The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setPhoneNumber($phoneNumber) {
+    public function setPhoneNumber($phoneNumber)
+    {
         $this->phoneNumber = $phoneNumber;
+
         return $this;
     }
 
@@ -427,8 +437,10 @@ class Entry
      * @param email The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
+
         return $this;
     }
 
@@ -448,8 +460,10 @@ class Entry
      * @param address The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setAddress($address) {
+    public function setAddress($address)
+    {
         $this->address = $address;
+
         return $this;
     }
 
@@ -469,8 +483,10 @@ class Entry
      * @param priorStudy The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setPriorStudy($priorStudy) {
+    public function setPriorStudy($priorStudy)
+    {
         $this->priorStudy = $priorStudy;
+
         return $this;
     }
 
@@ -490,8 +506,10 @@ class Entry
      * @param priorGrade The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setPriorGrade($priorGrade) {
+    public function setPriorGrade($priorGrade)
+    {
         $this->priorGrade = $priorGrade;
+
         return $this;
     }
 
@@ -511,8 +529,10 @@ class Entry
      * @param study The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setStudy($study) {
+    public function setStudy($study)
+    {
         $this->study = $study;
+
         return $this;
     }
 
@@ -532,8 +552,10 @@ class Entry
      * @param grade The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setGrade($grade) {
+    public function setGrade($grade)
+    {
         $this->grade = $grade;
+
         return $this;
     }
 
@@ -553,8 +575,10 @@ class Entry
      * @param bachelorStart The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setBachelorStart($bachelorStart) {
+    public function setBachelorStart($bachelorStart)
+    {
         $this->bachelorStart = $bachelorStart;
+
         return $this;
     }
 
@@ -574,8 +598,10 @@ class Entry
      * @param bachelorEnd The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setBachelorEnd($bachelorEnd) {
+    public function setBachelorEnd($bachelorEnd)
+    {
         $this->bachelorEnd = $bachelorEnd;
+
         return $this;
     }
 
@@ -595,8 +621,10 @@ class Entry
      * @param masterStart The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setMasterStart($masterStart) {
+    public function setMasterStart($masterStart)
+    {
         $this->masterStart = $masterStart;
+
         return $this;
     }
 
@@ -616,8 +644,10 @@ class Entry
      * @param masterEnd The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setMasterEnd($masterEnd) {
+    public function setMasterEnd($masterEnd)
+    {
         $this->masterEnd = $masterEnd;
+
         return $this;
     }
 
@@ -637,8 +667,10 @@ class Entry
      * @param additionalDiplomas The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setAdditionalDiplomas($additionalDiplomas) {
+    public function setAdditionalDiplomas($additionalDiplomas)
+    {
         $this->additionalDiplomas = $additionalDiplomas;
+
         return $this;
     }
 
@@ -658,8 +690,10 @@ class Entry
      * @param erasmusPeriod The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setErasmusPeriod($erasmusPeriod) {
+    public function setErasmusPeriod($erasmusPeriod)
+    {
         $this->erasmusPeriod = $erasmusPeriod;
+
         return $this;
     }
 
@@ -679,8 +713,10 @@ class Entry
      * @param erasmusLocation The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setErasmusLocation($erasmusLocation) {
+    public function setErasmusLocation($erasmusLocation)
+    {
         $this->erasmusLocation = $erasmusLocation;
+
         return $this;
     }
 
@@ -710,8 +746,10 @@ class Entry
      * @param languageExtra The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setLanguageExtra($languageExtra) {
+    public function setLanguageExtra($languageExtra)
+    {
         $this->languageExtra = $languageExtra;
+
         return $this;
     }
 
@@ -731,8 +769,10 @@ class Entry
      * @param computerSkills The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setComputerSkills($computerSkills) {
+    public function setComputerSkills($computerSkills)
+    {
         $this->computerSkills = $computerSkills;
+
         return $this;
     }
 
@@ -752,8 +792,10 @@ class Entry
      * @param experiences The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setExperiences($experiences) {
+    public function setExperiences($experiences)
+    {
         $this->experiences = $experiences;
+
         return $this;
     }
 
@@ -773,8 +815,10 @@ class Entry
      * @param thesisSummary The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setThesisSummary($thesisSummary) {
+    public function setThesisSummary($thesisSummary)
+    {
         $this->thesisSummary = $thesisSummary;
+
         return $this;
     }
 
@@ -794,8 +838,10 @@ class Entry
      * @param futureInterest The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setFutureInterest($futureInterest) {
+    public function setFutureInterest($futureInterest)
+    {
         $this->futureInterest = $futureInterest;
+
         return $this;
     }
 
@@ -815,8 +861,10 @@ class Entry
      * @param mobilityEurope The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setMobilityEurope($mobilityEurope) {
+    public function setMobilityEurope($mobilityEurope)
+    {
         $this->mobilityEurope = $mobilityEurope;
+
         return $this;
     }
 
@@ -836,8 +884,10 @@ class Entry
      * @param mobilityWorld The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setMobilityWorld($mobilityWorld) {
+    public function setMobilityWorld($mobilityWorld)
+    {
         $this->mobilityWorld = $mobilityWorld;
+
         return $this;
     }
 
@@ -857,8 +907,10 @@ class Entry
      * @param careerExpectations The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setCareerExpectations($careerExpectations) {
+    public function setCareerExpectations($careerExpectations)
+    {
         $this->careerExpectations = $careerExpectations;
+
         return $this;
     }
 
@@ -878,8 +930,10 @@ class Entry
      * @param hobbies The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setHobbies($hobbies) {
+    public function setHobbies($hobbies)
+    {
         $this->hobbies = $hobbies;
+
         return $this;
     }
 
@@ -899,8 +953,10 @@ class Entry
      * @param about The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setAbout($about) {
+    public function setAbout($about)
+    {
         $this->about = $about;
+
         return $this;
     }
 
@@ -930,8 +986,10 @@ class Entry
      * @param academic The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setAcademic($academic) {
+    public function setAcademic($academic)
+    {
         $this->academic = $academic;
+
         return $this;
     }
 
@@ -951,8 +1009,10 @@ class Entry
      * @param year The new value
      * @return BrBundle\Entity\Cv\Entry this
      */
-    public function setYear($year) {
+    public function setYear($year)
+    {
         $this->year = $year;
+
         return $this;
     }
 

@@ -109,11 +109,11 @@ class Action
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person executed this action
-     * @param string $entity The entity name
-     * @param integer $entityId The entity id
-     * @param string $action The action type
-     * @param integer $previousId The previous entity id
+     * @param \CommonBundle\Entity\User\Person $person     The person executed this action
+     * @param string                           $entity     The entity name
+     * @param integer                          $entityId   The entity id
+     * @param string                           $action     The action type
+     * @param integer                          $previousId The previous entity id
      */
     public function __construct(Person $person, $entity, $entityId, $action, $previousId = null)
     {
@@ -168,6 +168,7 @@ class Action
     public function setEntityId($entityId)
     {
         $this->entityId = $entityId;
+
         return $this;
     }
 
@@ -206,6 +207,7 @@ class Action
     public function setPreviousId($previousId)
     {
         $this->previousId = $previousId;
+
         return $this;
     }
 
@@ -267,6 +269,7 @@ class Action
         $this->completedPerson = $completedPerson;
         $this->confirmDate = new DateTime();
         $this->refuseDate = null;
+
         return $this;
     }
 
@@ -280,6 +283,7 @@ class Action
         $this->completedPerson = $completedPerson;
         $this->refuseDate = new DateTime();
         $this->confirmDate = null;
+
         return $this;
     }
 
@@ -315,6 +319,7 @@ class Action
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 }

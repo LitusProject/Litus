@@ -18,8 +18,6 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
-
 /**
  * InstallController
  *

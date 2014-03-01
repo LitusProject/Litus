@@ -33,12 +33,13 @@ class Url extends \Zend\View\Helper\Url
     private $_language;
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \CommonBundle\Entity\General\Language         $language
      * @return \CommonBundle\Component\Controller\Plugin\Url
      */
     public function setLanguage(Language $language)
     {
         $this->_language = $language;
+
         return $this;
     }
 
@@ -46,14 +47,14 @@ class Url extends \Zend\View\Helper\Url
      * Generates an url given the name of a route.
      *
      * @see    Zend\Mvc\Router\RouteInterface::assemble()
-     * @param  string  $name               Name of the route
-     * @param  array   $params             Parameters for the link
-     * @param  array   $options            Options for the route
-     * @param  boolean $reuseMatchedParams Whether to reuse matched parameters
-     * @return string Url                  For the link href attribute
-     * @throws Exception\RuntimeException  If no RouteStackInterface was provided
-     * @throws Exception\RuntimeException  If no RouteMatch was provided
-     * @throws Exception\RuntimeException  If RouteMatch didn't contain a matched route name
+     * @param  string                     $name               Name of the route
+     * @param  array                      $params             Parameters for the link
+     * @param  array                      $options            Options for the route
+     * @param  boolean                    $reuseMatchedParams Whether to reuse matched parameters
+     * @return string                     Url                  For the link href attribute
+     * @throws Exception\RuntimeException If no RouteStackInterface was provided
+     * @throws Exception\RuntimeException If no RouteMatch was provided
+     * @throws Exception\RuntimeException If RouteMatch didn't contain a matched route name
      */
     public function __invoke($name = null, $params = array(), $options = array(), $reuseMatchedParams = false)
     {

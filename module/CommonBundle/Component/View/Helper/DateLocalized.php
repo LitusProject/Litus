@@ -54,7 +54,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
 
     /**
      * @param \DateTime $date
-     * @param string $format
+     * @param string    $format
      *
      * @return Zend\Date\Date
      */
@@ -70,16 +70,17 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
             IntlDateFormatter::GREGORIAN,
             $format
         );
+
         return $formatter->format($date);
     }
 
     /**
      * Sets translator to use in helper
      *
-     * @param  Translator $translator  [optional] translator.
-     *                                 Default is null, which sets no translator.
-     * @param  string     $textDomain  [optional] text domain
-     *                                 Default is null, which skips setTranslatorTextDomain
+     * @param  Translator $translator [optional] translator.
+     *                                Default is null, which sets no translator.
+     * @param  string     $textDomain [optional] text domain
+     *                                Default is null, which skips setTranslatorTextDomain
      * @return HeadTitle
      */
     public function setTranslator(Translator $translator = null, $textDomain = null)
@@ -88,6 +89,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
         if (null !== $textDomain) {
             $this->setTranslatorTextDomain($textDomain);
         }
+
         return $this;
     }
 
@@ -118,13 +120,14 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Sets whether translator is enabled and should be used
      *
-     * @param  bool $enabled [optional] whether translator should be used.
-     *                       Default is true.
+     * @param  bool      $enabled [optional] whether translator should be used.
+     *                            Default is true.
      * @return HeadTitle
      */
     public function setTranslatorEnabled($enabled = true)
     {
         $this->translatorEnabled = (bool) $enabled;
+
         return $this;
     }
 
@@ -141,12 +144,13 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Set translation text domain
      *
-     * @param  string $textDomain
+     * @param  string    $textDomain
      * @return HeadTitle
      */
     public function setTranslatorTextDomain($textDomain = 'default')
     {
         $this->translatorTextDomain = $textDomain;
+
         return $this;
     }
 

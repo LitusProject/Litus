@@ -40,8 +40,8 @@ class Xml
     private $_order;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order $order The order
+     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Stock\Order $order         The order
      */
     public function __construct(EntityManager $entityManager, Order $order)
     {
@@ -62,7 +62,7 @@ class Xml
 
         $zip = new ZipArchive();
 
-        foreach($this->_order->getItems() as $item) {
+        foreach ($this->_order->getItems() as $item) {
             if (!$item->getArticle()->getMainArticle()->isInternal())
                 continue;
 
@@ -111,7 +111,7 @@ class Xml
         $mappings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($item->getArticle()->getMainArticle());
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $attachments[] = new Object(
                 'Attachment',
                 array(
@@ -122,7 +122,7 @@ class Xml
             );
         }
 
-        switch($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
+        switch ($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
             case 'glued':
                 $binding = 'Ingelijmd';
                 break;

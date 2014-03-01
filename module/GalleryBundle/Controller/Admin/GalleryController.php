@@ -76,7 +76,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()]) {
                         $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
                         $this->getEntityManager()->persist($translation);
@@ -132,7 +132,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $album->getTranslation($language);
 
                     if ($translation) {
@@ -280,7 +280,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
             do {
                 $filename = sha1(uniqid()) . '.jpg';
-            } while(file_exists($filePath . $filename));
+            } while (file_exists($filePath . $filename));
 
             $image = new Imagick($upload->getFileName());
 
@@ -288,7 +288,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             unlink($upload->getFileName());
 
             if (isset($exif['Orientation'])) {
-                switch($exif['Orientation']) {
+                switch ($exif['Orientation']) {
                     case 1: // nothing
                         break;
                     case 2: // horizontal flip

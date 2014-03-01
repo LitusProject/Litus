@@ -95,11 +95,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         $form = new AddForm($this->getEntityManager(), $prefix);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
@@ -193,7 +193,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 ->findAllByPeriodAndArticle($period, $delivery->getArticle());
 
             $diff = $ordered - $delivered;
-            foreach($virtualOrders as $virtual) {
+            foreach ($virtualOrders as $virtual) {
                 if ($diff <= 0)
                     break;
 
@@ -217,7 +217,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findLastAssignedByArticle($delivery->getArticle());
 
-            foreach($bookings as $booking) {
+            foreach ($bookings as $booking) {
                 if ($nbToMuchAssigned <= 0)
                     break;
                 $booking->setStatus('booked', $this->getEntityManager());
@@ -241,7 +241,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         $academicYear = $this->getAcademicYear();
-        
+
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
@@ -253,7 +253,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $virtual = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
                 ->findNbByPeriodAndArticle($period, $article);

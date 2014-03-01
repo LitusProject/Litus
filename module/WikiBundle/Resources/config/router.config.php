@@ -46,7 +46,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'wiki_install' => 'WikiBundle\Controller\Admin\InstallController',
 

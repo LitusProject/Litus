@@ -106,10 +106,10 @@ abstract class Field
 
     /**
      * @param \FormBundle\Entity\Node\Form $form
-     * @param integer $order
-     * @param boolean $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string $visibilityValue
+     * @param integer                      $order
+     * @param boolean                      $required
+     * @param \FormBundle\Entity\Field     $visibityDecisionField
+     * @param string                       $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
@@ -145,6 +145,7 @@ abstract class Field
     public function setOrder($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -164,6 +165,7 @@ abstract class Field
     public function setRequired($required)
     {
         $this->required = $required;
+
         return $this;
     }
 
@@ -183,6 +185,7 @@ abstract class Field
     public function setVisibilityDecissionField(Field $visibityDecisionField = null)
     {
         $this->visibityDecisionField = $visibityDecisionField;
+
         return $this;
     }
 
@@ -202,6 +205,7 @@ abstract class Field
     public function setVisibilityValue($visibilityValue)
     {
         $this->visibilityValue = $visibilityValue;
+
         return $this;
     }
 
@@ -215,7 +219,7 @@ abstract class Field
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return string
      */
@@ -231,14 +235,14 @@ abstract class Field
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return \FormBundle\Entity\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
 
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 

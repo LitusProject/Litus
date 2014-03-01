@@ -45,7 +45,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             'nl' => 'Nederlands'
         );
 
-        foreach($languages as $abbrev => $name) {
+        foreach ($languages as $abbrev => $name) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
@@ -61,9 +61,9 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _installCities()
     {
-        $cities = include('config/streets.php');
+        $cities = include 'config/streets.php';
 
-        foreach($cities as $cityData) {
+        foreach ($cities as $cityData) {
             $city = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\City')
                 ->findOneByPostal($cityData['postal']);
@@ -73,7 +73,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($city);
             }
 
-            foreach($cityData['streets'] as $streetData) {
+            foreach ($cityData['streets'] as $streetData) {
                 $street = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $streetData['name']);
@@ -97,7 +97,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             'VTK',
         );
 
-        foreach($organizations as $name) {
+        foreach ($organizations as $name) {
             $organization = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Organization')
                 ->findOneByName($name);

@@ -27,12 +27,12 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * Edits a quiz
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Edit extends Add {
-
+class Edit extends Add
+{
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Quiz $quiz The quiz to populate the form with
-     * @param null|string|int $name Optional name for the form
+     * @param \QuizBundle\Entity\Quiz     $quiz          The quiz to populate the form with
+     * @param null|string|int             $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
     {

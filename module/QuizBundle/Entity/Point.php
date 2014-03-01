@@ -62,8 +62,8 @@ class Point
 
     /**
      * @param \QuizBundle\Entity\Round $round
-     * @param \QuizBundle\Entity\Team $team
-     * @param integer $point
+     * @param \QuizBundle\Entity\Team  $team
+     * @param integer                  $point
      */
     public function __construct(Round $round, Team $team, $point)
     {
@@ -105,7 +105,7 @@ class Point
     }
 
     /**
-     * @param int $point
+     * @param  int                      $point
      * @return \QuizBundle\Entity\Point
      */
     public function setPoint($point)
@@ -113,6 +113,7 @@ class Point
         if ($point > $this->round->getMaxPoints())
             throw new \InvalidArgumentException('Points exceed maximum');
         $this->point = $point;
+
         return $this;
     }
 }

@@ -18,8 +18,6 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Exception;
-
 /**
  * InstallController
  *

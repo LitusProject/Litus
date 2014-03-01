@@ -33,7 +33,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -175,7 +175,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Build a pages submenu.
      *
-     * @param \PageBundle\Entity\Node\Page $page The page
+     * @param  \PageBundle\Entity\Node\Page $page The page
      * @return array
      */
     protected function _buildSubmenu(Page $page)
@@ -283,7 +283,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch(\ErrorException $e) {}
+        } catch (\ErrorException $e) {}
 
         $shibbolethUrl .= '%3Fsource=site';
 

@@ -18,8 +18,6 @@
 
 namespace BrBundle\Controller\Admin;
 
-use Exception;
-
 /**
  * InstallController
  *

@@ -103,7 +103,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 ->getConfigValue('publication.public_pdf_directory');
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid()) . '.pdf';
             } while (file_exists($filePath . $fileName));
 

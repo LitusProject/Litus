@@ -85,7 +85,7 @@ class Lap
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SportBundle\Entity\Runner $runner
+     * @param \SportBundle\Entity\Runner                $runner
      */
     public function __construct(AcademicYear $academicYear, Runner $runner)
     {
@@ -112,12 +112,13 @@ class Lap
     }
 
     /**
-     * @param \SportBundle\Entity\Runner $runner
+     * @param  \SportBundle\Entity\Runner $runner
      * @return \SportBundle\Entity\Lap
      */
     public function setRunner(Runner $runner)
     {
         $this->runner = $runner;
+
         return $this;
     }
 
@@ -145,6 +146,7 @@ class Lap
     public function start()
     {
         $this->startTime = new DateTime();
+
         return $this;
     }
 
@@ -157,12 +159,13 @@ class Lap
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \SportBundle\Entity\Lap
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
@@ -174,6 +177,7 @@ class Lap
     public function stop()
     {
         $this->endTime = new DateTime();
+
         return $this;
     }
 
@@ -229,7 +233,7 @@ class Lap
     /**
      * Converts a DateInterval to seconds.
      *
-     * @param \DateInterval $interval The interval that should be converted
+     * @param  \DateInterval $interval The interval that should be converted
      * @return integer
      */
     private function _convertDateIntervalToSeconds(DateInterval $interval)

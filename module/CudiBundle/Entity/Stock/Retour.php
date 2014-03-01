@@ -79,10 +79,10 @@ class Retour
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article The article of the retour
-     * @param integer $number The number of the retour
-     * @param \CommonBundle\Entity\User\Person $person The person of the retour
-     * @param string $comment The comment of the retour
+     * @param \CudiBundle\Entity\Sale\Article  $article The article of the retour
+     * @param integer                          $number  The number of the retour
+     * @param \CommonBundle\Entity\User\Person $person  The person of the retour
+     * @param string                           $comment The comment of the retour
      */
     public function __construct(Article $article, $number, Person $person, $comment)
     {

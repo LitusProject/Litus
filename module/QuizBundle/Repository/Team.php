@@ -51,7 +51,7 @@ class Team extends EntityRepository
 
     /**
      * Gets the number for the next team in the quiz
-     * @param \QuizBundle\Entity\Quiz $quiz
+     * @param  \QuizBundle\Entity\Quiz $quiz
      * @return int
      */
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)
@@ -67,6 +67,7 @@ class Team extends EntityRepository
             ->getSingleScalarResult();
 
         if($resultSet === null)
+
             return 1;
 
         return $resultSet + 1;

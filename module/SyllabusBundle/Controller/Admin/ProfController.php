@@ -45,7 +45,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -124,7 +124,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         );
 
         $result = array();
-        foreach($docents as $docent) {
+        foreach ($docents as $docent) {
             $item = (object) array();
             $item->id = $docent->getId();
             $item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();

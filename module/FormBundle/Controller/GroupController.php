@@ -57,7 +57,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $firstForm = $group->getForms()[0]->getForm();
         $startForm = $group->getForms()[0]->getForm();
 
-        foreach($group->getForms() as $form) {
+        foreach ($group->getForms() as $form) {
             $person = $this->getAuthentication()->getPersonObject();
 
             if (null !== $person) {
@@ -75,7 +75,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif(isset($_COOKIE['LITUS_form'])) {
+            } elseif (isset($_COOKIE['LITUS_form'])) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -113,6 +113,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -122,6 +123,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (null === $group) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 

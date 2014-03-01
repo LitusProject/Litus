@@ -53,7 +53,7 @@ class Mapping
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Article $article
+     * @param \CudiBundle\Entity\Article         $article
      * @param \CudiBundle\Entity\Comment\Comment $file
      */
     public function __construct(Article $article, Comment $comment)

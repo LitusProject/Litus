@@ -35,10 +35,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \FormBundle\Form\SpecifiedForm\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager           $entityManager
      * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param null|string|int $name Optional name for the element
+     * @param \FormBundle\Entity\Node\Form          $form
+     * @param null|string|int                       $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
     {
@@ -94,7 +94,7 @@ class Add extends \FormBundle\Form\SpecifiedForm\Add
         $fields->setLabel('Form');
         $this->add($fields);
 
-        foreach($this->getElements() as $name => $element) {
+        foreach ($this->getElements() as $name => $element) {
             if ($name == 'submit' || $name == 'is_guest')
                 continue;
 

@@ -71,10 +71,10 @@ class Translation
     private $content;
 
     /**
-     * @param \NewsBundle\Entity\Node\News $news
+     * @param \NewsBundle\Entity\Node\News          $news
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $title
-     * @param string $content
+     * @param string                                $title
+     * @param string                                $content
      */
     public function __construct(News $news, Language $language, $title, $content)
     {
@@ -116,6 +116,7 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Translation
     {
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->content);
+
         return \CommonBundle\Component\Util\String::truncate($summary, $length, '...');
     }
 
@@ -145,6 +147,7 @@ class Translation
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

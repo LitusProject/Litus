@@ -64,8 +64,8 @@ class Street
 
     /**
      * @param \CommonBundle\Entity\General\Address\City $city
-     * @param integer $registerNumber
-     * @param string $name
+     * @param integer                                   $registerNumber
+     * @param string                                    $name
      */
     public function __construct(City $city, $registerNumber, $name)
     {

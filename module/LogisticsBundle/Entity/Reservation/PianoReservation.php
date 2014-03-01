@@ -51,12 +51,12 @@ class PianoReservation extends Reservation
     private $confirmed;
 
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param \DateTime                                              $startDate
+     * @param \DateTime                                              $endDate
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string $additionalInfo
-     * @param \CommonBundle\Entity\User\Person $creator
-     * @param \CommonBundle\Entity\User\Person $player
+     * @param string                                                 $additionalInfo
+     * @param \CommonBundle\Entity\User\Person                       $creator
+     * @param \CommonBundle\Entity\User\Person                       $player
      */
     public function __construct(DateTime $startDate, DateTime $endDate, ReservableResource $resource, $additionalInfo, Person $creator, Person $player)
     {
@@ -75,12 +75,13 @@ class PianoReservation extends Reservation
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $player
+     * @param  \CommonBundle\Entity\User\Person                     $player
      * @return \LogisticsBundle\Entity\Reservation\PianoReservation
      */
     public function setPlayer(Person $player)
     {
         $this->player = $player;
+
         return $this;
     }
 
@@ -93,12 +94,13 @@ class PianoReservation extends Reservation
     }
 
     /**
-     * @param boolean $confirmed
+     * @param  boolean                                              $confirmed
      * @return \LogisticsBundle\Entity\Reservation\PianoReservation
      */
     public function setConfirmed($confirmed = true)
     {
         $this->confirmed = $confirmed;
+
         return $this;
     }
 }

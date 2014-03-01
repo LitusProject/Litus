@@ -91,7 +91,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -163,7 +163,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation
         );
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

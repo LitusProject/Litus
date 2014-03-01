@@ -79,7 +79,7 @@ class Restriction
 
     /**
      * @param \CudiBundle\Entity\Sale\Article The article of the restriction
-     * @param string $type The type of the restriction
+     * @param string      $type  The type of the restriction
      * @param string|null $value The value of the restriction
      */
     public function __construct(Article $article, $type, $value = null)
@@ -142,7 +142,7 @@ class Restriction
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      *
      * @return boolean
      */
@@ -167,6 +167,7 @@ class Restriction
                         $academicYear
                 )
             );
+
             return $amount < $this->value;
         } else {
             return false;

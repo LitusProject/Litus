@@ -53,8 +53,8 @@ class Activity extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event $event The event
-     * @param mixed $opts The validator's options
+     * @param \TicketBundle\Entity\Event  $event         The event
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Event $event = null, $opts = null)
     {
@@ -68,8 +68,8 @@ class Activity extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if these does not exceed max
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -88,6 +88,7 @@ class Activity extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::NOT_VALID);
+
         return false;
     }
 }
