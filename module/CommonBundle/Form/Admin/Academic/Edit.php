@@ -63,7 +63,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $field = new Text('birthday');
         $field->setLabel('Birthday')
             ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-help', 'The birthday of this user.');
+            ->setAttribute('data-help', 'The birthday of the user.');
         $this->add($field);
 
         $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
@@ -89,11 +89,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     OrganizationStatus::$possibleStatuses
                 )
             )
-            ->setAttribute('data-help', 'The user status in the organiation: <ul>
-                <li><b>Member:</b> a regular member</li>
-                <li><b>Non-member:</b> a regular non member</li>
-                <li><b>Honorary member:</b> a member due to special earnings</li>
-                <li><b>Supportive member:</b> a member, but not a student</li>
+            ->setAttribute('data-help', 'The status of the user in the organization.<br><br><ul>
+                <li><b>Member:</b> a member of the organization</li>
+                <li><b>Non-Member:</b> the person is not a member of the organization</li>
+                <li><b>Honorary Member:</b> the person has earned membership because of his contributions to the organization</li>
+                <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
                 <li><b>Praesidium:</b> a member of the board</li>
             </ul>');
         $collection->add($field);
@@ -119,24 +119,24 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     UniversityStatus::$possibleStatuses
                 )
             )
-            ->setAttribute('data-help', 'The user status in the university: <ul>
-                <li><b>Alumnus:</b> Old student</li>
-                <li><b>Assistant Professor:</b> Assistant of a professor</li>
-                <li><b>Administrative Assistant:</b> Assistant</li>
-                <li><b>External Student:</b> A external student currently studying at this university</li>
-                <li><b>Professor:</b> A professor</li>
-                <li><b>Student:</b> A student</li>
+            ->setAttribute('data-help', 'The status of the user in the university.<br><br><ul>
+                <li><b>Alumnus:</b> a graduated student</li>
+                <li><b>Assistant Professor:</b> an assistant of a professor</li>
+                <li><b>Administrative Assistant:</b> an administrative support person</li>
+                <li><b>External Student:</b> a student that does not belong to the organization\'s faculty</li>
+                <li><b>Professor:</b> a professor</li>
+                <li><b>Student:</b> a student</li>
             </ul>');
         $collection->add($field);
 
         $field = new Text('university_identification');
         $field->setLabel('Identification')
-            ->setAttribute('data-help', 'The unique user identification of the university.');
+            ->setAttribute('data-help', 'The identification used by the university for the student.');
         $collection->add($field);
 
         $field = new Text('university_email');
         $field->setLabel('University E-mail')
-            ->setAttribute('data-help', 'The email address of this user of the university.');
+            ->setAttribute('data-help', 'The e-mail address given to the user by the university.');
         $collection->add($field);
 
         $field = new Submit('submit');

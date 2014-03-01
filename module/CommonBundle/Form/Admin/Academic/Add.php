@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
 
         $field = new Checkbox('activation_code');
         $field->setLabel('Activation Code')
-            ->setAttribute('data-help', 'With this activation code the user as the ability to login without shibboleth. A mail will be send with an activation code.');
+            ->setAttribute('data-help', 'When checked, an activiation code will be generated and mailed to the user. This code can be used to choose a password, so that it is possible to login without Shibboleth.');
         $this->add($field);
 
         $collection = new Collection('organization');
@@ -65,11 +65,11 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     OrganizationStatus::$possibleStatuses
                 )
             )
-            ->setAttribute('data-help', 'The user status in the organiation: <ul>
-                <li><b>Member:</b> a regular member</li>
-                <li><b>Non-member:</b> a regular non member</li>
-                <li><b>Honorary member:</b> a member due to special earnings</li>
-                <li><b>Supportive member:</b> a member, but not a student</li>
+            ->setAttribute('data-help', 'The status of the user in the organization.<br><br><ul>
+                <li><b>Member:</b> a member of the organization</li>
+                <li><b>Non-Member:</b> the person is not a member of the organization</li>
+                <li><b>Honorary Member:</b> the person has earned membership because of his contributions to the organization</li>
+                <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
                 <li><b>Praesidium:</b> a member of the board</li>
             </ul>');
         $collection->add($field);
@@ -77,7 +77,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
-            ->setAttribute('data-help', 'The barcode used to identify the user in this organization.');
+            ->setAttribute('data-help', 'A barcode that can be used to identify the user.');
         $collection->add($field);
 
         $collection = new Collection('university');
@@ -95,19 +95,19 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     UniversityStatus::$possibleStatuses
                 )
             )
-            ->setAttribute('data-help', 'The user status in the university: <ul>
-                <li><b>Alumnus:</b> Old student</li>
-                <li><b>Assistant Professor:</b> Assistant of a professor</li>
-                <li><b>Administrative Assistant:</b> Assistant</li>
-                <li><b>External Student:</b> A external student currently studying at this university</li>
-                <li><b>Professor:</b> A professor</li>
-                <li><b>Student:</b> A student</li>
+            ->setAttribute('data-help', 'The status of the user in the university.<br><br><ul>
+                <li><b>Alumnus:</b> a graduated student</li>
+                <li><b>Assistant Professor:</b> an assistant of a professor</li>
+                <li><b>Administrative Assistant:</b> an administrative support person</li>
+                <li><b>External Student:</b> a student that does not belong to the organization\'s faculty</li>
+                <li><b>Professor:</b> a professor</li>
+                <li><b>Student:</b> a student</li>
             </ul>');
         $collection->add($field);
 
         $field = new Text('university_identification');
         $field->setLabel('Identification')
-            ->setAttribute('data-help', 'The unique user identification of the university.');
+            ->setAttribute('data-help', 'The identification used by the university for the student.');
         $collection->add($field);
 
         $field = new Submit('submit');
