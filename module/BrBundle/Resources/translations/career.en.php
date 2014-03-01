@@ -31,7 +31,9 @@ return array(
     'Arrange By' => 'Arrange By',
     'Alphabetical By Company' => 'Alphabetical By Company',
     'Alphabetical By Vacancy' => 'Alphabetical By Vacancy',
+    'Alphabetical By internship' => 'Alphabetical By internship',
     'Most Recent Vacancy' => 'Most Recently Adjusted',
+    'Most Recent internship' => 'Most Recently Adjusted',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.',
     'So just look around and you might just find what you are looking for!' => 'So just look around and you might just find what you are looking for!',

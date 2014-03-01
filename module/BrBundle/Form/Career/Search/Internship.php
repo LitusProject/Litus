@@ -29,15 +29,15 @@ use BrBundle\Entity\Company,
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
+class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var array The possible sorting of vacancies
      */
     private static $possibleSorts = array(
         'alphabeticalByCompany' => 'Alphabetical By Company',
-        'alphabeticalByVacancy' => 'Alphabetical By Vacancy',
-        'mostRecent' => 'Most Recent Vacancy',
+        'alphabeticalByInternship' => 'Alphabetical By Internship',
+        'mostRecent' => 'Most Recent Internship',
     );
 
     /**
