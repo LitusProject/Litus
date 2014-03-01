@@ -216,10 +216,14 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             if (isset($params['page']))
                 unset($params['page']);
         }
+
+        $query = $this->getController()->getEvent()->getRequest()->getQuery();
+
         return array(
             'fullWidth' => $fullWidth,
             'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
+            'query' => sizeof($query) > 0 ? '?' . $query->toString() : '',
             'pages' => $this->_paginator->getPages(),
         );
     }

@@ -38,30 +38,27 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             ->getRepository('BrBundle\Entity\Company\Job')
             ->findAllActiveByTypeQuery('vacancy');
 
-        $searchResults = null;
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $vacancySearchForm->setData($formData);
+        $formData = $this->getRequest()->getQuery();
+        $vacancySearchForm->setData($formData);
 
-            if ($vacancySearchForm->isValid()) {
-                $formData = $vacancySearchForm->getFormData($formData);
+        if ($vacancySearchForm->isValid()) {
+            $formData = $vacancySearchForm->getFormData($formData);
 
-                $repository = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company\Job');
+            $repository = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company\Job');
 
-                if($formData['sector'] != 'all') {
-                    if($formData['searchType'] == 'alphabeticalByCompany')
-                        $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
-                    elseif($formData['searchType'] == 'alphabeticalByVacency')
-                        $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
-                    elseif($formData['searchType'] == 'mostRecent')
-                        $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
-                } else {
-                    if($formData['searchType'] == 'alphabeticalByVacency')
-                        $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
-                    elseif($formData['searchType'] == 'mostRecent')
-                        $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
-                }
+            if($formData['sector'] != 'all') {
+                if($formData['searchType'] == 'alphabeticalByCompany')
+                    $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
+                elseif($formData['searchType'] == 'alphabeticalByVacency')
+                    $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
+                elseif($formData['searchType'] == 'mostRecent')
+                    $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
+            } else {
+                if($formData['searchType'] == 'alphabeticalByVacency')
+                    $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
+                elseif($formData['searchType'] == 'mostRecent')
+                    $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
             }
         }
 
