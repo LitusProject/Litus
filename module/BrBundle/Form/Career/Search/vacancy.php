@@ -21,8 +21,6 @@ namespace BrBundle\Form\Career\Search;
 use BrBundle\Entity\Company,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
