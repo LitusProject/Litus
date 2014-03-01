@@ -197,16 +197,20 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
             'Content-Type' => 'application/pdf',
-            'Content-Length' => filesize($edition->getFileName()),
+            'Content-Length' => filesize($filePath . $edition->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($edition->getFileName(), 'r');
-        $data = fread($handle, filesize($edition->getFileName()));
+        $handle = fopen($filePath . $edition->getFileName(), 'r');
+        $data = fread($handle, filesize($filePath . $edition->getFileName()));
         fclose($handle);
 
         return new ViewModel(
