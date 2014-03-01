@@ -10,7 +10,7 @@
     {% include 'secretary/admin/registration/partials/organizations.twig' %}
 
     <div id="controller_action">
-        <input type="button" class="download downloadFile" data-file="{{ url('secretary_admin_registration', {"action": "download", "academicyear": activeAcademicYear.getCode(), "organization": currentOrganization.getId()}) }}" value="Download " style="padding-left: 18px;cursor: pointer;border-width: 2px;" />
+        <button class="download downloadFile" data-file="{{ url('secretary_admin_registration', {"action": "download", "academicyear": activeAcademicYear.getCode(), "organization": currentOrganization.getId()}) }}" style="padding-left: 18px;cursor: pointer;border-width: 2px;">Download</button>
     </div>
 {% endblock %}
 
