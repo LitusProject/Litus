@@ -51,7 +51,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                     $searchResults = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Company\Job')
                         ->findAllActiveByTypeAndSector('vacancy',$formData['sector']);
-                elseif($formData['searchType'] == 'mostRecent')
+                elseif($formData['searchType'] == 'alphabeticalByVacency')
                     $searchResults = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Company\Job')
                         ->findAllActiveByTypeAndSectorByJobName('vacancy',$formData['sector']);
