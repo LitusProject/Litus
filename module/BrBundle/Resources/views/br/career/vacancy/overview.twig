@@ -3,25 +3,24 @@
 {% block page_content %}
     <h1>{{ translate('Vacancies') }}</h1>
     <div class="row">
-        <div class="col-md-4 shiftSearchForms">
-            <h2>{{ translate('Search') }}</h2>
+        <div class="col-md-4 vacancySearchForms">
+            <h4>{{ translate('Arrange By') }}</h4>
                 {% do form.prepare() %}
-                {{ form().openTag(searchTypeForm)|raw }}
+                {{ form().openTag(vacancySearchForm)|raw }}
                     <div class="form-group">
                         <div class="input-group">
-                            {{ formElement(searchTypeForm.get('searchType'))|raw }}
+                            {{ translate(formElement(vacancySearchForm.get('searchType')))|raw }}
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
                             </div>
                         </div>
                     </div>
-                {{ form().closeTag()|raw }}
-                <h4>Sector</h4>
-                {% do form.prepare() %}
-                {{ form().openTag(sectorSearchForm)|raw }}
+        </div>
+        <div class="col-md-4 vacancySearchForms">
+                <h4>{{ translate('Sector') }}</h4>
                     <div class="form-group">
                         <div class="input-group">
-                            {{ formElement(sectorSearchForm.get('sector'))|raw }}
+                            {{ formElement(vacancySearchForm.get('sector'))|raw }}
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
                             </div>

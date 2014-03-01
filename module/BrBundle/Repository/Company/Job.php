@@ -86,8 +86,76 @@ class Job extends EntityRepository
             )
             ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
-            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.name','ASC')
             ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByTypeByJobNameQuery($type)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true')
+                )
+            )
+            ->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByTypeByDateQuery($type)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true')
+                )
+            )
+            ->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.dateUpdated', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByTypeAndSectorByDateQuery($type, $sector)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.sector', ':sector')
+                )
+            )
+            ->setParameter('type', $type)
+            ->setParameter('sector', $sector)
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.dateUpdated', 'DESC')
             ->getQuery();
 
         return $resultSet;
@@ -112,6 +180,30 @@ class Job extends EntityRepository
             ->setParameter('sector', $sector)
             ->setParameter('now', new DateTime())
             ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllActiveByTypeAndSectorByJobNameQuery($type, $sector)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->lt('v.startDate', ':now'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.sector', ':sector')
+                )
+            )
+            ->setParameter('type', $type)
+            ->setParameter('sector', $sector)
+            ->setParameter('now', new DateTime())
             ->addOrderBy('v.name', 'ASC')
             ->getQuery();
 

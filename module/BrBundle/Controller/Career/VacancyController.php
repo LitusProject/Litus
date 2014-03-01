@@ -20,7 +20,7 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
     BrBundle\Form\Career\Search\Sector as SectorSearchForm,
-    BrBundle\Form\Career\Search\SearchType as SearchTypeForm,
+    BrBundle\Form\Career\Search\vacancy as VacancySearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -33,8 +33,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $sectorSearchForm = new SectorSearchForm();
-        $searchTypeForm = new SearchTypeForm();
+        $vacancySearchForm = new VacancySearchForm();
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -46,29 +45,35 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $vacancySearchForm->setData($formData);
 
-            if (isset($formData['sector'])) {
-                $sectorSearchForm->setData($formData);
+            if($formData['sector'] != 'All'){
+                if($formData['searchType'] == 'alphabeticalByCompany')
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Job')
+                        ->findAllActiveByTypeAndSector('vacancy',$formData['sector']);
+                elseif($formData['searchType'] == 'mostRecent')
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Job')
+                        ->findAllActiveByTypeAndSectorByJobName('vacancy',$formData['sector']);
+                elseif($formData['searchType'] == 'mostRecent')
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Job')
+                        ->findAllActiveByTypeAndSectorByDate('vacancy',$formData['sector']);
+            }
+            else{
+                if($formData['searchType'] == 'alphabeticalByCompany')
+                    $searchResults = $paginator;
 
-                if ($sectorSearchForm->isValid() && '' != $formData['sector']) {
-                    $formData = $sectorSearchForm->getFormData($formData);
+                elseif($formData['searchType'] == 'alphabeticalByVacency')
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Job')
+                        ->findAllActiveByTypeByJobName('vacancy');
 
-                    if($formData['sector'] != "All")
-                        $searchResults = $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Company\Job')
-                            ->findAllActiveByTypeAndSector('vacancy',$formData['sector']);
-                    else
-                        $searchResults = $paginator;
-
-                } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
-                    );
-                }
+                elseif($formData['searchType'] == 'mostRecent')
+                    $searchResults = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Job')
+                        ->findAllActiveByTypeByDate('vacancy');
             }
         }
 
@@ -81,8 +86,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
-                'sectorSearchForm' => $sectorSearchForm,
-                'searchTypeForm' => $searchTypeForm,
+                'vacancySearchForm' => $vacancySearchForm,
                 'searchResults' => $searchResults,
             )
         );
