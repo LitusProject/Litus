@@ -86,7 +86,7 @@
                             .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.date + '</td>')
                             .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
-                            .append('<td>' + (this.cancelled ? '&times;' : '') + '</td>')
+                            .append('<td class="registrationCancelled">' + (this.cancelled ? '&times;' : '') + '</td>')
                             .append('<td>' + this.barcode + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
@@ -127,15 +127,20 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.registration_cancelled_success').removeClass('hide');
+                        $('tr.item item-'+id).find('td.registrationCancelled').text('&times;');
                         cancelRegistration.modal('hide');
                     } else {
-                        $('.flashmessage').addClass('hide');
-                        $('.registration_cancelled_error').removeClass('hide');
-                        $('#cancelRegistration').modal('hide');
+                        errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
             cancelRegistration.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.registration_cancelled_error').removeClass('hide');
+            $('#cancelRegistration').modal('hide');
         }
 
     </script>
