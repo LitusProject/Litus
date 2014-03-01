@@ -34,47 +34,41 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
     {
         $vacancySearchForm = new VacancySearchForm();
 
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+        $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeQuery('vacancy'),
-            $this->getParam('page')
-        );
+            ->findAllActiveByTypeQuery('vacancy');
 
         $searchResults = null;
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $vacancySearchForm->setData($formData);
 
-            if($formData['sector'] != 'All'){
-                if($formData['searchType'] == 'alphabeticalByCompany')
-                    $searchResults = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Job')
-                        ->findAllActiveByTypeAndSector('vacancy',$formData['sector']);
-                elseif($formData['searchType'] == 'alphabeticalByVacency')
-                    $searchResults = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Job')
-                        ->findAllActiveByTypeAndSectorByJobName('vacancy',$formData['sector']);
-                elseif($formData['searchType'] == 'mostRecent')
-                    $searchResults = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Job')
-                        ->findAllActiveByTypeAndSectorByDate('vacancy',$formData['sector']);
-            }
-            else{
-                if($formData['searchType'] == 'alphabeticalByCompany')
-                    $searchResults = $paginator;
+            if ($vacancySearchForm->isValid()) {
+                $formData = $vacancySearchForm->getFormData($formData);
 
-                elseif($formData['searchType'] == 'alphabeticalByVacency')
-                    $searchResults = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Job')
-                        ->findAllActiveByTypeByJobName('vacancy');
+                $repository = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company\Job');
 
-                elseif($formData['searchType'] == 'mostRecent')
-                    $searchResults = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Job')
-                        ->findAllActiveByTypeByDate('vacancy');
+                if($formData['sector'] != 'all') {
+                    if($formData['searchType'] == 'alphabeticalByCompany')
+                        $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
+                    elseif($formData['searchType'] == 'alphabeticalByVacency')
+                        $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
+                    elseif($formData['searchType'] == 'mostRecent')
+                        $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
+                } else {
+                    if($formData['searchType'] == 'alphabeticalByVacency')
+                        $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
+                    elseif($formData['searchType'] == 'mostRecent')
+                        $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
+                }
             }
         }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $query,
+            $this->getParam('page')
+        );
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -86,7 +80,6 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
                 'vacancySearchForm' => $vacancySearchForm,
-                'searchResults' => $searchResults,
             )
         );
     }

@@ -41,7 +41,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-
         if (null === $this->getParam('field')) {
             $paginator = $this->paginator()->createFromEntity(
                 'BrBundle\Entity\Company',

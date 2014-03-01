@@ -35,4 +35,6 @@ return array(
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.',
     'So just look around and you might just find what you are looking for!' => 'So just look around and you might just find what you are looking for!',
+
+    'No items found' => 'No items found',
 );

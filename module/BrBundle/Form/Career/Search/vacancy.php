@@ -29,7 +29,7 @@ use BrBundle\Entity\Company,
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
+class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
      * @var array The possible sorting of vacancies
@@ -66,8 +66,7 @@ class vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _createSectorArray()
     {
-        $sectorArray = array();
-        $sectorArray['All'] = 'All';
+        $sectorArray = array('all' => 'All');
         foreach (Company::$possibleSectors as $key => $sector)
             $sectorArray[$key] = $sector;
 
@@ -82,7 +81,16 @@ class vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'vacancySearch',
+                    'name'     => 'searchType',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'sector',
                     'required' => true,
                 )
             )
