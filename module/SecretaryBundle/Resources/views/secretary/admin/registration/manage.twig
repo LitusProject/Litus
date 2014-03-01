@@ -105,7 +105,7 @@
                             });
                         {% endif %}
                     });
-                    $('#registration_search table .delete').click(openModal);
+                    $('#registration_search table .delete').click(openCancelModal);
                     $('#registration_search table').change();
                 },
                 clear: function () {
@@ -116,7 +116,7 @@
             $('.delete').click(openModal);
         });
 
-        function openModal(e) {
+        function openCancelModal(e) {
             var $this = $(this);
             e.preventDefault();
             var cancelRegistration = $('#cancelRegistration');
@@ -129,13 +129,17 @@
                         $('.registration_cancelled_success').removeClass('hide');
                         cancelRegistration.modal('hide');
                     } else {
-                        $('.flashmessage').addClass('hide');
-                        $('.registration_cancelled_error').removeClass('hide');
-                        $('#cancelRegistration').modal('hide');
+                        errorCancel();
                     }
-                }, 'json').error(errorRemove);
+                }, 'json').error(errorCancel);
             });
             cancelRegistration.modal();
+        }
+
+        function errorCancel() {
+            $('.flashmessage').addClass('hide');
+            $('.registration_cancelled_error').removeClass('hide');
+            $('#cancelRegistration').modal('hide');
         }
 
     </script>

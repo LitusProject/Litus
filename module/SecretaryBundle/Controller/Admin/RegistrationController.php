@@ -377,7 +377,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function cancelAction()
     {
-
         $this->initAjax();
 
         if (!($registration = $this->_getRegistration()))
@@ -386,7 +385,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $academic = $registration->getAcademic();
         $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
 
-        if ($organizationStatus->getStatus()==='praesidium') {
+        if (null !== $organizationStatus && $organizationStatus->getStatus() == 'praesidium') {
             return new ViewModel(
                     array(
                     'result' => (object) array('status' => 'error'),
