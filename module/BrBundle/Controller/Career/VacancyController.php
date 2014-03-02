@@ -19,7 +19,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
-    BrBundle\Form\Career\Search\vacancy as VacancySearchForm,
+    BrBundle\Form\Career\Search\Vacancy as VacancySearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
