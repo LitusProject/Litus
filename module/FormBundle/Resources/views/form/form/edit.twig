@@ -37,9 +37,8 @@
                 if ($(this).data('file')) {
                     $(this).closest('.fileinput').append(
                         $('<div>', {'class': 'fileActions'}).append(
-                            $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
-                                '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
-                            ), ' ',
+                            $('<a>', {'class': 'btn btn-xs btn-default', 'href': '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')}).html('{{ translate('Download') }}'),
+                            ' ',
                             $('<button>', {'class': 'btn btn-xs btn-danger'}).html('{{ translate('Remove') }}').click(function (e) {
                                 e.preventDefault();
                                 $(this).closest('.fileinput').append(
