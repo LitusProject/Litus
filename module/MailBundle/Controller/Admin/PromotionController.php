@@ -73,10 +73,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     ->addTo($from, $mailName)
                     ->setSubject($formData['subject']);
 
-                $emailValidator = new EmailAddressValidator();
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress() && $emailValidator->isValid($person->getEmailAddress())) {
+                    if (null !== $person->getEmailAddress()) {
                         $i++;
                         $mail->addBcc($person->getEmailAddress(), $person->getFullName());
                     }
