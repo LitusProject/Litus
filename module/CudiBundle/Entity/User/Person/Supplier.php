@@ -39,14 +39,14 @@ class Supplier extends \CommonBundle\Entity\User\Person
     private $supplier;
 
     /**
-     * @param string $username The user's username
-     * @param array $roles The user's roles
-     * @param string $firstName The user's first name
-     * @param string $lastName The user's last name
-     * @param string $email The user's e-mail address
-     * @param string $phoneNumber The user's phone number
-     * @param string $sex The users sex
-     * @param \CudiBundle\Entity\Supplier $supplier The supplier
+     * @param string                      $username    The user's username
+     * @param array                       $roles       The user's roles
+     * @param string                      $firstName   The user's first name
+     * @param string                      $lastName    The user's last name
+     * @param string                      $email       The user's e-mail address
+     * @param string                      $phoneNumber The user's phone number
+     * @param string                      $sex         The users sex
+     * @param \CudiBundle\Entity\Supplier $supplier    The supplier
      */
     public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
     {
@@ -71,6 +71,7 @@ class Supplier extends \CommonBundle\Entity\User\Person
     public function setSupplier($supplier)
     {
         $this->supplier = $supplier;
+
         return $this;
     }
 

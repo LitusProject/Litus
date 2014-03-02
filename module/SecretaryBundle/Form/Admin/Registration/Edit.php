@@ -46,10 +46,10 @@ class Edit extends Add
     protected $_metaData = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SecretaryBundle\Entity\Registration $registration The registration data
-     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData The meta data
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager                   $entityManager The EntityManager instance
+     * @param \SecretaryBundle\Entity\Registration          $registration  The registration data
+     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData      The meta data
+     * @param null|string|int                               $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Registration $registration, MetaData $metaData = null, $name = null)
     {

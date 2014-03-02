@@ -40,9 +40,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null )
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $units = $this->_getUnits();
 
-        foreach($units as $unit) {
+        foreach ($units as $unit) {
             $field = new Text('unit_' . $unit->getId());
             $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
                 ->setAttribute('autocomplete', 'off')
@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $devices = $this->_getDevices();
 
-        foreach($devices as $device) {
+        foreach ($devices as $device) {
             $field = new Text('device_' . $device->getId());
             $field->setLabel($device->getName())
                 ->setAttribute('autocomplete', 'off')
@@ -110,7 +110,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $factory = new InputFactory();
 
         $units = $this->_getUnits();
-        foreach($units as $unit) {
+        foreach ($units as $unit) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $devices = $this->_getDevices();
-        foreach($devices as $device) {
+        foreach ($devices as $device) {
             $inputFilter->add(
                 $factory->createInput(
                     array(

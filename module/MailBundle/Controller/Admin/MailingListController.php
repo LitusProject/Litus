@@ -91,7 +91,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -145,6 +145,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     public function entriesAction()
     {
         if(!($list = $this->_getList()))
+
             return new ViewModel();
 
         if (!$this->_checkAccess($list, false))
@@ -156,7 +157,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->getEntityManager(), $this->getAuthentication()->getPersonObject(), $list
         );
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
@@ -301,6 +302,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     public function adminsAction()
     {
         if(!($list = $this->_getList()))
+
             return new ViewModel();
 
         if (!$this->_checkAccess($list, true))
@@ -309,7 +311,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         $adminForm = new AdminForm($this->getEntityManager());
         $adminRoleForm = new AdminRoleForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $adminForm->setData($formData);
             $adminRoleForm->setData($formData);
@@ -566,7 +568,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->getResult();
 
         $result = array();
-        foreach($lists as $list) {
+        foreach ($lists as $list) {
             $item = (object) array();
             $item->id = $list->getId();
             $item->name = $list->getName();
@@ -585,7 +587,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('MailBundle\Entity\MailingList')
@@ -781,7 +783,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $adminRole;
     }
 
-    private function _checkAccess($list, $adminEdit) {
+    private function _checkAccess($list, $adminEdit)
+    {
         $person = $this->getAuthentication()->getPersonObject();
         if (!$list->canBeEditedBy($person, $adminEdit)) {
             $this->flashMessenger()->addMessage(

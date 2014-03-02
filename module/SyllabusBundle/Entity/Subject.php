@@ -75,8 +75,8 @@ class Subject
     private $enrollments;
 
     /**
-     * @param string $code
-     * @param string $name
+     * @param string  $code
+     * @param string  $name
      * @param integer $semester
      * @param integer $credits
      */
@@ -105,12 +105,13 @@ class Subject
     }
 
     /**
-     * @param string $code
+     * @param  string                         $code
      * @return \SyllabusBundle\Entity\Subject
      */
     public function setCode($code)
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -123,12 +124,13 @@ class Subject
     }
 
     /**
-     * @param string $name
+     * @param  string                         $name
      * @return \SyllabusBundle\Entity\Subject
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -141,12 +143,13 @@ class Subject
     }
 
     /**
-     * @param integer $semester
+     * @param  integer                        $semester
      * @return \SyllabusBundle\Entity\Subject
      */
     public function setSemester($semester)
     {
         $this->semester = $semester;
+
         return $this;
     }
 
@@ -159,12 +162,13 @@ class Subject
     }
 
     /**
-     * @param integer $credits
+     * @param  integer                        $credits
      * @return \SyllabusBundle\Entity\Subject
      */
     public function setCredits($credits)
     {
         $this->credits = $credits;
+
         return $this;
     }
 
@@ -175,10 +179,11 @@ class Subject
      */
     public function getNbEnrollment(AcademicYear $academicYear)
     {
-        foreach($this->enrollments as $enrollment) {
+        foreach ($this->enrollments as $enrollment) {
             if ($enrollment->getAcademicYear() == $academicYear)
                 return $enrollment->getNumber();
         }
+
         return 0;
     }
 
@@ -189,10 +194,11 @@ class Subject
      */
     public function getEnrollment(AcademicYear $academicYear)
     {
-        foreach($this->enrollments as $enrollment) {
+        foreach ($this->enrollments as $enrollment) {
             if ($enrollment->getAcademicYear() == $academicYear)
                 return $enrollment;
         }
+
         return null;
     }
 }

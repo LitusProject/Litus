@@ -33,9 +33,9 @@ class Object
     private $_content;
 
     /**
-     * @param string $tag The object's tag
-     * @param array $params The object's paramters
-     * @param mixed $content The object's content
+     * @param  string                                                              $tag     The object's tag
+     * @param  array                                                               $params  The object's paramters
+     * @param  mixed                                                               $content The object's content
      * @throws \CommonBundle\Component\Util\Xml\Exception\InvalidArugmentException The given content was invalid
      */
     public function __construct($tag, array $params = null, $content = null)
@@ -64,13 +64,13 @@ class Object
 
             if (is_string($content)) {
                 $this->_content .= $this->_escape($content);
-            } else if ($content instanceof Object) {
+            } elseif ($content instanceof Object) {
                 $this->_content .= $content->__toString();
-            } else if (is_array($content)) {
+            } elseif (is_array($content)) {
                 foreach ($content as $part) {
                     if (is_string($part)) {
                         $this->_content .= $this->_escape($part);
-                    } else if ($part instanceof Object) {
+                    } elseif ($part instanceof Object) {
                         $this->_content .= $part->__toString();
                     } else {
                         throw new Exception\InvalidArgumentException('The given content was invalid');
@@ -87,20 +87,21 @@ class Object
     /**
      * Creates an XML object directly from a given XML string.
      *
-     * @param string $xmlString The content of the object
+     * @param  string $xmlString The content of the object
      * @return Object
      */
     public static function fromString($xmlString)
     {
         $result = new Object('tag');
         $result->_content = $xmlString;
+
         return $result;
     }
 
     /**
      * Converts an UTF-8 value to HTML.
      *
-     * @param string $value The value that should be converted
+     * @param  string $value The value that should be converted
      * @return string
      */
     private function _escape($value)

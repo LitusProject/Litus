@@ -86,23 +86,24 @@ class Category
     }
 
     /**
-     * @param \PageBundle\Entity\Node\Page $category The page's category
+     * @param  \PageBundle\Entity\Node\Page $category The page's category
      * @return \PageBundle\Entity\Category
      */
     public function setParent(Page $parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language   $language
+     * @param  boolean                                 $allowFallback
      * @return \PageBundle\Entity\Category\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -117,8 +118,8 @@ class Category
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getName(Language $language = null, $allowFallback = true)

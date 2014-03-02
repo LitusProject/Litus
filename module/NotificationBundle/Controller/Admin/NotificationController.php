@@ -76,7 +76,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (''!= $formData['content_' . $language->getAbbrev()]) {
                         $notification->addTranslation(
                             new Translation(
@@ -148,7 +148,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $notification->getTranslation($language, false);
 
                     if (null !== $translation) {

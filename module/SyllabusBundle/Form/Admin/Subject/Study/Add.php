@@ -53,10 +53,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_academicYear = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \SyllabusBundle\Entity\Subject            $subject
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                           $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, AcademicYear $academicYear, $name = null)
     {

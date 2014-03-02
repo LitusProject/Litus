@@ -127,6 +127,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     public function membersAction()
     {
         if(!($role = $this->_getRole()))
+
             return new ViewModel();
 
         $members = $this->getEntityManager()

@@ -95,12 +95,13 @@ class Driver
     }
 
     /**
-     * @param array $years
+     * @param  array                          $years
      * @return \LogisticsBundle\Entity\Driver
      */
     public function setYears(array $years)
     {
         $this->years = new ArrayCollection($years);
+
         return $this;
     }
 
@@ -116,22 +117,24 @@ class Driver
     }
 
     /**
-     * @param string $color
+     * @param  string                         $color
      * @return \LogisticsBundle\Entity\Driver
      */
     public function setColor($color)
     {
         $this->color = $color;
+
         return $this;
     }
 
     /**
-     * @param boolean $removed
+     * @param  boolean                        $removed
      * @return \LogisticsBundle\Entity\Driver
      */
     public function setRemoved($removed)
     {
         $this->removed = $removed;
+
         return $this;
     }
 

@@ -31,8 +31,8 @@ class AddWithSubject extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Article $article
-     * @param null|string|int $name Optional name for the element
+     * @param \CudiBundle\Entity\Article  $article
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
     {

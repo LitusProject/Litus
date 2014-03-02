@@ -71,12 +71,13 @@ class Reply
     /**
      * @throws \InvalidArgumentException
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\User\Person $person The person that created the reply
-     * @param \SyllabusBundle\Entity\Subject\Comment $comment The comment of the reply
-     * @param string $text The content of the reply
+     * @param \Doctrine\ORM\EntityManager            $entityManager
+     * @param \CommonBundle\Entity\User\Person       $person        The person that created the reply
+     * @param \SyllabusBundle\Entity\Subject\Comment $comment       The comment of the reply
+     * @param string                                 $text          The content of the reply
      */
-    public function __construct(EntityManager $entityManager, Person $person, Comment $comment, $text) {
+    public function __construct(EntityManager $entityManager, Person $person, Comment $comment, $text)
+    {
         $this->person = $person;
         $this->text = $text;
         $this->date = new DateTime();

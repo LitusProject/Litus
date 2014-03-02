@@ -41,10 +41,10 @@ class FlashMessage
     private $_message = '';
 
     /**
-     * @param string $type The FlashMessage's type
-     * @param string $title The FlashMessage's title
-     * @param string $message The FlashMessage's message
-     * @param bool $fullWidth Whether or not the message should use the full width when displayed
+     * @param string $type      The FlashMessage's type
+     * @param string $title     The FlashMessage's title
+     * @param string $message   The FlashMessage's message
+     * @param bool   $fullWidth Whether or not the message should use the full width when displayed
      */
     public function __construct($type, $title, $message)
     {
@@ -56,21 +56,24 @@ class FlashMessage
     /**
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->_type;
     }
 
     /**
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->_title;
     }
 
     /**
      * @return string
      */
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->_message;
     }
 }

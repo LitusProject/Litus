@@ -37,7 +37,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             ->findAll();
 
         $formattedValues = array();
-        foreach($configValues as $entry) {
+        foreach ($configValues as $entry) {
             if (strstr($entry->getKey(), Config::$separator)) {
                 $explodedKey = explode(Config::$separator, $entry->getKey());
                 $formattedValues[$explodedKey[0]][$explodedKey[1]] = array(

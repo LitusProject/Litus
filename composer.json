@@ -4,6 +4,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LitusProject/PhpCodeStyle"
         }
     ],
     "require": {
@@ -21,6 +25,9 @@
         "twitter/bootstrap": "dev-master",
 
         "packagist/yuicompressor-bin": "dev-master"
+    },
+    "require-dev": {
+        "litus/php-cs": "dev-master"
     },
     "autoload": {
         "psr-0": {

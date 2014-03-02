@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\WebSocket;
 
-use Exception;
-
 /**
  * This is the frame send over the websocket.
  *
@@ -128,9 +126,10 @@ class Frame
             $frame = substr($frame, 2);
             $unpacked = unpack('n', $data);
             $paylen = $unpacked[1];
-        } else if ($paylen == 127) {
+        } elseif ($paylen == 127) {
             $data = substr($frame, 0, 8);
             $frame = substr($frame, 8);
+
             return;
         }
 
@@ -156,7 +155,7 @@ class Frame
                     }
                 }
             }
-        } else if ($paylen) {
+        } elseif ($paylen) {
             $data = substr($frame, 0, $paylen);
             $frame = substr($frame, $paylen);
         }

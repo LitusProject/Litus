@@ -180,19 +180,19 @@ class Shift
     private $editRoles;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $creationPerson
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param \CommonBundle\Entity\User\Person $manager
-     * @param integer $nbResponsibles
-     * @param integer $nbVolunteers
+     * @param \CommonBundle\Entity\User\Person               $creationPerson
+     * @param \CommonBundle\Entity\General\AcademicYear      $academicYear
+     * @param \DateTime                                      $startDate
+     * @param \DateTime                                      $endDate
+     * @param \CommonBundle\Entity\User\Person               $manager
+     * @param integer                                        $nbResponsibles
+     * @param integer                                        $nbVolunteers
      * @param \CommonBundle\Entity\General\Organization\Unit $unit
-     * @param \CalendarBundle\Entity\Node\Event $event
-     * @param \CommonBundle\Entity\General\Location $location
-     * @param string $name
-     * @param string $description
-     * @param array $editRoles
+     * @param \CalendarBundle\Entity\Node\Event              $event
+     * @param \CommonBundle\Entity\General\Location          $location
+     * @param string                                         $name
+     * @param string                                         $description
+     * @param array                                          $editRoles
      */
     public function __construct(
         Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, array $editRoles
@@ -248,12 +248,13 @@ class Shift
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param  \DateTime                 $startDate
      * @return \ShiftBundle\Entity\Shift
      */
     public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -266,12 +267,13 @@ class Shift
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param  \DateTime                 $endDate
      * @return \ShiftBundle\Entity\Shift
      */
     public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -284,12 +286,13 @@ class Shift
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $manager
+     * @param  \CommonBundle\Entity\User\Person $manager
      * @return \ShiftBundle\Entity\Shift
      */
     public function setManager(Person $manager)
     {
         $this->manager = $manager;
+
         return $this;
     }
 
@@ -302,12 +305,13 @@ class Shift
     }
 
     /**
-     * @param integer $nbResponsibles
+     * @param  integer                   $nbResponsibles
      * @return \ShiftBundle\Entity\Shift
      */
     public function setNbResponsibles($nbResponsibles)
     {
         $this->nbResponsibles = $nbResponsibles;
+
         return $this;
     }
 
@@ -320,8 +324,8 @@ class Shift
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \ShiftBundle\Entity\Shift\Responsible $responsible
+     * @param  \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
+     * @param  \ShiftBundle\Entity\Shift\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
     public function addResponsible(EntityManager $entityManager, Responsible $responsible)
@@ -330,16 +334,18 @@ class Shift
             throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
 
         $this->responsibles->add($responsible);
+
         return $this;
     }
 
     /**
-     * @param \ShiftBundle\Entity\Shift\Responsible $responsible
+     * @param  \ShiftBundle\Entity\Shift\Responsible $responsible
      * @return \ShiftBundle\Entity\Shift
      */
     public function removeResponsible(Responsible $responsible)
     {
         $this->responsibles->removeElement($responsible);
+
         return $this;
     }
 
@@ -355,8 +361,8 @@ class Shift
      * Checks whether or not the given person qualifies as a responsible for this
      * shift.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
+     * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
      * @return boolean
      */
     public function canHaveAsResponsible(EntityManager $entityManager, Person $person)
@@ -390,12 +396,13 @@ class Shift
     }
 
     /**
-     * @param integer $nbVolunteers
+     * @param  integer                   $nbVolunteers
      * @return \ShiftBundle\Entity\Shift
      */
     public function setNbVolunteers($nbVolunteers)
     {
         $this->nbVolunteers = $nbVolunteers;
+
         return $this;
     }
 
@@ -408,8 +415,8 @@ class Shift
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \ShiftBundle\Entity\Shift\Volunteer $volunteer
+     * @param  \Doctrine\ORM\EntityManager         $entityManager The EntityManager instance
+     * @param  \ShiftBundle\Entity\Shift\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
     public function addVolunteer(EntityManager $entityManager, Volunteer $volunteer)
@@ -418,16 +425,18 @@ class Shift
             throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
 
         $this->volunteers->add($volunteer);
+
         return $this;
     }
 
     /**
-     * @param \ShiftBundle\Entity\Shift\Volunteer $volunteer
+     * @param  \ShiftBundle\Entity\Shift\Volunteer $volunteer
      * @return \ShiftBundle\Entity\Shift
      */
     public function removeVolunteer(Volunteer $volunteer)
     {
         $this->volunteers->removeElement($volunteer);
+
         return $this;
     }
 
@@ -443,8 +452,8 @@ class Shift
      * Checks whether or not the given person qualifies as a volunteer for this
      * shift.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
+     * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
      * @return boolean
      */
     public function canHaveAsVolunteer(EntityManager $entityManager, Person $person)
@@ -492,12 +501,13 @@ class Shift
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization\Unit $unit
+     * @param  \CommonBundle\Entity\General\Organization\Unit $unit
      * @return \ShiftBundle\Entity\Shift
      */
     public function setUnit(Unit $unit)
     {
         $this->unit = $unit;
+
         return $this;
     }
 
@@ -510,12 +520,13 @@ class Shift
     }
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event $event
+     * @param  \CalendarBundle\Entity\Node\Event $event
      * @return \ShiftBundle\Entity\Shift
      */
     public function setEvent($event)
     {
         $this->event = $event;
+
         return $this;
     }
 
@@ -528,12 +539,13 @@ class Shift
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Location $location
+     * @param  \CommonBundle\Entity\General\Location $location
      * @return \ShiftBundle\Entity\Shift
      */
     public function setLocation(Location $location)
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -546,12 +558,13 @@ class Shift
     }
 
     /**
-     * @param string $name
+     * @param  string                    $name
      * @return \ShiftBundle\Entity\Shift
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -564,12 +577,13 @@ class Shift
     }
 
     /**
-     * @param string $description
+     * @param  string                    $description
      * @return \ShiftBundle\Entity\Shift
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -582,12 +596,13 @@ class Shift
     }
 
     /**
-     * @param array $editRoles
+     * @param  array                        $editRoles
      * @return \PageBundle\Entity\Node\Page
      */
     public function setEditRoles(array $editRoles)
     {
         $this->editRoles = new ArrayCollection($editRoles);
+
         return $this;
     }
 
@@ -604,8 +619,8 @@ class Shift
     /**
      * Check whether or not the given person can sign out from this shift.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
+     * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
      * @return boolean
      */
     public function canSignout(EntityManager $entityManager, Person $person)
@@ -642,7 +657,7 @@ class Shift
     /**
      * Removes the given person from this shift.
      *
-     * @param \CommonBundle\Entity\User\Person $person The person that should be removed
+     * @param  \CommonBundle\Entity\User\Person                                          $person The person that should be removed
      * @return \ShiftBundle\Entity\Shift\Responsible|\ShiftBundle\Entity\Shift\Volunteer
      */
     public function removePerson(Person $person)
@@ -669,7 +684,7 @@ class Shift
     /**
      * Indicates whether the given person can edit this shift and its subscriptions.
      *
-     * @param \CommonBundle\Entity\User\Person $person The person to check.
+     * @param  \CommonBundle\Entity\User\Person $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

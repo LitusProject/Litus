@@ -34,7 +34,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)

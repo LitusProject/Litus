@@ -117,7 +117,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'ticket_install'               => 'TicketBundle\Controller\Admin\InstallController',
         'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',

@@ -115,7 +115,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $precalculatedSellPrice = $article->isInternal() ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
         $precalculatedPurchasePrice = $article->isInternal() ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -184,7 +184,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
         $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -325,7 +325,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
@@ -378,7 +378,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
@@ -399,7 +399,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new MailForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -416,12 +416,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail_name');
 
-                foreach($formData['to'] as $status) {
+                foreach ($formData['to'] as $status) {
                     $bookings = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                         ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriod());
 
-                    foreach($bookings as $booking) {
+                    foreach ($bookings as $booking) {
                         if (isset($persons[$booking->getPerson()->getId()]))
                             continue;
 
@@ -474,7 +474,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriod());
 
         $idsCancelled = array();
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $booking->setStatus('canceled', $this->getEntityManager());
             $idsCancelled[] = $booking->getId();
         }
@@ -498,7 +498,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _search(AcademicYear $academicYear, $semester)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')

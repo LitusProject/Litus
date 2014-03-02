@@ -62,11 +62,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->getLast();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $cashRegister = new CashRegister();
@@ -75,7 +75,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
-                foreach($devices as $device) {
+                foreach ($devices as $device) {
                     $amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
                     $this->getEntityManager()->persist($amountDevice);
                 }
@@ -83,7 +83,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $units = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
-                foreach($units as $unit) {
+                foreach ($units as $unit) {
                     $amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
                     $this->getEntityManager()->persist($amountUnit);
                 }
@@ -130,11 +130,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new CommentForm($session);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $session->setComment($formData['comment']);
@@ -190,18 +190,18 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $cashRegister);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
 
-                foreach($devices as $device) {
+                foreach ($devices as $device) {
                     $cashRegister->getAmountForDevice($device)
                         ->setAmount($formData['device_'.$device->getId()]);
                 }
@@ -210,7 +210,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
 
-                foreach($units as $unit) {
+                foreach ($units as $unit) {
                     $cashRegister->getAmountForUnit($unit)
                         ->setAmount($formData['unit_'.$unit->getId()]);
                 }
@@ -254,11 +254,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new CloseForm($this->getEntityManager(), $session->getOpenRegister());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $cashRegister = new CashRegister();
@@ -267,7 +267,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $devices = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                     ->findAll();
-                foreach($devices as $device) {
+                foreach ($devices as $device) {
                     $amountDevice = new BankDeviceAmount($cashRegister, $device, $formData['device_'.$device->getId()]);
                     $this->getEntityManager()->persist($amountDevice);
                 }
@@ -275,7 +275,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 $units = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                     ->findAll();
-                foreach($units as $unit) {
+                foreach ($units as $unit) {
                     $amountUnit = new MoneyUnitAmount($cashRegister, $unit, $formData['unit_'.$unit->getId()]);
                     $this->getEntityManager()->persist($amountUnit);
                 }

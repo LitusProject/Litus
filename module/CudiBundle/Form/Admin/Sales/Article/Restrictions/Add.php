@@ -49,8 +49,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager     $entityManager
+     * @param null|string|int                 $name          Optional name for the element
      */
     public function __construct(Article $article, EntityManager $entityManager, $name = null)
     {
@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        foreach(Restriction::$POSSIBLE_TYPES as $key => $type) {
+        foreach (Restriction::$POSSIBLE_TYPES as $key => $type) {
             $field = new Hidden('type_' . $key);
             $field->setAttribute('id', 'type_' . $key)
                 ->setValue(Restriction::$VALUE_TYPES[$key]);

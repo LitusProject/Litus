@@ -76,10 +76,10 @@ class Rule
     private $academic;
 
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param int $startTime
-     * @param int $endTime
+     * @param \DateTime                                 $startDate
+     * @param \DateTime                                 $endDate
+     * @param int                                       $startTime
+     * @param int                                       $endTime
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $startTime, $endTime, Academic $academic)
@@ -108,12 +108,13 @@ class Rule
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param  \DateTime                 $startDate
      * @return \DoorBundle\Document\Rule
      */
     public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -126,12 +127,13 @@ class Rule
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param  \DateTime                 $endDate
      * @return \DoorBundle\Document\Rule
      */
     public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -144,12 +146,13 @@ class Rule
     }
 
     /**
-     * @param int $startTime
+     * @param  int                       $startTime
      * @return \DoorBundle\Document\Rule
      */
     public function setStartTime($startTime)
     {
         $this->startTime = $startTime;
+
         return $this;
     }
 
@@ -162,17 +165,18 @@ class Rule
     }
 
     /**
-     * @param int $endTime
+     * @param  int                       $endTime
      * @return \DoorBundle\Document\Rule
      */
     public function setEndTime($endTime)
     {
         $this->endTime = $endTime;
+
         return $this;
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager   $entityManager
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function getAcademic(EntityManager $entityManager)

@@ -18,8 +18,6 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
-
 /**
  * InstallController
  *

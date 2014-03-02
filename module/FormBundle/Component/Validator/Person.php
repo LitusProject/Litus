@@ -53,10 +53,10 @@ class Person extends \Zend\Validator\AbstractValidator
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options. The following additional options are available:
-     *                     'byId' can be set to indicate whether a user id or user name is validated.
-     *                     By default this is false, indicating search by user name.
-     *                     'isRequired' is false by default. True indicates that empty values are not accepted.
+     * @param mixed                       $opts          The validator's options. The following additional options are available:
+     *                                                   'byId' can be set to indicate whether a user id or user name is validated.
+     *                                                   By default this is false, indicating search by user name.
+     *                                                   'isRequired' is false by default. True indicates that empty values are not accepted.
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
@@ -70,8 +70,8 @@ class Person extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if a person exists for this value, but no driver exists for that person.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -85,6 +85,7 @@ class Person extends \Zend\Validator\AbstractValidator
 
         if (null === $person) {
             $this->error(self::NO_SUCH_USER);
+
             return false;
         }
 

@@ -35,7 +35,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
     {
         $form = new LoginForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

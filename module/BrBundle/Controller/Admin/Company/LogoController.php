@@ -99,7 +99,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     $iterator = $image->getPixelIterator();
                     $nbPixels = 0;
                     foreach ($iterator as $pixels) {
-                        foreach ($pixels as $pixel){
+                        foreach ($pixels as $pixel) {
                             if ($pixel->getColor()['a'] == 1)
                                 continue;
 
@@ -118,7 +118,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     $combined = $all->appendImages(true);
                     $combined->setImageFormat('png');
 
-                    do{
+                    do {
                         $fileName = sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                     $combined->writeImage($filePath . $fileName);

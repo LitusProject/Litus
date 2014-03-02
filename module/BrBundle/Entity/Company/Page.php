@@ -73,8 +73,8 @@ class Page
     private $years;
 
     /**
-     * @param string $company The company
-     * @param string $summary The page's summary
+     * @param string $company     The company
+     * @param string $summary     The page's summary
      * @param string $description The page's description
      */
     public function __construct($company, $summary, $description)
@@ -110,7 +110,7 @@ class Page
     }
 
     /**
-     * @param string $summary
+     * @param  string                        $summary
      * @return \BrBundle\Entity\Company\Page
      */
     public function setSummary($summary)
@@ -129,7 +129,7 @@ class Page
     }
 
     /**
-     * @param string $description
+     * @param  string                        $description
      * @return \BrBundle\Entity\Company\Page
      */
     public function setDescription($description)
@@ -147,7 +147,8 @@ class Page
         return $this->description;
     }
 
-    public function hasYear(AcademicYear $academicYear) {
+    public function hasYear(AcademicYear $academicYear)
+    {
         return $this->years->contains($academicYear);
     }
 
@@ -156,16 +157,19 @@ class Page
      *
      * @return array The years in which this page existed.
      */
-    public function getYears() {
+    public function getYears()
+    {
         return $this->years->toArray();
     }
 
     /**
-     * @param array $years Sets the years in which this page existed.
+     * @param  array                         $years Sets the years in which this page existed.
      * @return \BrBundle\Entity\Company\Page This
      */
-    public function setYears(array $years) {
+    public function setYears(array $years)
+    {
         $this->years = new ArrayCollection($years);
+
         return $this;
     }
 }

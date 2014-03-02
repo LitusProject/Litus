@@ -37,7 +37,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
 
         $sorted = array();
-        foreach($albums as $album) {
+        foreach ($albums as $album) {
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
             $year = AcademicYear::getAcademicYear($date);
@@ -123,6 +123,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -145,6 +146,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -167,6 +169,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (null === $this->getParam('name')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -176,6 +179,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         if (null === $album) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -186,6 +190,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (null === $this->getParam('name')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -195,6 +200,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         if (null === $album) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 

@@ -65,8 +65,8 @@ class AdminMap
 
     /**
      * @param \MailBundle\Entity\MailingList The list of the mapping
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic of the mapping
-     * @param boolean $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
+     * @param \CommonBundle\Entity\User\Person\Academic $academic  The academic of the mapping
+     * @param boolean                                   $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
      */
     public function __construct(MailingList $list, Academic $academic, $editAdmin)
     {
@@ -75,28 +75,32 @@ class AdminMap
         $this->editAdmin = $editAdmin;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return \MailBundle\Entity\MailingList
      */
-    public function getList() {
+    public function getList()
+    {
         return $this->list;
     }
 
     /**
      * @return \CommonBundle\Entity\User\Person\Academic
      */
-    public function getAcademic() {
+    public function getAcademic()
+    {
         return $this->academic;
     }
 
     /**
      * @return boolean
      */
-    public function canEditAdmin() {
+    public function canEditAdmin()
+    {
         return $this->editAdmin;
     }
 }

@@ -79,7 +79,7 @@ class Message
      * @param string $type
      * @param string $subject
      * @param string $body
-     * @param array $attachments
+     * @param array  $attachments
      */
     public function __construct($type, $subject, $body, array $attachments = array())
     {
@@ -117,12 +117,13 @@ class Message
     }
 
     /**
-     * @param string $type
+     * @param  string                       $type
      * @return \MailBundle\Document\Message
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -135,12 +136,13 @@ class Message
     }
 
     /**
-     * @param string $subject
+     * @param  string                       $subject
      * @return \MailBundle\Document\Message
      */
     public function setSubject($subject)
     {
         $this->subject = utf8_encode($subject);
+
         return $this;
     }
 
@@ -153,12 +155,13 @@ class Message
     }
 
     /**
-     * @param string $message
+     * @param  string                       $message
      * @return \MailBundle\Document\Message
      */
     public function setBody($body)
     {
         $this->body = utf8_encode(str_replace(chr( 194 ) . chr( 160 ), " ", $body));
+
         return $this;
     }
 
@@ -171,12 +174,13 @@ class Message
     }
 
     /**
-     * @param array $attachments
+     * @param  array                        $attachments
      * @return \MailBundle\Document\Message
      */
     public function setAttachments(array $attachments)
     {
         $this->attachments = new ArrayCollection($attachments);
+
         return $this;
     }
 }

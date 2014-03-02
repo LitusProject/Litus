@@ -59,6 +59,7 @@ class LeaseController extends LogisticsController
     public function showAction()
     {
         if(!($lease = $this->_getLease()))
+
             return new ViewModel();
 
         return new ViewModel(
@@ -71,6 +72,7 @@ class LeaseController extends LogisticsController
     public function historyAction()
     {
         if(!($item = $this->_getItem($this->getRequest()->getQuery('barcode'))))
+
             return new ViewModel();
 
         $paginator = $this->paginator()->createFromQuery(
@@ -94,14 +96,14 @@ class LeaseController extends LogisticsController
         $query = $this->getRequest()->getQuery('q');
         $purpose = $this->getRequest()->getQuery('purpose');
         $results = array();
-        if($query !== null) {
+        if ($query !== null) {
             $items = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
                 ->findAllByName($query);
             $leaseRepo = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease');
 
-            foreach($items as $item) {
+            foreach ($items as $item) {
                 if($purpose === 'lease' && count($leaseRepo->findUnreturnedByItem($item)) > 0)
                     continue;
                 if($purpose === 'return' && count($leaseRepo->findUnreturnedByItem($item)) <= 0)
@@ -129,11 +131,11 @@ class LeaseController extends LogisticsController
             ->getRepository('LogisticsBundle\Entity\Lease\Item')
             ->findOneByBarcode($barcode);
 
-        if($item) {
+        if ($item) {
             $leases = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findUnreturnedByItem($item);
-            if(count($leases) > 0) {
+            if (count($leases) > 0) {
                 $status = 'leased';
             } else {
                 $status = 'returned';
@@ -156,12 +158,12 @@ class LeaseController extends LogisticsController
     {
         $form = new AddLeaseForm($this->getEntityManager(), 'lease');
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            if(isset($formData['lease'])) {
+            if (isset($formData['lease'])) {
                 $form->setData($formData);
 
-                if($form->isValid()) {
+                if ($form->isValid()) {
                     $formData = $form->getFormData($formData);
 
                     $item = $this->getEntityManager()
@@ -207,12 +209,12 @@ class LeaseController extends LogisticsController
     {
         $form = new AddReturnForm($this->getEntityManager(), 'return');
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            if(isset($formData['return'])) {
+            if (isset($formData['return'])) {
                 $form->setData($formData);
 
-                if($form->isValid()) {
+                if ($form->isValid()) {
                     $data = $form->getFormData($formData);
 
                     $item = $this->getEntityManager()
@@ -308,7 +310,7 @@ class LeaseController extends LogisticsController
             return;
         }
 
-        if($barcode) {
+        if ($barcode) {
             $item = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
                 ->findOneByBarcode($barcode);

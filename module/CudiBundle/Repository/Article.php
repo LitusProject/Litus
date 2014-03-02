@@ -197,7 +197,7 @@ class Article extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $mapping) {
+        foreach ($resultSet as $mapping) {
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
@@ -213,7 +213,7 @@ class Article extends EntityRepository
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndActionAndPerson('article', 'add', $person);
 
-        foreach($added as $add) {
+        foreach ($added as $add) {
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
@@ -239,7 +239,7 @@ class Article extends EntityRepository
             ->getResult();
 
         $articles = array();
-        foreach($resultSet as $article) {
+        foreach ($resultSet as $article) {
             if (!$article->isInternal() || $article->isOfficial())
                 $articles[] = $article;
         }

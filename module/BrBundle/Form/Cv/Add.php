@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Academic $academic, AcademicYear $year, Language $language, $name = null)
     {
@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $studiesMap = array();
         $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $year);
-        foreach($studies as $study) {
+        foreach ($studies as $study) {
             $studiesMap[$study->getStudy()->getId()] = $study->getStudy()->getFullTitle();
         }
 
@@ -280,8 +280,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
     }
 
-    public function populateFromEntry(CvEntry $entry) {
-
+    public function populateFromEntry(CvEntry $entry)
+    {
         $formData = array(
             'prior_degree' => $entry->getPriorStudy(),
             'prior_grade' => $entry->getPriorGrade() / 100,
@@ -361,10 +361,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function isValidLanguages($formData)
     {
         $count = $formData['lang_realcount'];
+
         return $count > 0 && $count <= 5;
     }
 
-    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent) {
+    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent)
+    {
         $iterator = $parent->getIterator();
         foreach ($iterator as $element) {
             if ($element instanceof \Zend\Form\Fieldset) {

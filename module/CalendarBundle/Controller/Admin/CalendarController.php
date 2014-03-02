@@ -98,7 +98,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
@@ -165,7 +165,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $event->getTranslation($language, false);
 
                     if (null !== $translation) {
@@ -287,7 +287,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     $fileName = '/' . $event->getPoster();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }

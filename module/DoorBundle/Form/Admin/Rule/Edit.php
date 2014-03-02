@@ -38,8 +38,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \DoorBundle\Document\Rule $rule The rule we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \DoorBundle\Document\Rule             $rule            The rule we're going to modify
+     * @param null|string|int                       $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, Rule $rule, $name = null)
     {

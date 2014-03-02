@@ -36,7 +36,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     /**
      * Construct a new Exception object.
      *
-     * @param \Exception $exception The exception that should be formatted
+     * @param \Exception                                            $exception      The exception that should be formatted
      * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
      */
     public function __construct(\Exception $exception, Authentication $authentication)
@@ -71,7 +71,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     /**
      * Formats the exception's backtrace nicely.
      *
-     * @param \Exception $exception The exception which trace should be formatted
+     * @param  \Exception $exception The exception which trace should be formatted
      * @return array
      */
     private function _formatBacktrace(\Exception $exception)

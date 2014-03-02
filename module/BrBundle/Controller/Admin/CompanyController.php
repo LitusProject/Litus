@@ -101,7 +101,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 if (count($formData['cvbook']) > 0) {
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($formData['cvbook'] as $yearId) {
+                    foreach ($formData['cvbook'] as $yearId) {
                         if (strpos($yearId, 'archive-') === 0) {
                             $archiveYears[] = substr($yearId, strlen('archive-'));
                         } else {
@@ -118,7 +118,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $yearIds = $formData['years'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
+                    foreach ($yearIds as $yearId) {
                         $years[] = $repository->findOneById($yearId);
                     }
                 }
@@ -193,7 +193,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 if (count($formData['cvbook']) > 0) {
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($formData['cvbook'] as $yearId) {
+                    foreach ($formData['cvbook'] as $yearId) {
                         if (strpos($yearId, 'archive-') === 0) {
                             $archiveYears[] = substr($yearId, strlen('archive-'));
                         } else {
@@ -210,7 +210,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $yearIds = $formData['years'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach($yearIds as $yearId) {
+                    foreach ($yearIds as $yearId) {
                         $years[] = $repository->findOneById($yearId);
                     }
                 }
@@ -283,7 +283,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $upload = new FileUpload();
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
@@ -305,6 +305,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
         }
+
         return new ViewModel();
     }
 
@@ -337,7 +338,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $fileName = '/' . $company->getLogo();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
@@ -388,7 +389,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 ->getResult();
 
         $result = array();
-        foreach($companies as $company) {
+        foreach ($companies as $company) {
             $item = (object) array();
             $item->id = $company->getId();
             $item->name = $company->getName();
@@ -409,7 +410,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')

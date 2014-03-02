@@ -44,7 +44,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -58,6 +58,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         if (!$enableRegistration) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -141,7 +142,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
 
         $membershipArticles = array();
-        foreach($ids as $organization => $id) {
+        foreach ($ids as $organization => $id) {
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
@@ -394,7 +395,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
 
         $membershipArticles = array();
-        foreach($ids as $organization => $id) {
+        foreach ($ids as $organization => $id) {
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
@@ -557,7 +558,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->getConfigValue('secretary.membership_article')
                     );
 
-                    foreach($ids as $organizationId => $articleId) {
+                    foreach ($ids as $organizationId => $articleId) {
                         $membershipArticles[$organizationId] = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($articleId);
@@ -566,7 +567,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     if ($metaData->becomeMember()) {
                         $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
                     } else {
-                        foreach($membershipArticles as $membershipArticle) {
+                        foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                                 ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
@@ -727,7 +728,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
-        foreach($studies as $enrollment) {
+        foreach ($studies as $enrollment) {
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
@@ -787,7 +788,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch(\ErrorException $e) {}
+        } catch (\ErrorException $e) {}
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';

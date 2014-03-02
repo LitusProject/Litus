@@ -39,8 +39,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Round $round The quiz round to populate the form with
-     * @param null|string|int $name Optional name for the form
+     * @param \QuizBundle\Entity\Round    $round         The quiz round to populate the form with
+     * @param null|string|int             $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Round $round, $name = null)
     {

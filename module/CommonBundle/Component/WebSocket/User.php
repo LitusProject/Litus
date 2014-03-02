@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\WebSocket;
 
-use Exception;
-
 /**
  * This is the user who is connected to the websocket.
  *
@@ -71,7 +69,7 @@ class User
 
         $requestHeaders = array();
 
-        foreach(explode("\r\n", $data) as $line) {
+        foreach (explode("\r\n", $data) as $line) {
             @list($k, $v) = explode(':', $line, 2);
             $requestHeaders[$k] = ltrim($v);
         }
@@ -105,6 +103,7 @@ class User
                 return $written;
             }
         }
+
         return $written;
     }
 
@@ -148,13 +147,14 @@ class User
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return \CommonBundle\Component\WebSocket\User
      */
     public function setExtraData($key, $value)
     {
         $this->_extraData[$key] = $value;
+
         return $this;
     }
 
@@ -176,6 +176,7 @@ class User
     public function removeExtraData($key)
     {
         unset($this->_extraData[$key]);
+
         return $this;
     }
 }

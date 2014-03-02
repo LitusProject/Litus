@@ -74,7 +74,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -139,7 +139,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $study);
 
-        if($this->getRequest()->isPost() && $this->hasAccess('syllabus_admin_study', 'add')) {
+        if ($this->getRequest()->isPost() && $this->hasAccess('syllabus_admin_study', 'add')) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -225,7 +225,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         array_splice($mappings, $numResults);
 
         $result = array();
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $item = (object) array();
             $item->mappingId = $mapping->getId();
             $item->id = $mapping->getStudy()->getId();
@@ -260,7 +260,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         array_splice($subjects, $numResults);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getSubject()->getId();
             $item->name = $subject->getSubject()->getName();
@@ -307,7 +307,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function _search(AcademicYearEntity $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
@@ -317,7 +317,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function _searchSubject(Study $study, AcademicYearEntity $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')

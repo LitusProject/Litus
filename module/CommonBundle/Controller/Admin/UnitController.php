@@ -144,11 +144,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     public function membersAction()
     {
         if(!($unit = $this->_getUnit()))
+
             return new ViewModel();
 
         $form = new MemberForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

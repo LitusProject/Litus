@@ -36,7 +36,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -50,6 +50,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('organization_url');
 
         $e->setResult($result);
+
         return $result;
     }
 
@@ -100,7 +101,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch(\ErrorException $e) {}
+        } catch (\ErrorException $e) {}
 
         $shibbolethUrl .= '?source=prof';
 

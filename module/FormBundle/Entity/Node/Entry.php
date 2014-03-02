@@ -87,10 +87,10 @@ class Entry
     private $fieldEntries;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\User\Person  $person
      * @param \FormBundle\Entity\Node\GuestInfo $guestInfo
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param boolean $draft
+     * @param \FormBundle\Entity\Node\Form      $form
+     * @param boolean                           $draft
      */
     public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form, $draft = false)
     {
@@ -156,22 +156,26 @@ class Entry
     /**
      * @return \FormBundle\Entity\Node\Form
      */
-    public function getForm() {
+    public function getForm()
+    {
         return $this->form;
     }
 
     /**
      * @param \FormBundle\Entity\Entry The entry to add to this form.
      */
-    public function addFieldEntry(FieldEntry $fieldEntry) {
+    public function addFieldEntry(FieldEntry $fieldEntry)
+    {
         $this->fieldEntries->add($fieldEntry);
+
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getFieldEntries() {
+    public function getFieldEntries()
+    {
         return $this->fieldEntries->toArray();
     }
 
@@ -183,6 +187,7 @@ class Entry
     public function setDraft($draft)
     {
         $this->draft = $draft;
+
         return $this;
     }
 

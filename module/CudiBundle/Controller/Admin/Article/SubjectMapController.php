@@ -42,7 +42,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

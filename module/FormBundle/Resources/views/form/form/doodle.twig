@@ -42,7 +42,7 @@
             </div>
         {% endif %}
         {% do form.prepare() %}
-        {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
+        {{ form().openTag(form)|raw }}
             {{ formElement(form.get('csrf')) }}
             {% import 'site/partials/form.twig' as forms %}
             {% if authenticatedPerson is null %}
@@ -51,7 +51,6 @@
                 {{ forms.renderOther(form.get('email')) }}
             {% endif %}
             <table class="table table-bordered table-striped" id="doodle">
-<<<<<<< HEAD
                 <thead>
                     <tr>
                         <th>{{ translate('Date') }}</th>
@@ -98,7 +97,7 @@
                     {{ formElement(form.get('submit')) }}
                 </div>
             {% endif %}
-        {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
+        {{ form().closeTag()|raw }}
     {% endif %}
 {% endblock %}
 

@@ -105,7 +105,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($orders as $order) {
+        foreach ($orders as $order) {
             $item = (object) array();
             $item->id = $order->getId();
             $item->articleId = $order->getArticle()->getId();
@@ -168,11 +168,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new CommentForm($order);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $order->setComment($formData['comment']);
                 $this->getEntityManager()->flush();
 
@@ -216,11 +216,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $academicYear = $this->getAcademicYear();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()
@@ -273,11 +273,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new EditForm($item);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $item->setNumber($formData['number']);
@@ -441,7 +441,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     private function _search(Period $period)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')

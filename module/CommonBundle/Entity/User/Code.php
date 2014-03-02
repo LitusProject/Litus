@@ -54,7 +54,7 @@ class Code
 
     /**
      * @param string $code
-     * @param int $expirationTime
+     * @param int    $expirationTime
      */
     public function __construct($code, $expirationTime = 604800)
     {

@@ -42,7 +42,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
         $academicYear = $this->getCurrentAcademicYear();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -61,7 +61,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                     ->findBy($criteria);
 
-                foreach($people as $person) {
+                foreach ($people as $person) {
                     $registration = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademic($person->getAcademic());

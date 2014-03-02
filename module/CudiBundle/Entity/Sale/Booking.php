@@ -115,12 +115,12 @@ class Booking
     /**
      * @throws \InvalidArgumentException
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\User\Person $person The person of the booking
-     * @param \CudiBundle\Entity\Sale\Article $article The booked article
-     * @param string $status The status of the booking
-     * @param integer $number The number of articles booked
-     * @param boolean $force Force the booking
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param \CommonBundle\Entity\User\Person $person        The person of the booking
+     * @param \CudiBundle\Entity\Sale\Article  $article       The booked article
+     * @param string                           $status        The status of the booking
+     * @param integer                          $number        The number of articles booked
+     * @param boolean                          $force         Force the booking
      */
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1, $force = false)
     {
@@ -174,6 +174,7 @@ class Booking
     public function setArticle($article)
     {
         $this->article = $article;
+
         return $this;
     }
 
@@ -193,6 +194,7 @@ class Booking
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 
@@ -204,6 +206,7 @@ class Booking
     public function setBookDate(DateTime $bookDate)
     {
         $this->bookDate = $bookDate;
+
         return $this;
     }
 
@@ -231,6 +234,7 @@ class Booking
     public function setExpirationDate(DateTime $expirationDate)
     {
         $this->expirationDate = $expirationDate;
+
         return $this;
     }
 
@@ -250,6 +254,7 @@ class Booking
     public function setSaleDate(DateTime $saleDate)
     {
         $this->saleDate = $saleDate;
+
         return $this;
     }
 
@@ -302,6 +307,7 @@ class Booking
         }
 
         $this->status = $status;
+
         return $this;
     }
 

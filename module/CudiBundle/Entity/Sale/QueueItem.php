@@ -148,9 +148,9 @@ class QueueItem
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \CudiBundle\Entity\Sale\Session $session
+     * @param \CudiBundle\Entity\Sale\Session  $session
      */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
@@ -212,6 +212,7 @@ class QueueItem
     public function setPayDesk(PayDesk $payDesk)
     {
         $this->payDesk = $payDesk;
+
         return $this;
     }
 
@@ -298,6 +299,7 @@ class QueueItem
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -320,6 +322,7 @@ class QueueItem
             throw new \InvalidArgumentException('The pay method is not valid.');
 
         $this->payMethod = $payMethod;
+
         return $this;
     }
 
@@ -357,6 +360,7 @@ class QueueItem
     public function setCollectPrinted($collectPrinted = true)
     {
         $this->collectPrinted = $collectPrinted;
+
         return $this;
     }
 

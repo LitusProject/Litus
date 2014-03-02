@@ -84,9 +84,9 @@ class Code
 
     /**
      * @param string $universityIdentification
-     * @param string $code The code
-     * @param int $expirationTime
-     * @param string $info The additional information
+     * @param string $code                     The code
+     * @param int    $expirationTime
+     * @param string $info                     The additional information
      */
     public function __construct($universityIdentification, $code, $expirationTime = 300, $info, $redirect = null)
     {
@@ -148,7 +148,8 @@ class Code
      *
      * @return string
      */
-    public function hash() {
+    public function hash()
+    {
         return sha1($this->code);
     }
 
@@ -159,7 +160,7 @@ class Code
      * We don't delete expired codes here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param string $hash The hash that was received
+     * @param  string $hash The hash that was received
      * @return bool
      */
     public function validate($hash)

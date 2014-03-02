@@ -33,7 +33,7 @@ abstract class Fieldset extends \Zend\Form\Fieldset
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable $messages
+     * @param  array|Traversable                          $messages
      * @return Element|ElementInterface|FieldsetInterface
      * @throws Exception\InvalidArgumentException
      */
@@ -42,7 +42,7 @@ abstract class Fieldset extends \Zend\Form\Fieldset
         parent::setMessages($messages);
 
         $fieldsets = $this->getFieldsets();
-        foreach($fieldsets as $fieldset) {
+        foreach ($fieldsets as $fieldset) {
             $fieldset->setMessages($messages);
         }
 
@@ -52,7 +52,7 @@ abstract class Fieldset extends \Zend\Form\Fieldset
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable $data
+     * @param  array|Traversable                  $data
      * @return void
      * @throws Exception\InvalidArgumentException
      */
@@ -61,7 +61,7 @@ abstract class Fieldset extends \Zend\Form\Fieldset
         parent::populateValues($data);
 
         $fieldsets = $this->getFieldsets();
-        foreach($fieldsets as $fieldset) {
+        foreach ($fieldsets as $fieldset) {
             if ($fieldset instanceof Collection)
                 continue;
 
@@ -75,7 +75,7 @@ abstract class Fieldset extends \Zend\Form\Fieldset
      * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
      * name clashes if the same fieldset is used multiple times
      *
-     * @param  Form $form
+     * @param  Form       $form
      * @return mixed|void
      */
     public function prepareElement(FormInterface $form)

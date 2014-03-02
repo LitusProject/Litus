@@ -32,7 +32,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -40,6 +40,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
         $result = parent::onDispatch($e);
 
         $e->setResult($result);
+
         return $result;
     }
 

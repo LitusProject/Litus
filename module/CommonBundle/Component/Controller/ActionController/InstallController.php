@@ -75,7 +75,7 @@ abstract class InstallController extends AdminController
         $key = strtolower($module);
         if (array_key_exists($key, $configuration)) {
             $configuration = $configuration[$key];
-        } else if (array_key_exists(str_replace('bundle', '', $key), $configuration)) {
+        } elseif (array_key_exists(str_replace('bundle', '', $key), $configuration)) {
             $key = str_replace('bundle', '', $key);
             $configuration = $configuration[$key];
         } else {
@@ -119,7 +119,7 @@ abstract class InstallController extends AdminController
     {
         $config = self::_loadConfig($config);
 
-        foreach($config as $item) {
+        foreach ($config as $item) {
             try {
                 $entry = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -133,7 +133,7 @@ abstract class InstallController extends AdminController
                 } else {
                     $entry->setDescription($item['description']);
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $entry = new Config($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
 
@@ -153,14 +153,14 @@ abstract class InstallController extends AdminController
     {
         $roles = self::_loadConfig($roles);
 
-        foreach($roles as $roleName => $config) {
+        foreach ($roles as $roleName => $config) {
             $role = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Role')
                 ->findOneByName($roleName);
 
             $parents = array();
             if (isset($config['parents'])) {
-                foreach($config['parents'] as $name) {
+                foreach ($config['parents'] as $name) {
                     $parents[] = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\Acl\Role')
                         ->findOneByName($name);
@@ -175,12 +175,12 @@ abstract class InstallController extends AdminController
                 );
 
                 $this->getEntityManager()->persist($role);
-            } elseif(!empty($config['parents'])) {
+            } elseif (!empty($config['parents'])) {
                 $role->setParents($parents);
             }
 
             foreach ($config['actions'] as $resource => $actions) {
-                foreach($actions as $action) {
+                foreach ($actions as $action) {
                     $action = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\Acl\Action')
                         ->findOneBy(array('name' => $action, 'resource' => $resource));

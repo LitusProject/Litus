@@ -90,10 +90,10 @@ class Session
     private $shibboleth;
 
     /**
-     * @param int|\DateTime $expirationTime
+     * @param int|\DateTime                    $expirationTime
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $userAgent
-     * @param string $ip
+     * @param string                           $userAgent
+     * @param string                           $ip
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -205,9 +205,9 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $userAgent The user agent that should be checked
-     * @param string $ip The IP currently used to connect to the site
+     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param  string                      $userAgent     The user agent that should be checked
+     * @param  string                      $ip            The IP currently used to connect to the site
      * @return bool|string
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)

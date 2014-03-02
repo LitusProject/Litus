@@ -128,7 +128,7 @@
                         <i>Please hit the link below to download the front page of this article!</i>
                     </p>
                     <p>
-                        <a href="#" class="downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
+                        <a href="{{ url('cudi_admin_article_file', {"action": "front", "id": article.getId()}) }}">&rarr; Download Front Page</a>
                     </p>
                 </div>
             </div>
@@ -187,8 +187,8 @@
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="sell" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="sell">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -206,8 +206,8 @@
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="cancelBookings" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="cancelBookings"Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -216,10 +216,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-
             $('.assignAll').click(openAssignAllModal);
             $('.deleteBookings').click(openDeleteBookingsModal);
 

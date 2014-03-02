@@ -20,15 +20,11 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     MailBundle\Form\Admin\Volunteer\Mail as MailForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
-    Zend\Validator\File\Count as CountValidator,
-    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
-
 
 /**
  * VolunteerController
@@ -37,14 +33,13 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class VolunteerController extends \MailBundle\Component\Controller\AdminController
 {
-
     public function sendAction()
     {
         $currentYear = $this->getCurrentAcademicYear();
 
         $form = new MailForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -73,16 +68,18 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     ->getConfigValue('shift.ranking_criteria')
                 );
 
-                if($formData['minimum_rank'] == "empty")
+                if ('none' == $formData['minimum_rank']) {
                     $volunteers = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
                         ->findAllByCountMinimum($currentYear, 1);
-                else
+                } else {
                     $volunteers = $this->getEntityManager()
                         ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                        ->findAllByCountMinimum($currentYear, $rankingCriteria[$formData['minimum_rank']]['limit']);
-
-                die(var_dump(count($volunteers)));
+                        ->findAllByCountMinimum(
+                            $currentYear,
+                            $rankingCriteria[$formData['minimum_rank']]['limit']
+                        );
+                }
 
                 foreach ($volunteers as $volunteer) {
                     $person = $this->getEntityManager()

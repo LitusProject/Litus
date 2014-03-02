@@ -58,7 +58,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             'stapled' => 'Stapled',
         );
 
-        foreach($bindings as $code => $name) {
+        foreach ($bindings as $code => $name) {
             $binding = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                 ->findOneByCode($code);
@@ -74,7 +74,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $colors = array('White');
 
-        foreach($colors as $item) {
+        foreach ($colors as $item) {
             $color = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Color')
                 ->findOneByName($item);
@@ -137,7 +137,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             $config = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.delivery_address');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $address = new Address(
                 'Kasteelpark Arenberg',
                 41,
@@ -156,7 +156,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             $config = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.billing_address');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $address = new Address(
                 'Studentenwijk Arenberg',
                 '6',
@@ -176,7 +176,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $units = array(500, 200, 100, 50, 20, 10, 5, 2, 1, 0.50, 0.20, 0.10, 0.05, 0.02, 0.01);
 
-        foreach($units as $item) {
+        foreach ($units as $item) {
             $unit = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                 ->findOneByUnit($item);
@@ -192,7 +192,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $bankdevices = array('Device 1', 'Device 2');
 
-        foreach($bankdevices as $item) {
+        foreach ($bankdevices as $item) {
             $bankdevice = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                 ->findOneByName($item);
@@ -212,7 +212,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
             'paydesk_3' => '3',
         );
 
-        foreach($paydesks as $code => $name) {
+        foreach ($paydesks as $code => $name) {
             $paydesk = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\PayDesk')
                 ->findOneByCode($code);

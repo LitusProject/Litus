@@ -43,9 +43,9 @@ class Analytics
     private $_idSite = 0;
 
     /**
-     * @param string $url The API's URL
-     * @param string $tokenAuth The authentication token that should be used
-     * @param integer $idSite The ID of the site that should be queried
+     * @param string  $url       The API's URL
+     * @param string  $tokenAuth The authentication token that should be used
+     * @param integer $idSite    The ID of the site that should be queried
      */
     public function __construct($url, $tokenAuth, $idSite)
     {
@@ -57,8 +57,8 @@ class Analytics
     /**
      * Returns the number of unique visitors in the given period.
      *
-     * @param string $date The period over which we want to query
-     * @param string $period The resolution of the date argument
+     * @param  string        $date   The period over which we want to query
+     * @param  string        $period The resolution of the date argument
      * @return array|integer
      */
     public function getUniqueVisitors($date = 'today', $period = 'day')
@@ -81,7 +81,7 @@ class Analytics
     /**
      * Returns the live counter data.
      *
-     * @param integer $lastMinutes The amount of time we should go back, in minutes
+     * @param  integer $lastMinutes The amount of time we should go back, in minutes
      * @return array
      */
     public function getLiveCounters($lastMinutes = 30)
@@ -107,7 +107,7 @@ class Analytics
     /**
      * Retrieves the data at the given URI.
      *
-     * @param array $parameters The request's parameters
+     * @param  array $parameters The request's parameters
      * @return array
      */
     private function _getData(array $parameters)
@@ -132,9 +132,8 @@ class Analytics
                 )
             );
 
-
             return (array) json_decode($client->send()->getBody());
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }

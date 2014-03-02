@@ -35,8 +35,8 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $barcodePrefix
-     * @param null|string|int $name Optional name for the element
+     * @param string                      $barcodePrefix
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {
@@ -76,4 +76,3 @@ class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
         return $inputFilter;
     }
 }
-

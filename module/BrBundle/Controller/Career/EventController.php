@@ -71,7 +71,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findAllFutureBySearch(new DateTime(), $this->getParam('string'));
 
         $result = array();
-        foreach($events as $event) {
+        foreach ($events as $event) {
             $item = (object) array();
             $item->id = $event->getId();
             $item->poster = $event->getEvent()->getPoster();

@@ -75,10 +75,10 @@ class UnitMap
     private $coordinator;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $person The person
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\General\Organization\Unit $unit The unit
-     * @param boolean $coordinator Whether or not the academic is the coordinator
+     * @param \CommonBundle\Entity\User\Person\Academic      $person       The person
+     * @param \CommonBundle\Entity\General\AcademicYear      $academicYear The academic year
+     * @param \CommonBundle\Entity\General\Organization\Unit $unit         The unit
+     * @param boolean                                        $coordinator  Whether or not the academic is the coordinator
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Unit $unit, $coordinator)
     {

@@ -43,7 +43,7 @@ class Academic extends \SecretaryBundle\Entity\Promotion
      * Creates a new promotion with the given academic.
      *
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year for this promotion.
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add.
+     * @param \CommonBundle\Entity\User\Person\Academic $academic     The academic to add.
      */
     public function __construct(AcademicYear $academicYear, AcademicPerson $academic)
     {
@@ -55,7 +55,8 @@ class Academic extends \SecretaryBundle\Entity\Promotion
     /**
      * @return \CommonBundle\Entity\User\Person\Academic
      */
-    public function getAcademic() {
+    public function getAcademic()
+    {
         return $this->academic;
     }
 

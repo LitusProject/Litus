@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 pg_query($connection, 'ALTER TABLE publications.editions ADD file_name VARCHAR(255)');
 
@@ -15,7 +31,7 @@ $pdfDir = 'public/_publications/pdf';
 if (!file_exists($pdfDir))
     mkdir($pdfDir, 0775, true);
 
-while($edition = pg_fetch_object($result)) {
+while ($edition = pg_fetch_object($result)) {
     $startAcademicYear = new DateTime($edition->start);
     $academicYears[$startAcademicYear->format('y')] = $startAcademicYear->format('y');
     $oldFileName = 'public/_publications/' . $startAcademicYear->format('y') . ($startAcademicYear->format('y') + 1) .
@@ -23,7 +39,7 @@ while($edition = pg_fetch_object($result)) {
     $oldFileName = str_replace('/irreeel', '/irreel', $oldFileName);
 
     $fileName = '';
-    do{
+    do {
         $fileName = sha1(uniqid()) . '.pdf';
     } while (file_exists($pdfDir . '/' . $fileName));
     $newFileName = $pdfDir . '/' . $fileName;
@@ -43,14 +59,14 @@ $htmlDir = 'public/_publications/html';
 if (!file_exists($htmlDir))
     mkdir($htmlDir, 0775, true);
 
-while($edition = pg_fetch_object($result)) {
+while ($edition = pg_fetch_object($result)) {
     $startAcademicYear = new DateTime($edition->start);
     $academicYears[$startAcademicYear->format('y')] = $startAcademicYear->format('y');
     $oldFileName = 'public/_publications/' . $startAcademicYear->format('y') . ($startAcademicYear->format('y') + 1) .
         '/html/' . createSlug($edition->pubtitle) . '/' . createSlug($edition->title);
 
     $fileName = '';
-    do{
+    do {
         $fileName = sha1(uniqid());
     } while (file_exists($htmlDir . '/' . $fileName));
     $newFileName = $htmlDir . '/' . $fileName;
@@ -66,7 +82,7 @@ while($edition = pg_fetch_object($result)) {
             INNER JOIN general.academic_years AS A ON E.academic_year = A.id
             WHERE E.publication = ' . $edition->pubid . ' AND lower(E.title) = \'' . $matches[2] . '\'');
 
-        while($row = pg_fetch_object($pdfResult)) {
+        while ($row = pg_fetch_object($pdfResult)) {
             if (strpos($row->start, '20' . substr($matches[1], 0, 2)) !== false) {
                 $html = preg_replace('/_publications\/[0-9]{4}\/pdf\/het-bakske\/.*s[0-9]+w[0-9]+\.pdf/', str_replace('public/', '', $pdfDir) . '/' . $row->file_name, $html);
             }
@@ -76,15 +92,16 @@ while($edition = pg_fetch_object($result)) {
     rename($oldFileName, $newFileName);
 }
 
-foreach($academicYears as $year) {
+foreach ($academicYears as $year) {
     rrmdir('public/_publications/' . $year . ($year + 1));
 }
 
 addConfigKey($connection, 'publication.public_pdf_directory', '/_publications/pdf/', 'The public pdf direction of publication');
 addConfigKey($connection, 'publication.public_html_directory', '/_publications/html/', 'The public html direction of publication');
 
-if(!function_exists("createSlug")) {
-    function createSlug($string, $delimiter = '-') {
+if (!function_exists("createSlug")) {
+    function createSlug($string, $delimiter = '-')
+    {
         $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
@@ -94,10 +111,10 @@ if(!function_exists("createSlug")) {
     }
 }
 
-if(!function_exists("rrmdir")) {
+if (!function_exists("rrmdir")) {
     function rrmdir($dir)
     {
-        foreach(glob($dir . '/*') as $file) {
+        foreach (glob($dir . '/*') as $file) {
             if(is_dir($file))
                 rrmdir($file);
             else

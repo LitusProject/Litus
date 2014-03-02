@@ -91,21 +91,7 @@
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'checkbox' %}
-                <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <div class="checkbox">
-                            {{ formLabel().openTag(element) }}
-                                {{ formElement(element) }}
-                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                            {{ formLabel().closeTag() }}
-                        </div>
-                        {% if element.getMessages()|length > 0 %}
-                            <div class="help-block">
-                                {{ formElementErrors(element) }}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+                {{ _self.renderCheckbox(element) }}
             {% elseif element.getAttribute('type') == 'hidden' %}
                 {{ formElement(element) }}
             {% else %}
@@ -139,6 +125,26 @@
         {% endif %}
     {% endautoescape %}
 {% endmacro %}
+
+{% macro renderCheckbox(element) %}
+    {% autoescape false %}
+        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %} {% if element.isRequired() %}required{% endif %}">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    {{ formLabel().openTag(element) }}
+                        {{ formElement(element) }}
+                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                    {{ formLabel().closeTag() }}
+                </div>
+                {% if element.getMessages()|length > 0 %}
+                    <div class="help-block">
+                        {{ formElementErrors(element) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endautoescape %}
+{% endmacro%}
 
 {% macro renderOther(element) %}
     {% autoescape false %}

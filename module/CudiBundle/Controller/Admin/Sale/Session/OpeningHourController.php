@@ -70,7 +70,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -88,7 +88,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['comment_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $openingHour,
@@ -135,7 +135,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
         $form = new EditForm($openingHour, $this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -149,7 +149,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $openingHour->getTranslation($language, false);
 
                     if (null !== $translation) {

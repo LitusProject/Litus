@@ -78,7 +78,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         );
 
         $organizationsList = array();
-        foreach($organizations as $organization) {
+        foreach ($organizations as $organization) {
             $organizationsList[$organization->getId()] = array(
                 'entity' => $organization,
                 'data' => array(
@@ -92,7 +92,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             );
         }
 
-        foreach($sessions as $session) {
+        foreach ($sessions as $session) {
             $session->setEntityManager($this->getEntityManager());
 
             $data['totalActualRevenue'] += $session->getActualRevenue();
@@ -128,7 +128,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $startDate = DateTime::createFromFormat('d/m/Y', $formData['start_date']);
@@ -170,7 +170,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                         ->getNumberBetween($startDate, $endDate),
                 );
 
-                foreach($organizations as $organization) {
+                foreach ($organizations as $organization) {
                     $organizationsList[$organization->getId()] = array(
                         'entity' => $organization,
                         'data' => array(
@@ -184,7 +184,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     );
                 }
 
-                foreach($sessions as $session) {
+                foreach ($sessions as $session) {
                     $session->setEntityManager($this->getEntityManager());
 
                     $data['totalActualRevenue'] += $session->getActualRevenue();

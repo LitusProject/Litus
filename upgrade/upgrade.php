@@ -52,7 +52,7 @@ $options = getopt("f:");
 // Run
 include 'util.php';
 
-foreach($files as $file) {
+foreach ($files as $file) {
     if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file))
         continue;
 

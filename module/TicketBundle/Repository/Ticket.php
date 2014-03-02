@@ -121,7 +121,7 @@ class Ticket extends EntityRepository
             ->getResult();
 
         $tickets = array();
-        foreach($resultSet as $ticket) {
+        foreach ($resultSet as $ticket) {
             $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
         }
 

@@ -22,7 +22,6 @@ use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\SaleItem\Prof")
  */
@@ -34,9 +33,9 @@ class Prof extends \CudiBundle\Entity\Sale\SaleItem
     private $person;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param integer $number
-     * @param string $person
+     * @param \CudiBundle\Entity\Sale\Article  $article
+     * @param integer                          $number
+     * @param string                           $person
      * @param \Doctrine\ORM\EntityManager|null $entityManager
      */
     public function __construct(Article $article, $number, $person, EntityManager $entityManager = null)

@@ -91,11 +91,11 @@ class Logo
 
     /**
      * @param \BrBundle\Entity\Company $company The event's company
-     * @param string $type The type to the logo
-     * @param string $path The path to the logo
-     * @param string $url The url to the website
-     * @param integer $width The width of the logo
-     * @param integer $height The height of the logo
+     * @param string                   $type    The type to the logo
+     * @param string                   $path    The path to the logo
+     * @param string                   $url     The url to the website
+     * @param integer                  $width   The width of the logo
+     * @param integer                  $height  The height of the logo
      */
     public function __construct(Company $company, $type, $path, $url, $width, $height)
     {

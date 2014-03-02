@@ -163,15 +163,15 @@ abstract class Article
     /**
      * @throws \InvalidArgumentException
      *
-     * @param string $title The title of the article
-     * @param string $authors The authors of the article
-     * @param string $publishers The publishers of the article
-     * @param integer $yearPublished The year the article was published
-     * @param integer $isbn The isbn of the article
-     * @param string|null $url The url of the article
-     * @param string $type The article type
-     * @param boolean $downloadable The flag whether the article is downloadable
-     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
+     * @param string      $title              The title of the article
+     * @param string      $authors            The authors of the article
+     * @param string      $publishers         The publishers of the article
+     * @param integer     $yearPublished      The year the article was published
+     * @param integer     $isbn               The isbn of the article
+     * @param string|null $url                The url of the article
+     * @param string      $type               The article type
+     * @param boolean     $downloadable       The flag whether the article is downloadable
+     * @param boolean     $sameAsPreviousYear The flag whether the article is the same as previous year
      */
     public function __construct($title, $authors, $publishers, $yearPublished, $isbn = null, $url = null, $type, $downloadable, $sameAsPreviousYear)
     {
@@ -228,6 +228,7 @@ abstract class Article
             throw new \InvalidArgumentException('The article title is not valid.');
 
         $this->title = $title;
+
         return $this;
     }
 
@@ -247,6 +248,7 @@ abstract class Article
     public function setAuthors($authors)
     {
         $this->authors = $authors;
+
         return $this;
     }
 
@@ -266,6 +268,7 @@ abstract class Article
     public function setPublishers($publishers)
     {
         $this->publishers = $publishers;
+
         return $this;
     }
 
@@ -287,6 +290,7 @@ abstract class Article
         if (empty($yearPublished))
             $yearPublished = null;
         $this->yearPublished = $yearPublished;
+
         return $this;
     }
 
@@ -306,6 +310,7 @@ abstract class Article
     public function setTimestamp(DateTime $timestamp)
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 
@@ -325,6 +330,7 @@ abstract class Article
     public function setVersionNumber($versionNumber)
     {
         $this->versionNumber = $versionNumber;
+
         return $this;
     }
 
@@ -367,6 +373,7 @@ abstract class Article
     public function setURL($url)
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -409,6 +416,7 @@ abstract class Article
     public function setIsProf($isProf)
     {
         $this->isProf = $isProf;
+
         return $this;
     }
 
@@ -423,6 +431,7 @@ abstract class Article
             $this->setIsProf(true);
 
         $this->isDraft = $isDraft;
+
         return $this;
     }
 
@@ -450,6 +459,7 @@ abstract class Article
     public function setIsDownloadable($downloadable)
     {
         $this->downloadable = $downloadable;
+
         return $this;
     }
 
@@ -469,6 +479,7 @@ abstract class Article
     public function setIsSameAsPreviousYear($sameAsPreviousYear)
     {
         $this->sameAsPreviousYear = $sameAsPreviousYear;
+
         return $this;
     }
 
@@ -490,6 +501,7 @@ abstract class Article
         if (!self::isValidArticleType($type))
             throw new \InvalidArgumentException('The article type is not valid.');
         $this->type = $type;
+
         return $this;
     }
 
@@ -514,6 +526,7 @@ abstract class Article
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 

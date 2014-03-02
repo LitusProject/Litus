@@ -92,7 +92,7 @@ if (isset($opts->p) && isset($opts->t)) {
             ),
         )
     );
-    switch($opts->t) {
+    switch ($opts->t) {
         case 'signin':
             $data->type = 1;
             break;

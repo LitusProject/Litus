@@ -78,7 +78,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($orders as $order) {
+        foreach ($orders as $order) {
             $item = (object) array();
             $item->id = $order->getId();
             $item->dateOrdered = $order->getOrder()->getDateOrdered()->format('d/m/Y H:i');
@@ -99,7 +99,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _individualSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
@@ -157,7 +157,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($records as $order) {
+        foreach ($records as $order) {
             $item = (object) array();
             $item->id = $order->getId();
             $item->dateOrdered = $order->getDateOrdered()->format('d/m/Y H:i');
@@ -177,7 +177,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _ordersSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'supplier':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
@@ -238,7 +238,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($records as $order) {
+        foreach ($records as $order) {
             $item = (object) array();
             $item->id = $order->getId();
             $item->article = $order->getArticle()->getMainArticle()->getTitle();
@@ -257,7 +257,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _orderSearch(Order $order, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
@@ -280,7 +280,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -348,7 +348,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($records as $order) {
+        foreach ($records as $order) {
             $item = (object) array();
             $item->id = $order->getId();
             $item->timestamp = $order->getOrder()->getDateOrdered()->format('d/m/Y H:i');
@@ -368,7 +368,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
