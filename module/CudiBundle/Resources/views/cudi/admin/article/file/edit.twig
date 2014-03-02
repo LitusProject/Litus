@@ -16,20 +16,10 @@
         <h1>File</h1>
         <p>Name: <b>{{ file.getName() }}</b></p>
         {% if hasAccess('cudi_admin_article_file', 'download') %}
-            <button class="downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": file.getId()}) }}">Download</button>
+            <a class="download" href="{{ url('cudi_admin_article_file', {"action": "download", "id": file.getId()}) }}">Download</a>
         {% endif %}
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-        });
-    </script>
 {% endblock %}

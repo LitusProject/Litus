@@ -63,7 +63,7 @@
                         <td style="text-align: center;">&times;</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_article_file', 'front') %}
-                                <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}">Download</a>
+                                <a href="{{ url('cudi_admin_article_file', {"action": "front", "id": saleArticle.getId()}) }}" class="view">Download</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -76,7 +76,7 @@
                         <td style="text-align: center;">{% if mapping.isPrintable() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_article_file', 'download') %}
-                                <a href="#" class="downloadFile view" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": mapping.getId()}) }}">Download</a>
+                                <a href="{{ url('cudi_admin_article_file', {"action": "download", "id": mapping.getId()}) }}" class="view">Download</a>
                             {% endif %}
                             {% if hasAccess('cudi_admin_article_file', 'edit') %}
                                 <a href="{{ url('cudi_admin_article_file', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
@@ -150,10 +150,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-
             $('#uploadFile').formUploadProgress({
                 onProgress: function (data) {
                     $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
@@ -186,7 +182,7 @@
 
                         {% if hasAccess('cudi_admin_article_file', 'download') %}
                             actions.append(
-                                $('<a>', {'href': '#', 'class': 'downloadFile view'}).html('Download').downloadFile('{{ url('cudi_admin_article_file', {"action": "download"}) }}' + data.info.mappingId),
+                                $('<a>', {'href': '{{ url('cudi_admin_article_file', {"action": "download"}) }}' + data.info.mappingId, 'class': 'view'}).html('Download'),
                                 ' '
                             );
                         {% endif %}
@@ -198,7 +194,7 @@
                             );
                         {% endif %}
 
-                        {% if hasAccess('cudi_prof_file', 'download') %}
+                        {% if hasAccess('cudi_admin_article_file', 'delete') %}
                             actions.append(
                                 $('<a>', {'href': '#', 'class': 'delete', 'data-id': data.info.mappingId, 'data-name': data.info.name, 'data-description': data.info.description}).html('Delete').click(openDeleteModal)
                             );

@@ -240,7 +240,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
+            'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
             'Content-Type' => 'application/octet-stream',
             'Content-Length' => filesize($filePath . $file->getPath()),
         ));
