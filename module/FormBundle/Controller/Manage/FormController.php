@@ -275,7 +275,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 if (!$result) {
                     return new ViewModel(
                         array(
-                            'specification' => $entry->getForm(),
+                            'specification' => $formEntry->getForm(),
                             'form'          => $form,
                         )
                     );
