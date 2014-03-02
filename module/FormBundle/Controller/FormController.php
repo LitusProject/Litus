@@ -566,7 +566,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if (!$result) {
                     return new ViewModel(
                         array(
-                            'specification' => $formSpecification,
+                            'specification' => $entry->getForm(),
                             'form'          => $form,
                         )
                     );

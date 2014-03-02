@@ -84,7 +84,7 @@
         </div>
         <div class="col-sm-3" style="text-align: left;">
             {% if hasAccess('common_account', 'passbook') %}
-                <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
+                <a href="{{ url('common_account', {"action": "passbook"}) }}"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
             {% endif %}
         </div>
     </div>
@@ -150,8 +150,6 @@
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
-
-            $('#passbook').downloadFile('{{ url('common_account', {"action": "passbook"}) }}');
 
             $('#editProfile').click(function () {
                 var image = $('#modalProfileImage .image:first');

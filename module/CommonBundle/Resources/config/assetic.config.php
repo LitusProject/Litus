@@ -104,7 +104,6 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_modal',
             '@secretary_css',
-            '@common_download_file',
             '@common_remote_typeahead',
             '@common_holder_js',
             '@jcrop_js',
@@ -226,12 +225,6 @@ return array(
         'common_socket' => array(
             'assets'  => array(
                 'common/js/socket.js',
-            ),
-            'filters' => array('js'),
-        ),
-        'common_download_file' => array(
-            'assets'  => array(
-                'common/js/downloadFile.js',
             ),
             'filters' => array('js'),
         ),

@@ -36,7 +36,7 @@
                         <td>{{ edition.getDate().format('d/m/Y') }}</td>
                         <td class="actions">
                             {% if hasAccess('publication_admin_edition_pdf', 'view') %}
-                                <a href="#" class="downloadFile view" data-file="{{ url('publication_admin_edition_pdf', {"action": "view", "id": edition.getId()}) }}">View</a>
+                                <a href="{{ url('publication_admin_edition_pdf', {"action": "view", "id": edition.getId()}) }}" class="view">View</a>
                             {% endif %}
                             {% if hasAccess('publication_admin_edition_pdf', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ edition.getId() }}" data-title="{{ edition.getTitle() }}" data-publication-title="{{ publication.getTitle() }}">Delete</a>
@@ -80,10 +80,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openModal);
-
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
         });
 
         function openModal(e) {

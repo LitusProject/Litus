@@ -106,8 +106,8 @@
                             <i>Please hit the link below to print the order for the supplier!</i>
                         </p>
                         <p>
-                            <a href="#" id="printOrderAlpha" target="_blank">&rarr; Print Order (Alphabetic)</a>
-                            <a href="#" id="printOrderBarcode" target="_blank">&rarr; Print Order (On Barcode)</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "alpha"}) }}">&rarr; Print Order (Alphabetic)</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "barcode"}) }}">&rarr; Print Order (On Barcode)</a>
                         </p>
                     </div>
                 </div>
@@ -221,14 +221,12 @@
                         return;
                     }
                     modal.find('.errors').addClass('hide');
-                    $(this).unbind('click').downloadFile('{{ url('cudi_admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
+                    window.location = '{{ url('cudi_admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date;
 
                     modal.modal('hide');
                 });
                 modal.modal();
             });
-            $('#printOrderAlpha').downloadFile('{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "alpha"}) }}');
-            $('#printOrderBarcode').downloadFile('{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "barcode"}) }}');
 
             $('.item .delete').click(openModalRemove);
             $('#cancelOrder').click(openModalCancel);

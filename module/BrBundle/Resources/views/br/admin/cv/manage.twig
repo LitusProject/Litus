@@ -56,7 +56,7 @@
                         <i>Please hit the link below to export the CVs!</i>
                     </p>
                     <p>
-                        <a href="#" class="exportCvs">&rarr; Export CVs</a>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Export CVs</a>
                     </p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                         <i>Please hit the link below to export the academics!</i>
                     </p>
                     <p>
-                        <a href="#" class="exportAcademics">&rarr; Export Academics</a>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Export Academics</a>
                     </p>
                 </div>
             </div>
@@ -100,12 +100,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.exportCvs').each(function () {
-                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}');
-            });
-            $('.exportAcademics').each(function () {
-                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}');
-            });
             $('.item .delete').click(openModal);
         });
 
