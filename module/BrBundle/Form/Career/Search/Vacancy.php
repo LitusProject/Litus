@@ -35,8 +35,8 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The search posibilities
      */
     private static $possibleSearchTypes = array(
-        'alphabeticalByCompany' => 'Alphabetical by Company',
-        'alphabeticalByVacancy' => 'Alphabetical by Vacancy',
+        'company' => 'Company',
+        'vacancy' => 'Vacancy',
         'mostRecent' => 'Most Recent',
     );
 
@@ -48,7 +48,6 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $this->setAttribute('class', 'form-inline');
-        $this->setAttribute('method', 'get');
 
         $field = new Select('searchType');
         $field->setAttribute('options', $this->_createSearchTypeArray());
