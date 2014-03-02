@@ -28,11 +28,12 @@ return array(
     'Contact Information' => 'Contact Information',
     'Sector' => 'Sector',
     'Location' => 'Location',
-    'Arrange By' => 'Arrange By',
+    'Arrange by' => 'Arrange by',
     'Alphabetical by Company' => 'Alphabetical by Company',
     'Alphabetical by Vacancy' => 'Alphabetical by Vacancy',
     'Alphabetical by internship' => 'Alphabetical by internship',
     'Most Recent' => 'Most Recent',
+    'All' => 'All',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.',
     'So just look around and you might just find what you are looking for!' => 'So just look around and you might just find what you are looking for!',
