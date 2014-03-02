@@ -124,11 +124,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $booking = new Booking(
@@ -565,7 +565,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $item = (object) array();
             $item->id = $booking->getId();
             $item->person = $booking->getPerson()->getFullName();
@@ -660,7 +660,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         if ($log->getType() == 'assigments') {
             $ids = $log->getAssigments();
-            foreach($ids as $id) {
+            foreach ($ids as $id) {
                 $booking = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneById($id);
@@ -668,7 +668,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             }
         } elseif ($log->getType() == 'cancellations') {
             $ids = $log->getCancellations();
-            foreach($ids as $id) {
+            foreach ($ids as $id) {
                 $booking = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneById($id);
@@ -688,7 +688,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _search(Period $activePeriod, $type)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'person':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')

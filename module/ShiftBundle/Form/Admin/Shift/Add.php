@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -147,6 +147,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         for ($i = 1 ; $i <= 20 ; $i++) {
             $duplications[$i] = $i;
         }
+
         return $duplications;
     }
 

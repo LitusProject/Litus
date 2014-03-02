@@ -34,7 +34,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByStudyAndAcademicYearQuery(StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 
@@ -56,7 +56,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByNameAndStudyAndAcademicYearQuery($name, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 
@@ -81,7 +81,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByCodeAndStudyAndAcademicYearQuery($code, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 

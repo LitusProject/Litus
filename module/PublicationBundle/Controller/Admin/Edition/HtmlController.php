@@ -108,7 +108,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getConfigValue('publication.public_pdf_directory');
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
@@ -337,7 +337,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     private function _rrmdir($dir)
     {
-        foreach(glob($dir . '/*') as $file) {
+        foreach (glob($dir . '/*') as $file) {
             if(is_dir($file))
                 $this->_rrmdir($file);
             else

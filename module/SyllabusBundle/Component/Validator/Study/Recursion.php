@@ -53,7 +53,7 @@ class Recursion extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Study $study, $opts = null)
     {
@@ -68,8 +68,8 @@ class Recursion extends \Zend\Validator\AbstractValidator
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -85,12 +85,14 @@ class Recursion extends \Zend\Validator\AbstractValidator
 
         if ($parent->getId() == $this->_study->getId()) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
-        foreach($this->_study->getAllChildren() as $child) {
+        foreach ($this->_study->getAllChildren() as $child) {
             if ($child->getId() == $parent->getId()) {
                 $this->error(self::NOT_VALID);
+
                 return false;
             }
         }

@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $cvYears = $this->_getArchiveYears();
-        foreach($years as $key => $year) {
+        foreach ($years as $key => $year) {
             $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
             if (isset($cvYears['archive-' . $shortCode]))
                 continue;

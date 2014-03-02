@@ -29,7 +29,7 @@ use BrBundle\Entity\Contract,
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
+class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \Litus\Entity\Br\Contract
@@ -38,7 +38,7 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Contract $contract The contract for which we want to generate a PDF
+     * @param \BrBundle\Entity\Contract   $contract      The contract for which we want to generate a PDF
      */
     public function __construct(EntityManager $entityManager, Contract $contract)
     {
@@ -78,7 +78,7 @@ class ContractGenerator extends \CommonBundle\Component\Document\Generator\Pdf
         // Generate the xml
 
         $entry_s = array();
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $entry_s[] = $entry->getSection()->getContent();
         }
 

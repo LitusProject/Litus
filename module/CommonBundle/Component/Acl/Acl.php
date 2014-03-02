@@ -70,7 +70,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
-     * @param \CommonBundle\Entity\Acl\Resource $resource The resource that should be added
+     * @param  \CommonBundle\Entity\Acl\Resource $resource The resource that should be added
      * @return void
      */
     private function _addResource(Resource $resource)
@@ -98,7 +98,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Add a role retrieved from the database.
      *
-     * @param \CommonBundle\Entity\Acl\Role $role The role that should be added
+     * @param  \CommonBundle\Entity\Acl\Role $role The role that should be added
      * @return void
      */
     private function _addRole(Role $role)
@@ -107,7 +107,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
             return;
 
         $parents = array();
-        foreach($role->getParents() as $parentRole) {
+        foreach ($role->getParents() as $parentRole) {
             if (!$this->hasRole($parentRole->getName()))
                 $this->_addRole($parentRole);
 

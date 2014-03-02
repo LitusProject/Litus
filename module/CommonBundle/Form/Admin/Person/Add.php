@@ -41,7 +41,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -52,7 +52,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('username');
         $field->setLabel('Username')
             ->setRequired()
-            ->setAttribute('data-help', 'The unique user name.');
+            ->setAttribute('data-help', 'A unique identifier for the user (for students, this is automatically set to their university identification).');
         $this->add($field);
 
         $field = new Text('first_name');
@@ -91,7 +91,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Groups')
             ->setAttribute('multiple', true)
             ->setAttribute('options', $this->createRolesArray())
-            ->setAttribute('data-help', 'The roles of this user, gives this user access to parts of the website.');
+            ->setAttribute('data-help', 'The roles given to a user control which resources he can access.');
         $this->add($field);
     }
 

@@ -45,7 +45,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->findAllByArticle($article, true);
 
         $fileMappings = array();
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'remove');
@@ -127,7 +127,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $originalName = $upload->getFileName(null, false);
 
             $fileName = '';
-            do{
+            do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 

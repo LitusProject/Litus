@@ -18,8 +18,6 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Language;
-
 /**
  * InstallController
  *

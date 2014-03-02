@@ -37,7 +37,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
     {
         $form = new SendForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -84,7 +84,6 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                     foreach($recipients as $recipient)
                         $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
                 }
-
 
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);

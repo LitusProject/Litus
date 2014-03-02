@@ -148,7 +148,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $formData = $dateSearchForm->getFormData($formData);
 
                     $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
-                    if(!$start_date) {
+                    if (!$start_date) {
                         $this->flashMessenger()->addMessage(
                             new FlashMessage(
                                 FlashMessage::ERROR,
@@ -438,7 +438,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllActiveByPerson($token->getPerson($this->getEntityManager()));
 
-            foreach($shifts as $shift) {
+            foreach ($shifts as $shift) {
                 $result .= 'BEGIN:VEVENT' . PHP_EOL;
                 $result .= 'SUMMARY:' . $shift->getName() . PHP_EOL;
                 $result .= 'DTSTART:' . $shift->getStartDate()->format('Ymd\THis') . PHP_EOL;

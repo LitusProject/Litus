@@ -132,7 +132,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     ->getConfigValue('banner.image_path');
 
                 $fileName = '';
-                do{
+                do {
                     $fileName = '/' . sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
 
@@ -215,7 +215,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                         ->getConfigValue('banner.image_path');
 
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
 

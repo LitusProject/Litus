@@ -11,7 +11,7 @@
         <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
         <p>Supplier: <b>{{ article.getSupplier().getName() }}</b></p>
         <br style="clear:both" />
-        
+
         <h1>Orders</h1>
         <table class="half_width">
             {% set ordered = period.getNbOrdered(article) %}

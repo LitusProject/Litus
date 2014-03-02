@@ -56,7 +56,7 @@ class News extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime $endDate
+     * @param \DateTime                        $endDate
      */
     public function __construct(Person $person, DateTime $endDate = null)
     {
@@ -76,33 +76,35 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param  \DateTime                    $endDate
      * @return \NewsBundle\Entity\Node\News
      */
     public function setEndDate(DateTime $endDate = null)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
     /**
-     * @param \NewsBundle\Entity\Node\Translation $translation
+     * @param  \NewsBundle\Entity\Node\Translation $translation
      * @return \NewsBundle\Entity\Node\News
      */
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return \NewsBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -117,8 +119,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -132,8 +134,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -147,8 +149,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getSummary($length = 200, Language $language = null, $allowFallback = true)
@@ -175,6 +177,7 @@ class News extends \CommonBundle\Entity\Node
     public function updateName()
     {
         $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s') . '_' . Url::createSlug($this->getTranslation()->getTitle());
+
         return $this;
     }
 }

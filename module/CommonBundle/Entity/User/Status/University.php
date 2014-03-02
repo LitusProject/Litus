@@ -78,9 +78,9 @@ class University
     private $academicYear;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $person The person that should be given the status
-     * @param string $status The status that should be given to the person
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
+     * @param  \CommonBundle\Entity\User\Person\Academic $person       The person that should be given the status
+     * @param  string                                    $status       The status that should be given to the person
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
@@ -114,8 +114,8 @@ class University
      * Returns whether the given user can have a university status.
      *
      * @static
-     * @param \CommonBundle\Entity\User\Person\Academic $person the user to check
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
+     * @param  \CommonBundle\Entity\User\Person\Academic $person       the user to check
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @return bool
      */
     public static function isValidPerson(Academic $person, AcademicYear $academicYear)

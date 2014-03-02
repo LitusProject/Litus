@@ -157,15 +157,15 @@ class Article
     private $_entityManager;
 
     /**
-     * @param \CudiBundle\Entity\Article $mainArticle The main article of this sale article
-     * @param integer $barcode  The barcode of the article
-     * @param integer $purchasePrice The purchase price of the articl
-     * @param integer $sellPrice The sell price of the article
-     * @param boolean $bookable Flag whether the article is bookable
-     * @param boolean $unbookable Flag whether the article is unbookable
-     * @param boolean $sellable Flag whether the article is sellable
-     * @param \CudiBundle\Entity\Supplier $supplier The supplier of the article
-     * @param boolean $canExpire Flag whether the aritcle can expire
+     * @param \CudiBundle\Entity\Article  $mainArticle   The main article of this sale article
+     * @param integer                     $barcode       The barcode of the article
+     * @param integer                     $purchasePrice The purchase price of the articl
+     * @param integer                     $sellPrice     The sell price of the article
+     * @param boolean                     $bookable      Flag whether the article is bookable
+     * @param boolean                     $unbookable    Flag whether the article is unbookable
+     * @param boolean                     $sellable      Flag whether the article is sellable
+     * @param \CudiBundle\Entity\Supplier $supplier      The supplier of the article
+     * @param boolean                     $canExpire     Flag whether the aritcle can expire
      */
     public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, $sellable, Supplier $supplier, $canExpire)
     {
@@ -211,6 +211,7 @@ class Article
     public function setTimestamp(DateTime $timestamp)
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 
@@ -230,6 +231,7 @@ class Article
     public function setMainArticle($mainArticle)
     {
         $this->mainArticle = $mainArticle;
+
         return $this;
     }
 
@@ -238,7 +240,7 @@ class Article
      */
     public function getBarcode()
     {
-        foreach($this->barcodes as $barcode) {
+        foreach ($this->barcodes as $barcode) {
             if ($barcode->isMain())
                 return $barcode->getBarcode();
         }
@@ -253,7 +255,7 @@ class Article
     {
         $main = null;
         $found = null;
-        foreach($this->barcodes as $object) {
+        foreach ($this->barcodes as $object) {
             if ($object->isMain())
                 $main = $object;
             if ($object->getBarcode() == $barcode)
@@ -289,6 +291,7 @@ class Article
     public function setPurchasePrice($purchasePrice)
     {
         $this->purchasePrice = round(str_replace(',', '.', $purchasePrice) * 100);
+
         return $this;
     }
 
@@ -308,6 +311,7 @@ class Article
     public function setSellPrice($sellPrice)
     {
         $this->sellPrice = round(str_replace(',', '.', $sellPrice) * 100);
+
         return $this;
     }
 
@@ -327,6 +331,7 @@ class Article
     public function setIsBookable($bookable)
     {
         $this->bookable = $bookable;
+
         return $this;
     }
 
@@ -346,6 +351,7 @@ class Article
     public function setIsUnbookable($unbookable)
     {
         $this->unbookable = $unbookable;
+
         return $this;
     }
 
@@ -365,6 +371,7 @@ class Article
     public function setIsSellable($sellable)
     {
         $this->sellable = $sellable;
+
         return $this;
     }
 
@@ -384,6 +391,7 @@ class Article
     public function setSupplier(Supplier $supplier)
     {
         $this->supplier = $supplier;
+
         return $this;
     }
 
@@ -403,6 +411,7 @@ class Article
     public function setCanExpire($canExpire)
     {
         $this->canExpire = $canExpire;
+
         return $this;
     }
 
@@ -422,6 +431,7 @@ class Article
     public function setVersionNumber($versionNumber)
     {
         $this->versionNumber = $versionNumber;
+
         return $this;
     }
 
@@ -441,6 +451,7 @@ class Article
     public function setStockValue($stockValue)
     {
         $this->stockValue = $stockValue < 0 ? 0 : $stockValue;
+
         return $this;
     }
 
@@ -452,6 +463,7 @@ class Article
     public function addStockValue($stockValue)
     {
         $this->setStockValue($this->stockValue + $stockValue);
+
         return $this;
     }
 
@@ -471,6 +483,7 @@ class Article
     public function setIsHistory($isHistory)
     {
         $this->isHistory = $isHistory;
+
         return $this;
     }
 
@@ -490,6 +503,7 @@ class Article
     public function addBarcode(Barcode $barcode)
     {
         $this->barcodes->add($barcode);
+
         return $this;
     }
 
@@ -511,16 +525,17 @@ class Article
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      *
      * @return boolean
      */
     public function canBook(Person $person, EntityManager $entityManager)
     {
-        foreach($this->restrictions as $restriction) {
+        foreach ($this->restrictions as $restriction) {
             if (!$restriction->canBook($person, $entityManager))
                 return false;
         }
+
         return true;
     }
 
@@ -554,12 +569,13 @@ class Article
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -570,8 +586,8 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getNumberSoldToMembers(AcademicYear $academicYear, Organization $organization = null)
@@ -582,8 +598,8 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getNumberReturned(AcademicYear $academicYear, Organization $organization = null)
@@ -594,7 +610,7 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNumberDelivered(AcademicYear $academicYear)
@@ -605,8 +621,8 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)

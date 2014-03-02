@@ -65,7 +65,7 @@ class Option
     /**
      * @param \FormBundle\Entity\Field\OptionSelector field
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $options
+     * @param string                                $options
      */
     public function __construct(OptionSelector $field, Language $language, $options)
     {
@@ -95,22 +95,26 @@ class Option
      *
      * @return \FormBundle\Entity\Field\Translation\Option
      */
-    public function setOptions($options) {
+    public function setOptions($options)
+    {
         $this->options = $options;
+
         return $this;
     }
 
     /**
      * @return string The options in a comma-seperated string.
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         return $this->options;
     }
 
     /**
      * @return array The options in an array.
      */
-    public function getOptionsArray() {
+    public function getOptionsArray()
+    {
         return explode(',', $this->getOptions());
     }
 }

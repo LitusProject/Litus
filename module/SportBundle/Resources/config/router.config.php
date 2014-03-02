@@ -104,7 +104,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'sport_install'    => 'SportBundle\Controller\Admin\InstallController',
         'sport_admin_run'  => 'SportBundle\Controller\Admin\RunController',

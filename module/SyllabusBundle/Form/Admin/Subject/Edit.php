@@ -38,9 +38,9 @@ class Edit extends Add
     private $_subject = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $subject The subject we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
+     * @param \SyllabusBundle\Entity\Subject $subject       The subject we're going to modify
+     * @param null|string|int                $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
     {

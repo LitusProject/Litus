@@ -71,11 +71,11 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new AddCommentForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $comment = new Comment(
@@ -130,12 +130,12 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddReplyForm();
         $markAsReadForm = new MarkAsReadForm($comment);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if (isset($formData['mark_as_read'])) {
                 $markAsReadForm->setData($formData);
 
-                if($markAsReadForm->isValid()) {
+                if ($markAsReadForm->isValid()) {
                     $formData = $markAsReadForm->getFormData($formData);
 
                     if ($comment->isRead())
@@ -166,7 +166,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             } else {
                 $form->setData($formData);
 
-                if($form->isValid()) {
+                if ($form->isValid()) {
                     $formData = $form->getFormData($formData);
 
                     $reply = new Reply(

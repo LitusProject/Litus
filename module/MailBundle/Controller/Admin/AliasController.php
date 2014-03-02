@@ -48,7 +48,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -127,7 +127,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             ->getResult();
 
         $result = array();
-        foreach($aliases as $alias) {
+        foreach ($aliases as $alias) {
             $item = (object) array();
             $item->id = $alias->getId();
             $item->alias = $alias->getName();
@@ -148,7 +148,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'alias':
                 return $this->getEntityManager()
                     ->getRepository('MailBundle\Entity\Alias')

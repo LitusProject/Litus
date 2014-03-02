@@ -58,7 +58,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new MailForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -77,7 +77,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findAllByForm($formSpecification);
 
-                foreach($entries as $entry) {
+                foreach ($entries as $entry) {
                     $mail = new Message();
                     $mail->setBody($formData['message'])
                         ->setFrom($mailAddress, $mailName)

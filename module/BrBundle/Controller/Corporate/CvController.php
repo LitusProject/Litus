@@ -293,7 +293,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             ->getConfigValue('br.file_path') . '/cv/';
 
         $archiveYearKey = '';
-        foreach($archive as $key => $year) {
+        foreach ($archive as $key => $year) {
             if ($year['full_year'] == $this->getParam('academicyear')) {
                 $archiveYear = $year;
                 $archiveYearKey = $key;

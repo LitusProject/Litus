@@ -61,7 +61,7 @@ class Barcode
     /**
      * @param \CudiBundle\Entity\Sale\Article The article of the barcode
      * @param integer $barcode The barcode of the article
-     * @param boolean $main Flag whether this is the main barcode
+     * @param boolean $main    Flag whether this is the main barcode
      */
     public function __construct(Article $article, $barcode, $main = false)
     {
@@ -94,6 +94,7 @@ class Barcode
     public function setBarcode($barcode)
     {
         $this->barcode = $barcode;
+
         return $this;
     }
 
@@ -121,6 +122,7 @@ class Barcode
     public function setIsMain($main)
     {
         $this->main = $main;
+
         return $this;
     }
 }

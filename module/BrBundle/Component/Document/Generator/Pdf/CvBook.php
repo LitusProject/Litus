@@ -50,8 +50,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     private $_translator;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $year The academic year for which to generate the book.
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $year          The academic year for which to generate the book.
      */
     public function __construct(EntityManager $entityManager, AcademicYear $year, TmpFile $file, Translator $translator)
     {
@@ -419,6 +419,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
         if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox())
             $result['bus'] = $cv->getAddress()->getMailbox();
+
         return $result;
     }
 
@@ -436,6 +437,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 null
             );
         }
+
         return $languages;
     }
 }

@@ -90,8 +90,8 @@ class Quiz
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $name
-     * @param array $editRoles
+     * @param string                           $name
+     * @param array                            $editRoles
      */
     public function __construct(Person $person, $name, $editRoles)
     {
@@ -128,12 +128,13 @@ class Quiz
     }
 
     /**
-     * @param string $name
+     * @param  string                  $name
      * @return \QuizBundle\Entity\Quiz
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -146,12 +147,13 @@ class Quiz
     }
 
     /**
-     * @param array $editRoles
+     * @param  array                   $editRoles
      * @return \QuizBundle\Entity\Quiz
      */
     public function setEditRoles(array $editRoles)
     {
         $this->editRoles = new ArrayCollection($editRoles);
+
         return $this;
     }
 
@@ -166,7 +168,7 @@ class Quiz
     /**
      * Checks whether or not the given user can edit the quiz.
      *
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

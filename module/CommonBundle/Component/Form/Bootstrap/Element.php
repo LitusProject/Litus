@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Admin;
+namespace CommonBundle\Component\Form\Bootstrap;
 
 /**
  * Extending Zend's form element component, so that our forms look the way we want
@@ -31,7 +31,7 @@ interface Element
      *
      * Also sets the HTML5 'required' attribute.
      *
-     * @param boolean $flag
+     * @param  boolean $flag
      * @return void
      */
     public function setRequired($flag = true);

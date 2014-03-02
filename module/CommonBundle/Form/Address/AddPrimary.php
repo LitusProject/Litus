@@ -54,11 +54,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private $_required;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $prefix
-     * @param null|string|int $name Optional name for the element
-     * @param boolean $required Whether or not the address is required
+     * @param \Zend\Cache\Storage\StorageInterface $cache         The cache instance
+     * @param \Doctrine\ORM\EntityManager          $entityManager The EntityManager instance
+     * @param string                               $prefix
+     * @param null|string|int                      $name          Optional name for the element
+     * @param boolean                              $required      Whether or not the address is required
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)
     {
@@ -94,7 +94,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             ->setRequired($this->_required);
         $this->add($field);
 
-        foreach($streets as $id => $collection) {
+        foreach ($streets as $id => $collection) {
             $field = new Select($prefix . 'address_street_' . $id);
             $field->setLabel('Street')
                 ->setAttribute('class', $field->getAttribute('class') . ' ' . $prefix . 'address_street')
@@ -125,11 +125,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
 
         $optionsCity = array('' => '');
         $optionsStreet = array();
-        foreach($cities as $city) {
+        foreach ($cities as $city) {
             $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
             $optionsStreet[$city->getId()] = array(0 => '');
 
-            foreach($city->getStreets() as $street) {
+            foreach ($city->getStreets() as $street) {
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
             }
         }

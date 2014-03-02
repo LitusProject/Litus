@@ -71,9 +71,9 @@ class Credential
     /**
      * Constructs a new credential
      *
-     * @param string $algorithm The algorithm that should be used to create the hash
-     * @param string $credential The credential that will be hashed and stored
-     * @param int $integer The number of hash iterations
+     * @param  string                    $algorithm  The algorithm that should be used to create the hash
+     * @param  string                    $credential The credential that will be hashed and stored
+     * @param  int                       $integer    The number of hash iterations
      * @throws \InvalidArgumentException
      */
     public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
@@ -91,7 +91,7 @@ class Credential
     /**
      * Hashes a credential.
      *
-     * @param string $credential The credential to hash
+     * @param  string $credential The credential to hash
      * @return string the hashed credential
      */
     private function _hash($credential)
@@ -106,7 +106,7 @@ class Credential
     /**
      * Checks whether or not the given credential is valid.
      *
-     * @param string $credential The credential that should be checked
+     * @param  string $credential The credential that should be checked
      * @return bool
      */
     public function validateCredential($credential)

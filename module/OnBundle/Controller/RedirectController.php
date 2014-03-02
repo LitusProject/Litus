@@ -32,6 +32,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     {
         if (!($slug = $this->_getSlug())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 

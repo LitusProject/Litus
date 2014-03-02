@@ -102,12 +102,12 @@ class CashRegister
     /**
      * Get the amount object for a unit.
      *
-     * @param \CommonBundle\Entity\General\Bank\MoneyUnit $unit The unit for which we want to get the amount
+     * @param  \CommonBundle\Entity\General\Bank\MoneyUnit        $unit The unit for which we want to get the amount
      * @return \CommonBundle\Entity\General\Bank\MoneyUnit\Amount
      */
     public function getAmountForUnit(MoneyUnit $unit)
     {
-        foreach($this->moneyUnitAmounts as $amount) {
+        foreach ($this->moneyUnitAmounts as $amount) {
             if ($amount->getUnit() == $unit)
                 return $amount;
         }
@@ -116,12 +116,12 @@ class CashRegister
     /**
      * Get amount object for a bank device.
      *
-     * @param \CommonBundle\Entity\General\Bank\BankDevice $device The device for which we want to get the amount
+     * @param  \CommonBundle\Entity\General\Bank\BankDevice        $device The device for which we want to get the amount
      * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount
      */
     public function getAmountForDevice(BankDevice $device)
     {
-        foreach($this->bankDeviceAmounts as $amount) {
+        foreach ($this->bankDeviceAmounts as $amount) {
             if ($amount->getDevice() == $device)
                 return $amount;
         }

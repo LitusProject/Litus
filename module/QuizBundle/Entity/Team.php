@@ -69,8 +69,8 @@ class Team
 
     /**
      * @param \QuizBundle\Entity\Quiz $quiz
-     * @param string $name
-     * @param integer $order
+     * @param string                  $name
+     * @param integer                 $order
      */
     public function __construct(Quiz $quiz, $name, $number)
     {
@@ -105,12 +105,13 @@ class Team
     }
 
     /**
-     * @param string $name
+     * @param  string                  $name
      * @return \QuizBundle\Entity\Team
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -123,12 +124,13 @@ class Team
     }
 
     /**
-     * @param int $number
+     * @param  int                     $number
      * @return \QuizBundle\Entity\Team
      */
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 }

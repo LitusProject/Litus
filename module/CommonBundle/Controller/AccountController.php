@@ -79,7 +79,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
 
         $mappings = array();
-        foreach($studies as $enrollment) {
+        foreach ($studies as $enrollment) {
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
@@ -176,7 +176,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
 
         $membershipArticles = array();
-        foreach($ids as $organization => $id) {
+        foreach ($ids as $organization => $id) {
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
@@ -341,7 +341,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->getConfigValue('secretary.membership_article')
                     );
 
-                    foreach($ids as $organizationId => $articleId) {
+                    foreach ($ids as $organizationId => $articleId) {
                         $membershipArticles[$organizationId] = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($articleId);
@@ -350,7 +350,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     if ($metaData->becomeMember()) {
                         $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
                     } else {
-                        foreach($membershipArticles as $membershipArticle) {
+                        foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                                 ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
@@ -847,7 +847,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $fileName = $academic->getPhotoPath();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = sha1(uniqid());
                     } while (file_exists($filePath . '/' . $fileName));
                 }
@@ -939,7 +939,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $user;
     }
 
-    private function _doRedirect() {
+    private function _doRedirect()
+    {
         if (null === $this->getParam('return')) {
             $this->redirect()->toRoute(
                 'common_account'

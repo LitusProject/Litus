@@ -116,7 +116,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $mail = new Mail($formData['reminder_mail_from'], $formData['reminder_mail_bcc']);
                         $this->getEntityManager()->persist($mail);
 
-                        foreach($languages as $language) {
+                        foreach ($languages as $language) {
                             $translation = new MailTranslation(
                                 $mail,
                                 $language,
@@ -145,7 +145,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if ($formData['mail']) {
                     $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
                     $this->getEntityManager()->persist($mail);
-                    foreach($languages as $language) {
+                    foreach ($languages as $language) {
                         $translation = new MailTranslation(
                             $mail,
                             $language,
@@ -157,7 +157,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $form->setMail($mail);
                 }
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
                         $translation = new FormTranslation(
                             $form,
@@ -282,7 +282,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                                 ->setBcc($formData['reminder_mail_bcc']);
                         }
 
-                        foreach($languages as $language) {
+                        foreach ($languages as $language) {
                             $translation = $mail->getTranslation($language, false);
 
                             if (null === $translation) {
@@ -315,7 +315,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                             ->setBcc($formData['mail_bcc']);
                     }
 
-                    foreach($languages as $language) {
+                    foreach ($languages as $language) {
                         $translation = $mail->getTranslation($language, false);
 
                         if (null === $translation) {
@@ -336,7 +336,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     $formSpecification->setMail(null);
                 }
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
                         $translation = $formSpecification->getTranslation($language, false);
 

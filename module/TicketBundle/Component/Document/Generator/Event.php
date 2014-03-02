@@ -38,9 +38,9 @@ class Event extends \CommonBundle\Component\Document\Generator\Pdf
     private $_event;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \TicketBundle\Entity\Event $event
-     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \TicketBundle\Entity\Event                $event
+     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, EventEntity $event, TmpFile $file)
     {
@@ -77,7 +77,7 @@ class Event extends \CommonBundle\Component\Document\Generator\Pdf
 
         $list = array();
 
-        foreach($tickets as $ticket) {
+        foreach ($tickets as $ticket) {
             $object = new Object(
                 'ticket',
                 null,

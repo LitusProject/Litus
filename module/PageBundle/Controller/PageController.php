@@ -35,6 +35,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($page = $this->_getPage())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -58,6 +59,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         if ($this->getParam('name') == '' || !file_exists($filePath)) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 

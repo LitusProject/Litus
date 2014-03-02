@@ -61,9 +61,9 @@ class StudentEnrollment
     private $number;
 
     /**
-     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \SyllabusBundle\Entity\Subject            $subject
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
-     * @param integer $academicYear The number of students of the enrollment
+     * @param integer                                   $academicYear The number of students of the enrollment
      */
     public function __construct(Subject $subject, AcademicYear $academicYear, $number)
     {
@@ -104,6 +104,7 @@ class StudentEnrollment
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 

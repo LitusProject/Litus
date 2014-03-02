@@ -62,7 +62,7 @@ class Key
     /**
      * @param string $host
      * @param string $code
-     * @param int $expirationTime
+     * @param int    $expirationTime
      */
     public function __construct($host, $code, $expirationTime = 946080000)
     {
@@ -99,12 +99,13 @@ class Key
     }
 
     /**
-     * @param string $host
+     * @param  string                $host
      * @return \ApiBundle\Entity\Key
      */
     public function setHost($host)
     {
         $this->host = $host;
+
         return $this;
     }
 
@@ -129,7 +130,7 @@ class Key
     /**
      * Checks whether or not this key is valid.
      *
-     * @param string $ip The remote IP
+     * @param  string  $ip The remote IP
      * @return boolean
      */
     public function validate($ip)
@@ -140,7 +141,6 @@ class Key
 
         //if (gethostbyname($this->host) != $ip)
         //    return false;
-
         return true;
     }
 }

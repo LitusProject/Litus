@@ -56,11 +56,13 @@ class Named extends \MailBundle\Entity\MailingList
     }
 
     /**
-     * @param string $name The name
+     * @param  string                         $name The name
      * @return \MailBundle\Entity\MailingList
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = strtolower($name);
+
         return $this;
     }
 }

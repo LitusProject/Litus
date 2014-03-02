@@ -31,7 +31,7 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @param \CudiBundle\Entity\Sale\Session $session
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                 $name    Optional name for the element
      */
     public function __construct(Session $session, $name = null)
     {

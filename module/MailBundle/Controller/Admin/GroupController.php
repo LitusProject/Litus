@@ -60,7 +60,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
         $form = new MailForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -98,7 +98,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 $emailValidator = new EmailAddressValidator();
 
                 $addresses = array();
-                foreach($people as $person) {
+                foreach ($people as $person) {
                     if (null === $person->getPerson()->getEmail() || !$emailValidator->isValid($person->getPerson()->getEmail()))
                         continue;
 
@@ -106,7 +106,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 }
 
                 $i = 0;
-                foreach($addresses as $address) {
+                foreach ($addresses as $address) {
                     $mail->addBcc($address);
                     $i++;
 

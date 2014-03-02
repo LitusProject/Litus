@@ -54,8 +54,8 @@ class Acco
     private $hasAccoCard;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person associated with this entity
-     * @param boolean $hasAccoCard Flag whether this person has an acco card
+     * @param \CommonBundle\Entity\User\Person $person      The person associated with this entity
+     * @param boolean                          $hasAccoCard Flag whether this person has an acco card
      */
     public function __construct(Person $person, $hasAccoCard)
     {
@@ -95,6 +95,7 @@ class Acco
     public function setHasAccoCard($hasAccoCard)
     {
         $this->hasAccoCard = $hasAccoCard;
+
         return $this;
     }
 }

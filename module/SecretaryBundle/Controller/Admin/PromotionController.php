@@ -87,7 +87,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         array_splice($promotions, $numResults);
 
         $result = array();
-        foreach($promotions as $promotion) {
+        foreach ($promotions as $promotion) {
             $item = (object) array();
             $item->id = $promotion->getId();
             $item->fullName = $promotion->getFullName();
@@ -114,7 +114,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -252,7 +252,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         $academics = array();
 
-        foreach($studyMappings as $mapping) {
+        foreach ($studyMappings as $mapping) {
             if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2)
                 continue;
 
@@ -290,7 +290,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     private function _search(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Promotion')

@@ -29,7 +29,7 @@ class Assignments extends \CudiBundle\Entity\Log
 {
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param array $assignments
+     * @param array                            $assignments
      */
     public function __construct(Person $person, $assignments)
     {

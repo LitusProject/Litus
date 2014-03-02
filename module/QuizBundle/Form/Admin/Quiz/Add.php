@@ -39,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the form
+     * @param null|string|int             $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -51,7 +51,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Name')
             ->setRequired();
         $this->add($field);
-
 
         $field = new Select('edit_roles');
         $field->setLabel('Edit Roles')
@@ -108,7 +107,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setData($data);
     }
-
 
     private function _createEditRolesArray()
     {

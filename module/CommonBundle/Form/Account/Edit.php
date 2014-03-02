@@ -39,14 +39,14 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
     protected $_entityManager = null;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData The organization metadata
-     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $identification The university identification
-     * @param boolean $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int $name Optional name for the element
+     * @param \CommonBundle\Entity\User\Person\Academic     $academic                The academic
+     * @param \CommonBundle\Entity\General\AcademicYear     $academicYear            The academic year
+     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData                The organization metadata
+     * @param \Zend\Cache\Storage\StorageInterface          $cache                   The cache instance
+     * @param \Doctrine\ORM\EntityManager                   $entityManager           The EntityManager instance
+     * @param string                                        $identification          The university identification
+     * @param boolean                                       $enableOtherOrganization Enable the "other organization" option
+     * @param null|string|int                               $name                    Optional name for the element
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $enableOtherOrganization = false, $name = null)
     {

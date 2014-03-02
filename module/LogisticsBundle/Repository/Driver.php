@@ -48,8 +48,8 @@ class Driver extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByYearQuery(AcademicYear $year) {
-
+    public function findAllByYearQuery(AcademicYear $year)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('LogisticsBundle\Entity\Driver', 'd')

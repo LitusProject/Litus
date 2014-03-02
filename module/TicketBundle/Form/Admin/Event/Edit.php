@@ -38,9 +38,9 @@ class Edit extends Add
     private $_event;
 
     /**
-     * @param \TicketBundle\Entity\Event $event
+     * @param \TicketBundle\Entity\Event  $event
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(Event $event, EntityManager $entityManager, $name = null)
     {

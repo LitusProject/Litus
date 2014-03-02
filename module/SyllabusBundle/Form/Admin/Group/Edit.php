@@ -38,9 +38,9 @@ class Edit extends Add
     private $_group = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Group $group The group we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
+     * @param \SyllabusBundle\Entity\Group $group         The group we're going to modify
+     * @param null|string|int              $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Group $group, $name = null)
     {

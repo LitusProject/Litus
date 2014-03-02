@@ -31,7 +31,7 @@ class Edit extends Add
 {
     /**
      * @param \BrBundle\Entity\Company\Job $job
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int              $name Optional name for the element
      */
     public function __construct(Job $job, $name = null)
     {

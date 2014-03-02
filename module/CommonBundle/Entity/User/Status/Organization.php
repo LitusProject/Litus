@@ -77,9 +77,9 @@ class Organization
     private $academicYear;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person this union status describes
-     * @param string $status The actual status value
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
+     * @param  \CommonBundle\Entity\User\Person          $person       The person this union status describes
+     * @param  string                                    $status       The actual status value
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
      * @throws \InvalidArgumentException
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
@@ -113,7 +113,7 @@ class Organization
      * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param \CommonBundle\Entity\User\Person $person The person to check
+     * @param  \CommonBundle\Entity\User\Person $person The person to check
      * @return bool
      */
     public static function isValidPerson(Person $person, AcademicYear $academicYear)

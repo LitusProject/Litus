@@ -67,7 +67,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                     $found = $this->getEntityManager()
                         ->getRepository('ApiBundle\Entity\Key')
                         ->findOneByCode($code);
-                } while(isset($found));
+                } while (isset($found));
 
                 $key = new Key(
                     $formData['host'],

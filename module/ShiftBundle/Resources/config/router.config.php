@@ -126,7 +126,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'shift_install'                  => 'ShiftBundle\Controller\Admin\InstallController',
         'shift_admin_shift'              => 'ShiftBundle\Controller\Admin\ShiftController',

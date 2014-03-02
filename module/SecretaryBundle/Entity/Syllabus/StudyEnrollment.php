@@ -68,7 +68,7 @@ class StudyEnrollment
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SyllabusBundle\Entity\Study $study
+     * @param \SyllabusBundle\Entity\Study              $study
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Study $study)
     {

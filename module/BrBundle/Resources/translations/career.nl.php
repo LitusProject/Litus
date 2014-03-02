@@ -29,7 +29,15 @@ return array(
     'Required Knowledge' => 'Vereiste Kennis',
     'Sector' => 'Sector',
     'Location' => 'Locatie',
+    'Arrange By' => 'Rangschikken op',
+    'Alphabetical By Company' => 'Alfabetisch op bedrijf',
+    'Alphabetical By Vacancy' => 'Alfabetisch op job',
+    'Alphabetical By Internship' => 'Alfabetisch op stage',
+    'Most Recent Vacancy' => 'Meest recent aangepast',
+    'Most Recent Internship' => 'Meest recent aangepast',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welkom bij het online BR platform! Hier kan je op een eenvoudige wijze interessante job- en stage-aanbiedingen bekijken, de laatste informatie over bedrijfsevenementen terugvinden of gewoon eens het bedrijvenlandschap verkennen.',
     'So just look around and you might just find what you are looking for!' => 'Kijk dus gerust eens rond en wie weet vind jij wel wat je zoekt!',
+
+    'No items found' => 'Geen items gevonden',
 );

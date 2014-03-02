@@ -38,7 +38,7 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
             ->findAllByNameTypeahead($this->getParam('string'));
 
         $result = array();
-        foreach($persons as $person) {
+        foreach ($persons as $person) {
             $item = (object) array();
             $item->id = $person->getId();
             $item->value = $person->getFullName() . ' - ' . $person->getUsername();

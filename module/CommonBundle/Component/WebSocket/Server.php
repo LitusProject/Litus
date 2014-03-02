@@ -88,7 +88,7 @@ class Server
      */
     public function process()
     {
-        while(true){
+        while (true) {
             clearstatcache();
 
             if (function_exists('gc_collect_cycles')) {
@@ -98,7 +98,7 @@ class Server
             $changed = $this->_sockets;
             stream_select($changed, $write, $except, null);
 
-            foreach($changed as $socket){
+            foreach ($changed as $socket) {
                 if ($socket == $this->master) {
                     $this->_addUserSocket(stream_socket_accept($this->master));
                 } else {
@@ -157,12 +157,12 @@ class Server
     /**
      * Get a user by his socket
      *
-     * @param mixed $socket
+     * @param  mixed                                  $socket
      * @return \CommonBundle\Component\WebSocket\User
      */
     public function getUserBySocket($socket)
     {
-        foreach($this->_users as $user) {
+        foreach ($this->_users as $user) {
             if ($user->getSocket() == $socket)
                 return $user;
         }
@@ -175,7 +175,7 @@ class Server
      */
     private function _removeUserSocket($socket)
     {
-        foreach($this->_users as $key => $value) {
+        foreach ($this->_users as $key => $value) {
             if ($value->getSocket() == $socket) {
                 unset($this->_users[$key]);
                 $this->onClose($value, 0, '');
@@ -187,7 +187,7 @@ class Server
 
         @socket_close($socket);
 
-        foreach($this->_sockets as $key => $value) {
+        foreach ($this->_sockets as $key => $value) {
             if ($value == $socket)
                 unset($this->_sockets[$key]);
         }
@@ -207,7 +207,7 @@ class Server
      * Process a frame send by a user to the master socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed $data
+     * @param mixed                                  $data
      */
     private function _processFrame(User $user, $data)
     {
@@ -219,11 +219,11 @@ class Server
             } else {
                 $this->handleDataFrame($user, $f);
             }
-        } else if (!$f->getIsFin() && $f->getOpcode() != 0) {
+        } elseif (!$f->getIsFin() && $f->getOpcode() != 0) {
             $user->createBuffer($f);
-        } else if (!$f->getIsFin() && $f->getOpcode() == 0) {
+        } elseif (!$f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
-        } else if ($f->getIsFin() && $f->getOpcode() == 0) {
+        } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
             $this->handleDataFrame($user, $user->getBuffer());
@@ -235,7 +235,7 @@ class Server
     /**
      * Handle the received control frames
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param \CommonBundle\Component\WebSocket\User  $user
      * @param \CommonBundle\Component\WebSocket\Frame $frame
      */
     private function _handleControlFrame(User $user, Frame $frame)
@@ -265,14 +265,14 @@ class Server
     /**
      * Handle a received data frame
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param \CommonBundle\Component\WebSocket\User  $user
      * @param \CommonBundle\Component\WebSocket\Frame $frame
      */
     protected function handleDataFrame(User $user, Frame $frame)
     {
         if ($frame->getOpcode() == self::OP_TEXT) {
             $this->gotText($user, $frame->getData());
-        } else if ($frame->getOpcode() == self::OP_BIN) {
+        } elseif ($frame->getOpcode() == self::OP_BIN) {
             $this->gotBin($user, $frame->getData());
         }
     }
@@ -281,7 +281,7 @@ class Server
      * Send text to a user socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param string $text
+     * @param string                                 $text
      */
     public function sendText($user, $text)
     {
@@ -324,7 +324,7 @@ class Server
             $header .= chr($len);
         }
 
-        foreach($this->_users as $user) {
+        foreach ($this->_users as $user) {
             if ($this->isAuthenticated($user->getSocket()))
                 $user->write($header . $text);
         }
@@ -342,7 +342,7 @@ class Server
      * Parse received text
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param string $data
+     * @param string                                 $data
      */
     protected function gotText(User $user, $data)
     {
@@ -352,7 +352,7 @@ class Server
      * Parse received binary
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed $data
+     * @param mixed                                  $data
      */
     protected function gotBin(User $user, $data)
     {
@@ -362,8 +362,8 @@ class Server
      * Do action when user closed his socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer $statusCode
-     * @param string $reason
+     * @param integer                                $statusCode
+     * @param string                                 $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {

@@ -35,8 +35,8 @@ class Booking
      * Send a mail for assigned bookings
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array $bookings
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param array                                   $bookings
+     * @param \CommonBundle\Entity\User\Person        $person
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -67,7 +67,7 @@ class Booking
             ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
-        foreach($openingHours as $openingHour) {
+        foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
             if (strlen($openingHour->getComment($language)) > 0)
@@ -86,7 +86,7 @@ class Booking
         $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 
@@ -116,8 +116,8 @@ class Booking
      * Send a warning mail before expiring bookings
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array $bookings
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param array                                   $bookings
+     * @param \CommonBundle\Entity\User\Person        $person
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -148,7 +148,7 @@ class Booking
             ->findPeriodFromNow('P7D');
 
         $openingHourText = '';
-        foreach($openingHours as $openingHour) {
+        foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
             if (strlen($openingHour->getComment($language)) > 0)
@@ -167,7 +167,7 @@ class Booking
         $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 
@@ -197,8 +197,8 @@ class Booking
      * Send a warning mail before expiring bookings
      *
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array $bookings
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param array                                   $bookings
+     * @param \CommonBundle\Entity\User\Person        $person
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -233,7 +233,7 @@ class Booking
             ->findOneByAbbrev('en');
 
         $openingHourText = '';
-        foreach($openingHours as $openingHour) {
+        foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
             if (strlen($openingHour->getComment($language)) > 0)
@@ -252,7 +252,7 @@ class Booking
         $message = preg_replace('/#expires#.*#expires#/', '', $message);
 
         $list = '';
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 

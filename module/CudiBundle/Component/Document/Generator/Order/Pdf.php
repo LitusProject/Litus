@@ -43,10 +43,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_sortOrder;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order $order The order
-     * @param string $sortOrder
-     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Stock\Order            $order         The order
+     * @param string                                    $sortOrder
+     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Order $order, $sortOrder, TmpFile $file)
     {
@@ -104,7 +104,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 ->findAllByOrderOnAlpha($this->_order);
         }
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
                 $internal_items[] = new Object(
                     'internal_item',
