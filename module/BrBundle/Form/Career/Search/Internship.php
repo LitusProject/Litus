@@ -32,12 +32,12 @@ use BrBundle\Entity\Company,
 class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var array The possible sorting of vacancies
+     * @var array The search possibilities
      */
-    private static $possibleSorts = array(
-        'alphabeticalByCompany' => 'Alphabetical By Company',
-        'alphabeticalByInternship' => 'Alphabetical By Internship',
-        'mostRecent' => 'Most Recent Internship',
+    private static $possibleSearchTypes = array(
+        'alphabeticalByCompany' => 'Alphabetical by Company',
+        'alphabeticalByInternship' => 'Alphabetical by Internship',
+        'mostRecent' => 'Most Recent',
     );
 
     /**
@@ -61,7 +61,7 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _createSearchTypeArray()
     {
-        return self::$possibleSorts;
+        return self::$possibleSearchTypes;
     }
 
     private function _createSectorArray()
