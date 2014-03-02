@@ -130,22 +130,14 @@
                         $('tr.item item-'+id).find('td.registrationCancelled').text('&times;');
                         cancelRegistration.modal('hide');
                     } else {
-<<<<<<< HEAD
-                        errorRemove();
-=======
                         errorCancel();
->>>>>>> f0ab568ea9d3c0bfa509387c1f61ae81d465ccfd
                     }
                 }, 'json').error(errorCancel);
             });
             cancelRegistration.modal();
         }
 
-<<<<<<< HEAD
-        function errorRemove() {
-=======
         function errorCancel() {
->>>>>>> f0ab568ea9d3c0bfa509387c1f61ae81d465ccfd
             $('.flashmessage').addClass('hide');
             $('.registration_cancelled_error').removeClass('hide');
             $('#cancelRegistration').modal('hide');
