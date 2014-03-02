@@ -16,7 +16,7 @@ Because we spent a great deal of time on this project, we thought it would be ni
 
 ## Contributing
 
-Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll review it! However, when contributing some code to the project, please take a look at our [Coding Style](https://github.com/LitusProject/Litus/wiki/Style) first.  
+Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll review it! However, when contributing some code to the project, please take a look at our [Code Style](https://github.com/LitusProject/Litus/wiki/Style) first.  
 We expect code to have passed through [`php-cs-fixer`](https://github.com/fabpot/PHP-CS-Fixer) before being committed. You can easily achieve this by using a pre-commit git hook as described [here](https://github.com/LitusProject/PhpCodeStyle/tree/master/Resources/git-hooks).
 
 ## Authors
