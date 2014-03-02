@@ -40,7 +40,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -127,7 +127,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         );
 
         $result = array();
-        foreach($docents as $docent) {
+        foreach ($docents as $docent) {
             $item = (object) array();
             $item->id = $docent->getId();
             $item->value = $docent->getUniversityIdentification() . ' - ' . $docent->getFullName();
@@ -175,7 +175,6 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
-
 
         if (null === $mapping) {
             $this->flashMessenger()->addMessage(

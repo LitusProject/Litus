@@ -26,7 +26,8 @@ namespace CommonBundle\Component\Validator;
  */
 class Decimal extends \Zend\Validator\Regex
 {
-    function __construct($maxAfterDecimal) {
+    public function __construct($maxAfterDecimal)
+    {
         parent::__construct('/^[0-9]+.?[0-9]{0,' . $maxAfterDecimal . '}$/');
 
         parent::setMessage(

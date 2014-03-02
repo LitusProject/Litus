@@ -95,11 +95,11 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new RetourForm($this->getEntityManager(), $prefix);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $article = $this->getEntityManager()

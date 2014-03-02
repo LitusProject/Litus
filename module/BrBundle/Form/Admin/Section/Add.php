@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

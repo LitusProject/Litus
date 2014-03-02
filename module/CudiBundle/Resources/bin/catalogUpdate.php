@@ -68,13 +68,13 @@ if (isset($opts->r)) {
     $logs = $em->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
         ->findAllAfter($date);
 
-    foreach($logs as $log) {
+    foreach ($logs as $log) {
         $article= $log->getArticle($em);
 
         $mappings = $em->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($article->getMainArticle(), $academicYear);
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             if (!isset($subjects[$mapping->getSubject()->getId()])) {
                 $subjects[$mapping->getSubject()->getId()] = array(
                     'subject' => $mapping->getSubject(),
@@ -94,13 +94,13 @@ if (isset($opts->r)) {
     $logs = $em->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
         ->findAllAfter($date);
 
-    foreach($logs as $log) {
+    foreach ($logs as $log) {
         $article= $log->getArticle($em);
 
         $mappings = $em->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($article->getMainArticle(), $academicYear);
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             if (!isset($subjects[$mapping->getSubject()->getId()])) {
                 $subjects[$mapping->getSubject()->getId()] = array(
                     'subject' => $mapping->getSubject(),
@@ -120,7 +120,7 @@ if (isset($opts->r)) {
     $logs = $em->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
         ->findAllAfter($date);
 
-    foreach($logs as $log) {
+    foreach ($logs as $log) {
         $subjectMap= $log->getSubjectMap($em);
 
         if (!isset($subjects[$subjectMap->getSubject()->getId()])) {
@@ -141,7 +141,7 @@ if (isset($opts->r)) {
     $logs = $em->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
         ->findAllAfter($date);
 
-    foreach($logs as $log) {
+    foreach ($logs as $log) {
         $subjectMap= $log->getSubjectMap($em);
 
         if (!isset($subjects[$subjectMap->getSubject()->getId()])) {
@@ -170,7 +170,7 @@ if (isset($opts->r)) {
 
     $counter = 0;
 
-    foreach($subscribers as $subscription) {
+    foreach ($subscribers as $subscription) {
         $academicSubjects = $em->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($subscription->getPerson(), $academicYear);
 
@@ -201,7 +201,7 @@ if (isset($opts->r)) {
         $message = preg_replace('/#removed#.*#removed#/', '', $message);
 
         $updates = '';
-        foreach($academicSubjects as $subject) {
+        foreach ($academicSubjects as $subject) {
             if (!isset($subjects[$subject->getSubject()->getId()]))
                 continue;
 

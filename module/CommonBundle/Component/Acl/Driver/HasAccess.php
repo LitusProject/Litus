@@ -40,7 +40,7 @@ class HasAccess
     private $_authentication = null;
 
     /**
-     * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
+     * @param \CommonBundle\Component\Acl\Acl                       $acl            The ACL object
      * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
      */
     public function __construct(Acl $acl, Authentication $authentication)
@@ -50,8 +50,8 @@ class HasAccess
     }
 
     /**
-     * @param string $resource The resource that should be verified
-     * @param string $action The module that should be verified
+     * @param  string $resource The resource that should be verified
+     * @param  string $action   The module that should be verified
      * @return bool
      */
     public function __invoke($resource, $action)

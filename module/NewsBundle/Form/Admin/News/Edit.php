@@ -31,9 +31,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \NewsBundle\Entity\Node\News $news The news item we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
+     * @param \NewsBundle\Entity\Node\News $news          The news item we're going to modify
+     * @param null|string|int              $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, News $news, $name = null)
     {
@@ -54,7 +54,7 @@ class Edit extends Add
         $data = array(
             'end_date' => $news->getEndDate() ? $news->getEndDate()->format('d/m/Y H:i') : '',
         );
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['content_' . $language->getAbbrev()] = $news->getContent($language, false);
             $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
         }

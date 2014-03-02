@@ -95,7 +95,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($group);
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()]) {
                         $translation = new GroupTranslation(
                             $group,
@@ -193,7 +193,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                         ->setEditableByUser($formData['editable_by_user'])
                         ->setNonMember($formData['non_members']);
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()]) {
                         $translation = $group->getTranslation($language, false);
 
@@ -344,7 +344,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('FormBundle\Entity\ViewerMap')
                         ->findByForm($group->getForms()[0]->getForm());
 
-                    foreach($groupViewers as $viewer) {
+                    foreach ($groupViewers as $viewer) {
                         $newViewer = new ViewerMap(
                             $form,
                             $viewer->getPerson(),
@@ -398,6 +398,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
 
         if(!($group = $this->_getGroup()))
+
             return new ViewModel();
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
@@ -420,15 +421,16 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         if(!$this->getRequest()->isPost())
+
             return new ViewModel();
 
         $data = $this->getRequest()->getPost();
 
         if(!$data['items'])
+
             return new ViewModel();
 
-        foreach($data['items'] as $order => $id)
-        {
+        foreach ($data['items'] as $order => $id) {
             $mapping = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneById($id);

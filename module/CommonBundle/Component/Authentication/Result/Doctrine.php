@@ -42,10 +42,10 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * Overwriting the standard constructor to allow for some specific fields.
      *
-     * @param int $code The result code
-     * @param string $identity The authenticated user's identity
-     * @param array $messages The result messages
-     * @param \CommonBundle\Entity\User\Person $personObject The user object given by the DQL query
+     * @param int                               $code          The result code
+     * @param string                            $identity      The authenticated user's identity
+     * @param array                             $messages      The result messages
+     * @param \CommonBundle\Entity\User\Person  $personObject  The user object given by the DQL query
      * @param \CommonBundle\Entity\User\Session $sessionObject The session object
      */
     public function __construct($code, $identity, array $messages = array(), Person $personObject = null, Session $sessionObject = null)
@@ -84,6 +84,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     public function setSessionObject(Session $sessionObject)
     {
         $this->_sessionObject = $sessionObject;
+
         return $this;
     }
 }

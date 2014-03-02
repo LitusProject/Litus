@@ -360,7 +360,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->initAjax();
 
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'university_identification':
                 $registrations = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Registration')
@@ -397,7 +397,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         array_splice($registrations, $numResults);
 
         $result = array();
-        foreach($registrations as $registration) {
+        foreach ($registrations as $registration) {
             if ($registration->getAcademic()->canLogin()) {
                 $item = (object) array();
                 $item->id = $registration->getId();
@@ -459,7 +459,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->findByAcademicYear($academicYear);
         }
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $registration = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Registration')
                 ->findOneByAcademicAndAcademicYear($mapping->getAcademic(), $academicYear);

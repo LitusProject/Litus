@@ -51,7 +51,7 @@ class Round extends EntityRepository
 
     /**
      * Gets the order for the next round in the quiz
-     * @param \QuizBundle\Entity\Quiz $quiz
+     * @param  \QuizBundle\Entity\Quiz $quiz
      * @return int
      */
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
@@ -67,6 +67,7 @@ class Round extends EntityRepository
             ->getSingleScalarResult();
 
         if($resultSet === null)
+
             return 1;
 
         return $resultSet + 1;

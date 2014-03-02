@@ -97,7 +97,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 if ($formData['enable_options']) {
-                    foreach($formData['options'] as $option) {
+                    foreach ($formData['options'] as $option) {
                         if (strlen($option['option']) == 0)
                             continue;
                         $option = new Option($event, $option['option'], $option['price_members'], $formData['only_members'] ? 0 : $option['price_non_members']);
@@ -106,7 +106,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 if ($formData['generate_tickets']) {
-                    for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
+                    for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
                         $ticket = new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()));
                         $this->getEntityManager()->persist($ticket);
                         $this->getEntityManager()->flush();
@@ -159,13 +159,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($formData['generate_tickets']) {
                     if ($event->areTicketsGenerated()) {
                         if ($formData['number_of_tickets'] >= $event->getNumberOfTickets()) {
-                            for($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
+                            for ($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
                                 do {
                                     $number = rand();
                                     $ticket = $this->getEntityManager()
                                         ->getRepository('TicketBundle\Entity\Ticket')
                                         ->findOneByEventAndNumber($event, $number);
-                                } while($ticket !== null);
+                                } while ($ticket !== null);
 
                                 $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                                 $this->getEntityManager()->persist($ticket);
@@ -177,7 +177,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->findAllEmptyByEvent($event);
                             $numberOfTickets = $event->getNumberOfTickets() - $formData['number_of_tickets'];
 
-                            foreach($tickets as $ticket) {
+                            foreach ($tickets as $ticket) {
                                 if ($numberOfTickets == 0)
                                     break;
 
@@ -186,13 +186,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             }
                         }
                     } else {
-                        for($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
+                        for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
                             do {
                                 $number = rand();
                                 $ticket = $this->getEntityManager()
                                     ->getRepository('TicketBundle\Entity\Ticket')
                                     ->findOneByEventAndNumber($event, $number);
-                            } while($ticket !== null);
+                            } while ($ticket !== null);
 
                             $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
                             $this->getEntityManager()->persist($ticket);
@@ -203,7 +203,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $tickets = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findAllEmptyByEvent($event);
-                    foreach($tickets as $ticket) {
+                    foreach ($tickets as $ticket) {
                         $this->getEntityManager()->remove($ticket);
                     }
                 }
@@ -226,7 +226,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->setPriceNonMembers($enableOptions ? 0 : ($formData['only_members'] ? 0 : $formData['price_non_members']));
 
                 if ($enableOptions) {
-                    foreach($formData['options'] as $optionData) {
+                    foreach ($formData['options'] as $optionData) {
                         if (strlen($optionData['option']) == 0)
                             continue;
 
@@ -243,7 +243,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         }
                     }
                 } else {
-                    foreach($event->getOptions() as $option) {
+                    foreach ($event->getOptions() as $option) {
                         $this->getEntityManager()->remove($option);
                     }
                 }

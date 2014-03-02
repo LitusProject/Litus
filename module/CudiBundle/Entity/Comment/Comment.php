@@ -80,13 +80,14 @@ class Comment
     /**
      * @throws \InvalidArgumentException
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\User\Person $person The person that created the comment
-     * @param \CudiBundle\Entity\Article $article The article of the comment
-     * @param string $text The content of the comment
-     * @param string $type The type of the comment
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param \CommonBundle\Entity\User\Person $person        The person that created the comment
+     * @param \CudiBundle\Entity\Article       $article       The article of the comment
+     * @param string                           $text          The content of the comment
+     * @param string                           $type          The type of the comment
      */
-    public function __construct(EntityManager $entityManager, Person $person, Article $article, $text, $type) {
+    public function __construct(EntityManager $entityManager, Person $person, Article $article, $text, $type)
+    {
         $this->person = $person;
         $this->text = $text;
         $this->date = new DateTime();

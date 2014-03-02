@@ -37,7 +37,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
         $form = new AddForm($article, $this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

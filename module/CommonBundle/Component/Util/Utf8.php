@@ -29,8 +29,8 @@ class Utf8
      * Convert a UTF-8 string to HTML.
      *
      * @static
-     * @param string $utf8 The string in UTF-8 charset
-     * @param boolean $encodeTags True will convert "<" to "&lt;", default value is false
+     * @param  string                                                          $utf8       The string in UTF-8 charset
+     * @param  boolean                                                         $encodeTags True will convert "<" to "&lt;", default value is false
      * @return string
      * @throws \CommonBundle\Component\Util\Exception\InvalidArgumentException The given first parameter was not a string
      */
@@ -52,22 +52,22 @@ class Utf8
             if ($ascii < 128) {
                 // One-byte character
                 $result .= ($encodeTags) ? htmlentities($char) : $char;
-            } else if ($ascii < 192) {
+            } elseif ($ascii < 192) {
                 // Non-utf8 character or not a start byte
-            } else if ($ascii < 224) {
+            } elseif ($ascii < 224) {
                 // Two-byte character
                 $ascii1 = ord($utf8[$i+1]);
                 $unicode = (15 & $ascii) * 64 + (63 & $ascii1);
                 $result .= '&#x' . dechex($unicode) . ';';
                 $i++;
-            } else if ($ascii < 240) {
+            } elseif ($ascii < 240) {
                 // Three-byte character
                 $ascii1 = ord($utf8[$i+1]);
                 $ascii2 = ord($utf8[$i+2]);
                 $unicode = (15 & $ascii) * 4096 + (63 & $ascii1) * 64 + (63 & $ascii2);
                 $result .= '&#x' . dechex($unicode) .';';
                 $i += 2;
-            } else if ($ascii < 248) {
+            } elseif ($ascii < 248) {
                 // Four-byte character
                 $ascii1 = ord($utf8[$i+1]);
                 $ascii2 = ord($utf8[$i+2]);

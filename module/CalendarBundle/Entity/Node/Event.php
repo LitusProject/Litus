@@ -69,8 +69,8 @@ class Event extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param \DateTime                        $startDate
+     * @param \DateTime                        $endDate
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
     {
@@ -91,6 +91,7 @@ class Event extends \CommonBundle\Entity\Node
     public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -110,6 +111,7 @@ class Event extends \CommonBundle\Entity\Node
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -137,17 +139,18 @@ class Event extends \CommonBundle\Entity\Node
     public function setPoster($poster)
     {
         $this->poster = trim($poster, '/');
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language   $language
+     * @param  boolean                                 $allowFallback
      * @return \CalendarBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -162,8 +165,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getLocation(Language $language = null, $allowFallback = true)
@@ -177,8 +180,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -192,8 +195,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -207,9 +210,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param integer $length
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  integer                               $length
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getSummary($length = 100, Language $language = null, $allowFallback = true)
@@ -238,6 +241,7 @@ class Event extends \CommonBundle\Entity\Node
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
+
         return $this;
     }
 
@@ -250,6 +254,7 @@ class Event extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation();
         $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+
         return $this;
     }
 }

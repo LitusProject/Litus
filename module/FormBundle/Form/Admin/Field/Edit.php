@@ -42,8 +42,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Field $field The field we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \FormBundle\Entity\Field    $field         The field we're going to modify
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
@@ -68,7 +68,7 @@ class Edit extends Add
     private function _getVisibilityOptions()
     {
         $options = array(0 => 'Always');
-        foreach($this->_form->getFields() as $field) {
+        foreach ($this->_form->getFields() as $field) {
             if ($field->getId() == $this->_field->getId())
                 continue;
 
@@ -80,7 +80,7 @@ class Edit extends Add
                         'data-type' => 'string',
                     )
                 );
-            } else if ($field instanceof DropdownField) {
+            } elseif ($field instanceof DropdownField) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
@@ -107,6 +107,7 @@ class Edit extends Add
                 );
             }
         }
+
         return $options;
     }
 

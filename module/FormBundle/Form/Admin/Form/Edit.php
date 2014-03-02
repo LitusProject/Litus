@@ -37,9 +37,9 @@ class Edit extends Add
     private $_group;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Node\Form $form The notification we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
+     * @param \FormBundle\Entity\Node\Form $form          The notification we're going to modify
+     * @param null|string|int              $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {
@@ -91,7 +91,7 @@ class Edit extends Add
             'mail_bcc'         => $form->hasMail() ? $form->getMail()->getBcc() : '',
         );
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $form->getTitle($language, false);
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
@@ -107,7 +107,7 @@ class Edit extends Add
             if ($form->hasReminderMail()) {
                 $data['reminder_mail_from'] = $form->getReminderMail()->getFrom();
                 $data['reminder_mail_bcc'] = $form->getReminderMail()->getBcc();
-                foreach($this->getLanguages() as $language) {
+                foreach ($this->getLanguages() as $language) {
                     $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
                     $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
                 }

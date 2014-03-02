@@ -40,10 +40,10 @@ class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
     private $_reservation;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param \Doctrine\ORM\EntityManager                       $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear         $academicYear  The academic year
      * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                                   $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, VanReservation $reservation, $name = null)
     {
@@ -52,8 +52,8 @@ class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
         $this->_reservation = $reservation;
     }
 
-    public function getInputFilter() {
-
+    public function getInputFilter()
+    {
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 

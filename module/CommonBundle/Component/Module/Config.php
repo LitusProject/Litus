@@ -75,8 +75,8 @@ class Config
     /**
      * Loads the file in the directory if it exists, returns empty array otherwise.
      *
-     * @param string $directory the directory containing the file
-     * @param string $file the file to load
+     * @param  string $directory the directory containing the file
+     * @param  string $file      the file to load
      * @return mixed
      */
     private static function _load($directory, $file)
@@ -218,8 +218,8 @@ class Config
 
     /**
      *
-     * @param string $namespace the namespace of the module
-     * @param string $directory
+     * @param  string $namespace the namespace of the module
+     * @param  string $directory
      * @return array
      */
     public static function create(array $settings, array $override = array())

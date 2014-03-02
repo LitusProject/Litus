@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $yearnames = array();
-        foreach($years as $year) {
+        foreach ($years as $year) {
             $yearnames[$year->getId()] = $year->getCode();
         }
 
@@ -94,7 +94,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $years = $driver->getYears();
 
         $yearids = array();
-        foreach($years as $year) {
+        foreach ($years as $year) {
             $yearids[] = $year->getId();
         }
 

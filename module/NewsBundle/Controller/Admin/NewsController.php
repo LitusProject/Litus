@@ -76,7 +76,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
                         $news->addTranslation(
                             new Translation(
@@ -142,7 +142,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $news->getTranslation($language, false);
 
                     if (null !== $translation) {

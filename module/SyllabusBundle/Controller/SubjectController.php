@@ -32,6 +32,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!($academicYear = $this->_getAcademicYear())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -40,7 +41,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getId();
             $item->value = $subject->getCode() . ' - ' . $subject->getName();

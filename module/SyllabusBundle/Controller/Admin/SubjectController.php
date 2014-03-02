@@ -74,7 +74,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -135,7 +135,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = new EditForm($this->getEntityManager(), $subject);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -213,7 +213,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         array_splice($subjects, $numResults);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getId();
             $item->name = $subject->getName();
@@ -240,7 +240,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getId();
             $item->value = $subject->getCode() . ' - ' . $subject->getName();
@@ -256,7 +256,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     private function _search(AcademicYearEntity $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')

@@ -26,7 +26,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
-
 /**
  * VolunteerController
  *
@@ -40,7 +39,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 
         $form = new MailForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

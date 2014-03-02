@@ -92,7 +92,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -125,7 +125,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                         )
                     );
                 } else {
-                    foreach($group->getForms() as $form) {
+                    foreach ($group->getForms() as $form) {
                         $viewer = new ViewerMap(
                             $form->getForm(),
                             $person,
@@ -208,7 +208,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findAllByGroupAndPerson($group->getGroup(), $viewer->getPerson());
 
-        foreach($viewers as $viewer) {
+        foreach ($viewers as $viewer) {
             $this->getEntityManager()->remove($viewer);
         }
 

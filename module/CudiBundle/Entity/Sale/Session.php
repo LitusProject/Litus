@@ -100,8 +100,8 @@ class Session
 
     /**
      * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
-     * @param \CommonBundle\Entity\User\Person $manager The manager of the session
-     * @param string $comment The comment on this sale session
+     * @param \CommonBundle\Entity\User\Person               $manager      The manager of the session
+     * @param string                                         $comment      The comment on this sale session
      */
     public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
     {
@@ -127,6 +127,7 @@ class Session
     public function setOpenDate(DateTime $openDate)
     {
         $this->openDate = $openDate;
+
         return $this;
     }
     /**
@@ -162,6 +163,7 @@ class Session
     {
         $this->closeRegister = $closeRegister;
         $this->closeDate = new DateTime();
+
         return $this;
     }
 
@@ -189,13 +191,15 @@ class Session
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getComment() {
+    public function getComment()
+    {
         return $this->comment;
     }
 
@@ -205,16 +209,18 @@ class Session
     public function isOpen()
     {
         if(null === $this->getCloseDate())
+
             return true;
 
         if($this->getCloseDate() >= $this->getOpenDate())
+
             return false;
 
         return true;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getTheoreticalRevenue(Organization $organization = null)
@@ -236,7 +242,7 @@ class Session
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getPurchasedAmount(Organization $organization = null)
@@ -254,6 +260,7 @@ class Session
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
@@ -278,14 +285,14 @@ class Session
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      * @param \CommonBundle\Entity\User\Person $person
      *
      * @return boolean
      */
     public function canSignIn(EntityManager $entityManager, Person $person)
     {
-        foreach($this->restrictions as $restriction) {
+        foreach ($this->restrictions as $restriction) {
             if (!$restriction->canSignIn($entityManager, $person))
                 return false;
         }

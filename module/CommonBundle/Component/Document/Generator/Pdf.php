@@ -52,8 +52,8 @@ abstract class Pdf
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $xslPath The path to the document's XSL file
-     * @param string $pdfPath The path all PDF's should be exported to
+     * @param string                      $xslPath       The path to the document's XSL file
+     * @param string                      $pdfPath       The path all PDF's should be exported to
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
@@ -109,7 +109,7 @@ abstract class Pdf
     /**
      * Generate the document's XML structure.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
+     * @param  \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
      * @return void
      */
     abstract protected function generateXml(TmpFile $xmlFile);

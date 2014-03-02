@@ -95,11 +95,11 @@ class Supplier
     private $_entityManager;
 
     /**
-     * @param string $name
-     * @param string $phoneNumber
+     * @param string                               $name
+     * @param string                               $phoneNumber
      * @param \CommonBundle\Entity\General\Address $address
-     * @param string $vatNumber
-     * @param strign $template
+     * @param string                               $vatNumber
+     * @param strign                               $template
      */
     public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
     {
@@ -146,6 +146,7 @@ class Supplier
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -165,6 +166,7 @@ class Supplier
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
+
         return $this;
     }
 
@@ -184,6 +186,7 @@ class Supplier
     public function setAddress(Address $address)
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -203,6 +206,7 @@ class Supplier
     public function setVatNumber($vatNumber)
     {
         $this->vatNumber = $vatNumber;
+
         return $this;
     }
 
@@ -225,6 +229,7 @@ class Supplier
             throw new \InvalidArgumentException('The template is not valid.');
 
         $this->template = $template;
+
         return $this;
     }
 
@@ -236,12 +241,13 @@ class Supplier
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -252,7 +258,7 @@ class Supplier
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNumberDelivered(AcademicYear $academicYear)
@@ -263,7 +269,7 @@ class Supplier
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNumberOrdered(AcademicYear $academicYear)
@@ -274,8 +280,8 @@ class Supplier
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
@@ -286,8 +292,8 @@ class Supplier
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
     public function getTotalPurchase(AcademicYear $academicYear, Organization $organization = null)
@@ -313,6 +319,7 @@ class Supplier
     public function setContact($contact)
     {
         $this->contact = $contact;
+
         return $this;
     }
 }

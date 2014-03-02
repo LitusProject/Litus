@@ -26,7 +26,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
-
 /**
  * PromotionController
  *
@@ -42,7 +41,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
         $form = new MailForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -74,10 +73,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     ->addTo($from, $mailName)
                     ->setSubject($formData['subject']);
 
-                $emailValidator = new EmailAddressValidator();
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress() && $emailValidator->isValid($person->getEmailAddress())) {
+                    if (null !== $person->getEmailAddress()) {
                         $i++;
                         $mail->addBcc($person->getEmailAddress(), $person->getFullName());
                     }

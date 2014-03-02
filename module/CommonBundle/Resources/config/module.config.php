@@ -32,6 +32,7 @@ return Config::create(
             'factories' => array(
                 'translator' => function ($serviceManager) {
                     $config = $serviceManager->get('Config');
+
                     return new \Zend\Mvc\I18n\Translator($config['translator']);
                 },
 
@@ -69,7 +70,7 @@ return Config::create(
                     return new \Zend\Authentication\Storage\Session('Litus_Auth');
                 },
 
-                'common_sessionstorage' => function($serviceManager) {
+                'common_sessionstorage' => function ($serviceManager) {
                     return new Zend\Session\Container('Litus_Common');
                 },
 

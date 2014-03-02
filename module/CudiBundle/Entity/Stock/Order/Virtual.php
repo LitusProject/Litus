@@ -61,7 +61,7 @@ class Virtual
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article The article of the item
-     * @param integer $number The number of items ordered
+     * @param integer                         $number  The number of items ordered
      */
     public function __construct(Article $article, $number)
     {
@@ -95,12 +95,13 @@ class Virtual
     }
 
     /**
-     * @param integer $number
+     * @param  integer                                $number
      * @return \CudiBundle\Entity\Stock\Order\Virtual
      */
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 }

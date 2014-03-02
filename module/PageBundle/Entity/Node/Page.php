@@ -92,9 +92,9 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $name
-     * @param array $editRoles
-     * @param string $name
+     * @param string                           $name
+     * @param array                            $editRoles
+     * @param string                           $name
      */
     public function __construct(Person $person, $name, Category $category, array $editRoles)
     {
@@ -118,12 +118,13 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \DateTime $endTime
+     * @param  \DateTime                    $endTime
      * @return \PageBundle\Entity\Node\Page
      */
     public function setEndTime($endTime)
     {
         $this->endTime = $endTime;
+
         return $this;
     }
 
@@ -136,12 +137,13 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \PageBundle\Entity\Category $category
+     * @param  \PageBundle\Entity\Category  $category
      * @return \PageBundle\Entity\Node\Page
      */
     public function setCategory($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -154,12 +156,13 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param array $editRoles
+     * @param  array                        $editRoles
      * @return \PageBundle\Entity\Node\Page
      */
     public function setEditRoles(array $editRoles)
     {
         $this->editRoles = new ArrayCollection($editRoles);
+
         return $this;
     }
 
@@ -172,12 +175,13 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \PageBundle\Entity\Node\Page $category The page's category
+     * @param  \PageBundle\Entity\Node\Page $category The page's category
      * @return \PageBundle\Entity\Node\Page
      */
     public function setParent(Page $parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -198,13 +202,13 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return \PageBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -219,8 +223,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -234,8 +238,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -262,7 +266,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * Checks whether or not the given user can edit the page.
      *
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \CommonBundle\Entity\User\Person $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

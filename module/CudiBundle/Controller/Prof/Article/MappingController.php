@@ -41,7 +41,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

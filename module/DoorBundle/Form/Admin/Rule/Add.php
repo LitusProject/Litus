@@ -39,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                       $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, $name = null)
     {

@@ -44,6 +44,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         if (!($event = $this->_getEvent())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -68,6 +69,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         if (!($event = $this->_getEventByPoster())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -101,6 +103,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         if (!$first) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 
@@ -130,7 +133,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
 
         $calendarItems = array();
-        foreach($events as $event) {
+        foreach ($events as $event) {
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
@@ -217,7 +220,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive(0);
 
-        foreach($events as $event) {
+        foreach ($events as $event) {
             $result .= 'BEGIN:VEVENT' . PHP_EOL;
             $result .= 'SUMMARY:' . $event->getTitle($this->getLanguage()) . PHP_EOL;
             $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;

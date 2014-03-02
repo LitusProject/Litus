@@ -61,7 +61,7 @@ class Pdf extends \Zend\Validator\AbstractValidator
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param $id The ID that should be ignored when checking for duplicate titles
-     * @param mixed $opts The validator's options.
+     * @param mixed                       $opts          The validator's options.
      */
     public function __construct(EntityManager $entityManager, Publication $publication, Academicyear $academicYear, $id = null, $opts = array())
     {
@@ -76,8 +76,8 @@ class Pdf extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if no edition with this title exists.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -89,6 +89,7 @@ class Pdf extends \Zend\Validator\AbstractValidator
         if (null !== $edition) {
             if (null === $this->_id || $edition->getId() !== $this->_id) {
                 $this->error(self::TITLE_EXISTS);
+
                 return false;
             }
         }

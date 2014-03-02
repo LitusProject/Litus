@@ -60,13 +60,13 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_person;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form $form
+     * @param \Doctrine\ORM\EntityManager            $entityManager
+     * @param \CommonBundle\Entity\General\Language  $language
+     * @param \FormBundle\Entity\Node\Form           $form
      * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param \FormBundle\Entity\Node\Entry|null $entry
-     * @param boolean $forceEdit
-     * @param null|string|int $name Optional name for the element
+     * @param \FormBundle\Entity\Node\Entry|null     $entry
+     * @param boolean                                $forceEdit
+     * @param null|string|int                        $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
     {
@@ -137,14 +137,15 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllByForm($form);
 
         $occupiedSlots = array();
-        foreach($formEntries as $formEntry) {
+        foreach ($formEntries as $formEntry) {
             if ($formEntry->getCreationPerson() == $person)
                 continue;
 
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
+            foreach ($formEntry->getFieldEntries() as $fieldEntry) {
                 $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
             }
         }
+
         return $occupiedSlots;
     }
 
@@ -172,7 +173,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _disableOccupiedSlots(array $occupiedSlots)
     {
-        foreach($occupiedSlots as $id => $slot) {
+        foreach ($occupiedSlots as $id => $slot) {
             $this->get('field-' . $id)->setAttribute('disabled', 'disabled');
         }
     }

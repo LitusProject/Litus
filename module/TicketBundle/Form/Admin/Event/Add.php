@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -169,7 +169,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             $this->get('enable_options')
                 ->setAttribute('disabled', 'disabled');
 
-            foreach($event->getOptions() as $option) {
+            foreach ($event->getOptions() as $option) {
                 $data['options'][] = array(
                     'option_id' => $option->getId(),
                     'option' => $option->getName(),

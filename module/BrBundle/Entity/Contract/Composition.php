@@ -63,9 +63,9 @@ class Composition
     private $position;
 
     /**
-     * @param \BrBundle\Entity\Contract $contract The contract this object is a part of
-     * @param \BrBundle\Entity\Contract\Section $section The section described in this object
-     * @param int $position The position number of the section in the contract
+     * @param \BrBundle\Entity\Contract         $contract The contract this object is a part of
+     * @param \BrBundle\Entity\Contract\Section $section  The section described in this object
+     * @param int                               $position The position number of the section in the contract
      */
     public function __construct(Contract $contract, Section $section, $position)
     {
@@ -84,7 +84,7 @@ class Composition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \BrBundle\Entity\Contract $contract
+     * @param  \BrBundle\Entity\Contract             $contract
      * @return \BrBundle\Entity\Contract\Composition
      */
     public function setContract(Contract $contract)
@@ -107,7 +107,7 @@ class Composition
 
     /**
      * @throws \InvalidArgumentException
-     * @param \BrBundle\Entity\Contract\Section $section
+     * @param  \BrBundle\Entity\Contract\Section     $section
      * @return \BrBundle\Entity\Contract\Composition
      */
     public function setSection(Section $section)

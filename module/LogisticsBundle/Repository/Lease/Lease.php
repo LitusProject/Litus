@@ -32,7 +32,7 @@ class Lease extends EntityRepository
     /**
      * Finds all leases of an item that have not yet been returned
      *
-     * @param \LogisticsBundle\Entity\Lease\Item $item
+     * @param  \LogisticsBundle\Entity\Lease\Item $item
      * @return array
      */
     public function findUnreturnedByItemQuery(ItemEntity $item)

@@ -43,7 +43,7 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
         );
 
         $result = array();
-        foreach($persons as $person) {
+        foreach ($persons as $person) {
             $item = (object) array();
             $item->id = $person->getId();
             $item->value = $person->getUniversityIdentification() . ' - ' . $person->getFullName();

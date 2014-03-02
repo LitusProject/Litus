@@ -33,10 +33,10 @@ class Dropdown extends OptionSelector
 {
     /**
      * @param FormBundle\Entity\Node\Form $form
-     * @param integer $order
-     * @param boolean $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string $visibilityValue
+     * @param integer                     $order
+     * @param boolean                     $required
+     * @param \FormBundle\Entity\Field    $visibityDecisionField
+     * @param string                      $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {

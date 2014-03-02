@@ -40,9 +40,9 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article $article The article
-     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Sale\Article           $article       The article
+     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
     {
@@ -82,7 +82,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
 
             $this->generatePdf();
 
-            do{
+            do {
                 $fileName = sha1(uniqid());
             } while (file_exists($cachePath . '/' . $fileName));
 

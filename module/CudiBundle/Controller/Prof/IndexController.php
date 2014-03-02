@@ -54,6 +54,7 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         }
+
         return new ViewModel();
     }
 }

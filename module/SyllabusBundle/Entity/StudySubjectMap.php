@@ -68,9 +68,9 @@ class StudySubjectMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Study $study
-     * @param \SyllabusBundle\Entity\Subject $subject
-     * @param boolean $mandatory
+     * @param \SyllabusBundle\Entity\Study              $study
+     * @param \SyllabusBundle\Entity\Subject            $subject
+     * @param boolean                                   $mandatory
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
     public function __construct(Study $study, Subject $subject, $mandatory, AcademicYear $academicYear)
@@ -114,12 +114,13 @@ class StudySubjectMap
     }
 
     /**
-     * @param boolean $mandatory
+     * @param  boolean                                $mandatory
      * @return \SyllabusBundle\Entity\StudySubjectMap
      */
     public function setMandatory($mandatory)
     {
         $this->mandatory = $mandatory;
+
         return $this;
     }
 

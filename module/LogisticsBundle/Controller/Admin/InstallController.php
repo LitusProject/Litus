@@ -40,7 +40,7 @@ class InstallController extends \CommonBundle\Component\Controller\ActionControl
     {
         $resources = array(VanReservation::VAN_RESOURCE_NAME, PianoReservation::PIANO_RESOURCE_NAME);
 
-        foreach($resources as $name) {
+        foreach ($resources as $name) {
             $resource = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                 ->findOneByName($name);

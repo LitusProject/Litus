@@ -47,7 +47,7 @@ class Resource
     private $parent;
 
     /**
-     * @param string $name The name of the resource
+     * @param string                            $name   The name of the resource
      * @param \CommonBundle\Entity\Acl\Resource $parent The parent of the resource, or null if there is no parent
      */
     public function __construct($name, Resource $parent = null)
@@ -75,7 +75,7 @@ class Resource
     /**
      * Retrieves this resource's children.
      *
-     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @param  \Doctrine\EntityManager $entityManager The EntityManager instance
      * @return array
      */
     public function getChildren(EntityManager $entityManager)
@@ -88,7 +88,7 @@ class Resource
     /**
      * Retrieves this resource's actions.
      *
-     * @param \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @param  \Doctrine\EntityManager $entityManager The EntityManager instance
      * @return array
      */
     public function getActions(EntityManager $entityManager)

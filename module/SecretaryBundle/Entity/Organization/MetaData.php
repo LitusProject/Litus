@@ -66,7 +66,7 @@ class MetaData
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param boolean $becomeMember
+     * @param boolean                                   $becomeMember
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember)
     {
@@ -115,6 +115,7 @@ class MetaData
     public function setBecomeMember($becomeMember)
     {
         $this->becomeMember = $becomeMember;
+
         return $this;
     }
 }

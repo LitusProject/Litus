@@ -80,7 +80,7 @@ class Log
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager   $entityManager
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function getAcademic(EntityManager $entityManager)

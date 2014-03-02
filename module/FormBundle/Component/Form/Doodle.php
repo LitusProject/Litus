@@ -35,7 +35,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Doodle
 {
-    static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -51,7 +51,7 @@ class Doodle
             $formEntry = new FormEntry($person, $guestInfo, $formSpecification);
             $entityManager->persist($formEntry);
         } else {
-            foreach($formEntry->getFieldEntries() as $fieldEntry) {
+            foreach ($formEntry->getFieldEntries() as $fieldEntry) {
                 $entityManager->remove($fieldEntry);
             }
             $entityManager->flush();

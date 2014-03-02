@@ -42,11 +42,11 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new AddForm($this->getEntityManager(), $subject, $academicYear);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $study = $this->getEntityManager()
@@ -98,11 +98,11 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new EditForm($this->getEntityManager(), $mapping);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $mapping->setMandatory($formData['mandatory']);

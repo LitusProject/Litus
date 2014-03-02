@@ -63,9 +63,9 @@ class Translation
     private $name;
 
     /**
-     * @param \PageBundle\Entity\Category $category
+     * @param \PageBundle\Entity\Category           $category
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $name
+     * @param string                                $name
      */
     public function __construct(Category $category, Language $language, $name)
     {
@@ -106,6 +106,7 @@ class Translation
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 }

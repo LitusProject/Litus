@@ -84,12 +84,12 @@ class Form
     private $updateText;
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
+     * @param \FormBundle\Entity\Node\Form          $form
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $title
-     * @param string $introduction
-     * @param string $submitText
-     * @param string $updateText
+     * @param string                                $title
+     * @param string                                $introduction
+     * @param string                                $submitText
+     * @param string                                $updateText
      */
     public function __construct(FormEntity $form, Language $language, $title, $introduction, $submitText, $updateText)
     {
@@ -133,6 +133,7 @@ class Form
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -152,6 +153,7 @@ class Form
     public function setIntroduction($introduction)
     {
         $this->introduction = $introduction;
+
         return $this;
     }
 
@@ -171,6 +173,7 @@ class Form
     public function setSubmitText($submitText)
     {
         $this->submitText = $submitText;
+
         return $this;
     }
 
@@ -190,6 +193,7 @@ class Form
     public function setUpdateText($updateText)
     {
         $this->updateText = $updateText;
+
         return $this;
     }
 }

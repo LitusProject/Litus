@@ -121,7 +121,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

@@ -52,7 +52,6 @@ return array(
             '@admin_js',
             '@common_jquery_form',
             '@common_form_upload_progress',
-            '@common_download_file',
             '@common_permanent_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -63,7 +62,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
         'cudi_admin_sales_article_sale' => array(
             '@common_jquery',
@@ -143,7 +141,6 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
-            '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),

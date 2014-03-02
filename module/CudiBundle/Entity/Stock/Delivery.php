@@ -70,7 +70,7 @@ class Delivery
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article The article of the delivery
-     * @param integer $number The number of the article
+     * @param integer                         $number  The number of the article
      * @param \CommonBundle\Entity\User\Person The person who ordered the order
      */
     public function __construct(Article $article, $number, Person $person)

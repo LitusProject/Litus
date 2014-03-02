@@ -59,7 +59,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllActive();
 
         $calendarItems = array();
-        foreach($events as $event) {
+        foreach ($events as $event) {
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(

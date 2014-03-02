@@ -73,10 +73,10 @@ class Group
     private $excludedMembers;
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param boolean $cvBook
-     * @param string $extraMembers
-     * @param string $excludedMembers
+     * @param string  $extraMembers
+     * @param string  $excludedMembers
      */
     public function __construct($name, $cvBook, $extraMembers, $excludedMembers)
     {
@@ -105,12 +105,13 @@ class Group
     }
 
     /**
-     * @param string $name
+     * @param  string                       $name
      * @return \SyllabusBundle\Entity\Group
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -123,12 +124,13 @@ class Group
     }
 
     /**
-     * @param boolean $cvBook
+     * @param  boolean                      $cvBook
      * @return \SyllabusBundle\Entity\Group
      */
     public function setCvBook($cvBook)
     {
         $this->cvBook = $cvBook;
+
         return $this;
     }
 
@@ -138,6 +140,7 @@ class Group
     public function setRemoved()
     {
         $this->removed = true;
+
         return $this;
     }
 
@@ -150,12 +153,13 @@ class Group
     }
 
     /**
-     * @param string $extraMembers
+     * @param  string                       $extraMembers
      * @return \SyllabusBundle\Entity\Group
      */
     public function setExtraMembers($extraMembers)
     {
         $this->extraMembers = $extraMembers;
+
         return $this;
     }
 
@@ -168,27 +172,29 @@ class Group
     }
 
     /**
-     * @param string $excludedMembers
+     * @param  string                       $excludedMembers
      * @return \SyllabusBundle\Entity\Group
      */
     public function setExcludedMembers($excludedMembers)
     {
         $this->excludedMembers = $excludedMembers;
+
         return $this;
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager  $entityManager
      * @return \SyllabusBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return integer
      */
     public function getNbStudents(AcademicYear $academicYear)

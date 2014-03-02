@@ -53,7 +53,7 @@ class Language
 
     /**
      * @param string $abbrev The language abbrev
-     * @param string $name The language name
+     * @param string $name   The language name
      */
     public function __construct($abbrev, $name)
     {

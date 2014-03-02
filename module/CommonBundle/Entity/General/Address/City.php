@@ -61,7 +61,7 @@ class City
 
     /**
      * @param integer $postal
-     * @param string $name
+     * @param string  $name
      */
     public function __construct($postal, $name)
     {

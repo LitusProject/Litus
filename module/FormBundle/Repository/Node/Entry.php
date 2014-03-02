@@ -195,13 +195,13 @@ class Entry extends EntityRepository
         $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
 
         $tmpEntries = array();
-        foreach($startEntries as $entry) {
+        foreach ($startEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $entries = array();
-        foreach($endEntries as $entry) {
+        foreach ($endEntries as $entry) {
             if ($entry->isDraft())
                 continue;
             if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
@@ -218,14 +218,14 @@ class Entry extends EntityRepository
 
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $tmpEntries = array();
-        foreach($endEntries as $entry) {
+        foreach ($endEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
         $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
 
         $entries = array();
-        foreach($startEntries as $entry) {
+        foreach ($startEntries as $entry) {
             if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
                     ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()))
                 $entries[] = $entry;

@@ -38,7 +38,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Form
 {
-    static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -93,7 +93,7 @@ class Form
                     if ($upload->isValid('field-' . $field->getId())) {
                         if (null === $fieldEntry || $fieldEntry->getValue() == '') {
                             $fileName = '';
-                            do{
+                            do {
                                 $fileName = sha1(uniqid());
                             } while (file_exists($filePath . '/' . $fileName));
                         } else {
@@ -115,6 +115,7 @@ class Form
 
                     if (sizeof($errors) > 0) {
                         $form->setMessages(array('field-' . $field->getId() => $errors));
+
                         return false;
                     } elseif ($value == '' && null !== $fieldEntry) {
                         $value = $fieldEntry->getValue();

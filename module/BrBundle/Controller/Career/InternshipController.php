@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use BrBundle\Entity\Company,
+    BrBundle\Form\Career\Search\Internship as InternshipSearchForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,10 +32,38 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+        $internshipSearchForm = new InternshipSearchForm();
+
+        $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeQuery('internship'),
+            ->findAllActiveByTypeQuery('internship');
+
+        $formData = $this->getRequest()->getQuery();
+        $internshipSearchForm->setData($formData);
+
+        if ($internshipSearchForm->isValid()) {
+            $formData = $internshipSearchForm->getFormData($formData);
+
+            $repository = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company\Job');
+
+            if($formData['sector'] != 'all') {
+                if($formData['searchType'] == 'alphabeticalByCompany')
+                    $query = $repository->findAllActiveByTypeAndSectorQuery('internship', $formData['sector']);
+                elseif($formData['searchType'] == 'alphabeticalByInternship')
+                    $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('internship', $formData['sector']);
+                elseif($formData['searchType'] == 'mostRecent')
+                    $query = $repository->findAllActiveByTypeAndSectorByDateQuery('internship', $formData['sector']);
+            } else {
+                if($formData['searchType'] == 'alphabeticalByInternship')
+                    $query = $repository->findAllActiveByTypeByJobNameQuery('internship');
+                elseif($formData['searchType'] == 'mostRecent')
+                    $query = $repository->findAllActiveByTypeByDateQuery('internship');
+            }
+        }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $query,
             $this->getParam('page')
         );
 
@@ -46,6 +76,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'internshipSearchForm' => $internshipSearchForm,
             )
         );
     }

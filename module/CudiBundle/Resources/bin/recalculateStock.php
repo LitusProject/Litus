@@ -73,7 +73,7 @@ if (isset($opts->r)) {
             ->getConfigValue('secretary.membership_article')
     );
 
-    foreach($articles as $article) {
+    foreach ($articles as $article) {
         if (is_array($article->getId(), $membership)) {
             $article->setStockValue(0);
             continue;
@@ -101,7 +101,7 @@ if (isset($opts->r)) {
             $bookings = $em->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findLastAssignedByArticle($article);
 
-            foreach($bookings as $booking) {
+            foreach ($bookings as $booking) {
                 if ($nbToMuchAssigned <= 0)
                     break;
                 $booking->setStatus('booked', $em);

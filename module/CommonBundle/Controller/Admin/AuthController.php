@@ -173,7 +173,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch(\ErrorException $e) {}
+        } catch (\ErrorException $e) {}
 
         $shibbolethUrl .= '?source=admin';
 

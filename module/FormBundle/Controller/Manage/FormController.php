@@ -67,6 +67,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($form = $this->_getForm()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()
@@ -121,6 +122,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($formSpecification = $this->_getForm()))
+
             return new ViewModel();
 
         if ($formSpecification->getType() == 'doodle') {
@@ -311,6 +313,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
     public function doodleAddAction()
     {
         if(!($formSpecification = $this->_getForm()))
+
             return new ViewModel();
 
         if ($formSpecification->getType() == 'form') {
@@ -516,6 +519,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($form = $this->_getForm()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()
@@ -561,7 +565,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     $result[] = $entry->getPersonInfo()->getEmail();
 
                 $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
-                foreach($entry->getFieldEntries() as $fieldEntry) {
+                foreach ($entry->getFieldEntries() as $fieldEntry) {
                     $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
                     $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
                 }
@@ -588,7 +592,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 if ($viewerMap->isMail())
                     $result[] = $entry->getPersonInfo()->getEmail();
 
-                foreach($fields as $field) {
+                foreach ($fields as $field) {
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($entry, $field);

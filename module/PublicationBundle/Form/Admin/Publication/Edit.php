@@ -38,9 +38,9 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
     private $_id;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
      * @param \PublicationBundle\Entity\Publication $publication
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                       $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, $name = null)
     {

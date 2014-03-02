@@ -40,7 +40,7 @@ class External extends \MailBundle\Entity\Alias
     /**
      * Creates a new alias with the given name and emailaddress.
      *
-     * @param string $name The name for this alias
+     * @param string $name  The name for this alias
      * @param string $email The e-mail address for this alias
      */
     public function __construct($name, $email)

@@ -72,7 +72,7 @@ class Log
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $text
+     * @param string                           $text
      */
     public function __construct(Person $person, $text)
     {

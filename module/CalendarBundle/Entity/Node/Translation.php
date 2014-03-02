@@ -77,11 +77,11 @@ class Translation
     private $content;
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event $event
+     * @param \CalendarBundle\Entity\Node\Event     $event
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $location
-     * @param string $title
-     * @param string $content
+     * @param string                                $location
+     * @param string                                $title
+     * @param string                                $content
      */
     public function __construct(Event $event, Language $language, $location, $title, $content)
     {
@@ -124,6 +124,7 @@ class Translation
     public function setLocation($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -143,6 +144,7 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -162,6 +164,7 @@ class Translation
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
