@@ -38,7 +38,7 @@
                         <td>{{ event.getLocation(language) }}</td>
                         <td class="actions">
                             {% if hasAccess('calendar_admin_calendar', 'pdf') %}
-                                <a href="#" id="printShiftList_{{ event.getId() }}" class="printer">Shift List</a>
+                                <a href="{{ url('calendar_admin_calendar', {"action": "pdf", "id": event.getId()}) }}" class="printer">Shift List</a>
                             {% endif %}
                             {% if hasAccess('calendar_admin_calendar', 'poster') %}
                                 <a href="{{ url('calendar_admin_calendar', {"action": "editPoster", "id": event.getId()}) }}" class="image_edit">Poster</a>
@@ -47,7 +47,7 @@
                                 <a href="{{ url('calendar_admin_calendar', {"action": "edit", "id": event.getId()}) }}" class="calendar_edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('calendar_admin_calendar', 'delete') %}
-                                <a href="#" data-id="{{ event.getId() }}" data-title="{{ game.getTitle(language) }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ event.getId() }}" data-title="{{ event.getTitle(language) }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -82,10 +82,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% for event in paginator %}
-                $('#printShiftList_{{ event.getId() }}').downloadFile('{{ url('calendar_admin_calendar', {"action": "pdf", "id": event.getId()}) }}');
-            {% endfor %}
-
             $('.item .delete').click(openModal);
         });
 

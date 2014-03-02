@@ -10,16 +10,6 @@
     {% include 'secretary/admin/registration/partials/organizations.twig' %}
 
     <div id="controller_action">
-        <button class="download downloadFile" data-file="{{ url('secretary_admin_registration', {"action": "download", "academicyear": activeAcademicYear.getCode(), "organization": currentOrganization.getId()}) }}" style="padding-left: 18px;cursor: pointer;border-width: 2px;">Download</button>
+        <a class="download" href="{{ url('secretary_admin_registration', {"action": "download", "academicyear": activeAcademicYear.getCode(), "organization": currentOrganization.getId()}) }}" style="padding-left: 18px;cursor: pointer;border-width: 2px;">Download</a>
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-        });
-    </script>
 {% endblock %}
