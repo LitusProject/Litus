@@ -35,8 +35,8 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The search possibilities
      */
     private static $possibleSearchTypes = array(
-        'alphabeticalByCompany' => 'Alphabetical by Company',
-        'alphabeticalByInternship' => 'Alphabetical by Internship',
+        'company' => 'Company',
+        'internship' => 'Internship',
         'mostRecent' => 'Most Recent',
     );
 
@@ -48,7 +48,6 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $this->setAttribute('class', 'form-inline');
-        $this->setAttribute('method', 'get');
 
         $field = new Select('searchType');
         $field->setAttribute('options', $this->_createSearchTypeArray());

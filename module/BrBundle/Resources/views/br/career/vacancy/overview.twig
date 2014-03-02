@@ -48,7 +48,7 @@
                         <td>
                             <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
                             <br/>
-                            <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                             <br/>
                             {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
