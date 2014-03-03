@@ -47,18 +47,20 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             $repository = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Job');
 
-            if($formData['sector'] != 'all') {
-                if($formData['searchType'] == 'alphabeticalByCompany')
+            if ('all' != $formData['sector']) {
+                if ('company' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorQuery('internship', $formData['sector']);
-                elseif($formData['searchType'] == 'alphabeticalByInternship')
+                } elseif ('internship' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('internship', $formData['sector']);
-                elseif($formData['searchType'] == 'mostRecent')
+                } elseif ('mostRecent' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorByDateQuery('internship', $formData['sector']);
+                }
             } else {
-                if($formData['searchType'] == 'alphabeticalByInternship')
+                if ('internship' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeByJobNameQuery('internship');
-                elseif($formData['searchType'] == 'mostRecent')
+                } elseif ('mostRecent' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeByDateQuery('internship');
+                }
             }
         }
 

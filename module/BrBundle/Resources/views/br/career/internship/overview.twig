@@ -48,7 +48,7 @@
                         <td>
                             <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
                             <br/>
-                            <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                             <br/>
                             {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
@@ -60,8 +60,8 @@
                     </div>
                 {% endfor %}
             </table>
+
+            {% include 'site/partials/paginationControl.twig' %}
         </div>
     </div>
-
-    {% include 'site/partials/paginationControl.twig' %}
 {% endblock %}
