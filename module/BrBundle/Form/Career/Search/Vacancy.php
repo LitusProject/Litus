@@ -32,12 +32,12 @@ use BrBundle\Entity\Company,
 class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var array The possible sorting of vacancies
+     * @var array The search posibilities
      */
-    private static $possibleSorts = array(
-        'alphabeticalByCompany' => 'Alphabetical By Company',
-        'alphabeticalByVacancy' => 'Alphabetical By Vacancy',
-        'mostRecent' => 'Most Recent Vacancy',
+    private static $possibleSearchTypes = array(
+        'company' => 'Company',
+        'vacancy' => 'Vacancy',
+        'mostRecent' => 'Most Recent',
     );
 
     /**
@@ -48,7 +48,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $this->setAttribute('class', 'form-inline');
-        $this->setAttribute('method', 'get');
+        $this->setAttributes('method', 'get');
 
         $field = new Select('searchType');
         $field->setAttribute('options', $this->_createSearchTypeArray());
@@ -61,7 +61,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _createSearchTypeArray()
     {
-        return self::$possibleSorts;
+        return self::$possibleSearchTypes;
     }
 
     private function _createSectorArray()

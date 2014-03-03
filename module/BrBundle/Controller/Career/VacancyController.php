@@ -19,7 +19,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
-    BrBundle\Form\Career\Search\vacancy as VacancySearchForm,
+    BrBundle\Form\Career\Search\Vacancy as VacancySearchForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -47,18 +47,20 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $repository = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Job');
 
-            if($formData['sector'] != 'all') {
-                if($formData['searchType'] == 'alphabeticalByCompany')
+            if ('all' != $formData['sector']) {
+                if ('company' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
-                elseif($formData['searchType'] == 'alphabeticalByVacancy')
+                } elseif ('vacancy' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
-                elseif($formData['searchType'] == 'mostRecent')
+                } elseif ('mostRecent' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
+                }
             } else {
-                if($formData['searchType'] == 'alphabeticalByVacancy')
+                if ('vacancy' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
-                elseif($formData['searchType'] == 'mostRecent')
+                } elseif ('mostRecent' == $formData['searchType']) {
                     $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
+                }
             }
         }
 

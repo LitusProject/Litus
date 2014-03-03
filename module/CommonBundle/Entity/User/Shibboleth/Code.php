@@ -84,21 +84,22 @@ class Code
 
     /**
      * @param string $universityIdentification
-     * @param string $code                     The code
+     * @param string $code
+     * @param string $info
      * @param int    $expirationTime
-     * @param string $info                     The additional information
+     * @param string $redirect
      */
-    public function __construct($universityIdentification, $code, $expirationTime = 300, $info, $redirect = null)
+    public function __construct($universityIdentification, $code, $info, $expirationTime = 300, $redirect = null)
     {
         $this->id = md5(uniqid(rand(), true));
-        $this->creationTime = new DateTime();
 
+        $this->creationTime = new DateTime();
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
-        $this->code = $code;
         $this->universityIdentification = $universityIdentification;
+        $this->code = $code;
         $this->info = $info;
         $this->redirect = $redirect;
     }
@@ -157,8 +158,8 @@ class Code
      * Checks whether or not this code is valid.
      *
      * Note:
-     * We don't delete expired codes here, but wait for the garbage collector to clean up all expired sessions
-     * at once.
+     * We don't delete expired codes here, but wait for the garbage collector to clean
+     * up all expired sessions at once.
      *
      * @param  string $hash The hash that was received
      * @return bool

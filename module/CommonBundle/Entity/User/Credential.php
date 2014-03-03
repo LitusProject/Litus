@@ -82,7 +82,7 @@ class Credential
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
 
         $this->algorithm = $algorithm;
-        $this->salt = bin2hex(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM));
+        $this->salt = bin2hex(openssl_random_pseudo_bytes(16));
         $this->iterations = $iterations;
 
         $this->hash = $this->_hash($credential);
