@@ -69,8 +69,8 @@ class Entry
     /**
      * @param \FormBundle\Entity\Node\Entry $formEntry
      * @param \FormBundle\Entity\Field      $field
-     * @param string $value
-     * @param string $readableValue
+     * @param string                        $value
+     * @param string                        $readableValue
      */
     public function __construct(NodeEntry $formEntry, Field $field, $value, $readableValue = null)
     {
@@ -105,7 +105,7 @@ class Entry
     }
 
     /**
-     * @param string $value;
+     * @param  string                   $value;
      * @return \FormBundle\Entity\Entry
      */
     public function setValue($value)
@@ -124,7 +124,7 @@ class Entry
     }
 
     /**
-     * @param string $readableValue;
+     * @param  string                   $readableValue;
      * @return \FormBundle\Entity\Entry
      */
     public function setReadableValue($readableValue)
