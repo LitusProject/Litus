@@ -177,7 +177,8 @@
 
                     <h3>{{ item.getTitle(language) }}</h3>
 
-                    <blockquote>{{ hideEmail(markdown(item.getSummary(400, language)))|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                    <blockquote>
+                        {{ hideEmail(item.getSummary(400, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
                     </blockquote>
                 </div>
