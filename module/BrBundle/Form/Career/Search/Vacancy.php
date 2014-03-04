@@ -48,7 +48,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::__construct($name);
 
         $this->setAttribute('class', 'form-inline');
-        $this->setAttributes('method', 'get');
+        $this->setAttribute('method', 'get');
 
         $field = new Select('searchType');
         $field->setAttribute('options', $this->_createSearchTypeArray());
