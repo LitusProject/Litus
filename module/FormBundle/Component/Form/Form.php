@@ -71,10 +71,10 @@ class Form
                 ->getRepository('FormBundle\Entity\Entry')
                 ->findOneByFormEntryAndField($formEntry, $field);
             $removed = false;
+            $readableValue = null;
 
             if ($field instanceof FileField) {
                 $value = '';
-                $readableValue = null;
                 $filePath = $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('form.file_upload_path');
