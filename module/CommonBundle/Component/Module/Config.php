@@ -226,6 +226,7 @@ class Config
     {
         $directory = $settings['directory'];
         $namespace = $settings['namespace'];
+
         $routerConfig = self::_load($directory, 'router.config.php');
 
         return array_merge_recursive(array(
@@ -250,6 +251,7 @@ class Config
 
             'litus' => array(
                 'install' => self::_createInstallConfig($settings),
+                'console' => self::_load($directory, 'console.config.php'),
             ),
         ), $override);
     }

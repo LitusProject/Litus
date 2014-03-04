@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'calendar_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/calendar[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'calendar_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'calendar_admin_calendar' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -89,7 +77,6 @@ return array(
     ),
 
     'controllers' => array(
-        'calendar_install'                     => 'CalendarBundle\Controller\Admin\InstallController',
         'calendar_admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
         'calendar_admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
 

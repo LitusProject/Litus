@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'quiz_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/quiz[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'quiz_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'quiz_admin_quiz' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -96,7 +84,6 @@ return array(
     ),
 
     'controllers' => array(
-        'quiz_install'              => 'QuizBundle\Controller\Admin\InstallController',
         'quiz_admin_quiz'           => 'QuizBundle\Controller\Admin\QuizController',
         'quiz_admin_round'          => 'QuizBundle\Controller\Admin\RoundController',
         'quiz_admin_team'           => 'QuizBundle\Controller\Admin\TeamController',

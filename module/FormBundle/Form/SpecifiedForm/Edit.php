@@ -69,7 +69,8 @@ class Edit extends Add
             $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
             if ($fieldEntry->getField() instanceof FileField) {
                 $this->get('field-' .$fieldEntry->getField()->getId())
-                    ->setAttribute('data-file', $fieldEntry->getValue());
+                    ->setAttribute('data-file', $fieldEntry->getValue())
+                    ->setAttribute('data-name', $fieldEntry->getReadableValue());
             }
         }
         $this->setData($data);

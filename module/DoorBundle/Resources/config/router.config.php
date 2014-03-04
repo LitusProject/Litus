@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'door_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/door[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'door_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'door_admin_rule' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -48,7 +36,6 @@ return array(
     ),
 
     'controllers' => array(
-        'door_install'    => 'DoorBundle\Controller\Admin\InstallController',
         'door_admin_rule' => 'DoorBundle\Controller\Admin\RuleController',
     ),
 );

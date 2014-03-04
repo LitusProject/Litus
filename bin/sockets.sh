@@ -4,6 +4,7 @@
 #
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIRECTORY"; cd ..;
 
 function backgroundTask() {
     if ps aux | grep -v grep | grep "$1" > /dev/null; then
@@ -16,9 +17,9 @@ function backgroundTask() {
 
 # Starting the WebSockets
 for i in {1..50}; do
-    backgroundTask "php $SCRIPT_DIRECTORY/CudiBundle/queue.php --run"
-    backgroundTask "php $SCRIPT_DIRECTORY/SportBundle/run.php --run"
-    backgroundTask "php $SCRIPT_DIRECTORY/SyllabusBundle/update.php --run"
+    backgroundTask "php public/index.php socket:cudi:sale-queue --run"
+    backgroundTask "php public/index.php socket:sport:run-queue --run"
+    backgroundTask "php public/index.php socket:syllabus:update --run"
 
     sleep 1
 done

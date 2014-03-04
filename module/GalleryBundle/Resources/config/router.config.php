@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'gallery_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/gallery[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'gallery_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'gallery_admin_gallery' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -63,7 +51,6 @@ return array(
     ),
 
     'controllers' => array(
-        'gallery_install'       => 'GalleryBundle\Controller\Admin\InstallController',
         'gallery_admin_gallery' => 'GalleryBundle\Controller\Admin\GalleryController',
 
         'gallery'               => 'GalleryBundle\Controller\GalleryController',
