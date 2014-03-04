@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'wiki_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/wiki[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'wiki_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'wiki_auth' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -48,8 +36,6 @@ return array(
     ),
 
     'controllers' => array(
-        'wiki_install' => 'WikiBundle\Controller\Admin\InstallController',
-
         'wiki_auth'    => 'WikiBundle\Controller\AuthController',
     ),
 );

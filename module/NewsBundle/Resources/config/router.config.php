@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'news_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/news[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'news_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'news_admin_news' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -64,7 +52,6 @@ return array(
     ),
 
     'controllers' => array(
-        'news_install'    => 'NewsBundle\Controller\Admin\InstallController',
         'news_admin_news' => 'NewsBundle\Controller\Admin\NewsController',
 
         'news'            => 'NewsBundle\Controller\NewsController',

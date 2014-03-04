@@ -75,10 +75,16 @@ return Config::create(
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
+
+                'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
+                'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
             ),
             'invokables' => array(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
+            ),
+            'aliases' => array(
+                'litus.console_application' => 'doctrine.cli',
             ),
         ),
         'translator' => array(
@@ -123,6 +129,21 @@ return Config::create(
         'authentication_sessionstorage' => array(
             'namespace' => 'Litus_Auth',
             'member'    => 'storage',
+        ),
+        'route_manager' => array(
+            'factories' => array(
+                'litus_cli' => function ($serviceManager) {
+                    $application = $serviceLocator->getServiceLocator()->get('litus.cli');
+
+                    return new \DoctrineModule\Mvc\Router\Console\SymfonyCli(
+                        $application,
+                        array(
+                            'controller' => 'DoctrineModule\Controller\Cli',
+                            'action'     => 'cli',
+                        )
+                    );
+                },
+            ),
         ),
     )
 );

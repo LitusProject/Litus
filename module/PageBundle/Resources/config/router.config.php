@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'page_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/page[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'page_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'page_admin_page' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -121,8 +109,6 @@ return array(
     ),
 
     'controllers' => array(
-        'page_install'        => 'PageBundle\Controller\Admin\InstallController',
-
         'page_admin_page'     => 'PageBundle\Controller\Admin\PageController',
         'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
         'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
