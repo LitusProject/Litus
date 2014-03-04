@@ -6,4 +6,4 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../../"
 
-php bin/CommonBundle/gc.php --all
+php public/index.php common:gc -a

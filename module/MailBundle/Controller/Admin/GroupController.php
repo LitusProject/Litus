@@ -23,7 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     MailBundle\Form\Admin\Mail\Mail as MailForm,
     Zend\Mail\Message,
-    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -95,19 +94,20 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
                 $mail->addTo($mailAddress, $mailName);
 
-                $emailValidator = new EmailAddressValidator();
-
                 $addresses = array();
                 foreach ($people as $person) {
-                    if (null === $person->getPerson()->getEmail() || !$emailValidator->isValid($person->getPerson()->getEmail()))
+                    if (null === $person->getPerson()->getEmail())
                         continue;
 
-                    $addresses[$person->getPerson()->getEmail()] = $person->getPerson()->getEmail();
+                    $addresses[$person->getPerson()->getEmail()] = array(
+                        'address' => $person->getPerson()->getEmail(),
+                        'name'    => $person->getPerson()->getFullName(),
+                    );
                 }
 
                 $i = 0;
                 foreach ($addresses as $address) {
-                    $mail->addBcc($address);
+                    $mail->addBcc($address['address'], $address['name']);
                     $i++;
 
                     if (500 == $i) {

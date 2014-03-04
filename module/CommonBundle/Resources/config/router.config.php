@@ -18,26 +18,6 @@
 
 return array(
     'routes' => array(
-        'common_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/common[/]',
-                'defaults' => array(
-                    'controller' => 'common_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'all_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/all[/]',
-                'defaults' => array(
-                    'controller' => 'all_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'common_admin_academic' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -285,9 +265,6 @@ return array(
     ),
 
     'controllers' => array(
-        'common_install'        => 'CommonBundle\Controller\Admin\InstallController',
-        'all_install'           => 'CommonBundle\Controller\Admin\AllInstallController',
-
         'common_admin_academic' => 'CommonBundle\Controller\Admin\AcademicController',
         'common_admin_auth'     => 'CommonBundle\Controller\Admin\AuthController',
         'common_admin_config'   => 'CommonBundle\Controller\Admin\ConfigController',

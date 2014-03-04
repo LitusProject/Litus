@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'publication_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/publication[/]',
-                'defaults' => array(
-                    'controller' => 'publication_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'publication_admin_publication' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -105,8 +95,6 @@ return array(
     ),
 
     'controllers' => array(
-        'publication_install'             => 'PublicationBundle\Controller\Admin\InstallController',
-
         'publication_admin_publication'   => 'PublicationBundle\Controller\Admin\PublicationController',
         'publication_admin_edition_pdf'   => 'PublicationBundle\Controller\Admin\Edition\PdfController',
         'publication_admin_edition_html'  => 'PublicationBundle\Controller\Admin\Edition\HtmlController',

@@ -60,14 +60,24 @@ class Entry
     private $value;
 
     /**
+     * @var string The readable value of this field.
+     *
+     * @ORM\Column(name="readable_value", type="text", nullable=true)
+     */
+    private $readableValue;
+
+    /**
      * @param \FormBundle\Entity\Node\Entry $formEntry
      * @param \FormBundle\Entity\Field      $field
+     * @param string $value
+     * @param string $readableValue
      */
-    public function __construct(NodeEntry $formEntry, Field $field, $value)
+    public function __construct(NodeEntry $formEntry, Field $field, $value, $readableValue = null)
     {
         $this->formEntry = $formEntry;
         $this->field = $field;
         $this->value = $value;
+        $this->readableValue = $readableValue;
     }
 
     /**
@@ -95,11 +105,31 @@ class Entry
     }
 
     /**
-     * @return string
+     * @param string $value;
+     * @return \FormBundle\Entity\Entry
      */
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReadableValue()
+    {
+        return $this->readableValue;
+    }
+
+    /**
+     * @param string $readableValue;
+     * @return \FormBundle\Entity\Entry
+     */
+    public function setReadableValue($readableValue)
+    {
+        $this->readableValue = $readableValue;
 
         return $this;
     }

@@ -24,7 +24,8 @@ use CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    PageBundle\Entity\Category;
+    PageBundle\Entity\Category,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -208,11 +209,13 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
+        $fallbackTranslation = null;
+
         foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 
