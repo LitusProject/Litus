@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'br_install' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/br[/]',
-                'defaults' => array(
-                    'controller' => 'br_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -322,8 +312,6 @@ return array(
     ),
 
     'controllers' => array(
-        'br_install'               => 'BrBundle\Controller\Admin\InstallController',
-
         'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
         'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
         'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',

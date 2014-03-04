@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'on_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/on[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'on_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'on_admin_slug' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -61,7 +49,6 @@ return array(
     ),
 
     'controllers' => array(
-        'on_install'    => 'OnBundle\Controller\Admin\InstallController',
         'on_admin_slug' => 'OnBundle\Controller\Admin\SlugController',
 
         'on_redirect'   => 'OnBundle\Controller\RedirectController',

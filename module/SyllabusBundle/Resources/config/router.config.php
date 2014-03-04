@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'syllabus_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/syllabus[/]',
-                'defaults' => array(
-                    'controller' => 'syllabus_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'syllabus_admin_update' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -215,8 +205,6 @@ return array(
     ),
 
     'controllers' => array(
-        'syllabus_install'               => 'SyllabusBundle\Controller\Admin\InstallController',
-
         'syllabus_admin_update'          => 'SyllabusBundle\Controller\Admin\UpdateController',
         'syllabus_admin_academic'        => 'SyllabusBundle\Controller\Admin\AcademicController',
         'syllabus_admin_group'           => 'SyllabusBundle\Controller\Admin\GroupController',

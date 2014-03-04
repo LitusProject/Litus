@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'logistics_install' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/logistics[/]',
-                'defaults' => array(
-                    'controller' => 'logistics_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'logistics_admin_driver' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -182,7 +172,6 @@ return array(
     ),
 
     'controllers' => array(
-        'logistics_install'                 => 'LogisticsBundle\Controller\Admin\InstallController',
         'logistics_admin_driver'            => 'LogisticsBundle\Controller\Admin\DriverController',
         'logistics_admin_van_reservation'   => 'LogisticsBundle\Controller\Admin\VanReservationController',
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',

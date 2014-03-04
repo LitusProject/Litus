@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'secretary_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/secretary[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'secretary_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'secretary_admin_registration' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -85,7 +73,6 @@ return array(
     ),
 
     'controllers' => array(
-        'secretary_install'              => 'SecretaryBundle\Controller\Admin\InstallController',
         'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
         'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
 
