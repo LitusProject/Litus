@@ -74,6 +74,7 @@ class Form
 
             if ($field instanceof FileField) {
                 $value = '';
+                $readableValue = null;
                 $filePath = $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('form.file_upload_path');
@@ -87,7 +88,7 @@ class Form
 
                         $entityManager->remove($fieldEntry);
                     }
-                } else {
+                } elseif (!isset($formData['field-' . $field->getId()])) {
                     $upload = new FileUpload();
                     $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
                     if ($upload->isValid('field-' . $field->getId())) {
@@ -101,6 +102,8 @@ class Form
                             if (file_exists($filePath . '/' . $fileName))
                                 unlink($filePath . '/' . $fileName);
                         }
+
+                        $readableValue = basename($upload->getFileName());
 
                         $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
                         $upload->receive('field-' . $field->getId());
@@ -125,9 +128,10 @@ class Form
 
             if (!$removed) {
                 if ($fieldEntry) {
-                    $fieldEntry->setValue($value);
+                    $fieldEntry->setValue($value)
+                        ->setReadableValue($readableValue);
                 } else {
-                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
+                    $fieldEntry = new FieldEntry($formEntry, $field, $value, $readableValue);
                     $formEntry->addFieldEntry($fieldEntry);
                     $entityManager->persist($fieldEntry);
                 }
