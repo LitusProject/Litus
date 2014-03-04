@@ -88,7 +88,7 @@ class Form
 
                         $entityManager->remove($fieldEntry);
                     }
-                } else {
+                } elseif (!isset($formData['field-' . $field->getId()])) {
                     $upload = new FileUpload();
                     $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
                     if ($upload->isValid('field-' . $field->getId())) {
