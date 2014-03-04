@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'cudi_install' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/cudi[/]',
-                'defaults' => array(
-                    'controller' => 'cudi_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'cudi_admin_article' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -827,8 +817,6 @@ return array(
     ),
 
     'controllers' => array(
-        'cudi_install'                                  => 'CudiBundle\Controller\Admin\InstallController',
-
         'cudi_admin_article'                            => 'CudiBundle\Controller\Admin\ArticleController',
         'cudi_admin_article_subject'                    => 'CudiBundle\Controller\Admin\Article\SubjectMapController',
         'cudi_admin_article_comment'                    => 'CudiBundle\Controller\Admin\Article\CommentController',

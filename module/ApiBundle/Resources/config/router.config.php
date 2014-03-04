@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'api_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/api[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'api_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'api_admin_key' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -85,7 +73,6 @@ return array(
     ),
 
     'controllers' => array(
-        'api_install'   => 'ApiBundle\Controller\Admin\InstallController',
         'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
         'api_auth'      => 'ApiBundle\Controller\AuthController',

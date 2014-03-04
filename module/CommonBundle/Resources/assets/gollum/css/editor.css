@@ -48,6 +48,7 @@ a {
   /* text-indent: -5000px; */
   text-shadow: 0 1px 0 #fff;
   width: 25px;
+  padding: 0px !important;
 
   border-radius: 0.3em;
   -moz-border-radius: 0.3em;
