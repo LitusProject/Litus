@@ -34,6 +34,10 @@
 
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             $('input[type=file]').each(function () {
+                if ($(this).data('name').length > 0) {
+                    $(this).closest('.fileinput').find('.glyphicon').show();
+                    $(this).closest('.fileinput').find('.fileinput-filename').append($(this).data('name'));
+                }
                 if ($(this).data('file')) {
                     $(this).closest('.fileinput').append(
                         $('<div>', {'class': 'fileActions'}).append(
