@@ -91,7 +91,12 @@ class Edit extends Add
                             'name'     => 'field-' . $fieldSpecification->getId(),
                             'required' => false,
                             'validators' => array(
-                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                                array(
+                                    'name' => 'filefilessize',
+                                    'options' => array(
+                                        'max' => $fieldSpecification->getMaxSize() . 'MB',
+                                    ),
+                                ),
                             ),
                         )
                     )

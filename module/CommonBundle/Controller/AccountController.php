@@ -585,8 +585,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $form = new ProfileForm();
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '3MB')));
-        $upload->addValidator(new ImageValidator());
+        $upload->setValidators($form->getInputFilter()->get('profile')->getValidatorChain()->getValidators());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

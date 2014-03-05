@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'logo',
-                    'required' => false,
+                    'required' => true,
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'max' => '2MB',
+                                'max' => '10MB',
                             ),
                         ),
                     ),

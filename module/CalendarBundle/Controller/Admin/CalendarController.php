@@ -269,14 +269,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
+        $form = new PosterForm();
+
         if ($this->getRequest()->isPost()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-            $upload->addValidator(new ImageValidator());
+            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();

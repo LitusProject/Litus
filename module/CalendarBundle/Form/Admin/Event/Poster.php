@@ -60,10 +60,10 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'poster',
-                    'required' => false,
+                    'required' => true,
                     'validators' => array(
                         array(
-                            'name' => 'image',
+                            'name' => 'fileisimage',
                         ),
                         array(
                             'name' => 'filefilessize',
