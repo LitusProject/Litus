@@ -63,15 +63,12 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
                     'required' => false,
                     'validators' => array(
                         array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
+                            'name' => 'image',
                         ),
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'max' => '2MB',
+                                'max' => '10MB',
                             ),
                         ),
                     ),
