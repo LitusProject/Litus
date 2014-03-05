@@ -173,6 +173,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'file',
+                    'required' => false,
+                    'validators'  => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => BannerController::BANNER_FILESIZE,
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileisimage',
+                        ),
+                        array(
+                            'name' => 'fileimagesize',
+                            'options' => array(
+                                'minwidth'  => BannerController::BANNER_WIDTH,
+                                'maxwidth'  => BannerController::BANNER_WIDTH,
+                                'minheight' => BannerController::BANNER_HEIGHT,
+                                'maxheight' => BannerController::BANNER_HEIGHT,
+                            )
+                        ),
+                    ),
+                )
+            )
+        );
+
         return $inputFilter;
     }
 }

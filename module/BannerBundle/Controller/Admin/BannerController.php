@@ -25,10 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\Validator\File\Count as CountValidator,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
-    Zend\Validator\File\ImageSize as ImageSizeValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -108,16 +104,12 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
+        $form = new AddForm($this->getEntityManager());
+
         $upload = new FileUpload();
 
-        $upload->addValidator(new SizeValidator(array('max' => $this::BANNER_FILESIZE)));
-        $upload->addValidator(new ImageValidator());
-        $validator = new ImageSizeValidator();
-        $validator->setMinWidth($this::BANNER_WIDTH)
-            ->setMinHeight($this::BANNER_HEIGHT)
-            ->setMaxWidth($this::BANNER_WIDTH)
-            ->setMaxHeight($this::BANNER_HEIGHT);
-        $upload->addValidator($validator);
+        foreach($form->getInputFilter()->get('file')->getValidatorChain()->getValidators() as $validator)
+            $upload->addValidator($validator['instance']);
 
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
