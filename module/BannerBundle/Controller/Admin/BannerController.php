@@ -37,10 +37,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
-    const BANNER_WIDTH = 940;
-    const BANNER_HEIGHT = 100;
-    const BANNER_FILESIZE = '10MB';
-
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(

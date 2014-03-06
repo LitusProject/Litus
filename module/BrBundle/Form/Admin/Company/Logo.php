@@ -30,6 +30,8 @@ use CommonBundle\Component\Form\Admin\Element\File,
  */
 class Logo extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '2MB';
+
     /**
      * @param null|string|int $name Optional name for the element
      */
@@ -41,6 +43,7 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new File('logo');
         $field->setLabel('Logo')
+            ->setAttribute('data-help', 'The logo must be an image of max ' . self::FILESIZE . '.')
             ->setRequired();
         $this->add($field);
 
@@ -67,7 +70,7 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'max' => '2MB',
+                                'max' => self::FILESIZE,
                             ),
                         ),
                     ),
