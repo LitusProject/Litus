@@ -21,7 +21,7 @@ namespace CommonBundle\Component\Module;
 /**
  * This class provides a static method to create module configurations.
  *
- * Configuration is split up into three files:
+ * Configuration is split up into four files:
  * - module.config.php
  *       The main file. Runs \CommonBundle\Component\Module\Config::create
  *       (not in BootstrapBundle)
@@ -35,7 +35,7 @@ namespace CommonBundle\Component\Module;
  *                       // a mapping of controller name to class
  *               ),
  *       );
- *- assetic.config.php
+ * - assetic.config.php
  *       Optional. Returns an array:
  *       return array(
  *               'controllers' => array(
@@ -46,6 +46,16 @@ namespace CommonBundle\Component\Module;
  *               ),
  *               'collections' => array(
  *                       // names collections of assets
+ *               ),
+ *       );
+ * - admin.config.php
+ *       Optional. Returns an array:
+ *       return array(
+ *               'general'  => array(
+ *                       // defines general menus to show in the admin
+ *               ),
+ *               'submenus' => array(
+ *                       // defines submenus to show in the admin
  *               ),
  *       );
  *
@@ -216,6 +226,11 @@ class Config
         );
     }
 
+    private static function _createAdminConfig(array $settings)
+    {
+        return self::_load($settings['directory'], 'admin.config.php');
+    }
+
     /**
      *
      * @param  string $namespace the namespace of the module
@@ -250,6 +265,7 @@ class Config
             'view_manager' => self::_createViewManagerConfig($settings),
 
             'litus' => array(
+                'admin'   => self::_createAdminConfig($settings),
                 'install' => self::_createInstallConfig($settings),
                 'console' => self::_load($directory, 'console.config.php'),
             ),

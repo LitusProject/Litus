@@ -87,6 +87,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (false !== getenv('SERVED_BY'))
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
 
+        $result->menu = $this->_getMenu();
+
         $e->setResult($result);
 
         return $result;
@@ -145,5 +147,77 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     protected function getCurrentAcademicYear($organization = true)
     {
         return parent::getCurrentAcademicYear($organization);
+    }
+
+    private function _addToMenu($controller, $settings, &$menu)
+    {
+        if (!is_array($settings))
+            $settings = array('title' => $settings);
+        if (!array_key_exists('action', $settings))
+            $settings['action'] = 'manage';
+
+        if ($this->hasAccess($controller, $settings['action'])) {
+            $menu[$controller] = $settings;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function _getMenu()
+    {
+        $config = $this->getServiceLocator()->get('Config');
+        $config = $config['litus']['admin'];
+
+        $currentController = $this->getParam('controller');
+
+        $menu = array(
+            'general'  => array(),
+            'submenus' => array(),
+        );
+
+        foreach ($config['general'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            foreach ($submenu as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenu);
+            }
+
+            if (count($newSubmenu))
+                $menu['general'][$name] = $newSubmenu;
+        }
+
+        foreach ($config['submenus'] as $name => $submenu) {
+            $newSubmenu = array('items' => array());
+
+            $lastSubtitle = array_pop($submenu['subtitle']);
+            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+
+            $active = false;
+
+            foreach ($submenu['items'] as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenu['items']);
+
+                if ($currentController === $controller)
+                    $active = true;
+            }
+
+            if (!$active && array_key_exists('controllers', $submenu)) {
+                foreach ($submenu['controllers'] as $controller) {
+                    if ($currentController === $controller) {
+                        $active = true;
+                        break;
+                    }
+                }
+            }
+
+            $newSubmenu['active'] = $active;
+
+            if (count($newSubmenu))
+                $menu['submenus'][$name] = $newSubmenu;
+        }
+
+        return $menu;
     }
 }
