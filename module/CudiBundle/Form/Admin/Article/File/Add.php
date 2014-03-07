@@ -33,6 +33,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '256MB';
+
     public function __construct($options = null)
     {
         parent::__construct($options);
@@ -49,11 +51,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new File('file');
         $field->setLabel('File')
             ->setAttribute('size', 70)
+            ->setAttribute('data-help', 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.')
             ->setRequired();
         $this->add($field);
 
         $field = new Checkbox('printable');
-        $field->setLabel('Printable');
+        $field->setLabel('Printable')
+            ->setAttribute('data-help', 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -98,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'max' => '256MB',
+                                'max' => self::FILESIZE,
                             ),
                         ),
                     ),
