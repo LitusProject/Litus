@@ -28,35 +28,62 @@ namespace CommonBundle\Component\Module;
  * - router.config.php
  *       Optional. Returns an array:
  *       return array(
- *               'routes' => array(
- *                       // the routes
- *               ),
- *               'controllers' => array(
- *                       // a mapping of controller name to class
- *               ),
+ *           'routes' => array(
+ *               // the routes
+ *           ),
+ *           'controllers' => array(
+ *               // a mapping of controller name to class
+ *           ),
  *       );
  * - assetic.config.php
  *       Optional. Returns an array:
  *       return array(
- *               'controllers' => array(
- *                       // defines which resources are to be loaded based on the controller
- *               ),
- *               'routes' => array(
- *                       // defines which resources are to be loaded based on the route
- *               ),
- *               'collections' => array(
- *                       // names collections of assets
- *               ),
+ *           'controllers' => array(
+ *               // defines which resources are to be loaded based on the controller
+ *           ),
+ *           'routes' => array(
+ *               // defines which resources are to be loaded based on the route
+ *           ),
+ *           'collections' => array(
+ *               // names collections of assets
+ *           ),
  *       );
  * - admin.config.php
  *       Optional. Returns an array:
  *       return array(
- *               'general'  => array(
- *                       // defines general menus to show in the admin
+ *           'general'     => array(
+ *               // Optional. Defines general menus to show in the admin
+ *               <group_name> => array(
+ *                   <controller> => array(
+ *                       'action' => 'manage', // optional, the action
+ *                       'title'  => ,         // required, the title
+ *                       'help'   => null,     // optional, help text
+ *                   ),
+ *                   // or using the shorthand if action is 'manage':
+ *                   <controller> => <title>,
  *               ),
- *               'submenus' => array(
- *                       // defines submenus to show in the admin
+ *           ),
+ *           'submenus'    => array(
+ *               // Optional. Defines submenus to show in the admin
+ *               <name> => array(
+ *                   'subtitle'    => array(
+ *                       // Optional. Defines words to add to the subtitle
+ *                   ),
+ *                   'items'       => array(
+ *                       // Optional. Defines items to add to the submenu
+ *                       <controller> => array(
+ *                           'action' => 'manage', // optional, the action
+ *                           'title'  => ,         // required, the title
+ *                           'help'   => null,     // optional, help text
+ *                       ),
+ *                       // shorthand for controller with action 'manage':
+ *                       <controller> => <title>,
+ *                   ),
+ *                   'controllers' => array(
+ *                       // Optional. Defines extra controllers that make this submenu "active"
+ *                   ),
  *               ),
+ *           ),
  *       );
  *
  * This class creates a standard configuration based on a couple of settings the module.config.php
@@ -64,17 +91,17 @@ namespace CommonBundle\Component\Module;
  *       public static function create(array $settings, array $override) { ... }
  * The parameters are (default values are given):
  *       $settings = array(
- *               'namespace'         =>         ,// required, the namespace of the bundle to configure
- *               'directory'         =>         ,// required, the directory of the module.config.php file
- *               'has_entities'      => true    ,// optional, whether or not the bundle has entities
- *               'has_documents'     => false   ,// optional, whether or not the bundle has documents
- *               'translation_files' => array() ,// optional, files in ../translations for i18n
- *               'has_views'         => true    ,// optional, whether the bundle has Twig views
- *               'has_layouts'       => false   ,// optional, whether the bundle has Twig layouts
+ *           'namespace'         =>         , // required, the namespace of the bundle to configure
+ *           'directory'         =>         , // required, the directory of the module.config.php file
+ *           'has_entities'      => true    , // optional, whether or not the bundle has entities
+ *           'has_documents'     => false   , // optional, whether or not the bundle has documents
+ *           'translation_files' => array() , // optional, files in ../translations for i18n
+ *           'has_views'         => true    , // optional, whether the bundle has Twig views
+ *           'has_layouts'       => false   , // optional, whether the bundle has Twig layouts
  *       );
  *       $override = array(
- *               // elements in this array are merged into the result of the method before it is returned
- *               // using array_merge_recursive.
+ *           // elements in this array are merged into the result of the method before it is returned
+ *           // using array_merge_recursive.
  *       );
  *
  *
@@ -226,11 +253,6 @@ class Config
         );
     }
 
-    private static function _createAdminConfig(array $settings)
-    {
-        return self::_load($settings['directory'], 'admin.config.php');
-    }
-
     /**
      *
      * @param  string $namespace the namespace of the module
@@ -265,7 +287,7 @@ class Config
             'view_manager' => self::_createViewManagerConfig($settings),
 
             'litus' => array(
-                'admin'   => self::_createAdminConfig($settings),
+                'admin'   => self::_load($directory, 'admin.config.php'),
                 'install' => self::_createInstallConfig($settings),
                 'console' => self::_load($directory, 'console.config.php'),
             ),
