@@ -20,7 +20,7 @@ namespace MailBundle\Form\Admin\Study;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
+    CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
@@ -196,6 +196,23 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         new MultiMailValidator()
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'file',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '50MB',
+                            ),
+                        ),
                     ),
                 )
             )

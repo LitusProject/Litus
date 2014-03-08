@@ -21,7 +21,7 @@ return array(
         'cudi_admin_article' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/article[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/article[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -38,7 +38,7 @@ return array(
         'cudi_admin_article_subject'=> array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/article/subject[/:action[/:id]][/:academicyear][/]',
+                'route' => '/admin/cudi/article/subject[/:action[/:id]][/:academicyear][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -53,7 +53,7 @@ return array(
         'cudi_admin_article_comment' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/article/comment[/:action[/:id[/:article]][/page/:page]][/]',
+                'route' => '/admin/cudi/article/comment[/:action[/:id[/:article]][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -68,7 +68,7 @@ return array(
         'cudi_admin_article_file' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/article/file[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/article/file[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -83,7 +83,7 @@ return array(
         'cudi_admin_sales_article' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article[/:action[/:id][/:academicyear][/semester/:semester][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/sales/article[/:action[/:id][/:academicyear][/semester/:semester][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -102,7 +102,7 @@ return array(
         'cudi_admin_sales_article_typeahead' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/:academicyear/typeahead[/:string][/]',
+                'route' => '/admin/cudi/sales/article/:academicyear/typeahead[/:string][/]',
                 'constraints' => array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
@@ -116,7 +116,7 @@ return array(
         'cudi_admin_sales_article_sale' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/sale[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/article/sale[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -130,7 +130,7 @@ return array(
         'cudi_admin_sales_article_discount' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/discount[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/article/discount[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -144,7 +144,7 @@ return array(
         'cudi_admin_sales_article_discount_template' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/discount/template[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/article/discount/template[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -158,7 +158,7 @@ return array(
         'cudi_admin_sales_article_barcode' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/barcode[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/article/barcode[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -172,7 +172,7 @@ return array(
         'cudi_admin_sales_article_restriction' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/article/restriction[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/article/restriction[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -186,7 +186,7 @@ return array(
         'cudi_admin_sales_booking' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page][/date/:date][/number/:number]][/]',
+                'route' => '/admin/cudi/sales/booking[/:action[/:id][/period/:period][/:type[/:field/:string]][/page/:page][/date/:date][/number/:number]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -206,7 +206,7 @@ return array(
         'cudi_admin_sales_session' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/session[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/sales/session[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -221,7 +221,7 @@ return array(
         'cudi_admin_sales_session_restriction' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/session/restriction[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/session/restriction[/:action[/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -235,7 +235,7 @@ return array(
         'cudi_admin_sales_session_openinghour' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/session/openinghours[/:action[/:id]][/]',
+                'route' => '/admin/cudi/sales/session/openinghours[/:action[/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -249,7 +249,7 @@ return array(
         'cudi_admin_sales_financial' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/financial[/:action[/:id][/:academicyear]][/]',
+                'route' => '/admin/cudi/sales/financial[/:action[/:id][/:academicyear]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -264,7 +264,7 @@ return array(
         'cudi_admin_sales_financial_sold' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/sales/financial/sold[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -282,7 +282,7 @@ return array(
         'cudi_admin_sales_financial_returned' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/financial/returned[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/sales/financial/returned[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -300,7 +300,7 @@ return array(
         'cudi_admin_sales_financial_ordered' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/sales/financial/ordered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -318,7 +318,7 @@ return array(
         'cudi_admin_sales_financial_delivered' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/sales/financial/delivered[/:action[/:id][/:academicyear][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -336,7 +336,7 @@ return array(
         'cudi_admin_supplier' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/supplier[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/supplier[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -351,7 +351,7 @@ return array(
         'cudi_admin_supplier_user' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/supplier/user[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/supplier/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -366,7 +366,7 @@ return array(
         'cudi_admin_stock' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock[/:action[/:id][/semester/:semester][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/stock[/:action[/:id][/semester/:semester][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -384,7 +384,7 @@ return array(
         'cudi_admin_stock_period' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock/period[/:action[/:id[/:field/:string]][/page/:page]][/]',
+                'route' => '/admin/cudi/stock/period[/:action[/:id[/:field/:string]][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -401,7 +401,7 @@ return array(
         'cudi_admin_stock_order' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock/order[/:action[/:id[/:date][/:order]][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/cudi/stock/order[/:action[/:id[/:date][/:order]][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -420,7 +420,7 @@ return array(
         'cudi_admin_stock_delivery' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock/delivery[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/stock/delivery[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -435,7 +435,7 @@ return array(
         'cudi_admin_stock_delivery_typeahead' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock/article/:academicyear/typeahead[/:string][/]',
+                'route' => '/admin/cudi/stock/article/:academicyear/typeahead[/:string][/]',
                 'constraints' => array(
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'string'       => '[%a-zA-Z0-9:.,_-]*',
@@ -449,7 +449,7 @@ return array(
         'cudi_admin_stock_retour' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/stock/retour[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/stock/retour[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -464,7 +464,7 @@ return array(
         'cudi_admin_prof_action' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/prof/actions[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/prof/actions[/:action[/:id][/page/:page]][/]',
                 'contraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

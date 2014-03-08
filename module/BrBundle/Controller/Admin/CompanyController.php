@@ -324,14 +324,16 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $upload = new FileTransfer();
+            $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
+
+            if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $file = new FileTransfer();
-                $file->receive();
+                $upload->receive();
 
-                $image = new Imagick($file->getFileName());
-                unlink($file->getFileName());
+                $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
@@ -364,6 +366,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 return new ViewModel();
+            } else {
+                $errors = $form->getMessages();
+
+                if (sizeof($upload->getMessages()) > 0)
+                    $errors['logo'] = $upload->getMessages();
+
+                $form->setMessages($errors);
             }
         }
 

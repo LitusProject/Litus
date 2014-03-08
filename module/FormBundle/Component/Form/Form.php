@@ -103,7 +103,7 @@ class Form
                                 unlink($filePath . '/' . $fileName);
                         }
 
-                        $readableValue = basename($upload->getFileName());
+                        $readableValue = basename($upload->getFileName('field-' . $field->getId()));
 
                         $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
                         $upload->receive('field-' . $field->getId());
