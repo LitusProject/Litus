@@ -172,10 +172,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentController = $this->getParam('controller');
 
-        $menu = array(
-            'general'  => array(),
-            'submenus' => array(),
-        );
+        $titleNatCmp = function(array $a, array $b) {
+            return strnatcmp($a['title'], $b['title']);
+        };
+
+        $general = array();
 
         foreach ($config['general'] as $name => $submenu) {
             $newSubmenu = array();
@@ -184,20 +185,26 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->_addToMenu($controller, $settings, $newSubmenu);
             }
 
-            if (count($newSubmenu))
-                $menu['general'][$name] = $newSubmenu;
+            if (count($newSubmenu)) {
+                uasort($newSubmenu, $titleNatCmp);
+                $general[$name] = $newSubmenu;
+            }
         }
 
-        foreach ($config['submenus'] as $name => $submenu) {
-            $newSubmenu = array('items' => array());
+        $submenus = array();
 
+        foreach ($config['submenus'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            natsort($submenu['subtitle']);
             $lastSubtitle = array_pop($submenu['subtitle']);
             $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
 
             $active = false;
+            $newSubmenuItems = array();
 
             foreach ($submenu['items'] as $controller => $settings) {
-                $this->_addToMenu($controller, $settings, $newSubmenu['items']);
+                $this->_addToMenu($controller, $settings, $newSubmenuItems);
 
                 if ($currentController === $controller)
                     $active = true;
@@ -214,10 +221,18 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
             $newSubmenu['active'] = $active;
 
+            uasort($newSubmenuItems, $titleNatCmp);
+            $newSubmenu['items']  = $newSubmenuItems;
+
             if (count($newSubmenu))
-                $menu['submenus'][$name] = $newSubmenu;
+                $submenus[$name] = $newSubmenu;
         }
 
-        return $menu;
+        uksort($submenus, 'strnatcmp');
+
+        return array(
+            'general'  => $general,
+            'submenus' => $submenus,
+        );
     }
 }
