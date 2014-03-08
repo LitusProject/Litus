@@ -72,80 +72,84 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $upload = new FileTransfer();
+            $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
+
+            if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $filePath = 'public/' . $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.public_logo_path') . '/';
 
-                $upload = new FileTransfer();
-                $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-                $upload->addValidator(new ImageValidator());
+                $upload->receive();
 
-                if ($upload->isValid()) {
-                    $upload->receive();
+                $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
+                $image->setImageFormat('png');
+                $image->scaleImage(1000, 100, true);
 
-                    $image = new Imagick($upload->getFileName());
-                    unlink($upload->getFileName());
-                    $image->setImageFormat('png');
-                    $image->scaleImage(1000, 100, true);
+                $original = clone $image;
 
-                    $original = clone $image;
+                $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
 
-                    $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
+                $color = 0;
+                $iterator = $image->getPixelIterator();
+                $nbPixels = 0;
+                foreach ($iterator as $pixels) {
+                    foreach ($pixels as $pixel) {
+                        if ($pixel->getColor()['a'] == 1)
+                            continue;
 
-                    $color = 0;
-                    $iterator = $image->getPixelIterator();
-                    $nbPixels = 0;
-                    foreach ($iterator as $pixels) {
-                        foreach ($pixels as $pixel) {
-                            if ($pixel->getColor()['a'] == 1)
-                                continue;
-
-                            $pixel_color = $pixel->getColor(true);
-                            $nbPixels++;
-                            $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
-                        }
+                        $pixel_color = $pixel->getColor(true);
+                        $nbPixels++;
+                        $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
                     }
-                    if ($nbPixels != 0 && $color/$nbPixels < 0.5)
-                        $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
-
-                    $all = new Imagick();
-                    $all->addImage($image);
-                    $all->addImage($original);
-                    $all->resetIterator();
-                    $combined = $all->appendImages(true);
-                    $combined->setImageFormat('png');
-
-                    do {
-                        $fileName = sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
-                    $combined->writeImage($filePath . $fileName);
-
-                    $logo = new Logo($company, $formData['type'], $fileName, $formData['url'], $image->getImageWidth(), $image->getImageHeight());
-                    $this->getEntityManager()->persist($logo);
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The logo has successfully been added!'
-                        )
-                    );
-
-                    $this->redirect()->toRoute(
-                        'br_admin_company_logo',
-                        array(
-                            'action' => 'manage',
-                            'id' => $company->getId(),
-                        )
-                    );
-
-                    return new ViewModel();
                 }
+                if ($nbPixels != 0 && $color/$nbPixels < 0.5)
+                    $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
+
+                $all = new Imagick();
+                $all->addImage($image);
+                $all->addImage($original);
+                $all->resetIterator();
+                $combined = $all->appendImages(true);
+                $combined->setImageFormat('png');
+
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+                $combined->writeImage($filePath . $fileName);
+
+                $logo = new Logo($company, $formData['type'], $fileName, $formData['url'], $image->getImageWidth(), $image->getImageHeight());
+                $this->getEntityManager()->persist($logo);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The logo has successfully been added!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_company_logo',
+                    array(
+                        'action' => 'manage',
+                        'id' => $company->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            } else {
+                $errors = $form->getMessages();
+
+                if (sizeof($upload->getMessages()) > 0)
+                    $errors['logo'] = $upload->getMessages();
+
+                $form->setMessages($errors);
             }
         }
 

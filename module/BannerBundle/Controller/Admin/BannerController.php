@@ -37,10 +37,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
-    const BANNER_WIDTH = 940;
-    const BANNER_HEIGHT = 100;
-    const BANNER_FILESIZE = '10MB';
-
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -107,9 +103,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         $form = new AddForm($this->getEntityManager());
 
         $upload = new FileUpload();
-
-        foreach($form->getInputFilter()->get('file')->getValidatorChain()->getValidators() as $validator)
-            $upload->addValidator($validator['instance']);
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
