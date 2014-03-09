@@ -30,7 +30,7 @@ use CommonBundle\Entity\User\Person,
 class Removed extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\User\Person      $person
      * @param \CudiBundle\Entity\Article\SubjectMap $subjectMap
      */
     public function __construct(Person $person, SubjectMap $subjectMap)

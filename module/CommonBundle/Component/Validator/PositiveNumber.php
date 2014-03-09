@@ -42,8 +42,8 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param bool $strict Enable striclty positive checking (i.e. zero is not allowed)
-     * @param mixed $opts The validator's options
+     * @param bool  $strict Enable striclty positive checking (i.e. zero is not allowed)
+     * @param mixed $opts   The validator's options
      */
     public function __construct($strict = true, $opts = null)
     {
@@ -54,8 +54,8 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if the value is a positive number.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

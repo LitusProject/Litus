@@ -172,11 +172,11 @@ abstract class Person implements RoleAware
     private $language;
 
     /**
-     * @param string $username The user's username
-     * @param array $roles The user's roles
-     * @param string $firstName The user's first name
-     * @param string $lastName The user's last name
-     * @param string $email The user's e-mail address
+     * @param string $username    The user's username
+     * @param array  $roles       The user's roles
+     * @param string $firstName   The user's first name
+     * @param string $lastName    The user's last name
+     * @param string $email       The user's e-mail address
      * @param string $phoneNumber The user's phone number
      * @param $sex string The users sex ('m' or 'f')
      */
@@ -204,7 +204,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param string $username
+     * @param  string                           $username
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
@@ -227,13 +227,14 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Credential $credential
+     * @param  \CommonBundle\Entity\User\Credential $credential
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setCredential(Credential $credential)
     {
         $this->credential = $credential;
+
         return $this;
     }
 
@@ -256,7 +257,7 @@ abstract class Person implements RoleAware
     /**
      * Checks whether or not the given credential is valid.
      *
-     * @param string $credential The credential that should be checked
+     * @param  string $credential The credential that should be checked
      * @return bool
      */
     public function validateCredential($credential)
@@ -278,12 +279,13 @@ abstract class Person implements RoleAware
     /**
      * Add the specified roles to the user.
      *
-     * @param array $roles An array containing the roles that should be added
+     * @param  array                            $roles An array containing the roles that should be added
      * @return \CommonBundle\Entity\User\Person
      */
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+
         return $this;
     }
 
@@ -303,23 +305,25 @@ abstract class Person implements RoleAware
     /**
      * Removes the given role.
      *
-     * @param \CommonBundle\Entity\Acl\Role $role The role that should be removed
+     * @param  \CommonBundle\Entity\Acl\Role    $role The role that should be removed
      * @return \CommonBundle\Entity\User\Person
      */
     public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
+
         return $this;
     }
 
     /**
-     * @param string $firstName
+     * @param  string                           $firstName
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -332,13 +336,14 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param string $lastName
+     * @param  string                           $lastName
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -359,12 +364,13 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param string $email
+     * @param  string                           $email
      * @return \CommonBundle\Entity\User\Person
      */
     public function setEmail($email = null)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -377,12 +383,13 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param  \CommonBundle\Entity\General\Address $address
      * @return \CommonBundle\Entity\User\Person
      */
     public function setAddress(Address $address)
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -395,7 +402,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param null|string $phoneNumber
+     * @param  null|string                      $phoneNumber
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
@@ -403,6 +410,7 @@ abstract class Person implements RoleAware
     {
         $phoneNumber = str_replace(' ', '', $phoneNumber);
         $this->phoneNumber = $phoneNumber;
+
         return $this;
     }
 
@@ -415,7 +423,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param null|string $sex The person's sex
+     * @param  null|string                      $sex The person's sex
      * @return \CommonBundle\Entity\User\Person
      * @throws \InvalidArgumentException
      */
@@ -425,6 +433,7 @@ abstract class Person implements RoleAware
             throw new \InvalidArgumentException('Invalid sex');
 
         $this->sex = $sex;
+
         return $this;
     }
 
@@ -450,6 +459,7 @@ abstract class Person implements RoleAware
     public function disableLogin()
     {
         $this->canLogin = false;
+
         return $this;
     }
 
@@ -477,6 +487,7 @@ abstract class Person implements RoleAware
     public function setCode(Code $code = null)
     {
         $this->code = $code;
+
         return $this;
     }
 
@@ -500,6 +511,7 @@ abstract class Person implements RoleAware
             $failedLogins = 32767;
 
         $this->failedLogins = $failedLogins;
+
         return $this;
     }
 
@@ -511,6 +523,7 @@ abstract class Person implements RoleAware
     public function setLanguage(Language $language)
     {
         $this->language = $language;
+
         return $this;
     }
 
@@ -523,32 +536,34 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
+     * @param  \CommonBundle\Entity\User\Status\Organization $organizationStatus
      * @return \CommonBundle\Entity\User\Person
      */
     public function addOrganizationStatus(OrganizationStatus $organizationStatus)
     {
         $this->organizationStatuses->add($organizationStatus);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Status\Organization $organizationStatus
+     * @param  \CommonBundle\Entity\User\Status\Organization $organizationStatus
      * @return \CommonBundle\Entity\User\Person
      */
     public function removeOrganizationStatus(OrganizationStatus $organizationStatus)
     {
         $this->organizationStatuses->removeElement($organizationStatus);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear     $academicYear
      * @return \CommonBundle\Entity\User\Status\Organization
      */
     public function getOrganizationStatus(AcademicYearEntity $academicYear)
     {
-        foreach($this->organizationStatuses as $status) {
+        foreach ($this->organizationStatuses as $status) {
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
@@ -557,14 +572,14 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return boolean
      */
     public function canHaveOrganizationStatus(AcademicYearEntity $academicYear)
     {
         if ($this->organizationStatuses->count() >= 1) {
             if ($this->organizationStatuses->exists(
-                function($key, $value) use ($academicYear) {
+                function ($key, $value) use ($academicYear) {
                     if ($value->getAcademicYear() == $academicYear)
                         return true;
                 }
@@ -579,7 +594,7 @@ abstract class Person implements RoleAware
     /**
      * Checks whether or not this person is a member.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return boolean
      */
     public function isMember(AcademicYearEntity $academicYear)
@@ -596,7 +611,7 @@ abstract class Person implements RoleAware
     /**
      * Checks whether or not this person is a praesidium member.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return boolean
      */
     public function isPraesidium(AcademicYearEntity $academicYear)
@@ -610,9 +625,9 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager             $entityManager
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param boolean $onlyShibboleth Activate only login by Shibboleth
+     * @param boolean                                 $onlyShibboleth Activate only login by Shibboleth
      *
      * @return \CommonBundle\Entity\User\Person
      */
@@ -626,7 +641,7 @@ abstract class Person implements RoleAware
                 $found = $entityManager
                     ->getRepository('CommonBundle\Entity\User\Code')
                     ->findOneByCode($code);
-            } while(isset($found));
+            } while (isset($found));
 
             $code = new Code($code, $time);
             $entityManager->persist($code);
@@ -671,8 +686,8 @@ abstract class Person implements RoleAware
      * This method is called recursively to create a one-dimensional role flattening the
      * roles' inheritance structure.
      *
-     * @param array $inheritanceRoles The array with the roles that should be unfolded
-     * @param array $return The one-dimensional return array
+     * @param  array $inheritanceRoles The array with the roles that should be unfolded
+     * @param  array $return           The one-dimensional return array
      * @return array
      */
     private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())

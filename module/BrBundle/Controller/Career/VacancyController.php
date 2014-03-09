@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use BrBundle\Entity\Company,
+    BrBundle\Form\Career\Search\Vacancy as VacancySearchForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,10 +32,40 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+        $vacancySearchForm = new VacancySearchForm();
+
+        $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeQuery('vacancy'),
+            ->findAllActiveByTypeQuery('vacancy');
+
+        $formData = $this->getRequest()->getQuery();
+        $vacancySearchForm->setData($formData);
+
+        if ($vacancySearchForm->isValid()) {
+            $formData = $vacancySearchForm->getFormData($formData);
+
+            $repository = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company\Job');
+
+            if ('all' != $formData['sector']) {
+                if ('company' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
+                } elseif ('vacancy' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
+                } elseif ('mostRecent' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
+                }
+            } else {
+                if ('vacancy' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
+                } elseif ('mostRecent' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
+                }
+            }
+        }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $query,
             $this->getParam('page')
         );
 
@@ -46,6 +78,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'vacancySearchForm' => $vacancySearchForm,
             )
         );
     }
@@ -111,5 +144,14 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $vacancy;
+    }
+
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector)
+            $sectorArray[$key] = $sector;
+
+        return $sectorArray;
     }
 }

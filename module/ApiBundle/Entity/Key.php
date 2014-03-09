@@ -81,11 +81,11 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @param string $host The host this key's valid for
-     * @param string $code The code
-     * @param boolean $checkHost Whether the host should be checked
-     * @param array $roles The key's roles
-     * @param int $expirationTime The expiration time of this code
+     * @param string  $host
+     * @param string  $code
+     * @param boolean $checkHost
+     * @param array   $roles
+     * @param int     $expirationTime
      */
     public function __construct($host, $code, $checkHost, $roles, $expirationTime = 157680000)
     {
@@ -124,12 +124,13 @@ class Key implements RoleAware
     }
 
     /**
-     * @param string $host
+     * @param  string                $host
      * @return \ApiBundle\Entity\Key
      */
     public function setHost($host)
     {
         $this->host = $host;
+
         return $this;
     }
 
@@ -160,12 +161,13 @@ class Key implements RoleAware
     }
 
     /**
-     * @param boolean $checkHost
+     * @param  boolean               $checkHost
      * @return \ApiBundle\Entity\Key
      */
     public function setCheckHost($checkHost)
     {
         $this->checkHost = $checkHost;
+
         return $this;
     }
 
@@ -180,12 +182,13 @@ class Key implements RoleAware
     /**
      * Add the specified roles to the user.
      *
-     * @param array $roles An array containing the roles that should be added
+     * @param  array                            $roles An array containing the roles that should be added
      * @return \CommonBundle\Entity\User\Person
      */
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+
         return $this;
     }
 
@@ -205,19 +208,20 @@ class Key implements RoleAware
     /**
      * Removes the given role.
      *
-     * @param \CommonBundle\Entity\Acl\Role $role The role that should be removed
+     * @param  \CommonBundle\Entity\Acl\Role    $role The role that should be removed
      * @return \CommonBundle\Entity\User\Person
      */
     public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
+
         return $this;
     }
 
     /**
      * Checks whether or not this key is valid.
      *
-     * @param string $ip The remote IP
+     * @param  string  $ip The remote IP
      * @return boolean
      */
     public function validate($ip)
@@ -236,8 +240,8 @@ class Key implements RoleAware
      * This method is called recursively to create a one-dimensional role flattening the
      * roles' inheritance structure.
      *
-     * @param array $inheritanceRoles The array with the roles that should be unfolded
-     * @param array $return The one-dimensional return array
+     * @param  array $inheritanceRoles The array with the roles that should be unfolded
+     * @param  array $return           The one-dimensional return array
      * @return array
      */
     private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())

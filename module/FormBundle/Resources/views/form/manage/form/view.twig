@@ -20,8 +20,14 @@
 
     {% if authenticatedPerson is not null %}
         <div class="pull-right">
+            {% if hasAccess('form_manage', 'add') and viewer.isEdit() %}
+                <a href="{{ url("form_manage", {"action" : "add", "id" : form.getId()}) }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    {{ translate("Add") }}
+                </a>
+            {% endif %}
             {% if hasAccess('form_manage', 'download') %}
-                <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download-file btn btn-default">
+                <a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-arrow-down"></span>
                     {{ translate("Download") }}
                 </a>
@@ -96,14 +102,14 @@
                                         <td>
                                             {% if form.getValueFor(entry, field, language) %}
                                                 {% if hasAccess('form_manage', 'downloadFile') %}
-                                                    <button class="btn btn-default btn-xs download-file" data-file="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</button>
+                                                    <a class="btn btn-default btn-xs" href="{{ url('form_manage', {'action': 'downloadFile', 'id': form.getValueFor(entry, field, language)}) }}">{{ translate('Download') }}</a>
                                                 {% endif %}
                                             {% else %}
                                                 <i>{{ translate('(empty)') }}</i>
                                             {% endif %}
                                         </td>
                                     {% else %}
-                                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}</td>
+                                        <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}&nbsp;</td>
                                     {% endif %}
                                 {% endfor %}
                             {% else %}
@@ -190,13 +196,10 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            $('.download-file').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-
             $('[data-toggle="popover"]').popover(
                 {
                     html: true,
+                    container: 'body',
                 }
             ).click(function (e) {
                 e.preventDefault();

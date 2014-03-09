@@ -37,7 +37,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
 
         $sorted = array();
-        foreach($albums as $album) {
+        foreach ($albums as $album) {
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
             $year = AcademicYear::getAcademicYear($date);
@@ -123,6 +123,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -145,6 +146,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -165,39 +167,43 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function _getAlbumByName()
     {
-    	if (null === $this->getParam('name')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            $this->getResponse()->setStatusCode(404);
+
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneByName($this->getParam('name'));
 
-    	if (null === $album) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            $this->getResponse()->setStatusCode(404);
 
-    	return $album;
+            return;
+        }
+
+        return $album;
     }
 
     public function _getPhoto()
     {
-    	if (null === $this->getParam('name')) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            $this->getResponse()->setStatusCode(404);
+
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('name'));
 
-    	if (null === $album) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            $this->getResponse()->setStatusCode(404);
 
-    	return $album;
+            return;
+        }
+
+        return $album;
     }
 }

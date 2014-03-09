@@ -6,4 +6,4 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${SCRIPT_DIRECTORY}/../../"
 
-php bin/CudiBundle/reminderMail.php -rm
+php public/index.php form:mail --mail

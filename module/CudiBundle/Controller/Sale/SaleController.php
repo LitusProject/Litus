@@ -44,7 +44,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 ->getConfigValue('secretary.membership_article')
         );
 
-        foreach($ids as $organizationId => $articleId) {
+        foreach ($ids as $organizationId => $articleId) {
             $membershipArticles[$organizationId] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($articleId);
@@ -73,7 +73,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
         $form = new ReturnForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -140,7 +140,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
             if (!isset($data['person']) || !isset($data['article']))

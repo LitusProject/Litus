@@ -1,110 +1,110 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'on/admin/slug/partials/navigation.twig' %}
+    {% include 'on/admin/slug/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width slug_removed_success hide">
-    	<div class="title">Success</div>
-    	<div class="content">
-    		<p>The slug was successfully removed!</p>
-    	</div>
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The slug was successfully removed!</p>
+        </div>
     </div>
     <div class="flashmessage error_message full_width slug_removed_error hide">
-    	<div class="title">Error</div>
-    	<div class="content">
-    		<p>An error occurred while trying to delete the slug.</p>
-    	</div>
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the slug.</p>
+        </div>
     </div>
 
-	<div id="controller_action">
-	    <table class="full_width manage">
-	        <thead>
-	            <tr>
-	                <th>Name</th>
-	                <th width="500px">URL</th>
-	                <th width="70px">Hits</th>
-	                <th width="70px">Actions</th>
-	            </tr>
-	        </thead>
+    <div id="controller_action">
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="500px">URL</th>
+                    <th width="70px">Hits</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
 
-	        <tbody>
-	            {% for slug in paginator %}
-	                <tr class="item item-{{ slug.getId() }}">
-	                    <td>{{ slug.getName() }}</td>
-	                    <td>{{ slug.getUrl() }}</td>
-	                    <td>{{ slug.getHits() }}</td>
-	                    <td class="actions">
-	                        {% if hasAccess('on_admin_slug', 'edit') %}
-	                            <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                        {% if hasAccess('on_admin_slug', 'delete') %}
-	                            <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
-	                        {% endif %}
-	                    </td>
-	                </tr>
-	            {% endfor %}
-	        </tbody>
-	    </table>
+            <tbody>
+                {% for slug in paginator %}
+                    <tr class="item item-{{ slug.getId() }}">
+                        <td>{{ slug.getName() }}</td>
+                        <td>{{ slug.getUrl() }}</td>
+                        <td>{{ slug.getHits() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('on_admin_slug', 'edit') %}
+                                <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('on_admin_slug', 'delete') %}
+                                <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 
-	<div class="modal hide fade" id="removeSlug">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Slug
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the slug shortening the following URL: <b class="url"></b>?
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
-	</div>
+    <div class="modal hide fade" id="removeSlug">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Delete Slug
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to delete the slug shortening the following URL: <b class="url"></b>?
+                Please note that this operation cannot be undone!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <button class="delete">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('.item .delete').click(openModal);
-		});
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
 
-		function openModal(e) {
-			var $this = $(this);
-			e.preventDefault();
-			var removeSlug = $('#removeSlug');
-			removeSlug.find('.url').html($(this).data('url'));
-			removeSlug.find('.cancel').one('click', function () {
-				removeSlug.modal('hide');
-			});
-			var id = $this.data('id');
-			removeSlug.find('.delete').unbind('click').click(function () {
-				$.post('{{ url('on_admin_slug', {"action": "delete"})}}' + id, function (data) {
-				    if (data && 'success' == data.status) {
-						$('.flashmessage').addClass('hide');
-						$('.slug_removed_success').removeClass('hide');
-						$('.item-' + id).remove();
-						removeSlug.modal('hide');
-					} else {
-					    errorRemove();
-					}
-				}, 'json').error(errorRemove);
-			});
-			removeSlug.modal();
-		}
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeSlug = $('#removeSlug');
+            removeSlug.find('.url').html($(this).data('url'));
+            removeSlug.find('.cancel').one('click', function () {
+                removeSlug.modal('hide');
+            });
+            var id = $this.data('id');
+            removeSlug.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('on_admin_slug', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.slug_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeSlug.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeSlug.modal();
+        }
 
-		function errorRemove() {
-		    $('.flashmessage').addClass('hide');
-		    $('.slug_removed_error').removeClass('hide');
-		    $('#removeSlug').modal('hide');
-		}
-	</script>
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.slug_removed_error').removeClass('hide');
+            $('#removeSlug').modal('hide');
+        }
+    </script>
 {% endblock %}

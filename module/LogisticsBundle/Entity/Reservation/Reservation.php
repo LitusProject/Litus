@@ -92,12 +92,12 @@ class Reservation
     private $endDate;
 
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param string $reason
+     * @param \DateTime                                              $startDate
+     * @param \DateTime                                              $endDate
+     * @param string                                                 $reason
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string $additionalInfo
-     * @param \CommonBundle\Entity\User\Person $creator
+     * @param string                                                 $additionalInfo
+     * @param \CommonBundle\Entity\User\Person                       $creator
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $reason, ReservableResource $resource, $additionalInfo, Person $creator)
     {
@@ -141,6 +141,7 @@ class Reservation
     public function setReason($reason)
     {
         $this->reason = $reason;
+
         return $this;
     }
 
@@ -160,6 +161,7 @@ class Reservation
     public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -179,6 +181,7 @@ class Reservation
     public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -198,6 +201,7 @@ class Reservation
     public function setAdditionalInfo($additionalInfo)
     {
         $this->additionalInfo = $additionalInfo;
+
         return $this;
     }
 

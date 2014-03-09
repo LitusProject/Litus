@@ -52,9 +52,9 @@ class Unique extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Unique Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article $saleArticle The sale article to be ignored
-     * @param mixed $opts The validator's options
+     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Sale\Article $saleArticle   The sale article to be ignored
+     * @param mixed                           $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Article $saleArticle = null, $opts = null)
     {
@@ -69,8 +69,8 @@ class Unique extends \Zend\Validator\AbstractValidator
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field unique and valid.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -79,6 +79,7 @@ class Unique extends \Zend\Validator\AbstractValidator
 
         if (! is_numeric($value)) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
@@ -90,6 +91,7 @@ class Unique extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::NOT_VALID);
+
         return false;
     }
 }

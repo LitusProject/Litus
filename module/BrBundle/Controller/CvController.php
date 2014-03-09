@@ -66,7 +66,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             }
         }
 
-
         $open = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_open');
@@ -282,7 +281,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ->getRepository('BrBundle\Entity\Cv\Language')
                     ->findByEntry($entry);
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $this->getEntityManager()->remove($language);
                 }
 
@@ -323,17 +322,20 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 'languageError' => $languageError,
                 'oral_skills' => CvLanguage::$ORAL_SKILLS,
                 'written_skills' => CvLanguage::$WRITTEN_SKILLS,
+                'profilePath' =>$this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
-
 
     public function completeAction()
     {
         return new ViewModel();
     }
 
-    private function _getBadAccountMessage(Academic $person) {
+    private function _getBadAccountMessage(Academic $person)
+    {
         $messages = array();
 
         $studies = $this->getEntityManager()

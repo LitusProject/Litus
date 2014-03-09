@@ -57,7 +57,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -109,6 +109,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         $e->setResult($result);
+
         return $result;
     }
 
@@ -142,13 +143,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             } else {
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
     }
 
     /**
      * Modifies the reponse headers for a JSON reponse.
      *
-     * @param array $additionalHeaders Any additional headers that should be set
+     * @param  array $additionalHeaders Any additional headers that should be set
      * @return void
      */
     protected function initJson(array $additionalHeaders = array())
@@ -196,7 +197,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _getAcl()
     {
         if (null !== $this->getCache()) {
-            if(!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
+            if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
                 );
@@ -295,8 +296,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Gets a parameter from a GET request.
      *
-     * @param string $param The parameter's key
-     * @param mixed $default The default value, returned when the parameter is not found
+     * @param  string $param   The parameter's key
+     * @param  mixed  $default The default value, returned when the parameter is not found
      * @return string
      */
     public function getParam($param, $default = null)

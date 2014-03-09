@@ -48,7 +48,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $_status = 'done';
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param Doctrine\ORM\EntityManager              $entityManager
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
@@ -67,7 +67,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      * Parse received text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string $data
+     * @param string                                       $data
      */
     protected function gotText(User $user, $data)
     {
@@ -81,6 +81,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             $this->removeUser($user);
             $now = new DateTime();
             echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key' . PHP_EOL;
+
             return;
         }
 
@@ -89,6 +90,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 $this->removeUser($user);
                 $now = new DateTime();
                 echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
+
                 return;
             }
 
@@ -115,6 +117,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 $this->removeUser($user);
                 $now = new DateTime();
                 echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session' . PHP_EOL;
+
                 return;
             }
         }
@@ -131,7 +134,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param string $type
+     * @param string      $type
      * @param null|string $extra
      */
     public function callback($type, $extra = null)

@@ -16,7 +16,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-
 namespace ApiBundle\Controller;
 
 use DateInterval,
@@ -32,16 +31,16 @@ use DateInterval,
 
 class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-	
-	/**
-	* Returns all the bookings and totals of a given user.
-	*
-	* @param 	$authenticatedPerson
-	*			User who's bookings are being searched for.
-	*
-	* @return 	Array
-	*/
-	public function viewAction()
+
+    /**
+    * Returns all the bookings and totals of a given user.
+    *
+    * @param 	$authenticatedPerson
+    *			User who's bookings are being searched for.
+    *
+    * @return 	Array
+    */
+    public function viewAction()
     {
         //TODO key needs to be given and person needs to be get from the key
         //$authenticatedPerson = $key->getPerson();
@@ -51,6 +50,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         //---END DUMMYCODE---
 
         if($authenticatedPerson == null)
+
             return new ViewModel();
 
         $bookings = $this->getEntityManager()
@@ -94,13 +94,13 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         $week = array();
         $openingHoursArray = array();
         $start->sub(new DateInterval('P1D'));
-        for($i = 0 ; $i < 5 ; $i ++) {
+        for ($i = 0 ; $i < 5 ; $i ++) {
             $start->add(new DateInterval('P1D'));
             $week[] = clone $start;
             $openingHoursArray[$i] = array();
         }
 
-        foreach($openingHours as $openingHour) {
+        foreach ($openingHours as $openingHour) {
             if ($openingHour->getStart()->format('H') < $startHour)
                 $startHour = $openingHour->getStart()->format('H');
 
@@ -120,6 +120,5 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             )
         );
     }
-
 
 }

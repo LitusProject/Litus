@@ -56,8 +56,8 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param boolean $mustBeLeased If true, the item must be leased to pass the validation. Else it shouldn't.
+     * @param  \Doctrine\ORM\EntityManager $entityManager
+     * @param  boolean                     $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
      * @return void
      */
     public function __construct(EntityManager $entityManager, $mustBeLeased = false)
@@ -70,8 +70,8 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
 
     /**
      *
-     * @param mixed $value
-     * @param array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -82,8 +82,9 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
             ->getRepository('LogisticsBundle\Entity\Lease\Item')
             ->findOneByBarcode($value);
 
-        if(!$item) {
+        if (!$item) {
             $this->error(self::NO_LEASE_ITEM);
+
             return false;
         }
 
@@ -91,9 +92,9 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease')
                 ->findUnreturnedByItem($item);
 
-        switch(count($unreturned)) {
+        switch (count($unreturned)) {
             case 0:
-                if($this->_mustBeLeased) {
+                if ($this->_mustBeLeased) {
                     $this->error(self::ITEM_RETURNED);
 
                     return false;
@@ -101,7 +102,7 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
 
                 return true;
             default:
-                if(!$this->_mustBeLeased) {
+                if (!$this->_mustBeLeased) {
                     $this->error(self::ITEM_LEASED);
 
                     return false;

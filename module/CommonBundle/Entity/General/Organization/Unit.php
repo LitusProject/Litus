@@ -109,13 +109,13 @@ class Unit
     private $active;
 
     /**
-     * @param string $name The unit's name
-     * @param string $mail The unit's mail
-     * @param \CommonBundle\Entity\General\Organization $organization The unit's organization
-     * @param array $roles The roles associated with the unit
-     * @param array $coordinatorRoles The roles associated with the coordinator of the unit
-     * @param boolean $displayed Whether or not this unit is displayed on the site
-     * @param \CommonBundle\Entity\General\Organization\Unit $parent The unit's parent
+     * @param string                                         $name             The unit's name
+     * @param string                                         $mail             The unit's mail
+     * @param \CommonBundle\Entity\General\Organization      $organization     The unit's organization
+     * @param array                                          $roles            The roles associated with the unit
+     * @param array                                          $coordinatorRoles The roles associated with the coordinator of the unit
+     * @param boolean                                        $displayed        Whether or not this unit is displayed on the site
+     * @param \CommonBundle\Entity\General\Organization\Unit $parent           The unit's parent
      */
     public function __construct($name, $mail, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
     {
@@ -147,12 +147,13 @@ class Unit
     }
 
     /**
-     * @param string $name
+     * @param  string                                         $name
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -165,12 +166,13 @@ class Unit
     }
 
     /**
-     * @param string $mail
+     * @param  string                                         $mail
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setMail($mail)
     {
         $this->mail = $mail;
+
         return $this;
     }
 
@@ -183,12 +185,13 @@ class Unit
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\Organization      $organization
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setOrganization(Organization $organization)
     {
         $this->organization = $organization;
+
         return $this;
     }
 
@@ -201,17 +204,18 @@ class Unit
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization\Unit $unit
+     * @param  \CommonBundle\Entity\General\Organization\Unit $unit
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setParent(Unit $parent = null)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
     /**
-     * @param boolean $mergeParentRoles
+     * @param  boolean $mergeParentRoles
      * @return array
      */
     public function getRoles($mergeParentRoles = true)
@@ -225,26 +229,29 @@ class Unit
     }
 
     /**
-     * @param array $roles
+     * @param  array                                          $roles
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setRoles(array $roles)
     {
         $this->roles = new ArrayCollection($roles);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\Acl\Role $role
+     * @param  \CommonBundle\Entity\Acl\Role                  $role
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
-    public function removeRole(Role $role) {
+    public function removeRole(Role $role)
+    {
         $this->roles->removeElement($role);
+
         return $this;
     }
 
     /**
-     * @param boolean $mergeParentRoles
+     * @param  boolean $mergeParentRoles
      * @return array
      */
     public function getCoordinatorRoles($mergeParentRoles = true)
@@ -258,21 +265,24 @@ class Unit
     }
 
     /**
-     * @param array $coordinatorRoles
+     * @param  array                                          $coordinatorRoles
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setCoordinatorRoles(array $coordinatorRoles)
     {
         $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\Acl\Role $coordinatorRole
+     * @param  \CommonBundle\Entity\Acl\Role                  $coordinatorRole
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
-    public function removeCoordinatorRole(Role $coordinatorRole) {
+    public function removeCoordinatorRole(Role $coordinatorRole)
+    {
         $this->coordinatorRoles->removeElement($coordinatorRole);
+
         return $this;
     }
 
@@ -285,12 +295,13 @@ class Unit
     }
 
     /**
-     * @param boolean $displayed
+     * @param  boolean                                        $displayed
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setDisplayed($displayed)
     {
         $this->displayed = $displayed;
+
         return $this;
     }
 

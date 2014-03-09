@@ -49,7 +49,7 @@ class Authentication
     /**
      * Construct a new Authentication object.
      *
-     * @param \Zend\Authentication\Adapter $adapter The authentication adapter that should be used
+     * @param \Zend\Authentication\Adapter                                         $adapter The authentication adapter that should be used
      * @param \CommonBundle\Component\Authentication\AbstractAuthenticationService $service The service that should be used
      */
     public function __construct(AdapterInterface $adapter, AuthenticationService $service)
@@ -61,10 +61,10 @@ class Authentication
     /**
      * Authenticate the user.
      *
-     * @param string $identity The provided identity
-     * @param string $credential The provided credential
-     * @param boolean $rememberMe Remember this authentication session
-     * @param boolean $shibboleth Whether or not this is sessions initiated by Shibboleth
+     * @param  string  $identity   The provided identity
+     * @param  string  $credential The provided credential
+     * @param  boolean $rememberMe Remember this authentication session
+     * @param  boolean $shibboleth Whether or not this is sessions initiated by Shibboleth
      * @return void
      */
     public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)

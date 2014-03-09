@@ -50,14 +50,14 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 );
         }
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                foreach($form->getWeeks() as $key => $week) {
+                foreach ($form->getWeeks() as $key => $week) {
                     if (isset($formData['submit_' . $key])) {
                         $weekIndex = $key;
                         break;

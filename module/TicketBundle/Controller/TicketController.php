@@ -33,7 +33,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class TicketController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function eventAction ()
+    public function eventAction()
     {
         if (!($event = $this->_getEvent()))
             return new ViewModel();
@@ -60,7 +60,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                     if (count($event->getOptions()) == 0) {
                         $number = $formData['number_member'];
-                        for($i = 0 ; $i < count($tickets) ; $i++) {
+                        for ($i = 0 ; $i < count($tickets) ; $i++) {
                             if (0 == $number)
                                 break;
 
@@ -72,7 +72,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         if (!$event->isOnlyMembers()) {
                             $number = $formData['number_non_member'];
-                            for(; $i < count($tickets) ; $i++) {
+                            for (; $i < count($tickets) ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -83,9 +83,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             }
                         }
                     } else {
-                        foreach($event->getOptions() as $option) {
+                        foreach ($event->getOptions() as $option) {
                             $number = $formData['option_' . $option->getId() . '_number_member'];
-                            for($i = 0; $i < count($tickets) ; $i++) {
+                            for ($i = 0; $i < count($tickets) ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -98,7 +98,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                             if (!$event->isOnlyMembers()) {
                                 $number = $formData['option_' . $option->getId() . '_number_non_member'];
-                                for(; $i < count($tickets) ; $i++) {
+                                for (; $i < count($tickets) ; $i++) {
                                     if (0 == $number)
                                         break;
 
@@ -113,29 +113,29 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     }
                 } else {
                     if (count($event->getOptions()) == 0) {
-                        for($i = 0 ; $i < $formData['number_member'] ; $i++) {
+                        for ($i = 0 ; $i < $formData['number_member'] ; $i++) {
                             $this->getEntityManager()->persist(
                                 $this->_createTicket($event, $person, true)
                             );
                         }
 
                         if (!$event->isOnlyMembers()) {
-                            for($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
+                            for ($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
                                     $this->_createTicket($event, $person, false)
                                 );
                             }
                         }
                     } else {
-                        foreach($event->getOptions() as $option) {
-                            for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
+                        foreach ($event->getOptions() as $option) {
+                            for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
                                     $this->_createTicket($event, $person, true, $option)
                                 );
                             }
 
                             if (!$event->isOnlyMembers()) {
-                                for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
+                                for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
                                     $this->getEntityManager()->persist(
                                         $this->_createTicket($event, $person, false, $option)
                                     );
@@ -221,6 +221,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -230,6 +231,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if (null == $event) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -240,6 +242,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (null === $this->getParam('id')) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
@@ -249,6 +252,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         if (null == $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 

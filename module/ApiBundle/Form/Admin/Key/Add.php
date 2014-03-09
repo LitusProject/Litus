@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('host');
         $field->setLabel('Host')
-            ->setAttribute('data-help', 'The host who can acces the API with a key')
+            ->setAttribute('data-help', 'The host from which the API can be accessed with the key.')
             ->setRequired();
         $this->add($field);
 

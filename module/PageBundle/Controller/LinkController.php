@@ -35,6 +35,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         if (!($link = $this->_getLink())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel();
         }
 

@@ -87,7 +87,7 @@ class Language
 
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $year The current academic year.
+     * @param \CommonBundle\Entity\General\AcademicYear $year     The current academic year.
      */
     public function __construct(Entry $entry, $name, $written, $oral)
     {
@@ -139,7 +139,7 @@ class Language
     }
 
     /**
-     * @param string $skill
+     * @param  string                       $skill
      * @return \BrBundle\Entity\Cv\Language
      */
     public function setWrittenSkill($skill)
@@ -169,7 +169,7 @@ class Language
 
 
     /**
-     * @param string $skill
+     * @param  string                       $skill
      * @return \BrBundle\Entity\Cv\Language
      */
     public function setOralSkill($skill)

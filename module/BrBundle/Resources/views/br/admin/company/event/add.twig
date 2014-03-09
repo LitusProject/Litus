@@ -1,16 +1,16 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'br/admin/company/event/partials/navigation.twig' %}
+    {% include 'br/admin/company/event/partials/navigation.twig' %}
 
-	<div id="controller_action">
-	    <h1>Company</h1>
-	    <p>Name: <b>{{ company.getName() }}</b></p>
-	    <br />
+    <div id="controller_action">
+        <h1>Company</h1>
+        <p>Name: <b>{{ company.getName() }}</b></p>
+        <br />
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -19,11 +19,11 @@
             $('#languages a:first').click();
         });
 
-	    $(document).ready(function () {
-	        $('textarea').gollum({
-	            toolbar: {
-					"bold": ["bold", "Bold", "bold"],
-					"italic": ["italic", "Italic", "italic"],
+        $(document).ready(function () {
+            $('textarea').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
                     "divider": "-",
                     "link": ["link", "Link", "link"],
                     "divider": "-",
@@ -34,7 +34,7 @@
                     "divider": "-",
                     "help": ["help", "Help", "help"],
                 },
-	        });
-	    });
+            });
+        });
     </script>
 {% endblock %}

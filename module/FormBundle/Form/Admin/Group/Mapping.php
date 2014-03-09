@@ -38,7 +38,7 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -75,7 +75,7 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findOneByAbbrev('en');
 
         $options = array();
-        foreach($forms as $form) {
+        foreach ($forms as $form) {
             $group = $this->_entityManager
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);

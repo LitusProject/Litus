@@ -56,7 +56,7 @@ class Responsible
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\User\Person          $person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
     public function __construct(Person $person, AcademicYear $academicYear)

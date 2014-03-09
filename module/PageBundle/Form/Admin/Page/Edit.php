@@ -38,7 +38,7 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Page $page, $name = null)
     {
@@ -50,7 +50,7 @@ class Edit extends Add
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $this->remove('parent_' . $category->getId());
 
             $field = new Select('parent_' . $category->getId());
@@ -73,7 +73,7 @@ class Edit extends Add
     private function _populateFromPage(Page $page)
     {
         $data = array();
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $page->getTitle($language, false);
             $data['content_' . $language->getAbbrev()] = $page->getContent($language, false);
         }
@@ -94,7 +94,7 @@ class Edit extends Add
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $inputFilter->remove('title_' . $language->getAbbrev());
             $inputFilter->add(
                 $factory->createInput(

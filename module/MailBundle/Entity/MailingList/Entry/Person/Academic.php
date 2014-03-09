@@ -41,7 +41,7 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * Creates a new list entry for the given list with the given academic?
      *
-     * @param \MailBundle\Entity\MailingList $list The list for this entry
+     * @param \MailBundle\Entity\MailingList            $list     The list for this entry
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add
      */
     public function __construct(MailingList $list, AcademicEntity $academic)
@@ -53,7 +53,8 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * @return \CommonBundle\Entity\User\Person\Academic
      */
-    public function getAcademic() {
+    public function getAcademic()
+    {
         return $this->academic;
     }
 

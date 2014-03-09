@@ -158,12 +158,12 @@ class Company
     );
 
     /**
-     * @param string $name The company's name
-     * @param string $vatNumber The company's VAT number
-     * @param \CommonBundle\Entity\General\Address $address The company's address
-     * @param string $phoneNumber The company's telephone number
-     * @param string $website The company's website
-     * @param string $sector The company's sector
+     * @param string                               $name        The company's name
+     * @param string                               $vatNumber   The company's VAT number
+     * @param \CommonBundle\Entity\General\Address $address     The company's address
+     * @param string                               $phoneNumber The company's telephone number
+     * @param string                               $website     The company's website
+     * @param string                               $sector      The company's sector
      */
     public function __construct($name, $vatNumber, Address $address, $phoneNumber, $website, $sector)
     {
@@ -212,7 +212,7 @@ class Company
     }
 
     /**
-     * @param string $name
+     * @param  string                   $name
      * @return \BrBundle\Entity\Company
      */
     public function setName($name)
@@ -232,12 +232,13 @@ class Company
     }
 
     /**
-     * @param string $vatNumber
+     * @param  string                   $vatNumber
      * @return \BrBundle\Entity\Company
      */
     public function setVatNumber($vatNumber)
     {
         $this->vatNumber = $vatNumber;
+
         return $this;
     }
 
@@ -250,12 +251,13 @@ class Company
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param  \CommonBundle\Entity\General\Address $address
      * @return \BrBundle\Entity\Company
      */
     public function setAddress(Address $address)
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -268,12 +270,13 @@ class Company
     }
 
     /**
-     * @param string $phoneNumber
+     * @param  string                   $phoneNumber
      * @return \BrBundle\Entity\Company
      */
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
+
         return $this;
     }
 
@@ -286,12 +289,13 @@ class Company
     }
 
     /**
-     * @param string $website
+     * @param  string                   $website
      * @return \BrBundle\Entity\Company
      */
     public function setWebsite($website)
     {
         $this->website = $website;
+
         return $this;
     }
 
@@ -305,6 +309,7 @@ class Company
         $result =  $this->getWebsite();
         if (false === strpos($result, 'http://'))
             $result = 'http://' . $result;
+
         return $result;
     }
 
@@ -317,7 +322,7 @@ class Company
     }
 
     /**
-     * @param string $sector
+     * @param  string                   $sector
      * @return \BrBundle\Entity\Company
      */
     public function setSector($sector)
@@ -348,7 +353,7 @@ class Company
     }
 
     /**
-     * @param string $logo
+     * @param  string                   $logo
      * @return \BrBundle\Entity\Company
      */
     public function setLogo($logo)
@@ -407,6 +412,7 @@ class Company
     public function setCvBookYears(array $years)
     {
         $this->cvBookYears = new ArrayCollection($years);
+
         return $this;
     }
 
@@ -420,7 +426,7 @@ class Company
 
         try {
             return unserialize($this->cvBookArchiveYears);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return array();
         }
     }
@@ -433,6 +439,7 @@ class Company
     public function setCvBookArchiveYears(array $archiveYears)
     {
         $this->cvBookArchiveYears = serialize($archiveYears);
+
         return $this;
     }
 }

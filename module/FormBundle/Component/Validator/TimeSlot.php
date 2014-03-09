@@ -62,8 +62,8 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
      * Sets validator options
      *
      * @param \FormBundle\Entity\Field\TimeSlot
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param  \Doctrine\ORM\EntityManager      $entityManager
+     * @param  \CommonBundle\Entity\User\Person $person
      * @return void
      */
     public function __construct(TimeSlotField $timeSlot, EntityManager $entityManager, Person $person = null, $opts = null)
@@ -78,8 +78,8 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if and only if the end date is after the start date
      *
-     * @param  mixed $value
-     * @param  array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -104,7 +104,7 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
                 ->findAllConflictingByFormAndTime($this->_timeSlot->getForm(), $this->_timeSlot->getStartDate(), $this->_timeSlot->getEndDate());
 
             // No overlap with other selections in this form
-            foreach($conflictingSlots as $conflictingSlot) {
+            foreach ($conflictingSlots as $conflictingSlot) {
                 if ($conflictingSlot->getId() == $this->_timeSlot->getId())
                     continue;
 

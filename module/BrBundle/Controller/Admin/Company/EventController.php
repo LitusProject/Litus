@@ -93,7 +93,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
@@ -164,7 +164,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $event->getEvent()->getTranslation($language, false);
 
                     if ($translation) {
@@ -281,14 +281,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $image = new Imagick($upload->getFileName());
 
-                $fileName = '';
-                do{
-                    $fileName = '/' . sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
-
-                if ($event->getPoster() != '' || $event->getPoster() !== null) {
-                    if (file_exists($filePath . '/' . $event->getPoster()))
-                        unlink($filePath . '/' . $event->getPoster());
+                if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
+                    $fileName = '/' . $event->getEvent()->getPoster();
+                } else {
+                    $fileName = '';
+                    do {
+                        $fileName = '/' . sha1(uniqid());
+                    } while (file_exists($filePath . $fileName));
                 }
 
                 $image->writeImage($filePath . $fileName);

@@ -35,7 +35,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
     {
         $form = new LoginForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

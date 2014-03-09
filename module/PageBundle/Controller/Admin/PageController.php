@@ -111,7 +111,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $page,
@@ -240,7 +240,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $newPage,
@@ -318,7 +318,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $upload = new FileUpload();
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 

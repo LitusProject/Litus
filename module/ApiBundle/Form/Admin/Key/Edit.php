@@ -31,8 +31,8 @@ use ApiBundle\Entity\Key,
 class Edit extends Add
 {
     /**
-     * @param \ApiBundle\Entity\Key $key The key we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \ApiBundle\Entity\Key $key  The key we're going to modify
+     * @param null|string|int       $name Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Key $key, $name = null)
     {
@@ -62,7 +62,7 @@ class Edit extends Add
     /**
      * Returns an array that is in the right format to populate the roles field.
      *
-     * @param array $roles The key's roles
+     * @param  array $roles The key's roles
      * @return array
      */
     private function _createRolesPopulationArray(array $roles)
@@ -74,6 +74,7 @@ class Edit extends Add
 
             $rolesArray[] = $role->getName();
         }
+
         return $rolesArray;
     }
 }

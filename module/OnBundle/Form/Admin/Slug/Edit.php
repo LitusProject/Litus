@@ -39,8 +39,8 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \OnBundle\Document\Slug $slug The slug we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \OnBundle\Document\Slug               $slug            The slug we're going to modify
+     * @param null|string|int                       $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, Slug $slug, $name = null)
     {

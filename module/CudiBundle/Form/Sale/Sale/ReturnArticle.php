@@ -42,9 +42,9 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null )
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 

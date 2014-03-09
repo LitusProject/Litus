@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Component\Validator\Sales\Session\Restriction;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Check the end value is after the start value
  *
@@ -61,8 +59,8 @@ class Values extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param mixed $token
-     * @param string $format
+     * @param  mixed  $token
+     * @param  string $format
      * @return void
      */
     public function __construct($startValue = null)
@@ -75,8 +73,8 @@ class Values extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if and only if the end date is after the start date
      *
-     * @param  mixed $value
-     * @param  array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -91,16 +89,19 @@ class Values extends \Zend\Validator\AbstractValidator
             $this->_startValue = $startValue;
         } else {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
         if ($startValue === null) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
         if ($startValue > $value) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 

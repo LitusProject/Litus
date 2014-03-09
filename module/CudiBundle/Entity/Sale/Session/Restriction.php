@@ -88,9 +88,9 @@ class Restriction
 
     /**
      * @param \CudiBundle\Entity\Sale\Session $session
-     * @param string $type
-     * @param string $startValue
-     * @param string $endValue
+     * @param string                          $type
+     * @param string                          $startValue
+     * @param string                          $endValue
      */
     public function __construct(Session $session, $type, $startValue, $endValue)
     {
@@ -180,7 +180,7 @@ class Restriction
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      * @param \CommonBundle\Entity\User\Person $person
      *
      * @return boolean
@@ -191,7 +191,7 @@ class Restriction
             $years = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
                 ->getYearsByPerson($person);
             $yearFound = false;
-            foreach($years as $year) {
+            foreach ($years as $year) {
                 if ($year >= $this->getRawStartValue() && $year <= $this->getRawEndValue()) {
                     $yearFound = true;
                     break;
@@ -205,6 +205,7 @@ class Restriction
             if (strtolower(substr($person->getLastName(), 0, strlen($this->getEndValue()))) > $this->getEndValue())
                 return false;
         }
+
         return true;
     }
 }

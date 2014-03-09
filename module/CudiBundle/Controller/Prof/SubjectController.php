@@ -79,7 +79,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 ->findAllBySubjectAndAcademicYear($subject, $previousAcademicYear, true)
         );
 
-        foreach($previousArticleMappings as $key => $mapping) {
+        foreach ($previousArticleMappings as $key => $mapping) {
             if (isset($currentArticles[$mapping['article']->getId()]))
                 unset($previousArticleMappings[$key]);
         }
@@ -91,7 +91,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         $enrollment = $subject->getEnrollment($academicYear);
         $enrollmentForm = new EnrollmentForm($enrollment);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $enrollmentForm->setData($formData);
 
@@ -150,7 +150,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getSubject()->getId();
             $item->value = $subject->getSubject()->getCode() . ' - ' . $subject->getSubject()->getName();
@@ -167,7 +167,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
     private function _getArticlesFromMappings($mappings)
     {
         $articleMappings = array();
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
@@ -191,6 +191,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 $article->setEntityManager($this->getEntityManager());
             }
         }
+
         return $articleMappings;
     }
 

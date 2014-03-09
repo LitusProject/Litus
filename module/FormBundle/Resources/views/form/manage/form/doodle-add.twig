@@ -1,0 +1,156 @@
+{% extends 'manage/base.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>{{ formSpecification.getTitle(language) }}</h1>
+    </div>
+
+    {% autoescape false %}
+        {{ markdown(specification.getIntroduction(language)) }}
+    {% endautoescape %}
+
+    <hr/>
+
+    {% if not form %}
+        <div class="alert alert-warning">
+            {{ translate(message) }}
+        </div>
+    {% else %}
+        {% if doodleNotValid %}
+            <div class="flashmessage alert alert-danger fade in">
+                <a class="close">&times;</a>
+                {{ translate('Your subscriptions couldn\'t be saved.') }}
+            </div>
+        {% endif %}
+        {% do form.prepare() %}
+        {{ form().openTag(form)|raw }}
+            {% import 'site/partials/form.twig' as forms %}
+
+            {{ forms.renderCheckbox(form.get('is_guest')) }}
+            <fieldset class="{{ form.get('person_form').getAttribute('class') }}" id="{{ form.get('person_form').getAttribute('id') }}">
+                <legend>{{ translate(form.get('person_form').getLabel()) }}</legend>
+                {{ forms.renderFieldset(form.get('person_form')) }}
+            </fieldset>
+            <fieldset class="{{ form.get('guest_form').getAttribute('class') }}" id="{{ form.get('guest_form').getAttribute('id') }}">
+                <legend>{{ translate(form.get('guest_form').getLabel()) }}</legend>
+                {{ forms.renderFieldset(form.get('guest_form')) }}
+            </fieldset>
+
+            <table class="table table-bordered table-striped" id="doodle">
+                <thead>
+                    <tr>
+                        <th>{{ translate('Date') }}</th>
+                        <th width="240px" class="hidden-xs">{{ translate('Location') }}</th>
+                        <th width="250px" class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
+                        <th width="130px">{{ translate('Subscribe') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for field in formSpecification.getFields() %}
+                        <tr {% if formElementErrors(form.get('fields_form').get('field-' ~ field.getId())) %}class="error"{% endif %}>
+                            <td>
+                                {{ field.getLabel(language) }}
+                            </td>
+                            <td class="hidden-xs">
+                                {{ field.getLocation(language) }}
+                            </td>
+                            <td class="hidden-xs hidden-sm">
+                                {{ field.getExtraInformation(language)|slice(1, 30) }}
+                                {% if field.getExtraInformation(language) %}
+                                    <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                {% endif %}
+                            </td>
+                            <td class="actions">
+                                {% if occupiedSlots[field.getId()] %}
+                                    {% if specification.getNamesVisibleForOthers() %}
+                                        <i>{{ occupiedSlots[field.getId()] }}</i>
+                                    {% else %}
+                                        <i>{{ translate('Occupied') }}</i>
+                                    {% endif %}
+                                {% else %}
+                                    <label class="checkbox" style="margin: 2px 0">
+                                        {{ formElement(form.get('fields_form').get('field-' ~ field.getId())) }}
+                                    </label>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="clear: both;text-align: center;">
+                {{ formElement(form.get('submit')) }}
+            </div>
+        {{ form().closeTag()|raw }}
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url("common_admin_academic_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+
+            $('#is_guest').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#person_form').hide();
+                    $('#guest_form').show();
+                } else {
+                    $('#person_form').show();
+                    $('#guest_form').hide();
+                }
+            }).change();
+
+            $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
+            $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
+
+            $('#doodle label.checkbox').each(function () {
+                $(this).hide();
+                $(this).parent().append(
+                    $('<button>', {'class': 'btn btn-primary btn-sm doodleButton'}).html('{{ translate('Subscribe') }}').click(function (e) {
+                        e.preventDefault();
+
+                        if ($(this).is(':disabled'))
+                            return false;
+
+                        var checkbox = $(this).parent().find('input[type=checkbox]');
+
+                        {% if not specification.isMultiple() %}
+                            if (!checkbox.prop('checked')) {
+                                $('#doodle .doodleButton').each(function () {
+                                    toggleButton($(this), $(this).parent().find('input[type=checkbox]'), false);
+                                });
+                            }
+                        {% endif %}
+
+                        toggleButton($(this), checkbox, !checkbox.is(':checked'));
+                    })
+                );
+
+                toggleButton($(this).parent().find('button'), $(this).find('input[type=checkbox]'), $(this).find('input[type=checkbox]').is(':checked'));
+
+                $(this).parent().find('button').prop('disabled', $(this).find('input[type=checkbox]').is(':disabled'));
+            });
+        });
+
+        function toggleButton(button, checkbox, value) {
+            if (!value) {
+                checkbox.prop('checked', false);
+                button.html('{{ translate('Subscribe') }}').removeClass('btn-danger');
+            } else {
+                checkbox.prop('checked', true);
+                button.html('{{ translate('Unsubscribe') }}').addClass('btn-danger');
+            }
+        }
+    </script>
+{% endblock %}

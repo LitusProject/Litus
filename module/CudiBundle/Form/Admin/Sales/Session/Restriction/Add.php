@@ -47,11 +47,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_session;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Session $session
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                 $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Session $session, $name = null )
+    public function __construct(EntityManager $entityManager, Session $session, $name = null)
     {
         parent::__construct($name);
 

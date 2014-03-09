@@ -1,13 +1,13 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	<header id="controller_header">
-	    <div class="title"><span class="dashboard">Dashboard</span></div>
-	</header>
+    <header id="controller_header">
+        <div class="title"><span class="dashboard">Dashboard</span></div>
+    </header>
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% if piwik is not null and piwik['visitsGraph']['dataset']|length > 1 %}
             <h1>Visits Summary</h1>
             <div class="chart">
@@ -24,28 +24,28 @@
 
         {% if hasAccess('cudi_admin_prof_action', 'manage') and profActions|length > 0 %}
             <h1>Last Prof Actions</h1>
-    	    <table>
-    	        <tr>
-    	            <th>Person</th>
-    	            <th width="160px">Action</th>
-    	            <th width="150px">Date</th>
-    	            <th width="70px">Actions</th>
-    	        </tr>
+            <table>
+                <tr>
+                    <th>Person</th>
+                    <th width="160px">Action</th>
+                    <th width="150px">Date</th>
+                    <th width="70px">Actions</th>
+                </tr>
 
-    	        {% for action in profActions %}
-    	            <tr class="item">
-    	                <td>{{ action.getPerson().getFullName() }}</td>
-    	                <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
-    	                <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
-    	                <td>
-    	                    {% if hasAccess('cudi_admin_prof_action', 'view') %}
-    	                        <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
-    	                    {% endif %}
-    	                </td>
-    	            </tr>
-    	        {% endfor %}
-    	    </table>
-	    {% endif %}
+                {% for action in profActions %}
+                    <tr class="item">
+                        <td>{{ action.getPerson().getFullName() }}</td>
+                        <td>{{ action.getEntityName()|capitalize }} {{ action.getAction()|capitalize }}</td>
+                        <td>{{ action.getTimestamp().format('d/m/Y H:i') }}</td>
+                        <td>
+                            {% if hasAccess('cudi_admin_prof_action', 'view') %}
+                                <a href="{{ url('cudi_admin_prof_action', {"action": "view", "id": action.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
 
         {% if hasAccess('syllabus_admin_subject_comment', 'manage') and subjectComments|length > 0 %}
             <h1>Last Subject Comments</h1>
@@ -139,9 +139,9 @@
                 </tr>
             {% endfor %}
         </table>
-	</div>
+    </div>
 
-	<aside>
+    <aside>
         {% if piwik is not null and piwik['uniqueVisitors'] is not null %}
             <div class="sidebox">
                 <div class="title">Piwik</div>
@@ -156,24 +156,24 @@
             </div>
         {% endif %}
 
-		<div class="sidebox">
-	        <div class="title">Versions</div>
-	        <div class="content">
-	        	<p>
-	        		<b>PHP</b><br />
-	        		{{ versions.php }}
-	        	</p>
-	        	<p>
-	            	<b>ZendFramework</b><br />
-	            	{{ versions.zf }}
-	            </p>
-	            <p>
-	            	<b>Doctrine</b><br />
-	            	{{ versions.doctrine }}
-	            </p>
-	        </div>
-	    </div>
-	</aside>
+        <div class="sidebox">
+            <div class="title">Versions</div>
+            <div class="content">
+                <p>
+                    <b>PHP</b><br />
+                    {{ versions.php }}
+                </p>
+                <p>
+                    <b>ZendFramework</b><br />
+                    {{ versions.zf }}
+                </p>
+                <p>
+                    <b>Doctrine</b><br />
+                    {{ versions.doctrine }}
+                </p>
+            </div>
+        </div>
+    </aside>
 {% endblock %}
 
 {% block content_script %}
@@ -181,7 +181,7 @@
         $(document).ready(function () {
             $('.item .delete').click(expireSession);
 
-            {% if piwik is not null and visitsGraph['dataset']|length > 1 %}
+            {% if piwik is not null and piwik['visitsGraph']['dataset']|length > 1 %}
                 drawVisitsGraph();
             {% endif %}
 

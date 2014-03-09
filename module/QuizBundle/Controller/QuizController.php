@@ -292,6 +292,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
             return;
         }
+
         return $round;
     }
 

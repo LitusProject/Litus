@@ -34,51 +34,51 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-	/**
-	 * @var \Doctrine\ORM\EntityManager The EntityManager instance
-	 */
-	private $_entityManager = null;
+    /**
+     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     */
+    private $_entityManager = null;
 
-	/**
-	 * @var \GalleryBundle\Entity\Album\Album
-	 */
-	protected $album = null;
+    /**
+     * @var \GalleryBundle\Entity\Album\Album
+     */
+    protected $album = null;
 
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int             $name          Optional name for the element
+     */
     public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
-		$this->_entityManager = $entityManager;
+        $this->_entityManager = $entityManager;
 
-		$tabs = new Tabs('languages');
-		$this->add($tabs);
+        $tabs = new Tabs('languages');
+        $this->add($tabs);
 
         $tabContent = new TabContent('tab_content');
 
-		foreach($this->_getLanguages() as $language) {
-		    $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+        foreach ($this->_getLanguages() as $language) {
+            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
-		    $pane = new TabPane('tab_' . $language->getAbbrev());
+            $pane = new TabPane('tab_' . $language->getAbbrev());
 
-		    $field = new Text('title_' . $language->getAbbrev());
-		    $field->setLabel('Title')
-		        ->setRequired($language->getAbbrev() == \Locale::getDefault());
-		    $pane->add($field);
+            $field = new Text('title_' . $language->getAbbrev());
+            $field->setLabel('Title')
+                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+            $pane->add($field);
 
-		    $tabContent->add($pane);
-		}
+            $tabContent->add($pane);
+        }
 
-		$this->add($tabContent);
+        $this->add($tabContent);
 
-		$field = new Text('date');
-		$field->setLabel('Date')
+        $field = new Text('date');
+        $field->setLabel('Date')
             ->setAttribute('placeholder', 'dd/mm/yyyy')
-		    ->setRequired();
-		$this->add($field);
+            ->setRequired();
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $data = array(
             'date' => $album->getDate()->format('d/m/Y'),
         );
-        foreach($this->_getLanguages() as $language) {
+        foreach ($this->_getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $album->getTitle($language);
         }
         $this->setData($data);
@@ -109,7 +109,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        foreach($this->_getLanguages() as $language) {
+        foreach ($this->_getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(

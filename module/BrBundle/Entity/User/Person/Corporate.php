@@ -47,14 +47,14 @@ class Corporate extends \CommonBundle\Entity\User\Person
     private $corporateStatuses;
 
     /**
-     * @param \BrBundle\Entity\Company $company The user's company
-     * @param string $username The user's username
-     * @param array $roles The user's roles
-     * @param string $firstName The user's first name
-     * @param string $lastName The user's last name
-     * @param string $email The user's e-mail address
-     * @param string $phoneNumber The user's phone number
-     * @param string $sex The users sex
+     * @param \BrBundle\Entity\Company $company     The user's company
+     * @param string                   $username    The user's username
+     * @param array                    $roles       The user's roles
+     * @param string                   $firstName   The user's first name
+     * @param string                   $lastName    The user's last name
+     * @param string                   $email       The user's e-mail address
+     * @param string                   $phoneNumber The user's phone number
+     * @param string                   $sex         The users sex
      */
     public function __construct(Company $company, $username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
     {
@@ -75,7 +75,7 @@ class Corporate extends \CommonBundle\Entity\User\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param \BrBundle\Entity\User\Status\Corporate $corporateStatus
+     * @param  \BrBundle\Entity\User\Status\Corporate $corporateStatus
      * @return \BrBundle\Entity\User\Person\Corporate
      * @throws \InvalidArgumentException
      * @throws \RuntimeException

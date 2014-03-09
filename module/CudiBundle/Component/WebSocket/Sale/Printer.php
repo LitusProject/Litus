@@ -24,16 +24,16 @@ use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
 class Printer
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string $printer
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param string                           $printer
      * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array $bookings
+     * @param array                            $bookings
      */
     public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
         $articles = array();
         $totalPrice = 0;
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $articles[] = array(
                 'title' => $booking->getArticle()->getMainArticle()->getTitle(),
                 'price' => (string) number_format($booking->getArticle()->getSellPrice() / 100, 2),
@@ -59,16 +59,16 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string $printer
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param string                           $printer
      * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array $bookings
+     * @param array                            $bookings
      */
     public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
         $articles = array();
         $totalPrice = 0;
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $articles[] = array(
                 'title' => $booking->getArticle()->getMainArticle()->getTitle(),
                 'price' => (string) number_format($booking->getArticle()->getSellPrice() / 100, 2),
@@ -94,16 +94,16 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string $printer
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param string                           $printer
      * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array $saleItems
+     * @param array                            $saleItems
      */
     public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
     {
         $articles = array();
         $totalPrice = 0;
-        foreach($saleItems as $saleItem) {
+        foreach ($saleItems as $saleItem) {
             $articles[] = array(
                 'title' => $saleItem->getArticle()->getMainArticle()->getTitle(),
                 'price' => (string) number_format($saleItem->getPrice() / 100, 2),

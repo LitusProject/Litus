@@ -103,7 +103,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -118,7 +118,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Field')
                     ->findOneById($formData['visible_if']);
 
-                switch($formData['type']) {
+                switch ($formData['type']) {
                     case 'string':
                         $field = new StringField(
                             $formSpecification,
@@ -140,7 +140,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null
                         );
 
-                        foreach($languages as $language) {
+                        foreach ($languages as $language) {
                             if ('' != $formData['options_' . $language->getAbbrev()]) {
                                 $translation = new OptionTranslationField(
                                     $field,
@@ -183,7 +183,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                             DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
                         );
 
-                        foreach($languages as $language) {
+                        foreach ($languages as $language) {
                             if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
                                 continue;
                             $translation = new TimeSlotTranslationField(
@@ -204,7 +204,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($field);
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['label_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $field,
@@ -283,7 +283,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($field, $this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -308,7 +308,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         ->setLines($formData['lines'] === '' ? 0 : $formData['lines'])
                         ->setMultiLine($formData['multiline']);
                 } elseif ($field instanceof DropdownField) {
-                    foreach($languages as $language) {
+                    foreach ($languages as $language) {
                         if ('' != $formData['options_' . $language->getAbbrev()]) {
                             $translation = $field->getOptionTranslation($language, false);
 
@@ -331,7 +331,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
                         ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
 
-                    foreach($languages as $language) {
+                    foreach ($languages as $language) {
                         $translation = $field->getTimeSlotTranslation($language, false);
 
                         if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()]) {
@@ -356,7 +356,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['label_' . $language->getAbbrev()]) {
                         $translation = $field->getTranslation($language, false);
 
@@ -453,18 +453,20 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         $this->initAjax();
 
         if(!($formSpecification = $this->_getForm()))
+
             return new ViewModel();
 
         if(!$this->getRequest()->isPost())
+
             return new ViewModel();
 
         $data = $this->getRequest()->getPost();
 
         if(!$data['items'])
+
             return new ViewModel();
 
-        foreach($data['items'] as $order => $id)
-        {
+        foreach ($data['items'] as $order => $id) {
             $field = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field')
                 ->findOneById($id);

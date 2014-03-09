@@ -57,8 +57,8 @@ class Config
     private $description;
 
     /**
-     * @param string $key The entry's key
-     * @param string $value The entry's value
+     * @param  string                    $key   The entry's key
+     * @param  string                    $value The entry's value
      * @throws \InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
@@ -87,9 +87,9 @@ class Config
     }
 
     /**
-     * @param string $value The entry's value
+     * @param  string                             $value The entry's value
      * @return \CommonBundle\Entity\Public\Config
-     * @throws \InvalidArgumentException Value must be a string
+     * @throws \InvalidArgumentException          Value must be a string
      */
     public function setValue($value)
     {

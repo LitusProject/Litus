@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -90,22 +90,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $article->add($field);
 
         $field = new Checkbox('downloadable');
-        $field->setLabel('Downloadable');
+        $field->setLabel('Downloadable')
+            ->setAttribute('data-help', 'Enabling this flag will warn the students this article is also downloadable on the website of the subject.');
         $article->add($field);
 
         $field = new Checkbox('same_as_previous_year');
-        $field->setLabel('Same As Previous Year');
+        $field->setLabel('Same As Previous Year')
+            ->setAttribute('data-help', 'This flag can be enabled by a docent in \'Prof App\', by this it is possible to show the owners of the store the article is the same as previous year.');
         $article->add($field);
 
         $field = new Select('type');
         $field->setLabel('Type')
             ->setRequired()
             ->setValue('other')
-            ->setAttribute('options', Article::$POSSIBLE_TYPES);
+            ->setAttribute('options', Article::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'The type of the article can be:
+            <ul>
+                <li><b>Common:</b> an article which is not mapped to a subject</li>
+                <li><b>Exercises:</b> an article related to exercises</li>
+                <li><b>Notes:</b> notes of the course</li>
+                <li><b>Slides:</b> slides of the course</li>
+                <li><b>Student:</b> an unofficial article of the course (made by students)</li>
+                <li><b>Textbook:</b> a textbook of the course</li>
+                <li><b>Other:</b> any other type</li>
+            </ul>');
         $article->add($field);
 
         $field = new Checkbox('internal');
-        $field->setLabel('Internal Article');
+        $field->setLabel('Internal Article')
+            ->setAttribute('data-help', 'Enabling this flag will show extra options for articles that will be printed by the owners of the store. Articles that are printed by and bought from another supplier doesn\'t need these options.');
         $article->add($field);
 
         $internal = new Collection('internal');
@@ -174,7 +187,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $subject->add($field);
 
         $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
+        $field->setLabel('Mandatory')
+            ->setAttribute('data-help', 'Enabling this flag will show the students this article is mandatory for the selected subject.');
         $subject->add($field);
 
         $field = new Submit('submit');

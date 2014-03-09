@@ -56,7 +56,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             );
         }
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -197,6 +197,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
     {
         if (!$this->getAuthentication()->isAuthenticated()
             || !$this->getAuthentication()->isExternallyAuthenticated())
+
                 return null;
 
         if (null !== $this->getParam('redirect')) {

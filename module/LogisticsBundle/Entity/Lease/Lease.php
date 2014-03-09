@@ -140,13 +140,13 @@ class Lease
     private $returnedComment;
 
     /**
-     * @param \LogisticsBundle\Entity\Lease\Item $item The leased item
-     * @param int $leasedAmount The number of items that was leased
-     * @param \DateTime $leasedDate The date of the lease
-     * @param \CommonBundle\Entity\User\Person $leasedBy The person who handed out the item
-     * @param string $leasedTo The person who received the item
-     * @param int $leasedPawn The pawn paid for the item
-     * @param string $leasedComment An optional comment for the lease
+     * @param \LogisticsBundle\Entity\Lease\Item $item          The leased item
+     * @param int                                $leasedAmount  The number of items that was leased
+     * @param \DateTime                          $leasedDate    The date of the lease
+     * @param \CommonBundle\Entity\User\Person   $leasedBy      The person who handed out the item
+     * @param string                             $leasedTo      The person who received the item
+     * @param int                                $leasedPawn    The pawn paid for the item
+     * @param string                             $leasedComment An optional comment for the lease
      */
     public function __construct(Item $item, $leasedAmount, \DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
     {
@@ -193,12 +193,13 @@ class Lease
     }
 
     /**
-     * @param integer $leasedAmount
+     * @param  integer                             $leasedAmount
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setLeasedAmount($leasedAmount)
     {
         $this->leasedAmount = $leasedAmount;
+
         return $this;
     }
 
@@ -251,12 +252,13 @@ class Lease
     }
 
     /**
-     * @param boolean $returned
+     * @param  boolean                             $returned
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturned($returned)
     {
         $this->returned = $returned;
+
         return $this;
     }
 
@@ -269,22 +271,24 @@ class Lease
     }
 
     /**
-     * @param integer $returnedAmount
+     * @param  integer                             $returnedAmount
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedAmount($returnedAmount)
     {
         $this->returnedAmount = $returnedAmount;
+
         return $this;
     }
 
     /**
-     * @param \DateTime $returnedDate
+     * @param  \DateTime                           $returnedDate
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedDate(\DateTime $returnedDate)
     {
         $this->returnedDate = $returnedDate;
+
         return $this;
     }
 
@@ -297,7 +301,7 @@ class Lease
     }
 
     /**
-     * @param string $returnedBy
+     * @param  string                              $returnedBy
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedBy($returnedBy)
@@ -316,12 +320,13 @@ class Lease
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $returnedTo
+     * @param  \CommonBundle\Entity\User\Person    $returnedTo
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedTo(Person $returnedTo)
     {
         $this->returnedTo = $returnedTo;
+
         return $this;
     }
 
@@ -334,7 +339,7 @@ class Lease
     }
 
     /**
-     * @param float $returnedPawn
+     * @param  float                               $returnedPawn
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedPawn($returnedPawn)
@@ -353,12 +358,13 @@ class Lease
     }
 
     /**
-     * @param string $returnedComment
+     * @param  string                              $returnedComment
      * @return \LogisticsBundle\Entity\Lease\Lease
      */
     public function setReturnedComment($returnedComment)
     {
         $this->returnedComment = $returnedComment;
+
         return $this;
     }
 

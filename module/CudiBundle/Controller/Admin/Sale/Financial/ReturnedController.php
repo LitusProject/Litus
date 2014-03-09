@@ -49,7 +49,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
@@ -82,7 +82,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getResult();
 
         $result = array();
-        foreach($records as $returnedItem) {
+        foreach ($records as $returnedItem) {
             $returnedItem->getSession()->setEntityManager($this->getEntityManager());
 
             $organization = $returnedItem->getPerson()->getOrganization($returnedItem->getSession()->getAcademicYear());
@@ -108,7 +108,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     private function _individualSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
@@ -139,7 +139,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -210,7 +210,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getResult();
 
         $result = array();
-        foreach($records as $returnedItem) {
+        foreach ($records as $returnedItem) {
             $returnedItem->getSession()->setEntityManager($this->getEntityManager());
 
             $organization = $returnedItem->getPerson()->getOrganization($returnedItem->getSession()->getAcademicYear());
@@ -235,7 +235,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     private function _sessionSearch(Session $session)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
@@ -268,7 +268,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -301,7 +301,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
 
             $item = (object) array();
@@ -325,7 +325,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     private function _articlesSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -374,7 +374,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
@@ -408,7 +408,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getResult();
 
         $result = array();
-        foreach($records as $returnedItem) {
+        foreach ($records as $returnedItem) {
             $returnedItem->getSession()->setEntityManager($this->getEntityManager());
 
             $organization = $returnedItem->getPerson()->getOrganization($returnedItem->getSession()->getAcademicYear());
@@ -433,7 +433,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     private function _articleSearch(Article $article, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'person':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')

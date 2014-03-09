@@ -1,11 +1,11 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'mail/admin/group/partials/navigation.twig' %}
+    {% include 'mail/admin/group/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         <h1>{{ type|capitalize }}: {{ status }}</h1>
 
         {% import 'admin/partials/form.twig' as forms %}

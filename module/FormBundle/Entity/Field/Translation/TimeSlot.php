@@ -72,8 +72,8 @@ class TimeSlot
     /**
      * @param \FormBundle\Entity\Field\TimeSlot timeslot
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $location
-     * @param string $extraInformation
+     * @param string                                $location
+     * @param string                                $extraInformation
      */
     public function __construct(TimeSlotField $timeslot, Language $language, $location, $extraInformation)
     {
@@ -115,6 +115,7 @@ class TimeSlot
     public function setLocation($location)
     {
         $this->location = $location;
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class TimeSlot
     public function setExtraInformation($extraInformation)
     {
         $this->extraInformation = $extraInformation;
+
         return $this;
     }
 }

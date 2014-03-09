@@ -63,9 +63,9 @@ class Notification extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $category
+     * @param string                           $category
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active )
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active)
     {
         parent::__construct($person);
         $this->startDate = $startDate;
@@ -79,15 +79,18 @@ class Notification extends \CommonBundle\Entity\Node
      *
      * @return \NotificationBundle\Entity\Node\Notification
      */
-    public function setStartDate($startDate) {
+    public function setStartDate($startDate)
+    {
         $this->startDate = $startDate;
+
         return $this;
     }
 
     /**
      * @return DateTime
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDate;
     }
 
@@ -96,15 +99,18 @@ class Notification extends \CommonBundle\Entity\Node
      *
      * @return \NotificationBundle\Entity\Node\Notification
      */
-    public function setEndDate($endDate) {
+    public function setEndDate($endDate)
+    {
         $this->endDate = $endDate;
+
         return $this;
     }
 
     /**
      * @return DateTime
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDate;
     }
 
@@ -113,36 +119,40 @@ class Notification extends \CommonBundle\Entity\Node
      *
      * @return \NotificationBundle\Entity\Node\Notification
      */
-    public function setActive($active) {
+    public function setActive($active)
+    {
         $this->active = $active;
+
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function isActive() {
+    public function isActive()
+    {
         return $this->active;
     }
 
     /**
-     * @param \NotificationBundle\Entity\Node\Translation $translation
+     * @param  \NotificationBundle\Entity\Node\Translation  $translation
      * @return \NotificationBundle\Entity\Node\Notification
      */
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language       $language
+     * @param  boolean                                     $allowFallback
      * @return \NotificationBundle\Entity\Node\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -157,8 +167,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -172,8 +182,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getSummary($length = 200, Language $language = null, $allowFallback = true)

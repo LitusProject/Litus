@@ -100,7 +100,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $heading = array('First Name', 'Last Name', 'Email', 'Address', 'Phone', 'Study');
 
         $results = array();
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
 
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();

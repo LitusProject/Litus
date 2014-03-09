@@ -65,7 +65,7 @@ class Barcode
      * Constructs a new barcode
      *
      * @param \CommonBundle\Entity\User\Person $person
-     * @param integer $barcode
+     * @param integer                          $barcode
      */
     public function __construct(Person $person, $barcode)
     {

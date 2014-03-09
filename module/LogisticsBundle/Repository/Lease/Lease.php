@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace LogisticsBundle\Repository\Lease;
 
@@ -16,7 +32,7 @@ class Lease extends EntityRepository
     /**
      * Finds all leases of an item that have not yet been returned
      *
-     * @param \LogisticsBundle\Entity\Lease\Item $item
+     * @param  \LogisticsBundle\Entity\Lease\Item $item
      * @return array
      */
     public function findUnreturnedByItemQuery(ItemEntity $item)

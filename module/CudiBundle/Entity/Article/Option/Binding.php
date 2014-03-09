@@ -52,7 +52,8 @@ class Binding
     /**
      * @param string $name
      */
-    public function __construct($code, $name) {
+    public function __construct($code, $name)
+    {
         $this->code = $code;
         $this->name = $name;
     }

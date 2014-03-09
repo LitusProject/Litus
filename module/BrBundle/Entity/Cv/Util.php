@@ -28,15 +28,14 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Util
 {
-    public static function getGrouped(EntityManager $entityManager, AcademicYear $academicYear) {
-
+    public static function getGrouped(EntityManager $entityManager, AcademicYear $academicYear)
+    {
         $groups = $entityManager
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAllCvBook();
 
         $result = array();
         foreach ($groups as $group) {
-
             $entries = $entityManager
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByGroupAndAcademicYear($group, $academicYear);
@@ -50,7 +49,7 @@ class Util
             }
         }
 
-        // Add all studies that are not in a cv book group.
+        // Add all studies that are not in a CV book group
         $cvStudies = $entityManager
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllUngroupedStudies();

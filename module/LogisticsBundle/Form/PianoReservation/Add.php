@@ -55,9 +55,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_weeks;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\Language $language
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                       $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, $name = null)
     {
@@ -68,7 +68,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_weeks = $this->_getTimeSlots();
 
-        foreach($this->_weeks as $key => $week) {
+        foreach ($this->_weeks as $key => $week) {
             $field = new Select('start_date_' . $key);
             $field->setLabel('Start Date')
                 ->setAttribute('options', $week['slotsStart']);
@@ -123,11 +123,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $weeks = array();
 
-        while($now < $maxDate) {
+        while ($now < $maxDate) {
             $listStart = array();
             $listEnd = array();
             if (null !== $config[$now->format('N')]) {
-                foreach($config[$now->format('N')] as $slot) {
+                foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(
                         substr($slot['start'], 0, strpos($slot['start'], ':')),
@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         substr($slot['end'], strpos($slot['end'], ':') + 1)
                     );
 
-                    while($startSlot <= $lastSlot) {
+                    while ($startSlot <= $lastSlot) {
                         if ($startSlot != $lastSlot) {
                             $occupied = $this->_entityManager
                                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
@@ -202,7 +202,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        foreach($this->_weeks as $key => $week) {
+        foreach ($this->_weeks as $key => $week) {
             if (!isset($this->data['submit_' . $key]))
                 continue;
 
