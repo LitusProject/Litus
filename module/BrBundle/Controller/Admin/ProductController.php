@@ -18,23 +18,25 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Contract\Section,
-    BrBundle\Form\Admin\Section\Add as AddForm,
-    BrBundle\Form\Admin\Section\Edit as EditForm,
+use BrBundle\Entity\Product,
+    BrBundle\Form\Admin\Product\Add as AddForm,
+    BrBundle\Form\Admin\Product\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
- * SectionController
+ * ProductController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class SectionController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class ProductController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Contract\Section',
+            'BrBundle\Entity\Product',
             $this->getParam('page')
         );
 
@@ -57,29 +59,40 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $newSection = new Section(
+                $newProduct = new Product(
                     $this->getEntityManager(),
                     $formData['name'],
+                    $formData['description'],
                     $formData['invoice_description'],
-                    $formData['content'],
+                    $formData['contract_text'],
                     $this->getAuthentication()->getPersonObject(),
                     $formData['price'],
-                    $formData['vat_type']
+                    $formData['vat_type'],
+                    $this->getCurrentAcademicYear(),
+                    DateTime::createFromFormat('d#m#Y', $formData['delivery_date'])
                 );
 
-                $this->getEntityManager()->persist($newSection);
+                if ('' != $formData['event']) {
+                    $newProduct->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
+                            ->findOneById($formData['event'])
+                    );
+                }
+
+                $this->getEntityManager()->persist($newProduct);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'The section was succesfully created!'
+                        'The product was succesfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'br_admin_section',
+                    'br_admin_product',
                     array(
                         'action' => 'manage',
                     )
@@ -98,9 +111,10 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        $section = $this->_getSection();
+        if (!($product = $this->_getProduct()))
+            return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $section);
+        $form = new EditForm($this->getEntityManager(), $product);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -109,11 +123,22 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $section->setName($formData['name'])
-                    ->setContent($formData['content'])
+                $product->setName($formData['name'])
+                    ->setDescription($formData['description'])
+                    ->setContractTExt($formData['contract_text'])
                     ->setPrice($formData['price'])
                     ->setVatType($this->getEntityManager(), $formData['vat_type'])
                     ->setInvoiceDescription($formData['invoice_description']);
+
+                if ('' != $formData['event']) {
+                    $product->setEvent(
+                        $this->getEntityManager()
+                            ->getRepository('CalendarBundle\Entity\Node\Event')
+                            ->findOneById($formData['event'])
+                    );
+                } else {
+                    $product->setEvent(null);
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -121,12 +146,12 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'The section was succesfully updated!'
+                        'The product was succesfully updated!'
                     )
                 );
 
                 $this->redirect()->toRoute(
-                    'br_admin_section',
+                    'br_admin_product',
                     array(
                         'action' => 'manage',
                     )
@@ -147,10 +172,10 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($section = $this->_getSection()))
+        if (!($product = $this->_getProduct()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($section);
+        $this->getEntityManager()->remove($product);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -160,19 +185,19 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getSection()
+    private function _getProduct()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the section!'
+                    'No ID was given to identify the product!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'br_admin_section',
+                'br_admin_product',
                 array(
                     'action' => 'manage'
                 )
@@ -181,21 +206,21 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        $section = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract\Section')
+        $product = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Product')
             ->findOneById($this->getParam('id'));
 
-        if (null === $section) {
+        if (null === $product) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No section with the given ID was found!'
+                    'No product with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'br_admin_section',
+                'br_admin_product',
                 array(
                     'action' => 'manage'
                 )
@@ -204,6 +229,6 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        return $section;
+        return $product;
     }
 }

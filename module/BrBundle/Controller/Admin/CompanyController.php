@@ -413,10 +413,30 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    /**
-     *
-     * @return \Doctrine\ORM\Query
-     */
+    public function contactsAction()
+    {
+        $this->initAjax();
+
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+
+        $contacts = $company->getContacts();
+
+        $result = array();
+        foreach($contacts as $contact) {
+            $item = (object) array();
+            $item->id = $contact->getId();
+            $item->value = $contact->getFullName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     private function _search()
     {
         switch ($this->getParam('field')) {

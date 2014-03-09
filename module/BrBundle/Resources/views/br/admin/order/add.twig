@@ -1,0 +1,60 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/order/partials/navigation.twig' %}
+
+    <div class="flashmessage error_message full_width contacts_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to fetch the contacts.</p>
+        </div>
+    </div>
+
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+
+		{% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+	</div>
+{% endblock %}
+
+{% block content_script %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#company').change(function(){
+
+                var company = $('#company').val();
+
+                if (company == '') {
+                    $('#contact').empty();
+                    return;
+                }
+
+                $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + company, function (data) {
+                    if (data) {
+                        // $('#contacts').attr('options', data);
+                        var optionsAsString = "";
+                        $('#contact').empty();
+                        $(data).each(function(k, v){
+                            optionsAsString += "<option value='" + v['id'] + "'>" + v['value'] + "</option>";
+                        });
+                        $('#contact').append(optionsAsString);
+                    } else {
+                        errorContacts();
+                    }
+                }, 'json').error(errorContacts);
+            });
+
+        });
+
+        function errorContacts()
+        {
+            $('.flashmessage').addClass('hide');
+            $('.contacts_error').removeClass('hide');
+        }
+
+    </script>
+
+{% endblock %}

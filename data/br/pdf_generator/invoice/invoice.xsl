@@ -154,7 +154,12 @@
 	        <fo:table-column column-width="30%"/>
 	
 	        <fo:table-body>
-	            <xsl:apply-templates select="f_row"/>
+	            <fo:table-row>
+	            	<fo:table-cell><fo:block>TODO</fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>FOOTER</fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>INVOICE</fo:block></fo:table-cell>
+	            </fo:table-row>
+	            <!-- <xsl:apply-templates select="f_row"/> -->
 	        </fo:table-body>
 	    </fo:table>
 	</xsl:template>

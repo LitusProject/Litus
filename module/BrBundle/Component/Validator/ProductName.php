@@ -20,15 +20,15 @@ namespace BrBundle\Component\Validator;
 
 use CommonBundle\Component\Util\Url,
     Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Contract\Section;
+    BrBundle\Entity\Product;
 
 /**
- * Matches the given section name against the database to check whether it is
+ * Matches the given product name against the database to check whether it is
  * unique or not.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class SectionName extends \Zend\Validator\AbstractValidator
+class ProductName extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -38,28 +38,27 @@ class SectionName extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var \BrBundle\Entity\Contract\Section The section exluded from this check
+     * @var \BrBundle\Entity\Product The product exluded from this check
      */
-    private $_section;
+    private $_product;
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The section name already exists'
+        self::NOT_VALID => 'The product name already exists'
     );
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Contract\Section The section exluded from this check
-     * @param mixed                       $opts          The validator's options
+     * @param mixed    $opts     The validator's options
      */
-    public function __construct(EntityManager $entityManager, Section $section = null, $opts = null)
+    public function __construct(EntityManager $entityManager, Product $product = null, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_section = $section;
+        $this->_product = $product;
     }
 
     /**
@@ -73,11 +72,11 @@ class SectionName extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $section = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Contract\Section')
+        $product = $this->_entityManager
+            ->getRepository('BrBundle\Entity\Product')
             ->findOneByName($value);
 
-        if (null === $section || ($this->_section && ($section == $this->_section)))
+        if (null === $product || ($this->_product && ($product == $this->_product)))
             return true;
 
         $this->error(self::NOT_VALID);

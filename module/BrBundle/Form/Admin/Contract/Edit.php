@@ -16,35 +16,45 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace Admin\Form\Contract;
+namespace BrBundle\Form\Admin\Contract;
 
-use \Litus\Entity\Br\Contract;
-
-use \Zend\Form\Element\Submit;
-use \Zend\Form\Element\Hidden;
-use \Zend\Form\Element\Text;
+use BrBundle\Entity\Contract,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    Doctrine\ORM\EntityManager,
+    Zend\InputFilter\InputFilter,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Element\Submit;
 
 /**
- * Edit Contract
+ * The form used to edit an existing contract
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(Contract $contract, $options = null)
+
+    public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
         parent::__construct($options);
 
-        $this->removeElement('submit');
+        $this->_createFromContract($contract);
 
-        $field = new Hidden('id');
-        $field->setValue($contract->getId());
-        $this->addElement($field);
+        $field = new Submit('Save');
+        $field->setValue('Save')
+            ->setAttribute('class', 'contract_edit');
+        $this->add($field);
+    }
 
-        $field = new Text('contract_nb');
-        $field->setLabel('Contract number')
-            ->setRequired();
-        $this->addElement($field);
+    private function _createFromContract(Contract $contract)
+    {
+        $field = new Text('title');
+        $field->setLabel('Title')
+            ->setValue($contract->getTitle())
+            ->setRequired(true);
+        $this->add($field);
 
         if ($contract->isSigned()) {
             $field = new Text('invoice_nb');
@@ -53,23 +63,34 @@ class Edit extends Add
                 ->setValue($contract->getInvoiceNb())
                 ->setAttrib('disabled', 'disabled');
             $this->addElement($field);
+
+        foreach ($contract->getEntries() as $entry)
+        {
+            $field = new Textarea('entry_' . $entry->getId());
+            $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
+                ->setValue($entry->getContractText())
+                ->setRequired(false);
+            $this->add($field);
+
         }
+    }
 
-        $field = new Submit('Save');
-        $field->setValue('Save')
-            ->setAttrib('class', 'contracts_edit');
-        $this->addElement($field);
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
 
-        $this->populate(
-            array(
-                'company'       => $contract->getCompany()->getId(),
-                'discount'      => $contract->getDiscount(),
-                'title'         => $contract->getTitle(),
-                'sections'      => $this->_getActiveSections($contract),
-                'contract_nb'   => $contract->getContractNb()
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'title',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
             )
         );
-    }
 
     private function _getActiveSections(Contract $contract)
     {

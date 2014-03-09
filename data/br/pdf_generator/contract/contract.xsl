@@ -45,8 +45,8 @@
 	                </fo:block>
 	            </fo:static-content>
 	            <fo:flow flow-name="xsl-region-body">
-	                <fo:block margin-left="20px" margin-right="20px">
-	                    <fo:table table-layout="fixed" width="100%" margin-left="20px">
+	                <fo:block margin-left="20px" margin-right="5px">
+	                    <fo:table table-layout="fixed" width="100%" margin-left="5px">
 	                        <fo:table-column column-width="50%"/>
 	                        <fo:table-column column-width="50%"/>
 	
@@ -170,8 +170,27 @@
 	
 	<xsl:template match="entry">
 	    <fo:list-item>
+
+
 	        <fo:list-item-label>
-	            <fo:block>&#x2022;</fo:block>
+        	<fo:block font-family="helvetica">
+
+
+				<!-- <xsl:variable name="entry_cnt" select="count(ancestor::entry)"/> -->
+	    		<!-- <xsl:value-of select="count(ancestor::entry)"/> -->
+
+
+		<xsl:choose>
+          	<xsl:when test="(count(ancestor::entry) mod 2) = 0">
+            	&#x2022;
+          	</xsl:when>
+    	  	<xsl:otherwise>
+            	o
+      		</xsl:otherwise>
+        </xsl:choose>
+
+
+	        </fo:block>
 	        </fo:list-item-label>
 	        <fo:list-item-body>
 	            <fo:block text-align="justify" margin-left="30px" padding-after="3px"><xsl:apply-templates/></fo:block>

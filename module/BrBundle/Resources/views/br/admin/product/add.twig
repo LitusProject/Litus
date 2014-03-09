@@ -1,0 +1,65 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/section/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        <div class="sidebox">
+            <div class="title">Variables</div>
+            <div class="content">
+                <p>
+                    <i>These variables may be used in the text and will be substituted with their appropriate values.</i>
+                </p>
+
+                <p>
+                    <i>Company Name:</i> <br />
+                    &lt;company_name /&gt;
+                </p>
+
+                <p>
+                    <i>Date:</i> <br />
+                    &lt;date /&gt;
+                </p>
+
+                <p>
+                    <i>Euro Sign:</i> <br />
+                    &lt;euro /&gt;
+                </p>
+            </div>
+        </div>
+
+        <div class="sidebox">
+            <div class="title">Formatting</div>
+            <div class="content">
+                <p>
+                    <i>When you may also use the following tags to format text.</i>
+                </p>
+
+                <p>
+                    <b>&lt;b&gt;Bold:&lt;/b&gt;</b> <br />
+                    <i>&lt;i&gt;Italic:&lt;/i&gt;</i> <br />
+                    <u>&lt;u&gt;Underline:&lt;/u&gt;</u>
+                </p>
+            </div>
+        </div>
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$('#event').change(function() {
+				$('#delivery_date').val($('#event').children(':selected').attr('data-date'));
+			});
+
+		});
+	</script>
+{% endblock %}
