@@ -12,8 +12,9 @@ do_psql() {
 init_database() {
     echo "Initialising database"
 
-    psql -c "create user litus with login superuser password 'huQeyU8te3aXusaz';"
     psql -c 'create database litus;' -U postgres
+    psql -c "create user litus with login superuser password 'huQeyU8te3aXusaz';" -U postgres
+    psql -c 'alter database litus owner to litus;' -U postgres
 
     for schema in acl cudi general mail shifts tickets api forms nodes publications sport users br gallery logistics quiz syllabus; do
         do_psql "create schema $schema authorization litus;"
