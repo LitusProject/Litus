@@ -3,7 +3,7 @@
 # bail out if anything fails
 set -e
 
-cd $(dirname $(dirname "$0"));
+cd $(dirname "$0")/../..;
 
 if [ -f composer.lock ]; then
     composer update --dev

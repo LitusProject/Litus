@@ -3,7 +3,7 @@
 # fail if any command fails
 set -e
 
-cd $(dirname $(dirname "$0"))
+cd $(dirname "$0")/../..
 
 do_psql() {
     psql -c "$1" -U postgres -d litus
