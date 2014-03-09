@@ -37,7 +37,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

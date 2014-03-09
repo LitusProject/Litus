@@ -43,9 +43,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
     private $_required;
 
     /**
-     * @param string $prefix
-     * @param null|string|int $name Optional name for the element
-     * @param boolean $required Whether or not the form is required
+     * @param string          $prefix
+     * @param null|string|int $name     Optional name for the element
+     * @param boolean         $required Whether or not the form is required
      */
     public function __construct($prefix = '', $name = null, $required = true)
     {
@@ -98,12 +98,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
     private function _getCountries()
     {
         $options = array();
-        foreach(Address::$countries as $key => $continent) {
+        foreach (Address::$countries as $key => $continent) {
             $options[$key] = array(
                 'label' => $key,
                 'options' => $continent,
             );
         }
+
         return $options;
     }
 

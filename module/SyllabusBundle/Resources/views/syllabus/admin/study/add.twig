@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/study/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/study/partials/years.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#studySearch').typeaheadRemote(
+                {
+                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#parentId').val($(this).data('value').id);
+                } else {
+                    $('#parentId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

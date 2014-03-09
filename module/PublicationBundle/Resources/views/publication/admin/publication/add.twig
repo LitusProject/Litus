@@ -1,13 +1,13 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'publication/admin/publication/partials/navigation.twig' %}
+    {% include 'publication/admin/publication/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
 
-		{% import 'admin/partials/form.twig' as forms %}
+        {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
 
     </div>

@@ -39,12 +39,12 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
     private $_academicYear;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $articles The kind of articles to export
-     * @param string $order The ordering of the articles to export
-     * @param boolean $onlyInStock Print only articles in stock
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param string                                    $articles      The kind of articles to export
+     * @param string                                    $order         The ordering of the articles to export
+     * @param boolean                                   $onlyInStock   Print only articles in stock
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Component\Util\File\TmpFile $file The file to write to
+     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, TmpFile $file)
     {
@@ -92,7 +92,7 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
         $external = array();
         $internal = array();
 
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $virtualOrdered = $period->getNbVirtualOrdered($article);
 
             $object = new Object(

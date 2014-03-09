@@ -92,8 +92,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '50MB')));
-        $upload->addValidator(new ExtensionValidator('pdf'));
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -103,7 +102,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 ->getConfigValue('publication.public_pdf_directory');
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid()) . '.pdf';
             } while (file_exists($filePath . $fileName));
 
@@ -197,16 +196,20 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         if (!($edition = $this->_getEdition()))
             return new ViewModel();
 
+        $filePath = 'public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.public_pdf_directory');
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
             'Content-Type' => 'application/pdf',
-            'Content-Length' => filesize($edition->getFileName()),
+            'Content-Length' => filesize($filePath . $edition->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($edition->getFileName(), 'r');
-        $data = fread($handle, filesize($edition->getFileName()));
+        $handle = fopen($filePath . $edition->getFileName(), 'r');
+        $data = fread($handle, filesize($filePath . $edition->getFileName()));
         fclose($handle);
 
         return new ViewModel(

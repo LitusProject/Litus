@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -119,9 +119,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $list = array();
 
-        while($now < $maxDate) {
+        while ($now < $maxDate) {
             if (null !== $config[$now->format('N')]) {
-                foreach($config[$now->format('N')] as $slot) {
+                foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(
                         substr($slot['start'], 0, strpos($slot['start'], ':')),
@@ -135,7 +135,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         substr($slot['end'], strpos($slot['end'], ':') + 1)
                     );
 
-                    while($startSlot <= $lastSlot) {
+                    while ($startSlot <= $lastSlot) {
                         if (($isStart && $startSlot == $lastSlot) || (!$isStart && $startSlot == $firstSlot)) {
                             $startSlot->add(new DateInterval('PT' . $slotDuration . 'M'));
                             continue;

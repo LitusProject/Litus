@@ -50,8 +50,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager     $entityManager
+     * @param null|string|int                 $name          Optional name for the element
      */
     public function __construct(Article $article, EntityManager $entityManager, $name = null)
     {
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
 
-        foreach($templates as $template) {
+        foreach ($templates as $template) {
             $field = new Hidden('template_' . $template->getId() . '_value');
             $field->setValue(number_format($template->getValue()/100, 2));
             $this->add($field);

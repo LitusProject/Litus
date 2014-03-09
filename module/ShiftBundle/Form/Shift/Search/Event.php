@@ -38,9 +38,9 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Language $language The language
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\Language $language      The language
+     * @param null|string|int                       $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, $name = null)
     {

@@ -86,6 +86,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $form->setData($formData);
 
         $upload = new FileUpload();
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -97,7 +98,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $originalName = $upload->getFileName(null, false);
 
             $fileName = '';
-            do{
+            do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
@@ -169,7 +170,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new EditForm($mapping);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -240,7 +241,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="' . $file->getName() . '"',
+            'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
             'Content-Type' => 'application/octet-stream',
             'Content-Length' => filesize($filePath . $file->getPath()),
         ));

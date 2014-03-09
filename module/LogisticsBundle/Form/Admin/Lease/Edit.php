@@ -25,12 +25,12 @@ use Doctrine\ORM\EntityManager,
  * Edits a lease
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Edit extends Add {
-
+class Edit extends Add
+{
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \LogisticsBundle\Entity\Lease\Item $lease The lease item to populate the form with
-     * @param null|string|int $name Optional name for the form
+     * @param \Doctrine\ORM\EntityManager        $entityManager
+     * @param \LogisticsBundle\Entity\Lease\Item $lease         The lease item to populate the form with
+     * @param null|string|int                    $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Item $lease, $name = null)
     {

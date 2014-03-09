@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $tabContent = new TabContent('tab_content');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'start' => $openingHour->getStart()->format('d/m/Y H:i'),
             'end' => $openingHour->getEnd()->format('d/m/Y H:i'),
         );
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['comment_' . $language->getAbbrev()] = $openingHour->getComment($language, false);
         }
 
@@ -159,7 +159,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(

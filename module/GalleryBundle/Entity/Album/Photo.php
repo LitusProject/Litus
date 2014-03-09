@@ -61,7 +61,7 @@ class Photo
 
     /**
      * @param \GalleryBundle\Entity\Album\Album $album
-     * @param string $filePath
+     * @param string                            $filePath
      */
     public function __construct(Album $album, $filePath)
     {
@@ -117,6 +117,7 @@ class Photo
     public function setCensored($censored)
     {
         $this->censored = $censored;
+
         return $this;
     }
 }

@@ -149,6 +149,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
                 );
             }
         }
+
         return new ViewModel(
             array(
                 'quiz' => $round->getQuiz(),
@@ -181,18 +182,20 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
         if(!($quiz = $this->_getQuiz()))
+
             return new ViewModel();
 
         if(!$this->getRequest()->isPost())
+
             return new ViewModel();
 
         $data = $this->getRequest()->getPost();
 
         if(!$data['items'])
+
             return new ViewModel();
 
-        foreach($data['items'] as $order=>$id)
-        {
+        foreach ($data['items'] as $order=>$id) {
             $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);
             $round->setOrder($order+1);
         }

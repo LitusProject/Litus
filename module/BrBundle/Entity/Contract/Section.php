@@ -93,12 +93,12 @@ class Section
     private $invoiceDescription;
 
     /**
-     * @param string $name The name of this section
-     * @param string $description The description on the invoice of this section
-     * @param string $content The content of this section
-     * @param \CommonBundle\Entity\User\Person $author The author of this section
-     * @param int $price
-     * @param string $vatType see setVatType($vatType)
+     * @param string                           $name        The name of this section
+     * @param string                           $description The description on the invoice of this section
+     * @param string                           $content     The content of this section
+     * @param \CommonBundle\Entity\User\Person $author      The author of this section
+     * @param int                              $price
+     * @param string                           $vatType     see setVatType($vatType)
      */
     public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author, $price, $vatType)
     {
@@ -129,7 +129,7 @@ class Section
     }
 
     /**
-     * @param string $name The name of this section
+     * @param  string                            $name The name of this section
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setName($name)
@@ -151,7 +151,7 @@ class Section
     }
 
     /**
-     * @param \Litus\Entity\Users\Person $author The author of this section
+     * @param  \Litus\Entity\Users\Person        $author The author of this section
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setAuthor(Person $author)
@@ -173,7 +173,7 @@ class Section
     }
 
     /**
-     * @param string $content The content of this section
+     * @param  string                            $content The content of this section
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setContent($content)
@@ -195,8 +195,8 @@ class Section
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @param  \Doctrine\ORM\EntityManager       $entityManager The EntityManager instance
+     * @param  string                            $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
      * @return \BrBundle\Entity\Contract\Section
      */
@@ -225,7 +225,7 @@ class Section
     /**
      * Returns the VAT percentage for this section.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return int
      */
     public function getVatPercentage(EntityManager $entityManager)
@@ -233,11 +233,12 @@ class Section
         $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
+
         return $types[$this->getVatType()];
     }
 
     /**
-     * @param float $price
+     * @param  float                             $price
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setPrice($price)
@@ -271,7 +272,7 @@ class Section
     }
 
     /**
-     * @param string|null $description
+     * @param  string|null                       $description
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setInvoiceDescription($description)

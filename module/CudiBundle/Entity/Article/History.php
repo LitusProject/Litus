@@ -56,7 +56,7 @@ class History
     private $precursor;
 
     /**
-     * @param \CudiBundle\Entity\Article $article The new version of the article
+     * @param \CudiBundle\Entity\Article      $article   The new version of the article
      * @param \CudiBundle\Entity\Article|null $precursor The old version of the article
      */
     public function __construct(Article $article, Article $precursor = null)
@@ -101,6 +101,7 @@ class History
     public function setArticle(Article $article)
     {
         $this->article = $article;
+
         return $this;
     }
 

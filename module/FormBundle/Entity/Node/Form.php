@@ -129,13 +129,13 @@ abstract class Form extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param boolean $active
-     * @param boolean $max
-     * @param boolean $multiple
-     * @param boolean $nonMember
-     * @param boolean $editableByUser
+     * @param \DateTime                        $startDate
+     * @param \DateTime                        $endDate
+     * @param boolean                          $active
+     * @param boolean                          $max
+     * @param boolean                          $multiple
+     * @param boolean                          $nonMember
+     * @param boolean                          $editableByUser
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser)
     {
@@ -160,6 +160,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setMax($max)
     {
         $this->max = $max;
+
         return $this;
     }
 
@@ -179,6 +180,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setMultiple($multiple)
     {
         $this->multiple = $multiple;
+
         return $this;
     }
 
@@ -198,6 +200,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setEditableByUser($editableByUser)
     {
         $this->editableByUser = $editableByUser;
+
         return $this;
     }
 
@@ -217,6 +220,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setNonMember($nonMember)
     {
         $this->nonMember = $nonMember;
+
         return $this;
     }
 
@@ -234,6 +238,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function addField($field)
     {
         $this->fields->add($field);
+
         return $this;
     }
 
@@ -253,6 +258,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -272,6 +278,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -291,6 +298,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setActive($active)
     {
         $this->active = $active;
+
         return $this;
     }
 
@@ -318,6 +326,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function setMail(Mail $mail = null)
     {
         $this->mail = $mail;
+
         return $this;
     }
 
@@ -330,8 +339,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -345,8 +354,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getIntroduction(Language $language = null, $allowFallback = true)
@@ -360,8 +369,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getSubmitText(Language $language = null, $allowFallback = true)
@@ -375,8 +384,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getUpdateText(Language $language = null, $allowFallback = true)
@@ -390,13 +399,13 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language    $language
+     * @param  boolean                                  $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -413,7 +422,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can view this form.
      *
-     * @param \CommonBundle\Entity\User\Persons $person The person to check.
+     * @param  \CommonBundle\Entity\User\Persons $person The person to check.
      * @return boolean
      */
     public function canBeViewedBy(Person $person = null)
@@ -431,7 +440,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can edit this form.
      *
-     * @param \CommonBundle\Entity\User\Person $person The person to check.
+     * @param  \CommonBundle\Entity\User\Person $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
@@ -453,8 +462,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Returns the value for the given entry and field.
      *
-     * @param \FormBundle\Entity\Node\Entry $entry The entry to find the value for.
-     * @param \FormBundle\Entity\Field $field The field to find the value for.
+     * @param \FormBundle\Entity\Node\Entry         $entry    The entry to find the value for.
+     * @param \FormBundle\Entity\Field              $field    The field to find the value for.
      * @param \CommonBundle\Entity\General\Language $language The language to get the value in.
      *
      * @return The value.
@@ -466,27 +475,29 @@ abstract class Form extends \CommonBundle\Entity\Node
                 return $fieldEntry->getValueString($language);
             }
         }
+
         return '';
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager  $entityManager
      * @return \FormBundle\Entity\Node\Form
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    abstract function getType();
+    abstract public function getType();
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \FormBundle\Entity\Node\Entry         $entry
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
     public function getCompletedMailBody(Entry $entry, Language $language)
@@ -502,8 +513,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $entry
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \FormBundle\Entity\Node\Entry         $entry
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
     abstract protected function _getSummary(Entry $entry, Language $language);

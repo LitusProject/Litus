@@ -33,9 +33,9 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person The person we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\User\Person $person        The person we're going to modify
+     * @param null|string|int                  $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $person, $name = null)
     {
@@ -85,7 +85,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     /**
      * Returns an array that is in the right format to populate the roles field.
      *
-     * @param array $roles The user's roles
+     * @param  array $roles The user's roles
      * @return array
      */
     private function _createRolesPopulationArray(array $roles)
@@ -97,13 +97,14 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
             $rolesArray[] = $role->getName();
         }
+
         return $rolesArray;
     }
 
     /**
      * Returns an array that is in the right format to populate the roles field.
      *
-     * @param array $toles The user's roles
+     * @param  array $toles The user's roles
      * @return array
      */
     private function _createSystemRolesPopulationArray(array $roles)
@@ -115,6 +116,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
             $rolesArray[] = $role->getName();
         }
+
         return $rolesArray;
     }
 
@@ -137,6 +139,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
             $rolesArray[$role->getName()] = $role->getName();
         }
+
         return $rolesArray;
     }
 

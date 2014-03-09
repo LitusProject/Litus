@@ -88,6 +88,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel();
             }
         }
+
         return new ViewModel(
             array(
                 'form' => $form,
@@ -105,7 +106,7 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $section->setName($formData['name'])
@@ -115,7 +116,6 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
                     ->setInvoiceDescription($formData['invoice_description']);
 
                 $this->getEntityManager()->flush();
-
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -159,7 +159,6 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
     }
-
 
     private function _getSection()
     {

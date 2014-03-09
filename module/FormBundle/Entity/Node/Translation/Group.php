@@ -70,10 +70,10 @@ class Group
     private $introduction;
 
     /**
-     * @param \FormBundle\Entity\Node\Group $group
+     * @param \FormBundle\Entity\Node\Group         $group
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $title
-     * @param string $introduction
+     * @param string                                $title
+     * @param string                                $introduction
      */
     public function __construct(GroupEntity $group, Language $language, $title, $introduction)
     {
@@ -115,6 +115,7 @@ class Group
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Group
     public function setIntroduction($introduction)
     {
         $this->introduction = $introduction;
+
         return $this;
     }
 }

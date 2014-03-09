@@ -46,7 +46,7 @@ class Message
     /**
      * @param string $message The message string that should be parsed
      */
-    public function  __construct($message)
+    public function __construct($message)
     {
         $this->_message = $message;
 
@@ -58,7 +58,7 @@ class Message
 
     /**
      * Retrieve the message's headers.
-     * 
+     *
      * @return string
      */
     public function getHeaders()
@@ -68,13 +68,14 @@ class Message
 
     /**
      * Retrieve a specific header.
-     * 
-     * @param string $name The header's name
+     *
+     * @param  string $name The header's name
      * @return string
      */
-    public function getHeader($name) {
+    public function getHeader($name)
+    {
         $headers = $this->_getPartHeaders($this->_parts[1]);
-        
+
         $header = '';
         if (isset($headers[$name]))
             $header = $headers[$name];
@@ -84,7 +85,7 @@ class Message
 
     /**
      * Returns the message's subject.
-     * 
+     *
      * @return string
      */
     public function getSubject()
@@ -94,7 +95,7 @@ class Message
 
     /**
      * Retrieves all text/plain and text/html parts from the message.
-     * 
+     *
      * @return array
      */
     public function getBody()
@@ -105,7 +106,7 @@ class Message
         );
 
         $body = array();
-        foreach($this->_parts as $part) {
+        foreach ($this->_parts as $part) {
             if (in_array($this->_getPartContentType($part), $bodyTypes)) {
                 $headers = $this->_getPartHeaders($part);
                 $content = $this->_decode(
@@ -125,7 +126,7 @@ class Message
 
     /**
      * Returns an array with the message's attachments.
-     * 
+     *
      * @return array
      */
     public function getAttachments()
@@ -140,7 +141,7 @@ class Message
         );
 
         $attachments = array();
-        foreach($this->_parts as $part) {
+        foreach ($this->_parts as $part) {
             $contentDisposition = $this->_getPartContentDisposition($part);
 
             $attachment = null;
@@ -162,11 +163,11 @@ class Message
                             $this->_getPartBody($part),
                             (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                         );
-                        
+
                         $filename = $this->_getPartHeaders($part)[$header];
                         if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>')
                             $filename = substr($filename, 1, (strlen($filename) - 2));
-                        
+
                         $attachment = new Attachment(
                             $filename,
                             $this->_getPartContentType($part),
@@ -185,7 +186,7 @@ class Message
 
     /**
      * Parse the message into its parts.
-     * 
+     *
      * @return void
      */
     private function _parse()
@@ -193,7 +194,7 @@ class Message
         $structure = mailparse_msg_get_structure($this->_mailParse);
 
         $this->_parts = array();
-        foreach($structure as $nbPart) {
+        foreach ($structure as $nbPart) {
             $part = mailparse_msg_get_part($this->_mailParse, $nbPart);
             $this->_parts[$nbPart] = mailparse_msg_get_part_data($part);
         }
@@ -210,8 +211,8 @@ class Message
 
     /**
      * Find the content-type of a part.
-     * 
-     * @param array $part The part we want to query
+     *
+     * @param  array  $part The part we want to query
      * @return string
      */
     private function _getPartContentType($part)
@@ -228,8 +229,8 @@ class Message
 
     /**
      * Find the content-disposition of a part.
-     * 
-     * @param array $part The part we want to query
+     *
+     * @param  array  $part The part we want to query
      * @return string
      */
     private function _getPartContentDisposition($part)
@@ -243,8 +244,8 @@ class Message
 
     /**
      * Retrieve a part's body.
-     * 
-     * @param array $part The part we want to query
+     *
+     * @param  array  $part The part we want to query
      * @return string
      */
     private function _getPartBody($part)
@@ -258,9 +259,9 @@ class Message
 
     /**
      * Decode the given string.
-     * 
-     * @param string $encodedString The encoded string
-     * @param string $encodingType  The encoding type
+     *
+     * @param  string $encodedString The encoded string
+     * @param  string $encodingType  The encoding type
      * @return string
      */
     private function _decode($encodedString, $encodingType)

@@ -34,7 +34,7 @@ class Period extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($name = null )
+    public function __construct($name = null)
     {
         parent::__construct($name);
 

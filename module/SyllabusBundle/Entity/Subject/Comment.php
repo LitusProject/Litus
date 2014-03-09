@@ -102,13 +102,14 @@ class Comment
     /**
      * @throws \InvalidArgumentException
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\User\Person $person The person that created the comment
-     * @param \SyllabusBundle\Entity\Subject $subject The subject of the comment
-     * @param string $text The content of the comment
-     * @param string $type The type of the comment
+     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param \CommonBundle\Entity\User\Person $person        The person that created the comment
+     * @param \SyllabusBundle\Entity\Subject   $subject       The subject of the comment
+     * @param string                           $text          The content of the comment
+     * @param string                           $type          The type of the comment
      */
-    public function __construct(EntityManager $entityManager, Person $person, Subject $subject, $text, $type) {
+    public function __construct(EntityManager $entityManager, Person $person, Subject $subject, $text, $type)
+    {
         $this->person = $person;
         $this->text = $text;
         $this->date = new DateTime();
@@ -192,12 +193,13 @@ class Comment
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person|null $readBy
+     * @param  \CommonBundle\Entity\User\Person|null  $readBy
      * @return \SyllabusBundle\Entity\Subject\Comment
      */
     public function setReadBy(Person $readBy = null)
     {
         $this->readBy = $readBy;
+
         return $this;
     }
 

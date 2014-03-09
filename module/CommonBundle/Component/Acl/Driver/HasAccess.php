@@ -46,9 +46,9 @@ class HasAccess
     private $_authenticated = false;
 
     /**
-     * @param \CommonBundle\Component\Acl\Acl $acl The ACL object
-     * @param boolean $authenticated Whether the person is authenticated
-     * @param \CommonBundle\Component\Acl\RoleAware $entity The authenticated entity
+     * @param \CommonBundle\Component\Acl\Acl       $acl           The ACL object
+     * @param boolean                               $authenticated Whether the person is authenticated
+     * @param \CommonBundle\Component\Acl\RoleAware $entity        The authenticated entity
      */
     public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)
     {
@@ -58,8 +58,8 @@ class HasAccess
     }
 
     /**
-     * @param string $resource The resource that should be verified
-     * @param string $action The module that should be verified
+     * @param  string $resource The resource that should be verified
+     * @param  string $action   The module that should be verified
      * @return bool
      */
     public function __invoke($resource, $action)

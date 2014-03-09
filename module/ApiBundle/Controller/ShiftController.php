@@ -45,32 +45,30 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         $authenticatedPerson = null;
         //---END DUMMYCODE---
 
-        if($authenticatedPerson != null){
+        if ($authenticatedPerson != null) {
             $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($authenticatedPerson);
-        }
-        else{
+        } else {
             return new ViewModel();
         }
-        
-        
+
         foreach ($myShifts as $shift) {
             $result[] = array(
                 'name' => $shift->getName(),
                 'discription' => $shift->getDiscription(),
                 'startDate' => $shift->getStartDate(),
                 'endDate' => $shift->getEndDate(),
-                'manager' => $shift->getManager(), 
+                'manager' => $shift->getManager(),
                 );
         }
-        
+
         return new ViewModel(
             array(
                 'result' => (object) $result
             )
         );
-        
+
     }
 
 }

@@ -119,13 +119,13 @@ class Ticket
     private $member;
 
     /**
-     * @param \TicketBundle\Entity\Event $event
-     * @param string $status
+     * @param \TicketBundle\Entity\Event       $event
+     * @param string                           $status
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \TicketBundle\Entity\GuestInfo $guestInfo
-     * @param \DateTime $bookDate
-     * @param \DateTime $soldDate
-     * @param integer $number
+     * @param \TicketBundle\Entity\GuestInfo   $guestInfo
+     * @param \DateTime                        $bookDate
+     * @param \DateTime                        $soldDate
+     * @param integer                          $number
      */
     public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
@@ -182,7 +182,7 @@ class Ticket
     }
 
     /**
-     * @param string $status
+     * @param  string                      $status
      * @return \TicketBundle\Entity\Ticket
      */
     public function setStatus($status)
@@ -205,6 +205,7 @@ class Ticket
         }
 
         $this->status = $status;
+
         return $this;
     }
 
@@ -217,12 +218,13 @@ class Ticket
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param  \CommonBundle\Entity\User\Person $person
      * @return \TicketBundle\Entity\Ticket
      */
     public function setPerson(Person $person = null)
     {
         $this->person = $person;
+
         return $this;
     }
 
@@ -235,12 +237,13 @@ class Ticket
     }
 
     /**
-     * @param \TicketBundle\Entity\GuestInfo $guestInfo
+     * @param  \TicketBundle\Entity\GuestInfo $guestInfo
      * @return \TicketBundle\Entity\Ticket
      */
     public function setGuestInfo(GuestInfo $guestInfo = null)
     {
         $this->guestInfo = $guestInfo;
+
         return $this;
     }
 
@@ -267,12 +270,13 @@ class Ticket
     }
 
     /**
-     * @param \DateTime $bookDate
+     * @param  \DateTime                   $bookDate
      * @return \TicketBundle\Entity\Ticket
      */
     public function setBookDate(DateTime $bookDate)
     {
         $this->bookDate = $bookDate;
+
         return $this;
     }
 
@@ -285,12 +289,13 @@ class Ticket
     }
 
     /**
-     * @param \DateTime $soldDate
+     * @param  \DateTime                   $soldDate
      * @return \TicketBundle\Entity\Ticket
      */
     public function setSoldDate(DateTime $soldDate)
     {
         $this->soldDate = $soldDate;
+
         return $this;
     }
 
@@ -303,12 +308,13 @@ class Ticket
     }
 
     /**
-     * @param integer $number
+     * @param  integer                     $number
      * @return \TicketBundle\Entity\Ticket
      */
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 
@@ -321,12 +327,13 @@ class Ticket
     }
 
     /**
-     * @param \TicketBundle\Entity\Option $option
+     * @param  \TicketBundle\Entity\Option $option
      * @return \TicketBundle\Entity\Ticket
      */
     public function setOption(Option $option = null)
     {
         $this->option = $option;
+
         return $this;
     }
 
@@ -339,12 +346,13 @@ class Ticket
     }
 
     /**
-     * @param boolean $member
+     * @param  boolean                     $member
      * @return \TicketBundle\Entity\Ticket
      */
     public function setMember($member)
     {
         $this->member = $member;
+
         return $this;
     }
 }

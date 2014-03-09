@@ -50,8 +50,8 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
         $code = new CommonBundle\Entity\User\Shibboleth\Code(
             $_SERVER[$shibbolethPersonKey],
             substr($_SERVER[$shibbolethSessionKey], 1),
-            ($_GET['source'] == 'register') ? 1800 : 300,
             serialize($extraInfo),
+            ($_GET['source'] == 'register') ? 1800 : 300,
             isset($_GET['redirect']) ? $_GET['redirect'] : null
         );
 

@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="action">Special Actions</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('cudi_admin_special_action', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_special_action', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

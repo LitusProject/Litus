@@ -41,7 +41,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     private $_mailTransport;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager             $entityManager The EntityManager instance
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport The mail transport interface
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
@@ -70,7 +70,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 $found = $this->_entityManager
                     ->getRepository('CommonBundle\Entity\User\Code')
                     ->findOneByCode($code);
-            } while(isset($found));
+            } while (isset($found));
 
             $code = new Code($code);
             $this->_entityManager->persist($code);

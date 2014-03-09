@@ -56,7 +56,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -100,7 +100,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
         $form = new EditForm($this->getEntityManager(), $publication);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

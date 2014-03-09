@@ -68,7 +68,7 @@ class SubjectEnrollment
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \SyllabusBundle\Entity\Subject            $subject
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Subject $subject)
     {

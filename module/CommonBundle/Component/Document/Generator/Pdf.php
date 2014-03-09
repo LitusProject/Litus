@@ -52,15 +52,15 @@ abstract class Pdf
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $xslPath The path to the document's XSL file
-     * @param string $pdfPath The path all PDF's should be exported to
+     * @param string                      $xslPath       The path to the document's XSL file
+     * @param string                      $pdfPath       The path all PDF's should be exported to
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
-        if(($xslPath === null) || !is_string($xslPath))
+        if (($xslPath === null) || !is_string($xslPath))
             throw new \InvalidArgumentException('Invalid XSL');
 
-        if(($pdfPath === null) || !is_string($pdfPath))
+        if (($pdfPath === null) || !is_string($pdfPath))
             throw new \InvalidArgumentException('Invalid PDF');
 
         $this->_entityManager = $entityManager;
@@ -109,7 +109,7 @@ abstract class Pdf
     /**
      * Generate the document's XML structure.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
+     * @param  \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
      * @return void
      */
     abstract protected function generateXml(TmpFile $xmlFile);
@@ -126,7 +126,7 @@ abstract class Pdf
 
         $pdfDir = dirname($this->_pdfPath);
         if (!file_exists($pdfDir)) {
-            if(!mkdir($pdfDir, 0770))
+            if (!mkdir($pdfDir, 0770))
                 throw new \RuntimeException('Failed to create the PDF directory');
         }
 

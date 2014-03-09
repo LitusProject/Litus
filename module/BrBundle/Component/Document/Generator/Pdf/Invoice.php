@@ -23,13 +23,12 @@ use \Litus\Util\Xml\XmlObject;
 
 use \Litus\Util\TmpFile;
 
-use \Litus\Br\DocumentGenerator;
 use \Litus\Entity\Br\Contract;
 
 use \Zend\Registry;
 
-class InvoiceGenerator extends DocumentGenerator {
-
+class Invoice extends DocumentGenerator
+{
     /**
      * @var \Litus\Entity\Br\Contract
      */
@@ -103,7 +102,7 @@ class InvoiceGenerator extends DocumentGenerator {
             }
         }
 
-        while($count < 8) {
+        while ($count < 8) {
             $entries[] = new XmlObject('empty_line');
             $count++;
         }
@@ -113,7 +112,7 @@ class InvoiceGenerator extends DocumentGenerator {
         $entries[] = new XmlObject('empty_line');
 
         $discount = $this->_contract->getDiscount();
-        if($discount != 0) {
+        if ($discount != 0) {
             $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, '-' . $discount . '%'),

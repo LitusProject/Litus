@@ -38,7 +38,7 @@ return array(
         'SyllabusBundle',
         'TicketBundle',
 
-    	'LogisticsBundle',
+        'LogisticsBundle',
         'SecretaryBundle',
 
         'BannerBundle',

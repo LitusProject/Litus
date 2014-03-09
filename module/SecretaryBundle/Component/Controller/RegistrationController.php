@@ -85,7 +85,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $studies = array();
 
         if (!empty($data['studies'])) {
-            foreach($data['studies'] as $id) {
+            foreach ($data['studies'] as $id) {
                 if (isset($studies[$id]))
                     continue;
 
@@ -100,7 +100,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
                     ->findAllByStudyAndAcademicYear($study, $academicYear);
 
-                foreach($subjects as $subject) {
+                foreach ($subjects as $subject) {
                     if ($subject->isMandatory())
                         $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
                 }
@@ -165,7 +165,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $mappings = array();
         $studySubjects = array();
-        foreach($enrollments as $enrollment) {
+        foreach ($enrollments as $enrollment) {
             $subjects = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
                 ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $academicYear);
@@ -183,7 +183,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $subjectIds = array();
         $otherSubjects = array();
-        foreach($enrollments as $enrollment) {
+        foreach ($enrollments as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
 
             if (!in_array($enrollment->getSubject()->getId(), $studySubjects))
@@ -213,7 +213,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $subjects = array();
 
         if (!empty($data['subjects'])) {
-            foreach($data['subjects'] as $id) {
+            foreach ($data['subjects'] as $id) {
                 if (isset($subjects[$id]))
                     continue;
 

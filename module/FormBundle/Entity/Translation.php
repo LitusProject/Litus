@@ -65,8 +65,8 @@ class Translation
     /**
      * @param \FormBundle\Entity\Field field
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
-     * @param string $label
+     * @param string                                $content
+     * @param string                                $label
      */
     public function __construct(Field $field, Language $language, $label)
     {
@@ -107,6 +107,7 @@ class Translation
     public function setLabel($label)
     {
         $this->label = $label;
+
         return $this;
     }
 }

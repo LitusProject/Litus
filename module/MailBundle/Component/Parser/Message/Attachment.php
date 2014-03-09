@@ -41,9 +41,9 @@ class Attachment
     private $_data = '';
 
     /**
-     * @param string $filename The filename of the attachment
+     * @param string $filename    The filename of the attachment
      * @param string $contentType The attachment's content-type
-     * @param string $data The binary data of the attachment
+     * @param string $data        The binary data of the attachment
      */
     public function __construct($filename, $contentType, $data)
     {

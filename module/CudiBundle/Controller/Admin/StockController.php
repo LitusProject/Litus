@@ -118,7 +118,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
@@ -161,7 +161,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         array_splice($articles, $numResults);
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
@@ -207,7 +207,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ->findNbByPeriodAndArticle($period, $article);
         $maxDelivery = $period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual;
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             if (isset($formData['updateStock'])) {
@@ -232,7 +232,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             ->getRepository('CudiBundle\Entity\Sale\Booking')
                             ->findLastAssignedByArticle($article);
 
-                        foreach($bookings as $booking) {
+                        foreach ($bookings as $booking) {
                             if ($nbToMuchAssigned <= 0)
                                 break;
                             $booking->setStatus('booked', $this->getEntityManager());
@@ -463,7 +463,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             }
 
             $articles = array();
-            foreach($stock as $item) {
+            foreach ($stock as $item) {
                 if ($formData['articles'] == 'external' && $item->getMainArticle()->isInternal())
                     continue;
                 if ($formData['articles'] == 'internal' && !$item->getMainArticle()->isInternal())
@@ -477,12 +477,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
             $form = new BulkUpdateForm($articles);
 
-            if($this->getRequest()->isPost()) {
+            if ($this->getRequest()->isPost()) {
                 $formData = $this->getRequest()->getPost();
                 $form->setData($formData);
 
                 if ($form->isValid()) {
-                    foreach($articles as $article) {
+                    foreach ($articles as $article) {
                         if ($article->getStockValue() != $formData['article-' . $article->getId()]) {
                             $delta = new Delta(
                                 $this->getAuthentication()->getPersonObject(),
@@ -500,7 +500,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                                 ->findLastAssignedByArticle($article);
 
-                            foreach($bookings as $booking) {
+                            foreach ($bookings as $booking) {
                                 if ($nbToMuchAssigned <= 0)
                                     break;
                                 $booking->setStatus('booked', $this->getEntityManager());
@@ -534,7 +534,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     private function _search(AcademicYear $academicYear, $semester = 0)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -552,7 +552,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     private function _searchNotDelivered(Period $period)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Period')

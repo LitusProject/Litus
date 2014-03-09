@@ -31,8 +31,8 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
     private $_required = false;
 
     /**
-     * @param  null|int|string  $name    Optional name for the element
-     * @param  array            $options Optional options for the element
+     * @param  null|int|string                    $name    Optional name for the element
+     * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($name, $options = array())
@@ -51,13 +51,14 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
      *
      * Also sets the HTML5 'required' attribute.
      *
-     * @param boolean $flag
+     * @param  boolean $flag
      * @return void
      */
     public function setRequired($flag = true)
     {
         $this->setAttribute('required', $flag);
         $this->_required = $flag;
+
         return $this;
     }
 

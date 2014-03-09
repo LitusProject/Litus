@@ -49,6 +49,10 @@ body {
     }
 }
 
+.navbar-collapse {
+    max-height: none;
+}
+
 header {
     background: @cHeaderLight;
     #gradient > .vertical(@start-color: @cHeaderDark; @end-color: @cHeaderLight; @start-percent: 0%; @end-percent: 50%);
@@ -248,6 +252,10 @@ footer {
             }
         }
     }
+
+    .icons {
+        text-align: right;
+    }
 }
 
 .alert {
@@ -302,4 +310,14 @@ table {
 
 .disabled {
     cursor: not-allowed;
+}
+
+@media(min-width: @screen-md-min) {
+    header {
+        .site-link {
+            display: block;
+            width: 940px;
+            margin: 0px auto;
+        }
+    }
 }

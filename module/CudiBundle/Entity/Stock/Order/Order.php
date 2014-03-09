@@ -127,6 +127,7 @@ class Order
         $number = 0;
         foreach($this->items as $item)
             $number += $item->getNumber();
+
         return $number;
     }
 
@@ -140,6 +141,7 @@ class Order
         $price = 0;
         foreach($this->items as $item)
             $price += $item->getPrice();
+
         return $price;
     }
 
@@ -183,6 +185,7 @@ class Order
     public function setPerson(Person $person)
     {
         $this->person = $person;
+
         return $this;
     }
 
@@ -200,6 +203,7 @@ class Order
     public function order()
     {
         $this->dateOrdered = new DateTime();
+
         return $this;
     }
 
@@ -209,6 +213,7 @@ class Order
     public function cancel()
     {
         $this->dateOrdered = null;
+
         return $this;
     }
 
@@ -221,6 +226,7 @@ class Order
     {
         $deliveryDate->setTime(0, 0);
         $this->dateDelivery = $deliveryDate;
+
         return $this;
     }
 
@@ -248,6 +254,7 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 }

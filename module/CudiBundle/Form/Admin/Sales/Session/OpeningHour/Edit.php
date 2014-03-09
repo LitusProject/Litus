@@ -31,10 +31,10 @@ class Edit extends Add
 {
     /**
      * @param \CudiBundle\Entity\Sale\Session\OpeningHour $openingHour
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager                 $entityManager The EntityManager instance
+     * @param null|string|int                             $name          Optional name for the element
      */
-    public function __construct(OpeningHour $openingHour, EntityManager $entityManager, $name = null )
+    public function __construct(OpeningHour $openingHour, EntityManager $entityManager, $name = null)
     {
         parent::__construct($entityManager, $name);
 

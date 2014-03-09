@@ -35,19 +35,20 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param  \Doctrine\ORM\EntityManager                   $entityManager The EntityManager instance
      * @return \CommonBundle\Component\View\Helper\StaticMap
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Location $location The location that should be verified
-     * @param string $size The image's size
-     * @param string $color The hex value for the color of the marker on the image
+     * @param  \CommonBundle\Entity\General\Location $location The location that should be verified
+     * @param  string                                $size     The image's size
+     * @param  string                                $color    The hex value for the color of the marker on the image
      * @return bool
      */
     public function __invoke(Location $location, $size, $color)

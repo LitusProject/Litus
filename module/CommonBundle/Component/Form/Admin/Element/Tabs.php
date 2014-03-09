@@ -37,8 +37,8 @@ class Tabs extends \Zend\Form\Element
     );
 
     /**
-     * @param  null|int|string  $name    Optional name for the element
-     * @param  array            $options Optional options for the element
+     * @param  null|int|string                    $name    Optional name for the element
+     * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($name = null, $options = array())
@@ -55,6 +55,7 @@ class Tabs extends \Zend\Form\Element
     public function setTabs($tabs = array())
     {
         $this->attributes['tabs'] = $tabs;
+
         return $this;
     }
 
@@ -74,6 +75,7 @@ class Tabs extends \Zend\Form\Element
     public function addTab($tab)
     {
         $this->attributes['tabs'] = array_merge($this->attributes['tabs'], $tab);
+
         return $this;
     }
 }

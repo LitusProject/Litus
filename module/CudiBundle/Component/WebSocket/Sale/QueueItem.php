@@ -59,7 +59,7 @@ class QueueItem
 
     /**
      * @param Doctrine\ORM\EntityManager $entityManager
-     * @param integer $id The id of the queue item
+     * @param integer                    $id            The id of the queue item
      */
     public function __construct(EntityManager $entityManager, User $user, $id)
     {
@@ -83,6 +83,7 @@ class QueueItem
     public function setUser(User $user)
     {
         $this->_user = $user;
+
         return $this;
     }
 
@@ -187,8 +188,8 @@ class QueueItem
     }
 
     /**
-     * @param array $articles
-     * @param array $discounts
+     * @param  array $articles
+     * @param  array $discounts
      * @return array
      */
     public function conclude($articles, $discounts)
@@ -209,7 +210,7 @@ class QueueItem
 
         $soldArticles = array();
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0 || !$booking->getArticle()->isSellable())
                 continue;
 
@@ -261,11 +262,11 @@ class QueueItem
                         $this->_entityManager->persist($registration);
                     }
                     $registration->setPayed();
-                } catch(\Exception $e) {}
+                } catch (\Exception $e) {}
             }
         }
 
-        foreach($articles as $id => $number) {
+        foreach ($articles as $id => $number) {
             if ($number <= 0)
                 continue;
 
@@ -310,16 +311,16 @@ class QueueItem
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
                     $registration->setPayed();
-                } catch(\Exception $e) {}
+                } catch (\Exception $e) {}
             }
         }
 
         $saleItems = array();
-        foreach($soldArticles as $soldArticle) {
+        foreach ($soldArticles as $soldArticle) {
             while ($soldArticle['number'] > 0) {
                 $price = $soldArticle['article']->getSellPrice();
                 $bestDiscount = null;
-                foreach($soldArticle['article']->getDiscounts() as $discount) {
+                foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
                         if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager))
                             continue;
@@ -351,7 +352,7 @@ class QueueItem
         }
 
         $hasAccoCard = false;
-        foreach($discounts as $discount) {
+        foreach ($discounts as $discount) {
             $hasAccoCard = ($discount == 'acco');
             if ($hasAccoCard)
                 break;
@@ -383,7 +384,7 @@ class QueueItem
 
         $results = array();
         $bookedArticles = array();
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             $barcodes = array();
             foreach($booking->getArticle()->getBarcodes() as $barcode)
                 $barcodes[] = $barcode->getBarcode();
@@ -408,7 +409,7 @@ class QueueItem
                     'discounts' => array(),
                 );
 
-                foreach($booking->getArticle()->getDiscounts() as $discount) {
+                foreach ($booking->getArticle()->getDiscounts() as $discount) {
                     if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager) &&
                             $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
@@ -423,7 +424,7 @@ class QueueItem
             }
         }
 
-        foreach($this->_articles as $id => $number) {
+        foreach ($this->_articles as $id => $number) {
             if (!in_array($id, $bookedArticles) && $number > 0) {
                 $article = $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -448,7 +449,7 @@ class QueueItem
                     'discounts' => array(),
                 );
 
-                foreach($article->getDiscounts() as $discount) {
+                foreach ($article->getDiscounts() as $discount) {
                     if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
                             $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(

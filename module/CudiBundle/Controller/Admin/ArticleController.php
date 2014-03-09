@@ -73,7 +73,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form = new AddForm($this->getEntityManager());
         $academicYear = $this->getAcademicYear();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -187,7 +187,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $article);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -316,7 +316,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
 
             $item = (object) array();
@@ -347,7 +347,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new DuplicateForm($this->getEntityManager(), $article);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -403,7 +403,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findAllByArticleAndAcademicYear($article, $academicYear);
 
-                foreach($mappings as $mapping) {
+                foreach ($mappings as $mapping) {
                     $this->getEntityManager()->persist(new SubjectMap($new, $mapping->getSubject(), $academicYear, $mapping->isMandatory()));
                 }
 
@@ -489,7 +489,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticle($previous, true);
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $new = new SubjectMap($article, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
             $new->setIsProf($mapping->isProf());
             $this->getEntityManager()->persist($new);
@@ -585,7 +585,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticle($previous, true);
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $new = new SubjectMap($article, $mapping->getSubject(), $mapping->getAcademicYear(), $mapping->isMandatory());
             $new->setIsProf($mapping->isProf());
             $this->getEntityManager()->persist($new);
@@ -614,7 +614,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     private function _search(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')

@@ -45,10 +45,10 @@ class Html extends \PublicationBundle\Entity\Edition
      *
      * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
      * @param \CommonBundle\Entity\General\AcademicYear
-     * @param string $title The title of this edition
-     * @param string $html The html of this edition
-     * @param \DateTime $date The date of this edition
-     * @param string $fileName The file name of this edition
+     * @param string    $title    The title of this edition
+     * @param string    $html     The html of this edition
+     * @param \DateTime $date     The date of this edition
+     * @param string    $fileName The file name of this edition
      */
     public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, DateTime $date, $fileName)
     {

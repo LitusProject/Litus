@@ -67,7 +67,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -186,7 +186,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
         $form = new EditForm($this->getEntityManager(), $reservation);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

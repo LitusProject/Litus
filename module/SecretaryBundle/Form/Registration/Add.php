@@ -58,12 +58,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_enableOtherOrganization = false;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $identification The university identification
-     * @param array|null $extraInfo Extra information about the user
-     * @param boolean $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int $name Optional name for the element
+     * @param \Zend\Cache\Storage\StorageInterface $cache                   The cache instance
+     * @param \Doctrine\ORM\EntityManager          $entityManager           The EntityManager instance
+     * @param string                               $identification          The university identification
+     * @param array|null                           $extraInfo               Extra information about the user
+     * @param boolean                              $enableOtherOrganization Enable the "other organization" option
+     * @param null|string|int                      $name                    Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
     {
@@ -247,8 +247,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             }
-            else {
+             } else {
                 $data['primary_address_address_city'] = 'other';
                 $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
                 $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
@@ -273,7 +272,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
             $data['bakske'] = $metaData->bakskeByMail();
             $data['tshirt_size'] = $metaData->getTshirtSize();
-        } else if ($metaData) {
+        } elseif ($metaData) {
             $data['bakske'] = $metaData->bakskeByMail();
         }
 

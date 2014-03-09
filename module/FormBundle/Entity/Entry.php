@@ -60,50 +60,86 @@ class Entry
     private $value;
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $formEntry
-     * @param \FormBundle\Entity\Field $field
+     * @var string The readable value of this field.
+     *
+     * @ORM\Column(name="readable_value", type="text", nullable=true)
      */
-    public function __construct(NodeEntry $formEntry, Field $field, $value)
+    private $readableValue;
+
+    /**
+     * @param \FormBundle\Entity\Node\Entry $formEntry
+     * @param \FormBundle\Entity\Field      $field
+     * @param string                        $value
+     * @param string                        $readableValue
+     */
+    public function __construct(NodeEntry $formEntry, Field $field, $value, $readableValue = null)
     {
         $this->formEntry = $formEntry;
         $this->field = $field;
         $this->value = $value;
+        $this->readableValue = $readableValue;
     }
 
     /**
      * @return The form entry this entry belongs to.
      */
-    public function getFormEntry() {
+    public function getFormEntry()
+    {
         return $this->formEntry;
     }
 
     /**
      * @return The field this entry belongs to.
      */
-    public function getField() {
+    public function getField()
+    {
         return $this->field;
     }
 
     /**
      * @return string
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
     /**
-     * @return string
+     * @param  string                   $value;
+     * @return \FormBundle\Entity\Entry
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->value = $value;
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
      * @return string
      */
-    public function getValueString(Language $language) {
+    public function getReadableValue()
+    {
+        return $this->readableValue;
+    }
+
+    /**
+     * @param  string                   $readableValue;
+     * @return \FormBundle\Entity\Entry
+     */
+    public function setReadableValue($readableValue)
+    {
+        $this->readableValue = $readableValue;
+
+        return $this;
+    }
+
+    /**
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @return string
+     */
+    public function getValueString(Language $language)
+    {
         return $this->getField()->getValueString($language, $this->getValue());
     }
 }

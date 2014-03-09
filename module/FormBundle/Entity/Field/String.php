@@ -54,13 +54,13 @@ class String extends Field
 
     /**
      * @param FormBundle\Entity\Node\Form $form
-     * @param integer $order
-     * @param boolean $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string $visibilityValue
-     * @param integer $lineLength
-     * @param integer $lines
-     * @param boolean $multiLine
+     * @param integer                     $order
+     * @param boolean                     $required
+     * @param \FormBundle\Entity\Field    $visibityDecisionField
+     * @param string                      $visibilityValue
+     * @param integer                     $lineLength
+     * @param integer                     $lines
+     * @param boolean                     $multiLine
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $lineLength, $lines, $multiLine)
     {
@@ -81,12 +81,13 @@ class String extends Field
     }
 
     /**
-     * @param integer $lineLength The maximum number of characters per line.
+     * @param  integer                          $lineLength The maximum number of characters per line.
      * @return \FormBundle\Entity\Fields\String
      */
     public function setLineLength($lineLength)
     {
         $this->lineLength = $lineLength;
+
         return $this;
     }
 
@@ -103,12 +104,13 @@ class String extends Field
     }
 
     /**
-     * @param integer $lines Returns the maximum number of lines for this field.
+     * @param  integer                          $lines Returns the maximum number of lines for this field.
      * @return \FormBundle\Entity\Fields\String
      */
     public function setLines($lines)
     {
         $this->lines = $lines;
+
         return $this;
     }
 
@@ -123,12 +125,13 @@ class String extends Field
     }
 
     /**
-     * @param boolean $multiLine Returns whether this is a multiline field.
+     * @param  boolean                          $multiLine Returns whether this is a multiline field.
      * @return \FormBundle\Entity\Fields\String
      */
     public function setMultiLine($multiLine)
     {
         $this->multiLine = $multiLine;
+
         return $this;
     }
 
@@ -136,20 +139,22 @@ class String extends Field
      * Returns whether this field has a maximum length or not.
      *
      * @return boolean True if and only if the maximum length per line is specified and, for
-     *         multiline fields, the maximum number of lines is specified.
+     *                 multiline fields, the maximum number of lines is specified.
      */
     public function hasLengthSpecification()
     {
         $result = $this->getLineLength() !== NULL && $this->getLineLength() != 0 && $this->getLines() !== NULL && $this->getLines() != 0;
+
         return $result;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $value
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $value
      * @return string
      */
-    public function getValueString(Language $language, $value) {
+    public function getValueString(Language $language, $value)
+    {
         return $value;
     }
 

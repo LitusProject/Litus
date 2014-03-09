@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $cvYears = $this->_getArchiveYears();
-        foreach($years as $key => $year) {
+        foreach ($years as $key => $year) {
             $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
             if (isset($cvYears['archive-' . $shortCode]))
                 continue;
@@ -98,6 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('cvbook');
         $field->setLabel('CV Book')
             ->setAttribute('multiple', true)
+            ->setAttribute('data-help', 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.')
             ->setAttribute('options', $cvYears);
         $this->add($field);
 

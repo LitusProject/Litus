@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace CudiBundle\Repository\Sale;
 
@@ -748,7 +764,7 @@ class Booking extends EntityRepository
         $counter = 0;
         $idsCancelled = array();
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if (in_array($booking->getArticle()->getId(), $excluded))
                 continue;
             $booking->setStatus('canceled', $this->getEntityManager());
@@ -760,7 +776,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssigned();
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if (in_array($booking->getArticle()->getId(), $excluded))
                 continue;
             $booking->setStatus('canceled', $this->getEntityManager());
@@ -793,7 +809,7 @@ class Booking extends EntityRepository
 
         $persons = array();
 
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
 
             if ($available <= 0)
@@ -803,7 +819,7 @@ class Booking extends EntityRepository
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
-            foreach($bookings as $booking) {
+            foreach ($bookings as $booking) {
                 if ($available <= 0)
                     break;
 
@@ -864,7 +880,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllBookedByArticleAndPeriod($article, $period);
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if ($available <= 0)
                 break;
 
@@ -916,7 +932,7 @@ class Booking extends EntityRepository
             ->getResult();
 
         $persons = array();
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
 
                if (!isset($persons[$booking->getPerson()->getId()]))
@@ -953,13 +969,14 @@ class Booking extends EntityRepository
             ->getConfigValue('cudi.reservation_extend_time');
 
         $number = 0;
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if ($booking->getExpirationDate()) {
                 $date = clone $booking->getExpirationDate();
                 $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
                 $number++;
             }
         }
+
         return $number;
     }
 

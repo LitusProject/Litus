@@ -35,9 +35,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     private $_displayFormActions;
 
     /**
-     * @param null|string|int $name Optional name for the element
-     * @param boolean $horizontal Whether to display the form horizontically or vertically
-     * @param boolean $displayFormActions Whether or not to show the form-actions div
+     * @param null|string|int $name               Optional name for the element
+     * @param boolean         $horizontal         Whether to display the form horizontically or vertically
+     * @param boolean         $displayFormActions Whether or not to show the form-actions div
      */
     public function __construct($name = null, $horizontal = true, $displayFormActions = true)
     {
@@ -61,7 +61,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      *
      * Typically, also passes data on to the composed input filter.
      *
-     * @param  array|\ArrayAccess|\Traversable $data
+     * @param  array|\ArrayAccess|\Traversable    $data
      * @return Form|FormInterface
      * @throws Exception\InvalidArgumentException
      */
@@ -75,7 +75,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable $messages
+     * @param  array|Traversable                          $messages
      * @return Element|ElementInterface|FieldsetInterface
      * @throws Exception\InvalidArgumentException
      */
@@ -84,7 +84,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         parent::setMessages($messages);
 
         $fieldsets = $this->getFieldsets();
-        foreach($fieldsets as $fieldset) {
+        foreach ($fieldsets as $fieldset) {
             $fieldset->setMessages($messages);
         }
 
@@ -94,7 +94,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable $data
+     * @param  array|Traversable                  $data
      * @return void
      * @throws Exception\InvalidArgumentException
      */
@@ -103,7 +103,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         parent::populateValues($data);
 
         $fieldsets = $this->getFieldsets();
-        foreach($fieldsets as $fieldset) {
+        foreach ($fieldsets as $fieldset) {
             $fieldset->populateValues($data);
         }
 
@@ -127,10 +127,11 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function getFormData($formData)
     {
-        foreach($this->getData() as $key => $value) {
+        foreach ($this->getData() as $key => $value) {
             if (null !== $value)
                 $formData->{$key} = $value;
         }
+
         return $formData;
     }
 }

@@ -31,7 +31,7 @@ interface Element
      *
      * Also sets the HTML5 'required' attribute.
      *
-     * @param boolean $flag
+     * @param  boolean $flag
      * @return void
      */
     public function setRequired($flag = true);

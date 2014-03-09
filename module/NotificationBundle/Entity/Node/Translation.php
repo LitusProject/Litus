@@ -65,9 +65,9 @@ class Translation
 
     /**
      * @param \NotificationBundle\Entity\Node\Notification $notification
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string $title
-     * @param string $content
+     * @param \CommonBundle\Entity\General\Language        $language
+     * @param string                                       $title
+     * @param string                                       $content
      */
     public function __construct(Notification $notification, Language $language, $content)
     {
@@ -108,6 +108,7 @@ class Translation
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

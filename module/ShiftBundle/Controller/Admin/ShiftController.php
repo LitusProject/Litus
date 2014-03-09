@@ -161,9 +161,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function addInterval(DateTime $time, $interval, $duplicate){
+    private function addInterval(DateTime $time, $interval, $duplicate)
+    {
         for ($i = 0; $i < $duplicate; $i++)
             $time = $time->add($interval);
+
         return clone $time;
     }
 
@@ -329,7 +331,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($shifts as $shift) {
+        foreach ($shifts as $shift) {
             $item = (object) array();
             $item->id = $shift->getId();
             $item->name = $shift->getName();
@@ -347,13 +349,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-
     /**
     *   @return \Doctrine\ORM\Query
     */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')

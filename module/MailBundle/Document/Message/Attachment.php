@@ -60,7 +60,7 @@ class Attachment
 
     /**
      * @param string $message
-     * @param array $attachments
+     * @param array  $attachments
      */
     public function __construct($filename, $contentType, $data)
     {

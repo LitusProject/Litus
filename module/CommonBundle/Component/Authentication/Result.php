@@ -32,12 +32,12 @@ abstract class Result extends \Zend\Authentication\Result
      *
      * @return \CommonBundle\Entity\User\Person
      */
-    public abstract function getPersonObject();
+    abstract public function getPersonObject();
 
     /**
      * Return the session object.
      *
      * @return \CommonBundle\Entity\User\Session
      */
-    public abstract function getSessionObject();
+    abstract public function getSessionObject();
 }

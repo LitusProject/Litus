@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace CudiBundle\Repository\Stock;
 
@@ -131,10 +147,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 
@@ -159,10 +176,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 
@@ -190,7 +208,7 @@ class Period extends EntityRepository
             ->getResult();
 
         $articles = array();
-        foreach($resultSet as $barcode) {
+        foreach ($resultSet as $barcode) {
             if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($barcode->getArticle()) <= 0)
                 continue;
             $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
@@ -217,10 +235,11 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for($i = 0 ; $i < count($resultSet) ; $i++) {
+            for ($i = 0 ; $i < count($resultSet) ; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
+
             return $articles;
         }
 

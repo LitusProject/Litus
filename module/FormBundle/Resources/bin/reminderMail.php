@@ -71,16 +71,16 @@ if (isset($opts->r)) {
     try {
     $timeSlots = $em->getRepository('FormBundle\Entity\Field\TimeSlot')
         ->findAllForReminderMail($start, $end);
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         print_r($e);
     }
 
-    foreach($timeSlots as $timeSlot) {
+    foreach ($timeSlots as $timeSlot) {
         echo 'Form ' . $timeSlot->getForm()->getTitle($english) . ': TimeSlot ' . $timeSlot->getLabel($english) . PHP_EOL;
         $entries = $em->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($timeSlot);
 
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             echo 'Reminder for ' . $entry->getFormEntry()->getPersonInfo()->getFullName() . PHP_EOL;
 
             $timeSlot->getForm()->setEntityManager($em);
@@ -100,7 +100,7 @@ if (isset($opts->r)) {
                 $mail->addBcc($mailAddress);
 
             if ('development' != getenv('APPLICATION_ENV') && isset($opts->m))
-                $this->getMailTransport()->send($mail);
+                $mt->send($mail);
         }
 
         echo '------------------------------------------------' . PHP_EOL;

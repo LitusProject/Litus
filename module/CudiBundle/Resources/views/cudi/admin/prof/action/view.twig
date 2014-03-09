@@ -126,7 +126,7 @@
             Description: <b>{{ action.getEntity().getFile().getDescription() }}</b><br />
             <br />
             {% if hasAccess('cudi_admin_article_file', 'download') %}
-                <input type="button" class="download downloadFile" data-file="{{ url('cudi_admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}" value="Download " style="padding-left: 18px;cursor: pointer;border-width: 2px;" />
+                <a class="download" href="{{ url('cudi_admin_article_file', {"action": "download", "id": action.getEntity().getId()}) }}">Download</a>
             {% endif %}
         {% endif %}
     </div>
@@ -161,14 +161,4 @@
             {% endif %}
         {% endif %}
     </aside>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-        });
-    </script>
 {% endblock %}

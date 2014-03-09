@@ -71,10 +71,10 @@ class Role
     private $actions;
 
     /**
-     * @param string $name The name of the role
-     * @param boolean $system Whether or not this is a system role
-     * @param array $parents The role's parents
-     * @param array $actions The role's actions
+     * @param string  $name    The name of the role
+     * @param boolean $system  Whether or not this is a system role
+     * @param array   $parents The role's parents
+     * @param array   $actions The role's actions
      */
     public function __construct($name, $system = false, array $parents = array(), array $actions = array())
     {
@@ -102,12 +102,13 @@ class Role
     }
 
     /**
-     * @param array $parents
+     * @param  array                         $parents
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function setParents(array $parents)
     {
         $this->parents = new ArrayCollection($parents);
+
         return $this;
     }
 
@@ -120,12 +121,13 @@ class Role
     }
 
     /**
-     * @param array $actions
+     * @param  array                         $actions
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function setActions(array $actions)
     {
         $this->actions = new ArrayCollection($actions);
+
         return $this;
     }
 
@@ -140,7 +142,7 @@ class Role
     /**
      * Allow this role access to the given action.
      *
-     * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
+     * @param  \CommonBundle\Entity\Acl\Action $action The action the role should have access to
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function addAction(Action $action)
@@ -151,7 +153,7 @@ class Role
     /**
      * Remove the given action from the role.
      *
-     * @param \CommonBundle\Entity\Acl\Action $action The action the role should have access to
+     * @param  \CommonBundle\Entity\Acl\Action $action The action the role should have access to
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function removeAction(Action $action)
@@ -163,9 +165,9 @@ class Role
      * Checks whether or not this role has sufficient permissions to access
      * the specified action.
      *
-     * @param \CommonBundle\Component\Acl\Acl $acl The ACL instance
-     * @param string $resource The resource the action belongs to
-     * @param string $action The action that should be verified
+     * @param  \CommonBundle\Component\Acl\Acl $acl      The ACL instance
+     * @param  string                          $resource The resource the action belongs to
+     * @param  string                          $action   The action that should be verified
      * @return bool
      */
     public function isAllowed(Acl $acl, $resource, $action)

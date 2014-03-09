@@ -61,6 +61,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
     {
         if (null === ($poster = $this->_getPoster())) {
             $this->getResponse()->setStatusCode(404);
+
             return new ViewModel(
                 array(
                     'error' => (object) array(
@@ -76,6 +77,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
         if (!file_exists($filePath . $poster)) {
             $this->getResponse()->setStatusCode(500);
+
             return new ViewModel(
                 array(
                     'error' => (object) array(

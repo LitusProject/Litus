@@ -70,8 +70,8 @@ class ReservationConflict extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param mixed $token
-     * @param string $format
+     * @param  mixed  $token
+     * @param  string $format
      * @return void
      */
     public function __construct($startDate, $format, $resource, $entityManager, $reservationId = -1)
@@ -88,8 +88,8 @@ class ReservationConflict extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if and only if no other reservation exists for the resource that conflicts with the new one.
      *
-     * @param mixed $value
-     * @param array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -100,11 +100,13 @@ class ReservationConflict extends \Zend\Validator\AbstractValidator
             $startDate = $context[$this->_startDate];
         } else {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
         if ($startDate === null) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
@@ -126,6 +128,7 @@ class ReservationConflict extends \Zend\Validator\AbstractValidator
 
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);
+
             return false;
         }
 

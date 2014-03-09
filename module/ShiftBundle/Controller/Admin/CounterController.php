@@ -224,7 +224,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         $academicYear = $this->_getAcademicYear();
 
         $people = null;
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'university_identification':
                 $people = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
