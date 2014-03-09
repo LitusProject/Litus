@@ -15,3 +15,6 @@ cp ./composer.lock vendor/composer.lock
 
 cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
+
+(cd /usr/local/bin && sudo ln -s /usr/bin/node ./node)
+(cd /usr/local/lib && sudo ln -s /usr/lib/node_modules ./node_modules)
