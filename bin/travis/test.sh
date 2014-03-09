@@ -5,10 +5,6 @@ set -e
 
 cd $(dirname "$0")/../..
 
-do_psql() {
-    psql -c "$1" -U postgres -d litus
-}
-
 init_database() {
     echo "Initialising database"
 
@@ -16,13 +12,9 @@ init_database() {
     psql -c "create user litus with login superuser password 'huQeyU8te3aXusaz';" -U postgres
     psql -c 'alter database litus owner to litus;' -U postgres
 
-    for schema in acl cudi general mail shifts tickets api forms nodes publications sport users br gallery logistics quiz syllabus; do
-        do_psql "create schema $schema authorization litus;"
-    done
-
     cat <<EOF | mongo
 use litus
-db.createUser({
+db.addUser({
     user: "litus",
     pwd: "huQeyU8te3aXusaz",
     roles: ["readWrite", "dbAdmin"]
