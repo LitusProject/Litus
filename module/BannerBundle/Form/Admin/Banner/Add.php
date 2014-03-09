@@ -39,6 +39,11 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+
+    const BANNER_WIDTH = 940;
+    const BANNER_HEIGHT = 100;
+    const BANNER_FILESIZE = '10MB';
+
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
@@ -87,8 +92,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new File('file');
-        $field->setLabel('Image (' . BannerController::BANNER_WIDTH . ' x ' . BannerController::BANNER_HEIGHT . ')')
-            ->setAttribute('data-help', 'The image for the banner. The maximum file size is ' . BannerController::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . BannerController::BANNER_WIDTH . 'px and a height of ' . BannerController::BANNER_HEIGHT . 'px.')
+        $field->setLabel('Image (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')')
+            ->setAttribute('data-help', 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.')
             ->setRequired(true);
         $this->add($field);
 
@@ -168,6 +173,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'file',
+                    'required' => false,
+                    'validators'  => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => self::BANNER_FILESIZE,
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileisimage',
+                        ),
+                        array(
+                            'name' => 'fileimagesize',
+                            'options' => array(
+                                'minwidth'  => self::BANNER_WIDTH,
+                                'maxwidth'  => self::BANNER_WIDTH,
+                                'minheight' => self::BANNER_HEIGHT,
+                                'maxheight' => self::BANNER_HEIGHT,
+                            )
+                        ),
                     ),
                 )
             )
