@@ -1,0 +1,17 @@
+language: php
+php:
+    - 5.4
+    - 5.5
+
+cache:
+    directories:
+        - vendor
+        - $HOME/.composer/cache
+
+env:
+    - LITUS_TEST=install
+    - LITUS_TEST=codestyle
+
+install: bin/travis/install.sh
+
+script: bin/travis/test.sh $LITUS_TEST
