@@ -15,6 +15,8 @@ env:
     - LITUS_TEST=install
     - LITUS_TEST=codestyle
 
+before_install: phpenv config-add config/travis.ini
+
 install: bin/travis/install.sh
 
 script: bin/travis/test.sh $LITUS_TEST
