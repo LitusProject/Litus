@@ -277,4 +277,10 @@ Disallow: /admin/*
         'value'       => '83GZ464K6U',
         'description' => 'The team identifier of the Apple developer account that generated the certificates',
     ),
+
+    array(
+        'key'         => 'last_upgrade',
+        'value'       => '2014022800',
+        'description' => 'The last upgrade that has been applied',
+    ),
 );

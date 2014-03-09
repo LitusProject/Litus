@@ -20,8 +20,6 @@ init_database() {
         do_psql "create schema $schema authorization litus;"
     done
 
-    do_psql "insert into general.config values ('last_upgrade', '$(date %Y%m%d)99', 'The last upgrade that was applied');"
-
     cat <<EOF | mongo
 use litus
 db.createUser({
@@ -35,12 +33,19 @@ EOF
     echo
 }
 
+install() {
+    init_database
+
+    bin/litus.sh orm:schema-tool:create
+    bin/litus.sh install:all
+}
+
 case $1 in
     codestyle)
         exec bin/fix-cs.sh
         ;;
     install)
-        init_database
+        install
         exec bin/update.sh
         ;;
     *)
