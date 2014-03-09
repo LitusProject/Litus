@@ -158,6 +158,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'file',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '30MB',
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'zip',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
         return $inputFilter;
     }
 }

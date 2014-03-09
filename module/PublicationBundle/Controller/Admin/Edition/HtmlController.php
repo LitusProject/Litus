@@ -92,8 +92,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-        $upload->addValidator(new ExtensionValidator('zip'));
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);

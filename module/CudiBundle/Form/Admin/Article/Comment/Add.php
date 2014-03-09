@@ -47,6 +47,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('type');
         $field->setLabel('Type')
             ->setAttribute('options', Comment::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'The comment type defines the visibility of the comment:
+            <ul>
+                <li><b>Internal:</b> These comments will only be visible in the admin</li>
+                <li><b>External:</b> These comments will only be visible in \'Prof App\' and in the admin</li>
+                <li><b>Site:</b> These comments will also be visible on the website</li>
+            </ul>')
             ->setRequired();
         $this->add($field);
 

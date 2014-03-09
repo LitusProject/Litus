@@ -37,8 +37,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    Zend\Validator\File\Size as SizeValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * Specifield Form Add
@@ -214,7 +213,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name'     => 'field-' . $fieldSpecification->getId(),
                             'required' => $fieldSpecification->isRequired(),
                             'validators' => array(
-                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                                array(
+                                    'name' => 'filefilessize',
+                                    'options' => array(
+                                        'max' => $fieldSpecification->getMaxSize() . 'MB',
+                                    ),
+                                ),
                             ),
                         )
                     )

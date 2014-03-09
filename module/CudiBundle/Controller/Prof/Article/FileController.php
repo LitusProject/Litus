@@ -116,6 +116,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $form->setData($formData);
 
         $upload = new FileUpload();
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);

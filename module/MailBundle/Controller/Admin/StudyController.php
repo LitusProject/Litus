@@ -62,8 +62,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
-
-                $upload->addValidator(new SizeValidator(array('max' => '50MB')));
+                $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
                 if ($upload->isValid()) {
                     $enrollments = array();

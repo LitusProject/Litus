@@ -1,23 +1,29 @@
 (function ($) {
     var showHelp = false;
+    var helpButton;
+
     $(document).ready(function () {
-        if ($('[data-help]:visible').length > 0) {
-            $('body').append(
-                $('<div>', {'id': 'toggleHelpButton'}).append(
-                    $('<div>').html('Help').css({
-                        'float': 'right',
-                        'margin-right': '5px',
-                        'background': '#dddcdc',
-                        'color': '#7f7c7c',
-                        'padding': '5px',
-                        'cursor': 'pointer',
-                        'border': '1px solid #000',
-                        'border-top': 'none',
-                        'z-index': 1000
-                    })
-                ).click(toggleHelp)
-            );
-        }
+        $('body').append(
+            helpButton = $('<div>', {'id': 'toggleHelpButton'}).append(
+                $('<div>').html('Help').css({
+                    'float': 'right',
+                    'margin-right': '5px',
+                    'background': '#dddcdc',
+                    'color': '#7f7c7c',
+                    'padding': '5px',
+                    'cursor': 'pointer',
+                    'border': '1px solid #000',
+                    'border-top': 'none',
+                    'z-index': 1000
+                })
+            ).hide().click(toggleHelp)
+        );
+
+        helpButton.toggle($('[data-help]:visible').length > 0);
+
+        $(document).click(function () {
+            helpButton.toggle($('[data-help]:visible').length > 0);
+        });
 
         function toggleHelp() {
             if (showHelp) {

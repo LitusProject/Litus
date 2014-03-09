@@ -21,7 +21,7 @@ return array(
         'logistics_admin_driver' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/driver[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/logistics/driver[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -36,7 +36,7 @@ return array(
         'logistics_admin_van_reservation' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/reservation/van[/:action[/:id][/page/:page][/return/:return]][/]',
+                'route' => '/admin/logistics/reservation/van[/:action[/:id][/page/:page][/return/:return]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -52,7 +52,7 @@ return array(
         'logistics_admin_piano_reservation' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/reservation/piano[/:action[/:id][/page/:page][/return/:return]][/]',
+                'route' => '/admin/logistics/reservation/piano[/:action[/:id][/page/:page][/return/:return]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -68,7 +68,7 @@ return array(
         'logistics_admin_lease' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/lease[/:action[/:id]][/page/:page][/]',
+                'route' => '/admin/logistics/lease[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

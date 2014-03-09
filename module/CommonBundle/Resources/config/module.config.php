@@ -130,20 +130,5 @@ return Config::create(
             'namespace' => 'Litus_Auth',
             'member'    => 'storage',
         ),
-        'route_manager' => array(
-            'factories' => array(
-                'litus_cli' => function ($serviceManager) {
-                    $application = $serviceLocator->getServiceLocator()->get('litus.cli');
-
-                    return new \DoctrineModule\Mvc\Router\Console\SymfonyCli(
-                        $application,
-                        array(
-                            'controller' => 'DoctrineModule\Controller\Cli',
-                            'action'     => 'cli',
-                        )
-                    );
-                },
-            ),
-        ),
     )
 );
