@@ -20,4 +20,4 @@ Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll r
 We expect code to have passed through [`php-cs-fixer`](https://github.com/fabpot/PHP-CS-Fixer) before being committed. You can easily achieve this by using a pre-commit git hook as described [here](https://github.com/LitusProject/PhpCodeStyle/tree/master/Resources/git-hooks).
 
 ## Authors
-Built by [@nielsavonds](https://github.com/nielsavonds), [@pmaene](https://github.com/pmaene) and [@krmarien](https://github.com/krmarien) with all the love in the world. If you have any questions, don't hesitate to contact us.
+Built by [@nielsavonds](https://github.com/nielsavonds), [@koencertyn](https://github.com/koencertyn), [@bgotink](https://github.com/bgotink), [@DarioI](https://github.com/DarioI), [@pmaene](https://github.com/pmaene), [@krmarien](https://github.com/krmarien), [@vierbergenlars](https://github.com/vierbergenlars) and [@dwendelen](https://github.com/dwendelen) with all the love in the world. If you have any questions, don't hesitate to contact us.
