@@ -18,10 +18,20 @@
 
 return array(
     'routes' => array(
+        'br_install' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/install/br[/]',
+                'defaults' => array(
+                    'controller' => 'br_install',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/company[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/company[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -38,7 +48,7 @@ return array(
         'br_admin_company_event' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/company/event[/:action[/:id]][/]',
+                'route' => '/admin/company/event[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -52,7 +62,7 @@ return array(
         'br_admin_company_job' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/company/job[/:action[/:id]][/]',
+                'route' => '/admin/company/job[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -66,7 +76,7 @@ return array(
         'br_admin_company_user' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/company/user[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -81,7 +91,7 @@ return array(
         'br_admin_company_logo' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/company/logos[/:action[/:id]][/]',
+                'route' => '/admin/company/logos[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -95,7 +105,7 @@ return array(
         'br_admin_cv_entry' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -111,29 +121,56 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/contract[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/contract[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
-                    'confirm' => '[01]',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
+        'br_admin_invoice' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/invoice[/:action[/:id][/date/:date]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                    'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}'
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_invoice',
+                    'action'     => 'view',
+                ),
+            ),
+        ),
+        'br_admin_order' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/order[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_order',
                     'action'     => 'manage',
                 ),
             ),
         ),
-        'br_admin_section' => array(
+        'br_admin_product' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/section[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/product[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
-                    'confirm' => '[01]',
                 ),
                 'defaults' => array(
-                    'controller' => 'br_admin_section',
+                    'controller' => 'br_admin_product',
                     'action'     => 'manage',
                 ),
             ),
@@ -310,7 +347,6 @@ return array(
             ),
         ),
     ),
-
     'controllers' => array(
         'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
         'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
