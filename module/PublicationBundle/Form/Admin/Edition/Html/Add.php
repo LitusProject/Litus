@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name' => 'file',
-                    'required' => true,
+                    'required' => false,
                     'validators' => array(
                         array(
                             'name' => 'filefilessize',
