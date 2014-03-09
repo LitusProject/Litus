@@ -31,9 +31,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
     public function indexAction()
     {
         if (!($slug = $this->_getSlug())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $slug->incrementHits();

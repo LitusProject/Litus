@@ -32,7 +32,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     public function viewAction()
     {
         if (!($group = $this->_getGroup()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $now = new DateTime();
         if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {
@@ -112,8 +112,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -122,8 +120,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $group) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
