@@ -109,6 +109,19 @@ return array(
                 ),
             ),
         ),
+        'api_oauth' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/api/oauth[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'api_oauth',
+                ),
+            ),
+        ),
         'api_shift' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -133,6 +146,7 @@ return array(
         'api_door'      => 'ApiBundle\Controller\DoorController',
         'api_mail'      => 'ApiBundle\Controller\MailController',
         'api_news'      => 'ApiBundle\Controller\NewsController',
+        'api_oauth'     => 'ApiBundle\Controller\OAuthController',
         'api_shift'     => 'ApiBundle\Controller\ShiftController',
     ),
 );

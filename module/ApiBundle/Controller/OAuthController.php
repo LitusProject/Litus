@@ -18,7 +18,9 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
+use ApiBundle\Document\Code\Authorization as AuthorizationCode,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -28,4 +30,59 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class OAuthController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
+    public function authorizeAction()
+    {
+        $form = new LoginForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $this->getAuthentication()->forget();
+
+                $this->getAuthentication()->authenticate(
+                    $formData['username'], $formData['password'], $formData['remember_me']
+                );
+
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    $authorizationCode = new AuthorizationCode(
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getKey()
+                    );
+
+                    $this->getDocumentManager()->persist($authorizationCode);
+                    $this->getDocumentManager()->flush();
+
+                    $this->redirect()->toUrl(
+                        $this->getParam('redirect_uri') . '?code=' . $authorizationCode->getCode()
+                    );
+                } else {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The given username and password did not match. Please try again.'
+                        )
+                    );
+                }
+            } else {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::ERROR,
+                        'Error',
+                        'The given username and password did not match. Please try again.'
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form
+            )
+        );
+    }
 }

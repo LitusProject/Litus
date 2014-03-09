@@ -62,8 +62,19 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function onDispatch(MvcEvent $e)
     {
+        $this->getServiceLocator()
+            ->get('Zend\View\Renderer\PhpRenderer')
+            ->plugin('headMeta')
+            ->setCharset('utf-8');
+
         $this->_initFallbackLanguage();
         $this->_initLocalization();
+
+        if (false !== getenv('SERVED_BY')) {
+            $this->getResponse()
+                ->getHeaders()
+                ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
+        }
 
         if ('development' != getenv('APPLICATION_ENV')) {
             if (!$this->getRequest()->isPost()) {
@@ -96,8 +107,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 );
             }
         }
-
-        $this->initJson();
 
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
@@ -340,6 +349,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         return $this->getServiceLocator()->get('MvcTranslator');
     }
 
+    /**
+     * Authenticates an application if an API key is provided.
+     *
+     * @return boolean
+     */
     private function _validateKey()
     {
         if ('development' != getenv('APPLICATION_ENV')) {
@@ -355,9 +369,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 );
             }
 
-            $key = $this->getEntityManager()
-                ->getRepository('ApiBundle\Entity\Key')
-                ->findOneActiveByCode($this->getRequest()->getPost('key'));
+            $key = $this->getKey();
 
             $validateKey = $key->validate(
                 isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
@@ -385,8 +397,29 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         return true;
     }
 
+    /**
+     * Authenticates a user if an OAuth access token is provided.
+     *
+     * @return boolean
+     */
     private function _validateOAuth()
     {
         return true;
+    }
+
+    /**
+     * Simple helper method that retrieves the API key.
+     *
+     * @return \ApiBundle\Entity\Key
+     */
+    protected function getKey()
+    {
+        if (null !== $this->getRequest()->getPost('key')) {
+            return $this->getEntityManager()
+                ->getRepository('ApiBundle\Entity\Key')
+                ->findOneActiveByCode($this->getRequest()->getPost('key'));
+        }
+
+        return null;
     }
 }
