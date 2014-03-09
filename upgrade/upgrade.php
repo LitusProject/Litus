@@ -39,7 +39,9 @@ $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'
 $lastUpgrade = pg_fetch_row($result)[0];
 
 foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
-    if($fileInfo->isDot())
+    if ($fileInfo->isDot())
+        continue;
+    if ($fileInfo->getFilename() == 'README.md')
         continue;
 
     $files[] = $fileInfo->getFilename();
