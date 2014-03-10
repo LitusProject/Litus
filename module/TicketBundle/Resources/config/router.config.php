@@ -74,7 +74,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_sale_ticket',
-                    'action'     => 'sale',
+                    'action'     => 'overview',
                 ),
             ),
         ),
