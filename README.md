@@ -1,5 +1,9 @@
-![](https://github.com/LitusProject/Litus/raw/master/public/img/favicon.ico) Litus Project
-======
+Litus
+=====
+
+<p align="center">
+    <img src="https://github.com/LitusProject/Litus/raw/master/public/img/litus.png" height="250px" />
+</p>
 
 ## Welcome
 You are running a student organization and need some supporting applications, but don't have the time or experience to build your own platform? This is an overview of what is currently implemented in our system.
@@ -22,7 +26,7 @@ The following files are exempt from the AGPLv3 license:
 - All images containing a reference to [VTK](http://vtk.be) are &copy; Vlaamse Technische Kring vzw.
 - All images containing a reference to [Litus](http://litus.cc) or [Student IT](http://studentit.be) are &copy; Student IT vzw.
 - All other images are licensed [CC-BY-ND v4 or later](https://creativecommons.org/licenses/by-nd/4.0/) unless otherwise denoted in a readme or license file in a parent directory of the file.
-- All javascript and css files containing an explicit license header.
+- All JavaScript and CSS files containing an explicit license header.
 
 ## Contributing
 Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll review it! However, when contributing some code to the project, please take a look at our [Code Style](https://github.com/LitusProject/Litus/wiki/Style) first.  
