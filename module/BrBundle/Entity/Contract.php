@@ -20,10 +20,12 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
     BrBundle\Entity\Contract\Composition,
-    BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Product,
+    BrBundle\Entity\Product\Order,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,47 +46,25 @@ class Contract
     private $id;
 
     /**
-     * @var \DateTime The date and time when this contract was written
+     * @var \BrBundle\Entity\Product\Order The order for which this contract is meant
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
-    private $date;
+    private $order;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The author of this contract
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
-     * @ORM\JoinColumn(name="author", referencedColumnName="id")
-     */
-    private $author;
-
-    /**
-     * @var \BrBundle\Entity\Company The company for which this contract is meant
-     *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
-     * @ORM\JoinColumn(name="company", referencedColumnName="id")
-     */
-    private $company;
-
-    /**
-     * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
+     * @var \BrBundle\Entity\Contract\ContractEntry The entries in this contract
      *
      * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contract\Composition",
+     *      targetEntity="BrBundle\Entity\Contract\ContractEntry",
      *      mappedBy="contract",
      *      cascade={"all"},
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $composition;
-
-    /**
-     * @var int The discount the company gets, in %.
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $discount;
+    private $contractEntries;
 
     /**
      * @var string The title of the contract
@@ -93,24 +73,11 @@ class Contract
      */
     private $title;
 
+    // TODO: contract number: $entityManager->getRepository('BrBundle\Entity\Contract')->findNextContractNb();
     /**
-     * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
+     * Creates a new contract
      *
-     * @ORM\Column(name="invoice_nb", type="integer")
-     */
-    private $invoiceNb;
-
-    /**
-     * @var int The contract number. A form of identification that means something to the human users.
-     *
-     * @ORM\Column(name="contract_nb", type="integer", unique=true)
-     */
-    private $contractNb;
-
-    /**
-     * @var bool True if the contract has been updated but the updated version has not been generated yet.
-     *
-     * @ORM\Column(type="boolean")
+     * @param \BrBundle\Entity\Product\Order $order The order to create the contract for.
      */
     private $dirty;
 
@@ -120,18 +87,10 @@ class Contract
      * @param int                              $discount The discount associated with this contract
      * @param string                           $title    The title of the contract
      */
-    public function __construct(Person $author, Company $company, $discount, $title)
+    public function __construct(Order $order)
     {
-        $this->setDate();
-        $this->setAuthor($author);
-        $this->setCompany($company);
-        $this->setDiscount($discount);
-        $this->setTitle($title);
-
-        $this->setDirty();
-        $this->setInvoiceNb();
-
-        $this->composition = new ArrayCollection();
+        $this->setOrder($order);
+        $this->setTitle('Contract ' . $order->getCompany()->getName());
     }
 
     /**
@@ -239,38 +198,21 @@ class Contract
     }
 
     /**
-     * @param  array                        $sections The array containing all sections that should be added; the array keys will be used as the position
-     * @return \BrBundle\Entity\Br\Contract
+     * @return BrBundle\Entity\Product\Order
      */
-    public function addSections(array $sections)
+    public function getOrder()
     {
-        foreach ($sections as $position => $section)
-            $this->addSection($section, $position);
-
-        return $this;
+        return $this->order;
     }
 
     /**
-     * @throws \InvalidArgumentException
-     * @param  int                          $discount The discount, $discount >= 0 && $discount <= 100
-     * @return \BrBundle\Entity\Br\Contract
+     * @param \BrBundle\Entity\Product\Order $order
+     * @return \BrBundle\Entity\Contract
      */
-    public function setDiscount($discount)
+    public function setOrder(Order $order)
     {
-        if (($discount < 0) || ($discount > 100))
-            throw new \InvalidArgumentException('Invalid discount');
-
-        $this->discount = $discount;
-
+        $this->order = $order;
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
     }
 
     /**
@@ -305,14 +247,11 @@ class Contract
     }
 
     /**
-     * @param  bool                         $dirty
-     * @return \BrBundle\Entity\Br\Contract
+     * @return array
      */
-    public function setDirty($dirty = true)
+    public function getEntries()
     {
-        $this->dirty = ($dirty ? true : false);
-
-        return $this;
+        return $this->contractEntries->toArray();
     }
 
     /**
