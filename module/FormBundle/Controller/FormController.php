@@ -40,7 +40,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($formSpecification = $this->()))
+        if (!($formSpecification = $this->_getForm()))
             return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'doodle') {
