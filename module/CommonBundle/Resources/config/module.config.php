@@ -33,7 +33,7 @@ return Config::create(
                 'translator' => function ($serviceManager) {
                     $config = $serviceManager->get('Config');
 
-                    return new \Zend\Mvc\I18n\Translator($config['translator']);
+                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
                 },
 
                 'authentication' => function ($serviceManager) {

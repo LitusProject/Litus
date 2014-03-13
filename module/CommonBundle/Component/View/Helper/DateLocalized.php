@@ -21,7 +21,7 @@ namespace CommonBundle\Component\View\Helper;
 use DateTime,
     IntlDateFormatter,
     Locale,
-    Zend\I18n\Translator\Translator,
+    Zend\I18n\Translator\TranslatorInterface,
     Zend\I18n\Translator\TranslatorAwareInterface;
 
 /**
@@ -83,7 +83,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      *                                Default is null, which skips setTranslatorTextDomain
      * @return HeadTitle
      */
-    public function setTranslator(Translator $translator = null, $textDomain = null)
+    public function setTranslator(TranslatorInterface $translator = null, $textDomain = null)
     {
         $this->translator = $translator;
         if (null !== $textDomain) {
