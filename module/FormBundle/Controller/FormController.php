@@ -40,8 +40,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+        if (!($formSpecification = $this->()))
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'doodle') {
             $this->redirect()->toRoute(
@@ -230,7 +230,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function doodleAction()
     {
         if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -364,7 +364,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function saveDoodleAction()
     {
         if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -491,7 +491,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($entry = $this->_getEntry()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $entry->getForm()->setEntityManager($this->getEntityManager());
 
@@ -617,9 +617,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByValue($this->getParam('id'));
 
         if (null === $fieldEntry || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $headers = new Headers();
@@ -644,8 +642,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -654,8 +650,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -667,8 +661,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getEntry()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -677,15 +669,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $entry || !$entry->getForm()->isEditableByUser()) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
         $now = new DateTime();
         if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -698,16 +686,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if ($person !== null && $entry->getCreationPerson() != $person) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         } elseif ($guestInfo !== null && $entry->getGuestInfo() !== $guestInfo) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         } elseif ($guestInfo === null && $person === null) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 

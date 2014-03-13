@@ -82,9 +82,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->getConfigValue('br.file_path') . '/' . $this->getParam('name');
 
         if ($this->getParam('name') == '' || !file_exists($filePath)) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $headers = new Headers();
