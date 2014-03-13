@@ -21,7 +21,7 @@ return array(
         'br_install' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/install/br[/]',
+                'route' => '/admin/br/install/br[/]',
                 'defaults' => array(
                     'controller' => 'br_install',
                     'action'     => 'index',
@@ -31,7 +31,7 @@ return array(
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/br/company[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -48,7 +48,7 @@ return array(
         'br_admin_company_event' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/event[/:action[/:id]][/]',
+                'route' => '/admin/br/company/event[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -62,7 +62,7 @@ return array(
         'br_admin_company_job' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/job[/:action[/:id]][/]',
+                'route' => '/admin/br/company/job[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -76,7 +76,7 @@ return array(
         'br_admin_company_user' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/br/company/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -91,7 +91,7 @@ return array(
         'br_admin_company_logo' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/logos[/:action[/:id]][/]',
+                'route' => '/admin/br/company/logos[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -105,7 +105,7 @@ return array(
         'br_admin_cv_entry' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                'route' => '/admin/br/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -121,7 +121,7 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/contract[/:action[/:id]][/]',
+                'route' => '/admin/br/contract[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -135,7 +135,7 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/invoice[/:action[/:id][/date/:date]][/]',
+                'route' => '/admin/br/invoice[/:action[/:id][/date/:date]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -150,7 +150,7 @@ return array(
         'br_admin_order' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/order[/:action[/:id]][/]',
+                'route' => '/admin/br/order[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -164,7 +164,7 @@ return array(
         'br_admin_product' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/product[/:action[/:id]][/]',
+                'route' => '/admin/br/product[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
