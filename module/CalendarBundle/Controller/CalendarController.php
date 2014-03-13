@@ -43,9 +43,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function viewAction()
     {
         if (!($event = $this->_getEvent())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $hasShifts = sizeof($this->getEntityManager()
@@ -68,9 +66,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function posterAction()
     {
         if (!($event = $this->_getEventByPoster())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $filePath = $this->getEntityManager()
@@ -102,9 +98,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
         if (!$first) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $last = clone $first;

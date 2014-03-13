@@ -47,7 +47,8 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('printable');
-        $field->setLabel('Printable');
+        $field->setLabel('Printable')
+            ->setAttribute('data-help', 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.');
         $this->add($field);
 
         $field = new Submit('submit');

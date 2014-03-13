@@ -42,9 +42,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $bookings = $this->getEntityManager()
@@ -69,9 +67,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
 
         if (!($booking = $this->_getBooking())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         if (!($booking->getArticle()->isUnbookable())) {
@@ -120,9 +116,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $currentYear = $this->getCurrentAcademicYear();

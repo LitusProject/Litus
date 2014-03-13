@@ -90,21 +90,34 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
         $articleCollection->add($field);
 
         $field = new Checkbox('downloadable');
-        $field->setLabel('Downloadable');
+        $field->setLabel('Downloadable')
+            ->setAttribute('data-help', 'Enabling this flag will warn the students this article is also downloadable on the website of the subject.');
         $articleCollection->add($field);
 
         $field = new Checkbox('same_as_previous_year');
-        $field->setLabel('Same As Previous Year');
+        $field->setLabel('Same As Previous Year')
+            ->setAttribute('data-help', 'This flag can be enabled by a docent in \'Prof App\', by this it is possible to show the owners of the store the article is the same as previous year.');
         $articleCollection->add($field);
 
         $field = new Select('type');
         $field->setLabel('Type')
             ->setRequired()
-            ->setAttribute('options', Article::$POSSIBLE_TYPES);
+            ->setAttribute('options', Article::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'The type of the article can be:
+            <ul>
+                <li><b>Common:</b> an article which is not mapped to a subject</li>
+                <li><b>Exercises:</b> an article related to exercises</li>
+                <li><b>Notes:</b> notes of the course</li>
+                <li><b>Slides:</b> slides of the course</li>
+                <li><b>Student:</b> an unofficial article of the course (made by students)</li>
+                <li><b>Textbook:</b> a textbook of the course</li>
+                <li><b>Other:</b> any other type</li>
+            </ul>');
         $articleCollection->add($field);
 
         $field = new Checkbox('internal');
-        $field->setLabel('Internal Article');
+        $field->setLabel('Internal Article')
+            ->setAttribute('data-help', 'Enabling this flag will show extra options for articles that will be printed by the owners of the store. Articles that are printed by and bought from another supplier doesn\'t need these options.');
         $articleCollection->add($field);
 
         $internal = new Collection('internal');

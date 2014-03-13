@@ -177,7 +177,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->initAjax();
 
         if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($this->getRequest()->isPost()) {
             $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation);
@@ -292,7 +292,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->initAjax();
 
         if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();
@@ -307,7 +307,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     public function moveAction()
     {
         if (!($reservation = $this->_getReservation()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $start = new DateTime();
         $start->setTimeStamp($this->getRequest()->getPost('start'));
@@ -335,7 +335,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $reservations = $this->_getReservations();
 
         if (null === $reservations) {
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $result = array();
@@ -463,8 +463,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     private function _getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -487,8 +485,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -497,8 +493,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->findOneById($this->getParam('id'));
 
         if (null == $reservation) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
