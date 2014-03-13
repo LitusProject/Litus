@@ -10,7 +10,7 @@
                 <li>
                     <a
                         {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_section', {"action": "manage"}) }}"
+                        href="{{ url('br_admin_product', {"action": "manage"}) }}"
                     >
                         Manage
                     </a>
