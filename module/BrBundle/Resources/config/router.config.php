@@ -355,7 +355,10 @@ return array(
         'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
         'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
         'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
+
         'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
+        'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
 
         'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
