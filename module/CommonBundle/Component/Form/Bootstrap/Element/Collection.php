@@ -74,7 +74,7 @@ class Collection extends \Zend\Form\Element\Collection
                 unset($data[$key]);
         }
         foreach ($this->byName as $name => $element) {
-            if (!isset($data[$name]))
+            if (!isset($data[$name]) && !($this->get($name) instanceOf Fieldset))
                 $data[$name] = '';
         }
         parent::populateValues($data);
