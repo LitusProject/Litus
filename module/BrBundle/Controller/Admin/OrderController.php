@@ -51,62 +51,43 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $contractCreated = false;
+        $form = new AddForm($this->getEntityManager(),$this->getCurrentAcademicYear());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']);
 
-                $contact = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\User\Person\Corporate')
-                    ->findOneById($formData['contact']);
-
-                $order = new Order(
-                    $contact,
-                    $this->getAuthentication()->getPersonObject()
+                $newContract = new Contract(
+                    $this->getAuthentication()->getPersonObject(),
+                    $company,
+                    $formData['discount'],
+                    $formData['title']
                 );
 
-                $contract = new Contract($order);
-
-                $products = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Product')
-                    ->findByAcademicYear($this->getCurrentAcademicYear());
-
-                $counter = 0;
-                foreach ($products as $product)
-                {
-                    $quantity = $formData['product-' . $product->getId()];
-                    if ($quantity != 0)
-                    {
-                        $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
-                        $counter++;
-                        $this->getEntityManager()->persist($orderEntry);
-                        $this->getEntityManager()->persist($contractEntry);
-                    }
-                }
-
-                if ($counter > 0) {
-                    $this->getEntityManager()->persist($order);
-                    $this->getEntityManager()->persist($contract);
-                    $this->getEntityManager()->flush();
-                }
+                $newContract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
-                        'Success',
-                        'The order was succesfully created!'
+                        'Succes',
+                        'The shift was successfully created!'
                     )
                 );
 
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
-                        'action' => 'manage',
+                        'action' => 'manage'
                     )
                 );
 
@@ -116,6 +97,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'contractCreated' => $contractCreated,
                 'form' => $form,
             )
         );

@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
- * Add a product.
+ * Add a order.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
@@ -76,6 +76,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
         $this->_currentYear = $currentYear;
 
+        $field = new Text('title');
+        $field->setLabel('Order title')
+            ->setAttribute('class', 'input-very-mini')
+            ->setAttribute('placeholder', 'title');
+        $this->add($field);
+
         $field = new Select('company');
         $field->setLabel('Company')
             ->setAttribute('options', $this->_createCompanyArray());
@@ -87,6 +93,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($this->_contacts);
 
         $this->addInputs();
+
+        $field = new Text('discount');
+        $field->setLabel('Discount percentage')
+            ->setAttribute('class', 'input-very-mini')
+            ->setAttribute('placeholder', '0');
+        $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')

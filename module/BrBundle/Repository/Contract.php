@@ -45,7 +45,7 @@ class Contract extends EntityRepository
     public function findNextContractNb()
     {
         $query = $this->_em->createQueryBuilder();
-        $highestInvoiceNb = $query->select('MAX(c.contractNb)')
+        $highestContractNb = $query->select('MAX(c.contractNb)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery()
             ->getSingleScalarResult();

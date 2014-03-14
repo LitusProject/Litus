@@ -29,9 +29,11 @@ use BrBundle\Entity\Contract,
  */
 class Section
 {
-
+    //____________________
+    //______
 	//TODO dummy implementation !!!!
 	//TODO has to be changed to required fields
+    //__________________
 
     /**
      * @var int A generated ID
