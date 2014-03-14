@@ -171,10 +171,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->populateFromGuestInfo($guestInfo);
 
         if ($this->getRequest()->isPost()) {
-            $formData = array_merge(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            );
+            $formData = $this->getRequest()->getPost()->toArray();
             $form->setData($formData);
 
             if ($form->isValid() || isset($formData['save_as_draft'])) {

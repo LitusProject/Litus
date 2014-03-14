@@ -211,7 +211,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $factory->createInput(
                         array(
                             'name'     => 'field-' . $fieldSpecification->getId(),
-                            'required' => false
+                            'required' => false,
                             'validators' => array(
                                 array(
                                     'name' => 'filefilessize',

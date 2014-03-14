@@ -65,7 +65,7 @@ class Form
         $formEntry->setDraft(isset($formData['save_as_draft']));
 
         foreach ($formSpecification->getFields() as $field) {
-            $value = $formData['field-' . $field->getId()];
+            $value = isset($formData['field-' . $field->getId()]) ? $formData['field-' . $field->getId()] : '';
 
             $fieldEntry = $entityManager
                 ->getRepository('FormBundle\Entity\Entry')
