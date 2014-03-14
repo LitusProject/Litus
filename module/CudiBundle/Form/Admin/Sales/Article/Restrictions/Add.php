@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 <ul>
                     <li><b>Member:</b> restrict this article to members only</li>
                     <li><b>Amount:</b> restrict the number of this article sold to this user</li>
-                </ul>');
+                </ul>')
             ->setRequired();
         $this->add($field);
 
