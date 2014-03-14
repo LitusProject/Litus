@@ -62,6 +62,13 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
+        if (empty($data))
+            return;
+
+        foreach ($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
         foreach ($data as $key => $value) {
             if (!$this->has($key))
                 unset($data[$key]);
