@@ -98,8 +98,12 @@ class Collection extends \Zend\Form\Element\Collection
             }
         } else {
             foreach ($this->byName as $name => $element) {
-                if (!isset($data[$name]) && !($this->get($name) instanceOf Fieldset))
-                    $data[$name] = '';
+                if (!isset($data[$name])) {
+                    if ($this->get($name) instanceOf Fieldset)
+                        $data[$name] = array();
+                    else
+                        $data[$name] = '';
+                }
             }
         }
 
