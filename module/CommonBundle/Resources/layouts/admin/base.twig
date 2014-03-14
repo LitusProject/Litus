@@ -138,6 +138,9 @@
                                     {% if hasAccess('br_admin_product', 'manage') %}
                                         <li><a href="{{ url('br_admin_product') }}">Products</a></li>
                                     {% endif %}
+                                    {% if hasAccess('br_admin_contract', 'view') %}
+                                        <li><a href="{{ url('br_admin_contract') }}">Contracts</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                         {% endif %}

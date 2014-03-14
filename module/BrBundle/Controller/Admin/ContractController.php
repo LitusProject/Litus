@@ -36,6 +36,25 @@ use BrBundle\Entity\Contract,
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 
+    public function manageAction()
+    {
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Contract',
+                $this->getParam('page')
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+
+
     public function viewAction()
     {
         if (!($contract = $this->_getContract()))

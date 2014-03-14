@@ -51,7 +51,7 @@ class Contract
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
-    private $order;
+    private $order_id;
 
     /**
      * @var \BrBundle\Entity\Contract\ContractEntry The entries in this contract
@@ -89,7 +89,7 @@ class Contract
      */
     public function __construct(Order $order)
     {
-        $this->setOrder($order);
+        $this->setOrderId($order);
         $this->setTitle('Contract ' . $order->getCompany()->getName());
     }
 
@@ -209,7 +209,7 @@ class Contract
      * @param \BrBundle\Entity\Product\Order $order
      * @return \BrBundle\Entity\Contract
      */
-    public function setOrder(Order $order)
+    public function setOrderId(Order $order)
     {
         $this->order = $order;
         return $this;

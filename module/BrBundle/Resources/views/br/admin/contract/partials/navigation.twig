@@ -8,14 +8,10 @@
             {% endif %}
 
             {% if hasAccess('br_admin_contract', 'manage') %}
-                <li>
-                    <a
-                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_contract', {"action": "manage"}) }}"
-                    >
-                        Manage
-                    </a>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_contract', {"action": "manage"}) }}">Manage</a>
                 </li>
+            {% endif %}
 
             {% if hasAccess('br_admin_contract', 'view') %}
                 <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_contract', {"action": "view", "id" : contract.getId()}) }}">View</a></li>
