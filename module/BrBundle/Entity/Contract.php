@@ -22,6 +22,7 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\Section,
     CommonBundle\Entity\User\Person,
+    BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -42,6 +43,15 @@ class Contract
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @var \BrBundle\Entity\Product\Order The contract accompanying this order
+     *
+     * @ORM\OneToOne(
+     *      targetEntity="BrBundle\Entity\Product\Order"
+     * )
+     */
+    private $order;
 
     /**
      * @var \DateTime The date and time when this contract was written
@@ -120,8 +130,9 @@ class Contract
      * @param int                              $discount The discount associated with this contract
      * @param string                           $title    The title of the contract
      */
-    public function __construct(Person $author, Company $company, $discount, $title)
+    public function __construct(Order $order, Person $author, Company $company, $discount, $title)
     {
+        $this->setOrder($order);
         $this->setDate();
         $this->setAuthor($author);
         $this->setCompany($company);
@@ -132,6 +143,22 @@ class Contract
         $this->setInvoiceNb();
 
         $this->composition = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function setOrder(Order $order)
+    {
+        return $this->order = $order;
     }
 
     /**

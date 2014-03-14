@@ -175,6 +175,22 @@ return array(
                 ),
             ),
         ),
+
+        'br_admin_section' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/section[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_section',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+
         'br_career_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
