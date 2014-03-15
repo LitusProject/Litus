@@ -18,6 +18,8 @@ namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Product\OrderEntry,
+    CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -29,12 +31,6 @@ use BrBundle\Entity\Contract,
  */
 class Section
 {
-    //____________________
-    //______
-	//TODO dummy implementation !!!!
-	//TODO has to be changed to required fields
-    //__________________
-
     /**
      * @var int A generated ID
      *
@@ -47,7 +43,7 @@ class Section
     /**
      * @var string The name of this section
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     private $name;
 
@@ -103,7 +99,7 @@ class Section
      * @param int                              $price
      * @param string                           $vatType     see setVatType($vatType)
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author, $price, $vatType)
+    public function __construct(EntityManager $entityManager, $name, $description, $content, Person $author,AcademicYear $year, $price, $vatType)
     {
         $this->setName($name);
         $this->setInvoiceDescription($description);
@@ -112,7 +108,7 @@ class Section
         $this->setPrice($price);
         $this->setVatType($entityManager, $vatType);
 
-        $this->year = AcademicYear::getAcademicYear();
+        $this->year = $year->getCode(true);
     }
 
     /**

@@ -21,6 +21,8 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
+    BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
     BrBundle\Form\Admin\Order\Edit as EditForm,
@@ -48,64 +50,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-
-    // public function addAction()
-    // {
-    //     $contractCreated = false;
-    //     $form = new AddForm($this->getEntityManager(),$this->getCurrentAcademicYear());
-
-    //     if ($this->getRequest()->isPost()) {
-    //         $formData = $this->getRequest()->getPost();
-    //         $form->setData($formData);
-
-    //         if ($form->isValid()) {
-
-    //             $contact = $this->getEntityManager()
-    //                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
-    //                 ->findOneById($formData['contact']);
-
-
-
-    //             $newContract = new Contract(
-    //                 $this->getAuthentication()->getPersonObject(),
-    //                 $company,
-    //                 $formData['discount'],
-    //                 $formData['title']
-    //             );
-
-
-
-    //             $newOrder = new Order($contact,$this->getAuthentication()->getPersonObject());
-
-    //             //$this->getEntityManager()->persist($newContract);
-    //             $this->getEntityManager()->persist($newOrder);
-    //             $this->getEntityManager()->flush();
-
-    //             $this->flashMessenger()->addMessage(
-    //                 new FlashMessage(
-    //                     FlashMessage::SUCCESS,
-    //                     'Succes',
-    //                     'The order was successfully created!'
-    //                 )
-    //             );
-
-    //             $this->redirect()->toRoute(
-    //                 'br_admin_order',
-    //                 array(
-    //                     'action' => 'manage'
-    //                 )
-    //             );
-
-    //             return new ViewModel();
-    //         }
-    //     }
-
-    //     return new ViewModel(
-    //         array(
-    //             'form' => $form,
-    //         )
-    //     );
-    // }
 
     public function addAction()
     {
@@ -144,8 +88,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
-                $order->setContract($contract);
-
                 $products = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findByAcademicYear($this->getCurrentAcademicYear());
@@ -158,7 +100,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
+                        $section = new Section($this->getEntityManager(), $product->getName(), $formData['description'], $product->getDescription(),
+                            $this->getAuthentication()->getPersonObject(),$this->getCurrentAcademicYear(), $product->getPrice(), $product->getVatType());
+                        //$composition = new Composition($contract,$section,$counter);
+                        $contract->addSection($section,$counter);
                         $counter++;
+                        $this->getEntityManager()->persist($section);
                         $this->getEntityManager()->persist($orderEntry);
                         $this->getEntityManager()->persist($contractEntry);
                     }

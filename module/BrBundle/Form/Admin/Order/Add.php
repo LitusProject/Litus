@@ -94,10 +94,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addInputs();
 
-        $field = new Text('discription');
-        $field->setLabel('Discription')
+        $field = new Text('description');
+        $field->setLabel('Description')
             ->setAttribute('class', 'input-very-mini')
-            ->setAttribute('placeholder', 'discription');
+            ->setAttribute('placeholder', 'description');
         $this->add($field);
 
         $field = new Text('discount');
