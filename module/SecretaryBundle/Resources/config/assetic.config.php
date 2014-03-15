@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'secretary_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'secretary_admin_registration' => array(
             '@common_jquery',
             '@admin_css',
