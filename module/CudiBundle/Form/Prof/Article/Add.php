@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Colored');
         $internal->add($field);
 
-        $subject = new Collection('subject');
+        $subject = new Collection('subject_form');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
         $this->add($subject);

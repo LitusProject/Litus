@@ -168,7 +168,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Hardcovered');
         $internal->add($field);
 
-        $subject = new Collection('subject');
+        $subject = new Collection('subject_form');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
         $this->add($subject);
