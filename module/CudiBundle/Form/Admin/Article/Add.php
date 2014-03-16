@@ -411,7 +411,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (isset($this->data['type']) && $this->data['type'] !== 'common' && isset($this->data['subject_id'])) {
-            if ($this->data['subject_id'] == '' && $this->get('subject')) {
+            if ('' == $this->data['subject_id'] && $this->has('subject')) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
