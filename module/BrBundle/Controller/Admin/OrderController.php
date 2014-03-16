@@ -100,12 +100,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
-                        $section = new Section($this->getEntityManager(), $product->getName(), $formData['description'], $product->getDescription(),
-                            $this->getAuthentication()->getPersonObject(),$this->getCurrentAcademicYear(), $product->getPrice(), $product->getVatType());
-                        //$composition = new Composition($contract,$section,$counter);
-                        $contract->addSection($section,$counter);
+                        // $section = new Section($this->getEntityManager(), $product->getName(), $formData['description'], $product->getDescription(),
+                        //     $this->getAuthentication()->getPersonObject(),$this->getCurrentAcademicYear(), $product->getPrice(), $product->getVatType());
+                        // //$composition = new Composition($contract,$section,$counter);
+                        // $contract->addSection($section,$counter);
+                        $order->setEntry($orderEntry);
+                        $contract->setEntry($contractEntry);
                         $counter++;
-                        $this->getEntityManager()->persist($section);
+                        //$this->getEntityManager()->persist($section);
                         $this->getEntityManager()->persist($orderEntry);
                         $this->getEntityManager()->persist($contractEntry);
                     }

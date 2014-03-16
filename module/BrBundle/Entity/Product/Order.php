@@ -170,6 +170,12 @@ class Order
         return $this->orderEntries->toArray();
     }
 
+    public function setEntry(OrderEntry $entry)
+    {
+        $this->orderEntries->add($entry);
+        return $this;
+    }
+
     /**
      * @return \BrBundle\Entity\Contract
      */

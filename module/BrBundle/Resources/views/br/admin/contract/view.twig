@@ -27,11 +27,11 @@
         {% endif %}
             <span id="contractId" style="display: none;">{{ contract.getId() }}</span>
             <ul id="contractComposition">
-                {% for entry in contract.getComposition() %}
+                {% for entry in contract.getEntries %}
                     <li id="contractComposition_{{ entry.getId() }}" class="sections">
                         <dl class="dl-horizontal">
-                            <dt>{{ entry.getSection().getName() }}</dt>
-                            <dd>{{ entry.getSection().getInvoiceDescription() }}</dd>
+                            <dt>{{ entry.getOrderEntry().getProduct().getName() }}</dt>
+                            <dd>{{ entry.getContractText() }}</dd>
                         </dl>
                     </li>
                 {% endfor %}

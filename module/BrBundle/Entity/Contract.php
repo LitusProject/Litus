@@ -21,6 +21,7 @@ namespace BrBundle\Entity;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Contract\ContractEntry,
     CommonBundle\Entity\User\Person,
     BrBundle\Entity\Product\Order,
     DateTime,
@@ -80,14 +81,10 @@ class Contract
      * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
      * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contract\Composition",
-     *      mappedBy="contract",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     *      targetEntity="BrBundle\Entity\Contract\ContractEntry",mappedBy="contract")
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $composition;
+    private $contractEntries;
 
     /**
      * @var int The discount the company gets, in %.
@@ -142,7 +139,7 @@ class Contract
         $this->setDirty();
         $this->setInvoiceNb();
 
-        $this->composition = new ArrayCollection();
+        $this->contractEntries = new ArrayCollection();
     }
 
     /**
@@ -233,6 +230,8 @@ class Contract
         return $this;
     }
 
+    //TODO remove compositions
+
     /**
      * @return array
      */
@@ -250,6 +249,8 @@ class Contract
 
         return $this;
     }
+
+    //TODO remove sections
 
     /**
      * @param  \BrBundle\Entity\Br\Contracts\Section $section  The section that should be added
@@ -392,6 +393,20 @@ class Contract
 
         $this->contractNb = $contractNb;
 
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntries()
+    {
+        return $this->contractEntries->toArray();
+    }
+
+    public function setEntry(ContractEntry $entry)
+    {
+        $this->contractEntries->add($entry);
         return $this;
     }
 }
