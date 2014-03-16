@@ -429,7 +429,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $result .= 'END:VTIMEZONE' . PHP_EOL;
 
         if (null !== $this->getParam('token')) {
-
             $token = $this->getDocumentManager()
                 ->getRepository('ShiftBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));

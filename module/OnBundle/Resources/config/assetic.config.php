@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'on_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'on_admin_slug' => array(
             '@common_jquery',
             '@admin_css',

@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'shift_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'shift_admin_shift' => array(
             '@common_jquery',
             '@admin_css',

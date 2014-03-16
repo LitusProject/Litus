@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'gallery_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'gallery_admin_gallery' => array(
             '@common_jquery',
             '@admin_css',

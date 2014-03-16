@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'mail_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'mail_admin_alias' => array(
             '@common_jquery',
             '@admin_css',

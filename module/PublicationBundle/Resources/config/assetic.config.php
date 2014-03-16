@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'publication_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'publication_admin_publication' => array(
             '@common_jquery',
             '@admin_css',
