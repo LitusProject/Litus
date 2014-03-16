@@ -59,7 +59,7 @@
     <aside>
         {% if not order.isOrdered() %}
             {% if hasAccess('cudi_admin_stock_order', 'place') %}
-                <div class="sidebox">
+                <div class="sidebox" data-help="These order items are still in the order queue, to finalise the order and pass it to the supplier, please press 'Place Order'">
                     <div class="title">Place Order</div>
                     <div class="content">
                         <p>

@@ -23,8 +23,8 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         {% if hasAccess('form_manage', 'index') %}
-                            <li {% if 'index' == getParam('action') and 'form_manage' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("form_manage", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
+                            <li {% if 'form_manage' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("form_manage", {"language": language.getAbbrev()}) }}">{{ translate('Forms') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('form_manage_group', 'index') %}
@@ -129,7 +129,7 @@
         </header>
 
         <div class="container">
-            {% include 'manage/partials/flashMessenger.twig' %}
+            {% include 'form/partials/flashMessenger.twig' %}
 
             <div id="content_controller">
                 {% block content %} {% endblock %}
