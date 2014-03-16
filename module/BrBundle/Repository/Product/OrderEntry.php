@@ -3,7 +3,7 @@
 namespace BrBundle\Repository\Product;
 
 use BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order,
+    BrBundle\Entity\Product\Order as EditOrder,
     Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,7 +14,7 @@ use BrBundle\Entity\Product,
  */
 class OrderEntry extends EntityRepository
 {
-    public function findOneByOrderAndProduct(Order $order, Product $product) {
+    public function findOneByOrderAndProduct(EditOrder $order, Product $product) {
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')

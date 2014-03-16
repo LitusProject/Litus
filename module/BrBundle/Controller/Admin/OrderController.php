@@ -100,6 +100,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
+
+                        //TODO remove
                         // $section = new Section($this->getEntityManager(), $product->getName(), $formData['description'], $product->getDescription(),
                         //     $this->getAuthentication()->getPersonObject(),$this->getCurrentAcademicYear(), $product->getPrice(), $product->getVatType());
                         // //$composition = new Composition($contract,$section,$counter);

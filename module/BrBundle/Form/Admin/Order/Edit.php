@@ -46,7 +46,9 @@ class Edit extends Add
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
+        $this->remove('discount');
+
+        $field = new Submit('save');
         $field->setValue('Save')
             ->setAttribute('class', 'order_edit');
         $this->add($field);

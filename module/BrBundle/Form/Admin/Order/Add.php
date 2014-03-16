@@ -94,12 +94,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addInputs();
 
-        $field = new Text('description');
-        $field->setLabel('Description')
-            ->setAttribute('class', 'input-very-mini')
-            ->setAttribute('placeholder', 'description');
-        $this->add($field);
-
         $field = new Text('discount');
         $field->setLabel('Discount percentage')
             ->setAttribute('class', 'input-very-mini')
@@ -165,8 +159,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', $this->_createContactsArray($order->getCompany()));
 
         $formData = array(
+            'title' => $order->getContract()->getTitle(),
             'company' => $order->getCompany()->getId(),
             'contact' => $order->getContact()->getId(),
+            'discount' => $order->getContract()->getDiscount()
         );
 
 
