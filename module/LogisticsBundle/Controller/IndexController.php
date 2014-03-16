@@ -39,11 +39,14 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-        $token = $this->getDocumentManager()
-            ->getRepository('LogisticsBundle\Document\Token')
-            ->findOneByPerson($this->getAuthentication()->getPersonObject());
+        $token = null;
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $token = $this->getDocumentManager()
+                ->getRepository('LogisticsBundle\Document\Token')
+                ->findOneByPerson($this->getAuthentication()->getPersonObject());
+        }
 
-        if (null === $token) {
+        if (null === $token && $this->getAuthentication()->isAuthenticated()) {
             $token = new Token(
                 $this->getAuthentication()->getPersonObject()
             );
