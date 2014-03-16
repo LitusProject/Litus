@@ -38,8 +38,8 @@ class AddWithSubject extends Add
     {
         parent::__construct($entityManager, $name);
 
-        $this->get('subject')->get('subject_id')->setAttribute('value', $subject->getId());
-        $this->get('subject')->get('subject')->setAttribute('value', $subject->getCode() . ' - ' . $subject->getName())
+        $this->get('subject_form')->get('subject_id')->setAttribute('value', $subject->getId());
+        $this->get('subject_form')->get('subject')->setAttribute('value', $subject->getCode() . ' - ' . $subject->getName())
             ->setAttribute('disabled', 'disabled');
     }
 
