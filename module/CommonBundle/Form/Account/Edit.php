@@ -56,7 +56,7 @@ class Edit extends \SecretaryBundle\Form\Registration\Edit
             null !== $academic->getOrganizationStatus($academicYear)
             && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
         ) {
-            $this->get('organization')
+            $this->get('organization_info')
                 ->get('become_member')
                 ->setValue(false)
                 ->setAttribute('disabled', 'disabled');
