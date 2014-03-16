@@ -114,9 +114,10 @@ return array(
         'logistics_export' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/logistics/export/ical.ics',
+                'route' => '[/:language]/logistics/export[/:token]/ical.ics',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
+                    'token'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'logistics_index',

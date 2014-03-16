@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     IntlDateFormatter,
     LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Form\VanReservation\Edit as EditForm,
+    LogisticsBundle\Document\Token,
     LogisticsBundle\Entity\Driver,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation,
@@ -38,10 +39,23 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
 
+        $token = $this->getDocumentManager()
+            ->getRepository('LogisticsBundle\Document\Token')
+            ->findOneByPerson($this->getAuthentication()->getPersonObject());
+
+        if (null === $token) {
+            $token = new Token(
+                $this->getAuthentication()->getPersonObject()
+            );
+            $this->getDocumentManager()->persist($token);
+            $this->getDocumentManager()->flush();
+        }
+
         return new ViewModel(
             array(
                 'form' => $form,
                 'date' => $this->getParam('date'),
+                'token' => $token,
             )
         );
     }
@@ -429,7 +443,20 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllActive();
 
+        $person = null;
+        if (null !== $this->getParam('token')) {
+            $token = $this->getDocumentManager()
+                ->getRepository('LogisticsBundle\Document\Token')
+                ->findOneByHash($this->getParam('token'));
+
+            if (null !== $token)
+                $person = $token->getPerson($this->getEntityManager());
+        }
+
         foreach ($reservations as $reservation) {
+            if (null !== $person && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person)
+                continue;
+
             $summary = array();
             if (strlen($reservation->getLoad()) > 0)
                 $summary[] = str_replace("\n", '', $reservation->getLoad());

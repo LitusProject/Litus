@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'ticket_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'ticket_admin_event' => array(
             '@common_jquery',
             '@admin_css',

@@ -18,17 +18,6 @@
 
 return array(
     'controllers' => array(
-        'common_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'all_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'common_admin_academic' => array(
             '@common_jquery',
             '@admin_css',

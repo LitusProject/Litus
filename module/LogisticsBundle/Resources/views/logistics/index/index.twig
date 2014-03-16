@@ -52,8 +52,20 @@
 
     {% if hasAccess('logistics_index', 'export') %}
         <div class="pull-right" style="line-height: 50px">
-            <a href="{{ url('logistics_export') }}" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+            <div class="btn-group">
+                <a class="btn btn-default" href="{{ url('logistics_export') }}"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+                {% if authenticatedPerson is not null %}
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('logistics_export') }}">{{ translate('General') }}</a></li>
+                        <li><a href="{{ url('logistics_export', {'token': token.getHash()}) }}">{{ translate('Personal') }}</a></li>
+                    </ul>
+                {% endif %}
+            </div>
         </div>
+
     {% endif %}
 
     <div id="calendar"></div>
