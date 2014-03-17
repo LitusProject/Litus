@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'br_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'br_admin_company' => array(
             '@common_jquery',
             '@admin_css',

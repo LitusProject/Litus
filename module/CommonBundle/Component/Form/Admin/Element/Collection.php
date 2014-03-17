@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\FormInterface;
+use Zend\Form\Fieldset,
+    Zend\Form\FormInterface;
 
 /**
  * Collection form element
@@ -91,16 +92,21 @@ class Collection extends \Zend\Form\Element\Collection
         if ($this->shouldCreateTemplate()) {
             foreach ($data as $value) {
                 foreach ($this->byName as $name => $element) {
-                    if (!isset($value[$name]))
-                        $value[$name] = '';
+                    if (!isset($data[$name]))
+                        $data[$name] = '';
                 }
             }
         } else {
             foreach ($this->byName as $name => $element) {
-                if (!isset($data[$name]))
-                    $data[$name] = '';
+                if (!isset($data[$name])) {
+                    if ($this->get($name) instanceOf Fieldset)
+                        $data[$name] = array();
+                    else
+                        $data[$name] = '';
+                }
             }
         }
+
         parent::populateValues($data);
     }
 

@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'syllabus_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'syllabus_admin_update' => array(
             '@common_jquery',
             '@admin_css',
