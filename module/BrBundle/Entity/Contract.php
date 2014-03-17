@@ -122,6 +122,13 @@ class Contract
     private $dirty;
 
     /**
+     * @var bool True if the contract has been signed or not.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $signed;
+
+    /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
      * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract
@@ -140,6 +147,7 @@ class Contract
         $this->setInvoiceNb();
 
         $this->contractEntries = new ArrayCollection();
+        $this->signed = false;
     }
 
     /**
@@ -348,7 +356,15 @@ class Contract
      */
     public function isSigned()
     {
-        return $this->getInvoiceNb() != -1;
+        return $this->signed;
+    }
+
+    /**
+     *
+     */
+    public function sign()
+    {
+        return $this->signed = true;
     }
 
     /**

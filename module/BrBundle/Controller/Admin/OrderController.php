@@ -100,16 +100,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
-
-                        //TODO remove
-                        // $section = new Section($this->getEntityManager(), $product->getName(), $formData['description'], $product->getDescription(),
-                        //     $this->getAuthentication()->getPersonObject(),$this->getCurrentAcademicYear(), $product->getPrice(), $product->getVatType());
-                        // //$composition = new Composition($contract,$section,$counter);
-                        // $contract->addSection($section,$counter);
                         $order->setEntry($orderEntry);
                         $contract->setEntry($contractEntry);
                         $counter++;
-                        //$this->getEntityManager()->persist($section);
                         $this->getEntityManager()->persist($orderEntry);
                         $this->getEntityManager()->persist($contractEntry);
                     }
@@ -232,7 +225,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!($order = $this->_getOrder()))
             return new ViewModel();
+        foreach ($order->getContract()->getEntries() as $contractEntry) {
+            $this->getEntityManager()->remove($contractEntry);
+            $this->getEntityManager()->flush();
+        }
 
+        $this->getEntityManager()->remove($order->getContract());
+        $this->getEntityManager()->flush();
+
+        foreach ($order as $orderEntry) {
+            $this->getEntityManager()->remove($orderEntry);
+            $this->getEntityManager()->flush();
+        }
         $this->getEntityManager()->remove($order);
         $this->getEntityManager()->flush();
 
