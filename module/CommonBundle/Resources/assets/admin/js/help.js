@@ -30,7 +30,7 @@
                 $('.help-question-mark').animate({'opacity': 0}, 500, function () {$(this).remove()})
             } else {
                 $('.help-question-mark').remove();
-                $('[data-help]').each(function () {
+                $('[data-help]:visible').each(function () {
                     $('body').append(
                         $('<div>', {'class': 'help-question-mark'}).html('?').css({
                             'width': 20,
