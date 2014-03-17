@@ -136,6 +136,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $this->getEntityManager()->persist($invoice);
         $this->getEntityManager()->flush();
 
+        $contract->setSigned();
+
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::SUCCESS,

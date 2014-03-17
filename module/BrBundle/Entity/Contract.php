@@ -362,9 +362,11 @@ class Contract
     /**
      *
      */
-    public function sign()
+    public function setSigned($bool = true)
     {
-        return $this->signed = true;
+        $this->signed = $bool;
+
+        return $this;
     }
 
     /**
