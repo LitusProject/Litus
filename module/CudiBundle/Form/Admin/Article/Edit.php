@@ -67,7 +67,6 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
 
         if ($this->_article->getType() == 'common')
             $inputFilter->remove('type');

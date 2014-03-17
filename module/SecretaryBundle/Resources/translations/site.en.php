@@ -49,7 +49,7 @@ return array(
     'University E-mail' => 'University E-mail',
     'Personal E-mail' => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'I want to receive e-mail at my personal e-mail address',
-    'Student Association' => 'Student Association',
+    'Student Organization' => 'Student Organization',
     'I want to become a member of the student association (&euro; { price })' => 'I want to become a member of the student association (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'I have read and agree with the terms and conditions',
     'Register' => 'Register',

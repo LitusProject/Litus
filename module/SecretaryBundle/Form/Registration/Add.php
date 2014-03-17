@@ -153,14 +153,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(true);
         $internet->add($field);
 
-        $organization = new Collection('organization');
-        $organization->setLabel('Student Association')
+        $organization = new Collection('organization_info');
+        $organization->setLabel('Student Organization')
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
         $field = new Select('organization');
-        $field->setLabel('Student Association')
+        $field->setLabel('Student Organization')
             ->setAttribute('options', $organizations);
         $organization->add($field);
 
@@ -188,7 +188,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
     {
-
         $universityEmail = $academic->getUniversityEmail();
 
         if ($universityEmail)
@@ -240,13 +239,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
-            if ($this->get('organization')->has('organization')) {
-                $this->get('organization')->get('organization')
+            if ($this->get('organization_info')->has('organization')) {
+                $this->get('organization_info')->get('organization')
                     ->setAttribute('disabled', true);
             }
-            $this->get('organization')->get('become_member')
+            $this->get('organization_info')->get('become_member')
                 ->setAttribute('disabled', true);
-            $this->get('organization')->get('conditions')
+            $this->get('organization_info')->get('conditions')
                 ->setAttribute('disabled', true);
             $this->_conditionsAlreadyChecked = true;
 
