@@ -27,6 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
+    TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -221,6 +222,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                         ),
                     ),
                     new DateCompareValidator('now', 'd/m/Y H:i'),
+                    new DateValidator($this->_entityManager, 'd/m/Y H:i'),
                 ),
             )
         );

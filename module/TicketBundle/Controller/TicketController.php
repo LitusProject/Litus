@@ -219,34 +219,30 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     private function _getEvent()
     {
-        if (null === $this->getParam('id')) {
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $event = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null == $event) {
+        if (null === $event || !$event->isActive())
             return;
-        }
 
         return $event;
     }
 
     private function _getTicket()
     {
-        if (null === $this->getParam('id')) {
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneById($this->getParam('id'));
 
-        if (null == $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject())
             return;
-        }
 
         return $ticket;
     }
