@@ -1,0 +1,41 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/order/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+
+		<table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Description</th>
+                <th width="150px">Date</th>
+                <th width="150px">Placed By</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for order in paginator %}
+            	{% if order.isOld() == true %}
+					<tr class="item item-{{ order.getId() }}">
+	                    <td>{{ order.getCompany().getName() }}</td>
+	                    <td>{{ order.getDescription() }}</td>
+	                    <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
+	                    <td>{{ order.getCreationPerson().getFullName() }}</td>
+	                    <td class="actions">
+	                        {% if hasAccess('br_admin_order', 'delete') %}
+	                        	<a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getCompany().getName() }} ({{ order.getDescription() }})">Delete</a>
+	                        {% endif %}
+	                        {% if hasAccess('br_admin_contract', 'view') %}
+	                            <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
+	                        {% endif %}
+	                    </td>
+	                </tr>
+	            {% endif %}
+            {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}

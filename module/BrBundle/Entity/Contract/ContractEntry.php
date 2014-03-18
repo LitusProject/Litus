@@ -108,7 +108,7 @@ class ContractEntry
     {
         if($versionNmbr < 0)
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
-        $this->position = $versionNmbr;
+        $this->version = $versionNmbr;
     }
 
 

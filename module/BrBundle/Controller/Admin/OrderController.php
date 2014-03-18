@@ -33,6 +33,7 @@ use BrBundle\Entity\Contract,
  * OrderController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
 class OrderController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -99,7 +100,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     if ($quantity != 0)
                     {
                         $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($contract, $orderEntry, $counter);
+                        $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                         $order->setEntry($orderEntry);
                         $contract->setEntry($contractEntry);
                         $counter++;
@@ -158,38 +159,51 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
 
-                $order->setContact($contact);
+                $updatedOrder = new Order(
+                    $contact,
+                    $this->getAuthentication()->getPersonObject()
+                );
 
-                // Remove all entries that are no longer needed
-                foreach ($order->getEntries() as $entry)
-                {
-                    $quantity = $formData['product-' . $entry->getProduct()->getId()];
-                    if (0 == $quantity)
-                    {
-                        $this->getEntityManager()->remove($entry);
-                    }
-                }
+                $updatedContract = new Contract($updatedOrder,
+                    $this->getAuthentication()->getPersonObject(),
+                    $order->getCompany(),
+                    $order->getContract()->getDiscount(),
+                    $formData['title']
+                );
+
+                $updatedContract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
 
                 $products = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
+                $counter = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
                     $orderEntry = $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Product\OrderEntry')
                         ->findOneByOrderAndProduct($order, $product);
-                    if (null === $orderEntry && 0 != $quantity)
+                    if (0 != $quantity)
                     {
-                        $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($order->getContract(), $orderEntry);
-                        $this->getEntityManager()->persist($orderEntry);
-                        $this->getEntityManager()->persist($contractEntry);
-                    } elseif (0 != $quantity) {
-                        $orderEntry->setQuantity($quantity);
+                        $updatedOrderEntry = new OrderEntry($updatedOrder, $product, $quantity);
+                        $updatedContractEntry = new ContractEntry($updatedContract, $updatedOrderEntry,$counter, 0);
+                        $counter++;
+                        $this->getEntityManager()->persist($updatedOrderEntry);
+                        $this->getEntityManager()->persist($updatedContractEntry);
                     }
                 }
+
+                $this->getEntityManager()->persist($updatedOrder);
+                $this->getEntityManager()->persist($updatedContract);
+
+                $order->setOld();
+
+                $this->getEntityManager()->persist($order);
 
                 $this->getEntityManager()->flush();
 
@@ -243,6 +257,21 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Product\Order',
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }

@@ -104,6 +104,13 @@ class Order
     private $creationPerson;
 
     /**
+     * @var bool The quantity of this item.
+     *
+     * @ORM\Column(name="old", type="boolean")
+     */
+    private $old;
+
+    /**
      */
     public function __construct(CorporatePerson $contact, Person $creationPerson)
     {
@@ -111,8 +118,16 @@ class Order
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
+        $this->old = false;
     }
 
+    public function isOld(){
+        return $this->old;
+    }
+
+    public function setOld(){
+        $this->old = true;
+    }
     /**
      * @return int
      */
