@@ -28,4 +28,49 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ContractEntry extends EntityRepository
 {
+	public function findHighestVersionNb()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $highestVersion = $query->select('MAX(c.version)')
+            ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $highestVersion;
+    }
+
+    public function findAllContractEntriesByContract(Contract $Contract)
+    {
+    	$query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
+            ->where(
+                $query->expr()->eq('c.contract', ':contract')
+            )
+            ->setParameter('contract', $contract)
+            ->orderBy('c.version', 'ASC')
+            ->addOrderBy('c.position', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findContractEntriesByContractAndVersion(Contract $Contract, $version)
+    {
+    	$query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
+            ->where(
+            	$query->expr()->andx(
+                	$query->expr()->eq('c.contract', ':contract'),
+                	$query->expr()->eq('c.version', ':version'),
+                )
+            )
+            ->setParameter('contract', $contract)
+            ->setParameter('version', $version)
+            ->orderBy('c.position', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

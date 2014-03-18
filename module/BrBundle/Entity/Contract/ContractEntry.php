@@ -72,17 +72,45 @@ class ContractEntry
     private $position;
 
     /**
-     * @param \BrBundle\Entity\Contract $contract The contract of which this entry is part.
-     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this contract entry.
-     * @param int $position The position number of the entry in the contract
+     * @var int The version of the contract this entry belongs too.
+     *
+     * @ORM\Column(type="integer")
      */
-    public function __construct(Contract $contract, OrderEntry $orderEntry, $position)
+    private $version;
+
+    /**
+     * @param \BrBundle\Entity\Contract $contract               The contract of which this entry is part.
+     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry   The order entry corresponding to this contract entry.
+     * @param int $position                                     The position number of the entry in the contract
+     * @param int $version                                      The version number of this contract entry
+     */
+    public function __construct(Contract $contract, OrderEntry $orderEntry, $position, $version)
     {
         $this->contract = $contract;
         $this->orderEntry = $orderEntry;
         $this->setContractText($orderEntry->getProduct()->getContractText());
         $this->setPosition($position);
+        $this->_setVersion($version);
     }
+
+    /**
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return int
+     */
+    private function _setVersion($versionNmbr)
+    {
+        if($versionNmbr < 0)
+            throw new \InvalidArgumentException("version number must be larger or equal to zero");
+        $this->position = $versionNmbr;
+    }
+
 
     /**
      * @return int

@@ -67,6 +67,18 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function historyAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
+
+        return new ViewModel(
+            array(
+                'contract' => $contract,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($contract = $this->_getContract(false)))
