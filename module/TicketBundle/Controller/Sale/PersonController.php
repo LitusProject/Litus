@@ -47,6 +47,10 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
             $item = (object) array();
             $item->id = $person->getId();
             $item->value = $person->getUniversityIdentification() . ' - ' . $person->getFullName();
+
+            if ($person->isMember($this->getCurrentAcademicYear()))
+                $item->value .= ' (Member)';
+
             $result[] = $item;
         }
 
