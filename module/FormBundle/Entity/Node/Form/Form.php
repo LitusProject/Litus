@@ -20,6 +20,7 @@ namespace FormBundle\Entity\Node\Form;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
 
@@ -52,7 +53,9 @@ class Form extends BaseForm
 
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
-            $result .= $fieldEntry->getField()->getLabel($language) . ': ' . $fieldEntry->getValueString($language) . PHP_EOL;
+            $result .= $fieldEntry->getField()->getLabel($language) . ': ';
+            $result .= $fieldEntry->getField() instanceOf FileField ? $fieldEntry->getReadableValue() : $fieldEntry->getValueString($language);
+            $result .= PHP_EOL;
         }
 
         return $result;
