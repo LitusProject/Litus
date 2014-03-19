@@ -320,5 +320,21 @@ return array(
                 'output' => 'jcrop_css.css',
             ),
         ),
+
+        'resizableColumns_js' => array(
+            'assets' => array(
+                'common/js/resizableColumns.js',
+            ),
+            'filters' => array('js'),
+        ),
+        'resizableColumns_css' => array(
+            'assets' => array(
+                'common/css/resizableColumns.css',
+            ),
+            'filters' => array('css'),
+            'options' => array(
+                'output' => 'resizableColumns_css.css',
+            ),
+        ),
     ),
 );

@@ -33,7 +33,7 @@
         {% endif %}
         <br />
 
-        <table class="full_width manage">
+        <table class="full_width manage" id="tickets">
             <thead>
                 <tr>
                     <th>Person</th>
@@ -63,4 +63,12 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tickets").resizableColumns();
+        });
+    </script>
 {% endblock %}
