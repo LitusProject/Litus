@@ -63,7 +63,7 @@ class ContractEntry extends EntityRepository
             ->where(
             	$query->expr()->andx(
                 	$query->expr()->eq('c.contract', ':contract'),
-                	$query->expr()->eq('c.version', ':version'),
+                	$query->expr()->eq('c.version', ':version')
                 )
             )
             ->setParameter('contract', $contract)
