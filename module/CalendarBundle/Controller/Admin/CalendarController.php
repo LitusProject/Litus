@@ -19,7 +19,6 @@
 namespace CalendarBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
     CalendarBundle\Entity\Node\Event,
     CalendarBundle\Entity\Node\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
@@ -27,7 +26,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
     DateTime,
     Imagick,
-    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\Validator\File\Size as SizeValidator,
@@ -361,33 +359,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'data' => $data,
-            )
-        );
-    }
-
-    public function pdfAction()
-    {
-        if (!($event = $this->_getEvent()))
-            return new ViewModel();
-
-        $shifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
-
-        $file = new TmpFile();
-        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
-        $document->generate();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $file->getContent(),
             )
         );
     }

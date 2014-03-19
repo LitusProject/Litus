@@ -37,8 +37,8 @@
                         <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getLocation(language) }}</td>
                         <td class="actions">
-                            {% if hasAccess('calendar_admin_calendar', 'pdf') %}
-                                <a href="{{ url('calendar_admin_calendar', {"action": "pdf", "id": event.getId()}) }}" class="printer">Shift List</a>
+                            {% if hasAccess('shift_admin_shift', 'pdf') %}
+                                <a href="{{ url('shift_admin_shift', {"action": "pdf", "id": event.getId()}) }}" class="printer">Shift List</a>
                             {% endif %}
                             {% if hasAccess('calendar_admin_calendar', 'poster') %}
                                 <a href="{{ url('calendar_admin_calendar', {"action": "editPoster", "id": event.getId()}) }}" class="image_edit">Poster</a>
