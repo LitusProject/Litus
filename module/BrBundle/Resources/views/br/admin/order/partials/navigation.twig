@@ -10,9 +10,9 @@
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                 		href="{{ url('br_admin_order', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_order', 'old') %}
+            {% if hasAccess('br_admin_order', 'history') %}
                 <li><a {% if 'old' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_order', {"action": "old"}) }}">Old</a></li>
+                        href="{{ url('br_admin_order', {"action": "history"}) }}">History</a></li>
             {% endif %}
         </ul>
     </nav>
