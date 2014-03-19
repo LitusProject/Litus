@@ -18,11 +18,13 @@
 
 namespace ApiBundle\Document\Token;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 /**
  * This entity represents an access token used in OAuth 2.0.
  *
  * @ODM\Document(
- *     collection="apibundle_token_access
+ *     collection="apibundle_token_access",
  *     repositoryClass="ApiBundle\Repository\Token\Access"
  * )
  */

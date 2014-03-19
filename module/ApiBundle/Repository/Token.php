@@ -18,7 +18,10 @@
 
 namespace ApiBundle\Repository;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use ApiBundle\Document\Code\Authorization as AuthorizationCode,
+    DateTime,
+    Doctrine\ODM\MongoDB\DocumentRepository,
+    MongoId;
 
 /**
  * Token
@@ -28,4 +31,17 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class Token extends DocumentRepository
 {
+    public function findAllActiveByAuthorizationCode(AuthorizationCode $authorizationCode)
+    {
+        $query = $this->createQueryBuilder();
+        $resultSet = $query->field('authorizationCode')
+            ->equals(new MongoId($authorizationCode->getId()))
+            ->field('expirationTime')
+            ->gt(new DateTime())
+            ->getQuery()
+            ->execute()
+            ->toArray();
+
+        return $resultSet;
+    }
 }

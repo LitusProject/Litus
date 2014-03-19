@@ -19,7 +19,7 @@
 namespace ApiBundle\Document\Code;
 
 use ApiBundle\Entity\Key,
-    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
@@ -34,6 +34,8 @@ use ApiBundle\Entity\Key,
  */
 class Authorization
 {
+    const DEFAULT_EXPIRATION_TIME = 300;
+
     /**
      * @var integer The ID of this authorization code
      *
@@ -49,11 +51,11 @@ class Authorization
     private $code;
 
     /**
-     * @var integer The academic that authorized the code
+     * @var integer The person that authorized the code
      *
      * @ODM\Field(type="int")
      */
-    private $academic;
+    private $person;
 
     /**
      * @var integer The API key that was used to request the code
@@ -77,15 +79,15 @@ class Authorization
     private $exchangeTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \ApiBundle\Entity\Key $key
-     * @param int $expirationTime
+     * @param \CommonBundle\Entity\User\Person $person
+     * @param \ApiBundle\Entity\Key            $key
+     * @param int                              $expirationTime
      */
-    public function __construct(Academic $academic, Key $key, $expirationTime = 300)
+    public function __construct(Person $person, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
         $this->code = bin2hex(openssl_random_pseudo_bytes(16));
 
-        $this->academic = $academic->getId();
+        $this->person = $person->getId();
         $this->key = $key->getId();
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
@@ -101,17 +103,25 @@ class Authorization
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return string
      */
-    public function getAcademic(EntityManager $entityManager)
+    public function getCode()
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->academic);
+        return $this->code;
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager      $entityManager
+     * @return \CommonBundle\Entity\User\Person
+     */
+    public function getPerson(EntityManager $entityManager)
+    {
+        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($this->person);
+    }
+
+    /**
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \ApiBundle\Entity\Key
      */
     public function getKey(EntityManager $entityManager)
@@ -142,6 +152,7 @@ class Authorization
     public function exchange()
     {
         $this->exchangeTime = new \DateTime();
+
         return $this;
     }
 }

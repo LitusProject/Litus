@@ -76,35 +76,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
-            if (!$this->getRequest()->isPost()) {
-                $this->getResponse()->setStatusCode(400);
-
-                return new ViewModel(
-                    array(
-                        'error' => (object) array(
-                            'message' => 'The API should be accessed using POST requests'
-                        )
-                    )
-                );
-            }
-        }
-
         if ($this->_validateKey() || $this->_validateOAuth()) {
             if (
                 !$this->_hasAccess(
                     $this->getParam('controller'), $this->getParam('action')
                 )
             ) {
-                $this->getResponse()->setStatusCode(401);
-
-                return new ViewModel(
-                    array(
-                        'error' => (object) array(
-                            'You do not have sufficient permissions to access this resource'
-                        )
-                    )
-                );
+                return $this->error(401, 'You do not have sufficient permissions to access this resource');
             }
         }
 
@@ -115,11 +93,35 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $result = parent::onDispatch($e);
+        $result->flashMessenger = $this->flashMessenger();
         $result->setTerminal(true);
 
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * Returns an error message.
+     *
+     * @param  integer                    $code    The HTTP status code
+     * @param  string                     $message The error message
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function error($code, $message)
+    {
+        $this->initJson();
+        $this->getResponse()->setStatusCode($code);
+
+        $error = array(
+            'message' => $message
+        );
+
+        return new ViewModel(
+            array(
+                'error' => (object) $error
+            )
+        );
     }
 
     /**
@@ -139,19 +141,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                         ->getConfigValue('fallback_language')
                 );
 
-            if (null === $fallbackLanguage) {
-                $this->getResponse()->setStatusCode(401);
-
-                return new ViewModel(
-                    array(
-                        'error' => (object) array(
-                            'message' => 'The specified fallback language does not exist'
-                        )
-                    )
-                );
-            } else {
+            if (null !== $fallbackLanguage)
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
-            }
         } catch (\Exception $e) {}
     }
 
@@ -168,7 +159,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $headers = $this->getResponse()->getHeaders();
 
         if ($headers->has('Content-Type'))
-            $headers->removeHeader('Content-Type');
+            $headers->removeHeader($headers->get('Content-Type'));
 
         $headers->addHeaders(
             array_merge(
@@ -223,6 +214,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * We want an easy method to retrieve the Authentication from
+     * the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\Authentication
+     */
+    public function getAuthentication()
+    {
+        return $this->getServiceLocator()->get('authentication');
+    }
+
+    /**
      * We want an easy method to retrieve the Cache from
      * the DI container.
      *
@@ -250,6 +252,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * We want an easy method to retrieve the DocumentManager from
+     * the DI container.
+     *
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     */
+    public function getDocumentManager()
+    {
+        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+    }
+
+    /**
      * We want an easy method to retrieve the EntityManager from
      * the DI container.
      *
@@ -258,6 +271,30 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     public function getEntityManager()
     {
         return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+    }
+
+    /**
+     * Simple helper method that retrieves the API key.
+     *
+     * @param  string                                           $field The name of the field that contains the key
+     * @return \ApiBundle\Entity\Key|\Zend\View\Model\ViewModel
+     */
+    protected function getKey($field = 'key')
+    {
+        $code = $this->getRequest()->getPost($field);
+        if (!$this->getRequest()->isPost() || null === $code)
+            $code = $this->getRequest()->getQuery($field);
+
+        $key = $this->getEntityManager()
+            ->getRepository('ApiBundle\Entity\Key')
+            ->findOneActiveByCode($code);
+
+        if ('development' != getenv('APPLICATION_ENV')) {
+            if (null === $key)
+                return $this->error(400, 'No API key was given');
+        }
+
+        return $key;
     }
 
     /**
@@ -357,35 +394,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _validateKey()
     {
         if ('development' != getenv('APPLICATION_ENV')) {
-            if (null === $this->getRequest()->getPost('key')) {
-                $this->getResponse()->setStatusCode(400);
-
-                return new ViewModel(
-                    array(
-                        'error' => (object) array(
-                            'message' => 'No API key was provided with the request'
-                        )
-                    )
-                );
-            }
-
             $key = $this->getKey();
 
             $validateKey = $key->validate(
                 isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
             );
 
-            if (!$validateKey) {
-                $this->getResponse()->setStatusCode(401);
-
-                return new ViewModel(
-                    array(
-                        'error' => (object) array(
-                            'message' => 'The given API key was invalid'
-                        )
-                    )
-                );
-            }
+            if (!$validateKey)
+                return $this->error(401, 'The API key is invalid');
 
             $this->_hasAccessDriver = new HasAccess(
                 $this->_getAcl(),
@@ -405,21 +421,5 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _validateOAuth()
     {
         return true;
-    }
-
-    /**
-     * Simple helper method that retrieves the API key.
-     *
-     * @return \ApiBundle\Entity\Key
-     */
-    protected function getKey()
-    {
-        if (null !== $this->getRequest()->getPost('key')) {
-            return $this->getEntityManager()
-                ->getRepository('ApiBundle\Entity\Key')
-                ->findOneActiveByCode($this->getRequest()->getPost('key'));
-        }
-
-        return null;
     }
 }

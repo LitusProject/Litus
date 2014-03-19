@@ -31,50 +31,56 @@
         <div id="content" class="container">
             {% include 'site/partials/flashMessenger.twig' %}
 
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <h1 class="page-header">{{ translate('Login') }}</h1>
+            {% if error is not null %}
+                <div class="flashmessage alert alert-danger fade in">
+                    {% autoescape false %}{{ translate(error) }}{% endautoescape %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <h1 class="page-header">{{ translate('Login') }}</h1>
 
-                    <div class="well" style="text-align: center;">
-                        <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
-                    </div>
+                        <div class="well" style="text-align: center;">
+                            <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+                        </div>
 
-                    <div class="well">
-                        <div class="login-container">
-                            {% do form.prepare() %}
-                            {% autoescape false %}
-                                {{ form().openTag(form) }}
-                                    {% for element in form.getElements() %}
-                                        {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
-                                            {{ formElement(element) }}
-                                        {% elseif element.getAttribute('type') == 'hidden' %}
-                                            {{ formElement(element) }}
-                                        {% elseif element.getAttribute('type') == 'checkbox' %}
-                                            <div class="remember_me">
-                                                <label>
-                                                    {{ formElement(element) }}
-                                                    {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                                                </label>
-                                            </div>
-                                        {% else %}
-                                            <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
-                                                <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
-                                                <div>{{ formElement(element) }}</div>
-                                                {% if element.getMessages()|length > 0 %}
-                                                    <div class="help-block">
-                                                        {{ formElementErrors(element) }}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                {{ form().closeTag() }}
-                            {% endautoescape %}
-                            <br style="clear: both" />
+                        <div class="well">
+                            <div class="login-container">
+                                {% do form.prepare() %}
+                                {% autoescape false %}
+                                    {{ form().openTag(form) }}
+                                        {% for element in form.getElements() %}
+                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'hidden' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                <div class="remember_me">
+                                                    <label>
+                                                        {{ formElement(element) }}
+                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                    </label>
+                                                </div>
+                                            {% else %}
+                                                <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                    <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                    <div>{{ formElement(element) }}</div>
+                                                    {% if element.getMessages()|length > 0 %}
+                                                        <div class="help-block">
+                                                            {{ formElementErrors(element) }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {{ form().closeTag() }}
+                                {% endautoescape %}
+                                <br style="clear: both" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 

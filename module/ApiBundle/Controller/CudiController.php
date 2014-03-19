@@ -31,15 +31,6 @@ use DateInterval,
 
 class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-
-    /**
-    * Returns all the bookings and totals of a given user.
-    *
-    * @param 	$authenticatedPerson
-    *			User who's bookings are being searched for.
-    *
-    * @return 	Array
-    */
     public function viewAction()
     {
         //TODO key needs to be given and person needs to be get from the key
@@ -70,11 +61,6 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
-    /**
-    * Returns the openinghours of Cudi.
-    *
-    * @return array
-    */
     public function weekAction()
     {
         $openingHours = $this->getEntityManager()

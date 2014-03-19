@@ -16,11 +16,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Document\Code;
+namespace ApiBundle\Document;
 
-use ApiBundle\Document\Code\Authorization,
+use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Entity\Key,
-    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
@@ -33,6 +33,8 @@ use ApiBundle\Document\Code\Authorization,
  */
 abstract class Token
 {
+    const DEFAULT_EXPIRATION_TIME = 604800;
+
     /**
      * @var integer The ID of this authorization code
      *
@@ -48,17 +50,19 @@ abstract class Token
     private $code;
 
     /**
-     * @var integer The academic that authorized the code
+     * @var integer The person that authorized the code
      *
      * @ODM\Field(type="int")
      */
-    private $academic;
+    private $person;
 
     /**
      * @var \ApiBundle\Document\Code\Authorization The authorization code that was used to request the token
      *
-     * @ReferenceOne(
+     * @ODM\ReferenceOne(
+     *     name="authorization_code",
      *     targetDocument="ApiBundle\Document\Code\Authorization",
+     *     simple=true,
      *     cascade="persist"
      * )
      */
@@ -67,20 +71,20 @@ abstract class Token
     /**
      * @var integer The expiration time of the code
      *
-     * @ODM\Field(type="date")
+     * @ODM\Field(name="expiration_time", type="date")
      */
     private $expirationTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param \CommonBundle\Entity\User\Person       $person
      * @param \ApiBundle\Document\Code\Authorization $authorizationCode
-     * @param int $expirationTime
+     * @param int                                    $expirationTime
      */
-    public function __construct(Academic $academic, Authorization $authorizationCode, $expirationTime = 604800)
+    public function __construct(Person $person, AuthorizationCode $authorizationCode, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
         $this->code = bin2hex(openssl_random_pseudo_bytes(16));
 
-        $this->academic = $academic->getId();
+        $this->person = $person->getId();
         $this->authorizationCode = $authorizationCode;
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
@@ -104,13 +108,13 @@ abstract class Token
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  \Doctrine\ORM\EntityManager      $entityManager
+     * @return \CommonBundle\Entity\User\Person
      */
-    public function getAcademic(EntityManager $entityManager)
+    public function getPerson(EntityManager $entityManager)
     {
-        return $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->academic);
+        return $entityManager->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($this->person);
     }
 
     /**

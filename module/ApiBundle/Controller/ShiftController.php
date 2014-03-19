@@ -23,6 +23,7 @@ use DateInterval,
     IntlDateFormatter,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
+
 /**
  * ShiftController
  *
@@ -30,12 +31,6 @@ use DateInterval,
  */
 class ShiftController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-
-    /**
-    * Returns all the active shifts by the current person
-    *
-    * @return array
-    */
     public function myShiftAction()
     {
         //TODO key needs to be given and person needs to be get from the key

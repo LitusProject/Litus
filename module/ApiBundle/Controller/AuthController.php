@@ -30,6 +30,8 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getPersonAction()
     {
+        $this->initJson();
+
         if (null === ($person = $this->_getPerson())) {
             return new ViewModel(
                 array(

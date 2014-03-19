@@ -16,10 +16,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Document\Code;
+namespace ApiBundle\Document\Token;
 
-use ApiBundle\Entity\Key,
-    CommonBundle\Entity\User\Person\Academic,
+use ApiBundle\Document\Code\Authorization as AuthorizationCode,
+    ApiBundle\Entity\Key,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;
@@ -29,11 +30,13 @@ use ApiBundle\Entity\Key,
  *
  * @ODM\Document(
  *     collection="apibundle_token_refresh",
- *     repositoryClass="ApiBundle\Repository\Code\Authorization"
+ *     repositoryClass="ApiBundle\Repository\Token\Refresh"
  * )
  */
 class Refresh extends \ApiBundle\Document\Token
 {
+    const DEFAULT_EXPIRATION_TIME = 1209600;
+
     /**
      * @var integer The API key that can refresh the access token
      *
@@ -49,20 +52,20 @@ class Refresh extends \ApiBundle\Document\Token
     private $exchangeTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param \CommonBundle\Entity\User\Person       $person
      * @param \ApiBundle\Document\Code\Authorization $authorizationCode
-     * @param \ApiBundle\Entity\Key $key
-     * @param int $expirationTime
+     * @param \ApiBundle\Entity\Key                  $key
+     * @param int                                    $expirationTime
      */
-    public function __construct(Academic $academic, Authorization $authorizationCode, Key $key, $expirationTime = 1209600)
+    public function __construct(Person $person, AuthorizationCode $authorizationCode, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
-        parent::__construct($academic, $authorizationCode, $expirationTime);
+        parent::__construct($person, $authorizationCode, $expirationTime);
 
         $this->key = $key->getId();
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \ApiBundle\Entity\Key
      */
     public function getKey(EntityManager $entityManager)
@@ -85,6 +88,7 @@ class Refresh extends \ApiBundle\Document\Token
     public function exchange()
     {
         $this->exchangeTime = new \DateTime();
+
         return $this;
     }
 }

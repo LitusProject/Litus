@@ -33,6 +33,8 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 {
     public function getActiveEventsAction()
     {
+        $this->initJson();
+
         $items = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
@@ -59,33 +61,15 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
     public function getPosterAction()
     {
-        if (null === ($poster = $this->_getPoster())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel(
-                array(
-                    'error' => (object) array(
-                        'message' => 'No poster key was provided with the request'
-                    )
-                )
-            );
-        }
+        if (null === ($poster = $this->_getPoster()))
+            return $this->error(404, 'No poster key was provided with the request');
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('calendar.poster_path') . '/';
 
-        if (!file_exists($filePath . $poster)) {
-            $this->getResponse()->setStatusCode(500);
-
-            return new ViewModel(
-                array(
-                    'error' => (object) array(
-                        'message' => 'The poster file does not exist'
-                    )
-                )
-            );
-        }
+        if (!file_exists($filePath . $poster))
+            return $this->error(500, 'The poster file does not exist');
 
         $posterData = null;
         if (!file_exists($filePath . $poster . '_thumb')) {

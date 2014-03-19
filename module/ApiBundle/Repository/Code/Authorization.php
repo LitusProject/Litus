@@ -18,7 +18,8 @@
 
 namespace ApiBundle\Repository\Code;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use CommonBundle\Entity\User\Person,
+    Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * Authorization

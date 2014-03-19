@@ -30,6 +30,8 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getLastAction()
     {
+        $this->initJson();
+
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findAllSite();
