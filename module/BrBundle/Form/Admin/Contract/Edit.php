@@ -56,13 +56,11 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(true);
         $this->add($field);
 
-        if ($contract->isSigned()) {
-            $field = new Text('invoice_nb');
-            $field->setLabel('Invoice number')
-                ->setRequired()
-                ->setValue($contract->getInvoiceNb())
-                ->setAttrib('disabled', 'disabled');
-            $this->addElement($field);
+        $field = new Text('invoice_nb');
+        $field->setLabel('Invoice number')
+            ->setRequired()
+            ->setValue($contract->getInvoiceNb());
+        $this->add($field);
 
         foreach ($contract->getEntries() as $entry)
         {
@@ -80,17 +78,21 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
+        $inputFilter->remove('company_name');
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name' => 'title',
+                    'name'     => 'title',
                     'required' => true,
-                    'filters' => array(
+                    'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                 )
             )
         );
+
+        return $inputFilter;
+    }
 
     private function _getActiveSections(Contract $contract)
     {

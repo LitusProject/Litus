@@ -32,6 +32,7 @@ use BrBundle\Entity\Contract,
  * ContractController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
