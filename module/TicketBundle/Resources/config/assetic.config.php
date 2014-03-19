@@ -35,6 +35,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@resizableColumns_js',
+            '@resizableColumns_css',
         ),
         'ticket_sale_index' => array(
             '@common_jquery',
