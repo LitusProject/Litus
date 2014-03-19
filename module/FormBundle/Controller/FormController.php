@@ -619,7 +619,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $this->getParam('id') . '"',
+            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
             'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));
@@ -665,7 +665,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneById($this->getParam('id'));
 
-        if (null === $entry || !$entry->getForm()->isEditableByUser()) {
+        if (null === $entry || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft())) {
             return;
         }
 
