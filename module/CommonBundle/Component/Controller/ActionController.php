@@ -19,7 +19,7 @@
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
@@ -41,9 +41,9 @@ use CommonBundle\Component\Acl\Acl,
 class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var \CommonBundle\Entity\General\Language The current language
      */
-    private $_language;
+    private $_language = null;
 
     /**
      * Execute the request.
@@ -127,7 +127,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $authenticationHandler = $this->getAuthenticationHandler();
         if (null !== $authenticationHandler) {
             if (
-                $this->hasAccess(
+                $this->hasAccess()->toResourceAction(
                     $this->getParam('controller'), $this->getParam('action')
                 )
             ) {
@@ -177,7 +177,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         );
 
         $this->hasAccess()->setDriver(
-            new HasAccess(
+            new HasAccessDriver(
                 $this->_getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
                 $this->getAuthentication()->getPersonObject()
@@ -244,7 +244,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
         );
         $renderer->plugin('hasAccess')->setDriver(
-            new HasAccess(
+            new HasAccessDriver(
                 $this->_getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
                 $this->getAuthentication()->getPersonObject()

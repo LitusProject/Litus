@@ -19,7 +19,7 @@
 namespace ApiBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
     CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\Controller\Exception\RuntimeException,
@@ -50,9 +50,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private $_hasAccessDriver = null;
 
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var \CommonBundle\Entity\General\Language The current language
      */
-    private $_language;
+    private $_language = null;
 
     /**
      * Execute the request.
@@ -67,6 +67,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
+        $this->_initControllerPlugins();
         $this->_initFallbackLanguage();
         $this->_initLocalization();
 
@@ -76,13 +77,22 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
         }
 
+        $result = parent::onDispatch($e);
+        $result->setTerminal(true);
+
         if ($this->_validateKey() || $this->_validateOAuth()) {
+            $this->hasAccess()->setDriver($this->_hasAccessDriver);
+
             if (
-                !$this->_hasAccess(
+                !$this->hasAccess()->toResourceAction(
                     $this->getParam('controller'), $this->getParam('action')
                 )
             ) {
-                return $this->error(401, 'You do not have sufficient permissions to access this resource');
+                $error = $this->error(401, 'You do not have sufficient permissions to access this resource');
+                $error->setOptions($result->getOptions());
+                $e->setResult($error);
+
+                return $error;
             }
         }
 
@@ -92,9 +102,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
         }
 
-        $result = parent::onDispatch($e);
         $result->flashMessenger = $this->flashMessenger();
-        $result->setTerminal(true);
 
         $e->setResult($result);
 
@@ -167,6 +175,31 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                     'Content-Type' => 'application/json',
                 ),
                 $additionalHeaders
+            )
+        );
+    }
+
+    /**
+     * Initializes our custom controller plugins.
+     *
+     * @return void
+     */
+    private function _initControllerPlugins()
+    {
+        // Url Plugin
+        $this->getPluginManager()->setInvokableClass(
+            'url', 'CommonBundle\Component\Controller\Plugin\Url'
+        );
+        $this->url()->setLanguage($this->getLanguage());
+
+        // HasAccess Plugin
+        $this->getPluginManager()->setInvokableClass(
+            'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
+        );
+
+        $this->hasAccess()->setDriver(
+            new HasAccessDriver(
+                $this->_getAcl(), false
             )
         );
     }
@@ -274,10 +307,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * Simple helper method that retrieves the API key.
+     * Helper method that retrieves the API key.
      *
-     * @param  string                                           $field The name of the field that contains the key
-     * @return \ApiBundle\Entity\Key|\Zend\View\Model\ViewModel
+     * @param  string                $field The name of the field that contains the key
+     * @return \ApiBundle\Entity\Key
      */
     protected function getKey($field = 'key')
     {
@@ -289,12 +322,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->getRepository('ApiBundle\Entity\Key')
             ->findOneActiveByCode($code);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
-            if (null === $key)
-                return $this->error(400, 'No API key was given');
-        }
-
         return $key;
+    }
+
+    /**
+     * Helper method that retrieves the OAuth 2 access token.
+     *
+     * @param  string                           $field The name of the field that contains the access token
+     * @return \ApiBundle\Document\Token\Access
+     */
+    protected function getAccessToken($field = 'access_token')
+    {
+        $code = $this->getRequest()->getPost($field);
+        if (!$this->getRequest()->isPost() || null === $code)
+            $code = $this->getRequest()->getQuery($field);
+
+        $accessToken = $this->getDocumentManager()
+            ->getRepository('ApiBundle\Document\Token\Access')
+            ->findOneActiveByCode($code);
+
+        return $accessToken;
     }
 
     /**
@@ -351,19 +398,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
     }
 
-    private function _hasAccess($resource, $action)
-    {
-        if ('development' == getenv('APPLICATION_ENV'))
-            return true;
-
-        if (null === $this->_hasAccessDriver)
-            throw new RuntimeException('The access driver was not yet initiliazed');
-
-        return $this->_hasAccessDriver(
-            $resource, $action
-        );
-    }
-
     /**
      * We want an easy method to retrieve the Translator from
      * the DI container.
@@ -395,22 +429,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     {
         if ('development' != getenv('APPLICATION_ENV')) {
             $key = $this->getKey();
+            if (null === $key)
+                return false;
 
             $validateKey = $key->validate(
                 isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
             );
 
             if (!$validateKey)
-                return $this->error(401, 'The API key is invalid');
+                return false;
 
-            $this->_hasAccessDriver = new HasAccess(
+            $this->_hasAccessDriver = new HasAccessDriver(
                 $this->_getAcl(),
                 true,
                 $key
             );
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -420,6 +458,20 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateOAuth()
     {
-        return true;
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $accessToken = $this->getAccessToken();
+            if (null === $accessToken)
+                return false;
+
+            $this->_hasAccessDriver = new HasAccessDriver(
+                $this->_getAcl(),
+                true,
+                $accessToken->getPerson($this->getEntityManager())
+            );
+
+            return true;
+        }
+
+        return false;
     }
 }
