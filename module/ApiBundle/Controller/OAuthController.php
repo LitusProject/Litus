@@ -112,8 +112,6 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
         if (null === $this->getRequest()->getPost('grant_type'))
             return $this->error(400, 'The grant type was not specified');
 
-        $now = new DateTime();
-
         if ('authorization_code' == $this->getRequest()->getPost('grant_type')) {
             if (null === $this->getRequest()->getPost('code'))
                 return $this->error(400, 'No authorization code was provided');
@@ -125,10 +123,10 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             if (null === $authorizationCode)
                 return $this->error(500, 'This authorization code does not exist');
 
-            if ($authorizationCode->getExpirationTime() < $now)
+            if ($authorizationCode->hasExpired())
                 return $this->error(401, 'This authorization code has expired');
 
-            if (null !== $authorizationCode->getExchangeTime()) {
+            if ($authorizationCode->hasBeenExchanged()) {
                 $tokens = array_merge(
                     $this->getDocumentManager()
                         ->getRepository('ApiBundle\Document\Token\Access')
@@ -192,10 +190,10 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             if (null === $refreshToken)
                 return $this->error(500, 'This refresh token does not exist');
 
-            if ($refreshToken->getExpirationTime() < $now)
+            if ($refreshToken->hasExpired())
                 return $this->error(401, 'This refresh token has expired');
 
-            if (null !== $refreshToken->getExchangeTime()) {
+            if ($refreshToken->hasBeenExhanged()) {
                 $tokens = array_merge(
                     $this->getDocumentManager()
                         ->getRepository('ApiBundle\Document\Token\Access')

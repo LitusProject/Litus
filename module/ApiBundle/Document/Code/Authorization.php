@@ -155,4 +155,14 @@ class Authorization
 
         return $this;
     }
+
+    /**
+     * Whether this authorization code has already been exchanged.
+     *
+     * @return boolean
+     */
+    public function hasBeenExchanged()
+    {
+        return null !== $this->exchangeTime;
+    }
 }
