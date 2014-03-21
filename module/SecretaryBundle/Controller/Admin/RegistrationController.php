@@ -499,9 +499,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $header = array(
-            'First name',
-            'Last name',
-            'Email',
+            'First Name',
+            'Last Name',
+            'E-mail',
             'Street (Primary Address)',
             'Number (Primary Address)',
             'Mailbox (Primary Address)',
