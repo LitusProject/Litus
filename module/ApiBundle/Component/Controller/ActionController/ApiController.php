@@ -29,6 +29,7 @@ use CommonBundle\Component\Acl\Acl,
     DateTime,
     Zend\Http\Headers,
     Zend\Mvc\MvcEvent,
+    Zend\Uri\UriFactory,
     Zend\Validator\AbstractValidator,
     Zend\View\Model\ViewModel;
 
@@ -70,6 +71,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $this->_initControllerPlugins();
         $this->_initFallbackLanguage();
         $this->_initLocalization();
+        $this->_initUriScheme();
 
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
@@ -205,7 +207,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * Initializes the localization
+     * Initializes the localization.
      *
      * @return void
      */
@@ -220,6 +222,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->setLocale($this->getLanguage()->getAbbrev());
 
         AbstractValidator::setDefaultTranslator($this->getTranslator());
+    }
+
+    /**
+     * Initializes custom URL schemes.
+     *
+     * @return void
+     */
+    private function _initUriScheme()
+    {
+        UriFactory::registerScheme('litus', 'ApiBundle\Component\Uri\Litus');
     }
 
     /**
