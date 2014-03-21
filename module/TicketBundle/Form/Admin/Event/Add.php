@@ -148,6 +148,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
     public function populateFromEvent(Event $event)
     {
+        $events = $this->_createEventsArray();
+        $events[$event->getActivity()->getId()] = $event->getActivity()->getTitle();
+        $this->get('event')->setAttribute('options', $events);
+
         $data = array(
             'event' => $event->getActivity()->getId(),
             'active' => $event->isActive(),
