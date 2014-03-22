@@ -175,7 +175,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         if (!($product = $this->_getProduct()))
             return new ViewModel();
 
-        $this->getEntityManager()->remove($product);
+        $product->setOld();
         $this->getEntityManager()->flush();
 
         return new ViewModel(

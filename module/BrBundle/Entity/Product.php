@@ -110,6 +110,13 @@ class Product
     private $vatType;
 
     /**
+     * @var boolean that reflects if the current product is still being sold or not.
+     *
+     * @ORM\Column(name="old", type="boolean")
+     */
+    private $old;
+
+    /**
      * @var string The short description of this product shown in invoices
      *
      * @ORM\Column(name="invoice_description", type="string", nullable=true)
@@ -137,6 +144,16 @@ class Product
         $this->setVatType($entityManager, $vatType);
         $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
+        $this->old = false;
+    }
+
+    public function setOld(){
+        $this->old = true;
+        return $this;
+    }
+
+    public function isOld(){
+        return $this->old;
     }
 
     /**

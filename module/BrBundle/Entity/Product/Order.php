@@ -104,7 +104,7 @@ class Order
     private $creationPerson;
 
     /**
-     * @var bool The quantity of this item.
+     * @var bool True if this order is old or not.
      *
      * @ORM\Column(name="old", type="boolean")
      */
