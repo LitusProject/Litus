@@ -273,7 +273,7 @@ class Booking
      */
     public function setStatus($status, $entityManager)
     {
-        switch($status) {
+        switch ($status) {
             case 'booked':
                 if ($this->status != 'assigned')
                     $this->bookDate = new DateTime();

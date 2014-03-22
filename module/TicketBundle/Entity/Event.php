@@ -275,6 +275,9 @@ class Event
      */
     public function isActive()
     {
+        if ($this->activity->getStartDate() < new DateTime())
+            return false;
+
         return $this->active;
     }
 

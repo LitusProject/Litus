@@ -522,6 +522,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($form = $this->_getForm()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()

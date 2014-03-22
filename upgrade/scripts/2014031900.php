@@ -35,7 +35,7 @@ $result = pg_query($connection, 'SELECT nextval(\'acl.actions_id_seq\')');
 $exportId = pg_fetch_row($result)[0];
 pg_query($connection, 'INSERT INTO acl.actions VALUES(' . $exportId . ', \'shift_admin_shift\', \'export\')');
 
-foreach($roles as $role) {
+foreach ($roles as $role) {
     pg_query($connection, 'INSERT INTO acl.roles_actions_map VALUES(\'' . $role . '\', ' . $pdfId . ')');
     pg_query($connection, 'INSERT INTO acl.roles_actions_map VALUES(\'' . $role . '\', ' . $exportId . ')');
 }

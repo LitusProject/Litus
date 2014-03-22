@@ -64,7 +64,6 @@ class Date extends \Zend\Validator\AbstractValidator
         $this->_format = $format;
     }
 
-
     /**
      * Returns true if these does not exceed max
      *
