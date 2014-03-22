@@ -36,11 +36,13 @@ return array(
         'ticket_admin_ticket' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
                     'page'    => '[0-9]*',
+                    'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string'  => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_admin_ticket',

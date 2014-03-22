@@ -19,7 +19,7 @@
 return array(
     'shiftbundle' => array(
         'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'manage', 'old', 'search'
+            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search'
         ),
         'shift_admin_shift_counter' => array(
             'delete', 'index', 'payed', 'search', 'units', 'view'

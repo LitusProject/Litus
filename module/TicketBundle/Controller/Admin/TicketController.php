@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateTime,
     TicketBundle\Component\Document\Generator\Event as EventGenerator,
+    TicketBundle\Entity\Event,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -38,10 +39,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $paginator = $this->paginator()->createFromArray(
-            $this->getEntityManager()
+        if (null !== $this->getParam('field'))
+            $tickets = $this->_search($event);
+
+        if (!isset($mappings)) {
+            $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllActiveByEvent($event),
+                ->findAllActiveByEvent($event);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $tickets,
             $this->getParam('page')
         );
 
@@ -122,6 +130,60 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'data' => $file->getContent(),
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        $tickets = $this->_search($event);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($tickets, $numResults);
+
+        $result = array();
+        foreach ($tickets as $ticket) {
+            $item = (object) array();
+            $item->id = $ticket->getId();
+            $item->person = $ticket->getFullName() ? $ticket->getFullName() : '(none)';
+            $item->status = $ticket->getStatus();
+            $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
+            $item->number = $ticket->getNumber();
+            $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
+            $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
+            $item->isMember = $ticket->isMember();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search(Event $event)
+    {
+        switch ($this->getParam('field')) {
+            case 'person':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPersonName($event, $this->getParam('string'));
+            case 'option':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOption($event, $this->getParam('string'));
+            case 'organization':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
+        }
     }
 
     private function _getEvent()
