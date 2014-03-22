@@ -32,6 +32,6 @@ $result = pg_query($connection, 'SELECT nextval(\'acl.actions_id_seq\')');
 $searchId = pg_fetch_row($result)[0];
 pg_query($connection, 'INSERT INTO acl.actions VALUES(' . $searchId . ', \'ticket_admin_ticket\', \'search\')');
 
-foreach($roles as $role) {
+foreach ($roles as $role) {
     pg_query($connection, 'INSERT INTO acl.roles_actions_map VALUES(\'' . $role . '\', ' . $searchId . ')');
 }
