@@ -72,6 +72,8 @@
                             {% if form.getType != 'doodle' %}
                                 {% for field in fields %}
                                     <th>{{ field.getLabel(language) }}</th>
+                                {% else %}
+                                    <th>&nbsp;</th>
                                 {% endfor %}
                             {% else %}
                                 <th>{{ translate('Subscriptions') }}</th>
@@ -131,7 +133,7 @@
                                         </td>
                                     {% else %}
                                         <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}&nbsp;</td>
-                                    {% endif %}
+                                    {% endif %}ç
                                 {% endfor %}
                             {% else %}
                                 <td>
