@@ -19,26 +19,18 @@ cd "$SCRIPT_DIRECTORY"; cd ..;
 #
 
 log() {
-    echo "$(date)" "$@" >&2
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >&2
 }
-
-# find location of md5 program
-#
-
-if which -s md5sum; then # look for md5sum first
-    MD5="md5sum -t | cut -d' ' -f1'"
-elif which -s md5; then # perhaps we have OpenSSL md5?
-    MD5="md5"
-elif which -s openssl; then # perhaps OpenSSL is only available through one executable
-    MD5="openssl md5 | cut -d' ' -f2"
-else
-    log "Cannot find md5sum or OpenSSL executable in PATH"
-    exit 3
-fi
 
 # location of run directory
 #
-_TMPDIR="/var/run/litus-sockets.$(pwd | $MD5)"
+
+if ! php public/index.php config:get --quiet socket_path; then
+    log "Cannot get socket path, is litus configured correctly?"
+    exit 4
+fi
+
+_TMPDIR=$(php public/index.php config:get socket_path)
 
 # don't start the sockets if they're already running or if $_TMPDIR cannot be
 # created
@@ -84,7 +76,7 @@ on_int() {
     rm "$_TMPDIR/pid"
 
     # kill sockets
-    find "$_TMPDIR/sockets" -type f -print0 | xargs -0 cat | xargs kill
+    find "$_TMPDIR/pids" -type f -print0 | xargs -0 cat | xargs kill
 }
 
 trap on_int SIGINT SIGQUIT SIGTERM
@@ -96,7 +88,7 @@ on_usr1() {
     log "Got SIGUSR1, restarting sockets..."
 
     # kill sockets
-    find "$_TMPDIR/sockets" -type f -print0 | xargs -0 cat | xargs kill
+    find "$_TMPDIR/pids" -type f -print0 | xargs -0 cat | xargs kill
 }
 
 trap on_usr1 SIGUSR1
@@ -107,7 +99,7 @@ trap on_usr1 SIGUSR1
 function socket() {
     # we know this is only run if the sockets aren't running...
 
-    local _PIDFILE="$_TMPDIR/sockets/$1.pid"
+    local _PIDFILE="$_TMPDIR/pids/$1.pid"
 
     while :
     do
@@ -142,7 +134,7 @@ function socket() {
 #
 
 # create sockets directory
-mkdir -p "$_TMPDIR/sockets"
+mkdir -p "$_TMPDIR/pids"
 
 # store PID
 echo $$ > "$_TMPDIR/pid"
