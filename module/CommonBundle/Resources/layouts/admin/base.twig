@@ -97,7 +97,7 @@
                                     {% if 'sport_admin_run' == getParam('controller') or 'door_admin_rule' == getParam('controller') or 'ticket_admin_event' == getParam('controller') or 'ticket_admin_ticket' == getParam('controller') or 'quiz_admin_quiz' == getParam('controller')  or 'quiz_admin_round' == getParam('controller') or 'quiz_admin_team' == getParam('controller') %}
                                         style="display: block;"
                                     {% endif %}
-                                >
+                                > 
                                     {% if hasAccess('sport_admin_run', 'queue') %}
                                         <li><a href="{{ url('sport_admin_run') }}">24h Run</a></li>
                                     {% endif %}
@@ -131,6 +131,9 @@
                                     {% endif %}
                                     {% if hasAccess('br_admin_cv_entry', 'manage') %}
                                         <li data-help="Here you can find a list of all the CV's that are accessable by the companies."><a href="{{ url('br_admin_cv_entry') }}">CVs</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('br_admin_invoice', 'manage') %}
+                                        <li data-help="Here you can find all the invoices of the contracts that the companies signed."><a href="{{ url('br_admin_invoice') }}">Invoices</a></li>
                                     {% endif %}
                                     {% if hasAccess('br_admin_order', 'manage') %}
                                         <li data-help="Manage the orders of each company.  Orders can be added or deleted.  Creating an order instantly creates a contract that can be signed.  A the order of a signed contract cannot be removed."><a href="{{ url('br_admin_order') }}">Orders</a></li>

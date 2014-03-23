@@ -47,6 +47,23 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function manageAction()
+    {
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Invoice',
+                $this->getParam('page')
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     public function downloadAction()
     {
         if (!($invoice = $this->_getInvoice()))

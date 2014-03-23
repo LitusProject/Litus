@@ -3,8 +3,8 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_invoice', 'view') %}
-                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "view", "id" : invoice.getId()}) }}">View</a></li>
+            {% if hasAccess('br_admin_invoice', 'manage') %}
+                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

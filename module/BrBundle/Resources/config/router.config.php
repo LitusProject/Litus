@@ -143,7 +143,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_invoice',
-                    'action'     => 'view',
+                    'action'     => 'manage',
                 ),
             ),
         ),
@@ -375,6 +375,7 @@ return array(
         'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
         'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
         'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
+        'br_admin_invoice'        => 'BrBundle\Controller\Admin\InvoiceController',
 
         'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
