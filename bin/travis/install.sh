@@ -16,8 +16,5 @@ cp ./composer.lock vendor/composer.lock
 cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
 
-echo -n "node is where now? "; which node
-echo -n "ls /usr/local: "; ls /usr/local
-
-(cd /usr/local/bin && sudo ln -s /usr/bin/node ./node)
-(cd /usr/local/lib && sudo ln -s /usr/lib/node_modules ./node_modules)
+sudo ln -s $(which node) /usr/local/bin/node
+(cd /usr/local/lib && sudo npm install less)
