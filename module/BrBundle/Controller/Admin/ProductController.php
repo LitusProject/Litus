@@ -185,6 +185,21 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Product',
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     private function _getProduct()
     {
         if (null === $this->getParam('id')) {

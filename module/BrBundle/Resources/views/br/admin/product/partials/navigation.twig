@@ -7,14 +7,11 @@
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_product', {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('br_admin_product', 'manage') %}
-                <li>
-                    <a
-                        {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_product', {"action": "manage"}) }}"
-                    >
-                        Manage
-                    </a>
-                </li>
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_product', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_invoice', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_product', {"action": "old"}) }}">Old</a></li>
             {% endif %}
         </ul>
     </nav>
