@@ -21,6 +21,8 @@ namespace CudiBundle\Controller\Admin\Sale;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\Booking,
+    CudiBundle\Entity\Sale\QueueItem,
+    CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
@@ -425,6 +427,71 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 FlashMessage::SUCCESS,
                 'SUCCESS',
                 'The booking was successfully extended!'
+            )
+        );
+
+        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+        return new ViewModel();
+    }
+
+    public function returnAction()
+    {
+        if (!($booking = $this->_getBooking()) || $booking->getStatus() != 'sold')
+            return new ViewModel();
+
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->getLast();
+
+        $queueItem = new QueueItem($this->getEntityManager(), $booking->getPerson(), $session);
+        $queueItem->setStatus('sold');
+        $this->getEntityManager()->persist($queueItem);
+
+        if (is_numeric($this->getParam('number')) && $this->getParam('number') < $booking->getNumber()) {
+            $number = $this->getParam('number');
+        } else {
+            $number = 1;
+        }
+
+        $saleItem = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findOneByPersonAndArticle($booking->getPerson(), $booking->getArticle());
+
+        if ($saleItem) {
+            $price = $saleItem->getPrice() / $saleItem->getNumber();
+        } else {
+            $price = $booking->getArticle()->getSellPrice();
+        }
+
+        if ($booking->getNumber() > 1) {
+            $remainder = new Booking(
+                $this->getEntityManager(),
+                $booking->getPerson(),
+                $booking->getArticle(),
+                'returned',
+                $number,
+                true
+            );
+            $this->getEntityManager()->persist($remainder);
+
+            $booking->setNumber($booking->getNumber() - $number)
+                ->setStatus('sold', $this->getEntityManager());
+        } else {
+            $booking->setStatus('returned', $this->getEntityManager());
+        }
+
+        $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price/100, $queueItem));
+
+        $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() + $number);
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'SUCCESS',
+                '<b>' . $number . '</b> items of this booking were successfully returned!'
             )
         );
 
