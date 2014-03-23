@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 # This little script starts our WebSockets
 #
 # @author Bram Gotink <bram.gotink@litus.cc>
