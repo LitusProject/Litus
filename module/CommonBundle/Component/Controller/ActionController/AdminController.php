@@ -87,6 +87,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (false !== getenv('SERVED_BY'))
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
 
+        $result->menu = $this->_getMenu();
+
         $e->setResult($result);
 
         return $result;
@@ -145,5 +147,92 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     protected function getCurrentAcademicYear($organization = true)
     {
         return parent::getCurrentAcademicYear($organization);
+    }
+
+    private function _addToMenu($controller, $settings, &$menu)
+    {
+        if (!is_array($settings))
+            $settings = array('title' => $settings);
+        if (!array_key_exists('action', $settings))
+            $settings['action'] = 'manage';
+
+        if ($this->hasAccess($controller, $settings['action'])) {
+            $menu[$controller] = $settings;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function _getMenu()
+    {
+        $config = $this->getServiceLocator()->get('Config');
+        $config = $config['litus']['admin'];
+
+        $currentController = $this->getParam('controller');
+
+        $titleNatCmp = function(array $a, array $b) {
+            return strnatcmp($a['title'], $b['title']);
+        };
+
+        $general = array();
+
+        foreach ($config['general'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            foreach ($submenu as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenu);
+            }
+
+            if (count($newSubmenu)) {
+                uasort($newSubmenu, $titleNatCmp);
+                $general[$name] = $newSubmenu;
+            }
+        }
+
+        $submenus = array();
+
+        foreach ($config['submenus'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            natsort($submenu['subtitle']);
+            $lastSubtitle = array_pop($submenu['subtitle']);
+            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+
+            $active = false;
+            $newSubmenuItems = array();
+
+            foreach ($submenu['items'] as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenuItems);
+
+                if ($currentController === $controller)
+                    $active = true;
+            }
+
+            if (!$active && array_key_exists('controllers', $submenu)) {
+                foreach ($submenu['controllers'] as $controller) {
+                    if ($currentController === $controller) {
+                        $active = true;
+                        break;
+                    }
+                }
+            }
+
+            $newSubmenu['active'] = $active;
+
+            uasort($newSubmenuItems, $titleNatCmp);
+            $newSubmenu['items']  = $newSubmenuItems;
+
+            if (count($newSubmenu))
+                $submenus[$name] = $newSubmenu;
+        }
+
+        uksort($submenus, 'strnatcmp');
+
+        return array(
+            'general'  => $general,
+            'submenus' => $submenus,
+        );
     }
 }
