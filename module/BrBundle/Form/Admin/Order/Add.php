@@ -142,14 +142,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findByAcademicYear($this->_currentYear);
 
         foreach ($products as $product) {
+            if(! $product->isOld()){
+                $field = new Text('product-' . $product->getId());
+                $field->setLabel($product->getName())
+                    ->setAttribute('class', 'input-very-mini')
+                    ->setAttribute('placeholder', '0');
+                $this->add($field);
 
-            $field = new Text('product-' . $product->getId());
-            $field->setLabel($product->getName())
-                ->setAttribute('class', 'input-very-mini')
-                ->setAttribute('placeholder', '0');
-            $this->add($field);
-
-            $this->_inputs[] = $field;
+                $this->_inputs[] = $field;
+            }
         }
     }
 
