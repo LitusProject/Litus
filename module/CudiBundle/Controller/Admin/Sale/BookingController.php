@@ -231,7 +231,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findAllByPersonAndPeriodQuery($booking->getPerson(), $activePeriod),
+                ->findAllByPersonAndAcademicYearQuery($booking->getPerson(), $this->getAcademicYear()),
             $this->getParam('page')
         );
 
@@ -585,28 +585,31 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function personAction()
     {
-        if (!($activePeriod = $this->_getPeriod()))
-            return new ViewModel();
-
-        $return = new ViewModel();
-
         $form = new PersonForm();
-        $return->form = $form;
 
         if ($person = $this->_getPerson()) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findAllByPersonAndPeriodQuery($person, $activePeriod),
+                    ->findAllByPersonAndAcademicYearQuery($person, $this->getAcademicYear()),
                 $this->getParam('page')
             );
 
-            $return->paginator = $paginator;
-            $return->paginationControl = $this->paginator()->createControl();
-            $return->person = $person;
+            return new ViewModel(
+                array(
+                    'form' => $form,
+                    'paginator' => $paginator,
+                    'paginationControl' => $this->paginator()->createControl(),
+                    'person' => $person,
+                )
+            );
         }
 
-        return $return;
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function articleAction()
@@ -614,26 +617,33 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         if (!($activePeriod = $this->_getPeriod()))
             return new ViewModel();
 
-        $return = new ViewModel();
-
         $form = new ArticleForm();
-        $return->form = $form;
-        $return->currentAcademicYear = $this->getAcademicYear();;
 
         if ($article = $this->_getArticle()) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findAllByArticleAndPeriodQuery($article, $activePeriod),
+                    ->findAllByArticleAndAcademicYearQuery($article, $this->getAcademicYear()),
                 $this->getParam('page')
             );
 
-            $return->paginator = $paginator;
-            $return->paginationControl = $this->paginator()->createControl(true);
-            $return->article = $article;
+            return new ViewModel(
+                array(
+                    'form' => $form,
+                    'currentAcademicYear' => $this->getAcademicYear(),
+                    'paginator' => $paginator,
+                    'paginationControl' => $this->paginator()->createControl(),
+                    'article' => $article,
+                )
+            );
         }
 
-        return $return;
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'currentAcademicYear' => $this->getAcademicYear(),
+            )
+        );
     }
 
     public function actionsAction()
