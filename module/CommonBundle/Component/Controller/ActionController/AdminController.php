@@ -156,7 +156,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (!array_key_exists('action', $settings))
             $settings['action'] = 'manage';
 
-        if ($this->hasAccess($controller, $settings['action'])) {
+        if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
             $menu[$controller] = $settings;
 
             return true;
@@ -172,7 +172,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentController = $this->getParam('controller');
 
-        $titleNatCmp = function(array $a, array $b) {
+        $titleNatCmp = function (array $a, array $b) {
             return strnatcmp($a['title'], $b['title']);
         };
 
