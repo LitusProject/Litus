@@ -348,6 +348,22 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_vacancy' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/corporate/vacancy[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '[a-z]{2}',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_vacancy',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_cv_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -380,6 +396,7 @@ return array(
         'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
         'br_corporate_auth'        => 'BrBundle\Controller\Corporate\AuthController',
+        'br_corporate_vacancy'     => 'BrBundle\Controller\Corporate\VacancyController',
 
         'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
