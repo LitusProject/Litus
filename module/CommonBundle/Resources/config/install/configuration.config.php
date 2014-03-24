@@ -277,4 +277,10 @@ Disallow: /admin/*
         'value'       => '83GZ464K6U',
         'description' => 'The team identifier of the Apple developer account that generated the certificates',
     ),
+
+    array(
+        'key'         => 'last_upgrade',
+        'value'       => '2014032300',
+        'description' => 'The last Litus schema update performed on this system',
+    ),
 );
