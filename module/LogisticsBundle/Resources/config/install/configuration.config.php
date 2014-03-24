@@ -49,7 +49,9 @@ return array(
                 '1' => array(
                     array('start' => '19:00', 'end' => '22:00')
                 ), // Monday
-                '2' => null, // Tuesday
+                '2' => array(
+                    array('start' => '19:00', 'end' => '22:00')
+                ), // Tuesday
                 '3' => null, // Wednesday
                 '4' => array(
                     array('start' => '19:00', 'end' => '22:00')
