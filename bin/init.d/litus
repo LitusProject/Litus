@@ -94,7 +94,7 @@ start_socket() {
     log "socket directory: $SOCKET_DIR"
 
     log_daemon_msg "Starting sockets in $(pwd)"
-    /sbin/start-stop-daemon -b -c "$USER" -d "$(pwd)" -p "$SOCKET_DIR/pid" --start --exec bin/sockets.sh || return $?
+    /sbin/start-stop-daemon -b -c "$USER" -d "$(pwd)" -p "$SOCKET_DIR/pid" --start --exec bin/sockets.sh -- --daemon || return $?
     log_end_msg 0
 }
 

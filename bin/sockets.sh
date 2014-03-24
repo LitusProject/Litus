@@ -36,7 +36,7 @@ log() {
     if [[ "$_LOGFILE" = "0" ]]; then
         echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >&2
     else
-        echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >> $LOGFILE
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >> $_LOGFILE
     fi
 }
 
