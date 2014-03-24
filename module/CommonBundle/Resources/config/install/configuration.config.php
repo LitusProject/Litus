@@ -200,6 +200,11 @@ VTK'
         'description' => 'The abbreviation of the language that will be used of no other translation is present',
     ),
     array(
+        'key'         => 'socket_log',
+        'value'       => './sockets.log',
+        'description' => 'The path of the socket logfile, either relative to the Litus root or absolute',
+    ),
+    array(
         'key'         => 'socket_path',
         'value'       => '/var/run/litus',
         'description' => 'The location of pid/socket files',
