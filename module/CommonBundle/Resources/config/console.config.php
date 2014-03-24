@@ -20,8 +20,8 @@ return array(
     'install.all'     => 'CommonBundle\Command\AllInstall',
     'install.common'  => 'CommonBundle\Command\Install',
 
-    'common.gc'       => 'CommonBundle\Command\GarbageCollect',
-    'common.conf.get' => 'CommonBundle\Command\GetConfig',
+    'common.gc'      => 'CommonBundle\Command\GarbageCollect',
+    'common.config'  => 'CommonBundle\Command\Config',
 
     'assetic.build'   => 'CommonBundle\Command\Assetic\Build',
     'assetic.setup'   => 'CommonBundle\Command\Assetic\Setup',

@@ -201,7 +201,7 @@ VTK'
     ),
     array(
         'key'         => 'socket_log',
-        'value'       => './sockets.log',
+        'value'       => '/var/log/litus/sockets.log',
         'description' => 'The path of the socket logfile, either relative to the Litus root or absolute',
     ),
     array(

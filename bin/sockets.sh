@@ -15,22 +15,35 @@ set -m
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY"; cd ..;
 
+# check configuration of litus
+#
+
+if ! php public/index.php common:config test socket_path || ! php public/index.php common:config test socket_log; then
+    echo "Cannot get socket info, is litus configured correctly?" >&2
+    exit 4
+fi
+
 # log function
 #
 
+if [[ "${1:-n}" =~ -d|--daemon ]]; then
+    _LOGFILE=$(php public/index.php common:config get socket_log)
+else
+    _LOGFILE=0
+fi
+
 log() {
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >&2
+    if [[ "$_LOGFILE" = "0" ]]; then
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >&2
+    else
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')]" "$@" >> $LOGFILE
+    fi
 }
 
 # location of run directory
 #
 
-if ! php public/index.php config:get --quiet socket_path; then
-    log "Cannot get socket path, is litus configured correctly?"
-    exit 4
-fi
-
-_TMPDIR=$(php public/index.php config:get socket_path)
+_TMPDIR=$(php public/index.php common:config get socket_path)
 
 # don't start the sockets if they're already running or if $_TMPDIR cannot be
 # created

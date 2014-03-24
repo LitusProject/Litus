@@ -23,48 +23,53 @@ use Symfony\Component\Console\Input\InputArgument;
 /**
  * Performs garbage collection on the sessions.
  */
-class GetConfig extends \CommonBundle\Component\Console\Command
+class Config extends \CommonBundle\Component\Console\Command
 {
     protected function configure()
     {
         $this
-            ->setName('config:get')
+            ->setName('common:config')
             ->setDescription('Get configuration values.')
-            ->addOption('quiet', 'q', null, 'don\'t output anything')
-            ->addArgument('key', InputArgument::REQUIRED, 'the name of the configuration value')
+            ->addArgument('action', InputArgument::REQUIRED, 'the action to take (test|get)')
+            ->addArgument('key',    InputArgument::REQUIRED, 'the name of the configuration value')
             ->setHelp(<<<EOT
-The <info>%command.name%</info> command gets configuration values.
+The <info>%command.name%</info> command gets or sets configuration values.
 
-The exit status is 0 if the configuration entry exists, 1 otherwise.
-
-If the <comment>--quiet</comment> flag is given, the output of this command will
-be empty. The status code will still be set, so this can be used to test the
-existence of the configuration entry.
+For <comment>test</comment> and <comment>get</comment>:
+    The exit status is 0 if the configuration entry exists, 1 otherwise.
+    <comment>test</comment> does not output anything, <comment>get</comment> outputs the value.
 EOT
         );
     }
 
     protected function executeCommand()
     {
+        $key = $this->getArgument('key');
+        $action = $this->getArgument('action');
+
         $config = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->find($this->getArgument('key'));
 
-        if (null === $config) {
-            if (!$this->getOption('quiet'))
+        if ('get' == $action) {
+            if (null === $config) {
                 fwrite(STDERR, 'Configuration key "' . $this->getArgument('key') . '" doesn\'t exist' . PHP_EOL);
 
-            return 1;
+                return 1;
+            } else {
+                $this->writeln($config->getValue());
+
+                return 0;
+            }
+        } elseif ('test' == $action) {
+            return (null === $config) ? 1 : 0;
+        } else {
+            throw new \RuntimeException('Invalid action: ' . $action);
         }
-
-        if (!$this->getOption('quiet'))
-            echo $config->getValue() . PHP_EOL;
-
-        return 0;
     }
 
     protected function getLogName()
     {
-        return '';
+        return false;
     }
 }
