@@ -2,9 +2,9 @@ before_commands:
     - "cp .composer.lock composer.lock"
 
 tools:
-#    php_code_coverage:
-#        enabled: true
-#        test_command: ./vendor/bin/phpunit -c phpunit.xml.dist
+    php_code_coverage:
+        enabled: true
+        test_command: ./vendor/bin/phpunit -c phpunit.xml.dist
     php_code_sniffer:
         enabled: true
         config:
@@ -26,8 +26,11 @@ tools:
     php_pdepend:
         enabled: true
         excluded_dirs: ["bin", "data", "config", "vendor"]
-    php_analyzer: true
-    php_analyzer:
-        filter:
-            paths: ["module/*"]
+    # php_analyzer:
+    #     enabled: true
+    #     filter:
+    #         paths: ["module/*"]
+    #     config:
+    #         use_statement_fixes:
+    #             preserve_multiple:    false
     sensiolabs_security_checker: true
