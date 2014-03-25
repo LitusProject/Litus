@@ -1,6 +1,3 @@
-before_commands:
-    - "composer update --prefer-source"
-
 tools:
 #    php_code_coverage:
 #        enabled: true
