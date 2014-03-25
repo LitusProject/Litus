@@ -16,5 +16,11 @@ cp ./composer.lock vendor/composer.lock
 cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
 
+# install lessc
+wget -O- https://github.com/less/less.js/archive/master.tar.gz | tar xz
+
+sudo mkdir -p /usr/local/lib/node_modules
+sudo ln -s $(pwd)/less.js-master /usr/local/lib/node_moules/less
+
+# install node to /usr/local/bin
 sudo ln -s $(which node) /usr/local/bin/node
-(cd /usr/local/lib && sudo npm install less)
