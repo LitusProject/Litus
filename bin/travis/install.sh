@@ -17,10 +17,10 @@ cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
 
 # install lessc
-wget -O- https://github.com/less/less.js/archive/master.tar.gz | tar xz
+(cd vendor; wget -O- https://github.com/less/less.js/archive/master.tar.gz | tar xz)
 
 sudo mkdir -p /usr/local/lib/node_modules
-sudo ln -s $(pwd)/less.js-master /usr/local/lib/node_modules/less
+sudo ln -s $(pwd)/vendor/less.js-master /usr/local/lib/node_modules/less
 
 # install node to /usr/local/bin
 sudo ln -s $(which node) /usr/local/bin/node
