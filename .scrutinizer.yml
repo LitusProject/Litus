@@ -1,3 +1,6 @@
+before_commands:
+    - "cp .composer.lock composer.lock"
+
 tools:
 #    php_code_coverage:
 #        enabled: true
@@ -23,9 +26,7 @@ tools:
     php_pdepend:
         enabled: true
         excluded_dirs: ["bin", "data", "config", "vendor"]
-# php_analyzer is disabled because `composer install` doesn't work (missing mongo and postgres)
-# can be fixed by committing composer.lock to the repository
-#    php_analyzer: true
+   php_analyzer: true
     php_analyzer:
         filter:
             paths: ["module/*"]
