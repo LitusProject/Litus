@@ -29,6 +29,15 @@ HAVE_PRINTERS=0
 set +e
 
 ##
+# Quit if we're not root or $USER
+#
+
+if [[ "$EUID" != "0" ]] && [[ $(whoami) != "$USER" ]]; then
+    echo "You're not root or $USER, aborting..." >&2
+    exit 5
+fi
+
+##
 # Load init helper functions
 #
 
