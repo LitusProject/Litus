@@ -41,8 +41,8 @@
                         <td>{% if form.isActive() %}&times;{% endif %}</td>
                         <td>{{ form.getCreationPerson().getFullName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('form_view', 'view') %}
-                                <a href="{{ url('form_view', {"action": "view", "id": form.getId()}) }}" class="view">View Form</a>
+                            {% if hasAccess('form_view', 'index') %}
+                                <a href="{{ url('form_view', {"action": "index", "id": form.getId()}) }}" class="view">View Form</a>
                             {% endif %}
                             {% if form.canBeViewedBy(authenticatedPerson) %}
                                 {% if hasAccess('form_manage', 'view') %}
