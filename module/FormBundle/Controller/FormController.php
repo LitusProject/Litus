@@ -286,6 +286,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'specification'   => $entry->getForm(),
                 'group'           => $group,
                 'progressBarInfo' => $progressBarInfo,
+                'entry'           => $entry,
             )
         );
     }

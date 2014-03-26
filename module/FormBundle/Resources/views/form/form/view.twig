@@ -21,5 +21,34 @@
         </div>
     {% endif %}
 
-
+    <dl class="dl-horizontal">
+        {% for fieldEntry in entry.getFieldEntries() %}
+            <dt>{{ fieldEntry.getField().getLabel(language) }}</dt>
+            <dd>
+                {% if fieldEntry.getField().getType() == 'checkbox' %}
+                    {% if fieldEntry.getValue() %}
+                        {{ translate('Yes') }}
+                    {% else %}
+                        {{ translate('No') }}
+                    {% endif %}
+                {% elseif fieldEntry.getField().getType() == 'dropdown' %}
+                    {{ fieldEntry.getValueString(language) }}
+                {% elseif fieldEntry.getField().getType() == 'file' %}
+                    {% if fieldEntry.getValue() %}
+                        {{ fieldEntry.getReadableValue() }}
+                        <a href="{{ url('form_view', {'action': 'downloadFile', 'id': fieldEntry.getValue()}) }}" class="btn btn-xs btn-default" style="margin-left: 10px;">{{ translate('Download') }}</a>
+                    {% else %}
+                        <i>{{ translate('(empty)') }}</i>
+                    {% endif %}
+                {% elseif fieldEntry.getField().getType() == 'string' %}
+                    {% if fieldEntry.getValueString(language) %}
+                        {{ fieldEntry.getValueString(language) }}
+                    {% else %}
+                        <i>{{ translate('(empty)') }}</i>
+                    {% endif %}
+                {% endif %}
+                &nbsp;
+            </dd>
+        {% endfor %}
+    </dl>
 {% endblock %}
