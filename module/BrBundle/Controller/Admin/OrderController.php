@@ -71,9 +71,15 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('BrBundle\Entity\Company')
                 ->findOneById($formData['company']);
 
+                if ($formData['tax'] == 'yes') {
+                    $tax = true;
+                } else
+                    $tax = false;
+
                 $order = new Order(
                     $contact,
-                    $this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject(),
+                    $tax
                 );
 
                 $contract = new Contract($order,
@@ -94,11 +100,17 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
                 $counter = 0;
+                $cost = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
                     if ($quantity != 0)
                     {
+                        if($tax){
+                            $cost = $cost + ($product->getPrice() + ($product->getPrice() * $product->getVatPercentage())) * $quantity;
+                        } else
+                            $cost = $cost + ($product->getPrice() * $quantity) / 100;
+
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                         $order->setEntry($orderEntry);
@@ -110,18 +122,28 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 if ($counter > 0) {
+                    $order->setTotalCost($cost);
                     $this->getEntityManager()->persist($order);
                     $this->getEntityManager()->persist($contract);
                     $this->getEntityManager()->flush();
-                }
 
-                $this->flashMessenger()->addMessage(
+                    $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
                         'The order was succesfully created!'
-                    )
-                );
+                        )
+                    );
+                }
+                else{
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                            FlashMessage::ERROR,
+                            'Error',
+                            'The order has to contain some products!'
+                        )
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'br_admin_order',

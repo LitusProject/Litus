@@ -111,14 +111,55 @@ class Order
     private $old;
 
     /**
+     * @var bool True if this order is tax free or not.
+     *
+     * @ORM\Column(name="tax_free", type="boolean")
      */
-    public function __construct(CorporatePerson $contact, Person $creationPerson)
+    private $taxFree;
+
+    /**
+     * @var bool True if this order is old or not.
+     *
+     * @ORM\Column(name="total_cost", type="integer")
+     */
+    private $totalCost;
+
+    /**
+     * @var int that determines the maximum cost that can be given to an order.
+     **/
+    private static $MAX_TOTAL_COST = 25000;
+
+    /**
+     */
+    public function __construct(CorporatePerson $contact, Person $creationPerson, $taxFree)
     {
         $this->setContact($contact);
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
+        $this->setTaxFree($taxFree);
+        $this->totalCost = 0;
+    }
+
+    public function setTotalCost($cost){
+        print_r($cost);
+        if($cost <= 0 or $cost > self::$MAX_TOTAL_COST){
+            throw new \InvalidArgumentException('Invalid total cost');
+        }
+        $this->totalCost = $cost;
+    }
+
+    public function getTotalCost(){
+        return $this->totalCost;
+    }
+
+    public function isTaxFree(){
+        return $this->taxFree;
+    }
+
+    public function setTaxFree($taxFree){
+        $this->taxFree = $taxFree;
     }
 
     public function isOld(){

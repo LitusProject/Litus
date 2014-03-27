@@ -100,6 +100,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('placeholder', '0');
         $this->add($field);
 
+        $field = new Select('tax');
+        $field->setLabel('Tax Free')
+            ->setAttribute('options', array(false => 'No', true => 'Yes'));
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'product_add');
