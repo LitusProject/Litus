@@ -120,17 +120,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Checkbox('multiline');
         $field->setLabel('Multiline')
-            ->setAttribute('Allow multiple lines in the field (textarea).');
+            ->setAttribute('data-help', 'Allow multiple lines in the field (textarea).');
         $string_form->add($field);
 
         $field = new Text('charsperline');
         $field->setLabel('Max. characters per line (or Infinite)')
-            ->setAttribute('The maximum numbers of characters on one line. Zero is infinite.');
+            ->setAttribute('data-help', 'The maximum numbers of characters on one line. Zero is infinite.');
         $string_form->add($field);
 
         $field = new Text('lines');
         $field->setLabel('Max. number of lines (Multiline fields only)')
-            ->setAttribute('The maximum numbers of lines. Zero is infinite.');
+            ->setAttribute('data-help', 'The maximum numbers of lines. Zero is infinite.');
         $string_form->add($field);
 
         $dropdown_form = new Collection('dropdown_form');
