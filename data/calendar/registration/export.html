@@ -3448,7 +3448,7 @@ button.close {
 
                     $(members).each(function () {
                         if ((this.identification && this.identification.indexOf(val) >= 0)
-                            || this.barcode.indexOf(val) >= 0
+                            || this.barcode.indexOf(val.substring(0, 12)) >= 0
                             || (this.firstname + ' ' + this.lastname).toLowerCase().indexOf(val) >= 0
                             || (this.lastname + ' ' + this.firstname).toLowerCase().indexOf(val) >= 0) {
                             foundMembers.push(this);
@@ -3508,7 +3508,7 @@ button.close {
 
             $('#message_success').removeClass('hide');
             $('#foundMembers').addClass('hide');
-            $('#personSearch').val('');
+            $('#personSearch').val('').focus();
 
             clearTimeout(timer);
             timer = setTimeout(function () {
