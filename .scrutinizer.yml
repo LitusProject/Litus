@@ -11,6 +11,11 @@ tools:
             standard: PSR2
         filter:
             paths: ["module/*"]
+        config:
+            sniffs:
+                psr2:
+                    namespaces:
+                        use_declaration_sniff: false
     # php_cpd:
     #     enabled: true
     #     excluded_dirs: ["bin", "data", "config", "vendor"]
