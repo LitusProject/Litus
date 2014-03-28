@@ -105,6 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('order');
         $field->setLabel('Order')
+            ->setAttribute('data-help', 'The display order of the fields, lower numbers are displayed first.')
             ->setRequired(True);
         $this->add($field);
 
@@ -118,15 +119,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($string_form);
 
         $field = new Checkbox('multiline');
-        $field->setLabel('Multiline');
+        $field->setLabel('Multiline')
+            ->setAttribute('data-help', 'Allow multiple lines in the field (textarea).');
         $string_form->add($field);
 
         $field = new Text('charsperline');
-        $field->setLabel('Max. characters per line (or Infinite)');
+        $field->setLabel('Max. characters per line (or Infinite)')
+            ->setAttribute('data-help', 'The maximum numbers of characters on one line. Zero is infinite.');
         $string_form->add($field);
 
         $field = new Text('lines');
-        $field->setLabel('Max. number of lines (Multiline fields only)');
+        $field->setLabel('Max. number of lines (Multiline fields only)')
+            ->setAttribute('data-help', 'The maximum numbers of lines. Zero is infinite.');
         $string_form->add($field);
 
         $dropdown_form = new Collection('dropdown_form');
@@ -145,7 +149,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $pane = new TabPane('dropdown_tab_' . $language->getAbbrev());
 
             $field = new Text('options_' . $language->getAbbrev());
-            $field->setLabel('Options');
+            $field->setLabel('Options')
+                ->setAttribute('data-help', 'The options comma separated.');
             $pane->add($field);
 
             $dropdownTabContent->add($pane);

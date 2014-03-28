@@ -118,6 +118,27 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByPersonAndAcademicYearQuery(Person $person, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('person', $person->getId())
+            ->setParameter('startDate', $academicYear->getUniversityStartDate())
+            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->orderBy('b.bookDate', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
     public function findAllByArticleAndPeriodQuery(ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -137,6 +158,27 @@ class Booking extends EntityRepository
                 $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByArticleAndAcademicYearQuery(ArticleEntity $article, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('startDate', $academicYear->getUniversityStartDate())
+            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->orderBy('b.bookDate', 'DESC')
             ->getQuery();
 
         return $resultSet;
