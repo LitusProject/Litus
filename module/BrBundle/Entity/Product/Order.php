@@ -120,7 +120,7 @@ class Order
     /**
      * @var bool True if this order is old or not.
      *
-     * @ORM\Column(name="total_cost", type="integer")
+     * @ORM\Column(name="total_cost", type="decimal")
      */
     private $totalCost;
 
@@ -143,7 +143,6 @@ class Order
     }
 
     public function setTotalCost($cost){
-        print_r($cost);
         if($cost <= 0 or $cost > self::$MAX_TOTAL_COST){
             throw new \InvalidArgumentException('Invalid total cost');
         }

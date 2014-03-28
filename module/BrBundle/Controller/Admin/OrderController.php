@@ -71,7 +71,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('BrBundle\Entity\Company')
                 ->findOneById($formData['company']);
 
-                if ($formData['tax'] == 'yes') {
+                if ($formData['tax'] == true) {
                     $tax = true;
                 } else
                     $tax = false;
@@ -107,9 +107,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     if ($quantity != 0)
                     {
                         if($tax){
-                            $cost = $cost + ($product->getPrice() + ($product->getPrice() * $product->getVatPercentage())) * $quantity;
+                            $cost = $cost + (($product->getPrice() / 100) * $quantity);
                         } else
-                            $cost = $cost + ($product->getPrice() * $quantity) / 100;
+                            $cost = $cost + ( ( ($product->getPrice() / 100) + (($product->getPrice() / 100) * ($product->getVatPercentage($this->getEntityManager()) / 100)) )
+                             * $quantity);
 
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
@@ -122,7 +123,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 if ($counter > 0) {
-                    $order->setTotalCost($cost);
+                    $discount = (integer) $formData['discount'];
+                    $order->setTotalCost($cost * (1-($discount/100)));
                     $this->getEntityManager()->persist($order);
                     $this->getEntityManager()->persist($contract);
                     $this->getEntityManager()->flush();
