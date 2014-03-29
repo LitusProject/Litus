@@ -1,0 +1,35 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/order/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+
+		<table class="full_width manage">
+            <tr>
+                <th>Person</th>
+                <th>Amount of contracts</th>
+                <th>Contracted Revenue</th>
+                <th>Paid Revenue</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for entry in list %}
+            	{% if order.isOld() == false %}
+					<tr class="item item-{{ order.getId() }}">
+	                    <td>TODO PERSON</td>
+	                    <td>TODO contract amount</td>
+	                    <td>TODO contracted revenue</td>
+	                    <td>TODO paid revenue</td>
+	                    <td class="actions">
+	                    	TODO
+	                    </td>
+	                </tr>
+	            {% endif %}
+            {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}
