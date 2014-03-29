@@ -296,9 +296,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     public function exportAction()
     {
         if(!($academicYear = $this->_getAcademicYear()))
+
             return new ViewModel();
 
         if(!($group = $this->_getGroup()))
+
             return new ViewModel();
 
         $mappings = $this->getEntityManager()
@@ -307,13 +309,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         $academics = array();
 
-        foreach($mappings as $mapping) {
+        foreach ($mappings as $mapping) {
             $study = $mapping->getStudy();
             $enrollments = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
 
-            foreach($enrollments as $enrollment) {
+            foreach ($enrollments as $enrollment) {
                 $ac = $enrollment->getAcademic();
                 $academics[$ac->getId()] = array(
                     'academicFirstName'             => $ac->getFirstName(),

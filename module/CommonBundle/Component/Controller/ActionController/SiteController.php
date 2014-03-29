@@ -33,7 +33,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -132,6 +132,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             foreach ($pages as $page) {
                 $menu[$i]['items'][] = array(
                     'type'  => 'page',
+                    'id'    => $page->getId(),
                     'name'  => $page->getName(),
                     'title' => $page->getTitle($this->getLanguage())
                 );
@@ -145,7 +146,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     'type' => 'link',
                     'id'   => $link->getId(),
                     'name' => $link->getName($this->getLanguage()),
-                    'url' => $link->getUrl($this->getLanguage()),
+                    'url'  => $link->getUrl($this->getLanguage()),
                 );
 
                 if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0)
@@ -176,7 +177,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Build a pages submenu.
      *
-     * @param \PageBundle\Entity\Node\Page $page The page
+     * @param  \PageBundle\Entity\Node\Page $page The page
      * @return array
      */
     protected function _buildSubmenu(Page $page)
@@ -197,6 +198,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         foreach ($pages as $page) {
             $submenu[] = array(
                 'type'     => 'page',
+                'id'       => $page->getId(),
                 'name'     => $page->getName(),
                 'parent'   => $page->getParent()->getName(),
                 'title'    => $page->getTitle($this->getLanguage()),
@@ -283,7 +285,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch(\ErrorException $e) {}
+        } catch (\ErrorException $e) {}
 
         $shibbolethUrl .= '%3Fsource=site';
 

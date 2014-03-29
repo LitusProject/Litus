@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '256MB',
+                                'max' => '256MB',
                             ),
                         ),
                     ),

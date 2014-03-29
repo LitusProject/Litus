@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Zend\InputFilter\InputFilter,
@@ -48,7 +49,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Address');
         $this->add($field);
 
-        $field = new Submit('submit');
+        $geographical = new Collection('greographical');
+        $geographical->setLabel('Geographical');
+        $this->add($geographical);
+
+        $field = new Text('latitude');
+        $field->setLabel('Latitude')
+            ->setRequired();
+        $geographical->add($field);
+
+        $field = new Text('longitude');
+        $field->setLabel('Longitude')
+            ->setRequired();
+        $geographical->add($field);
+
+        $field = new Submit('add');
         $field->setValue('Add')
             ->setAttribute('class', 'location_add');
         $this->add($field);

@@ -53,10 +53,10 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * Creates a new list entry for the given list with the given mail address.
      *
-     * @param MailBundle\Entity\MailingList $list The list for this entry
-     * @param string $firstName The first name to add
-     * @param string $lastName The last name to add
-     * @param string $email The e-mail address to add
+     * @param MailBundle\Entity\MailingList $list      The list for this entry
+     * @param string                        $firstName The first name to add
+     * @param string                        $lastName  The last name to add
+     * @param string                        $email     The e-mail address to add
      */
     public function __construct(MailingList $list, $firstName, $lastName, $email)
     {

@@ -50,8 +50,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \CudiBundle\Entity\Sale\Article $article
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager     $entityManager
+     * @param null|string|int                 $name          Optional name for the element
      */
     public function __construct(Article $article, EntityManager $entityManager, $name = null)
     {
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
 
-        foreach($templates as $template) {
+        foreach ($templates as $template) {
             $field = new Hidden('template_' . $template->getId() . '_value');
             $field->setValue(number_format($template->getValue()/100, 2));
             $this->add($field);
@@ -107,7 +107,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttribute('id', 'discount_template_method')
             ->setLabel('Method')
             ->setAttribute('options', Discount::$POSSIBLE_METHODS)
-            ->setRequired();
+            ->setRequired()
+            ->setAttribute('data-help', 'The method of this discount:
+                <ul>
+                    <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
+                    <li><b>Fixed:</b> the value will be subtracted from the real price</li>
+                    <li><b>Override:</b> the value will be used as the new price</li>
+                </ul>');
         $this->add($field);
 
         $field = new Select('type');
@@ -133,7 +139,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Checkbox('apply_once');
         $field->setAttribute('id', 'discount_template_apply_once')
-            ->setLabel('Apply Once');
+            ->setLabel('Apply Once')
+            ->setAttribute('data-help', 'Enabling this option will allow apply this discount only once to every user.');
         $this->add($field);
 
         $field = new Submit('submit');

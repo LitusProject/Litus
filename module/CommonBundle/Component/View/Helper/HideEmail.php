@@ -27,7 +27,7 @@ class HideEmail extends \Zend\View\Helper\AbstractHelper
 {
     /**
      * @param \DateTime $date
-     * @param string $format
+     * @param string    $format
      *
      * @return Zend\Date\Date
      */

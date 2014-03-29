@@ -84,10 +84,10 @@ class SubjectMap
     private $removed;
 
     /**
-     * @param \CudiBundle\Entity\Article $article The article of the mapping
-     * @param \SyllabusBundle\Entity\Subject $subject The subject of the mapping
+     * @param \CudiBundle\Entity\Article                $article      The article of the mapping
+     * @param \SyllabusBundle\Entity\Subject            $subject      The subject of the mapping
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
-     * @param boolean $mandatory Flag whether the article is mandatory
+     * @param boolean                                   $mandatory    Flag whether the article is mandatory
      */
     public function __construct(Article $article, Subject $subject, AcademicYear $academicYear, $mandatory)
     {
@@ -155,6 +155,7 @@ class SubjectMap
     public function setIsProf($isProf)
     {
         $this->isProf = $isProf;
+
         return $this;
     }
 
@@ -164,6 +165,7 @@ class SubjectMap
     public function setRemoved()
     {
         $this->removed = true;
+
         return $this;
     }
 }

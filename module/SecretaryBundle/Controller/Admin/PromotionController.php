@@ -25,7 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
     SecretaryBundle\Form\Admin\Promotion\Add as AddForm,
-    SecretaryBundle\Form\Admin\Promotion\Mail as MailForm,
     Zend\Mail\Message,
     Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
@@ -88,7 +87,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         array_splice($promotions, $numResults);
 
         $result = array();
-        foreach($promotions as $promotion) {
+        foreach ($promotions as $promotion) {
             $item = (object) array();
             $item->id = $promotion->getId();
             $item->fullName = $promotion->getFullName();
@@ -115,7 +114,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         $form = new AddForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -253,7 +252,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         $academics = array();
 
-        foreach($studyMappings as $mapping) {
+        foreach ($studyMappings as $mapping) {
             if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2)
                 continue;
 
@@ -289,93 +288,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    public function mailAction()
-    {
-        $academicYears = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        $academicYear = $this->_getAcademicYear();
-
-        $from = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.mail');
-
-        $form = new MailForm($from);
-
-        if($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $promotions = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Promotion')
-                    ->findAllByAcademicYear($academicYear);
-
-                $mailName = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.mail_name');
-
-                $mail = new Message();
-                $mail->setBody($formData['message'])
-                    ->setFrom($from, $mailName)
-                    ->addTo($from, $mailName)
-                    ->setSubject($formData['subject']);
-
-                $emailValidator = new EmailAddressValidator();
-                $i = 0;
-                foreach($promotions as $promotion) {
-                    if (null !== $promotion->getEmailAddress() && $emailValidator->isValid($promotion->getEmailAddress())) {
-                        $i++;
-                        $mail->addBcc($promotion->getEmailAddress(), $promotion->getFullName());
-                    }
-
-                    if ($i == 500) {
-                        $i = 0;
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-
-                        $mail->setBcc(array());
-                    }
-                }
-
-                if ('development' != getenv('APPLICATION_ENV'))
-                    $this->getMailTransport()->send($mail);
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The mail was successfully sent!'
-                    )
-                );
-
-                $this->redirect()->toRoute(
-                    'secretary_admin_promotion',
-                    array(
-                        'action' => 'manage',
-                        'academicyear' => $academicYear->getCode(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
-            )
-        );
-    }
-
     private function _search(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Promotion')

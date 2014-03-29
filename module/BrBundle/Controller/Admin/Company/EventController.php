@@ -93,7 +93,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
@@ -164,7 +164,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $event->getEvent()->getTranslation($language, false);
 
                     if ($translation) {
@@ -285,7 +285,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $fileName = '/' . $event->getEvent()->getPoster();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }

@@ -63,10 +63,10 @@ class Translation
     private $title;
 
     /**
-     * @param \GalleryBundle\Entity\Album\Album $album
+     * @param \GalleryBundle\Entity\Album\Album     $album
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $content
-     * @param string $title
+     * @param string                                $content
+     * @param string                                $title
      */
     public function __construct(Album $album, Language $language, $title)
     {
@@ -107,6 +107,7 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 }

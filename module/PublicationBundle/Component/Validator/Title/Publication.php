@@ -49,7 +49,7 @@ class Publication extends \Zend\Validator\AbstractValidator
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param $id The id that should be ignored when checking for duplicate titles
-     * @param mixed $opts The validator's options.
+     * @param mixed                       $opts          The validator's options.
      */
     public function __construct(EntityManager $entityManager, $id = null, $opts = array())
     {
@@ -62,8 +62,8 @@ class Publication extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if no publication with this title exists.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -75,6 +75,7 @@ class Publication extends \Zend\Validator\AbstractValidator
         if (null !== $publication) {
             if (null === $this->_id || $publication->getId() !== $this->_id) {
                 $this->error(self::TITLE_EXISTS);
+
                 return false;
             }
         }

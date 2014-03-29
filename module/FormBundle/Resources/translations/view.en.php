@@ -33,6 +33,7 @@ return array(
     'Submission Date' => 'Submission Date',
     'Actions' => 'Actions',
     'Edit' => 'Edit',
+    'Occupied' => 'Occupied',
 
     'Please submit these forms in order.' => 'Please submit these forms in order.',
     'This form group is currently closed.' => 'This form group is currently closed.',
@@ -48,4 +49,8 @@ return array(
     'Save as Draft' => 'Save as Draft',
     'Draft' => 'Draft',
     'You have already a draft of this form' => 'You have already a draft of this form',
+
+    'Yes' => 'Yes',
+    'No' => 'No',
+    '(empty)' => '(empty)',
 );

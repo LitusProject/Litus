@@ -17,11 +17,23 @@
         <p>Number Unique Clients: <b>{{ data['uniqueClients'] }}</b></p>
 
         {% if organizationsList|length > 1 %}
+            {% set otherRevenue = data['totalTheoreticalRevenue'] %}
+            {% set otherPurchased = data['totalPurchasedAmount'] %}
+
             {% for organization in organizationsList %}
+                {% set otherRevenue = otherRevenue - organization['data']['totalTheoreticalRevenue'] %}
+                {% set otherPurchased = otherPurchased - organization['data']['totalPurchasedAmount'] %}
+
                 <h2>{{ organization['entity'].getName() }}</h2>
                 <p>Total Theoretical Revenue: <b>&euro; {{ (organization['data']['totalTheoreticalRevenue']/100)|number_format(2) }}</b></p>
                 <p>Total Purchased: <b>&euro; {{ (organization['data']['totalPurchasedAmount']/100)|number_format(2) }}</b></p>
             {% endfor %}
+
+            {% if otherOrganizationEnabled %}
+                <h2>Other Organizations</h2>
+                <p>Total Theoretical Revenue: <b>&euro; {{ (otherRevenue/100)|number_format(2) }}</b></p>
+                <p>Total Purchased: <b>&euro; {{ (otherPurchased/100)|number_format(2) }}</b></p>
+            {% endif %}
         {% endif %}
 
         <h1>Orders</h1>
@@ -55,18 +67,10 @@
                         <i>Please hit the link below to download a global overview of all the articles!</i>
                     </p>
                     <p>
-                        <a id="exportArticles" href="#">&rarr; Export</a>
+                        <a href="{{ url('cudi_admin_sales_financial', {"action": "export"}) }}">&rarr; Export</a>
                     </p>
                 </div>
             </div>
         {% endif %}
     </aside>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#exportArticles').downloadFile('{{ url('cudi_admin_sales_financial', {"action": "export"}) }}');
-        });
-    </script>
 {% endblock %}

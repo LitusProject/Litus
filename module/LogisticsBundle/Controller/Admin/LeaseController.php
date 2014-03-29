@@ -142,7 +142,7 @@ class LeaseController extends AdminController
         $leaseRepo = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Lease');
 
-        if(count($leaseRepo->findUnreturnedByItem($item)) > 0) {
+        if (count($leaseRepo->findUnreturnedByItem($item)) > 0) {
             return new ViewModel(
                 array(
                     'result' => array(
@@ -153,7 +153,7 @@ class LeaseController extends AdminController
         }
 
         $leases = $leaseRepo->findByItem($item);
-        foreach($leases as $lease) {
+        foreach ($leases as $lease) {
             $this->getEntityManager()->remove($lease);
         }
 

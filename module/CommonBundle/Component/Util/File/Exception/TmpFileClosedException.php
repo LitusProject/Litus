@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Util\File\Exception;
 
-use CommonBundle\Component\Util\File\TmpFile;
-
 /**
  * This exception is thrown when a handle to a tempory file, that is already closed,
  * is used.

@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\FormInterface;
+use Zend\Form\Fieldset,
+    Zend\Form\FormInterface;
 
 /**
  * Collection form element
@@ -28,8 +29,8 @@ use Zend\Form\FormInterface;
 class Collection extends \Zend\Form\Element\Collection
 {
     /**
-     * @param  null|int|string  $name    Optional name for the element
-     * @param  array            $options Optional options for the element
+     * @param  null|int|string                    $name    Optional name for the element
+     * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($name, $options = array())
@@ -50,7 +51,7 @@ class Collection extends \Zend\Form\Element\Collection
      * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
      * name clashes if the same fieldset is used multiple times
      *
-     * @param  Form $form
+     * @param  Form       $form
      * @return mixed|void
      */
     public function prepareElement(FormInterface $form)
@@ -69,42 +70,50 @@ class Collection extends \Zend\Form\Element\Collection
     /**
      * Populate values
      *
-     * @param array|\Traversable $data
+     * @param  array|\Traversable                            $data
      * @throws \Zend\Form\Exception\InvalidArgumentException
      * @throws \Zend\Form\Exception\DomainException
      * @return void
      */
     public function populateValues($data)
     {
-        foreach($this->getFieldsets() as $fieldset) {
+        if (empty($data))
+            return;
+
+        foreach ($this->getFieldsets() as $fieldset) {
             $fieldset->populateValues($data);
         }
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
 
         if ($this->shouldCreateTemplate()) {
-            foreach($data as $value) {
+            foreach ($data as $value) {
                 foreach ($this->byName as $name => $element) {
-                    if (!isset($value[$name]))
-                        $value[$name] = '';
+                    if (!isset($data[$name]))
+                        $data[$name] = '';
                 }
             }
         } else {
             foreach ($this->byName as $name => $element) {
-                if (!isset($data[$name]))
-                    $data[$name] = '';
+                if (!isset($data[$name])) {
+                    if ($this->get($name) instanceOf Fieldset)
+                        $data[$name] = array();
+                    else
+                        $data[$name] = '';
+                }
             }
         }
+
         parent::populateValues($data);
     }
 
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable $messages
+     * @param  array|Traversable                          $messages
      * @return Element|ElementInterface|FieldsetInterface
      * @throws Exception\InvalidArgumentException
      */
@@ -113,7 +122,7 @@ class Collection extends \Zend\Form\Element\Collection
         parent::setMessages($messages);
 
         $fieldsets = $this->getFieldsets();
-        foreach($fieldsets as $fieldset) {
+        foreach ($fieldsets as $fieldset) {
             $fieldset->setMessages($messages);
         }
 

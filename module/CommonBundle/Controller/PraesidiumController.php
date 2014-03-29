@@ -42,7 +42,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             ->findAllActiveAndDisplayed();
 
         $list = array();
-        foreach($units as $unit) {
+        foreach ($units as $unit) {
             $list[] = array(
                 'unit' => $unit,
                 'members' => $this->getEntityManager()
@@ -56,12 +56,12 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             ->findAllActiveAndNotDisplayed();
 
         $extra = array();
-        foreach($extraUnits as $unit) {
+        foreach ($extraUnits as $unit) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
                 ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
-            foreach($members as $member) {
+            foreach ($members as $member) {
                 if (!isset($extra[$member->getAcademic()->getId()]))
                     $extra[$member->getAcademic()->getId()] = array();
 

@@ -104,23 +104,23 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @throws \InvalidArgumentException
      *
-     * @param string $title The title of the article
-     * @param string $authors The authors of the article
-     * @param string $publishers The publishers of the article
-     * @param integer $yearPublished The year the article was published
-     * @param integer $isbn The isbn of the article
-     * @param string|null $url The url of the article
-     * @param string $type The article type
-     * @param boolean $downloadable The flag whether the article is downloadable
-     * @param boolean $sameAsPreviousYear The flag whether the article is the same as previous year
-     * @param integer $nbBlackAndWhite The number of blach and white pages of the article
-     * @param integer $nbColored The number of colored pages of the article
-     * @param \CudiBundle\Entity\Article\Option\Binding $binding The binding of the article
-     * @param boolean $official Whether the article is an official one or not
-     * @param boolean $rectoverso Whether the article is recto-verso or not
-     * @param \CudiBundle\Entity\Article\Option\Color $frontPageColor The front page color of the article
-     * @param boolean $isPerforated Whether the article is perforated or not
-     * @param boolean $isPerforated Whether the article pages are colored or not
+     * @param string                                    $title              The title of the article
+     * @param string                                    $authors            The authors of the article
+     * @param string                                    $publishers         The publishers of the article
+     * @param integer                                   $yearPublished      The year the article was published
+     * @param integer                                   $isbn               The isbn of the article
+     * @param string|null                               $url                The url of the article
+     * @param string                                    $type               The article type
+     * @param boolean                                   $downloadable       The flag whether the article is downloadable
+     * @param boolean                                   $sameAsPreviousYear The flag whether the article is the same as previous year
+     * @param integer                                   $nbBlackAndWhite    The number of blach and white pages of the article
+     * @param integer                                   $nbColored          The number of colored pages of the article
+     * @param \CudiBundle\Entity\Article\Option\Binding $binding            The binding of the article
+     * @param boolean                                   $official           Whether the article is an official one or not
+     * @param boolean                                   $rectoverso         Whether the article is recto-verso or not
+     * @param \CudiBundle\Entity\Article\Option\Color   $frontPageColor     The front page color of the article
+     * @param boolean                                   $isPerforated       Whether the article is perforated or not
+     * @param boolean                                   $isPerforated       Whether the article pages are colored or not
      */
     public function __construct(
         $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored,$hardcovered = false
@@ -154,6 +154,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setNbBlackAndWhite($nbBlackAndWhite)
     {
         $this->nbBlackAndWhite = $nbBlackAndWhite;
+
         return $this;
     }
 
@@ -173,6 +174,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setNbColored($nbColored)
     {
         $this->nbColored = $nbColored;
+
         return $this;
     }
 
@@ -192,6 +194,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setBinding(Binding $binding)
     {
         $this->binding = $binding;
+
         return $this;
     }
 
@@ -211,6 +214,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsOfficial($official)
     {
         $this->official = $official;
+
         return $this;
     }
 
@@ -230,6 +234,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsRectoVerso($rectoVerso)
     {
         $this->rectoVerso = $rectoVerso;
+
         return $this;
     }
 
@@ -249,6 +254,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setFrontColor(Color $frontPageColor = null)
     {
         $this->frontPageColor = $frontPageColor;
+
         return $this;
     }
 
@@ -276,6 +282,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsPerforated($isPerforated)
     {
         $this->isPerforated = $isPerforated;
+
         return $this;
     }
 
@@ -295,6 +302,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsColored($colored)
     {
         $this->colored = $colored;
+
         return $this;
     }
 
@@ -314,6 +322,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setIsHardCovered($hardcovered)
     {
         $this->hardcovered = $hardcovered;
+
         return $this;
     }
 
@@ -333,6 +342,7 @@ class Internal extends \CudiBundle\Entity\Article
     public function setFrontPage($frontPage = null)
     {
         $this->frontPage = $frontPage;
+
         return $this;
     }
 

@@ -56,12 +56,12 @@ class TimeSlot extends Field
 
     /**
      * @param FormBundle\Entity\Node\Form $form
-     * @param integer $order
-     * @param bool $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string $visibilityValue
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param integer                     $order
+     * @param bool                        $required
+     * @param \FormBundle\Entity\Field    $visibityDecisionField
+     * @param string                      $visibilityValue
+     * @param \DateTime                   $startDate
+     * @param \DateTime                   $endDate
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
     {
@@ -80,12 +80,13 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param  \DateTime                          $startDate
      * @return \FormBundle\Entity\Fields\TimeSlot
      */
     public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -98,18 +99,19 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param  \DateTime                          $endDate
      * @return \FormBundle\Entity\Fields\TimeSlot
      */
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return string
      */
@@ -142,7 +144,7 @@ class TimeSlot extends Field
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return string
      */
@@ -158,7 +160,7 @@ class TimeSlot extends Field
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return string
      */
@@ -174,13 +176,13 @@ class TimeSlot extends Field
 
     /**
      * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param boolean                               $allowFallback
      *
      * @return \FormBundle\Entity\Translation
      */
     public function getTimeSlotTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->timeslotTranslations as $translation) {
+        foreach ($this->timeslotTranslations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -195,11 +197,12 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $value
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $value
      * @return string
      */
-    public function getValueString(Language $language, $value) {
+    public function getValueString(Language $language, $value)
+    {
         return $value;
     }
 

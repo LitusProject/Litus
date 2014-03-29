@@ -56,10 +56,10 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\Language $language
      * @param \CalendarBundle\Entity\Node\Event The event exluded from this check
-     * @param mixed $opts The validator's options
+     * @param mixed                                 $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Language $language, Event $event = null, $opts = null)
     {
@@ -73,8 +73,8 @@ class Name extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if no matching record is found in the database.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

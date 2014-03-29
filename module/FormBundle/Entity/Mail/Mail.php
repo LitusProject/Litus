@@ -60,7 +60,7 @@ class Mail
     private $translations;
 
     /**
-     * @param string $from
+     * @param string  $from
      * @param boolean $bcc
      */
     public function __construct($from, $bcc)
@@ -70,12 +70,13 @@ class Mail
     }
 
     /**
-     * @param string $form
+     * @param  string                       $form
      * @return \FormBundle\Entity\Mail\Mail
      */
     public function setFrom($from)
     {
         $this->from = $from;
+
         return $this;
     }
 
@@ -88,12 +89,13 @@ class Mail
     }
 
     /**
-     * @param boolean $bcc
+     * @param  boolean                      $bcc
      * @return \FormBundle\Entity\Mail\Mail
      */
     public function setBcc($bcc)
     {
         $this->bcc = $bcc;
+
         return $this;
     }
 
@@ -106,8 +108,8 @@ class Mail
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getSubject(Language $language = null, $allowFallback = true)
@@ -121,8 +123,8 @@ class Mail
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -136,8 +138,8 @@ class Mail
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $allowFallback
      * @return \FormBundle\Entity\Mail\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -145,7 +147,7 @@ class Mail
         if (sizeof($this->translations) == 0)
             return null;
 
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0)
                 return $translation;
 

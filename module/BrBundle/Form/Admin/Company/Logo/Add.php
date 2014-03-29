@@ -36,6 +36,9 @@ use BrBundle\Component\Validator\Logo\Type as TypeValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+
+    const FILESIZE = '10MB';
+
     /**
      * @var \Doctrine\ORM\EntityManager The Doctrine EntityManager
      */
@@ -49,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Company The company to add the logo
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Company $company, $name = null)
     {
@@ -62,6 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new File('logo');
         $field->setLabel('Logo')
+            ->setAttribute('data-help', 'The logo must be an image of max ' . self::FILESIZE . '.')
             ->setRequired();
         $this->add($field);
 
@@ -73,6 +77,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('type');
         $field->setLabel('Type')
             ->setAttribute('options', Logo::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'The location where the logo will be used:
+            <ul>
+                <li><b>Homepage:</b> In the footer of the website</li>
+                <li><b>Cudi:<br> In the footer of the queue screen at Cudi</li>
+            </ul>')
             ->setRequired();
         $this->add($field);
 
@@ -91,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'logo',
-                    'required' => false,
+                    'required' => true,
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
@@ -99,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'extension' => '2MB',
+                                'max' => self::FILESIZE,
                             ),
                         ),
                     ),

@@ -59,7 +59,7 @@
     <aside>
         {% if not order.isOrdered() %}
             {% if hasAccess('cudi_admin_stock_order', 'place') %}
-                <div class="sidebox">
+                <div class="sidebox" data-help="These order items are still in the order queue, to finalise the order and pass it to the supplier, please press 'Place Order'">
                     <div class="title">Place Order</div>
                     <div class="content">
                         <p>
@@ -106,8 +106,8 @@
                             <i>Please hit the link below to print the order for the supplier!</i>
                         </p>
                         <p>
-                            <a href="#" id="printOrderAlpha" target="_blank">&rarr; Print Order (Alphabetic)</a>
-                            <a href="#" id="printOrderBarcode" target="_blank">&rarr; Print Order (On Barcode)</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "alpha"}) }}">&rarr; Print Order (Alphabetic)</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "barcode"}) }}">&rarr; Print Order (On Barcode)</a>
                         </p>
                     </div>
                 </div>
@@ -142,8 +142,8 @@
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="delete" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="delete">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -161,8 +161,8 @@
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="cancelOrder" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="cancelOrder">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -191,8 +191,8 @@
                 <p>The generation of the xml's can take a while, so please be patient.</p>
             </div>
             <div class="footer">
-                <input type="button" class="exportOrder" value="Export">
-                <input type="button" data-dismiss="modal" value="Cancel">
+                <button class="exportOrder">Export</button>
+                <button data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -215,20 +215,18 @@
                     var m = matches[2] - 1;
                     var y = matches[3];
                     var composedDate = new Date(y, m, d);
-                    console.log(composedDate);
+
                     if (composedDate.getDate() != d || composedDate.getMonth() != m || composedDate.getFullYear() != y) {
                         modal.find('.errors').removeClass('hide');
                         return;
                     }
                     modal.find('.errors').addClass('hide');
-                    $(this).unbind('click').downloadFile('{{ url('cudi_admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date).trigger('click');
+                    window.location = '{{ url('cudi_admin_stock_order', {"action": "export", "id": order.getId()}) }}' + date;
 
                     modal.modal('hide');
                 });
                 modal.modal();
             });
-            $('#printOrderAlpha').downloadFile('{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "alpha"}) }}');
-            $('#printOrderBarcode').downloadFile('{{ url('cudi_admin_stock_order', {"action": "pdf", "id": order.getId(), "order": "barcode"}) }}');
 
             $('.item .delete').click(openModalRemove);
             $('#cancelOrder').click(openModalCancel);

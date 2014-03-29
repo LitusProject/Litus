@@ -36,12 +36,12 @@ use CommonBundle\Entity\General\Language,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param \FormBundle\Entity\Node\Entry $entry
+     * @param \Doctrine\ORM\EntityManager            $entityManager
+     * @param \CommonBundle\Entity\General\Language  $language
+     * @param \FormBundle\Entity\Node\Form           $form
+     * @param \FormBundle\Entity\Node\Entry          $entry
      * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                        $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Entry $entry, Person $person = null, $name = null)
     {
@@ -65,11 +65,12 @@ class Edit extends Add
             $data['email'] = $entry->getGuestInfo()->getEmail();
         }
 
-        foreach($entry->getFieldEntries() as $fieldEntry) {
+        foreach ($entry->getFieldEntries() as $fieldEntry) {
             $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
             if ($fieldEntry->getField() instanceof FileField) {
                 $this->get('field-' .$fieldEntry->getField()->getId())
-                    ->setAttribute('data-file', $fieldEntry->getValue());
+                    ->setAttribute('data-file', $fieldEntry->getValue())
+                    ->setAttribute('data-name', $fieldEntry->getReadableValue());
             }
         }
         $this->setData($data);
@@ -90,7 +91,12 @@ class Edit extends Add
                             'name'     => 'field-' . $fieldSpecification->getId(),
                             'required' => false,
                             'validators' => array(
-                                new SizeValidator(array('max' => $fieldSpecification->getMaxSize() . 'MB'))
+                                array(
+                                    'name' => 'filefilessize',
+                                    'options' => array(
+                                        'max' => $fieldSpecification->getMaxSize() . 'MB',
+                                    ),
+                                ),
                             ),
                         )
                     )

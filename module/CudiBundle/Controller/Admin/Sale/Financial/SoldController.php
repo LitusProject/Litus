@@ -51,7 +51,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
@@ -84,7 +84,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($records as $soldItem) {
+        foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
             if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
@@ -116,7 +116,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     private function _individualSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -155,7 +155,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -206,6 +206,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'otherOrganizationEnabled' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.enable_other_organization'),
             )
         );
     }
@@ -226,7 +229,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($records as $soldItem) {
+        foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
             if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
@@ -257,7 +260,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     private function _sessionSearch(Session $session)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -294,7 +297,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -327,7 +330,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
 
             $item = (object) array();
@@ -351,7 +354,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     private function _articlesSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -400,7 +403,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
@@ -412,6 +415,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'otherOrganizationEnabled' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.enable_other_organization'),
             )
         );
     }
@@ -434,7 +440,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($records as $soldItem) {
+        foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
             if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
@@ -465,7 +471,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     private function _articleSearch(Article $article, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'person':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -496,7 +502,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -539,7 +545,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
@@ -551,6 +557,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'otherOrganizationEnabled' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.enable_other_organization'),
             )
         );
     }
@@ -573,7 +582,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getResult();
 
         $result = array();
-        foreach($records as $soldItem) {
+        foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
             if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
@@ -605,7 +614,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')

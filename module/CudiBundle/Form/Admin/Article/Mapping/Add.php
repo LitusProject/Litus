@@ -62,7 +62,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
+        $field->setLabel('Mandatory')
+            ->setAttribute('data-help', 'Enabling this flag will show the students this article is mandatory for the selected subject.');
         $this->add($field);
 
         $field = new Submit('submit');

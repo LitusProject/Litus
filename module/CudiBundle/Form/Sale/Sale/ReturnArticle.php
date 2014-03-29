@@ -42,9 +42,9 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null )
+    public function __construct(EntityManager $entityManager, $name = null)
     {
         parent::__construct($name);
 
@@ -57,7 +57,6 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
         $field = new Text('person');
         $field->setLabel('Person')
             ->setAttribute('placeholder', 'Student')
-            ->setAttribute('style', 'width: 300px;')
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
@@ -72,7 +71,6 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Article')
             ->setRequired()
             ->setAttribute('autocomplete', 'off')
-            ->setAttribute('style', 'width: 400px;')
             ->setAttribute('placeholder', 'Article')
             ->setAttribute('id', 'articleSearch')
             ->setAttribute('data-provide', 'typeahead');

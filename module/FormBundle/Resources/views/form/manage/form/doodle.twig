@@ -1,4 +1,4 @@
-{% extends 'manage/base.twig' %}
+{% extends 'form/base.twig' %}
 
 {% block content %}
     {% if authenticatedPerson is not null %}
@@ -59,7 +59,7 @@
                                 {{ field.getLocation(language) }}
                             </td>
                             <td>
-                                {{ field.getExtraInformation(language)|slice(1, 30) }}
+                                {{ field.getExtraInformation(language)|slice(0, 30) }}
                                 {% if field.getExtraInformation(language) %}
                                     <a href="#" class="extraInformation pull-right" data-content="{{ field.getExtraInformation(language) }}"><i class="glyphicon glyphicon-info-sign"></i></a>
                                 {% endif %}
@@ -100,7 +100,7 @@
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
-            
+
             $('.extraInformation').popover({'trigger': 'hover', 'placement': 'left'});
 
             $('table label.checkbox').each(function () {

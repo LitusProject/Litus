@@ -20,12 +20,12 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Cv\Util,
     BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\I18n\Translator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    Zend\Mvc\I18n\Translator;
 
 /**
  * Generates the CV Book for one academic year.
@@ -50,8 +50,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     private $_translator;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $year The academic year for which to generate the book.
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $year          The academic year for which to generate the book.
      */
     public function __construct(EntityManager $entityManager, AcademicYear $year, TmpFile $file, Translator $translator)
     {
@@ -80,9 +80,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         // Add the groups
         $groups = array();
 
-        foreach ($data as $studyData) {
+        foreach ($data as $studyData)
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
-        }
 
         $organization_logo = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -121,9 +120,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     private function _generateGroup($groupName, $entries)
     {
         $cvs = array();
-        foreach ($entries as $entry) {
+        foreach ($entries as $entry)
             $cvs[] = $this->_generateCv($entry);
-        }
 
         return new Object(
             'cvgroup',
@@ -213,9 +211,10 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
 
         // Erasmus
-        if ((null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation() )
-            || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod() ))
-        {
+        if (
+            (null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation())
+            || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod())
+        ) {
             $result[] = new Object(
                 'section',
                 array(
@@ -420,6 +419,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
         if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox())
             $result['bus'] = $cv->getAddress()->getMailbox();
+
         return $result;
     }
 
@@ -437,6 +437,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 null
             );
         }
+
         return $languages;
     }
 }

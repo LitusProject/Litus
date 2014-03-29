@@ -162,8 +162,8 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session The sale session
-     * @param string $universityIdentification
+     * @param \CudiBundle\Entity\Sale\Session $session                  The sale session
+     * @param string                          $universityIdentification
      *
      * @return string
      */
@@ -225,7 +225,7 @@ class Queue
      */
     public function unlockByUser(User $user)
     {
-        foreach($this->_queueItems as $item) {
+        foreach ($this->_queueItems as $item) {
             if ($item->getUser()->getSocket() == $user->getSocket()) {
                 $item = $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -243,7 +243,7 @@ class Queue
 
     /**
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer $id
+     * @param integer                                $id
      */
     public function startCollecting(User $user, $id, $bulk = false)
     {
@@ -351,10 +351,10 @@ class Queue
     }
 
     /**
-     * @param integer $id
-     * @param array $articles
-     * @param array $discounts
-     * @param string $payMethod
+     * @param  integer $id
+     * @param  array   $articles
+     * @param  array   $discounts
+     * @param  string  $payMethod
      * @return array
      */
     public function concludeSale($id, $articles, $discounts, $payMethod)
@@ -490,7 +490,7 @@ class Queue
             'discounts' => array(),
         );
 
-        foreach($article->getDiscounts() as $discount) {
+        foreach ($article->getDiscounts() as $discount) {
             if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
                     $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                 $result['discounts'][] = array(
@@ -525,7 +525,7 @@ class Queue
             ->findByQueueItem($item);
 
         $articles = array();
-        foreach($saleItems as $saleItem) {
+        foreach ($saleItems as $saleItem) {
             if (!isset($articles[$saleItem->getArticle()->getId()])) {
                 $articles[$saleItem->getArticle()->getId()] = array(
                     'article' => $saleItem->getArticle(),
@@ -537,8 +537,8 @@ class Queue
             $this->_entityManager->remove($saleItem);
         }
 
-        foreach($articles as $article) {
-            while($article['number'] > 0) {
+        foreach ($articles as $article) {
+            while ($article['number'] > 0) {
                 $booking = $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByPersonAndArticle($item->getPerson(), $article['article']);
@@ -582,7 +582,7 @@ class Queue
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
         $results = array();
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $result = (object) array();
             $result->id = $item->getId();
             $result->barcode = $prefix + $item->getId();
@@ -599,6 +599,7 @@ class Queue
             }
             $results[] = $result;
         }
+
         return $results;
     }
 

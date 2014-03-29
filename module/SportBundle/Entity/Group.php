@@ -77,8 +77,8 @@ class Group
 
     /**
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param string $name
-     * @param array $happyHours
+     * @param string                                    $name
+     * @param array                                     $happyHours
      */
     public function __construct(AcademicYear $academicYear, $name, array $happyHours)
     {
@@ -105,12 +105,13 @@ class Group
     }
 
     /**
-     * @param string $name
+     * @param  string                    $name
      * @return \SportBundle\Entity\Group
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -131,29 +132,31 @@ class Group
     }
 
     /**
-     * @param array $happyHours
+     * @param  array                     $happyHours
      * @return \SportBundle\Entity\Group
      */
     public function setHappyHours(array $happyHours)
     {
         $this->happyHours = serialize($happyHours);
+
         return $this;
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \SportBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
     /**
      * Returns the current point total of the group.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)

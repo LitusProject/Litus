@@ -64,14 +64,25 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBooked($previous);
 
-            foreach($bookings as $booking) {
+            foreach($bookings as $booking)
                 $booking->setStatus('booked', $this->getEntityManager());
+
+            $bookings = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findAllAssigned($previous);
+
+            foreach ($bookings as $booking) {
+                if ($booking->getArticle()->canExpire())
+                    continue;
+
+                $booking->setStatus('booked', $this->getEntityManager());
+                $booking->setStatus('assigned', $this->getEntityManager());
             }
 
             $articles = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findAllArticlesByPeriod($previous);
-            foreach($articles as $article) {
+            foreach ($articles as $article) {
                 $value = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Period\Value\Start')
                         ->findValueByArticleAndPeriod($article, $previous)
@@ -133,7 +144,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
         $period->setEntityManager($this->getEntityManager());
 
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 $articles = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -158,7 +169,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         array_splice($articles, $numResults);
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();

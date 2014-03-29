@@ -7,10 +7,10 @@
                 {% else %}
                     {% if 1 != paginationControl.pages.pageCount and 1 != paginationControl.pages.current %}
                         &larr; First
-					{% endif %}
+                    {% endif %}
                 {% endif %}
 
-				{% if paginationControl.pages.previous is not sameas(null) %}
+                {% if paginationControl.pages.previous is not sameas(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationControl.matchedRouteParams)) }}">&laquo; Previous</a>
                 {% endif %}
             </td>

@@ -123,6 +123,7 @@ class Period
     public function close()
     {
         $this->endDate = new DateTime();
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Period
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
@@ -147,6 +149,7 @@ class Period
         $value = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbDelivered($this, $article);
+
         return $value < 0 ? 0 : $value;
     }
 

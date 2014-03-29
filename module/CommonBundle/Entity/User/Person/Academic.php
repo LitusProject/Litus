@@ -108,13 +108,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $unitMap;
 
     /**
-     * @param string $username The user's username
-     * @param array $roles The user's roles
-     * @param string $firstName The user's first name
-     * @param string $lastName The user's last name
-     * @param string $email The user's e-mail address
-     * @param string $phoneNumber The user's phone number
-     * @param string $sex The user's sex
+     * @param string $username                 The user's username
+     * @param array  $roles                    The user's roles
+     * @param string $firstName                The user's first name
+     * @param string $lastName                 The user's last name
+     * @param string $email                    The user's e-mail address
+     * @param string $phoneNumber              The user's phone number
+     * @param string $sex                      The user's sex
      * @param string $universityIdentification The user's university identification
      */
     public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
@@ -132,12 +132,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param string $personalEmail
+     * @param  string                                    $personalEmail
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPersonalEmail($personalEmail)
     {
         $this->personalEmail = $personalEmail;
+
         return $this;
     }
 
@@ -150,12 +151,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param string $universityEmail
+     * @param  string                                    $universityEmail
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setUniversityEmail($universityEmail)
     {
         $this->universityEmail = $universityEmail;
+
         return $this;
     }
 
@@ -168,12 +170,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param string $universityIdentification
+     * @param  string                                    $universityIdentification
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setUniversityIdentification($universityIdentification)
     {
         $this->universityIdentification = $universityIdentification;
+
         return $this;
     }
 
@@ -186,12 +189,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param string $photoPath
+     * @param  string                                    $photoPath
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPhotoPath($photoPath)
     {
         $this->photoPath = $photoPath;
+
         return $this;
     }
 
@@ -204,32 +208,34 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Status\University $universityStatus
+     * @param  \CommonBundle\Entity\User\Status\University $universityStatus
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function addUniversityStatus(UniversityStatus $universityStatus)
     {
         $this->universityStatuses->add($universityStatus);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Status\University $universityStatus
+     * @param  \CommonBundle\Entity\User\Status\University $universityStatus
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function removeUniversityStatus(UniversityStatus $universityStatus)
     {
         $this->universityStatuses->removeElement($universityStatus);
+
         return $this;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear   $academicYear
      * @return \CommonBundle\Entity\User\Status\University
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
-        foreach($this->universityStatuses as $status) {
+        foreach ($this->universityStatuses as $status) {
             if ($status->getAcademicYear() == $academicYear)
                 return $status;
         }
@@ -238,14 +244,14 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return boolean
      */
     public function canHaveUniversityStatus(AcademicYearEntity $academicYear)
     {
         if ($this->universityStatuses->count() >= 1) {
             if ($this->universityStatuses->exists(
-                function($key, $value) use ($academicYear) {
+                function ($key, $value) use ($academicYear) {
                     if ($value->getAcademicYear() == $academicYear)
                         return true;
                 }
@@ -258,12 +264,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \DateTime $birthday
+     * @param  \DateTime                                 $birthday
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setBirthday(DateTime $birthday = null)
     {
         $this->birthday = $birthday;
+
         return $this;
     }
 
@@ -276,13 +283,14 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $primaryAddress
+     * @param  \CommonBundle\Entity\General\Address      $primaryAddress
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setPrimaryAddress(Address $primaryAddress)
     {
         $this->primaryAddress = $primaryAddress;
         $this->setAddress($primaryAddress);
+
         return $this;
     }
 
@@ -295,12 +303,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $secondaryAddress
+     * @param  \CommonBundle\Entity\General\Address      $secondaryAddress
      * @return \CommonBundle\Entity\User\Person\Academic
      */
     public function setSecondaryAddress(Address $secondaryAddress)
     {
         $this->secondaryAddress = $secondaryAddress;
+
         return $this;
     }
 
@@ -313,7 +322,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @return \CommonBundle\Entity\General\Organization
      */
     public function getOrganization(AcademicYearEntity $academicYear)
@@ -327,7 +336,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  \CommonBundle\Entity\General\AcademicYear      $academicYear
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getUnit(AcademicYearEntity $academicYear)
@@ -341,7 +350,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param boolean $mergeUnitRoles
+     * @param  boolean $mergeUnitRoles
      * @return array
      */
     public function getRoles($mergeUnitRoles = true)

@@ -31,7 +31,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -79,6 +79,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('cudi.sale_light_version');
 
         $e->setResult($result);
+
         return $result;
     }
 
@@ -92,5 +93,22 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_public');
+    }
+
+    /**
+     * We need to be able to specify all required authentication information,
+     * which depends on the part of the site that is currently being used.
+     *
+     * @return array
+     */
+    public function getAuthenticationHandler()
+    {
+        return array(
+            'action'         => 'index',
+            'controller'     => 'common_index',
+
+            'auth_route'     => 'cudi_sale_auth',
+            'redirect_route' => 'cudi_sale_sale'
+        );
     }
 }

@@ -52,7 +52,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \TicketBundle\Entity\Event $event
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int            $name  Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, Person $person, $name = null)
     {
@@ -77,7 +77,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                 $this->add($field);
             }
         } else {
-            foreach($event->getOptions() as $option) {
+            foreach ($event->getOptions() as $option) {
                 $field = new Select('option_' . $option->getId() . '_number_member');
                 $field->setLabel(ucfirst($option->getName()) . ' (Member)')
                     ->setAttribute('options', $this->_getNumberOptions());
@@ -102,9 +102,10 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
         $numbers = array();
         $max = $this->_event->getLimitPerPerson() == 0 ? 10 : $this->_event->getLimitPerPerson();
 
-        for($i = 0 ; $i <= $max ; $i++) {
+        for ($i = 0 ; $i <= $max ; $i++) {
             $numbers[$i] = $i;
         }
+
         return $numbers;
     }
 
@@ -140,7 +141,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                 );
             }
         } else {
-            foreach($this->_event->getOptions() as $option) {
+            foreach ($this->_event->getOptions() as $option) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(

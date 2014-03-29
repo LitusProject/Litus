@@ -75,7 +75,8 @@ abstract class MailingList
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -87,8 +88,8 @@ abstract class MailingList
     /**
      * This method checks whether the list can be edited by the given academic.
      *
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic that should be checked
-     * @param boolean $editAdmin Whether or not to check for permission to edit the admins of the list
+     * @param  \CommonBundle\Entity\User\Person\Academic $academic  The academic that should be checked
+     * @param  boolean                                   $editAdmin Whether or not to check for permission to edit the admins of the list
      * @return boolean
      */
     public function canBeEditedBy(Academic $academic, $editAdmin = false)

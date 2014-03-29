@@ -24,11 +24,23 @@
         <p>Delta: <b>&euro; {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}</b></p>
 
         {% if organizations|length > 1 %}
+            {% set otherPurchased = session.getPurchasedAmount() %}
+            {% set otherRevenue = theoreticalRevenue %}
+
             {% for organization in organizations %}
+                {% set otherPurchased = otherPurchased - session.getPurchasedAmount(organization) %}
+                {% set otherRevenue = otherRevenue - session.getTheoreticalRevenue(organization) %}
+
                 <h2>{{ organization.getName() }}</h2>
                 <p>Purchase Price: <b>&euro; {{ (session.getPurchasedAmount(organization)/100)|number_format(2) }}</b></p>
                 <p>Theoretical Revenue: <b>&euro; {{ (session.getTheoreticalRevenue(organization)/100)|number_format(2) }}</b></p>
             {% endfor %}
+
+            {% if otherOrganizationEnabled %}
+                <h2>Other Organizations</h2>
+                <p>Purchase Price: <b>&euro; {{ (otherPurchased/100)|number_format(2) }}</b></p>
+                <p>Theoretical Revenue: <b>&euro; {{ (otherRevenue/100)|number_format(2) }}</b></p>
+            {% endif %}
         {% endif %}
         <br />
         <div id="sold_search" style="display:none;">

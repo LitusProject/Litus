@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace FormBundle\Repository\Node;
 
@@ -179,13 +195,13 @@ class Entry extends EntityRepository
         $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
 
         $tmpEntries = array();
-        foreach($startEntries as $entry) {
+        foreach ($startEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $entries = array();
-        foreach($endEntries as $entry) {
+        foreach ($endEntries as $entry) {
             if ($entry->isDraft())
                 continue;
             if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
@@ -202,14 +218,14 @@ class Entry extends EntityRepository
 
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $tmpEntries = array();
-        foreach($endEntries as $entry) {
+        foreach ($endEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
         $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
 
         $entries = array();
-        foreach($startEntries as $entry) {
+        foreach ($startEntries as $entry) {
             if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
                     ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()))
                 $entries[] = $entry;

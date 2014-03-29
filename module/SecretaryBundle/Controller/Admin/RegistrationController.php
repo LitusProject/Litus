@@ -20,6 +20,8 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Barcode,
     DateInterval,
@@ -370,7 +372,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->initAjax();
 
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'university_identification':
                 $registrations = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Registration')
@@ -407,7 +409,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         array_splice($registrations, $numResults);
 
         $result = array();
-        foreach($registrations as $registration) {
+        foreach ($registrations as $registration) {
             if ($registration->getAcademic()->canLogin()) {
                 $item = (object) array();
                 $item->id = $registration->getId();
@@ -428,6 +430,105 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function exportAction()
+    {
+        $academicYear = $this->_getAcademicYear();
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'activeAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
+                'organizations' => $organizations,
+                'currentOrganization' => $this->_getOrganization(),
+            )
+        );
+    }
+
+    public function downloadAction()
+    {
+        $academicYear = $this->_getAcademicYear();
+        $organization = $this->_getOrganization();
+
+        if ($organization) {
+            $mappings = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+                ->findByAcademicYearAndOrganization($academicYear, $organization);
+        } else {
+            $mappings = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+                ->findByAcademicYear($academicYear);
+        }
+
+        foreach ($mappings as $mapping) {
+            $registration = $this->getEntityManager()
+                ->getRepository('SecretaryBundle\Entity\Registration')
+                ->findOneByAcademicAndAcademicYear($mapping->getAcademic(), $academicYear);
+
+            if (null === $registration || $registration->hasPayed() == false)
+                continue;
+
+            $members[$mapping->getAcademic()->getId()] = array(
+                'academicFirstName'               => $mapping->getAcademic()->getFirstName(),
+                'academicLastName'                => $mapping->getAcademic()->getLastName(),
+                'academicEmail'                   => $mapping->getAcademic()->getEmail(),
+                'academicPrimaryAddressStreet'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getStreet() : '',
+                'academicPrimaryAddressNumber'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getNumber() : '',
+                'academicPrimaryAddressMailbox'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getMailbox() : '',
+                'academicPrimaryAddressPostal'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getPostal() : '',
+                'academicPrimaryAddressCity'      => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCity() : '',
+                'academicPrimaryAddressCountry'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCountry() : '',
+                'academicSecondaryAddressStreet'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getStreet() : '',
+                'academicSecondaryAddressNumber'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getNumber() : '',
+                'academicSecondaryAddressMailbox' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getMailbox() : '',
+                'academicSecondaryAddressPostal'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getPostal() : '',
+                'academicSecondaryAddressCity'    => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCity() : '',
+                'academicSecondaryAddressCountry' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCountry() : '',
+            );
+        }
+
+        $header = array(
+            'First Name',
+            'Last Name',
+            'E-mail',
+            'Street (Primary Address)',
+            'Number (Primary Address)',
+            'Mailbox (Primary Address)',
+            'Postal (Primary Address)',
+            'City (Primary Address)',
+            'Country (Primary Address)',
+            'Street (Secondary Address)',
+            'Number (Secondary Address)',
+            'Mailbox (Secondary Address)',
+            'Postal (Secondary Address)',
+            'City (Secondary Address)',
+            'Country (Secondary Address)',
+        );
+
+        $exportFile = new CsvFile();
+        $csvGenerator = new CsvGenerator($header, $members);
+        $csvGenerator->generateDocument($exportFile);
+
+        $this->getResponse()->getHeaders()
+            ->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="members_'.$academicYear->getCode().'.csv"',
+            'Content-Type' => 'text/csv',
+        ));
+
+        return new ViewModel(
+            array(
+                'result' => $exportFile->getContent(),
             )
         );
     }

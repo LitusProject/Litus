@@ -21,12 +21,24 @@
         <p>Total Revenue: <b>&euro; {{ (supplier.getTotalRevenue(activeAcademicYear)/100)|number_format(2) }}</b></p>
 
         {% if organizations|length > 1 %}
+            {% set otherPurchased = supplier.getTotalPurchase(activeAcademicYear) %}
+            {% set otherRevenue = supplier.getTotalRevenue(activeAcademicYear) %}
+
             {% for organization in organizations %}
+                {% set otherPurchased = otherPurchased - supplier.getTotalPurchase(activeAcademicYear, organization) %}
+                {% set otherRevenue = otherRevenue - supplier.getTotalRevenue(activeAcademicYear, organization) %}
+
                 <h2>{{ organization.getName() }}</h2>
                 <p>Number Sold: <b>{{ supplier.getNumberSold(activeAcademicYear, organization) }}</b></p>
                 <p>Total Purchase: <b>&euro; {{ (supplier.getTotalPurchase(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
                 <p>Total Revenue: <b>&euro; {{ (supplier.getTotalRevenue(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
             {% endfor %}
+
+            {% if otherOrganizationEnabled %}
+                <h2>Other Organizations</h2>
+                <p>Total Purchase: <b>&euro; {{ (otherPurchased/100)|number_format(2) }}</b></p>
+                <p>Total Revenue: <b>&euro; {{ (otherRevenue/100)|number_format(2) }}</b></p>
+            {% endif %}
         {% endif %}
         <br />
 

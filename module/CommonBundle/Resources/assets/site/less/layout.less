@@ -49,6 +49,10 @@ body {
     }
 }
 
+.navbar-collapse {
+    max-height: none;
+}
+
 header {
     background: @cHeaderLight;
     #gradient > .vertical(@start-color: @cHeaderDark; @end-color: @cHeaderLight; @start-percent: 0%; @end-percent: 50%);
@@ -58,12 +62,13 @@ header {
 
         .site-logo {
             float: left;
-            margin: 7px 20px 0 20px;
+            margin: 17px 20px 0 20px;
             height: 41px;
         }
 
         .site-name {
             margin: 0px;
+            padding-top: 20px;
         }
     }
 
@@ -199,6 +204,10 @@ footer {
     .light {
         padding: 16px 0 16px 0;
         background: @grayDark;
+
+        h3 {
+            color: @white;
+        }
     }
 
     .dark {
@@ -206,6 +215,7 @@ footer {
 
         h3 {
             line-height: 30px;
+            color: @gray
         }
 
         img {
@@ -215,9 +225,12 @@ footer {
 
     h3 {
         margin: 0;
+
         font-weight: normal;
         font-size: 18px;
-        color: @gray
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+
+        line-height: 40px;
     }
 
     .nav-list {
@@ -240,9 +253,15 @@ footer {
             }
         }
     }
+
+    .icons {
+        text-align: right;
+    }
 }
 
 .alert {
+    margin-bottom: 0px;
+
     .title {
         font-weight: bold;
     }
@@ -303,4 +322,14 @@ table {
     color: #fff;
     text-align: center;
     padding: 10px 0;
+}
+
+@media(min-width: @screen-md-min) {
+    header {
+        .site-link {
+            display: block;
+            width: 940px;
+            margin: 0px auto;
+        }
+    }
 }

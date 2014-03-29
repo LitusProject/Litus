@@ -47,6 +47,13 @@
         <div class="container">
             {% include 'ticket/partials/flashMessenger.twig' %}
 
+            {% if not event.isActive() %}
+                <div class="alert alert-warning fade in">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate('The event isn\'t active anymore.') }}
+                </div>
+            {% endif %}
+
             <div id="content_controller">
                 <div class="page-header">
                     <h1>{{ event.getActivity().getTitle(language) }}</h1>

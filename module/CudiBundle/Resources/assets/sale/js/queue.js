@@ -69,7 +69,6 @@
         },
         setLastSold : function (data) {
             lastSold = data;
-            console.log(data);
             $(this).find('.undoLastSale').toggle(lastSold > 0);
             return this;
         },
@@ -132,7 +131,7 @@
                         $('<label>', {'class': 'checkbox pull-left'}).append(
                             hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                             settings.tHideHold
-                        ),
+                        ).css('margin-left', '20px'),
                         undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'
@@ -285,11 +284,7 @@
             } else {
                 $this.find('.startSale').addClass('disabled').unbind('click');
             }
-        }).typeaheadRemote(
-            {
-                source: settings.personTypeahead,
-            }
-        ).change(function (e) {
+        }).change(function (e) {
             if ($(this).data('value')) {
                 filterText.val($(this).data('value').universityIdentification);
                 settings.sendToSocket(
@@ -300,7 +295,11 @@
                     })
                 );
             }
-        });
+        }).typeaheadRemote(
+            {
+                'source': settings.personTypeahead,
+            }
+        );
 
         undoLastSale.click(function () {
             if (lastSold > 0) {

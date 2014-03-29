@@ -29,8 +29,8 @@ use \Zend\Form\Element\Text;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add {
-
+class Edit extends Add
+{
     public function __construct(Contract $contract, $options = null)
     {
         parent::__construct($options);
@@ -46,7 +46,7 @@ class Edit extends Add {
             ->setRequired();
         $this->addElement($field);
 
-        if($contract->isSigned()) {
+        if ($contract->isSigned()) {
             $field = new Text('invoice_nb');
             $field->setLabel('Invoice number')
                 ->setRequired()
@@ -76,6 +76,7 @@ class Edit extends Add {
         $return = array();
         foreach ($contract->getComposition() as $contractComposition)
             $return[] = $contractComposition->getSection()->getId();
+
         return $return;
     }
 }

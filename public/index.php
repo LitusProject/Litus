@@ -27,8 +27,9 @@ if ('development' == getenv('APPLICATION_ENV')) {
 }
 
 set_error_handler(
-    function ($errorNb, $errorString, $errorFile, $errorLine ) {
-        throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
+    function ($errorNb, $errorString, $errorFile, $errorLine) {
+        if (0 !== error_reporting())
+            throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
     }
 );
 

@@ -62,7 +62,7 @@ class SubjectProfMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param \SyllabusBundle\Entity\Subject            $subject
      * @param \CommonBundle\Entity\User\Person\Academic $prof
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */

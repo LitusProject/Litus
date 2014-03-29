@@ -30,8 +30,8 @@ use Zend\Form\Element\Submit,
 class Export extends SelectOptions
 {
     /**
-     * @param string $action
-     * @param null|string|int $name Optional name for the element
+     * @param string          $action
+     * @param null|string|int $name   Optional name for the element
      */
     public function __construct($action = null, $name = null)
     {

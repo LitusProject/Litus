@@ -33,6 +33,7 @@ return array(
     'Submission Date' => 'Registratie Datum',
     'Actions' => 'Acties',
     'Edit' => 'Bewerk',
+    'Occupied' => 'Bezet',
 
     'Please submit these forms in order.' => 'Gelieve deze formulieren in volgorde in te vullen.',
     'This form group is currently closed.' => 'Deze formulier groep is momenteel gesloten.',
@@ -48,4 +49,8 @@ return array(
     'Save as Draft' => 'Opslaan als Concept',
     'Draft' => 'Concept',
     'You have already a draft of this form' => 'U hebt al een concept van dit formulier',
+
+    'Yes' => 'Yes',
+    'No' => 'No',
+    '(empty)' => '(empty)',
 );

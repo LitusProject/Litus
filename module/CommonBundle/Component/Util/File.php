@@ -29,7 +29,7 @@ class File
      * Returns the real filename of the given file.
      *
      * @static
-     * @param string $filename The filename as it is used in the code, with '/' as directory separator
+     * @param  string $filename The filename as it is used in the code, with '/' as directory separator
      * @return string
      */
     public static function getRealFilename($filename)

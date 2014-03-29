@@ -32,9 +32,9 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Send extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param string $email
-     * @param string $personName
-     * @param null|string|int $name Optional name for the element
+     * @param string          $email
+     * @param string          $personName
+     * @param null|string|int $name       Optional name for the element
      */
     public function __construct($email = '', $personName = '', $name = null)
     {

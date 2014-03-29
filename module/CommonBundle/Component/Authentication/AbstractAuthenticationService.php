@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Component\Authentication;
 
-
 use CommonBundle\Component\Authentication\Action,
     Zend\Authentication\Storage\StorageInterface as StorageInterface;
 
@@ -50,11 +49,11 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_action;
 
     /**
-     * @param \Zend\Authentication\Storage\StorageInterface $storage The persistent storage handler
-     * @param string $namespace The namespace the storage handlers will use
-     * @param string $cookieSuffix The cookie suffix that is used to store the session cookie
-     * @param int $duration The expiration time for the cookie
-     * @param \CommonBundle\Component\Authentication\Action $action The action that should be taken after authentication
+     * @param \Zend\Authentication\Storage\StorageInterface $storage      The persistent storage handler
+     * @param string                                        $namespace    The namespace the storage handlers will use
+     * @param string                                        $cookieSuffix The cookie suffix that is used to store the session cookie
+     * @param int                                           $duration     The expiration time for the cookie
+     * @param \CommonBundle\Component\Authentication\Action $action       The action that should be taken after authentication
      */
     public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action
     )
@@ -75,6 +74,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     public function setAction(Action $action)
     {
         $this->_action = $action;
+
         return $this;
     }
 
@@ -125,8 +125,8 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     /**
      * Set the authentication cookie.
      *
-     * @param string $value The cookie's value
-     * @param int $expire The cookie's expiration time
+     * @param string $value  The cookie's value
+     * @param int    $expire The cookie's expiration time
      */
     protected function _setCookie($value)
     {

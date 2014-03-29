@@ -390,6 +390,7 @@ class Address
     public function setStreet($street)
     {
         $this->street = $street;
+
         return $this;
     }
 
@@ -409,6 +410,7 @@ class Address
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 
@@ -428,6 +430,7 @@ class Address
     public function setMailbox($mailbox)
     {
         $this->mailbox = $mailbox;
+
         return $this;
     }
 
@@ -447,6 +450,7 @@ class Address
     public function setPostal($postal)
     {
         $this->postal = $postal;
+
         return $this;
     }
 
@@ -466,6 +470,7 @@ class Address
     public function setCity($city)
     {
         $this->city = $city;
+
         return $this;
     }
 
@@ -482,10 +487,11 @@ class Address
      */
     public function getCountry()
     {
-        foreach(self::$countries as $continent) {
+        foreach (self::$countries as $continent) {
             if (array_key_exists($this->country, $continent))
                 return $continent[$this->country];
         }
+
         return '';
     }
 
@@ -510,10 +516,11 @@ class Address
      */
     public static function isValidCountry($country)
     {
-        foreach(self::$countries as $continent) {
+        foreach (self::$countries as $continent) {
             if (array_key_exists($country, $continent))
                 return true;
         }
+
         return false;
     }
 }

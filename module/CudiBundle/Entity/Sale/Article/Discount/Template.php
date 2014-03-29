@@ -87,18 +87,18 @@ class Template
     private $organization;
 
     /**
-     * @param string $name The name of the discount
-     * @param integer $value The value of the discount
-     * @param string $method The method of the discount
-     * @param string $type The type of the discount
-     * @param string $rounding The type of the rounding
-     * @param boolean $applyOnce Apply the discount only once
+     * @param string                                         $name         The name of the discount
+     * @param integer                                        $value        The value of the discount
+     * @param string                                         $method       The method of the discount
+     * @param string                                         $type         The type of the discount
+     * @param string                                         $rounding     The type of the rounding
+     * @param boolean                                        $applyOnce    Apply the discount only once
      * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      */
     public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, $organization = null)
     {
         $this->name = $name;
-        $this->value = $value * 100;
+        $this->value = str_replace(',', '.', $value) * 100;
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
@@ -128,6 +128,7 @@ class Template
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -145,6 +146,7 @@ class Template
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -162,6 +164,7 @@ class Template
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 
@@ -179,6 +182,7 @@ class Template
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -196,6 +200,7 @@ class Template
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+
         return $this;
     }
 
@@ -221,6 +226,7 @@ class Template
     public function setRounding($rounding)
     {
         $this->rounding = $rounding;
+
         return $this;
     }
 
@@ -238,6 +244,7 @@ class Template
     public function setApplyOnce($applyOnce)
     {
         $this->applyOnce = $applyOnce;
+
         return $this;
     }
 }

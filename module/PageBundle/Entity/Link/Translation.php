@@ -70,10 +70,10 @@ class Translation
     private $url;
 
     /**
-     * @param \PageBundle\Entity\Link $link
+     * @param \PageBundle\Entity\Link               $link
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $name
-     * @param string $url
+     * @param string                                $name
+     * @param string                                $url
      */
     public function __construct(Link $link, Language $language, $name, $url)
     {
@@ -115,6 +115,7 @@ class Translation
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Translation
     public function setUrl($url)
     {
         $this->url = $url;
+
         return $this;
     }
 }

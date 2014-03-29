@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace CudiBundle\Repository\Sale;
 
@@ -113,16 +129,40 @@ class SaleItem extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->eq('m.organization', ':organization')
+                    null === $organization ? '1=1' : $query->expr()->eq('m.organization', $organization->getId())
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', $organization)
             ->getQuery()
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
+            $ids[] = $item['id'];
+        }
+
+        return $ids;
+    }
+
+    private function _selectOnlyMembers($ids, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('a.id')
+            ->from('SecretaryBundle\Entity\Registration', 'r')
+            ->innerJoin('r.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('r.academic', $ids),
+                    $query->expr()->eq('r.academicYear', ':academicYear'),
+                    $query->expr()->eq('r.payed', 'true')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -227,13 +267,71 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findNumberByArticleAndAcademicYearAndMember(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
+    {
+        if (null !== $organization) {
+            $ids = $this->_selectOnlyMembers(
+                $this->_personsByAcademicYearAndOrganization($academicYear, $organization),
+                $academicYear
+            );
+
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->in('q.person', $ids)
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+        } else {
+            $ids = $this->_selectOnlyMembers(
+                $this->_personsByAcademicYearAndOrganization($academicYear),
+                $academicYear
+            );
+
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->in('q.person', $ids)
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
     public function findTotalRevenueBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -253,7 +351,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -283,7 +381,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -303,7 +401,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -333,7 +431,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.session', 's')
@@ -352,7 +450,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.session', 's')
                 ->where(
@@ -481,7 +579,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -639,7 +737,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -765,7 +863,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -914,7 +1012,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 

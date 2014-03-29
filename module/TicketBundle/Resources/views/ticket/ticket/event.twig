@@ -24,7 +24,15 @@
         <div class="calendarItem">
             <p>
                 <span class="glyphicon glyphicon-time time"></span>
-                {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}{% if event.getActivity().getEndDate() %} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}{% endif %}
+                {% if event.getActivity().getEndDate() %}
+                    {% if event.getActivity().getEndDate().format('d/M/Y') == event.getActivity().getStartDate().format('d/M/Y')%}
+                        {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }} - {{ dateLocalized(event.getActivity().getEndDate(), 'HH:mm') }}
+                    {% else %}
+                        {{ dateLocalized(event.getActivity().getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getActivity().getEndDate(), 'd MMM HH:mm') }}
+                    {% endif %}
+                {% else %}
+                    {{ dateLocalized(event.getActivity().getStartDate(), 'HH:mm') }}
+                {% endif %}
             </p>
             <p>
                 <span class="glyphicon glyphicon-home time"></span>

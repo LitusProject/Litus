@@ -43,9 +43,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
     private $_required;
 
     /**
-     * @param string $prefix The form's prefix
-     * @param null|string|int $name Optional name for the element
-     * @param boolean $required Whether or not the address is required
+     * @param string          $prefix   The form's prefix
+     * @param null|string|int $name     Optional name for the element
+     * @param boolean         $required Whether or not the address is required
      */
     public function __construct($prefix = '', $name = null, $required = true)
     {
@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         $this->add($field);
 
         $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox')
+        $field->setLabel('Mailbox');
         $this->add($field);
 
         $field = new Text($prefix . 'address_postal');
@@ -94,12 +94,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
     private function _getCountries()
     {
         $options = array();
-        foreach(Address::$countries as $key => $continent) {
+        foreach (Address::$countries as $key => $continent) {
             $options[$key] = array(
                 'label' => $key,
                 'options' => $continent,
             );
         }
+
         return $options;
     }
 

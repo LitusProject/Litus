@@ -105,12 +105,13 @@ class Volunteer
     }
 
     /**
-     * @param boolean $payed
+     * @param  boolean                               $payed
      * @return \ShiftBundle\Entity\Shift\Responsible
      */
     public function setPayed($payed)
     {
         $this->payed = $payed;
+
         return $this;
     }
 }

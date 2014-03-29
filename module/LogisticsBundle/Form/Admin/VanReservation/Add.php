@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $name = null)
     {
@@ -115,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $driversArray = array(
             -1 => ''
         );
-        foreach($drivers as $driver) {
+        foreach ($drivers as $driver) {
             $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
         }
 

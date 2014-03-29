@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $tabContent = new TabContent('tab_content');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -130,27 +130,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Text('max');
         $field->setLabel('Total Max Entries')
-            ->setAttribute('class', 'form');
+            ->setAttribute('class', 'form')
+            ->setAttribute('data-help', 'The maximum number of form submittions possible.');
         $this->add($field);
 
         $field = new Checkbox('non_members');
         $field->setLabel('Allow Entry Without Login')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'Allow users to submit this form without login. A name and email field will be added as first fields of this form.');
         $this->add($field);
 
         $field = new Checkbox('editable_by_user');
         $field->setLabel('Allow Users To Edit Their Info')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries.');
         $this->add($field);
 
         $field = new Checkbox('names_visible_for_others');
         $field->setLabel('Names Are Visible For Others')
-            ->setAttribute('class', 'doodle');
+            ->setAttribute('class', 'doodle')
+            ->setAttribute('data-help', 'Display the name of other person registered for slots in this doodle.');
         $this->add($field);
 
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries Per Person')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'The maximum number of form submittions possible for each user.');
         $this->add($field);
 
         $field = new Checkbox('mail');
@@ -186,7 +191,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->getConfigValue('form.mail_confirmation')
         );
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $mailTabs->addTab(array($language->getName() => '#mail_tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('mail_tab_' . $language->getAbbrev());
@@ -212,7 +217,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Checkbox('reminder_mail');
         $field->setLabel('Send Reminder Mail')
-            ->setAttribute('class', 'doodle');
+            ->setAttribute('class', 'doodle')
+            ->setAttribute('data-help', 'This mail will be sent the day before the timeslot starts. <br><br> If the slot is on Tuesday, the user will receive an email on Sunday morning.');
         $this->add($field);
 
         $reminder = new Collection('reminder_mail_form');
@@ -243,7 +249,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->getConfigValue('form.mail_reminder')
         );
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $reminderMailTabs->addTab(array($language->getName() => '#reminder_mail_tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('reminder_mail_tab_' . $language->getAbbrev());
@@ -361,7 +367,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             );
 
-            foreach($this->getLanguages() as $language) {
+            foreach ($this->getLanguages() as $language) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
@@ -406,7 +412,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             );
 
-            foreach($this->getLanguages() as $language) {
+            foreach ($this->getLanguages() as $language) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(
@@ -433,7 +439,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             }
         }
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(

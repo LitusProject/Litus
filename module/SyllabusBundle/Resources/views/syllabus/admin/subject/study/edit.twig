@@ -1,0 +1,40 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/subject/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/subject/partials/years.twig' %}
+
+    <div id="controller_action">
+        <h1>Subject</h1>
+
+        <p>Code: <b>{{ mapping.getSubject().getCode() }}</b></p>
+        <p>Name: <b>{{ mapping.getSubject().getName() }}</b></p>
+        <p>Semester: <b>{{ mapping.getSubject().getSemester() }}</b></p>
+        <p>Credits: <b>{{ mapping.getSubject().getCredits() }}</b></p>
+        <p>Students: <b>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</b></p>
+        <br />
+        <p>Students: <b>{{ mapping.getStudy().getFullTitle() }}</b></p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('syllabus_admin_subject', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Subject</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit this subject!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url("syllabus_admin_subject", {"action": "edit", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Edit Subject</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

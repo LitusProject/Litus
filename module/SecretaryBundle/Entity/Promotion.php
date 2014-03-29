@@ -65,7 +65,8 @@ abstract class Promotion
     /**
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 

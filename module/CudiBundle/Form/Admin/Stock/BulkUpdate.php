@@ -36,8 +36,8 @@ class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
     private $_inputs = array();
 
     /**
-     * @param array $articles
-     * @param null|string|int $name Optional name for the element
+     * @param array           $articles
+     * @param null|string|int $name     Optional name for the element
      */
     public function __construct($articles, $name = null)
     {

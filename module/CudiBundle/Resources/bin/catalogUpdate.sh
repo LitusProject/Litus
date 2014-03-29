@@ -6,4 +6,4 @@
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../../"
 
-php bin/CudiBundle/catalogUpdate.php -rm
+APPLICATION_ENV="production" php public/index.php cudi:update-catalog -m

@@ -1,4 +1,4 @@
-{% extends 'manage/base.twig' %}
+{% extends 'form/base.twig' %}
 
 {% block content %}
     {% if authenticatedPerson is not null %}
@@ -27,7 +27,7 @@
                           <a href="{{ url("form_manage", {"action" : "view", "id" : form.getId()}) }}" class="btn btn-info btn-xs">{{ translate("View") }}</a>
                         {% endif %}
                         {% if hasAccess('form_manage', 'download') %}
-                            <a href="#" data-file="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="download btn btn-primary btn-xs">{{ translate("Download") }}</a>
+                            <a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="btn btn-primary btn-xs">{{ translate("Download") }}</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -41,14 +41,4 @@
             <h3>{{ translate('Please login to get access to these pages.') }}</h3>
         </div>
     {% endif %}
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.download').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-        });
-    </script>
 {% endblock %}

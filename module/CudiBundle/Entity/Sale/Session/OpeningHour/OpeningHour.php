@@ -75,8 +75,8 @@ class OpeningHour
     private $translations;
 
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param \DateTime                        $startDate
+     * @param \DateTime                        $endDate
      * @param \CommonBundle\Entity\User\Person $person
      */
     public function __construct(DateTime $startDate, DateTime $endDate, Person $person)
@@ -104,12 +104,13 @@ class OpeningHour
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param  \DateTime                                                $startDate
      * @return \CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHours
      */
     public function setStart(DateTime $startDate)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -122,12 +123,13 @@ class OpeningHour
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param  \DateTime                                               $endDate
      * @return \CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour
      */
     public function setEnd(DateTime $endDate)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -140,13 +142,13 @@ class OpeningHour
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $allowFallback
+     * @param  \CommonBundle\Entity\General\Language                   $language
+     * @param  boolean                                                 $allowFallback
      * @return \CudiBundle\Entity\Sale\Session\OpeningHour\Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        foreach($this->translations as $translation) {
+        foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
@@ -161,7 +163,7 @@ class OpeningHour
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param  \CommonBundle\Entity\General\Language $language
      * @return string
      */
     public function getComment(Language $language, $allowFallback = true)

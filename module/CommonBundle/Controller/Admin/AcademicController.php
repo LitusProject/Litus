@@ -427,7 +427,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findAllByNameTypeahead($this->getParam('string'));
 
         $result = array();
-        foreach($academics as $academic) {
+        foreach ($academics as $academic) {
             $identification = $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : $academic->getUserName();
 
             $item = (object) array();
@@ -458,7 +458,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getResult();
 
         $result = array();
-        foreach($academics as $academic) {
+        foreach ($academics as $academic) {
             if ($academic->canLogin()) {
                 $item = (object) array();
                 $item->id = $academic->getId();
@@ -486,7 +486,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'username':
                 return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')

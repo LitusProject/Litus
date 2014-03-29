@@ -1,12 +1,75 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-	{% include 'common/admin/location/partials/navigation.twig' %}
+    {% include 'common/admin/location/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
-	</div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#greographical').hide();
+
+            var search = $('<button>', {'class': 'location_add'}).html('Search');
+            $('#controller_action .form-actions input[name=add]').hide()
+            $('#controller_action .form-actions input').after(search);
+
+            search.click(function (e) {
+                e.preventDefault();
+
+                $.post(
+                    '{{ url('common_admin_location', {'action': 'geocoding'}) }}',
+                    {
+                        'street': $('#address_street').val(),
+                        'number': $('#address_number').val(),
+                        'postal': $('#address_postal').val(),
+                        'city': $('#address_city').val(),
+                        'country': $('#address_country').val(),
+                    },
+                    function (data) {
+                        search.hide();
+                        var tablebody;
+                        $('#controller_action .found_locations').remove();
+                        $('#controller_action').append(
+                            $('<table>', {'class': 'found_locations'}).append(
+                                $('<thead>').append(
+                                    $('<tr>').append(
+                                        $('<th>').html('Address'),
+                                        $('<th>').html('Location'),
+                                        $('<th>').html('').css('width', '100px')
+                                    )
+                                ),
+                                tablebody = $('<tbody>')
+                            )
+                        );
+                        $(data.results).each(function () {
+                            tablebody.append(
+                                $('<tr>').append(
+                                    $('<td>').html(this.formatted_address),
+                                    $('<td>').html(this.geometry.location.lat + ', ' + this.geometry.location.lng),
+                                    $('<td>').html(
+                                        $('<a>', {'class': 'location_add', 'href': '#'}).html('Choose').data(this).click(function (e) {
+                                            e.preventDefault();
+
+                                            $('#latitude').val($(this).data().geometry.location.lat);
+                                            $('#longitude').val($(this).data().geometry.location.lng);
+
+                                            $('#controller_action form').submit();
+                                        })
+                                    )
+                                )
+                            )
+                        });
+                    },
+                    'json'
+                )
+            });
+        });
+    </script>
 {% endblock %}

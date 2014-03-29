@@ -62,8 +62,8 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param mixed $token
-     * @param string $format
+     * @param  mixed  $token
+     * @param  string $format
      * @return void
      */
     public function __construct($endDate = null, $format)
@@ -77,8 +77,8 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if and only if the end date is after the start date
      *
-     * @param  mixed $value
-     * @param  array $context
+     * @param  mixed   $value
+     * @param  array   $context
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -94,16 +94,19 @@ class DateCompare extends \Zend\Validator\AbstractValidator
             $endDate = 'now';
         } else {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
         if ($endDate === null) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
         if (DateTime::createFromFormat($this->_format, $value) <= DateTime::createFromFormat($this->_format, $endDate)) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 

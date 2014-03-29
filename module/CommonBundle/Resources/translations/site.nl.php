@@ -91,9 +91,9 @@ return array(
     'Bookstore' => 'Cudi',
     'Reservations' => 'Reservaties',
     'Open Session' => 'Open Sessie',
-    'Cudi is open until <span class="badge badge-warning">%time%</span>.' => 'Cudi is open tot <span class="badge badge-warning">%time%</span>.',
-    'Currently there is <span class="badge badge-info">%number%</span> student in the queue at Cudi.' => 'Momenteel is er <span class="badge badge-info">%number%</span> student in de rij bij Cudi.',
-    'Currently there are <span bij="badge badge-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="badge badge-info">%number%</span> studenten in de rij bij Cudi.',
+    'Cudi is open until <span class="label label-warning">%time%</span>.' => 'Cudi is open tot <span class="label label-warning">%time%</span>.',
+    'Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.' => 'Momenteel is er <span class="label label-info">%number%</span> student in de rij bij Cudi.',
+    'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="label label-info">%number%</span> studenten in de rij bij Cudi.',
     'Opening Hours' => 'Openingsuren',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',

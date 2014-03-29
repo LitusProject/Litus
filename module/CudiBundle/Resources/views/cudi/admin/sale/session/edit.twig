@@ -181,8 +181,8 @@
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="yes" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="yes">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -200,8 +200,6 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
-                    } else {
-                        console.log(data);
                     }
                 }, 'json');
 

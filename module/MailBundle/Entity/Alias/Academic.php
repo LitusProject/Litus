@@ -42,7 +42,7 @@ class Academic extends \MailBundle\Entity\Alias
     /**
      * Creates a new alias for the given academic with the given name.
      *
-     * @param string $name The name for this alias.
+     * @param string                                    $name     The name for this alias.
      * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to create the alias for.
      */
     public function __construct($name, AcademicEntity $academic)
@@ -54,7 +54,8 @@ class Academic extends \MailBundle\Entity\Alias
     /**
      * @return \CommonBundle\Entity\User\Person\Academic
      */
-    public function getAcademic() {
+    public function getAcademic()
+    {
         return $this->academic;
     }
 

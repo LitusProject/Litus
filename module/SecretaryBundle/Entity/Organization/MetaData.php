@@ -102,10 +102,10 @@ class MetaData
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param boolean $becomeMember
-     * @param boolean $irreeelAtCudi
-     * @param boolean $bakskeByMail
-     * @param string $tshirtSize
+     * @param boolean                                   $becomeMember
+     * @param boolean                                   $irreeelAtCudi
+     * @param boolean                                   $bakskeByMail
+     * @param string                                    $tshirtSize
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
     {
@@ -168,6 +168,7 @@ class MetaData
     public function setBecomeMember($becomeMember)
     {
         $this->becomeMember = $becomeMember;
+
         return $this;
     }
 
@@ -187,6 +188,7 @@ class MetaData
     public function setReceiveIrReeelAtCudi($irreeelAtCudi)
     {
         $this->irreeelAtCudi = $irreeelAtCudi;
+
         return $this;
     }
 
@@ -206,6 +208,7 @@ class MetaData
     public function setBakskeByMail($bakskeByMail)
     {
         $this->bakskeByMail = $bakskeByMail;
+
         return $this;
     }
 
@@ -235,6 +238,7 @@ class MetaData
     public function setTshirtSize($tshirtSize)
     {
         $this->tshirtSize = $tshirtSize;
+
         return $this;
     }
 }

@@ -265,21 +265,21 @@
             $('<td>').append(data.title),
             $('<td>').append(settings.translateStatus(data.status)),
             $('<td>').append(
-                $('<span>', {class: 'currentNumber'}).html(data.collected),
+                $('<span>', {'class': 'currentNumber'}).html(data.collected),
                 '/' + data.number
             ),
             $('<td class="price">').append('&euro; ' + (bestPrice/100).toFixed(2)),
-            actions = $('<td>', {class: 'actions'})
+            actions = $('<td>', {'class': 'actions'})
         ).data('info', data);
 
         if ("booked" == data.status || data.sellable == false) {
             row.addClass('inactive');
         } else {
             actions.append(
-                $('<button>', {class: 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
+                $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
                     _addArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide(),
-                $('<button>', {class: 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
                     _removeArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide()
             );
@@ -479,8 +479,10 @@
             }
         });
 
+        modal.on('shown.bs.modal', function () {
+            $(this).find('input').focus();
+        });
         modal.modal();
-        modal.find('input').focus();
     }
 
     function _addExtraArticle($this, data) {
@@ -503,17 +505,18 @@
                     data.number++;
                     data.currentNumber++;
                     row.find('td:nth-child(4)').html('').append(
-                        $('<span>', {class: 'currentNumber'}).html(data.currentNumber),
+                        $('<span>', {'class': 'currentNumber'}).html(data.currentNumber),
                         '/' + data.number
                     );
+                    _updatePrice($this);
                 } else {
                     data.status = 'assigned';
                     row.removeClass('inactive');
                     row.find('td:nth-child(6)').append(
-                        $('<button>', {class: 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
+                        $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
                             _addArticle($this, $(this).closest('tr').data('info').articleId);
                         }).hide(),
-                        $('<button>', {class: 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
+                        $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
                             _removeArticle($this, $(this).closest('tr').data('info').articleId);
                         }).hide()
                     );
@@ -522,6 +525,7 @@
                 row.data('info', data);
             } else {
                 $this.find('tbody').prepend(_addArticleRow($this, settings, data));
+                _addArticle($this, data.articleId);
             }
         }
     }

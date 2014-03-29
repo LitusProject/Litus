@@ -24,7 +24,7 @@ use CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager;
 
 /**
- * This entity represents an access rule for our door.
+ * This document represents an access rule for our door.
  *
  * @ODM\Document(
  *     collection="doorbundle_log",
@@ -80,7 +80,7 @@ class Log
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager   $entityManager
      * @return \CommonBundle\Entity\Acl\Role
      */
     public function getAcademic(EntityManager $entityManager)

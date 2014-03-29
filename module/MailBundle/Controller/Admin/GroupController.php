@@ -21,9 +21,8 @@ namespace MailBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
-    MailBundle\Form\Admin\Mail\Mail as MailForm,
+    MailBundle\Form\Admin\Group\Mail as MailForm,
     Zend\Mail\Message,
-    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -60,7 +59,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
         $form = new MailForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -74,12 +73,19 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                         ->getConfigValue('system_mail_address');
                 }
 
-                $mailName = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('system_mail_name');
+                $mailName = $formData['name'];
+                if ('' == $mailName) {
+                    $mailName = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_mail_name');
+                }
+
+                $body = $formData['message'];
+                if ($formData['test'])
+                    $body = 'This email would have been sent to the group "' . $type . ' - ' . $status . '":' . PHP_EOL . PHP_EOL . $body;
 
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setBody($body)
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
@@ -95,28 +101,31 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
                 $mail->addTo($mailAddress, $mailName);
 
-                $emailValidator = new EmailAddressValidator();
+                if (!$formData['test']) {
+                    $addresses = array();
+                    foreach ($people as $person) {
+                        if (null === $person->getPerson()->getEmail())
+                            continue;
 
-                $addresses = array();
-                foreach($people as $person) {
-                    if (null === $person->getPerson()->getEmail() || !$emailValidator->isValid($person->getPerson()->getEmail()))
-                        continue;
+                        $addresses[$person->getPerson()->getEmail()] = array(
+                            'address' => $person->getPerson()->getEmail(),
+                            'name'    => $person->getPerson()->getFullName(),
+                        );
+                    }
 
-                    $addresses[$person->getPerson()->getEmail()] = $person->getPerson()->getEmail();
-                }
+                    $i = 0;
+                    foreach ($addresses as $address) {
+                        $mail->addBcc($address['address'], $address['name']);
+                        $i++;
 
-                $i = 0;
-                foreach($addresses as $address) {
-                    $mail->addBcc($address);
-                    $i++;
+                        if (500 == $i) {
+                            $i = 0;
 
-                    if (500 == $i) {
-                        $i = 0;
+                            if ('development' != getenv('APPLICATION_ENV'))
+                                $this->getMailTransport()->send($mail);
 
-                        if ('development' != getenv('APPLICATION_ENV'))
-                            $this->getMailTransport()->send($mail);
-
-                        $mail->setBcc(array());
+                            $mail->setBcc(array());
+                        }
                     }
                 }
 

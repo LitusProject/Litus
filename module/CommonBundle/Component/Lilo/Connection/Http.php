@@ -52,8 +52,8 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Creates a new HTTP connection.
      *
-     * @param string $host The application's host
-     * @param bool $secure Whether or not to use a secure connection
+     * @param string $host      The application's host
+     * @param bool   $secure    Whether or not to use a secure connection
      * @param string $secretKey The application's secret key
      */
     public function __construct($host = '', $secure = true, $secretKey = '')
@@ -66,7 +66,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Sends the given data object to the server.
      *
-     * @param \CommonBundle\Component\Lilo\Data $data The data object that should be sent
+     * @param  \CommonBundle\Component\Lilo\Data $data The data object that should be sent
      * @return void
      */
     public function send(Data $data)
@@ -86,7 +86,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Generates the request URL based on the data type.
      *
-     * @param \CommonBundle\Component\Lilo\Data $data The data object
+     * @param  \CommonBundle\Component\Lilo\Data $data The data object
      * @return string
      */
     private function _getRequestUrl(Data $data)

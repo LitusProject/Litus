@@ -33,7 +33,7 @@ class Csv
     private $_results;
 
     /**
-     * @param array $headers The array containing the headers
+     * @param array  $headers The array containing the headers
      * @param arrays $results The array containing the form results
      */
     public function __construct(array $headers, array $results)
@@ -51,7 +51,7 @@ class Csv
     {
         $file->appendContent($this->_headers);
 
-        foreach($this->_results as $result) {
+        foreach ($this->_results as $result) {
             $file->appendContent($result);
         }
     }

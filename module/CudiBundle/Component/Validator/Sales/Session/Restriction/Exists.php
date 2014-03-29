@@ -52,9 +52,9 @@ class Exists extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Session $session
-     * @param mixed $opts The validator's options
+     * @param mixed                           $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Session $session, $opts = null)
     {
@@ -69,8 +69,8 @@ class Exists extends \Zend\Validator\AbstractValidator
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -85,6 +85,7 @@ class Exists extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::NOT_VALID);
+
         return false;
     }
 }

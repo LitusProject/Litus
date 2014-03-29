@@ -44,7 +44,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         $commentForm = new AddCommentForm();
         $replyForm = new AddReplyForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             if ($formData['reply']) {
@@ -91,7 +91,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             } else {
                 $commentForm->setData($formData);
 
-                if($commentForm->isValid()) {
+                if ($commentForm->isValid()) {
                     $formData = $commentForm->getFormData($formData);
 
                     $comment = new Comment(

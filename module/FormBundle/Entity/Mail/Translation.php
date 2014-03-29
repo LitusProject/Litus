@@ -69,10 +69,10 @@ class Translation
     private $content;
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail $mail
+     * @param \FormBundle\Entity\Mail\Mail          $mail
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $subject
-     * @param string $content
+     * @param string                                $subject
+     * @param string                                $content
      */
     public function __construct(Mail $mail, Language $language, $subject, $content)
     {
@@ -114,6 +114,7 @@ class Translation
     public function setSubject($subject)
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -133,6 +134,7 @@ class Translation
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

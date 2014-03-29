@@ -5,6 +5,13 @@
         <h1>{{ translate('Account') }}</h1>
     </div>
 
+    <div class="flashmessage alert alert-danger fade" id="profile_upload_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while uploading your profile image.') }}
+        </div>
+    </div>
+
     {% include 'common/account/partials/navigation.twig' %}
 
     <h3>{{ translate('Personal') }}</h3>
@@ -28,12 +35,13 @@
             </dl>
         </div>
         <div class="col-sm-3">
-            <div class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px;">
+            <div id="accountProfileImage" class="thumbnail" style="width: 180px; height: 135px; margin-top: 18px; position: relative;">
                 {% if authenticatedPerson.getPhotoPath() %}
                     <img src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="">
                 {% else %}
                     <img data-src="holder.js/180x135/auto/text:Profile Image" alt="">
                 {% endif %}
+                <button id="editProfile" class="btn btn-default btn-sm hidden-xs hidden-sm" style="position: absolute; bottom: 5px; right: 5px;">{{ translate('Edit') }}</button>
             </div>
         </div>
     </div>
@@ -76,7 +84,7 @@
         </div>
         <div class="col-sm-3" style="text-align: left;">
             {% if hasAccess('common_account', 'passbook') %}
-                <a href="#" id="passbook"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
+                <a href="{{ url('common_account', {"action": "passbook"}) }}"><img src="/_site/img/passbook.png" style="margin-top: 18px;"/></a>
             {% endif %}
         </div>
     </div>
@@ -95,12 +103,164 @@
     <div class="hidden-sm hidden-xs" style="text-align: center;">
         <a href="{{ url('common_account', {'action': 'edit'}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
     </div>
+
+    <div id="modalProfileImage" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Profile Image') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="imageCrop">
+                        <div style="width: 320px; margin: 10px auto;">
+                            {% if authenticatedPerson.getPhotoPath() %}
+                                <img class="image" src="{{ profilePath }}/{{ authenticatedPerson.getPhotoPath() }}" alt="" width="320">
+                            {% else %}
+                                <img class="image" width="320" />
+                            {% endif %}
+                        </div>
+                        <div class="flashmessage alert alert-error fade" id="file_size_error">
+                            <div class="content">
+                                {{ translate('The selected file is to large.') }}
+                            </div>
+                        </div>
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
+                    </div>
+
+                    <div class="imageForm" style="display: none;">
+                        {% import 'site/partials/form.twig' as forms %}
+                        {{ forms.renderForm(profileForm) }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success save">{{ translate('Save') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
+        var jcrop_api;
         $(document).ready(function () {
-            $('#passbook').downloadFile('{{ url('common_account', {"action": "passbook"}) }}');
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('#editProfile').click(function () {
+                var image = $('#modalProfileImage .image:first');
+                $('#modalProfileImage').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
+                    if (typeof jcrop_api != 'undefined')
+                        jcrop_api.destroy();
+
+                    if (image.attr('src'))
+                        enableJCrop(image);
+                });
+
+                if (window.File && window.FileReader && window.FileList && window.Blob) {
+                    $('#modalProfileImage input[type=file]').change(function () {
+                        var oFile = $(this)[0].files[0];
+
+                        $('#file_size_error').removeClass('in');
+
+                        if (oFile === undefined)
+                            return;
+
+                        if (oFile.size > 2000 * 1024) {
+                            $('#file_size_error').addClass('in');
+                            return;
+                        }
+
+                        var oReader = new FileReader();
+                        oReader.onload = function(e) {
+                            if (typeof jcrop_api != 'undefined')
+                                jcrop_api.destroy();
+
+                            image.attr('src', e.target.result).attr('style', '');
+                            image.load(function () {
+                                enableJCrop(image);
+                            });
+                        }
+                        oReader.readAsDataURL(oFile);
+
+                    });
+
+                    $('#modalProfileImage .save').one('click', function () {
+                        $('#modalProfileImage .imageCrop form').ajaxSubmit({
+                            'error': function () {
+                                $('#profile_upload_error').addClass('in');
+                                $('#modalProfileImage').modal('hide');
+                            },
+                            'success': function (data) {
+                                if (data.status !== undefined && data.status == 'success') {
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    $('#modalProfileImage').modal('hide');
+                                } else {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                }
+                            },
+                            'dataType': 'json'
+                        });
+                    });
+                } else {
+                    $('#modalProfileImage .imageCrop').hide();
+                    $('#modalProfileImage .imageForm').show();
+
+                    $('#modalProfileImage .save').one('click', function () {
+                        $('#modalProfileImage .imageForm form').ajaxSubmit({
+                            'error': function () {
+                                $('#profile_upload_error').addClass('in');
+                                $('#modalProfileImage').modal('hide');
+                            },
+                            'success': function (data) {
+                                if (data.status !== undefined && data.status == 'success') {
+                                    $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    $('#modalProfileImage').modal('hide');
+                                } else {
+                                    $('#profile_upload_error').addClass('in');
+                                    $('#modalProfileImage').modal('hide');
+                                }
+                            },
+                            'dataType': 'json'
+                        });
+                    });
+                }
+            });
         });
+
+        function enableJCrop(image) {
+            var w = image.outerWidth();
+            var h = w*240/320;
+            if (h > image.outerHeight()) {
+                h = image.outerHeight(),
+                w = h*320/240;
+            }
+
+            var x = image.outerWidth()/2 - w/2;
+            var y = image.outerHeight()/2 - h/2;
+
+            image.Jcrop({
+                keySupport: false,
+                aspectRatio: 320/240,
+                setSelect: [x, y, x+w, y+h],
+                onChange: function (e) {
+                    $('#modalProfileImage .imageCrop #x').val(Math.round(e.x));
+                    $('#modalProfileImage .imageCrop #y').val(Math.round(e.y));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.x2));
+                    $('#modalProfileImage .imageCrop #x2').val(Math.round(e.y2));
+                    $('#modalProfileImage .imageCrop #w').val(Math.round(e.w));
+                    $('#modalProfileImage .imageCrop #h').val(Math.round(e.h));
+                }
+            }, function () {
+                jcrop_api = this;
+            });
+        }
     </script>
 {% endblock %}

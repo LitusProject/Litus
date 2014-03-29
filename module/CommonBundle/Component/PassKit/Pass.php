@@ -61,8 +61,8 @@ abstract class Pass
     private $_languages = array();
 
     /**
-     * @param \CommonBundle\Component\Util\File\TmpFile $pass The temporary file for the pass
-     * @param string $imageDirectory The location of the image directory
+     * @param \CommonBundle\Component\Util\File\TmpFile $pass           The temporary file for the pass
+     * @param string                                    $imageDirectory The location of the image directory
      */
     public function __construct(TmpFile $pass, $imageDirectory)
     {
@@ -103,12 +103,13 @@ abstract class Pass
     /**
      * Add a new language to the pass.
      *
-     * @param string $name The name of the language
-     * @param array $strings The localised strings
+     * @param string $name    The name of the language
+     * @param array  $strings The localised strings
      */
     protected function addLanguage($name, array $strings)
     {
         $this->_languages[$name] = $strings;
+
         return $this;
     }
 
@@ -204,12 +205,13 @@ abstract class Pass
     /**
      * Convert a certifcate in the PEM format to a DER.
      *
-     * @param string $signature The PEM signature
+     * @param  string $signature The PEM signature
      * @return string
      */
     private function _convertPemToDer($signature)
     {
         $signature = substr($signature, (strpos($signature, 'filename="smime.p7s"')+20));
+
         return base64_decode(trim(substr($signature, 0, strpos($signature, '------'))));
     }
 

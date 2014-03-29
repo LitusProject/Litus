@@ -82,8 +82,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->getConfigValue('br.file_path') . '/' . $this->getParam('name');
 
         if ($this->getParam('name') == '' || !file_exists($filePath)) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $headers = new Headers();
@@ -114,7 +113,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->findAllActiveBySearch($this->getCurrentAcademicYear(), $this->getParam('string'));
 
         $result = array();
-        foreach($pages as $page) {
+        foreach ($pages as $page) {
             $item = (object) array();
             $item->name = $page->getCompany()->getName();
             $item->logo = $page->getCompany()->getLogo();
@@ -175,7 +174,6 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return $company;
     }
-
 
     private function _getCompanyByLogo()
     {

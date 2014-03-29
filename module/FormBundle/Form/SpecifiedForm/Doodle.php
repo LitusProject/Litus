@@ -60,21 +60,20 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_person;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form $form
+     * @param \Doctrine\ORM\EntityManager            $entityManager
+     * @param \CommonBundle\Entity\General\Language  $language
+     * @param \FormBundle\Entity\Node\Form           $form
      * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param \FormBundle\Entity\Node\Entry|null $entry
-     * @param array $occupiedSlots
-     * @param boolean $forceEdit
-     * @param null|string|int $name Optional name for the element
+     * @param \FormBundle\Entity\Node\Entry|null     $entry
+     * @param boolean                                $forceEdit
+     * @param null|string|int                        $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, array $occupiedSlots, $forceEdit = false, $name = null)
+    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
     {
         parent::__construct($name);
 
         // Create guest fields
-        if ($person === null) {
+        if (null === $person) {
             $field = new Text('first_name');
             $field->setLabel('First Name')
                 ->setRequired(true);
@@ -91,10 +90,11 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        $this->_form = $form;
-        $this->_occupiedSlots = $occupiedSlots;
         $this->_entityManager = $entityManager;
+        $this->_form = $form;
         $this->_person = $person;
+
+        $this->_occupiedSlots = $this->_getOccupiedSlots($entityManager, $form, $person);
 
         $editable = $form->canBeSavedBy($person) || $forceEdit;
 
@@ -127,7 +127,31 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         if (null !== $entry)
             $this->_populateFromEntry($entry);
 
-        $this->_disableOccupiedSlots($occupiedSlots);
+        $this->_disableOccupiedSlots($this->_occupiedSlots);
+    }
+
+    private function _getOccupiedSlots(EntityManager $entityManager, Form $form, Person $person = null)
+    {
+        $formEntries = $entityManager
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($form);
+
+        $occupiedSlots = array();
+        foreach ($formEntries as $formEntry) {
+            if (null !== $person && $formEntry->getCreationPerson() == $person)
+                continue;
+
+            foreach ($formEntry->getFieldEntries() as $fieldEntry) {
+                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
+            }
+        }
+
+        return $occupiedSlots;
+    }
+
+    public function getOccupiedSlots()
+    {
+        return $this->_occupiedSlots;
     }
 
     private function _populateFromEntry(Entry $entry)
@@ -149,7 +173,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _disableOccupiedSlots(array $occupiedSlots)
     {
-        foreach($occupiedSlots as $id => $slot) {
+        foreach ($occupiedSlots as $id => $slot) {
             $this->get('field-' . $id)->setAttribute('disabled', 'disabled');
         }
     }

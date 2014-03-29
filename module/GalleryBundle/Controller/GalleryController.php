@@ -37,7 +37,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
 
         $sorted = array();
-        foreach($albums as $album) {
+        foreach ($albums as $album) {
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
             $year = AcademicYear::getAcademicYear($date);
@@ -97,7 +97,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function albumAction()
     {
         if (!($album = $this->_getAlbumByName()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -106,7 +106,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess('gallery', 'censor') && $this->hasAccess('gallery', 'uncensor'))
+                && $this->hasAccess()->resourceAction('gallery', 'censor') && $this->hasAccess()->resourceAction('gallery', 'uncensor'))
                 $allowCensor = true;
         }
 
@@ -122,12 +122,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function censorAction()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-            return;
+            return $this->notFoundAction();
         }
 
         if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
@@ -144,12 +143,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function uncensorAction()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-            return;
+            return $this->notFoundAction();
         }
 
         if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
@@ -165,39 +163,35 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function _getAlbumByName()
     {
-    	if (null === $this->getParam('name')) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findOneByName($this->getParam('name'));
 
-    	if (null === $album) {
-    	    $this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 
     public function _getPhoto()
     {
-    	if (null === $this->getParam('name')) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $this->getParam('name')) {
+            return;
+        }
 
         $album = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Photo')
             ->findOneById($this->getParam('name'));
 
-    	if (null === $album) {
-    		$this->getResponse()->setStatusCode(404);
-    		return;
-    	}
+        if (null === $album) {
+            return;
+        }
 
-    	return $album;
+        return $album;
     }
 }

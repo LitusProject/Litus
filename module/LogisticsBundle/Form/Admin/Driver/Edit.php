@@ -39,9 +39,9 @@ class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
     private $_driver;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
      * @param \LogisticsBundle\Entity\Driver $driver
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Driver $driver, $name = null)
     {

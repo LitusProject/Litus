@@ -20,7 +20,7 @@ namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
-	Doctrine\ORM\QueryBuilder,
+    Doctrine\ORM\QueryBuilder,
     GalleryBundle\Entity\Album\Album;
 
 /**
@@ -28,10 +28,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-	/**
-	 * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
-	 */
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param null|string|int             $name          Optional name for the element
+     */
     public function __construct(EntityManager $entityManager, Album $album, $name = null)
     {
         parent::__construct($entityManager, $name);

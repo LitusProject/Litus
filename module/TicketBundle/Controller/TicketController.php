@@ -33,10 +33,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class TicketController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function eventAction ()
+    public function eventAction()
     {
         if (!($event = $this->_getEvent()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
@@ -60,7 +60,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                     if (count($event->getOptions()) == 0) {
                         $number = $formData['number_member'];
-                        for($i = 0 ; $i < count($tickets) ; $i++) {
+                        for ($i = 0 ; $i < count($tickets) ; $i++) {
                             if (0 == $number)
                                 break;
 
@@ -72,7 +72,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         if (!$event->isOnlyMembers()) {
                             $number = $formData['number_non_member'];
-                            for(; $i < count($tickets) ; $i++) {
+                            for (; $i < count($tickets) ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -83,9 +83,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             }
                         }
                     } else {
-                        foreach($event->getOptions() as $option) {
+                        foreach ($event->getOptions() as $option) {
                             $number = $formData['option_' . $option->getId() . '_number_member'];
-                            for($i = 0; $i < count($tickets) ; $i++) {
+                            for ($i = 0; $i < count($tickets) ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -98,7 +98,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                             if (!$event->isOnlyMembers()) {
                                 $number = $formData['option_' . $option->getId() . '_number_non_member'];
-                                for(; $i < count($tickets) ; $i++) {
+                                for (; $i < count($tickets) ; $i++) {
                                     if (0 == $number)
                                         break;
 
@@ -113,29 +113,29 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     }
                 } else {
                     if (count($event->getOptions()) == 0) {
-                        for($i = 0 ; $i < $formData['number_member'] ; $i++) {
+                        for ($i = 0 ; $i < $formData['number_member'] ; $i++) {
                             $this->getEntityManager()->persist(
                                 $this->_createTicket($event, $person, true)
                             );
                         }
 
                         if (!$event->isOnlyMembers()) {
-                            for($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
+                            for ($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
                                     $this->_createTicket($event, $person, false)
                                 );
                             }
                         }
                     } else {
-                        foreach($event->getOptions() as $option) {
-                            for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
+                        foreach ($event->getOptions() as $option) {
+                            for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
                                 $this->getEntityManager()->persist(
                                     $this->_createTicket($event, $person, true, $option)
                                 );
                             }
 
                             if (!$event->isOnlyMembers()) {
-                                for($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
+                                for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
                                     $this->getEntityManager()->persist(
                                         $this->_createTicket($event, $person, false, $option)
                                     );
@@ -183,7 +183,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $this->initAjax();
 
         if (!($ticket = $this->_getTicket()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($ticket->getEvent()->areTicketsGenerated()) {
             $ticket->setStatus('empty');
@@ -219,38 +219,30 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     private function _getEvent()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $event = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null == $event) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $event || !$event->isActive())
             return;
-        }
 
         return $event;
     }
 
     private function _getTicket()
     {
-        if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $this->getParam('id'))
             return;
-        }
 
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneById($this->getParam('id'));
 
-        if (null == $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject())
             return;
-        }
 
         return $ticket;
     }

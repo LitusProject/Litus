@@ -50,13 +50,13 @@
     <aside>
         {% if hasAccess('br_admin_cv_entry', 'export') %}
             <div class="sidebox">
-                <div class="title">Export CV's</div>
+                <div class="title">Export CVs</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to export the cv's!</i>
+                        <i>Please hit the link below to export the CVs!</i>
                     </p>
                     <p>
-                        <a href="#" class="exportCVS">&rarr; Export CV's</a>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Export CVs</a>
                     </p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                         <i>Please hit the link below to export the academics!</i>
                     </p>
                     <p>
-                        <a href="#" class="exportAcademics">&rarr; Export Academics</a>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Export Academics</a>
                     </p>
                 </div>
             </div>
@@ -83,15 +83,15 @@
         </div>
         <div class="modal-body">
             <p>
-                You are about to delete the following cv: <b class="academicName"></b>!
+                You are about to delete the following CV: <b class="academicName"></b>!
                 Please note that this operation cannot be undone!
             </p>
             <p>
                 Are you sure you want to continue?
             </p>
             <div class="footer">
-                <input type="button" class="delete" value="Yes">
-                <input type="button" class="cancel" data-dismiss="modal" value="No">
+                <button class="delete">Yes</button>
+                <button class="cancel" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -100,12 +100,6 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.exportCVS').each(function () {
-                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "export", "academicyear": activeAcademicYear.getCode()}) }}');
-            });
-            $('.exportAcademics').each(function () {
-                $(this).downloadFile('{{ url('br_admin_cv_entry', {"action": "exportAcademics", "academicyear": activeAcademicYear.getCode()}) }}');
-            });
             $('.item .delete').click(openModal);
         });
 

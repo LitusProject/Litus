@@ -33,7 +33,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
     {
         $form = new LoginForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

@@ -1,4 +1,4 @@
-{% extends 'manage/base.twig' %}
+{% extends 'form/base.twig' %}
 
 {% block content %}
     {% if authenticatedPerson is not null %}
@@ -76,11 +76,18 @@
         $(document).ready(function () {
             $('input[type=file]').each(function () {
                 if ($(this).data('file')) {
-                    $(this).closest('.fileinput').append(
-                        $('<button>', {'class': 'btn btn-xs btn-default'}).html('{{ translate('Download') }}').downloadFile(
-                            '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')
-                        )
+                    var fileinput = $(this).closest('.fileinput');
+                    fileinput.find('.fileinput-filename').append($(this).data('name') ? $(this).data('name') : $(this).data('file'));
+                    fileinput.removeClass('fileinput-new').addClass('fileinput-exists');
+                    fileinput.find('a.input-group-addon:last').before(
+                        $('<a>', {'class': 'input-group-addon btn btn-default fileinput-exists', 'href': '{{ url('form_view', {'action': 'downloadFile'}) }}' + $(this).data('file')}).html('{{ translate('Download') }}')
                     );
+                    fileinput.find('a.input-group-addon:last').click(function (e) {
+                        $(this).closest('.fileinput').append(
+                            $('<input>', {'type': 'hidden', 'name': $(this).closest('.fileinput').find('input[type="file"]').attr('id') + '-removed'}).val(1)
+                        );
+                        $(this).closest('.fileActions').remove();
+                    });
                 }
             });
 

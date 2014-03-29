@@ -45,8 +45,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_allMembers = array();
 
     /**
-     * @param array $allMembers
-     * @param null|string|int $name Optional name for the element
+     * @param array           $allMembers
+     * @param null|string|int $name       Optional name for the element
      */
     public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
     {
@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _cleanHappyHoursArray($optionsArray, &$groups)
     {
         $returnArray = $optionsArray;
-        for($i = 0; $i < (count($groups) % 6); $i++) {
+        for ($i = 0; $i < (count($groups) % 6); $i++) {
             $happyHours = $groups[$i]->getHappyHours();
 
             if (isset($returnArray[$happyHours[0]]))

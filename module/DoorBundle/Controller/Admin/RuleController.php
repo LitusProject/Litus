@@ -228,7 +228,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     private function _getLogGraph()
     {
         if (null !== $this->getCache()) {
-            if($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
+            if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now)
                     return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
@@ -270,7 +270,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         foreach ($entries as $entry)
             $data[$entry->getTimestamp()->format('d/m/Y')]++;
 
-        foreach(array_reverse($data) as $label => $value) {
+        foreach (array_reverse($data) as $label => $value) {
             $logGraphData['labels'][] = $label;
             $logGraphData['dataset'][] = $value;
         }

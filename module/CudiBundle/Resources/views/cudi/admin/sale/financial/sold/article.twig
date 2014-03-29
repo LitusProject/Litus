@@ -20,16 +20,36 @@
 
         {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
         <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear) }}</b></p>
+        <p>Number Sold to Members: <b>{{ article.getNumberSoldToMembers(activeAcademicYear) }}</b></p>
         <p>Total Purchase: <b>&euro; {{ (article.getNumberSold(activeAcademicYear)*article.getPurchasePrice()/100)|number_format(2) }}</b></p>
         <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear)/100)|number_format(2) }}</b></p>
 
         {% if organizations|length > 1 %}
+            {% set otherSold = article.getNumberSold(activeAcademicYear) %}
+            {% set otherSoldToMembers = article.getNumberSoldToMembers(activeAcademicYear) %}
+            {% set otherPurchased = article.getNumberSold(activeAcademicYear)*article.getPurchasePrice() %}
+            {% set otherRevenue = article.getTotalRevenue(activeAcademicYear) %}
+
             {% for organization in organizations %}
+                {% set otherSold = otherSold - article.getNumberSold(activeAcademicYear, organization) %}
+                {% set otherSoldToMembers = otherSoldToMembers - article.getNumberSoldToMembers(activeAcademicYear, organization) %}
+                {% set otherPurchased = otherPurchased - article.getNumberSold(activeAcademicYear, organization)*article.getPurchasePrice() %}
+                {% set otherRevenue = otherRevenue - article.getTotalRevenue(activeAcademicYear, organization) %}
+
                 <h2>{{ organization.getName() }}</h2>
                 <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear, organization) }}</b></p>
+                <p>Number Sold to Members: <b>{{ article.getNumberSoldToMembers(activeAcademicYear, organization) }}</b></p>
                 <p>Total Purchase: <b>&euro; {{ (article.getNumberSold(activeAcademicYear, organization)*article.getPurchasePrice()/100)|number_format(2) }}</b></p>
                 <p>Total Revenue: <b>&euro; {{ (article.getTotalRevenue(activeAcademicYear, organization)/100)|number_format(2) }}</b></p>
             {% endfor %}
+
+            {% if otherOrganizationEnabled %}
+                <h2>Other Organizations</h2>
+                <p>Number Sold: <b>{{ otherSold }}</b></p>
+                <p>Number Sold to Members: <b>{{ otherSoldToMembers }}</b></p>
+                <p>Total Purchase: <b>&euro; {{ (otherPurchased/100)|number_format(2) }}</b></p>
+                <p>Total Revenue: <b>&euro; {{ (otherRevenue/100)|number_format(2) }}</b></p>
+            {% endif %}
         {% endif %}
         <br />
 

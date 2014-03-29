@@ -44,8 +44,8 @@ class AcademicYear
      * for the given date. If no date is given, the current date is used.
      *
      * @static
-     * @param \DateTime $date If null, the current date is used
-     * @return string The academic year in yyyy-zzzz notation
+     * @param  \DateTime $date If null, the current date is used
+     * @return string    The academic year in yyyy-zzzz notation
      */
     public static function getAcademicYear(DateTime $date = null)
     {
@@ -70,8 +70,8 @@ class AcademicYear
      * If no date is given, the current date is used.
      *
      * @static
-     * @param \DateTime $date If null, the current date is used
-     * @return string The academic year in yyzz format
+     * @param  \DateTime $date If null, the current date is used
+     * @return string    The academic year in yyzz format
      */
     public static function getShortAcademicYear(DateTime $date = null)
     {
@@ -95,9 +95,9 @@ class AcademicYear
      * Returns the start of the academic year. Only the date is returned, any time should be ignored.
      *
      * @static
-     * @param \DateTime|null $date the date, if null, the current date is used.
-     * @param int $delta the start of the academic year is modified by -delta days, defaults to 0.
-     * @return \DateTime the start of the academic year
+     * @param  \DateTime|null $date  the date, if null, the current date is used.
+     * @param  int            $delta the start of the academic year is modified by -delta days, defaults to 0.
+     * @return \DateTime      the start of the academic year
      */
     public static function getStartOfAcademicYear(DateTime $date = null, $delta = 0)
     {
@@ -137,7 +137,7 @@ class AcademicYear
             $currentDate->sub(
                 new DateInterval('P1Y')
             );
-        } while($christmas > $date);
+        } while ($christmas > $date);
 
         $christmas->sub(new DateInterval(
             'P' . $delta . 'D'
@@ -150,8 +150,8 @@ class AcademicYear
      * Returns the end of the academic year. Only the date is returned, any time should be ignored.
      *
      * @static
-     * @param \DateTime|null $date the date, if null, the current date is used.
-     * @return \DateTime the end of the academic year
+     * @param  \DateTime|null $date the date, if null, the current date is used.
+     * @return \DateTime      the end of the academic year
      */
     public static function getEndOfAcademicYear(DateTime $date = null)
     {
@@ -159,6 +159,7 @@ class AcademicYear
         $date->add(
             new DateInterval('P1Y3M')
         );
+
         return self::getStartOfAcademicYear($date);
     }
 
@@ -166,7 +167,7 @@ class AcademicYear
      * Returns the start of the Academic year for the given Academic year.
      *
      * @static
-     * @param string $academicYear The academic year in yyzz format
+     * @param  string    $academicYear The academic year in yyzz format
      * @return \DateTime
      */
     public static function getDateTime($academicYear)
@@ -174,6 +175,7 @@ class AcademicYear
         $startYear = new DateTime(
             (substr($academicYear, 0, (strpos($academicYear, '-') === false ? 2 : 4))) . '-12-1'
         );
+
         return self::getStartOfAcademicYear($startYear);
     }
 
@@ -181,8 +183,8 @@ class AcademicYear
      * Returns the promotion year for the given date. This is the last year in the academic year.
      *
      * @static
-     * @param \DateTime|null $date if null, the current date is used.
-     * @return string the promotion year, in yyyy format (i.e. 2010, 2012).
+     * @param  \DateTime|null $date if null, the current date is used.
+     * @return string         the promotion year, in yyyy format (i.e. 2010, 2012).
      */
     public static function getGraduationYear(DateTime $date = null)
     {
@@ -203,8 +205,8 @@ class AcademicYear
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \DateTime $date
+     * @param  \Doctrine\ORM\EntityManager               $entityManager
+     * @param  \DateTime                                 $date
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     public static function getUniversityYear(EntityManager $entityManager, DateTime $date = null)
@@ -240,8 +242,8 @@ class AcademicYear
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \DateTime $date
+     * @param  \Doctrine\ORM\EntityManager               $entityManager
+     * @param  \DateTime                                 $date
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     public static function getOrganizationYear(EntityManager $entityManager, DateTime $date = null)

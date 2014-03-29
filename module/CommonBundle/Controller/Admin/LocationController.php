@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Location\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Location,
+    Zend\Http\Client,
     Zend\View\Model\ViewModel;
 
 /**
@@ -65,7 +66,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $formData = $form->getFormData($formData);
 
                 $location = new Location(
-                    $this->getEntityManager(),
                     $formData['name'],
                     new Address(
                         $formData['address_street'],
@@ -74,7 +74,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                         $formData['address_postal'],
                         $formData['address_city'],
                         $formData['address_country']
-                    )
+                    ),
+                    $formData['latitude'],
+                    $formData['longitude']
                 );
 
                 $this->getEntityManager()->persist($location);
@@ -107,6 +109,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'form' => $form,
+                'geocodingUrl' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.geocoding_api_url'),
             )
         );
     }
@@ -184,6 +189,34 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 'result' => array(
                     'status' => 'success'
                 )
+            )
+        );
+    }
+
+    public function geocodingAction()
+    {
+        $geocodingUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.geocoding_api_url');
+
+        $client = new Client(
+            $geocodingUrl . (substr($geocodingUrl, -1) == '/' ? 'json' : '/json')
+        );
+
+        $client->setParameterGet(
+            array(
+                'sensor'  => 'false',
+                'address' => urlencode(
+                    $this->getRequest()->getPost()->get('street') . ' ' . $this->getRequest()->getPost()->get('number') . ', '
+                        . $this->getRequest()->getPost()->get('postal') . ' ' . $this->getRequest()->getPost()->get('city') . ', '
+                        . $this->getRequest()->getPost()->get('country')
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'result' => json_decode($client->send()->getBody()),
             )
         );
     }

@@ -43,7 +43,7 @@ class Generator
      */
     public function __construct(TmpFile $tmpFile = null)
     {
-        if($tmpFile === null) {
+        if ($tmpFile === null) {
             $this->_data = new TmpFile();
             $this->_destroy = true;
         } else {
@@ -57,7 +57,7 @@ class Generator
     /**
      * Append an XML object to the file.
      *
-     * @param \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
+     * @param  \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
      * @return void
      */
     public function append(Object $object)

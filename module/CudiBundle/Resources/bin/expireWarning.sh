@@ -6,4 +6,4 @@
 scriptDirectory=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "${scriptDirectory}/../../"
 
-php bin/CudiBundle/expireWarning.php -rm
+APPLICATION_ENV="production" php public/index.php cudi:expire -m

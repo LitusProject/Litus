@@ -2,29 +2,66 @@
 
 {% block page_content %}
     <h1>{{ translate('Internships') }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {% do internshipSearchForm.prepare() %}
+            {{ form().openTag(internshipSearchForm)|raw }}
+                <div class="well">
+                    <h4>{{ translate('Arrange By') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ translate(formElement(internshipSearchForm.get('searchType')))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-        {% for internship in paginator %}
-            <tr>
-                <td width="120">
-                    <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
-                        {% if internship.getCompany().getLogo() is not empty %}
-                            <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
-                        {% else %}
-                            <center class="company-name">{{ internship.getCompany().getName() }}</center>
-                        {% endif %}
-                    </a>
-                </td>
+                <div class="well">
+                    <h4>{{ translate('Sector') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(internshipSearchForm.get('sector'))|raw }}
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{ form().closeTag()|raw }}
+        </div>
+        <div class="col-md-8">
+            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                {% for internship in paginator %}
+                    <tr>
+                        <td width="120">
+                            <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                {% if internship.getCompany().getLogo() is not empty %}
+                                    <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                                {% else %}
+                                    <center class="company-name">{{ internship.getCompany().getName() }}</center>
+                                {% endif %}
+                            </a>
+                        </td>
 
-                <td>
-                    <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
-                    <div class="pull-right hidden-xs">{{ translate('Last updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                    <br/>{% autoescape false %}{{ internship.getSummary(200) }}{% endautoescape %}
-                </td>
-            </tr>
+                        <td>
+                            <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
+                            <br/>
+                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                            <br/>
+                            {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <div class="flashmessage alert alert-warning fade in">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('No items found') }}
+                    </div>
+                {% endfor %}
+            </table>
 
-        {% endfor %}
-    </table>
-
-    {% include 'site/partials/paginationControl.twig' %}
+            {% include 'site/partials/paginationControl.twig' %}
+        </div>
+    </div>
 {% endblock %}

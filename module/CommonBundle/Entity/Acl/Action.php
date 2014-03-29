@@ -59,7 +59,7 @@ class Action
     private $resource;
 
     /**
-     * @param string $name The name of the action
+     * @param string                            $name     The name of the action
      * @param \CommonBundle\Entity\Acl\Resource $resource The resource to which the action belongs
      */
     public function __construct($name, Resource $resource)

@@ -40,19 +40,20 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
     public function setLanguage(Language $language)
     {
         $this->_language = $language;
+
         return $this;
     }
 
     /**
      * Generates a URL based on a route.
      *
-     * @param  string $route RouteInterface name
-     * @param  array $params Parameters to use in url generation, if any
-     * @param  array|bool $options RouteInterface-specific options to use in url generation, if any. If boolean, and no fourth argument, used as $reuseMatchedParams
-     * @param  boolean $reuseMatchedParams Whether to reuse matched parameters
+     * @param  string                     $route              RouteInterface name
+     * @param  array                      $params             Parameters to use in url generation, if any
+     * @param  array|bool                 $options            RouteInterface-specific options to use in url generation, if any. If boolean, and no fourth argument, used as $reuseMatchedParams
+     * @param  boolean                    $reuseMatchedParams Whether to reuse matched parameters
      * @return string
-     * @throws Exception\DomainException if composed controller does not implement InjectApplicationEventInterface, or
-     *         router cannot be found in controller event
+     * @throws Exception\DomainException  if composed controller does not implement InjectApplicationEventInterface, or
+     *                                                       router cannot be found in controller event
      * @throws Exception\RuntimeException if no RouteMatch instance or no matched route name present
      */
     public function fromRoute($route = null, $params = array(), $options = array(), $reuseMatchedParams = false)

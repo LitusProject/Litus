@@ -46,13 +46,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findAllMembers($this->getCurrentAcademicYear());
 
         $membersJson = array();
-        foreach($members as $member) {
+        foreach ($members as $member) {
             $barcode = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Barcode')
                 ->findOneByPerson($member);
 
             $membersJson[] = array(
+                'id' => $member->getId(),
                 'name' => $member->getFullName(),
+                'firstname' => $member->getFirstName(),
+                'lastname' => $member->getLastName(),
                 'identification' => $member->getUniversityIdentification(),
                 'barcode' => isset($barcode) ? $barcode->getBarcode() : '',
             );

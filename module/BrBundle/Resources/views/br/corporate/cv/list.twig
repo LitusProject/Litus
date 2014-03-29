@@ -3,7 +3,7 @@
 {% block cv_content %}
     <div class="panel-group" id="accordion">
         {% for entry in entries %}
-            <div class="panel panel-default">
+            <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">
                 <div class="panel-heading">
                     <a class="pannel-title entry-toggle" data-toggle="collapse" href="#body-entry-{{ entry.getId() }}">
                         {{ entry.getFirstName() }} {{ entry.getLastName() }}

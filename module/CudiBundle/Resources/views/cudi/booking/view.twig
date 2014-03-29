@@ -83,8 +83,8 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-danger continue" value="Yes">
-                    <input type="button" class="btn btn-default cancel" data-dismiss="modal" value="No">
+                    <button class="btn btn-danger continue">Yes</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -94,7 +94,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
             $('.item .cancel').click(openModal);
         });
 

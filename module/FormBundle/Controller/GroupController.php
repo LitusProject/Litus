@@ -32,7 +32,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     public function viewAction()
     {
         if (!($group = $this->_getGroup()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $now = new DateTime();
         if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {
@@ -57,7 +57,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $firstForm = $group->getForms()[0]->getForm();
         $startForm = $group->getForms()[0]->getForm();
 
-        foreach($group->getForms() as $form) {
+        foreach ($group->getForms() as $form) {
             $person = $this->getAuthentication()->getPersonObject();
 
             if (null !== $person) {
@@ -75,7 +75,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif(isset($_COOKIE['LITUS_form'])) {
+            } elseif (isset($_COOKIE['LITUS_form'])) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -112,7 +112,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
@@ -121,7 +120,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $group) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 

@@ -55,7 +55,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         $form = new MailForm($mailSubject, $message);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -88,7 +88,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 );
                 $this->getEntityManager()->flush();
 
-                foreach($statuses as $status) {
+                foreach ($statuses as $status) {
                     if ('' == $status->getPerson()->getEmail())
                         continue;
 
@@ -97,7 +97,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         ->findAllByProfAndAcademicYear($status->getPerson(), $academicYear);
 
                     $subjects = array();
-                    foreach($allSubjects as $subject) {
+                    foreach ($allSubjects as $subject) {
                         if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
                             $subjects[] = $subject->getSubject();
                         }
@@ -107,7 +107,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         continue;
 
                     $text = '';
-                    for($i = 0; isset($subjects[$i]); $i++) {
+                    for ($i = 0; isset($subjects[$i]); $i++) {
                         if ($i != 0)
                              $text .= PHP_EOL;
 

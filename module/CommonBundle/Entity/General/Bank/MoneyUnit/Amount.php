@@ -97,7 +97,7 @@ class Amount
     }
 
     /**
-     * @param int $amount The number of units
+     * @param  int                                                 $amount The number of units
      * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount
      */
     public function setAmount($number)

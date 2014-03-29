@@ -57,7 +57,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.subject_enroll').click(function () {
-                console.log($(this));
                 if ( $(this).html() === '{{ translate('Enroll') }}')
                     $(this).text('{{ translate('Unsubscribe') }}');
                 else

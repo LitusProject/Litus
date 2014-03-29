@@ -79,17 +79,17 @@ class Location
     private $active;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string $name
+     * @param \Doctrine\ORM\EntityManager          $entityManager
+     * @param string                               $name
      * @param \CommonBundle\Entity\General\Address $address
      */
-    public function __construct(EntityManager $entityManager, $name, Address $address)
+    public function __construct($name, Address $address, $latitude, $longitude)
     {
         $this->name = $name;
         $this->address = $address;
         $this->active = true;
-
-        $this->_updateGeocode($entityManager);
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
     }
 
     /**
@@ -109,12 +109,13 @@ class Location
     }
 
     /**
-     * @param string $name
+     * @param  string                                $name
      * @return \CommonBundle\Entity\General\Location
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -127,13 +128,12 @@ class Location
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager          $entityManager
      * @param \CommonBundle\Entity\General\Address $address
      */
-    public function setAddress(EntityManager $entityManager, Address $address)
+    public function setAddress(Address $address)
     {
         $this->address = $address;
-        $this->_updateGeocode($entityManager);
 
         return $this;
     }
@@ -147,12 +147,13 @@ class Location
     }
 
     /**
-     * @param string $latitude
+     * @param  string                               $latitude
      * @return CommonBundle\Entity\General\Location
      */
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
+
         return $this;
     }
 
@@ -165,12 +166,13 @@ class Location
     }
 
     /**
-     * @param string $longitude
+     * @param  string                               $longitude
      * @return CommonBundle\Entity\General\Location
      */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
+
         return $this;
     }
 
@@ -188,44 +190,5 @@ class Location
     public function deactivate()
     {
         $this->active = false;
-    }
-
-    /**
-     * Sets the latitude and longitude based on the results returned by
-     * the specified geocoding API.
-     *
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @return void
-     */
-    private function _updateGeocode(EntityManager $entityManager)
-    {
-        $geocodingUrl = $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.geocoding_api_url');
-
-        $client = new Client(
-            $geocodingUrl . (substr($geocodingUrl, -1) == '/' ? 'json' : '/json')
-        );
-
-        $client->setParameterGet(
-            array(
-                'sensor'  => 'false',
-                'address' => urlencode(
-                    $this->address->getStreet() . ' ' . $this->address->getNumber() . ', '
-                        . $this->address->getPostal() . ' ' . $this->address->getCity() . ', '
-                        . $this->address->getCountry()
-                )
-            )
-        );
-
-        $response = json_decode($client->send()->getBody());
-
-        if ('OK' != $response->status)
-            throw new \RuntimeException('Failed to correctly determine geocoding information');
-
-        if (count($response->results) > 1)
-            throw new \RuntimeException('The geocoding information found was ambiguous');
-
-        $this->latitude = $response->results[0]->geometry->location->lat;
-        $this->longitude = $response->results[0]->geometry->location->lng;
     }
 }

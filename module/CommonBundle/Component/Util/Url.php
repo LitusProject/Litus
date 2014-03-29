@@ -29,8 +29,8 @@ class Url
      * Creates a clean URL slug from the given string.
      *
      * @static
-     * @param string $string The string that will be cleaned
-     * @param string $delimiter The delimiter used to replace spaces
+     * @param  string $string    The string that will be cleaned
+     * @param  string $delimiter The delimiter used to replace spaces
      * @return string
      */
     public static function createSlug($string, $delimiter = '-')

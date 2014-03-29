@@ -71,10 +71,10 @@ class ViewerMap
     private $mail;
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
+     * @param \FormBundle\Entity\Node\Form     $form
      * @param \CommonBundle\Entity\User\Person $person
-     * @param boolean $edit
-     * @param boolean $mail
+     * @param boolean                          $edit
+     * @param boolean                          $mail
      */
     public function __construct(Form $form, Person $person, $edit, $mail)
     {

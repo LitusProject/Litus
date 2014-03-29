@@ -63,6 +63,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 if ($formData['responsible']) {
                     if (!$shift->canHaveAsResponsible($this->getEntityManager(), $person)) {
                         $this->_invalidAdd($shift);
+
                         return new ViewModel();
                     }
 
@@ -73,6 +74,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 } else {
                     if (!$shift->canHaveAsVolunteer($this->getEntityManager(), $person)) {
                         $this->_invalidAdd($shift);
+
                         return new ViewModel();
                     }
 
@@ -176,7 +178,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $type = $this->getParam('type');
 
-        switch($type) {
+        switch ($type) {
             case 'volunteer':
                 $repository = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift\Volunteer');
@@ -294,7 +296,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return $shift;
     }
 
-    private function _invalidAdd(Shift $shift) {
+    private function _invalidAdd(Shift $shift)
+    {
         $this->flashMessenger()->addMessage(
             new FlashMessage(
                 FlashMessage::ERROR,

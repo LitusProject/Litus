@@ -33,10 +33,10 @@ class Checkbox extends Field
 {
     /**
      * @param FormBundle\Entity\Node\Form $form
-     * @param integer $order
-     * @param bool $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string $visibilityValue
+     * @param integer                     $order
+     * @param bool                        $required
+     * @param \FormBundle\Entity\Field    $visibityDecisionField
+     * @param string                      $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
@@ -44,11 +44,12 @@ class Checkbox extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean $value
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  boolean                               $value
      * @return string
      */
-    public function getValueString(Language $language, $value) {
+    public function getValueString(Language $language, $value)
+    {
         return $value ? 'X' : '';
     }
 

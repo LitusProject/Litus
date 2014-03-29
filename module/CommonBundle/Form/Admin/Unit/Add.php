@@ -40,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -73,17 +73,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('roles');
         $field->setLabel('Roles')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createRolesArray());
+            ->setAttribute('options', $this->_createRolesArray())
+            ->setAttribute('data-help', 'The roles for the members of this unit.');
         $this->add($field);
 
         $field = new Select('coordinatorRoles');
         $field->setLabel('Coordinator Roles')
             ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createRolesArray());
+            ->setAttribute('options', $this->_createRolesArray())
+            ->setAttribute('data-help', 'The roles for the coordinator of this unit.');
         $this->add($field);
 
         $field = new Checkbox('displayed');
-        $field->setLabel('Displayed');
+        $field->setLabel('Displayed')
+            ->setAttribute('data-help', 'Flag whether this unit will be displayed on the website.');
         $this->add($field);
 
         $field = new Submit('submit');
