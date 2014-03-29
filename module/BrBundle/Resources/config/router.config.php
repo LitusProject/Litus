@@ -161,6 +161,20 @@ return array(
                 ),
             ),
         ),
+        'br_admin_overview' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/overview[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_overview',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_admin_product' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -391,7 +405,8 @@ return array(
         'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
         'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
         'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
-        'br_admin_invoice'        => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_invoice'         => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_overview'        => 'BrBundle\Controller\Admin\OverviewController',
 
         'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',

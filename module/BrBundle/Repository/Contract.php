@@ -52,4 +52,28 @@ class Contract extends EntityRepository
 
         return ++$highestContractNb;
     }
+
+    public function findAuthorByIDQuery($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('p')
+            ->from('CommonBundle\Entity\User\Person', 'p')
+            ->where(
+                $query->expr()->eq('p.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $result;
+    }
+
+    public function findContractAuthorsQuery()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('distinct(c.author)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery();
+
+        return $result;
+    }
 }

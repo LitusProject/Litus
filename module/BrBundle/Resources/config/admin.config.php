@@ -26,6 +26,7 @@ return array(
                 'br_admin_cv_entry' => 'CVs',
                 'br_admin_invoice'  => 'Invoices',
                 'br_admin_order'    => 'Orders',
+                'br_admin_overview' => 'Overview',
                 'br_admin_product'  => 'Products',
             ),
         ),

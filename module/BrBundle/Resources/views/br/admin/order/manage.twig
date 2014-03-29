@@ -40,7 +40,7 @@
                                 {% else %} No
                                 {% endif %}
                         </td>
-	                    <td>{{ order.getTotalCost() }}</td>
+	                    <td> &euro; {{ order.getTotalCost() }}</td>
 	                    <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
 	                    <td>{{ order.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
