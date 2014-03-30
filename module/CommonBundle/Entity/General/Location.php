@@ -72,7 +72,7 @@ class Location
     private $longitude;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var bool Whether or not the location is active
      *
      * @ORM\Column(type="boolean")
      */
