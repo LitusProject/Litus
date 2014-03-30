@@ -898,7 +898,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _isCookieSet()
     {
-        return $this->getRequest()->getHeader('Cookie')->offsetExists('LITUS_form');
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies->offsetExists('LITUS_form');
     }
 
     /**
@@ -906,6 +909,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getCookie()
     {
-        return $this->getRequest()->getHeader('Cookie')->get('LITUS_form');
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies['LITUS_form'];
     }
 }

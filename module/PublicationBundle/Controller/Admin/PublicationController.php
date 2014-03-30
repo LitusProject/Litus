@@ -38,10 +38,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('PublicationBundle\Entity\Publication')
                 ->findAllActiveQuery(),
             $this->getParam('page'),
-            array(),
-            array(
-                'title' => 'ASC'
-            )
+            array()
         );
 
         return new ViewModel(

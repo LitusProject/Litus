@@ -157,16 +157,15 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
         if (isset($this->_cookies[$this->_cookie]))
             unset($this->_cookies[$this->_cookie]);
 
-        $this->_response->getHeaders()->addHeader(new SetCookie(
-            $this->_cookie,
-            'deleted',
-            0,
-            '/',
-            str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']),
-            null,
-            null,
-            0
-        ));
+        $this->_response->getHeaders()->addHeader(
+            (new SetCookie())
+                ->setName($this->_cookie)
+                ->setValue('deleted')
+                ->setExpires(0)
+                ->setMaxAge(0)
+                ->setPath('/')
+                ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
+        );
     }
 
     /**
@@ -180,15 +179,14 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
         $this->_clearCookie();
 
         $this->_cookies[$this->_cookie] = $value;
-        $this->_response->getHeaders()->addHeader(new SetCookie(
-            $this->_cookie,
-            $value,
-            time() + $this->_duration,
-            '/',
-            str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']),
-            null,
-            null,
-            $this->_duration
+        $this->_response->getHeaders()->addHeader(
+            (new SetCookie())
+                ->setName($this->_cookie)
+                ->setValue($value)
+                ->setExpires(time() + $this->_duration)
+                ->setMaxAge($this->_duration)
+                ->setPath('/')
+                ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
         ));
     }
 }
