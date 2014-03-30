@@ -18,16 +18,7 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractEntry,
-    BrBundle\Entity\Product\Order,
-    BrBundle\Entity\Contract\Section,
-    BrBundle\Entity\Contract\Composition,
-    BrBundle\Entity\Product\OrderEntry,
-    BrBundle\Form\Admin\Order\Add as AddForm,
-    BrBundle\Form\Admin\Order\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * OverviewController
@@ -38,46 +29,120 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Product\Order',
-            $this->getParam('page')
-        );
-
         $array = $this->_getOverview();
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'array' => $array,
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        $person = $this->_getAuthor();
+
+        $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findContractsByAuthorID($person);
+
+        return new ViewModel(
+            array(
+                'contracts' => $contracts,
             )
         );
     }
 
     private function _getOverview(){
-        //TODO
 
-        // $authorsID = $this->getEntityManager()
-        //     ->getRepository('BrBundle\Entity\Contract')
-        //     ->findContractAuthors();
-        // $array = array();
-        // foreach ($authorsID as $author) {
-        //     print_r($author[1]);
-        //     $person = $this->getEntityManager()
-        //         ->getRepository('BrBundle\Entity\Contract')
-        //         ->findAuthorByID($author);
-        //     array_push($array,$person);
-        // }
-        // print_r($array);
-        // return $array;
-        $array = array();
-        $person = $this->getEntityManager()
+        //TODO extremely dirty solution -> can be put in one single query normally!
+        //TODO has to be cleaned up..
+
+        $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
-            ->findAuthorByID(1);
-        $array[] = $person;
-        return $array;
+            ->findContractAuthors();
+        $collection = array();
+        foreach ($ids as $id => $val) {
+            $result = array();
+
+            $person = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAuthorByID($val[1]);
+
+            //TODO this query returns a array instead of a single element, has to be fixed.  So loop can be avoided.
+
+            foreach ($person as $pers) {
+                $result['person'] = $pers;
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getContractAmountByPerson($pers);
+                $result['amount'] = $amount;
+
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getContractedRevenueByPerson($pers);
+                $result['contract'] = $amount;
+
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getPaidRevenueByPerson($pers);
+                $result['paid'] = $amount;
+
+                array_push($collection, $result);
+            }
+        }
+        return $collection;
+
+
     }
 
+    private function _getAuthor()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the author!'
+                )
+            );
 
+            $this->redirect()->toRoute(
+                'br_admin_overview',
+                array(
+                    'action' => 'manage'
+                )
+            );
 
+            return;
+        }
 
+        $array = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAuthorByID($this->getParam('id'));
+        foreach ($array as $pers) {
+            $person = $pers;
+        }
+
+        if (null === $person) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No person with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_overview',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $person;
+    }
 }

@@ -18,7 +18,8 @@
 
 namespace BrBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Contract
@@ -53,6 +54,20 @@ class Contract extends EntityRepository
         return ++$highestContractNb;
     }
 
+    public function findContractsByAuthorIDQuery(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->eq('c.author', ':person')
+            )
+            ->setParameter('person', $person)
+            ->getQuery();
+
+        return $result;
+    }
+
     public function findAuthorByIDQuery($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -64,6 +79,58 @@ class Contract extends EntityRepository
             ->setParameter('id', $id)
             ->getQuery();
 
+        return $result;
+    }
+
+    public function getContractAmountByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('count(c)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->eq('c.author', ':person')
+            )
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getContractedRevenueByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('sum(o.totalCost)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
+            ->where(
+                $query->expr()->eq('c.author', ':person')
+            )
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getPaidRevenueByPerson(Person $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('sum(o.totalCost)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.author', ':person'),
+                    $query->expr()->eq('c.signed', 'TRUE')
+                )
+            )
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if($result == '')
+            return 0;
         return $result;
     }
 

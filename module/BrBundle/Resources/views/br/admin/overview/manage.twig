@@ -15,18 +15,18 @@
                 <th>Paid Revenue</th>
                 <th width="70px">Actions</th>
             </tr>
-            {% for entry in list %}
-            	{% if order.isOld() == false %}
-					<tr class="item item-{{ order.getId() }}">
-	                    <td>TODO PERSON</td>
-	                    <td>TODO contract amount</td>
-	                    <td>TODO contracted revenue</td>
-	                    <td>TODO paid revenue</td>
-	                    <td class="actions">
-	                    	TODO
-	                    </td>
-	                </tr>
-	            {% endif %}
+            {% for entry in array %}
+				<tr class="item item-{{ order.getId() }}">
+                    <td>{{entry['person'].getFullName()}}</td>
+                    <td>{{entry['amount']}}</td>
+                    <td>&euro; {{entry['contract']}}</td>
+                    <td>&euro; {{entry['paid']}}</td>
+                    <td class="actions">
+                    	{% if hasAccess('br_admin_overview', 'view') %}
+                            <a href="{{ url('br_admin_overview', {"action": "view", "id": entry['person'].getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
 	    </table>
 
