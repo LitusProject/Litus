@@ -58,7 +58,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
-        $nbPayDesks = sizeof($payDesks)
+        $nbPayDesks = sizeof($payDesks);
         for ($i = 0; $i < $nbPayDesks; $i++) {
             if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0)
                 unset($payDesks[$i]);
