@@ -1,0 +1,22 @@
+language: php
+php:
+    - 5.4
+    - 5.5
+
+services:
+    - mongodb
+
+cache:
+    directories:
+        - vendor
+        - $HOME/.composer/cache
+
+env:
+    - LITUS_TEST=install
+    - LITUS_TEST=codestyle
+
+before_install: phpenv config-add config/travis.ini
+
+install: bin/travis/install.sh
+
+script: bin/travis/test.sh $LITUS_TEST
