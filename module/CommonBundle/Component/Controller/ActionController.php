@@ -64,6 +64,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
+        $this->_initAuthenticationService();
         $this->_initControllerPlugins();
         $this->_initFallbackLanguage();
         $this->_initViewHelpers();
@@ -120,6 +121,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 'This page is accessible only through an asynchroneous request'
             );
         }
+    }
+
+    private function _initAuthenticationService()
+    {
+        $this->getServiceLocator()->get('authentication_service')
+            ->setRequest($this->getRequest())
+            ->setResponse($this->getResponse());
     }
 
     /**

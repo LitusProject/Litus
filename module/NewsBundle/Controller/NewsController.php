@@ -78,7 +78,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         else
             $description = $descriptions[\Locale::getDefault()];
 
-        $serverName = 'http://' . str_replace(',', '', $_SERVER['SERVER_NAME']);
+        $serverName = 'http://' . str_replace(',', '', $this->getRequest()->getServer('SERVER_NAME'));
 
         $data = array(
             new XmlObject(

@@ -370,7 +370,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -391,7 +391,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }

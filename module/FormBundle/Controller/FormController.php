@@ -77,10 +77,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE['LITUS_form'])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $entries = $this->getEntityManager()
@@ -268,10 +268,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif (isset($_COOKIE['LITUS_form'])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $draftVersion = $this->getEntityManager()
@@ -373,10 +373,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE['LITUS_form'])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $formEntry = $this->getEntityManager()
@@ -488,10 +488,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE['LITUS_form'])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $formEntry = $this->getEntityManager()
@@ -603,10 +603,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif (isset($_COOKIE['LITUS_form'])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $draftVersion = $this->getEntityManager()
@@ -743,10 +743,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = $this->getAuthentication()->getPersonObject();
         $guestInfo = null;
-        if (isset($_COOKIE['LITUS_form']) && null === $person) {
+        if ($this->_isCookieSet() && null === $person) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE['LITUS_form']);
+                ->findOneBySessionId($this->_getCookie());
         }
 
         if ($person !== null && $entry->getCreationPerson() != $person) {
@@ -817,10 +817,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         } else {
             $guestInfo = null;
-            if (isset($_COOKIE['LITUS_form'])) {
+            if ($this->_isCookieSet()) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($_COOKIE['LITUS_form']);
+                    ->findOneBySessionId($this->_getCookie());
 
                 $guestInfo->renew();
             }
@@ -891,5 +891,21 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    private function _isCookieSet()
+    {
+        return $this->getRequest()->getHeader('Cookie')->offsetExists('LITUS_form');
+    }
+
+    /**
+     * @return string
+     */
+    private function _getCookie()
+    {
+        return $this->getRequest()->getHeader('Cookie')->get('LITUS_form');
     }
 }

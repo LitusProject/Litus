@@ -62,7 +62,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
                 ->findOneActiveByCode($this->getRequest()->getPost('key'));
 
             $validateKey = $key->validate(
-                isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+                $this->getRequest()->getServer('HTTP_X_FORWARDED_FOR', $this->getRequest()->getServer('REMOTE_ADDR'))
             );
 
             if (!$validateKey) {

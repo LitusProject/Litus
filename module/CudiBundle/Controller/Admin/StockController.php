@@ -519,7 +519,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         )
                     );
 
-                    $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+                    $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
                 }
             }
 

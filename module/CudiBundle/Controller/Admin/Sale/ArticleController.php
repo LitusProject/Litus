@@ -305,7 +305,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -490,7 +490,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }

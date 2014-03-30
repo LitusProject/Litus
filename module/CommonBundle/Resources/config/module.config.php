@@ -39,10 +39,11 @@ return Config::create(
                 'authentication' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Authentication(
                         $serviceManager->get('authentication_credentialadapter'),
-                        $serviceManager->get('authentication_doctrineservice')
+                        $serviceManager->get('authentication_service')
                     );
                 },
-                'authentication_credentialadapter' => function ($serviceManager) {
+
+                'authentication_doctrinecredentialadapter' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Person',
@@ -60,12 +61,13 @@ return Config::create(
                         $serviceManager->get('authentication_action')
                     );
                 },
-                'authentication_action' => function ($serviceManager) {
+                'authentication_doctrineaction' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Action\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );
                 },
+
                 'authentication_sessionstorage' => function ($serviceManager) {
                     return new \Zend\Authentication\Storage\Session('Litus_Auth');
                 },
@@ -85,6 +87,10 @@ return Config::create(
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
+
+                'authentication_service' => 'authentication_doctrineservice',
+                'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
+                'authentication_action' => 'authentication_doctrineaction',
             ),
         ),
         'translator' => array(

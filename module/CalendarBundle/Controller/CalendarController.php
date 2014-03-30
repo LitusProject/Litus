@@ -222,7 +222,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
             $result .= 'TRANSP:OPAQUE' . PHP_EOL;
             $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
-            $result .= 'URL:' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $this->url()->fromRoute(
+            $result .= 'URL:' . (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute(
                     'calendar',
                     array(
                         'action' => 'view',

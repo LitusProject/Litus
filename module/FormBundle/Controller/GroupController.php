@@ -59,6 +59,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         foreach ($group->getForms() as $form) {
             $person = $this->getAuthentication()->getPersonObject();
+            $cookie = $this->getRequest()->getHeader('Cookie');
 
             if (null !== $person) {
                 $entries[$form->getForm()->getId()] = array(
@@ -75,10 +76,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif (isset($_COOKIE['LITUS_form'])) {
+            } elseif (isset($cookie['LITUS_form'])) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($_COOKIE['LITUS_form']);
+                    ->findOneBySessionId($cookie['LITUS_form']);
 
                 $guestInfo->renew();
 

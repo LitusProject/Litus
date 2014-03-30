@@ -115,12 +115,15 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('PublicationBundle\Entity\Edition\Pdf')
                 ->findOneById($formData['pdf_version']);
 
+            $host = (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https' : 'http')
+                . '://'
+                . $this->getRequest()->getServer('HTTP_HOST');
             $html = preg_replace(
                 '/{{[ ]*pdfVersion[ ]*}}/',
-                ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePathPdf . $pdfVersion->getFileName(),
+                $host . $publicFilePathPdf . $pdfVersion->getFileName(),
                 preg_replace(
                     '/{{[ ]*imageUrl[ ]*}}/',
-                    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePath . $fileName,
+                    $host . $publicFilePath . $fileName,
                     $formData['html']
                 )
             );
