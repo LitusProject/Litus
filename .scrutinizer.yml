@@ -17,10 +17,10 @@ tools:
     php_loc:
         enabled: true
         excluded_dirs: ["bin", "data", "config", "vendor"]
-    # php_mess_detector:
-    #     enabled: true
-    #     filter:
-    #         paths: ["module/*"]
+    php_mess_detector:
+        enabled: true
+        filter:
+            paths: ["module/*"]
     php_pdepend:
         enabled: true
         excluded_dirs: ["bin", "data", "config", "vendor", "upgrade"]
