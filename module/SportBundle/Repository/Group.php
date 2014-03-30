@@ -28,4 +28,33 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Group extends EntityRepository
 {
+    /**
+     * Returns the (count % 6) last groups entered
+     *
+     * @return array
+     */
+    public function findLast()
+    {
+        $builder = $this->_em->createQueryBuilder();
+
+        $count = $builder->select($builder->expr()->count('g.id'))
+            ->from('SportBundle\Entity\Group', 'g')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $count = ($count % 6);
+
+        // avoid second query if not needed
+        if (0 === $count)
+            return array();
+
+        $builder = $this->_em->createQueryBuilder();
+
+        return $builder->select('g')
+            ->from('SportBundle\Entity\Group', 'g')
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults($count)
+            ->getQuery()
+            ->getResult();
+    }
 }

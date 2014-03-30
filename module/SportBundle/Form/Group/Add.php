@@ -104,20 +104,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
-            ->findAll();
+            ->findLast();
 
-        $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
-
-        if (0 == count($returnArray)) {
-            $returnArray = $optionsArray;
-            if (0 != count($groups))
-                $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
-        }
-
-        return $returnArray;
+        return $this->_cleanHappyHoursArray($optionsArray, $groups);
     }
 
-    private function _cleanHappyHoursArray($optionsArray, &$groups)
+    private function _cleanHappyHoursArray(array $optionsArray, array $groups)
     {
         $returnArray = $optionsArray;
         for ($i = 0; $i < (count($groups) % 6); $i++) {
@@ -128,14 +120,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
             if (isset($returnArray[$happyHours[1]]))
                 unset($returnArray[$happyHours[1]]);
-
-            unset($groups[$i]);
         }
-
-        $newGroups = array();
-        foreach($groups as $groupNb => $group)
-            $newGroups[$groupNb - 6] = $group;
-        $groups = $newGroups;
 
         return $returnArray;
     }
