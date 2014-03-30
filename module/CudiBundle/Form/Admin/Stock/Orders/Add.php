@@ -66,7 +66,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Submit('add');
         $field->setValue('Add')
             ->setAttribute('class', 'stock_add')
-            ->setAttribute('id', 'stock_add');
+            ->setAttribute('id', 'stock_add')
+            ->setAttribute('data-help', '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
+                <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>');
         $this->add($field);
     }
 

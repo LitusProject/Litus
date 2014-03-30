@@ -280,7 +280,7 @@ Disallow: /admin/*
 
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2014022800',
-        'description' => 'The last upgrade that has been applied',
+        'value'       => '2014032300',
+        'description' => 'The last Litus schema update performed on this system',
     ),
 );

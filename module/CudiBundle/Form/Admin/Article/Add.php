@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('data-help', 'Enabling this flag will show extra options for articles that will be printed by the owners of the store. Articles that are printed by and bought from another supplier doesn\'t need these options.');
         $article->add($field);
 
-        $internal = new Collection('internal');
+        $internal = new Collection('internal_form');
         $internal->setLabel('Internal Article')
             ->setAttribute('id', 'internal_form');
         $this->add($internal);
@@ -168,7 +168,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Hardcovered');
         $internal->add($field);
 
-        $subject = new Collection('subject');
+        $subject = new Collection('subject_form');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
         $this->add($subject);
@@ -411,7 +411,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (isset($this->data['type']) && $this->data['type'] !== 'common' && isset($this->data['subject_id'])) {
-            if ($this->data['subject_id'] == '' && $this->get('subject')) {
+            if ('' == $this->data['subject_id'] && $this->has('subject')) {
                 $inputFilter->add(
                     $factory->createInput(
                         array(

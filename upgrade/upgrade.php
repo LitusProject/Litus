@@ -32,16 +32,16 @@ $connection = pg_connect(
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 
-if (0 == pg_num_rows($result))
-    pg_query($connection, 'INSERT INTO general.config VALUES(\'last_upgrade\', \'0\', \'The last upgrade that was applied\')');
+if (0 == pg_num_rows($result)) {
+    echo 'Please run `php public/index.php install:all` before attempting to upgrade' . PHP_EOL;
+    exit(1);
+}
 
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 $lastUpgrade = pg_fetch_row($result)[0];
 
 foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
-    if ($fileInfo->isDot())
-        continue;
-    if ($fileInfo->getFilename() == 'README.md')
+    if($fileInfo->isDot() || $fileInfo->getFilename() === 'README.md')
         continue;
 
     $files[] = $fileInfo->getFilename();

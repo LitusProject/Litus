@@ -147,4 +147,7 @@ return array(
     'No lease with the given id was found!' => 'No lease with the given id was found!',
     'No id or barcode was given to identify the item!' => 'No id or barcode was given to identify the item!',
     'No item with the given id or barcode was found!' => 'No item with the given id or barcode was found!',
+
+    'General' => 'General',
+    'Personal' => 'Personal',
 );

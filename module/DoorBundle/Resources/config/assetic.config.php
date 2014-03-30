@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'door_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'door_admin_rule' => array(
             '@common_jquery',
             '@admin_css',

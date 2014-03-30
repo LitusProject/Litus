@@ -106,10 +106,17 @@ class Booking
     private $cancelationDate;
 
     /**
+     * @var \DateTime The time the booking was returned
+     *
+     * @ORM\Column(name="returndate", type="datetime", nullable=true)
+     */
+    private $returnDate;
+
+    /**
      * @var array The possible states of a booking
      */
     private static $POSSIBLE_STATUSES = array(
-        'booked', 'assigned', 'sold', 'expired', 'canceled'
+        'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned'
     );
 
     /**
@@ -128,10 +135,10 @@ class Booking
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
 
         $this->person = $person;
+        $this->bookDate = new DateTime();
         $this->setArticle($article)
             ->setNumber($number)
             ->setStatus($status, $entityManager);
-        $this->bookDate = new DateTime();
     }
 
     /**
@@ -267,43 +274,69 @@ class Booking
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getCancelationDate()
+    {
+        return $this->cancelationdate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getReturnDate()
+    {
+        return $this->returnDate;
+    }
+
+    /**
      * @param string $status
      *
      * @return \CudiBundle\Entity\Sale\Booking
      */
     public function setStatus($status, $entityManager)
     {
-        if (!self::isValidBookingStatus($status))
-            throw new \InvalidArgumentException('The BookingStatus is not valid.');
+        switch ($status) {
+            case 'booked':
+                if ($this->status != 'assigned')
+                    $this->bookDate = new DateTime();
+                $this->assignmentDate = null;
+                $this->saleDate = null;
+                $this->cancelationDate = null;
+                $this->expirationDate = null;
+                break;
+            case 'assigned':
+                $this->assignmentDate = new DateTime();
+                $this->saleDate = null;
+                $this->cancelationDate = null;
 
-        if ($status == 'booked') {
-            $this->bookDate = new DateTime();
-            $this->assignmentDate = null;
-            $this->saleDate = null;
-            $this->cancelationDate = null;
-            $this->expirationDate = null;
-        } elseif ($status == 'assigned') {
-            $this->assignmentDate = new DateTime();
-            $this->saleDate = null;
-            $this->cancelationDate = null;
+                if ($this->article->canExpire()) {
+                    $expireTime = $entityManager
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.reservation_expire_time');
 
-            if ($this->article->canExpire()) {
-                $expireTime = $entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.reservation_expire_time');
-
-                $now = new DateTime();
-                $this->expirationDate = $now->add(new DateInterval($expireTime));
-            }
-        } elseif ($status == 'sold') {
-            $this->saleDate = new DateTime();
-            $this->cancelationDate = null;
-        } elseif ($status == 'expired') {
-            $this->saleDate = null;
-            $this->cancelationDate = null;
-        } elseif ($status == 'canceled') {
-            $this->saleDate = null;
-            $this->cancelationDate = new DateTime();
+                    $now = new DateTime();
+                    $this->expirationDate = $now->add(new DateInterval($expireTime));
+                }
+                break;
+            case 'sold':
+                $this->saleDate = new DateTime();
+                $this->cancelationDate = null;
+                break;
+            case 'expired':
+                $this->saleDate = null;
+                $this->cancelationDate = null;
+                break;
+            case 'canceled':
+                $this->saleDate = null;
+                $this->cancelationDate = new DateTime();
+                break;
+            case 'returned':
+                $this->returnDate = new DateTime();
+                $this->cancelationDate = null;
+                break;
+            default:
+                throw new \InvalidArgumentException('The BookingStatus is not valid.');
         }
 
         $this->status = $status;

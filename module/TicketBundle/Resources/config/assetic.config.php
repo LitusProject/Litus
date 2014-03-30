@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'ticket_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'ticket_admin_event' => array(
             '@common_jquery',
             '@admin_css',
@@ -40,6 +35,8 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@resizableColumns_js',
+            '@resizableColumns_css',
         ),
         'ticket_sale_index' => array(
             '@common_jquery',

@@ -19,8 +19,10 @@
 namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Entry as FieldEntry,
@@ -32,7 +34,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    ZipArchive;
 
 /**
  * FormController
@@ -647,6 +650,55 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
     }
 
+    public function downloadFilesAction()
+    {
+        if (!($field = $this->_getField()) || $field->getType() != 'file')
+            return new ViewModel();
+
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findAllByField($field);
+
+        $archive = new TmpFile();
+
+        $zip = new ZipArchive();
+        $now = new DateTime();
+
+        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
+        $zip->close();
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/';
+
+        foreach ($entries as $entry) {
+            $extension = pathinfo($entry->getReadableValue(), PATHINFO_EXTENSION);
+            $extension = $extension ? '.' . $extension : '';
+
+            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+            $zip->addFile(
+                $filePath . $entry->getValue(),
+                $field->getLabel($this->getLanguage()) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . $extension
+            );
+            $zip->close();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
+            'Content-Type'        => mime_content_type($archive->getFileName()),
+            'Content-Length'      => filesize($archive->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $archive->getContent(),
+            )
+        );
+    }
+
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
@@ -743,4 +795,50 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return $entry;
     }
 
+    private function _getField()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the field!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        $field = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $field) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No field with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        return $field;
+    }
 }

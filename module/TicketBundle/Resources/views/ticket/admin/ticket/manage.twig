@@ -33,34 +33,99 @@
         {% endif %}
         <br />
 
-        <table class="full_width manage">
-            <thead>
-                <tr>
-                    <th>Person</th>
-                    <th width="100px">Status</th>
-                    <th width="150px">Option</th>
-                    <th width="170px">Number</th>
-                    <th width="110px">Book Date</th>
-                    <th width="110px">Sold Date</th>
-                    <th width="70px">Member</th>
-                </tr>
-            </thead>
+        <div id="controller_action">
+            <div id="ticket_search" style="display:none;">
+                <div style="padding:4px;text-align:right">
+                    Search:
+                    <select id="searchField">
+                        <option value="person">Person</option>
+                        <option value="option">Option</option>
+                        <option value="organization">Organization</option>
+                    </select>
+                    is
+                    <input type="text" id="searchString" size="30" />
+                </div>
 
-            <tbody>
-                {% for ticket in paginator %}
-                    <tr class="item item-{{ ticket.getId() }}">
-                        <td>{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
-                        <td>{{ ticket.getStatus() }}</td>
-                        <td>{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
-                        <td>{{ ticket.getNumber() }}</td>
-                        <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
-                        <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
-                        <td>{% if ticket.isMember() %}&times;{% endif %}</td>
+                <table class="full_width manage tickets">
+                    <tr>
+                        <th>Person</th>
+                        <th width="100px">Status</th>
+                        <th width="150px">Option</th>
+                        <th width="170px">Number</th>
+                        <th width="110px">Book Date</th>
+                        <th width="110px">Sold Date</th>
+                        <th width="70px">Member</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </table>
+            </div>
 
-        {% include 'admin/partials/paginationControl.twig' %}
+            <div id="default_page">
+                <table class="full_width manage tickets">
+                    <thead>
+                        <tr>
+                            <th>Person</th>
+                            <th width="100px">Status</th>
+                            <th width="150px">Option</th>
+                            <th width="170px">Number</th>
+                            <th width="110px">Book Date</th>
+                            <th width="110px">Sold Date</th>
+                            <th width="70px">Member</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for ticket in paginator %}
+                            <tr class="item item-{{ ticket.getId() }}">
+                                <td>{% if ticket.getFullName() %}{{ ticket.getFullName() }}{% else %}(none){% endif %}</td>
+                                <td>{{ ticket.getStatus() }}</td>
+                                <td>{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
+                                <td>{{ ticket.getNumber() }}</td>
+                                <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
+                                <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
+                                <td>{% if ticket.isMember() %}&times;{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% include 'admin/partials/paginationControl.twig' %}
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".tickets").resizableColumns();
+
+            {% if hasAccess('ticket_admin_ticket', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#ticket_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('ticket_admin_ticket', {'action': 'manage', 'id': event.getId()}) }}',
+                url: '{{ url('ticket_admin_ticket', {'action': 'search', 'id': event.getId()}) }}',
+                display: function (data) {
+                    $('#ticket_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.person + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                            .append('<td>' + this.option + '</td>')
+                            .append('<td>' + this.number + '</td>')
+                            .append('<td>' + this.bookDate + '</td>')
+                            .append('<td>' + this.soldDate + '</td>')
+                            .append('<td>' + (this.isMember ? '&times' : '') + '</td>');
+                    });
+                    $('#ticket_search table').change();
+                },
+                clear: function () {
+                    $('#ticket_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
 {% endblock %}

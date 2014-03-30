@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'form_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'form_admin_form' => array(
             '@common_jquery',
             '@admin_css',

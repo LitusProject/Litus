@@ -52,7 +52,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->findOneByPerson($member);
 
             $membersJson[] = array(
+                'id' => $member->getId(),
                 'name' => $member->getFullName(),
+                'firstname' => $member->getFirstName(),
+                'lastname' => $member->getLastName(),
                 'identification' => $member->getUniversityIdentification(),
                 'barcode' => isset($barcode) ? $barcode->getBarcode() : '',
             );

@@ -63,6 +63,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttribute('id', 'restriction_type')
             ->setLabel('Type')
             ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'Limit the sale of this article on user base:
+                <ul>
+                    <li><b>Member:</b> restrict this article to members only</li>
+                    <li><b>Amount:</b> restrict the number of this article sold to this user</li>
+                </ul>')
             ->setRequired();
         $this->add($field);
 

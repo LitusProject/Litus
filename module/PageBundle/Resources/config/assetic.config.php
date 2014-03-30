@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'page_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'page_admin_page' => array(
             '@common_jquery',
             '@admin_css',

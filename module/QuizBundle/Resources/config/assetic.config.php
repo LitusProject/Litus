@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'quiz_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'quiz_admin_quiz' => array(
             '@common_jquery',
             '@admin_css',

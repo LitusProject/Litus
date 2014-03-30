@@ -27,6 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
+    TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -147,6 +148,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
     public function populateFromEvent(Event $event)
     {
+        $events = $this->_createEventsArray();
+        $events[$event->getActivity()->getId()] = $event->getActivity()->getTitle();
+        $this->get('event')->setAttribute('options', $events);
+
         $data = array(
             'event' => $event->getActivity()->getId(),
             'active' => $event->isActive(),
@@ -221,6 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                         ),
                     ),
                     new DateCompareValidator('now', 'd/m/Y H:i'),
+                    new DateValidator($this->_entityManager, 'd/m/Y H:i'),
                 ),
             )
         );

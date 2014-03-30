@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'notification_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'notification_admin_notification' => array(
             '@common_jquery',
             '@admin_css',

@@ -46,7 +46,7 @@ return array(
             'delete', 'manage'
         ),
         'cudi_admin_sales_booking' => array(
-            'actions', 'add', 'article', 'assign', 'assignAll', 'delete', 'deleteAll', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'search', 'unassign', 'undo'
+            'actions', 'add', 'article', 'assign', 'assignAll', 'delete', 'deleteAll', 'edit', 'extendAll', 'expire', 'expireAll', 'extend', 'inactive', 'manage', 'person', 'return', 'search', 'unassign', 'undo'
         ),
         'cudi_admin_sales_article_discount' => array(
             'delete', 'manage'
