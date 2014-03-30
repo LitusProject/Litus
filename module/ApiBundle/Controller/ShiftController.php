@@ -31,31 +31,46 @@ use DateInterval,
  */
 class ShiftController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function myShiftAction()
+    public function getActiveAction()
     {
-        //TODO key needs to be given and person needs to be get from the key
-        //$authenticatedPerson = $key->getPerson();
+        $authenticatedPerson = $this->getAccesToken()->getPerson();
+        if (null === $authenticatedPerson)
+            return $this->error(401, '');
 
-        //-----DUMMYCODE-----
-        $authenticatedPerson = null;
-        //---END DUMMYCODE---
-
-        if ($authenticatedPerson != null) {
-            $myShifts = $this->getEntityManager()
+        $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByPerson($authenticatedPerson);
-        } else {
-            return new ViewModel();
-        }
+            ->findAllActiveByPerson($authticatedPerson);
 
-        foreach ($myShifts as $shift) {
+        foreach ($shifts as $shift) {
+            $hasSignedUp = false;
+
             $result[] = array(
-                'name' => $shift->getName(),
-                'discription' => $shift->getDiscription(),
-                'startDate' => $shift->getStartDate(),
-                'endDate' => $shift->getEndDate(),
-                'manager' => $shift->getManager(),
-                );
+                'id'                    => $shift->getId(),
+
+                'canHaveAsResponsible'  => $shift->canHaveAsResponsible($this->getEntityManager(), $authenticatedPerson),
+                'canHaveAsVolunteer'    => $shift->canHaveAsVolunteer($this->getEntityManager(), $authenticatedPerson),
+                'description'           => $shift->getDescription(),
+                'currentNbResponsibles' => count($shift->getResponsibles()),
+                'currentNbVolunteers'   => count($shift->getVolunteers()),
+                'endDate'               => $shift->getEndDate(),
+                'hasSignedUp'           => $hasSignedUp,
+                'manager'               => $shift->getManager()->getFullName(),
+                'name'                  => $shift->getName(),
+                'nbResponsibles'        => $shift->getNbResponsibles(),
+                'nbVolunteers'          => $shift->getNbVolunteers(),
+                'startDate'             => $shift->getStartDate(),
+
+                'location'              => array(
+                    'id'        => $shift->getLocation()->getId(),
+                    'latitude'  => $shift->getLocation()->getLatitude(),
+                    'longitude' => $shift->getLocation()->getLongitude(),
+                    'name'      => $shift->getLocation()->getName(),
+                ),
+                'unit'                  => array(
+                    'id'   => $shift->getUnit()->getId(),
+                    'name' => $shift->getUnit()->getName(),
+                ),
+            );
         }
 
         return new ViewModel(
