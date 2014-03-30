@@ -67,7 +67,8 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                     if (count($event->getOptions()) == 0) {
                         $number = $formData['number_member'];
-                        for ($i = 0 ; $i < count($tickets) ; $i++) {
+                        $nbTickets = count($tickets);
+                        for ($i = 0 ; $i < $nbTickets ; $i++) {
                             if (0 == $number)
                                 break;
 
@@ -80,7 +81,8 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                         if (!$event->isOnlyMembers()) {
                             $number = $formData['number_non_member'];
-                            for (; $i < count($tickets) ; $i++) {
+                            $nbTickets = count($tickets);
+                            for (; $i < $nbTickets ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -94,7 +96,8 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     } else {
                         foreach ($event->getOptions() as $option) {
                             $number = $formData['option_' . $option->getId() . '_number_member'];
-                            for ($i = 0; $i < count($tickets) ; $i++) {
+                            $nbTickets = count($tickets);
+                            for ($i = 0 ; $i < $nbTickets ; $i++) {
                                 if (0 == $number)
                                     break;
 
@@ -108,7 +111,8 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                             if (!$event->isOnlyMembers()) {
                                 $number = $formData['option_' . $option->getId() . '_number_non_member'];
-                                for (; $i < count($tickets) ; $i++) {
+                                $nbTickets = count($tickets);
+                                for (; $i < $nbTickets ; $i++) {
                                     if (0 == $number)
                                         break;
 
@@ -139,14 +143,16 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                         }
                     } else {
                         foreach ($event->getOptions() as $option) {
-                            for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
+                            $nbMember = $formData['option_' . $option->getId() . '_number_member'];
+                            for ($i = 0 ; $i < $nbMember ; $i++) {
                                 $this->getEntityManager()->persist(
                                     $this->_createTicket($event, $person, $guestInfo, true, $formData['payed'], $option)
                                 );
                             }
 
                             if (!$event->isOnlyMembers()) {
-                                for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
+                                $nbNonMember = $formData['option_' . $option->getId() . '_number_non_member'];
+                                for ($i = 0 ; $i < $nbNonMember ; $i++) {
                                     $this->getEntityManager()->persist(
                                         $this->_createTicket($event, $person, $guestInfo, false, $formData['payed'], $option)
                                     );

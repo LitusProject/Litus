@@ -147,7 +147,8 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for ($i = 0 ; $i < count($resultSet) ; $i++) {
+            $nbResults = count($resultSet);
+            for ($i = 0; $i < $nbResults; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
@@ -176,7 +177,8 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for ($i = 0 ; $i < count($resultSet) ; $i++) {
+            $nbResults = count($resultSet);
+            for ($i = 0; $i < $nbResults; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
@@ -235,7 +237,8 @@ class Period extends EntityRepository
 
         if ($notDelivered) {
             $articles = array();
-            for ($i = 0 ; $i < count($resultSet) ; $i++) {
+            $nbResults = count($resultSet);
+            for ($i = 0; $i < $nbResults; $i++) {
                 if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
                     $articles[] = $resultSet[$i];
             }
