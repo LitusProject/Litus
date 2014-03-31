@@ -19,8 +19,6 @@
 namespace SyllabusBundle\Form\Admin\Subject\Comment;
 
 use SyllabusBundle\Entity\Subject\Comment,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**

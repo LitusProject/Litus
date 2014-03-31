@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Entity\User\Person;
 
-use CommonBundle\Entity\User\Credential,
-    CudiBundle\Entity\Supplier as SupplierEntity,
+use CudiBundle\Entity\Supplier as SupplierEntity,
     Doctrine\ORM\Mapping as ORM;
 
 /**

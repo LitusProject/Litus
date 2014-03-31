@@ -49,7 +49,7 @@ class Authentication
     /**
      * Construct a new Authentication object.
      *
-     * @param \Zend\Authentication\Adapter                                         $adapter The authentication adapter that should be used
+     * @param AdapterInterface                                                     $adapter The authentication adapter that should be used
      * @param \CommonBundle\Component\Authentication\AbstractAuthenticationService $service The service that should be used
      */
     public function __construct(AdapterInterface $adapter, AuthenticationService $service)

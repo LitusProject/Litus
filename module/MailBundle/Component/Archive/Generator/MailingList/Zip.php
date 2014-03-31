@@ -54,7 +54,7 @@ class Zip
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {

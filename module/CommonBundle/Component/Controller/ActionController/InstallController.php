@@ -37,7 +37,7 @@ abstract class InstallController extends AdminController
     /**
      * Running all installation methods.
      *
-     * @return void
+     * @return ViewModel
      */
     public function indexAction()
     {

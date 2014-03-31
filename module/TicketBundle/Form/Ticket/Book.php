@@ -24,7 +24,6 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
-    Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 

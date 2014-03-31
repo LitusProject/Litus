@@ -70,7 +70,7 @@ class Responsible
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

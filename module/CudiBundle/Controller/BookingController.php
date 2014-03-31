@@ -19,15 +19,11 @@
 namespace CudiBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
-    DateInterval,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**

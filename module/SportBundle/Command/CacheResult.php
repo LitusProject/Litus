@@ -83,6 +83,9 @@ EOT
         );
     }
 
+    /**
+     * @param string $str
+     */
     protected function writeln($str, $raw = false)
     {
         $now = new DateTime();

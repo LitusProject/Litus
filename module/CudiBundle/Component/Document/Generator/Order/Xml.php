@@ -40,8 +40,8 @@ class Xml
     private $_order;
 
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order $order         The order
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param Order                       $order         The order
      */
     public function __construct(EntityManager $entityManager, Order $order)
     {
@@ -52,7 +52,7 @@ class Xml
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {

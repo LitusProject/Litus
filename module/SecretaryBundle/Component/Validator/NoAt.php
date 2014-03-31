@@ -47,9 +47,7 @@ class NoAt extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Unique Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param mixed                            $opts          The validator's options
+     * @param mixed $opts The validator's options
      */
     public function __construct($opts = null)
     {

@@ -496,8 +496,8 @@ class Address
     }
 
     /**
-     * @param string $number
      *
+     * @param  string                               $country
      * @return \CommonBundle\Entity\General\Address
      */
     public function setCountry($country)

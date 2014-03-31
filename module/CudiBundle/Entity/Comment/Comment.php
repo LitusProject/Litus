@@ -100,6 +100,7 @@ class Comment
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidCommentType($type)

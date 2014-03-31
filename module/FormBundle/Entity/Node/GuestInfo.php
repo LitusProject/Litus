@@ -18,8 +18,7 @@
 
 namespace FormBundle\Entity\Node;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**

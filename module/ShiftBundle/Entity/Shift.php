@@ -188,7 +188,6 @@ class Shift
      * @param integer                                        $nbResponsibles
      * @param integer                                        $nbVolunteers
      * @param \CommonBundle\Entity\General\Organization\Unit $unit
-     * @param \CalendarBundle\Entity\Node\Event              $event
      * @param \CommonBundle\Entity\General\Location          $location
      * @param string                                         $name
      * @param string                                         $description
@@ -512,7 +511,7 @@ class Shift
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @return Event
      */
     public function getEvent()
     {
@@ -596,8 +595,8 @@ class Shift
     }
 
     /**
-     * @param  array                        $editRoles
-     * @return \PageBundle\Entity\Node\Page
+     * @param  array $editRoles
+     * @return Shift
      */
     public function setEditRoles(array $editRoles)
     {

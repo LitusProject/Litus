@@ -93,7 +93,7 @@ class User
     /**
      * Write data to the user
      *
-     * @param mixed $data
+     * @param string $data
      */
     public function write($data)
     {
@@ -139,7 +139,7 @@ class User
     /**
      * Return the complete message of the user
      *
-     * @return mixed
+     * @return Frame|null
      */
     public function getBuffer()
     {
@@ -162,7 +162,7 @@ class User
     /**
      * @param string $key
      *
-     * @return mixed
+     * @return string
      */
     public function getExtraData($key)
     {

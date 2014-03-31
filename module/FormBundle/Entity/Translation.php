@@ -18,8 +18,7 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,7 +64,6 @@ class Translation
     /**
      * @param \FormBundle\Entity\Field field
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $content
      * @param string                                $label
      */
     public function __construct(Field $field, Language $language, $label)

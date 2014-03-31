@@ -258,6 +258,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return $event;
     }
 
+    /**
+     * @return resource
+     */
     private function _getEventByPoster()
     {
         if (null === $this->getParam('name'))

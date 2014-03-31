@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateTime,
+use DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -192,6 +191,7 @@ abstract class Article
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidArticleType($type)

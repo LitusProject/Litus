@@ -256,6 +256,9 @@ abstract class Field
         return null;
     }
 
+    /**
+     * @param string $value
+     */
     abstract public function getValueString(Language $language, $value);
 
     abstract public function getType();

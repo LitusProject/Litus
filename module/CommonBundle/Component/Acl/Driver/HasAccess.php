@@ -50,9 +50,9 @@ class HasAccess
     }
 
     /**
-     * @param  string $resource The resource that should be verified
-     * @param  string $action   The module that should be verified
-     * @return bool
+     * @param  string       $resource The resource that should be verified
+     * @param  string       $action   The module that should be verified
+     * @return boolean|null
      */
     public function __invoke($resource, $action)
     {

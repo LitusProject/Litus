@@ -246,9 +246,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param string $name
      *
-     * @return \NewsBundle\Entity\Node\News
+     * @return Event
      */
     public function updateName()
     {

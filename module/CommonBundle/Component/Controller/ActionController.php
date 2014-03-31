@@ -22,14 +22,10 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
     Locale,
-    Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter,
     Zend\View\Model\ViewModel;
 
 /**
@@ -216,7 +212,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      *
      * If this returns null, no redirection will take place.
      *
-     * @return void
+     * @return \Zend\Http\Response
      */
     protected function redirectAfterAuthentication()
     {
@@ -228,7 +224,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Initializes the authentication.
      *
-     * @return void
+     * @return \Zend\Http\Response|null
      */
     protected function initAuthentication()
     {

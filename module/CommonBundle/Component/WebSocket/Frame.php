@@ -93,6 +93,7 @@ class Frame
 
     /**
      * @param string
+     * @param string $data
      */
     public function appendData($data)
     {

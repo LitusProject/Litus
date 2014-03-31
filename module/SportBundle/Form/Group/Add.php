@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_allMembers = array();
 
     /**
-     * @param array           $allMembers
+     * @param string[]        $allMembers
      * @param null|string|int $name       Optional name for the element
      */
     public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
@@ -84,6 +84,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
     }
 
+    /**
+     * @param integer $startTime
+     */
     private function _generateHappyHours($startTime)
     {
         $optionsArray = array();

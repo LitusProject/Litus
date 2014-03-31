@@ -162,7 +162,7 @@ class Order
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getItems()
     {

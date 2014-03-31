@@ -214,6 +214,7 @@ class Discount
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidDiscountType($type)
@@ -222,6 +223,7 @@ class Discount
     }
 
     /**
+     * @param  string  $method
      * @return boolean
      */
     public static function isValidDiscountMethod($method)
@@ -230,6 +232,7 @@ class Discount
     }
 
     /**
+     * @param  string  $rounding
      * @return boolean
      */
     public static function isValidRoundingType($rounding)
@@ -323,7 +326,7 @@ class Discount
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function applyOnce()
     {

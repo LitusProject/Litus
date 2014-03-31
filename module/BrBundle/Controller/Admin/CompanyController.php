@@ -26,7 +26,6 @@ use BrBundle\Entity\Company,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     Imagick,
-    Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
@@ -427,6 +426,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         }
     }
 
+    /**
+     * @return Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {

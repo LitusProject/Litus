@@ -27,7 +27,6 @@ use BrBundle\Entity\Company\Event,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
-    Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
@@ -383,6 +382,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return $company;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\Language
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {

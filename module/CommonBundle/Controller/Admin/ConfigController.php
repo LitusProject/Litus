@@ -108,6 +108,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Config
+     */
     private function _getEntry()
     {
         if (null === $this->getParam('key')) {

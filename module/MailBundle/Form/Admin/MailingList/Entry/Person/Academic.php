@@ -20,10 +20,8 @@ namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
-    MailBundle\Component\Validator\MailingList as NameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,

@@ -48,7 +48,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $_status = 'done';
 
     /**
-     * @param Doctrine\ORM\EntityManager              $entityManager
+     * @param EntityManager                           $entityManager
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
@@ -66,8 +66,8 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {

@@ -150,7 +150,7 @@ class SubjectMap
     /**
      * @param boolean $isProf
      *
-     * @return \CudiBundle\Entity\Article
+     * @return SubjectMap
      */
     public function setIsProf($isProf)
     {

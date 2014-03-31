@@ -19,7 +19,6 @@
 namespace MailBundle\Entity\MailingList;
 
 use CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 

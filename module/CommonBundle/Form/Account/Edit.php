@@ -23,8 +23,7 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\Cache\Storage\StorageInterface as CacheStorage;
 
 /**
  * Edit Registration

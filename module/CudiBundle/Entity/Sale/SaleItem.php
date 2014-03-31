@@ -145,7 +145,7 @@ class SaleItem
     /**
      * @param \DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Sale\Booking
+     * @return SaleItem
      */
     public function setTimestamp(DateTime $timestamp)
     {

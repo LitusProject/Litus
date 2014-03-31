@@ -375,6 +375,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\File\Mapping
+     */
     private function _getFileMapping()
     {
         if (null === $this->getParam('id')) {

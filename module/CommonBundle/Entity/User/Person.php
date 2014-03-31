@@ -177,7 +177,7 @@ abstract class Person
      * @param string $lastName    The user's last name
      * @param string $email       The user's e-mail address
      * @param string $phoneNumber The user's phone number
-     * @param $sex string The users sex ('m' or 'f')
+     * @param string $sex         string The users sex ('m' or 'f')
      */
     public function __construct($username, array $roles, $firstName, $lastName, $email = null, $phoneNumber = null, $sex = null)
     {
@@ -195,7 +195,7 @@ abstract class Person
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getId()
     {
@@ -414,7 +414,7 @@ abstract class Person
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getPhoneNumber()
     {

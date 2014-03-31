@@ -57,7 +57,7 @@ class Generator
     /**
      * Append an XML object to the file.
      *
-     * @param  \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
+     * @param  Object $object The object that should be appended
      * @return void
      */
     public function append(Object $object)

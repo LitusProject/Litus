@@ -99,7 +99,7 @@ class Barcode
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article\Barcode
+     * @return
      */
     public function getArticle()
     {

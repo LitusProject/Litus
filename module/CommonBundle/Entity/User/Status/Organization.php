@@ -94,7 +94,7 @@ class Organization
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -130,8 +130,8 @@ class Organization
     }
 
     /**
-     * @param $status
-     * @return \CommonBundle\Entity\User\UnionStatus
+     * @param  string       $status
+     * @return Organization
      */
     public function setStatus($status)
     {

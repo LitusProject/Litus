@@ -24,8 +24,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Form,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Specifield Form Doodle

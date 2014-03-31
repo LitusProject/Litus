@@ -22,8 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CalendarBundle\Entity\Node\Event,
-    ShiftBundle\Entity\Shift,
-    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -71,7 +69,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for FOP.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

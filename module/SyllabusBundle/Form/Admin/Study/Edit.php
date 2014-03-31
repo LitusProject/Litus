@@ -22,7 +22,6 @@ use Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
     SyllabusBundle\Component\Validator\Study\Recursion as RecursionValidator,
     SyllabusBundle\Entity\Study,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

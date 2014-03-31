@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Team,

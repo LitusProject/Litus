@@ -188,7 +188,7 @@ class Event
 
     /**
      * @param  \CalendarBundle\Entity\Node\Event $activity
-     * @return \TicketBunlde\Entity\Event
+     * @return Event
      */
     public function setActivity(CalendarEvent $activity)
     {
@@ -214,8 +214,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $bookablePraesidium
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $bookablePraesidium
+     * @return Event
      */
     public function setBookablePraesidium($bookablePraesidium)
     {
@@ -241,8 +241,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $bookable
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $bookable
+     * @return Event
      */
     public function setBookable($bookable)
     {
@@ -260,8 +260,8 @@ class Event
     }
 
     /**
-     * @param  \DateTime|null             $bookingsCloseDate
-     * @return \TicketBunlde\Entity\Event
+     * @param  \DateTime|null $bookingsCloseDate
+     * @return Event
      */
     public function setBookingsCloseDate(DateTime $bookingsCloseDate = null)
     {
@@ -282,8 +282,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $active
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $active
+     * @return Event
      */
     public function setActive($active)
     {
@@ -301,8 +301,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $ticketsGenerated
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $ticketsGenerated
+     * @return Event
      */
     public function setTicketsGenerated($ticketsGenerated)
     {
@@ -320,8 +320,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $numberOfTickets
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $numberOfTickets
+     * @return Event
      */
     public function setNumberOfTickets($numberOfTickets)
     {
@@ -339,8 +339,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $limitPerPerson
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $limitPerPerson
+     * @return Event
      */
     public function setLimitPerPerson($limitPerPerson)
     {
@@ -358,8 +358,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $allowRemove
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $allowRemove
+     * @return Event
      */
     public function setAllowRemove($allowRemove)
     {
@@ -377,8 +377,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $onlyMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $onlyMembers
+     * @return Event
      */
     public function setOnlyMembers($onlyMembers)
     {
@@ -396,8 +396,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $priceMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $priceMembers
+     * @return Event
      */
     public function setPriceMembers($priceMembers)
     {
@@ -415,8 +415,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $priceNonMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $priceNonMembers
+     * @return Event
      */
     public function setPriceNonMembers($priceNonMembers)
     {

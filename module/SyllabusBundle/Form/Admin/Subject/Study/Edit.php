@@ -21,7 +21,6 @@ namespace SyllabusBundle\Form\Admin\Subject\Study;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

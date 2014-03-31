@@ -19,11 +19,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Form\Auth\Login as LoginForm,
-    DateInterval,
-    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**

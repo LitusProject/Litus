@@ -21,12 +21,9 @@ namespace SecretaryBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
-    DateTime,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
     SecretaryBundle\Form\Admin\Promotion\Add as AddForm,
-    Zend\Mail\Message,
-    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**

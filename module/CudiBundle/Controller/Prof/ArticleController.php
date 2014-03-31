@@ -437,6 +437,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    /**
+     * @return Article
+     */
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -488,6 +491,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject
+     */
     private function _getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear()))

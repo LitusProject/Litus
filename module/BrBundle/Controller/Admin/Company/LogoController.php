@@ -23,8 +23,6 @@ use BrBundle\Entity\Company\Logo,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**

@@ -23,9 +23,7 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * This form allows the user to edit the reservation.
@@ -40,10 +38,9 @@ class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
     private $_reservation;
 
     /**
-     * @param \Doctrine\ORM\EntityManager                       $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear         $academicYear  The academic year
-     * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
-     * @param null|string|int                                   $name          Optional name for the element
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param VanReservation              $reservation
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, VanReservation $reservation, $name = null)
     {

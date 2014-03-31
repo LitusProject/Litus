@@ -20,7 +20,6 @@ namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    IntlDateFormatter,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface;
 

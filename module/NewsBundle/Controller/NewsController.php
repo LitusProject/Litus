@@ -19,8 +19,6 @@
 namespace NewsBundle\Controller;
 
 use CommonBundle\Component\Util\Xml\Object as XmlObject,
-    DateTime,
-    IntlDateFormatter,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

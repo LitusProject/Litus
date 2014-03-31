@@ -37,7 +37,7 @@ class Tabs extends \Zend\Form\Element
     );
 
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @param  string                             $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
@@ -50,7 +50,7 @@ class Tabs extends \Zend\Form\Element
     /**
      * @param array $tabs
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return Tabs
      */
     public function setTabs($tabs = array())
     {
@@ -70,7 +70,7 @@ class Tabs extends \Zend\Form\Element
     /**
      * @param array $tab
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return Tabs
      */
     public function addTab($tab)
     {

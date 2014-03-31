@@ -19,9 +19,6 @@
 namespace CudiBundle\Entity\Article;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\SubjectMap as SubjectMapping,
-    CudiBundle\Entity\Comment\Mapping as CommentMapping,
-    CudiBundle\Entity\File\Mapping as FileMapping,
     Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -19,7 +19,6 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 

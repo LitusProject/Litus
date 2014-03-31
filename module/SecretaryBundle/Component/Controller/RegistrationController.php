@@ -25,13 +25,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
-    CudiBundle\Entity\Sale\Booking,
-    DateInterval,
-    DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    Zend\Mvc\MvcEvent,
     Zend\View\Model\ViewModel;
 
 /**
@@ -115,6 +111,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+     * @param \SecretaryBundle\Form\Registration\Subject\Add $form
+     */
     protected function _subjectAction(Academic $academic, AcademicYear $academicYear, $form)
     {
         if ($this->getRequest()->isPost()) {

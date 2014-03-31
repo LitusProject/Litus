@@ -31,7 +31,7 @@ class Team extends EntityRepository
 {
     /**
      * Gets all teams belonging to a quiz
-     * @param QuizBundle\Entity\Quiz $quiz The team the rounds must belong to
+     * @param QuizEntity $quiz The team the rounds must belong to
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {

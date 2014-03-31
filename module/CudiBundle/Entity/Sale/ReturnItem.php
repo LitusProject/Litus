@@ -111,7 +111,7 @@ class ReturnItem
     /**
      * @param \DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Sale\Booking
+     * @return ReturnItem
      */
     public function setTimestamp(DateTime $timestamp)
     {

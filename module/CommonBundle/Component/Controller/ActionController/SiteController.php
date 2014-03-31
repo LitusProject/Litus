@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Form\Auth\Login as LoginForm,
-    PageBundle\Entity\Node\Page,
+use PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**

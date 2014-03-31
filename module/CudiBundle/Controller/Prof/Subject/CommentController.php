@@ -160,6 +160,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject
+     */
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;

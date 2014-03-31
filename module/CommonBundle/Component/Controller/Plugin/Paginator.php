@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\Plugin;
 
-use Doctrine\ORM\EntityManager,
-    Zend\Mvc\Exception,
+use Zend\Mvc\Exception,
     Zend\Paginator\Paginator as ZendPaginator,
     Zend\Paginator\Adapter\ArrayAdapter,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
@@ -76,9 +75,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator from a given array.
      *
-     * @param  array                     $records      The array containing the paginated records
-     * @param  int                       $currentPage  The page we now are on
-     * @param  int                       $itemsPerPage The number of items on each page
+     * @param  array                     $records     The array containing the paginated records
+     * @param  int                       $currentPage The page we now are on
      * @return \Zend\Paginator\Paginator
      */
     public function createFromArray(array $records, $currentPage)
@@ -98,11 +96,10 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given document.
      *
-     * @param  string                    $document     The name of the document that should be paginated
-     * @param  int                       $currentPage  The page we now are on
-     * @param  array                     $conditions   These conditions will be passed to the Repository call
-     * @param  array                     $oderBy       An array containing constraints on how to order the results
-     * @param  int                       $itemsPerPage The number of items on each page
+     * @param  string                    $document    The name of the document that should be paginated
+     * @param  int                       $currentPage The page we now are on
+     * @param  array                     $conditions  These conditions will be passed to the Repository call
+     * @param  array                     $orderBy     An array containing constraints on how to order the results
      * @return \Zend\Paginator\Paginator
      */
     public function createFromDocument($document, $currentPage, array $conditions = array(), array $orderBy = null)
@@ -118,11 +115,10 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given entity.
      *
-     * @param  string                    $entity       The name of the entity that should be paginated
-     * @param  int                       $currentPage  The page we now are on
-     * @param  array                     $conditions   These conditions will be passed to the Repository call
-     * @param  array                     $oderBy       An array containing constraints on how to order the results
-     * @param  int                       $itemsPerPage The number of items on each page
+     * @param  string                    $entity      The name of the entity that should be paginated
+     * @param  int                       $currentPage The page we now are on
+     * @param  array                     $conditions  These conditions will be passed to the Repository call
+     * @param  array                     $orderBy     An array containing constraints on how to order the results
      * @return \Zend\Paginator\Paginator
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
@@ -162,11 +158,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for a given entity.
      *
-     * @param  string                    $entity       The name of the entity that should be paginated
-     * @param  int                       $currentPage  The page we now are on
-     * @param  array                     $conditions   These conditions will be passed to the Repository call
-     * @param  array                     $oderBy       An array containing constraints on how to order the results
-     * @param  int                       $itemsPerPage The number of items on each page
+     * @param  int                       $currentPage The page we now are on
      * @return \Zend\Paginator\Paginator
      */
     public function createFromPaginatorRepository(array $records, $currentPage, $totalNumber)
@@ -202,8 +194,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * A method to quickly create the array needed to build the pagination control.
      *
-     * @param  \Zend\Paginator\Paginator $paginator The paginator
-     * @param  bool                      $fullWidth Whether the paginationControl should be displayed using the full width or not
+     * @param  bool  $fullWidth Whether the paginationControl should be displayed using the full width or not
      * @return array
      */
     public function createControl($fullWidth = false)

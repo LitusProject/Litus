@@ -83,7 +83,7 @@ class Slug
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

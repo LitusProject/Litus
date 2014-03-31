@@ -67,8 +67,8 @@ class Department
     private $_entityManager;
 
     /**
-     * @param string $name
-     * @param array  $happyHours
+     * @param string   $name
+     * @param string[] $happyHours
      */
     public function __construct($name, array $happyHours)
     {
@@ -85,7 +85,7 @@ class Department
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getName()
     {
@@ -109,8 +109,8 @@ class Department
     }
 
     /**
-     * @param  array                     $happyHours
-     * @return \SportBundle\Entity\Group
+     * @param  array      $happyHours
+     * @return Department
      */
     public function setHappyHours(array $happyHours)
     {
@@ -121,7 +121,7 @@ class Department
 
     /**
      * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \SportBundle\Entity\Group
+     * @return Department
      */
     public function setEntityManager(EntityManager $entityManager)
     {

@@ -62,7 +62,6 @@ class Volunteer
     private $payed;
 
     /**
-     * @param string $name
      */
     public function __construct(Person $person)
     {
@@ -73,7 +72,7 @@ class Volunteer
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -105,8 +104,8 @@ class Volunteer
     }
 
     /**
-     * @param  boolean                               $payed
-     * @return \ShiftBundle\Entity\Shift\Responsible
+     * @param  boolean   $payed
+     * @return Volunteer
      */
     public function setPayed($payed)
     {

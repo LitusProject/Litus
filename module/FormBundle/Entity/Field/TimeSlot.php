@@ -55,13 +55,13 @@ class TimeSlot extends Field
     private $timeslotTranslations;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param bool                        $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
-     * @param \DateTime                   $startDate
-     * @param \DateTime                   $endDate
+     * @param Form                     $form
+     * @param integer                  $order
+     * @param bool                     $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string                   $visibilityValue
+     * @param \DateTime                $startDate
+     * @param \DateTime                $endDate
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
     {
@@ -80,8 +80,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param  \DateTime                          $startDate
-     * @return \FormBundle\Entity\Fields\TimeSlot
+     * @param  \DateTime $startDate
+     * @return TimeSlot
      */
     public function setStartDate($startDate)
     {
@@ -99,8 +99,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param  \DateTime                          $endDate
-     * @return \FormBundle\Entity\Fields\TimeSlot
+     * @param  \DateTime $endDate
+     * @return TimeSlot
      */
     public function setEndDate($endDate)
     {
@@ -199,7 +199,7 @@ class TimeSlot extends Field
     /**
      * @param  \CommonBundle\Entity\General\Language $language
      * @param  boolean                               $value
-     * @return string
+     * @return boolean
      */
     public function getValueString(Language $language, $value)
     {

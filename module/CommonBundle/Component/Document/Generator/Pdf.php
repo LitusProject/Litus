@@ -109,7 +109,7 @@ abstract class Pdf
     /**
      * Generate the document's XML structure.
      *
-     * @param  \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
+     * @param  TmpFile $xmlFile A tempory file which holds the generated XML structure
      * @return void
      */
     abstract protected function generateXml(TmpFile $xmlFile);

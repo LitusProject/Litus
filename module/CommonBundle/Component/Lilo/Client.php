@@ -21,7 +21,6 @@ namespace CommonBundle\Component\Lilo;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
@@ -47,7 +46,7 @@ class Client
     /**
      * Constructs a new Lilo client.
      *
-     * @param \CommonBundle\Compnent\Lilo\Connection $connection The connection to the Lilo server
+     * @param Connection $connection The connection to the Lilo server
      */
     public function __construct(Connection $connection, Authentication $authentication = null)
     {

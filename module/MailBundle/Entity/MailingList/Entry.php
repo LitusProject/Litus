@@ -19,7 +19,6 @@
 namespace MailBundle\Entity\MailingList;
 
 use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
 
 /**

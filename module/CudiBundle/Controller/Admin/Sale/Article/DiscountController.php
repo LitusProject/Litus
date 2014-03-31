@@ -129,6 +129,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {

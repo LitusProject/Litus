@@ -25,8 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
-    Zend\Validator\File\Count as CountValidator,
-    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
 
 /**

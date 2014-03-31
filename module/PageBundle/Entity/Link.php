@@ -75,7 +75,7 @@ class Link
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -91,8 +91,7 @@ class Link
     }
 
     /**
-     * @param  \PageBundle\Entity\Node\Page $category The page's category
-     * @return \PageBundle\Entity\Category
+     * @return Link
      */
     public function setParent(Page $parent)
     {

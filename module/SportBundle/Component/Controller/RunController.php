@@ -18,8 +18,7 @@
 
 namespace SportBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\Mvc\MvcEvent;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

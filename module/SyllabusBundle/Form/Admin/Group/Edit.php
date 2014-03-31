@@ -21,7 +21,6 @@ namespace SyllabusBundle\Form\Admin\Group;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
     SyllabusBundle\Entity\Group,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

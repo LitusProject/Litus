@@ -68,7 +68,6 @@ class AcademicYearMap
     private $organization;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $person       The person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @param \CommonBundle\Entity\General\Organization $organization The organization
      */

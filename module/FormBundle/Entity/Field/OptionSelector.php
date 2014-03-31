@@ -39,11 +39,11 @@ abstract class OptionSelector extends Field
     private $optionTranslations;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param boolean                     $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
+     * @param Form                     $form
+     * @param integer                  $order
+     * @param boolean                  $required
+     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param string                   $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {

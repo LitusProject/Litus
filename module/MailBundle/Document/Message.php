@@ -93,7 +93,7 @@ class Message
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -155,7 +155,7 @@ class Message
     }
 
     /**
-     * @param  string                       $message
+     * @param  string                       $body
      * @return \MailBundle\Document\Message
      */
     public function setBody($body)

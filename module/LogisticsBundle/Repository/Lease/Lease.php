@@ -33,7 +33,7 @@ class Lease extends EntityRepository
      * Finds all leases of an item that have not yet been returned
      *
      * @param  \LogisticsBundle\Entity\Lease\Item $item
-     * @return array
+     * @return \Doctrine\ORM\Query
      */
     public function findUnreturnedByItemQuery(ItemEntity $item)
     {
@@ -55,7 +55,7 @@ class Lease extends EntityRepository
     /**
      * Finds all leases that have not yet been returned
      *
-     * @return array
+     * @return \Doctrine\ORM\Query
      */
     public function findAllUnreturnedQuery()
     {

@@ -255,8 +255,6 @@ class Config
 
     /**
      *
-     * @param  string $namespace the namespace of the module
-     * @param  string $directory
      * @return array
      */
     public static function create(array $settings, array $override = array())

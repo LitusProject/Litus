@@ -18,8 +18,7 @@
 
 namespace MailBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     MailBundle\Entity\MailingList\Named as MailingListEntity;
 
 /**

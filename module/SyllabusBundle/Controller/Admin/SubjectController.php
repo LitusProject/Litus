@@ -268,6 +268,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         }
     }
 
+    /**
+     * @return Subject
+     */
     private function _getSubject()
     {
         if (null === $this->getParam('id')) {

@@ -21,8 +21,6 @@ namespace TicketBundle\Form\Admin\Event;
 use Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**

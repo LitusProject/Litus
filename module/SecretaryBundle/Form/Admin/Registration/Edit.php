@@ -18,15 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Entity\Organization\MetaData,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Edit Registration Data form

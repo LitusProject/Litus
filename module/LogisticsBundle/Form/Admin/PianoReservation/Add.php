@@ -95,6 +95,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    /**
+     * @param boolean $isStart
+     */
     private function _getTimeSlots($isStart)
     {
         $config = unserialize(

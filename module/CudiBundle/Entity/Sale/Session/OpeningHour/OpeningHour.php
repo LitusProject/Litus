@@ -104,8 +104,8 @@ class OpeningHour
     }
 
     /**
-     * @param  \DateTime                                                $startDate
-     * @return \CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHours
+     * @param  \DateTime   $startDate
+     * @return OpeningHour
      */
     public function setStart(DateTime $startDate)
     {

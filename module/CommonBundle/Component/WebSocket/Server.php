@@ -42,7 +42,6 @@ class Server
     const OP_PONG = 0xa;
 
     /**
-     * @param string $address The file for the websocket master socket
      */
     public function __construct($file)
     {
@@ -124,7 +123,7 @@ class Server
     /**
      * Add a user socket to listen to
      *
-     * @param mixed $socket
+     * @param resource $socket
      */
     private function _addUserSocket($socket)
     {
@@ -207,7 +206,7 @@ class Server
      * Process a frame send by a user to the master socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed                                  $data
+     * @param string                                 $data
      */
     private function _processFrame(User $user, $data)
     {
@@ -352,7 +351,7 @@ class Server
      * Parse received binary
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed                                  $data
+     * @param string                                 $data
      */
     protected function gotBin(User $user, $data)
     {

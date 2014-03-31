@@ -20,12 +20,8 @@ namespace CommonBundle\Component\Lilo\Connection;
 
 use CommonBundle\Component\Lilo\Data,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
-    CommonBundle\Component\Lilo\Data\Log as LogData,
-    Exception,
     Zend\Http\Client,
-    Zend\Http\Request,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent;
+    Zend\Http\Request;
 
 /**
  * This client provides all functions needed to store Litus exceptions.

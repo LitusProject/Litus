@@ -20,12 +20,10 @@ namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

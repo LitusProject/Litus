@@ -154,6 +154,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return SubjectMap
+     */
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {

@@ -547,6 +547,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return $order;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Stock\Order\Item
+     */
     private function _getOrderItem()
     {
         if (null === $this->getParam('id')) {

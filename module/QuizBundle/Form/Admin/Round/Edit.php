@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Round,

@@ -92,7 +92,7 @@ class Rule
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

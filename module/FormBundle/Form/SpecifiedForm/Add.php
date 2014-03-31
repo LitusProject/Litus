@@ -52,11 +52,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_form;
 
     /**
-     * @param \Doctrine\ORM\EntityManager            $entityManager
-     * @param \CommonBundle\Entity\General\Language  $language
-     * @param \FormBundle\Entity\Node\Form           $form
-     * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param null|string|int                        $name          Optional name for the element
+     * @param \Doctrine\ORM\EntityManager           $entityManager
+     * @param \CommonBundle\Entity\General\Language $language
+     * @param \FormBundle\Entity\Node\Form          $form
+     * @param null|Person                           $person
+     * @param null|string|int                       $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
     {
@@ -156,6 +156,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setData($formData);
     }
 
+    /**
+     * @param boolean $hasDraft
+     */
     public function hasDraft($hasDraft)
     {
         if ($hasDraft) {

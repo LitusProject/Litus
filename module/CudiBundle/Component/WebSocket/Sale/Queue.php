@@ -20,7 +20,6 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
@@ -43,7 +42,7 @@ class Queue
     private $_queueItems;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -312,7 +311,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  integer $id
+     * @return string
      */
     public function startSale(User $user, $id)
     {
@@ -413,7 +413,6 @@ class Queue
 
     /**
      * @param integer $id
-     * @param integer $barcode
      */
     public function addArticle($id, $articleId)
     {

@@ -23,7 +23,6 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Entity\Sale\Article,
-    DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -95,7 +94,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for the fop.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

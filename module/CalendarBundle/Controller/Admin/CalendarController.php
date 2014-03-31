@@ -28,8 +28,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -410,6 +408,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return $event;
     }
 
+    /**
+     * @return resource
+     */
     private function _getEventByPoster()
     {
         if (null === $this->getParam('id')) {

@@ -517,6 +517,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return SaleArticle
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {

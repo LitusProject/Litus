@@ -70,7 +70,7 @@ class Mail
     }
 
     /**
-     * @param  string                       $form
+     * @param  string                       $from
      * @return \FormBundle\Entity\Mail\Mail
      */
     public function setFrom($from)
@@ -100,7 +100,7 @@ class Mail
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getBcc()
     {

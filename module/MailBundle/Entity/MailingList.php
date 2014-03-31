@@ -90,7 +90,7 @@ abstract class MailingList
      *
      * @param  \CommonBundle\Entity\User\Person\Academic $academic  The academic that should be checked
      * @param  boolean                                   $editAdmin Whether or not to check for permission to edit the admins of the list
-     * @return boolean
+     * @return boolean|null
      */
     public function canBeEditedBy(Academic $academic, $editAdmin = false)
     {

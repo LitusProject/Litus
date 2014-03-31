@@ -30,7 +30,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateTime,
     DateInterval,
-    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -764,6 +763,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param string $type
+     */
     private function _search(Period $activePeriod, $type)
     {
         switch ($this->getParam('field')) {
@@ -782,6 +784,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return Period
+     */
     private function _getPeriod()
     {
         if (null === $this->getParam('period')) {

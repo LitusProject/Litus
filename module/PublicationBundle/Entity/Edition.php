@@ -20,7 +20,6 @@ namespace PublicationBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
 
 /**

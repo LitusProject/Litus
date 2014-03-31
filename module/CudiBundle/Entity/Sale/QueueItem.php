@@ -165,6 +165,7 @@ class QueueItem
     }
 
     /**
+     * @param  string  $status
      * @return boolean
      */
     public static function isValidQueueStatus($status)
@@ -173,6 +174,7 @@ class QueueItem
     }
 
     /**
+     * @param  string  $payMethod
      * @return boolean
      */
     public static function isValidPayMethod($payMethod)

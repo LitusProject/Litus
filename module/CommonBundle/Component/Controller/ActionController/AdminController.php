@@ -20,7 +20,6 @@ namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
 
 /**

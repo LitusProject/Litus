@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
 class Button extends \Zend\Form\Element\Button
 {
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @param  string                             $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */

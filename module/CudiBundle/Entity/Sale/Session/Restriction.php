@@ -104,6 +104,7 @@ class Restriction
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidType($type)

@@ -176,7 +176,6 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \PageBundle\Entity\Node\Page $category The page's category
      * @return \PageBundle\Entity\Node\Page
      */
     public function setParent(Page $parent)

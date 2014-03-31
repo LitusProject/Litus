@@ -20,7 +20,6 @@ namespace CommonBundle\Component\PassKit;
 
 use CommonBundle\Component\Util\File\TmpFile,
     DirectoryIterator,
-    Doctrine\ORM\EntityManager,
     ZipArchive;
 
 /**

@@ -18,10 +18,7 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
+use CommonBundle\Entity\General\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 

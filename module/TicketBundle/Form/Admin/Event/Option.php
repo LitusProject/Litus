@@ -21,13 +21,9 @@ namespace TicketBundle\Form\Admin\Event;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    Doctrine\ORM\EntityManager,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Fieldset,
-    Zend\Form\Element\Submit;
+    Zend\Form\Fieldset;
 
 /**
  * Add Option

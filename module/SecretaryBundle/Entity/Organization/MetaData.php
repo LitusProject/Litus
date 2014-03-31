@@ -20,7 +20,6 @@ namespace SecretaryBundle\Entity\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -121,6 +120,7 @@ class MetaData
     }
 
     /**
+     * @param  string  $size
      * @return boolean
      */
     public static function isValidTshirtSize($size)

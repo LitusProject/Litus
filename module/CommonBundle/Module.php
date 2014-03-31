@@ -21,7 +21,6 @@ namespace CommonBundle;
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
     Zend\Mvc\MvcEvent,
     Zend\Console\Request as ConsoleRequest,
-    Zend\EventManager\EventInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
     Symfony\Component\Console\Application as ConsoleApplication;
 

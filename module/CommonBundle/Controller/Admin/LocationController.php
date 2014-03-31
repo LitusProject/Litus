@@ -221,6 +221,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return Location
+     */
     private function _getLocation()
     {
         if (null === $this->getParam('id')) {

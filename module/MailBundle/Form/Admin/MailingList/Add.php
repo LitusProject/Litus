@@ -19,7 +19,6 @@
 namespace MailBundle\Form\Admin\MailingList;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     MailBundle\Component\Validator\NamedList as NameValidator,

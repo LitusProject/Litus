@@ -20,10 +20,8 @@ namespace CommonBundle\Component\PassKit\Pass;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Component\Util\File\TmpFile,
-    Doctrine\ORM\EntityManager,
-    ZipArchive;
+    Doctrine\ORM\EntityManager;
 
 /**
  * This class can be used to generate a membership pass.
@@ -48,11 +46,10 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
     private $_currentAcademicYear = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager                 The EntityManager instance
-     * @param \CommonBundle\Component\Util\File\TmpFile $pass                          The temporary file for the pass
-     * @param \CommonBundle\Entity\General\AcademicYear $currentAcademicYear           The current academic year
-     * @param string                                    $appleRootCertificatePath$this The location of Apple's root certficate
-     * @param string                                    $imageDirectory                The location of the image directory
+     * @param \Doctrine\ORM\EntityManager               $entityManager       The EntityManager instance
+     * @param \CommonBundle\Component\Util\File\TmpFile $pass                The temporary file for the pass
+     * @param \CommonBundle\Entity\General\AcademicYear $currentAcademicYear The current academic year
+     * @param string                                    $imageDirectory      The location of the image directory
      */
     public function __construct(EntityManager $entityManager, Person $authenticatedPerson, AcademicYear $currentAcademicYear, TmpFile $pass, $imageDirectory)
     {

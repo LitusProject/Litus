@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Entity\General;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Zend\Http\Client;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents a geographic location associated with an address.
@@ -79,7 +77,6 @@ class Location
     private $active;
 
     /**
-     * @param \Doctrine\ORM\EntityManager          $entityManager
      * @param string                               $name
      * @param \CommonBundle\Entity\General\Address $address
      */
@@ -128,7 +125,6 @@ class Location
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager          $entityManager
      * @param \CommonBundle\Entity\General\Address $address
      */
     public function setAddress(Address $address)
@@ -147,8 +143,8 @@ class Location
     }
 
     /**
-     * @param  string                               $latitude
-     * @return CommonBundle\Entity\General\Location
+     * @param  string   $latitude
+     * @return Location
      */
     public function setLatitude($latitude)
     {
@@ -166,8 +162,8 @@ class Location
     }
 
     /**
-     * @param  string                               $longitude
-     * @return CommonBundle\Entity\General\Location
+     * @param  string   $longitude
+     * @return Location
      */
     public function setLongitude($longitude)
     {

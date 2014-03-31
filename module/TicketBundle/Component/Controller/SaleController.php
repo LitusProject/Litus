@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Exception,
+use Exception,
     Zend\Mvc\MvcEvent;
 
 /**

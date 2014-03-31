@@ -205,9 +205,8 @@ class Album
     }
 
     /**
-     * @param string $name
      *
-     * @return \NewsBundle\Entity\Node\News
+     * @return Album
      */
     public function updateName()
     {

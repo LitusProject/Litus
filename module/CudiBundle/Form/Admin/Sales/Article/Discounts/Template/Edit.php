@@ -20,7 +20,6 @@ namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
 use Doctrine\ORM\EntityManager,
     Cudibundle\Entity\Sale\Article\Discount\Template,
-    Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 
 /**

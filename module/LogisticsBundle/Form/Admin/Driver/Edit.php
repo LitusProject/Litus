@@ -18,12 +18,8 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Entity\Driver,
+use LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**

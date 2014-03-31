@@ -18,10 +18,8 @@
 
 namespace DoorBundle\Form\Admin\Rule;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ODM\MongoDB\DocumentManager,
+use Doctrine\ODM\MongoDB\DocumentManager,
     DoorBundle\Document\Rule,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**

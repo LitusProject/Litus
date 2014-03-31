@@ -58,8 +58,9 @@ class PianoDuration extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  mixed  $token
-     * @param  string $format
+     * @param  string        $format
+     * @param  string        $startDate
+     * @param  EntityManager $entityManager
      * @return void
      */
     public function __construct($startDate, $format, $entityManager)

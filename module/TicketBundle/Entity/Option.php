@@ -104,8 +104,8 @@ class Option
     }
 
     /**
-     * @param  string                      $name
-     * @return \TicketBunlde\Entity\Option
+     * @param  string $name
+     * @return Option
      */
     public function setName($name)
     {
@@ -123,8 +123,8 @@ class Option
     }
 
     /**
-     * @param  integer                     $priceMembers
-     * @return \TicketBunlde\Entity\Option
+     * @param  integer $priceMembers
+     * @return Option
      */
     public function setPriceMembers($priceMembers)
     {
@@ -142,8 +142,8 @@ class Option
     }
 
     /**
-     * @param  integer                     $priceNonMembers
-     * @return \TicketBunlde\Entity\Option
+     * @param  integer $priceNonMembers
+     * @return Option
      */
     public function setPriceNonMembers($priceNonMembers)
     {

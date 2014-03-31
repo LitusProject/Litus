@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person,
     Zend\View\Model\ViewModel;
 
 /**

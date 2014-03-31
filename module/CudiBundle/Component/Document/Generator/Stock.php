@@ -81,7 +81,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for the fop.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

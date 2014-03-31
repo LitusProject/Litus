@@ -222,7 +222,7 @@ class Runner
 
     /**
      * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \SportBundle\Entity\Group
+     * @return Runner
      */
     public function setEntityManager(EntityManager $entityManager)
     {

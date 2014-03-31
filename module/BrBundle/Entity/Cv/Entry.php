@@ -265,8 +265,28 @@ class Entry
     private $about;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $year     The current academic year.
+     * @param \CommonBundle\Entity\User\Person\Academic $academic           The academic
+     * @param \CommonBundle\Entity\General\AcademicYear $year               The current academic year.
+     * @param integer                                   $priorStudy
+     * @param integer                                   $priorGrade
+     * @param integer                                   $grade
+     * @param integer                                   $bachelorStart
+     * @param integer                                   $bachelorEnd
+     * @param integer                                   $masterStart
+     * @param integer                                   $masterEnd
+     * @param integer                                   $additionalDiplomas
+     * @param integer                                   $erasmusPeriod
+     * @param integer                                   $erasmusLocation
+     * @param integer                                   $languageExtra
+     * @param integer                                   $computerSkills
+     * @param integer                                   $experiences
+     * @param integer                                   $thesisSummary
+     * @param integer                                   $futureInterest
+     * @param integer                                   $mobilityEurope
+     * @param integer                                   $mobilityWorld
+     * @param integer                                   $careerExpectations
+     * @param integer                                   $hobbies
+     * @param integer                                   $about
      */
     public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, $birthday,
         $sex, $phoneNumber, $email, Address $address, $priorStudy, $priorGrade, Study $study, $grade, $bachelorStart,
@@ -320,7 +340,7 @@ class Entry
      * Changes the firstName of this cv entry to the given value.
      *
      * @param firstName The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setFirstName($firstName)
     {
@@ -343,7 +363,7 @@ class Entry
      * Changes the lastName of this cv entry to the given value.
      *
      * @param lastName The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setLastName($lastName)
     {
@@ -366,7 +386,7 @@ class Entry
      * Changes the birthday of this cv entry to the given value.
      *
      * @param birthday The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setBirthday($birthday)
     {
@@ -389,7 +409,7 @@ class Entry
      * Changes the sex of this cv entry to the given value.
      *
      * @param sex The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setSex($sex)
     {
@@ -412,7 +432,7 @@ class Entry
      * Changes the phoneNumber of this cv entry to the given value.
      *
      * @param phoneNumber The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -435,7 +455,7 @@ class Entry
      * Changes the email of this cv entry to the given value.
      *
      * @param email The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setEmail($email)
     {
@@ -458,7 +478,7 @@ class Entry
      * Changes the address of this cv entry to the given value.
      *
      * @param address The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setAddress($address)
     {
@@ -481,7 +501,7 @@ class Entry
      * Changes the priorStudy of this cv entry to the given value.
      *
      * @param priorStudy The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setPriorStudy($priorStudy)
     {
@@ -504,7 +524,7 @@ class Entry
      * Changes the priorGrade of this cv entry to the given value.
      *
      * @param priorGrade The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setPriorGrade($priorGrade)
     {
@@ -527,7 +547,7 @@ class Entry
      * Changes the study of this cv entry to the given value.
      *
      * @param study The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setStudy($study)
     {
@@ -550,7 +570,7 @@ class Entry
      * Changes the grade of this cv entry to the given value.
      *
      * @param grade The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setGrade($grade)
     {
@@ -573,7 +593,7 @@ class Entry
      * Changes the bachelorStart of this cv entry to the given value.
      *
      * @param bachelorStart The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setBachelorStart($bachelorStart)
     {
@@ -596,7 +616,7 @@ class Entry
      * Changes the bachelorEnd of this cv entry to the given value.
      *
      * @param bachelorEnd The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setBachelorEnd($bachelorEnd)
     {
@@ -619,7 +639,7 @@ class Entry
      * Changes the masterStart of this cv entry to the given value.
      *
      * @param masterStart The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setMasterStart($masterStart)
     {
@@ -642,7 +662,7 @@ class Entry
      * Changes the masterEnd of this cv entry to the given value.
      *
      * @param masterEnd The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setMasterEnd($masterEnd)
     {
@@ -665,7 +685,7 @@ class Entry
      * Changes the additionalDiplomas of this cv entry to the given value.
      *
      * @param additionalDiplomas The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setAdditionalDiplomas($additionalDiplomas)
     {
@@ -688,7 +708,7 @@ class Entry
      * Changes the erasmusPeriod of this cv entry to the given value.
      *
      * @param erasmusPeriod The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setErasmusPeriod($erasmusPeriod)
     {
@@ -711,7 +731,7 @@ class Entry
      * Changes the erasmusLocation of this cv entry to the given value.
      *
      * @param erasmusLocation The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setErasmusLocation($erasmusLocation)
     {
@@ -744,7 +764,7 @@ class Entry
      * Changes the languageExtra of this cv entry to the given value.
      *
      * @param languageExtra The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setLanguageExtra($languageExtra)
     {
@@ -767,7 +787,7 @@ class Entry
      * Changes the computerSkills of this cv entry to the given value.
      *
      * @param computerSkills The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setComputerSkills($computerSkills)
     {
@@ -790,7 +810,7 @@ class Entry
      * Changes the experiences of this cv entry to the given value.
      *
      * @param experiences The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setExperiences($experiences)
     {
@@ -813,7 +833,7 @@ class Entry
      * Changes the thesisSummary of this cv entry to the given value.
      *
      * @param thesisSummary The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setThesisSummary($thesisSummary)
     {
@@ -836,7 +856,7 @@ class Entry
      * Changes the futureInterest of this cv entry to the given value.
      *
      * @param futureInterest The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setFutureInterest($futureInterest)
     {
@@ -859,7 +879,7 @@ class Entry
      * Changes the mobilityEurope of this cv entry to the given value.
      *
      * @param mobilityEurope The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setMobilityEurope($mobilityEurope)
     {
@@ -882,7 +902,7 @@ class Entry
      * Changes the mobilityWorld of this cv entry to the given value.
      *
      * @param mobilityWorld The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setMobilityWorld($mobilityWorld)
     {
@@ -905,7 +925,7 @@ class Entry
      * Changes the careerExpectations of this cv entry to the given value.
      *
      * @param careerExpectations The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setCareerExpectations($careerExpectations)
     {
@@ -928,7 +948,7 @@ class Entry
      * Changes the hobbies of this cv entry to the given value.
      *
      * @param hobbies The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setHobbies($hobbies)
     {
@@ -951,7 +971,7 @@ class Entry
      * Changes the about of this cv entry to the given value.
      *
      * @param about The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setAbout($about)
     {
@@ -963,7 +983,7 @@ class Entry
     /**
      * Retrieves the id of this entry.
      *
-     * @return id
+     * @return string
      */
     public function getId()
     {
@@ -984,7 +1004,7 @@ class Entry
      * Changes the academic of this cv entry to the given value.
      *
      * @param academic The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setAcademic($academic)
     {
@@ -1007,7 +1027,7 @@ class Entry
      * Changes the year of this cv entry to the given value.
      *
      * @param year The new value
-     * @return BrBundle\Entity\Cv\Entry this
+     * @return Entry this
      */
     public function setYear($year)
     {

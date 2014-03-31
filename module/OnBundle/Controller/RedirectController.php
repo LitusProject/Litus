@@ -18,8 +18,7 @@
 
 namespace OnBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * RedirectController

@@ -20,7 +20,6 @@ namespace CudiBundle\Form\Admin\Article;
 
 use CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

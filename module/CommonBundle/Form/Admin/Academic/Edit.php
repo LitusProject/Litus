@@ -31,7 +31,6 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

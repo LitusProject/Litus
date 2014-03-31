@@ -422,7 +422,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can view this form.
      *
-     * @param  \CommonBundle\Entity\User\Persons $person The person to check.
+     * @param  Person  $person The person to check.
      * @return boolean
      */
     public function canBeViewedBy(Person $person = null)

@@ -20,7 +20,6 @@ namespace NotificationBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -63,7 +62,6 @@ class Notification extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $category
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active)
     {

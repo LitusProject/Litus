@@ -70,7 +70,6 @@ class Team
     /**
      * @param \QuizBundle\Entity\Quiz $quiz
      * @param string                  $name
-     * @param integer                 $order
      */
     public function __construct(Quiz $quiz, $name, $number)
     {

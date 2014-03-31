@@ -45,9 +45,9 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param $charsPerLine The maximum number of characters per line
-     * @param $lines The maximum number of lines
-     * @param mixed $opts The validator's options
+     * @param integer $charsPerLine The maximum number of characters per line
+     * @param integer $lines        The maximum number of lines
+     * @param mixed   $opts         The validator's options
      */
     public function __construct($charsPerLine, $lines, $opts = null)
     {

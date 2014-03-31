@@ -392,7 +392,7 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
-     * @return integer
+     * @return double
      */
     public function precalculateSellPrice(EntityManager $entityManager)
     {
@@ -435,7 +435,7 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
-     * @return integer
+     * @return double
      */
     public function precalculatePurchasePrice(EntityManager $entityManager)
     {

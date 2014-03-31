@@ -181,7 +181,7 @@ class PianoReservation extends EntityRepository
      * @param  \DateTime                                              $endDate
      * @param  \LogisticsBundle\Entity\Reservation\ReservableResource $resource
      * @param  int                                                    $ignoreId
-     * @return array
+     * @return \Doctrine\ORM\Query
      */
     public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId)
     {

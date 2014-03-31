@@ -23,7 +23,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     Doctrine\ORM\EntityManager,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
@@ -57,7 +56,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
      * @param \Zend\Cache\Storage\StorageInterface $cache         The cache instance
      * @param \Doctrine\ORM\EntityManager          $entityManager The EntityManager instance
      * @param string                               $prefix
-     * @param null|string|int                      $name          Optional name for the element
+     * @param string                               $name          Optional name for the element
      * @param boolean                              $required      Whether or not the form is required
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)

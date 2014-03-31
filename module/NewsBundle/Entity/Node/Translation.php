@@ -19,7 +19,6 @@
 namespace NewsBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
     Markdown_Parser;
 

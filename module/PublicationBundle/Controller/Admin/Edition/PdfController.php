@@ -24,8 +24,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Edition\Pdf as PdfEdition,
     PublicationBundle\Form\Admin\Edition\Pdf\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\Extension as ExtensionValidator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -219,6 +217,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return resource
+     */
     private function _getEdition()
     {
         if (null === $this->getParam('id')) {

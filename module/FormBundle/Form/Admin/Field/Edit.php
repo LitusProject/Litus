@@ -23,7 +23,6 @@ use Doctrine\ORM\EntityManager,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -42,7 +41,6 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Field    $field         The field we're going to modify
      * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)

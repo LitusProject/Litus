@@ -206,7 +206,7 @@ class Article
     /**
      * @param \DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -249,7 +249,7 @@ class Article
     /**
      * @param integer $barcode
      *
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function setBarcode($barcode)
     {
@@ -376,7 +376,7 @@ class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Suppplier
+     * @return Supplier
      */
     public function getSupplier()
     {
@@ -564,7 +564,7 @@ class Article
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Article
      */
     public function setEntityManager(EntityManager $entityManager)
     {

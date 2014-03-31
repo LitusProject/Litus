@@ -31,7 +31,7 @@ class Round extends EntityRepository
 {
     /**
      * Gets all rounds belonging to a quiz
-     * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
+     * @param QuizEntity $quiz The quiz the rounds must belong to
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {

@@ -142,6 +142,7 @@ class Ticket
     }
 
     /**
+     * @param  string  $status
      * @return boolean
      */
     public static function isValidTicketStatus($status)

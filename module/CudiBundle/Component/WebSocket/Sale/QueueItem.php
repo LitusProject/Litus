@@ -20,13 +20,10 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
-    DateInterval,
-    DateTime,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Entity\Registration;
 
@@ -58,8 +55,8 @@ class QueueItem
     private $_articles;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
-     * @param integer                    $id            The id of the queue item
+     * @param EntityManager $entityManager
+     * @param integer       $id            The id of the queue item
      */
     public function __construct(EntityManager $entityManager, User $user, $id)
     {

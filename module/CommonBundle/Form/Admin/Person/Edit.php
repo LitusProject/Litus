@@ -21,9 +21,7 @@ namespace CommonBundle\Form\Admin\Person;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Edit Person
@@ -80,7 +78,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     /**
      * Returns an array that is in the right format to populate the roles field.
      *
-     * @param  array $toles The user's roles
+     * @param  array $roles The user's roles
      * @return array
      */
     private function _createRolesPopulationArray(array $roles)
@@ -99,7 +97,7 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     /**
      * Returns an array that is in the right format to populate the roles field.
      *
-     * @param  array $toles The user's roles
+     * @param  array $roles The user's roles
      * @return array
      */
     private function _createSystemRolesPopulationArray(array $roles)

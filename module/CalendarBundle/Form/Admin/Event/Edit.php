@@ -19,10 +19,8 @@
 namespace CalendarBundle\Form\Admin\Event;
 
 use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
     CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Node\Event,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

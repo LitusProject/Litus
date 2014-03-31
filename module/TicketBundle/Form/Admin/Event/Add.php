@@ -29,8 +29,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilterProviderInterface,
     Zend\Form\Element\Submit;
 

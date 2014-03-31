@@ -19,7 +19,6 @@
 namespace CommonBundle\Entity\User\Shibboleth;
 
 use DateTime,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**

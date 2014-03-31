@@ -20,7 +20,6 @@ namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    CommonBundle\Entity\User\Session,
     Doctrine\ORM\EntityManager,
     Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Storage\StorageInterface as StorageInterface;

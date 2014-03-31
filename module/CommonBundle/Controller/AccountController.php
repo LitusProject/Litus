@@ -23,8 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
@@ -37,8 +35,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**

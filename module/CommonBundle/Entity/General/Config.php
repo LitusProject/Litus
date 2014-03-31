@@ -87,9 +87,9 @@ class Config
     }
 
     /**
-     * @param  string                             $value The entry's value
-     * @return \CommonBundle\Entity\Public\Config
-     * @throws \InvalidArgumentException          Value must be a string
+     * @param  string                    $value The entry's value
+     * @return Config
+     * @throws \InvalidArgumentException Value must be a string
      */
     public function setValue($value)
     {

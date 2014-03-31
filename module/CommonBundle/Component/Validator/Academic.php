@@ -92,6 +92,9 @@ class Academic extends \Zend\Validator\AbstractValidator
         return true;
     }
 
+    /**
+     * @param string $value
+     */
     protected function getPerson($value)
     {
         $repository = $this->_entityManager

@@ -165,6 +165,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param integer $duplicate
+     */
     private function addInterval(DateTime $time, $interval, $duplicate)
     {
         for ($i = 0; $i < $duplicate; $i++)
@@ -404,6 +407,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return Shift
+     */
     private function _getShift()
     {
         if (null === $this->getParam('id')) {

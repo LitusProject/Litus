@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     Zend\View\Model\ViewModel;
 
 /**

@@ -19,7 +19,6 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
@@ -459,6 +458,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -471,6 +473,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
     private function _getPerson()
     {
         if (null === $this->getRequest()->getPost('person'))

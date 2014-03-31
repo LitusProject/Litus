@@ -188,6 +188,9 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Driver
+     */
     private function _getDriver()
     {
         if (null === $this->getParam('id')) {

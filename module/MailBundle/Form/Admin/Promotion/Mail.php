@@ -24,8 +24,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    Zend\Validator\EmailAddress as EmailAddressValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * Send Mail

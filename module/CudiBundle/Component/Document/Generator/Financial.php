@@ -40,9 +40,6 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
 
     /**
      * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param string                                    $articles      The kind of articles to export
-     * @param string                                    $order         The ordering of the articles to export
-     * @param boolean                                   $onlyInStock   Print only articles in stock
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
      */
@@ -64,7 +61,7 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for the fop.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

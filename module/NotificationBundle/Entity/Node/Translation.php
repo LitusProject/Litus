@@ -19,9 +19,7 @@
 namespace NotificationBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    Markdown_Parser;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -66,7 +64,6 @@ class Translation
     /**
      * @param \NotificationBundle\Entity\Node\Notification $notification
      * @param \CommonBundle\Entity\General\Language        $language
-     * @param string                                       $title
      * @param string                                       $content
      */
     public function __construct(Notification $notification, Language $language, $content)

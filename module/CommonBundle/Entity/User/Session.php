@@ -90,10 +90,11 @@ class Session
     private $shibboleth;
 
     /**
-     * @param int|\DateTime                    $expirationTime
+     * @param integer                          $expirationTime
      * @param \CommonBundle\Entity\User\Person $person
      * @param string                           $userAgent
      * @param string                           $ip
+     * @param string                           $shibboleth
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -191,7 +192,7 @@ class Session
     }
 
     /**
-     * @return boolean
+     * @return string
      */
     public function isShibboleth()
     {

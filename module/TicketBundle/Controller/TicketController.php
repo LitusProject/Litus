@@ -205,6 +205,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @param boolean $member
+     */
     private function _createTicket(Event $event, Person $person, $member, Option $option = null)
     {
         $ticket = new Ticket(

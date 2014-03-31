@@ -19,8 +19,7 @@
 namespace SecretaryBundle\Entity\Promotion;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a promotion.

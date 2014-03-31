@@ -93,6 +93,7 @@ class Restriction
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidRestrictionType($type)
@@ -109,7 +110,7 @@ class Restriction
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article\Barcode
+     * @return
      */
     public function getArticle()
     {

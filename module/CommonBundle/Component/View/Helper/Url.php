@@ -33,8 +33,8 @@ class Url extends \Zend\View\Helper\Url
     private $_language;
 
     /**
-     * @param  \CommonBundle\Entity\General\Language         $language
-     * @return \CommonBundle\Component\Controller\Plugin\Url
+     * @param  \CommonBundle\Entity\General\Language $language
+     * @return Url
      */
     public function setLanguage(Language $language)
     {

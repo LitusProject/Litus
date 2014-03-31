@@ -34,8 +34,7 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     private $_helper = null;
 
     /**
-     * @param  \CommonBundle\Component\Acl\Helper\HasAccess  $acl The driver object
-     * @return \CommonBundle\Component\View\Helper\HasAccess
+     * @return HasAccess
      */
     public function setDriver(HasAccessDriver $driver)
     {

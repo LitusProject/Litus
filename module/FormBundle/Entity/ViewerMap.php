@@ -19,7 +19,6 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;
 

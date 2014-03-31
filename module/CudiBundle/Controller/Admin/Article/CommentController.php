@@ -109,6 +109,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Article
+     */
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;

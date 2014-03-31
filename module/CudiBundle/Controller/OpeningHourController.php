@@ -18,10 +18,8 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     DateInterval,
-    PageBundle\Entity\Node\Page,
     Zend\View\Model\ViewModel;
 
 /**

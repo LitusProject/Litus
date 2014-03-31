@@ -61,9 +61,8 @@ class Start
     private $period;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $stockItem The article of the value
-     * @param \CudiBundle\Entity\Stock\Period $period    The period of the value
-     * @param integer                         $value     The value of the value
+     * @param \CudiBundle\Entity\Stock\Period $period The period of the value
+     * @param integer                         $value  The value of the value
      */
     public function __construct(Article $article, Period $period, $value)
     {

@@ -35,7 +35,6 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     private $_entityManager = null;
 
     /**
-     * @param  \CommonBundle\Component\Acl\Driver\HasAccess  $driver The driver object
      * @return \CommonBundle\Component\View\Helper\StaticMap
      */
     public function setEntityManager(EntityManager $entityManager)
@@ -49,7 +48,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      * @param  \CommonBundle\Entity\General\Location $location The location that should be verified
      * @param  string                                $size     The image's size
      * @param  string                                $color    The hex value for the color of the marker on the image
-     * @return bool
+     * @return string
      */
     public function __invoke(Location $location, $size, $color)
     {

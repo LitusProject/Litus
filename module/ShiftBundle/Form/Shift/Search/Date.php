@@ -19,7 +19,6 @@
 namespace ShiftBundle\Form\Shift\Search;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     DateTime,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

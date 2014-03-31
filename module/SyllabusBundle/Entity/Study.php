@@ -224,7 +224,7 @@ class Study
     }
 
     /**
-     * @return array
+     * @return Study
      */
     public function getChildren()
     {

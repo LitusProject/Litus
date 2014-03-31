@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Admin\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Credential,
     CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
@@ -192,6 +191,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Supplier
+     */
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
@@ -239,6 +241,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         return $supplier;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
     private function _getUser()
     {
         if (null === $this->getParam('id')) {

@@ -783,6 +783,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $adminRole;
     }
 
+    /**
+     * @param boolean $adminEdit
+     */
     private function _checkAccess($list, $adminEdit)
     {
         $person = $this->getAuthentication()->getPersonObject();

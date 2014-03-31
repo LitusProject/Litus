@@ -227,6 +227,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject
+     */
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -276,6 +279,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $subject;
     }
 
+    /**
+     * @return Comment
+     */
     private function _getComment()
     {
         if (null === $this->getParam('id')) {

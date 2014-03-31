@@ -21,8 +21,7 @@ namespace FormBundle\Repository;
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\User\Person,
     FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Group,
-    DateTime;
+    FormBundle\Entity\Node\Group;
 
 /**
  * Viewermap

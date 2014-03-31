@@ -20,19 +20,16 @@ namespace SyllabusBundle\Component\XMLParser;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\ORM\EntityManager,
-    SimpleXMLElement,
     SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,
     SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
-    Zend\Dom\Query as DomQuery,
     Zend\Mail\Transport\TransportInterface;
 
 /**
@@ -435,6 +432,9 @@ class Study
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @param string $identification
+     */
     private function _getInfoProf($identification)
     {
         $client = new HttpClient();
@@ -460,6 +460,9 @@ class Study
         );
     }
 
+    /**
+     * @param string $type
+     */
     private function _callback($type, $extra = null)
     {
         call_user_func($this->_callback, $type, $extra);

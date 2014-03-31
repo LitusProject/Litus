@@ -33,8 +33,8 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     private $_routeMatch = null;
 
     /**
-     * @param  \Zend\Stdlib\RequestDescription             $routeMatch The matched router object
-     * @return \CommonBundle\Component\View\Helper\Request
+     * @param  RouteMatch $routeMatch The matched router object
+     * @return GetParam
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {

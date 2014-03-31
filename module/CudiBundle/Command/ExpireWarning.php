@@ -19,7 +19,6 @@
 namespace CudiBundle\Command;
 
 use CudiBundle\Component\Mail\Booking,
-    RuntimeException,
     DateTime,
     DateInterval;
 

@@ -19,9 +19,7 @@
 namespace MailBundle\Entity\Alias;
 
 use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
-    MailBundle\Entity\MailingList;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic alias.

@@ -19,7 +19,6 @@
 namespace ShiftBundle\Form\Shift\Search;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

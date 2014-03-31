@@ -21,7 +21,6 @@ namespace CudiBundle\Form\Admin\Stock\Deliveries;
 use CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**

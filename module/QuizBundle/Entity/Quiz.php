@@ -112,7 +112,7 @@ class Quiz
     }
 
     /**
-     * @return string
+     * @return Person
      */
     public function getPerson()
     {

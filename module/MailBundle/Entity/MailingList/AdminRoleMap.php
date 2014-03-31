@@ -19,7 +19,6 @@
 namespace MailBundle\Entity\MailingList;
 
 use CommonBundle\Entity\Acl\Role,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 
@@ -89,7 +88,7 @@ class AdminRoleMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Role
      */
     public function getRole()
     {

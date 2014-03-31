@@ -21,7 +21,6 @@ namespace CommonBundle\Entity\User\Person;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,

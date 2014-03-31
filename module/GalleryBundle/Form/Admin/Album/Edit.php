@@ -20,7 +20,6 @@ namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder,
     GalleryBundle\Entity\Album\Album;
 
 /**

@@ -62,6 +62,9 @@ class Mapping
      */
     private $order;
 
+    /**
+     * @param integer $order
+     */
     public function __construct(Form $form, Group $group, $order)
     {
         $this->form = $form;

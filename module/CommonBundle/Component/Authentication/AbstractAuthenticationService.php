@@ -171,8 +171,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     /**
      * Set the authentication cookie.
      *
-     * @param string $value  The cookie's value
-     * @param int    $expire The cookie's expiration time
+     * @param string $value The cookie's value
      */
     protected function _setCookie($value)
     {

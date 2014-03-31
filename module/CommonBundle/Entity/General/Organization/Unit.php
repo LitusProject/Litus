@@ -131,7 +131,7 @@ class Unit
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -204,7 +204,6 @@ class Unit
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Organization\Unit $unit
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function setParent(Unit $parent = null)

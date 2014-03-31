@@ -41,9 +41,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
-     * @param string                     $address       The url for the websocket master socket
-     * @param integer                    $port          The port to listen on
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -69,8 +67,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {
@@ -144,8 +142,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $command
+     * @param User   $user
+     * @param string $command
      */
     private function _gotAction(User $user, $command)
     {
@@ -170,7 +168,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Send queue to one user
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
+     * @param User   $user
+     * @param string $json
      */
     private function sendQueue(User $user, $json)
     {
@@ -187,6 +186,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $this->sendQueue($user, $queue);
     }
 
+    /**
+     * @param string $data
+     */
     private function _addToQueue($data)
     {
         if ('' != $data->universityIdentification
@@ -284,6 +286,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return json_encode($data);
     }
 
+    /**
+     * @param string $state
+     */
     private function _jsonLap(Lap $lap = null, $state)
     {
         if (null === $lap)
@@ -303,6 +308,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         );
     }
 
+    /**
+     * @param string $data
+     */
     private function _deleteLap($data)
     {
         $lap = $this->_entityManager
@@ -324,6 +332,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
     }
 
+    /**
+     * @return null|Lap
+     */
     private function _getCurrentLap()
     {
         return $this->_entityManager

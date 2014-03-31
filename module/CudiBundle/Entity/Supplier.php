@@ -313,6 +313,7 @@ class Supplier
 
     /**
      * @param boolean
+     * @param boolean $contact
      *
      * @return \CudiBundle\Entity\Supplier
      */

@@ -18,8 +18,7 @@
 
 namespace GalleryBundle\Entity\Album;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -65,7 +64,6 @@ class Translation
     /**
      * @param \GalleryBundle\Entity\Album\Album     $album
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $content
      * @param string                                $title
      */
     public function __construct(Album $album, Language $language, $title)

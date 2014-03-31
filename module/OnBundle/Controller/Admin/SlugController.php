@@ -175,6 +175,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return implode($name);
     }
 
+    /**
+     * @return Slug
+     */
     private function _getSlug()
     {
         if (null === $this->getParam('id')) {

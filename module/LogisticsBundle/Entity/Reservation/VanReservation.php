@@ -86,7 +86,7 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $driver
+     * @param Driver $driver
      *
      * @return \LogisticsBundle\Entity\Reservation\VanReservation
      */

@@ -337,6 +337,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         return $publication;
     }
 
+    /**
+     * @param string $dir
+     */
     private function _rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {

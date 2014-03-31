@@ -18,11 +18,7 @@
 
 namespace CommonBundle\Component\Controller\Plugin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    ArrayIterator,
-    Zend\Stdlib\SplQueue,
-    Zend\Session\Container,
-    Zend\Session\ManagerInterface as Manager;
+use CommonBundle\Component\FlashMessenger\FlashMessage;
 
 /**
  * Make FlashMessenger accept FlashMessages as well.

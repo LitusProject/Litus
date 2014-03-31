@@ -365,6 +365,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $count > 0 && $count <= 5;
     }
 
+    /**
+     * @param Add $parent
+     */
     private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent)
     {
         $iterator = $parent->getIterator();

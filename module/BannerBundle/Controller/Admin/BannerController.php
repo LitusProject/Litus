@@ -24,7 +24,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -280,6 +279,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Banner
+     */
     private function _getBanner($redirect = true)
     {
         if (null === $this->getParam('id')) {
