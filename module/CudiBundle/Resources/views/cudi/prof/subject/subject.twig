@@ -98,10 +98,10 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_article', 'addFromSubject') %}
-            <a href="{{ url('cudi_prof_article', {"action": "addFromSubject", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add New Article') }}</a>
+            <a href="{{ url('cudi_prof_article', {"action": "addFromSubject", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add New Article') }}</a>
         {% endif %}
         {% if hasAccess('cudi_prof_article_mapping', 'add') %}
-            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Existing Article') }}</a>
+            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add Existing Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -132,7 +132,7 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_prof', 'add') %}
-            <a href="{{ url('cudi_prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
+            <a href="{{ url('cudi_prof_prof', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -207,7 +207,7 @@
             activateArticle.find('.articleTitle').html($(this).data('article'));
             activateArticle.find('.confirm').unbind('click').click(function () {
                 $.post(
-                    '{{ url('cudi_prof_article_mapping', {"action": "activate", "language": language.getAbbrev()})}}' + $this.data('id'),
+                    '{{ url('cudi_prof_article_mapping', {"action": "activate"})}}' + $this.data('id'),
                     {'sameAsPreviousYear': $('#sameAsPreviousYear').val()},
                     function (data) {
                         if (data && 'success' == data.status) {
@@ -234,7 +234,7 @@
             var removeArticle = $('#modalRemoveArticle');
             removeArticle.find('.articleTitle').html($(this).data('article'));
             removeArticle.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_article_mapping', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#article_removed_success').addClass('in');
@@ -261,7 +261,7 @@
             var removeProf = $('#modalRemoveProf');
             removeProf.find('.profName').html($(this).data('name'));
             removeProf.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_prof', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_prof', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#prof_removed_success').addClass('in');

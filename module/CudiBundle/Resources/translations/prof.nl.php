@@ -126,6 +126,9 @@ return array(
     'Will the content of the article be the same af previous year?' => 'Zal de inhoud van het artikel hetzelfde zijn als voorgaande jaar?',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
 
+    'An error occurred while removing the article.' => 'Er is een fout opgetreden tijdens het verwijderen van het artikel.',
+    'The article was succesfully removed.' => 'Het artikel is succesvol verwijderd.',
+
     'Textbook from Other Publisher' => 'Handboek van Andere Uitgever',
     'Published by {{ unionShortName }}' => 'Gedrukt bij {{ unionShortName }}',
 

@@ -416,6 +416,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    public function deleteAction()
+    {
+        return new ViewModel();
+    }
+
     public function typeaheadAction()
     {
         $articles = $this->getEntityManager()
