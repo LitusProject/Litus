@@ -1,0 +1,34 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/overview/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+		<table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Amount of contracts</th>
+                <th>Contracted Revenue</th>
+                <th>Paid Revenue</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for entry in array %}
+				<tr class="item item-{{ entry['company'].getId() }}">
+                    <td>{{entry['company'].getName()}}</td>
+                    <td>{{entry['amount']}}</td>
+                    <td>&euro; {{entry['contract']}}</td>
+                    <td>&euro; {{entry['paid']}}</td>
+                    <td class="actions">
+                    	{% if hasAccess('br_admin_overview', 'view') %}
+                            <a href="{{ url('br_admin_overview', {"action": "companyview", "id": entry['company'].getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+{% endblock %}
