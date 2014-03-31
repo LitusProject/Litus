@@ -187,6 +187,6 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setMaxAge($this->_duration)
                 ->setPath('/')
                 ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
-        ));
+        );
     }
 }
