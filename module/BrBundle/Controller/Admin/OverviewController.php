@@ -94,7 +94,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
-            ->findContractAuthors();
+            ->findContractCompany();
         $collection = array();
         foreach ($ids as $id => $val) {
             $result = array();
