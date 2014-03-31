@@ -29,11 +29,13 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $array = $this->_getOverview();
-
+        $overview = $this->_getOverview();
+        $array = $overview['array'];
+        $totals = $overview['totals'];
         return new ViewModel(
             array(
                 'array' => $array,
+                'totals' => $totals,
             )
         );
     }
@@ -58,6 +60,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         //TODO extremely dirty solution -> can be put in one single query normally!
         //TODO has to be cleaned up..
 
+        $contractNmbr = 0;
+        $totalContractRevenue = 0;
+        $totalPaidRevenue = 0;
+
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthors();
@@ -77,21 +83,25 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('BrBundle\Entity\Contract')
                     ->getContractAmountByPerson($pers);
                 $result['amount'] = $amount;
+                $contractNmbr += $amount;
 
                 $amount = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract')
                     ->getContractedRevenueByPerson($pers);
                 $result['contract'] = $amount;
+                $totalContractRevenue += $amount;
 
                 $amount = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract')
                     ->getPaidRevenueByPerson($pers);
                 $result['paid'] = $amount;
+                $totalPaidRevenue += $amount;
 
                 array_push($collection, $result);
             }
         }
-        return $collection;
+        $totals = array('amount' => $contractNmbr, 'contract' => $totalContractRevenue, 'paid' => $totalPaidRevenue);
+        return array('array' => $collection,'totals' => $totals);
 
 
     }

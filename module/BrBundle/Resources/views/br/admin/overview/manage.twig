@@ -6,6 +6,18 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Amount of contracts</th>
+                <th>Contracted Revenue</th>
+                <th>Paid Revenue</th>
+            </tr>
+            <tr class="overview">
+                    <td>{{totals['amount']}}</td>
+                    <td>&euro; {{totals['contract']}}</td>
+                    <td>&euro; {{totals['paid']}}</td>
+            </tr>
+        </table><br>
 
 		<table class="full_width manage">
             <tr>
