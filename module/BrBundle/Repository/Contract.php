@@ -18,7 +18,8 @@
 
 namespace BrBundle\Repository;
 
-use CommonBundle\Entity\User\Person,
+use BrBundle\Entity\Company,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
@@ -138,6 +139,98 @@ class Contract extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('distinct(c.author)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery();
+
+        return $result;
+    }
+    //____________
+    //____________
+
+    public function findContractsByCompanyIDQuery(Company $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->eq('c.company', ':company')
+            )
+            ->setParameter('company', $company)
+            ->getQuery();
+
+        return $result;
+    }
+
+    public function findCompanyByIDQuery($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Company', 'c')
+            ->where(
+                $query->expr()->eq('c.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $result;
+    }
+
+    public function getContractAmountByCompany(Company $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('count(c)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->eq('c.company', ':company')
+            )
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getContractedRevenueByCompany(Company $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('sum(o.totalCost)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
+            ->where(
+                $query->expr()->eq('c.company', ':company')
+            )
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getPaidRevenueByCompany(Company $company)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('sum(o.totalCost)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.company', ':company'),
+                    $query->expr()->eq('c.signed', 'TRUE')
+                )
+            )
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if($result == '')
+            return 0;
+        return $result;
+    }
+
+    public function findContractCompanyQuery()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('distinct(c.company)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery();
 

@@ -27,9 +27,9 @@ use Zend\View\Model\ViewModel;
  */
 class OverviewController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    public function manageAction()
+    public function personAction()
     {
-        $overview = $this->_getOverview();
+        $overview = $this->_getPersonOverview();
         $array = $overview['array'];
         $totals = $overview['totals'];
         return new ViewModel(
@@ -40,7 +40,20 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function viewAction()
+    public function companyAction()
+    {
+        $overview = $this->_getCompanyOverview();
+        $array = $overview['array'];
+        $totals = $overview['totals'];
+        return new ViewModel(
+            array(
+                'array' => $array,
+                'totals' => $totals,
+            )
+        );
+    }
+
+    public function personviewAction()
     {
         $person = $this->_getAuthor();
 
@@ -55,7 +68,71 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getOverview(){
+    public function companyviewAction()
+    {
+        $company = $this->_getCompany();
+
+        $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findContractsByCompanyID($company);
+
+        return new ViewModel(
+            array(
+                'contracts' => $contracts,
+            )
+        );
+    }
+
+    private function _getCompanyOverview(){
+
+        //TODO extremely dirty solution -> can be put in one single query normally!
+        //TODO has to be cleaned up..
+
+        $contractNmbr = 0;
+        $totalContractRevenue = 0;
+        $totalPaidRevenue = 0;
+
+        $ids = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findContractAuthors();
+        $collection = array();
+        foreach ($ids as $id => $val) {
+            $result = array();
+
+            $company = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findCompanyByID($val[1]);
+
+            //TODO this query returns a array instead of a single element, has to be fixed.  So loop can be avoided.
+
+            foreach ($company as $comp) {
+                $result['company'] = $comp;
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getContractAmountByCompany($comp);
+                $result['amount'] = $amount;
+                $contractNmbr += $amount;
+
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getContractedRevenueByCompany($comp);
+                $result['contract'] = $amount;
+                $totalContractRevenue += $amount;
+
+                $amount = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->getPaidRevenueByCompany($comp);
+                $result['paid'] = $amount;
+                $totalPaidRevenue += $amount;
+
+                array_push($collection, $result);
+            }
+        }
+        $totals = array('amount' => $contractNmbr, 'contract' => $totalContractRevenue, 'paid' => $totalPaidRevenue);
+        return array('array' => $collection,'totals' => $totals);
+    }
+
+    private function _getPersonOverview(){
 
         //TODO extremely dirty solution -> can be put in one single query normally!
         //TODO has to be cleaned up..
@@ -154,5 +231,55 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $person;
+    }
+
+    private function _getCompany()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the company!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_overview',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $array = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findCompanyByID($this->getParam('id'));
+        foreach ($array as $comp) {
+            $company = $comp;
+        }
+
+        if (null === $company) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No company with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_overview',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $company;
     }
 }

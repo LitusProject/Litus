@@ -4,8 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_overview', 'manage') %}
-                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
-                		href="{{ url('br_admin_order', {"action": "manage"}) }}">Manage</a></li>
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "manage"}) }}">Overview By Persons</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_overview', 'manage') %}
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "company"}) }}">Overview By Companies</a></li>
             {% endif %}
         </ul>
     </nav>

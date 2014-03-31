@@ -171,7 +171,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_overview',
-                    'action'     => 'manage',
+                    'action'     => 'person',
                 ),
             ),
         ),
