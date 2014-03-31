@@ -139,24 +139,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private function _initControllerPlugins()
     {
         // Url Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'url', 'CommonBundle\Component\Controller\Plugin\Url'
-        );
         $this->url()->setLanguage($this->getLanguage());
 
         // HasAccess Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
-        );
         $this->hasAccess()->setDriver(
             new HasAccess(
                 $this->_getAcl(), $this->getAuthentication()
             )
-        );
-
-        // Paginator Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
         );
     }
 
@@ -201,18 +190,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
 
-        // Url Plugin
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'url', 'CommonBundle\Component\View\Helper\Url'
-        );
-
-        $renderer->plugin('url')->setLanguage($this->getLanguage())
+        $renderer->plugin('url')
+            ->setLanguage($this->getLanguage())
             ->setRouter($this->getServiceLocator()->get('router'));
 
         // HasAccess View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
-        );
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccess(
                 $this->_getAcl(), $this->getAuthentication()
@@ -220,29 +202,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         );
 
         // GetParam View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-        );
         $renderer->plugin('getParam')->setRouteMatch(
             $this->getEvent()->getRouteMatch()
         );
 
-        // Date View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'dateLocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
-        );
-
         // StaticMap View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'staticMap', 'CommonBundle\Component\View\Helper\StaticMap'
-        );
         $renderer->plugin('staticMap')
             ->setEntityManager($this->getEntityManager());
-
-        // Hide Email Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'hideEmail', 'CommonBundle\Component\View\Helper\HideEmail'
-        );
     }
 
     /**

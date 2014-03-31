@@ -117,6 +117,23 @@ return Config::create(
             'display_not_found_reason' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
             'display_exceptions'       => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
         ),
+        'view_helpers' => array(
+            'invokables' => array(
+                'url'           => 'CommonBundle\Component\View\Helper\Url',
+                'hasaccess'     => 'CommonBundle\Component\View\Helper\HasAccess',
+                'getparam'      => 'CommonBundle\Component\View\Helper\GetParam',
+                'datelocalized' => 'CommonBundle\Component\View\Helper\DateLocalized',
+                'staticmap'     => 'CommonBundle\Component\View\Helper\StaticMap',
+                'hideemail'     => 'CommonBundle\Component\View\Helper\HideEmail',
+            ),
+        ),
+        'controller_plugins' => array(
+            'invokables' => array(
+                'url'            => 'CommonBundle\Component\Controller\Plugin\Url',
+                'hasaccess'      => 'CommonBundle\Component\Controller\Plugin\HasAccess',
+                'paginator'      => 'CommonBundle\Component\Controller\Plugin\Paginator',
+            ),
+        ),
         'assetic_configuration' => array(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug' => false,
