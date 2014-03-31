@@ -70,7 +70,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 
     public function getInputFilter()
     {
-        $inputFilter = new InputFilter();
+        $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
         $inputFilter->remove('barcode');
