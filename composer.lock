@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "12aa6d4cc6b6fefa132d3b0fbf3e8a3a",
+    "hash": "9106c39df1f046cfd3aa147854fea2a3",
     "packages": [
         {
             "name": "EvanDotPro/EdpMarkdown",
