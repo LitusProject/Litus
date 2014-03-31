@@ -459,6 +459,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return ShiftBundle\Entity\Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -471,6 +474,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
+    /**
+     * @return CommonBundle\Entity\User\Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getRequest()->getPost('person'))
