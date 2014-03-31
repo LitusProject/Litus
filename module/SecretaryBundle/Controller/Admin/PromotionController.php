@@ -236,7 +236,6 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        exit;
         $academicYear = $this->_getAcademicYear();
 
         $promotions = $this->getEntityManager()
