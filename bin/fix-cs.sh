@@ -3,4 +3,4 @@
 cd $(dirname "$0");
 cd ..;
 
-vendor/bin/php-cs-fixer fix .
+vendor/bin/php-cs-fixer fix . || exit $?
