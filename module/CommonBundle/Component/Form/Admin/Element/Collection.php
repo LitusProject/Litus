@@ -29,7 +29,7 @@ use Zend\Form\Fieldset,
 class Collection extends \Zend\Form\Element\Collection
 {
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @param  string|null                        $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */

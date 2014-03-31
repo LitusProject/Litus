@@ -146,7 +146,7 @@ class University
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string A status
+     * @param  string $status string A status
      * @return bool
      */
     public static function isValidStatus($status)

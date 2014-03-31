@@ -128,6 +128,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $returnArray;
     }
 
+    /**
+     * @param string $memberNb
+     */
     private function _generateMemberForm($memberNb, $required = false)
     {
         $user = new Collection('user_' . $memberNb);

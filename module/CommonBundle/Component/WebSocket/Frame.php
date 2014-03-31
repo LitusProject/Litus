@@ -36,7 +36,7 @@ class Frame
     const MAX_PAYLOAD_LEN = 1048576;
 
     /**
-     * @param mixed $data
+     * @param string $data
      */
     public function __construct($data)
     {
