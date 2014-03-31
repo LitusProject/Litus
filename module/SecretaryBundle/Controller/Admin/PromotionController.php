@@ -42,7 +42,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         if (null !== $this->getParam('field')) {
             $paginator = $this->paginator()->createFromArray(
@@ -76,7 +77,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $promotions = $this->_search($academicYear);
 
@@ -236,7 +238,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $promotions = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Promotion')

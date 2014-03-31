@@ -42,9 +42,6 @@ class FlashMessenger extends \Zend\Mvc\Controller\Plugin\FlashMessenger
     public function addMessage($message)
     {
         if (is_string($message)) {
-            $type = FlashMessage::NOTICE;
-            $title = 'Notice';
-
             switch ($this->getNamespace()) {
                 case self::NAMESPACE_ERROR:
                     $type = FlashMessage::ERROR;
