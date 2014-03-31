@@ -132,6 +132,7 @@ return Config::create(
                 'url'            => 'CommonBundle\Component\Controller\Plugin\Url',
                 'hasaccess'      => 'CommonBundle\Component\Controller\Plugin\HasAccess',
                 'paginator'      => 'CommonBundle\Component\Controller\Plugin\Paginator',
+                'flashmessenger' => 'CommonBundle\Component\Controller\Plugin\FlashMessenger',
             ),
         ),
         'assetic_configuration' => array(
