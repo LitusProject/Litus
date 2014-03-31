@@ -1709,12 +1709,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LitusProject/PhpCodeStyle.git",
-                "reference": "10148ac3e1df19b16ac89ec48dcba25578cff3f7"
+                "reference": "7b4f00efa848a4bb195efff7b06a69dd54eccc94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/10148ac3e1df19b16ac89ec48dcba25578cff3f7",
-                "reference": "10148ac3e1df19b16ac89ec48dcba25578cff3f7",
+                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/7b4f00efa848a4bb195efff7b06a69dd54eccc94",
+                "reference": "7b4f00efa848a4bb195efff7b06a69dd54eccc94",
                 "shasum": ""
             },
             "require": {
@@ -1726,11 +1726,11 @@
                     "Litus\\CodeStyle\\": ""
                 }
             },
-            "support": {
-                "source": "https://github.com/LitusProject/PhpCodeStyle/tree/master",
-                "issues": "https://github.com/LitusProject/PhpCodeStyle/issues"
-            },
-            "time": "2014-03-02 14:58:15"
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "time": "2014-03-31 13:41:10"
         },
         {
             "name": "sebastian/diff",
