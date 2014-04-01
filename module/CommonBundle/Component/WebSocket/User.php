@@ -111,7 +111,7 @@ class User
     /**
      * Create the buffer for fragmented frames
      *
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param Frame $frame
      */
     public function createBuffer(Frame $frame)
     {
@@ -121,9 +121,9 @@ class User
     /**
      * Append data to the buffer for fragmented frames
      *
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param Frame $frame
      */
-    public function appendBuffer($frame)
+    public function appendBuffer(Frame $frame)
     {
         $this->_buffer->appendData($frame->getData());
     }
@@ -150,7 +150,7 @@ class User
      * @param string $key
      * @param mixed  $value
      *
-     * @return \CommonBundle\Component\WebSocket\User
+     * @return self
      */
     public function setExtraData($key, $value)
     {
@@ -172,7 +172,7 @@ class User
     /**
      * @param string $key
      *
-     * @return \CommonBundle\Component\WebSocket\User
+     * @return self
      */
     public function removeExtraData($key)
     {

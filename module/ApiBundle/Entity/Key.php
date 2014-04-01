@@ -39,7 +39,7 @@ class Key
     private $id;
 
     /**
-     * @var \DateTime The expire time of this code
+     * @var DateTime The expire time of this code
      *
      * @ORM\Column(name="expiration_time", type="datetime", nullable=true)
      */
@@ -83,7 +83,7 @@ class Key
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {
@@ -99,8 +99,8 @@ class Key
     }
 
     /**
-     * @param  string                $host
-     * @return \ApiBundle\Entity\Key
+     * @param  string $host
+     * @return self
      */
     public function setHost($host)
     {

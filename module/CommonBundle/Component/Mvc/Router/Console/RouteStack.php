@@ -46,10 +46,10 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
     /**
      * Add a route to the stack.
      *
-     * @param  string     $name
-     * @param  mixed      $route
-     * @param  int        $priority
-     * @return RouteStack
+     * @param  string $name
+     * @param  mixed  $route
+     * @param  int    $priority
+     * @return self
      */
     public function addRoute($name, $route, $priority = null)
     {
@@ -60,7 +60,7 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
      * Add multiple routes to the stack.
      *
      * @param  array|\Traversable $routes
-     * @return RouteStack
+     * @return self
      */
     public function addRoutes($routes)
     {
@@ -70,8 +70,8 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
     /**
      * Remove a route from the stack.
      *
-     * @param  string     $name
-     * @return RouteStack
+     * @param  string $name
+     * @return self
      */
     public function removeRoute($name)
     {
@@ -82,7 +82,7 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
      * Remove all routes from the stack and set new ones.
      *
      * @param  array|\Traversable $routes
-     * @return RouteStack
+     * @return self
      */
     public function setRoutes($routes)
     {

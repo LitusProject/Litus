@@ -26,8 +26,8 @@ namespace CommonBundle\Component\View\Helper;
 class HideEmail extends \Zend\View\Helper\AbstractHelper
 {
     /**
-     *
-     * @return Zend\Date\Date
+     * @param  string $text
+     * @return string
      */
     public function __invoke($text)
     {

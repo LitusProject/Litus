@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Matches the field whether it is not zero.
  *
@@ -28,11 +26,6 @@ use Doctrine\ORM\EntityManager;
 class NotZero extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
 
     /**
      * @var array The error messages

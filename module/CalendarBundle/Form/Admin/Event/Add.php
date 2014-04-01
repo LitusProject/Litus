@@ -39,12 +39,13 @@ use CalendarBundle\Component\Validator\Name as EventNameValidator,
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param null|string|int $name Optional name for the element
+     * @param EntityManager   $entityManager The entity manager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

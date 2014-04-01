@@ -86,7 +86,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     }
 
     /**
-     * @return Academic
+     * @return Academic|null
      */
     private function _getAcademic()
     {

@@ -163,7 +163,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Key
+     * @return Key|null
      */
     private function _getKey()
     {

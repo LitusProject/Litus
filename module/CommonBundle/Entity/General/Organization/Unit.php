@@ -55,7 +55,7 @@ class Unit
     private $mail;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization The unit's organization
+     * @var Organization The unit's organization
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization", cascade={"persist"})
      * @ORM\JoinColumn(name="organization", referencedColumnName="id")
@@ -63,7 +63,7 @@ class Unit
     private $organization;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization\Unit The unit's parent
+     * @var self The unit's parent
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit", cascade={"persist"})
      * @ORM\JoinColumn(name="parent", referencedColumnName="id", nullable=true)
@@ -71,7 +71,7 @@ class Unit
     private $parent;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The roles associated with the unit
+     * @var ArrayCollection The roles associated with the unit
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -83,7 +83,7 @@ class Unit
     private $roles;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The roles associated with the coordinator of the unit
+     * @var ArrayCollection The roles associated with the coordinator of the unit
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -109,13 +109,13 @@ class Unit
     private $active;
 
     /**
-     * @param string                                         $name             The unit's name
-     * @param string                                         $mail             The unit's mail
-     * @param \CommonBundle\Entity\General\Organization      $organization     The unit's organization
-     * @param array                                          $roles            The roles associated with the unit
-     * @param array                                          $coordinatorRoles The roles associated with the coordinator of the unit
-     * @param boolean                                        $displayed        Whether or not this unit is displayed on the site
-     * @param \CommonBundle\Entity\General\Organization\Unit $parent           The unit's parent
+     * @param string       $name             The unit's name
+     * @param string       $mail             The unit's mail
+     * @param Organization $organization     The unit's organization
+     * @param array        $roles            The roles associated with the unit
+     * @param array        $coordinatorRoles The roles associated with the coordinator of the unit
+     * @param boolean      $displayed        Whether or not this unit is displayed on the site
+     * @param self         $parent           The unit's parent
      */
     public function __construct($name, $mail, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
     {
@@ -147,8 +147,8 @@ class Unit
     }
 
     /**
-     * @param  string                                         $name
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -166,8 +166,8 @@ class Unit
     }
 
     /**
-     * @param  string                                         $mail
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  string $mail
+     * @return self
      */
     public function setMail($mail)
     {
@@ -177,7 +177,7 @@ class Unit
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization
+     * @return Organization
      */
     public function getOrganization()
     {
@@ -185,8 +185,8 @@ class Unit
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Organization      $organization
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  Organization $organization
+     * @return self
      */
     public function setOrganization(Organization $organization)
     {
@@ -196,7 +196,7 @@ class Unit
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @return self
      */
     public function getParent()
     {
@@ -204,7 +204,8 @@ class Unit
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  self|null $parent
+     * @return self
      */
     public function setParent(Unit $parent = null)
     {
@@ -228,8 +229,8 @@ class Unit
     }
 
     /**
-     * @param  array                                          $roles
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  array $roles
+     * @return self
      */
     public function setRoles(array $roles)
     {
@@ -239,8 +240,8 @@ class Unit
     }
 
     /**
-     * @param  \CommonBundle\Entity\Acl\Role                  $role
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  Role $role
+     * @return self
      */
     public function removeRole(Role $role)
     {
@@ -264,8 +265,8 @@ class Unit
     }
 
     /**
-     * @param  array                                          $coordinatorRoles
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  array $coordinatorRoles
+     * @return self
      */
     public function setCoordinatorRoles(array $coordinatorRoles)
     {
@@ -275,8 +276,8 @@ class Unit
     }
 
     /**
-     * @param  \CommonBundle\Entity\Acl\Role                  $coordinatorRole
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  Role $coordinatorRole
+     * @return self
      */
     public function removeCoordinatorRole(Role $coordinatorRole)
     {
@@ -294,8 +295,8 @@ class Unit
     }
 
     /**
-     * @param  boolean                                        $displayed
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @param  boolean $displayed
+     * @return self
      */
     public function setDisplayed($displayed)
     {

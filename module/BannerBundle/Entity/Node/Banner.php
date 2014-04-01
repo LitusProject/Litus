@@ -83,8 +83,13 @@ class Banner extends \CommonBundle\Entity\Node
     private $url;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $image
+     * @param Person   $person
+     * @param string   $name
+     * @param string   $image
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param boolean  $active
+     * @param string   $url
      */
     public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url)
     {
@@ -101,7 +106,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $name
      *
-     * @return Banner
+     * @return self
      */
     public function setName($name)
     {
@@ -121,7 +126,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $image
      *
-     * @return Banner
+     * @return self
      */
     public function setImage($image)
     {
@@ -141,7 +146,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $startDate
      *
-     * @return Banner
+     * @return self
      */
     public function setStartDate($startDate)
     {
@@ -161,7 +166,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $endDate
      *
-     * @return Banner
+     * @return self
      */
     public function setEndDate($endDate)
     {
@@ -181,7 +186,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param boolean $active
      *
-     * @return Banner
+     * @return self
      */
     public function setActive($active)
     {
@@ -201,7 +206,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $url
      *
-     * @return Banner
+     * @return self
      */
     public function setUrl($url)
     {

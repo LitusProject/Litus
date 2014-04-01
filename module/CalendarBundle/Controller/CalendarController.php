@@ -243,6 +243,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return CalendarBundle\Entity\Node\Event|null
+     */
     public function _getEvent()
     {
         if (null === $this->getParam('name'))
@@ -259,7 +262,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return resource
+     * @return CalendarBundle\Entity\Node\Event|null
      */
     private function _getEventByPoster()
     {

@@ -22,7 +22,7 @@ use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
     Doctrine\ORM\EntityManager,
     Zend\Authentication\Adapter\AdapterInterface,
-    Zend\Authentication\Storage\StorageInterface as StorageInterface;
+    Zend\Authentication\Storage\StorageInterface;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -34,7 +34,7 @@ use CommonBundle\Component\Authentication\Action,
 class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthenticationService
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -44,14 +44,14 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     private $_entityName = '';
 
     /**
-     * @param  \Doctrine\ORM\EntityManager                                                       $entityManager The EntityManager instance
-     * @param  string                                                                            $entityName    The name of the entity that holds the sessions
-     * @param  int                                                                               $expire        The expiration time for the persistent storage
-     * @param  \Zend\Authentication\Storage\StorageInterface                                     $storage       The persistent storage handler
-     * @param  string                                                                            $namespace     The namespace the storage handlers will use
-     * @param  string                                                                            $cookieSuffix  The cookie suffix that is used to store the session cookie
-     * @param  \CommonBundle\Component\Authentication\Action                                     $action        The action that should be taken after authentication
-     * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
+     * @param  EntityManager                      $entityManager The EntityManager instance
+     * @param  string                             $entityName    The name of the entity that holds the sessions
+     * @param  int                                $expire        The expiration time for the persistent storage
+     * @param  StorageInterface                   $storage       The persistent storage handler
+     * @param  string                             $namespace     The namespace the storage handlers will use
+     * @param  string                             $cookieSuffix  The cookie suffix that is used to store the session cookie
+     * @param  Action                             $action        The action that should be taken after authentication
+     * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
         EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
@@ -72,11 +72,11 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Authenticates against the supplied adapter
      *
-     * @param \Zend\Authentication\Adapter\AdapterInterface $adapter    The supplied adapter
-     * @param boolean                                       $rememberMe Remember this authentication session
-     * @param boolean                                       $shibboleth Whether or not this is sessions initiated by Shibboleth
+     * @param AdapterInterface $adapter    The supplied adapter
+     * @param boolean          $rememberMe Remember this authentication session
+     * @param boolean          $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
-     * @return \Zend\Authentication\Result
+     * @return Result
      */
     public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
     {

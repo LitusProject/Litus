@@ -77,8 +77,8 @@ class Location
     private $active;
 
     /**
-     * @param string                               $name
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param string  $name
+     * @param Address $address
      */
     public function __construct($name, Address $address, $latitude, $longitude)
     {
@@ -106,8 +106,8 @@ class Location
     }
 
     /**
-     * @param  string                                $name
-     * @return \CommonBundle\Entity\General\Location
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -117,7 +117,7 @@ class Location
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getAddress()
     {
@@ -125,7 +125,8 @@ class Location
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param  Address $address
+     * @return self
      */
     public function setAddress(Address $address)
     {
@@ -143,8 +144,8 @@ class Location
     }
 
     /**
-     * @param  string   $latitude
-     * @return Location
+     * @param  string $latitude
+     * @return self
      */
     public function setLatitude($latitude)
     {
@@ -162,8 +163,8 @@ class Location
     }
 
     /**
-     * @param  string   $longitude
-     * @return Location
+     * @param  string $longitude
+     * @return self
      */
     public function setLongitude($longitude)
     {

@@ -33,7 +33,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)

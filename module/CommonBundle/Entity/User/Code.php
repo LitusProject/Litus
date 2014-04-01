@@ -39,7 +39,7 @@ class Code
     private $id;
 
     /**
-     * @var \DateTime The expire time of this code
+     * @var DateTime The expire time of this code
      *
      * @ORM\Column(name="expiration_time", type="datetime", nullable=true)
      */
@@ -66,7 +66,7 @@ class Code
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {

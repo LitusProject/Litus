@@ -40,14 +40,14 @@ class Code
     private $id;
 
     /**
-     * @var \DateTime The time at which this code was created
+     * @var DateTime The time at which this code was created
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \DateTime The time at which this session will end
+     * @var DateTime The time at which this session will end
      *
      * @ORM\Column(name="expiration_time", type="datetime")
      */
@@ -112,7 +112,7 @@ class Code
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {

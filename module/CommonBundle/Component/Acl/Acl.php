@@ -33,12 +33,12 @@ use CommonBundle\Entity\Acl\Resource,
 class Acl extends \Zend\Permissions\Acl\Acl
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param EntityManager|null $entityManager The EntityManager instance
      */
     public function __construct(EntityManager $entityManager = null)
     {
@@ -69,7 +69,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
-     * @param  \CommonBundle\Entity\Acl\Resource $resource The resource that should be added
+     * @param  Resource $resource The resource that should be added
      * @return void
      */
     private function _addResource(Resource $resource)
@@ -97,7 +97,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Add a role retrieved from the database.
      *
-     * @param  \CommonBundle\Entity\Acl\Role $role The role that should be added
+     * @param  Role $role The role that should be added
      * @return void
      */
     private function _addRole(Role $role)

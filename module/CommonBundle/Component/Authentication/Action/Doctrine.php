@@ -31,18 +31,18 @@ use CommonBundle\Entity\User\Code,
 class Doctrine implements \CommonBundle\Component\Authentication\Action
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface The mail transport interface
+     * @var TransportInterface The mail transport interface
      */
     private $_mailTransport;
 
     /**
-     * @param \Doctrine\ORM\EntityManager             $entityManager The EntityManager instance
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport The mail transport interface
+     * @param EntityManager      $entityManager The EntityManager instance
+     * @param TransportInterface $mailTransport The mail transport interface
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {

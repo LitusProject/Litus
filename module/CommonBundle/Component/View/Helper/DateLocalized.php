@@ -52,8 +52,8 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     protected $translatorEnabled = true;
 
     /**
-     * @param \DateTime $date
-     * @param string    $format
+     * @param DateTime $date
+     * @param string   $format
      *
      * @return string
      */

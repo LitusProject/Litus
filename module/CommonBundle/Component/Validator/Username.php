@@ -31,7 +31,7 @@ class Username extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -43,8 +43,8 @@ class Username extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    RuntimeException;
 
 /**
  * This class provides a container to create documents
@@ -31,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 abstract class Pdf
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
@@ -41,7 +42,7 @@ abstract class Pdf
     protected $_xslPath;
 
     /**
-     * @var \CommonBundle\Component\Util\TmpFile A tempory file which holds the generated XML structure
+     * @var TmpFile A tempory file which holds the generated XML structure
      */
     protected $_xmlFile;
 
@@ -51,9 +52,9 @@ abstract class Pdf
     protected $_pdfPath;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $xslPath       The path to the document's XSL file
-     * @param string                      $pdfPath       The path all PDF's should be exported to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $xslPath       The path to the document's XSL file
+     * @param string        $pdfPath       The path all PDF's should be exported to
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
@@ -118,7 +119,7 @@ abstract class Pdf
      * Generate the PDF document using the specified XSL and XML files, using FOP.
      *
      * @return void
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function generatePdf()
     {
@@ -127,7 +128,7 @@ abstract class Pdf
         $pdfDir = dirname($this->_pdfPath);
         if (!file_exists($pdfDir)) {
             if (!mkdir($pdfDir, 0770))
-                throw new \RuntimeException('Failed to create the PDF directory');
+                throw new RuntimeException('Failed to create the PDF directory');
         }
 
         $resultValue = 0;
@@ -141,11 +142,11 @@ abstract class Pdf
         );
 
         if ($resultValue != 0)
-            throw new \RuntimeException('The FOP command failed with return value ' . $resultValue);
+            throw new RuntimeException('The FOP command failed with return value ' . $resultValue);
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {

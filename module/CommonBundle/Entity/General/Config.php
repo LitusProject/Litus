@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Entity\General;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This class represents a configuration entry that is saved in the database
@@ -57,14 +58,14 @@ class Config
     private $description;
 
     /**
-     * @param  string                    $key   The entry's key
-     * @param  string                    $value The entry's value
-     * @throws \InvalidArgumentException Key must be a string
+     * @param  string                   $key   The entry's key
+     * @param  string                   $value The entry's value
+     * @throws InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
     {
         if(!is_string($key))
-            throw new \InvalidArgumentException('Key must be a string');
+            throw new InvalidArgumentException('Key must be a string');
 
         $this->key = $key;
         $this->setValue($value);
@@ -87,14 +88,14 @@ class Config
     }
 
     /**
-     * @param  string                    $value The entry's value
-     * @return Config
-     * @throws \InvalidArgumentException Value must be a string
+     * @param  string                   $value The entry's value
+     * @return self
+     * @throws InvalidArgumentException Value must be a string
      */
     public function setValue($value)
     {
         if(!is_string($value))
-            throw new \InvalidArgumentException('Value must be a string');
+            throw new InvalidArgumentException('Value must be a string');
 
         $this->value = $value;
 
@@ -111,13 +112,13 @@ class Config
 
     /**
     * @param string $description A description for this configuration entry
-    * @return \CommonBundle\Entity\Public\Config
-    * @throws \InvalidArgumentException Description must be a string or null
+    * @return self
+    * @throws InvalidArgumentException Description must be a string or null
      */
     public function setDescription($description = null)
     {
         if(($description !== null) && !is_string($description))
-            throw new \InvalidArgumentException('Description must be a string or null');
+            throw new InvalidArgumentException('Description must be a string or null');
 
         $this->description = $description;
     }

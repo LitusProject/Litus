@@ -27,12 +27,12 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     use ServiceLocatorAwareTrait;
 
     /**
-     * @var \Symfony\Component\Console\Input\InputInterface
+     * @var Input
      */
     protected $input;
 
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var Output
      */
     protected $output;
 

@@ -35,7 +35,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -280,7 +279,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Banner
+     * @return Banner|null
      */
     private function _getBanner($redirect = true)
     {

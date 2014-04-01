@@ -29,12 +29,13 @@ use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
 class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
 {
     /**
-     * @var \CommonBundle\Component\Acl\Driver\HasAccess The driver object
+     * @var HasAccessDriver The driver object
      */
     private $_helper = null;
 
     /**
-     * @return HasAccess
+     * @param  HasAccessDriver $driver The driver object
+     * @return self
      */
     public function setDriver(HasAccessDriver $driver)
     {

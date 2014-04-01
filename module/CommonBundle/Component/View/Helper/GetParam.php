@@ -28,7 +28,7 @@ use Zend\Mvc\Router\RouteMatch;
 class GetParam extends \Zend\View\Helper\AbstractHelper
 {
     /**
-     * @var \Zend\Mvc\Router\RouteMatch The matched router object
+     * @var RouteMatch The matched router object
      */
     private $_routeMatch = null;
 
@@ -45,7 +45,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
 
     /**
      * @param  string $key     The parameter's key
-     * @param  mixed  $default A default value for when the key is not present
+     * @param  string $default A default value for when the key is not present
      * @return string
      */
     public function __invoke($key, $default = null)

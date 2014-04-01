@@ -62,7 +62,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Sends the given data object to the server.
      *
-     * @param  \CommonBundle\Component\Lilo\Data $data The data object that should be sent
+     * @param  Data $data The data object that should be sent
      * @return void
      */
     public function send(Data $data)
@@ -82,7 +82,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Generates the request URL based on the data type.
      *
-     * @param  \CommonBundle\Component\Lilo\Data $data The data object
+     * @param  Data   $data The data object
      * @return string
      */
     private function _getRequestUrl(Data $data)

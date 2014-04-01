@@ -30,13 +30,13 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \CalendarBundle\Entity\Node\Event
+     * @var Event
      */
     protected $_event;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {

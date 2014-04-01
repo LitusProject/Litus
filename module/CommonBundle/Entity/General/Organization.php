@@ -38,7 +38,7 @@ class Organization
     private $id;
 
     /**
-     * @var \DateTime The name of the organization
+     * @var string The name of the organization
      *
      * @ORM\Column(type="string")
      */

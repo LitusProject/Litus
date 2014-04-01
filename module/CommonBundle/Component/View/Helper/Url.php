@@ -28,12 +28,12 @@ use CommonBundle\Entity\General\Language;
 class Url extends \Zend\View\Helper\Url
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
     private $_language;
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Language $language
      * @return Url
      */
     public function setLanguage(Language $language)

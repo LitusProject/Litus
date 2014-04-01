@@ -48,7 +48,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_duration = -1;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     * @var Action The action that should be taken after authentication
      */
     protected $_action;
 
@@ -63,16 +63,16 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     private $_cookies;
 
     /**
-     * @var \Zend\Http\PhpEnvironment\Response The HTTP response
+     * @var Response The HTTP response
      */
     private $_response;
 
     /**
-     * @param \Zend\Authentication\Storage\StorageInterface $storage      The persistent storage handler
-     * @param string                                        $namespace    The namespace the storage handlers will use
-     * @param string                                        $cookieSuffix The cookie suffix that is used to store the session cookie
-     * @param int                                           $duration     The expiration time for the cookie
-     * @param \CommonBundle\Component\Authentication\Action $action       The action that should be taken after authentication
+     * @param StorageInterface $storage      The persistent storage handler
+     * @param string           $namespace    The namespace the storage handlers will use
+     * @param string           $cookieSuffix The cookie suffix that is used to store the session cookie
+     * @param int              $duration     The expiration time for the cookie
+     * @param Action           $action       The action that should be taken after authentication
      */
     public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action)
     {
@@ -85,9 +85,9 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     }
 
     /**
-     * @param \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     * @param Action The action that should be taken after authentication
      *
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     * @return self
      */
     public function setAction(Action $action)
     {
@@ -97,8 +97,8 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     }
 
     /**
-     * @param  \Zend\Http\PhpEnvironment\Request                                    $request The HTTP request
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     * @param  Request $request The HTTP request
+     * @return self
      */
     public function setRequest(Request $request)
     {
@@ -109,8 +109,8 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     }
 
     /**
-     * @param  \Zend\Http\PhpEnvironment\Response                                   $response The HTTP response
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     * @param  Response $response The HTTP response
+     * @return self
      */
     public function setResponse(Response $response)
     {

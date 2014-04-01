@@ -43,7 +43,8 @@
 namespace CommonBundle\Component\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository,
-    Doctrine\ORM\Query;
+    Doctrine\ORM\Query,
+    LogicException;
 
 /**
  * Improved EntityRepository that handles conversion from methods returning a {@link Query}
@@ -81,10 +82,10 @@ abstract class EntityRepository extends DoctrineEntityRepository
     /**
      * Fetches the results from $this->$method, returning a {@link Query} in an array.
      *
-     * @param  string          $method
-     * @param  array           $arguments
+     * @param  string         $method
+     * @param  array          $arguments
      * @return array
-     * @throws \LogicException When the method does not return a {@link Query}
+     * @throws LogicException When the method does not return a {@link Query}
      */
     private function _fetchResults($method, $arguments)
     {
@@ -104,7 +105,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
         }
 
         if (!$query instanceof Query)
-            throw new \LogicException(get_class($this).'::'.$method.' must return an instance of Doctrine\ORM\Query.');
+            throw new LogicException(get_class($this).'::'.$method.' must return an instance of Doctrine\ORM\Query.');
 
         /* @var $query Query */
 

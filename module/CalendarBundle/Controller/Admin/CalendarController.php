@@ -361,6 +361,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
@@ -409,7 +412,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return resource
+     * @return Event|null
      */
     private function _getEventByPoster()
     {
