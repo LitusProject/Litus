@@ -58,8 +58,8 @@ class Client
     /**
      * Sends a log message to the server.
      *
-     * @param string $message The message that should be sent
-     * @param string $tags The tags associated with the message
+     * @param  string $message The message that should be sent
+     * @param  string $tags    The tags associated with the message
      * @return void
      */
     public function sendLog($message, $tags = '')
@@ -86,7 +86,7 @@ class Client
      * Handler that can be attached to Zend's EventManager and extracts the exception
      * from an MvcEvent
      *
-     * @param \Zend\Mvc\MvcEvent $e The MvcEvent passed by the EventManager
+     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent passed by the EventManager
      * @return void
      */
     public function handleMvcEvent(MvcEvent $e)

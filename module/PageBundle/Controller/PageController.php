@@ -34,8 +34,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($page = $this->_getPage())) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $submenu = $this->_buildSubmenu($page);
@@ -57,8 +56,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('page.file_path') . '/' . $this->getParam('name');
 
         if ($this->getParam('name') == '' || !file_exists($filePath)) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $headers = new Headers();

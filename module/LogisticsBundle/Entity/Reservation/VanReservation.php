@@ -60,13 +60,13 @@ class VanReservation extends Reservation
     private $load;
 
     /**
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
-     * @param string $reason
-     * @param string $load
+     * @param \DateTime                                              $startDate
+     * @param \DateTime                                              $endDate
+     * @param string                                                 $reason
+     * @param string                                                 $load
      * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string $additionalInfo
-     * @param \CommonBundle\Entity\User\Person $creator
+     * @param string                                                 $additionalInfo
+     * @param \CommonBundle\Entity\User\Person                       $creator
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, Person $creator)
     {
@@ -93,6 +93,7 @@ class VanReservation extends Reservation
     public function setDriver(Driver $driver)
     {
         $this->driver = $driver;
+
         return $this;
     }
 
@@ -112,6 +113,7 @@ class VanReservation extends Reservation
     public function setPassenger(Person $passenger)
     {
         $this->passenger = $passenger;
+
         return $this;
     }
 
@@ -131,6 +133,7 @@ class VanReservation extends Reservation
     public function setLoad($load)
     {
         $this->load = $load;
+
         return $this;
     }
 

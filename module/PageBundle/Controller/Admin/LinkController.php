@@ -78,7 +78,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['name_' . $language->getAbbrev()]) {
                         $translation = new Translation(
                             $link,
@@ -151,7 +151,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $link->getTranslation($language, false);
 
                     if (null !== $translation) {

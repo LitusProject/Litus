@@ -31,8 +31,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     public function typeaheadAction()
     {
         if (!($academicYear = $this->_getAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $subjects = $this->getEntityManager()
@@ -40,7 +39,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
 
         $result = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $item = (object) array();
             $item->id = $subject->getId();
             $item->value = $subject->getCode() . ' - ' . $subject->getName();

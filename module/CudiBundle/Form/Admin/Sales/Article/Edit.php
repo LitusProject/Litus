@@ -38,9 +38,9 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Article $article
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                 $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
@@ -70,7 +70,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 
     public function getInputFilter()
     {
-        $inputFilter = new InputFilter();
+        $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
         $inputFilter->remove('barcode');

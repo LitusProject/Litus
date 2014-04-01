@@ -149,6 +149,13 @@
                                     $('#responsible_success').addClass('in');
 
                                     updateButton(button, parseInt(data.ratio, 10), count);
+                                    var panel = $(button.data('panel')).clone();
+                                    panel.find('.buttons').html('').css('display', 'none');
+
+                                    $('#shifts-myShifts .alert').remove();
+                                    $('#shifts-myShifts').prepend(panel);
+                                    panel.fadeIn();
+                                    $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                                 } else {
                                     errorSave();
                                 }

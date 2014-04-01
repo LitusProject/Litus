@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'calendar_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'calendar_admin_calendar' => array(
             '@common_jquery',
             '@admin_css',
@@ -33,7 +28,6 @@ return array(
             '@common_permanent_modal',
             '@common_jquery_form',
             '@common_form_upload_progress',
-            '@common_download_file',
             '@gollum_css',
             '@gollum_js',
             '@common_jqueryui',
@@ -45,7 +39,6 @@ return array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
-            '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),

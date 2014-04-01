@@ -35,9 +35,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Node\Group $group The group we're going to edit
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager   $entityManager The EntityManager instance
+     * @param \FormBundle\Entity\Node\Group $group         The group we're going to edit
+     * @param null|string|int               $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Group $group, $name = null)
     {
@@ -104,7 +104,7 @@ class Edit extends Add
             'non_members'      => $group->isNonMember(),
         );
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $group->getTitle($language, false);
             $data['introduction_' . $language->getAbbrev()] = $group->getIntroduction($language, false);
         }

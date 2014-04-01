@@ -63,7 +63,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                         $found = $this->getDocumentManager()
                             ->getRepository('OnBundle\Document\Slug')
                             ->findOneByName($name);
-                    } while(isset($found));
+                    } while (isset($found));
                 }
 
                 $slug = new Slug(

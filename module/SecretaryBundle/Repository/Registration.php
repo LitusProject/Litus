@@ -71,7 +71,7 @@ class Registration extends EntityRepository
                 ->getQuery()
                 ->getResult();
 
-            foreach($resultSet as $result) {
+            foreach ($resultSet as $result) {
                 $ids[] = $result['id'];
             }
         }
@@ -115,7 +115,7 @@ class Registration extends EntityRepository
                 ->getQuery()
                 ->getResult();
 
-            foreach($resultSet as $result) {
+            foreach ($resultSet as $result) {
                 $ids[] = $result['id'];
             }
         }
@@ -177,7 +177,7 @@ class Registration extends EntityRepository
                 ->getQuery()
                 ->getResult();
 
-            foreach($resultSet as $result) {
+            foreach ($resultSet as $result) {
                 $ids[] = $result['id'];
             }
         }
@@ -196,7 +196,7 @@ class Registration extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $result) {
+        foreach ($resultSet as $result) {
             $ids[] = $result->getPerson()->getId();
         }
 

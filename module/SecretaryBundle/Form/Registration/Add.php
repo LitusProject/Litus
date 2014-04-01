@@ -58,12 +58,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_enableOtherOrganization = false;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache The cache instance
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string $identification The university identification
-     * @param array|null $extraInfo Extra information about the user
-     * @param boolean $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int $name Optional name for the element
+     * @param \Zend\Cache\Storage\StorageInterface $cache                   The cache instance
+     * @param \Doctrine\ORM\EntityManager          $entityManager           The EntityManager instance
+     * @param string                               $identification          The university identification
+     * @param array|null                           $extraInfo               Extra information about the user
+     * @param boolean                              $enableOtherOrganization Enable the "other organization" option
+     * @param null|string|int                      $name                    Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
     {
@@ -153,14 +153,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(true);
         $internet->add($field);
 
-        $organization = new Collection('organization');
-        $organization->setLabel('Student Association')
+        $organization = new Collection('organization_info');
+        $organization->setLabel('Student Organization')
             ->setAttribute('id', 'organization_info');
         $this->add($organization);
 
         $organizations = $this->_getOrganizations();
         $field = new Select('organization');
-        $field->setLabel('Student Association')
+        $field->setLabel('Student Organization')
             ->setAttribute('options', $organizations);
         $organization->add($field);
 
@@ -206,7 +206,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
     {
-
         $universityEmail = $academic->getUniversityEmail();
 
         if ($universityEmail)
@@ -247,8 +246,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             }
-            else {
+             } else {
                 $data['primary_address_address_city'] = 'other';
                 $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
                 $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
@@ -259,13 +257,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($metaData && $metaData->becomeMember()) {
-            if ($this->get('organization')->has('organization')) {
-                $this->get('organization')->get('organization')
+            if ($this->get('organization_info')->has('organization')) {
+                $this->get('organization_info')->get('organization')
                     ->setAttribute('disabled', true);
             }
-            $this->get('organization')->get('become_member')
+            $this->get('organization_info')->get('become_member')
                 ->setAttribute('disabled', true);
-            $this->get('organization')->get('conditions')
+            $this->get('organization_info')->get('conditions')
                 ->setAttribute('disabled', true);
             $this->_conditionsAlreadyChecked = true;
 
@@ -273,7 +271,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
             $data['bakske'] = $metaData->bakskeByMail();
             $data['tshirt_size'] = $metaData->getTshirtSize();
-        } else if ($metaData) {
+        } elseif ($metaData) {
             $data['bakske'] = $metaData->bakskeByMail();
         }
 

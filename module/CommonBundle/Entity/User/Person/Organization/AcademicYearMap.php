@@ -68,7 +68,7 @@ class AcademicYearMap
     private $organization;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $person The person
+     * @param \CommonBundle\Entity\User\Person\Academic $person       The person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @param \CommonBundle\Entity\General\Organization $organization The organization
      */
@@ -112,12 +112,13 @@ class AcademicYearMap
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization $organization
+     * @param  \CommonBundle\Entity\General\Organization                     $organization
      * @return \CommonBundle\Entity\User\Person\Organization\AcademicYearMap
      */
     public function setOrganization(Organization $organization)
     {
         $this->organization = $organization;
+
         return $this;
     }
 }

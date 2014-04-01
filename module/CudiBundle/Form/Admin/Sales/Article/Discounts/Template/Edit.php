@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace Cudibundle\Form\Admin\Sales\Article\Discounts\Template;
+namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
 use Doctrine\ORM\EntityManager,
     Cudibundle\Entity\Sale\Article\Discount\Template,
@@ -32,9 +32,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \CudiBundle\Entity\Sale\Article\Discount\Template $template The template we're going to modify
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager                       $entityManager
+     * @param \CudiBundle\Entity\Sale\Article\Discount\Template $template      The template we're going to modify
+     * @param null|string|int                                   $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Template $template, $name = null)
     {

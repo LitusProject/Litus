@@ -43,7 +43,7 @@ Het gaat om volgende vakken:
 
 Om uw cursussen eenvoudig te kunnen beheren, bieden wij u graag onze webapplicatie aan.
 Deze webapplicatie is beschikbaar op https://vtk.be/cudi/prof.
-U kunt hierop inloggen met uw u-nummer en paswoord via de centrale KULeuven log-in.
+U kunt hierop inloggen met uw u-nummer en paswoord via de centrale KU Leuven log-in.
 Indien u niets veranderd hebt aan het origineel van afgelopen academiejaar, gelieve dan toch de nodige gegevens in te vullen in de webapplicatie.
 Dit jaar werken we immers met een totaal nieuwe applicatie en is het belangrijk om over de juiste informatie te beschikken.
 

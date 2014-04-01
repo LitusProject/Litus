@@ -18,17 +18,6 @@
 
 return array(
     'controllers' => array(
-        'common_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'all_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'common_admin_academic' => array(
             '@common_jquery',
             '@admin_css',
@@ -104,7 +93,6 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_modal',
             '@secretary_css',
-            '@common_download_file',
             '@common_remote_typeahead',
             '@common_holder_js',
             '@jcrop_js',
@@ -229,12 +217,6 @@ return array(
             ),
             'filters' => array('js'),
         ),
-        'common_download_file' => array(
-            'assets'  => array(
-                'common/js/downloadFile.js',
-            ),
-            'filters' => array('js'),
-        ),
         'common_fieldcount' => array(
             'assets'  => array(
                 'common/js/fieldcount.js',
@@ -336,6 +318,22 @@ return array(
             'filters' => array('css'),
             'options' => array(
                 'output' => 'jcrop_css.css',
+            ),
+        ),
+
+        'resizableColumns_js' => array(
+            'assets' => array(
+                'common/js/resizableColumns.js',
+            ),
+            'filters' => array('js'),
+        ),
+        'resizableColumns_css' => array(
+            'assets' => array(
+                'common/css/resizableColumns.css',
+            ),
+            'filters' => array('css'),
+            'options' => array(
+                'output' => 'resizableColumns_css.css',
             ),
         ),
     ),

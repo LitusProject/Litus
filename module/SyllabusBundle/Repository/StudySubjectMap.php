@@ -20,6 +20,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -33,7 +34,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByStudyAndAcademicYearQuery(StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 
@@ -55,7 +56,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByNameAndStudyAndAcademicYearQuery($name, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 
@@ -80,7 +81,7 @@ class StudySubjectMap extends EntityRepository
     public function findAllByCodeAndStudyAndAcademicYearQuery($code, StudyEntity $study, AcademicYear $academicYear)
     {
         $parentIds = array($study->getId());
-        foreach($study->getParents() as $parent) {
+        foreach ($study->getParents() as $parent) {
             $parentIds[] = $parent->getId();
         }
 
@@ -193,6 +194,46 @@ class StudySubjectMap extends EntityRepository
             )
             ->orderBy('s.code', 'ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('subject', $subject)
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findOneByStudySubjectAndAcademicYear(StudyEntity $study, SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.study', ':study'),
+                    $query->expr()->eq('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('study', $study)
+            ->setParameter('subject', $subject)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }

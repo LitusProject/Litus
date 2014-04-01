@@ -73,7 +73,7 @@ class Subject extends EntityRepository
         $studies = $this->_em->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
-        foreach($studies as $studyMap) {
+        foreach ($studies as $studyMap) {
             $year = $studyMap->getStudy()->getPhase();
             if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false)
                 $years[$year+3] = $year+3;

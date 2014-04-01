@@ -30,11 +30,11 @@ use CommonBundle\Entity\General\Bank\CashRegister,
 class Close extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager                    $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\Bank\CashRegister $cashRegister
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                                $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $name = null )
+    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $name = null)
     {
         parent::__construct($entityManager, $name);
 

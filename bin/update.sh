@@ -3,6 +3,9 @@
 # A little script that makes it easier to update the application
 #
 
+# don't continue if any subcommand fails
+set -e
+
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
@@ -25,7 +28,10 @@ done
 php public/index.php orm:schema-tool:update --force
 php public/index.php orm:generate-proxies data/proxies/
 
+# Run installation
+php public/index.php install:all
+
 # Making sure our LESS stylesheets are recompiled
 find module/ -name base.less | xargs touch
 
-php public/index.php assetic build
+php public/index.php assetic:build

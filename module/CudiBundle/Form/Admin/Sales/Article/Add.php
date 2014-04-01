@@ -24,6 +24,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
+    DateInterval,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -43,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -64,6 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
+            ->setAttribute('data-help', 'This is the main barcode of the article. This one will be printed on the front page.')
             ->setRequired();
         $this->add($field);
 
@@ -74,20 +76,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Checkbox('bookable');
-        $field->setLabel('Bookable');
+        $field->setLabel('Bookable')
+            ->setAttribute('data-help', 'Enabling this option will allow students to book this article.');
         $this->add($field);
 
         $field = new Checkbox('unbookable');
-        $field->setLabel('Unbookable');
+        $field->setLabel('Unbookable')
+            ->setAttribute('data-help', 'Enabling this option will allow students with bookings of this article to cancel there reservation.');
         $this->add($field);
 
         $field = new Checkbox('sellable');
         $field->setLabel('Sellable')
-            ->setValue(true);
+            ->setValue(true)
+                ->setAttribute('data-help', 'Enabling this option will allow to sell this article in the \'Sale App\'.');
         $this->add($field);
 
+        $dateinterval = new DateInterval(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.reservation_expire_time')
+        );
+
         $field = new Checkbox('can_expire');
-        $field->setLabel('Can Expire');
+        $field->setLabel('Can Expire')
+            ->setAttribute('data-help', 'Enabling this option will expire the bookings of this article after a period of ' . $dateinterval->format('%d days'));
         $this->add($field);
 
         $field = new Submit('submit');

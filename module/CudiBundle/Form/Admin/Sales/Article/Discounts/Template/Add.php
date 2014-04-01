@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -67,7 +67,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setAttribute('id', 'method')
             ->setLabel('Method')
             ->setAttribute('options', Discount::$POSSIBLE_METHODS)
-            ->setRequired();
+            ->setRequired()
+            ->setAttribute('data-help', 'The method of this discount:
+                <ul>
+                    <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
+                    <li><b>Fixed:</b> the value will be subtracted from the real price</li>
+                    <li><b>Override:</b> the value will be used as the new price</li>
+                </ul>');
         $this->add($field);
 
         $field = new Select('type');
@@ -93,7 +99,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Checkbox('apply_once');
         $field->setAttribute('id', 'apply_once')
-            ->setLabel('Apply Once');
+            ->setLabel('Apply Once')
+            ->setAttribute('data-help', 'Enabling this option will allow apply this discount only once to every user.');
         $this->add($field);
 
         $field = new Submit('submit');

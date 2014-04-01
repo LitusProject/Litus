@@ -109,7 +109,7 @@ class AcademicYear
     /**
      * Returns a code representation for the academic year
      *
-     * @param boolean $short Whether or not we want a short code
+     * @param  boolean $short Whether or not we want a short code
      * @return string
      */
     public function getCode($short = false)

@@ -91,6 +91,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         $period->setEntityManager($this->getEntityManager());
+
         return $period;
     }
 }

@@ -51,8 +51,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($news = $this->_getNews())) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         return new ViewModel(
@@ -139,7 +138,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findAllSite();
 
-        foreach($news as $item) {
+        foreach ($news as $item) {
             $data[] = new XmlObject(
                 'item',
                 array(),
@@ -184,7 +183,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
-
 
         $feed = new XmlObject(
             'rss',

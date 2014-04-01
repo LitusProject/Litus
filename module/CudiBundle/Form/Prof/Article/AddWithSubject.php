@@ -31,15 +31,15 @@ class AddWithSubject extends Add
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Article $article
-     * @param null|string|int $name Optional name for the element
+     * @param \CudiBundle\Entity\Article  $article
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
     {
         parent::__construct($entityManager, $name);
 
-        $this->get('subject')->get('subject_id')->setAttribute('value', $subject->getId());
-        $this->get('subject')->get('subject')->setAttribute('value', $subject->getCode() . ' - ' . $subject->getName())
+        $this->get('subject_form')->get('subject_id')->setAttribute('value', $subject->getId());
+        $this->get('subject_form')->get('subject')->setAttribute('value', $subject->getCode() . ' - ' . $subject->getName())
             ->setAttribute('disabled', 'disabled');
     }
 

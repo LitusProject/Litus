@@ -479,8 +479,10 @@
             }
         });
 
+        modal.on('shown.bs.modal', function () {
+            $(this).find('input').focus();
+        });
         modal.modal();
-        modal.find('input').focus();
     }
 
     function _addExtraArticle($this, data) {
@@ -506,6 +508,7 @@
                         $('<span>', {'class': 'currentNumber'}).html(data.currentNumber),
                         '/' + data.number
                     );
+                    _updatePrice($this);
                 } else {
                     data.status = 'assigned';
                     row.removeClass('inactive');
@@ -522,6 +525,7 @@
                 row.data('info', data);
             } else {
                 $this.find('tbody').prepend(_addArticleRow($this, settings, data));
+                _addArticle($this, data.articleId);
             }
         }
     }

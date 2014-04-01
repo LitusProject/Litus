@@ -52,7 +52,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $form = new Add($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -72,7 +72,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $years = array();
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
+                foreach ($yearIds as $yearId) {
                     $years[] = $repository->findOneById($yearId);
                 }
 
@@ -118,7 +118,6 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-
     public function editAction()
     {
         if (!($driver = $this->_getDriver()))
@@ -126,7 +125,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
         $form = new Edit($this->getEntityManager(), $driver);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -137,7 +136,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $years = array();
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                foreach($yearIds as $yearId) {
+                foreach ($yearIds as $yearId) {
                     $years[] = $repository->findOneById($yearId);
                 }
 

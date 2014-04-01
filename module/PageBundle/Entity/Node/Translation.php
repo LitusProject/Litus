@@ -70,10 +70,10 @@ class Translation
     private $content;
 
     /**
-     * @param \PageBundle\Entity\Node\Page $page
+     * @param \PageBundle\Entity\Node\Page          $page
      * @param \CommonBundle\Entity\General\Language $language
-     * @param string $title
-     * @param string $content
+     * @param string                                $title
+     * @param string                                $content
      */
     public function __construct(Page $page, Language $language, $title, $content)
     {
@@ -115,6 +115,7 @@ class Translation
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Translation
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

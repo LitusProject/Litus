@@ -92,8 +92,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '30MB')));
-        $upload->addValidator(new ExtensionValidator('zip'));
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -108,7 +107,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getConfigValue('publication.public_pdf_directory');
 
             $fileName = '';
-            do{
+            do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
@@ -337,7 +336,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     private function _rrmdir($dir)
     {
-        foreach(glob($dir . '/*') as $file) {
+        foreach (glob($dir . '/*') as $file) {
             if(is_dir($file))
                 $this->_rrmdir($file);
             else

@@ -19,7 +19,6 @@
 namespace CalendarBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
     CalendarBundle\Entity\Node\Event,
     CalendarBundle\Entity\Node\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
@@ -27,7 +26,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
     DateTime,
     Imagick,
-    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     Zend\Http\Headers,
     Zend\File\Transfer\Transfer as FileTransfer,
     Zend\Validator\File\Size as SizeValidator,
@@ -98,7 +96,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
@@ -165,7 +163,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $event->getTranslation($language, false);
 
                     if (null !== $translation) {
@@ -269,14 +267,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
+        $form = new PosterForm();
+
         if ($this->getRequest()->isPost()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-            $upload->addValidator(new ImageValidator());
+            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
@@ -287,7 +286,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     $fileName = '/' . $event->getPoster();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
@@ -360,33 +359,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'data' => $data,
-            )
-        );
-    }
-
-    public function pdfAction()
-    {
-        if (!($event = $this->_getEvent()))
-            return new ViewModel();
-
-        $shifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
-
-        $file = new TmpFile();
-        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
-        $document->generate();
-
-        $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
-            'Content-Type'        => 'application/pdf',
-        ));
-        $this->getResponse()->setHeaders($headers);
-
-        return new ViewModel(
-            array(
-                'data' => $file->getContent(),
             )
         );
     }

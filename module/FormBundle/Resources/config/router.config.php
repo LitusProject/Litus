@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'form_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/form[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'form_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'form_admin_form' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -117,7 +105,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'form_view',
-                    'action'     => 'view',
+                    'action'     => 'index',
                 ),
             ),
         ),
@@ -199,7 +187,6 @@ return array(
     ),
 
     'controllers' => array(
-        'form_install'            => 'FormBundle\Controller\Admin\InstallController',
         'form_admin_form'         => 'FormBundle\Controller\Admin\FormController',
         'form_admin_group'        => 'FormBundle\Controller\Admin\GroupController',
         'form_admin_form_field'   => 'FormBundle\Controller\Admin\FieldController',

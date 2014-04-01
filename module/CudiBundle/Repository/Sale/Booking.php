@@ -118,6 +118,27 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findAllByPersonAndAcademicYearQuery(Person $person, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('person', $person->getId())
+            ->setParameter('startDate', $academicYear->getUniversityStartDate())
+            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->orderBy('b.bookDate', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
     public function findAllByArticleAndPeriodQuery(ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -137,6 +158,27 @@ class Booking extends EntityRepository
                 $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllByArticleAndAcademicYearQuery(ArticleEntity $article, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter('article', $article->getId())
+            ->setParameter('startDate', $academicYear->getUniversityStartDate())
+            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->orderBy('b.bookDate', 'DESC')
             ->getQuery();
 
         return $resultSet;
@@ -764,7 +806,7 @@ class Booking extends EntityRepository
         $counter = 0;
         $idsCancelled = array();
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if (in_array($booking->getArticle()->getId(), $excluded))
                 continue;
             $booking->setStatus('canceled', $this->getEntityManager());
@@ -776,7 +818,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssigned();
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if (in_array($booking->getArticle()->getId(), $excluded))
                 continue;
             $booking->setStatus('canceled', $this->getEntityManager());
@@ -809,7 +851,7 @@ class Booking extends EntityRepository
 
         $persons = array();
 
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
 
             if ($available <= 0)
@@ -819,7 +861,7 @@ class Booking extends EntityRepository
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
-            foreach($bookings as $booking) {
+            foreach ($bookings as $booking) {
                 if ($available <= 0)
                     break;
 
@@ -880,7 +922,7 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllBookedByArticleAndPeriod($article, $period);
 
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if ($available <= 0)
                 break;
 
@@ -932,7 +974,7 @@ class Booking extends EntityRepository
             ->getResult();
 
         $persons = array();
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
                $booking->setStatus('expired', $this->getEntityManager());
 
                if (!isset($persons[$booking->getPerson()->getId()]))
@@ -969,13 +1011,14 @@ class Booking extends EntityRepository
             ->getConfigValue('cudi.reservation_extend_time');
 
         $number = 0;
-        foreach($bookings as $booking) {
+        foreach ($bookings as $booking) {
             if ($booking->getExpirationDate()) {
                 $date = clone $booking->getExpirationDate();
                 $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
                 $number++;
             }
         }
+
         return $number;
     }
 

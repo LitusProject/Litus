@@ -43,7 +43,7 @@ class Zip
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
-     * @param arrays $lists The array containing the mailinglists
+     * @param arrays                      $lists         The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
@@ -65,7 +65,7 @@ class Zip
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
-        foreach($this->_lists as $list) {
+        foreach ($this->_lists as $list) {
             $entries = $this->_entityManager
                 ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);

@@ -61,7 +61,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      * Parse received text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string $data
+     * @param string                                       $data
      */
     protected function gotText(User $user, $data)
     {
@@ -76,7 +76,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         if (null == $command)
             return;
 
-        switch($command->command) {
+        switch ($command->command) {
             case 'action':
                 if ($this->isAuthenticated($user->getSocket()))
                     $this->_gotAction($user, $command);
@@ -89,6 +89,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     $this->removeUser($user);
                     $now = new DateTime();
                     echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
+
                     return;
                 }
 
@@ -97,6 +98,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                         $this->removeUser($user);
                         $now = new DateTime();
                         echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+
                         return;
                     }
 
@@ -123,6 +125,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                         $this->removeUser($user);
                         $now = new DateTime();
                         echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
+
                         return;
                     }
                 }
@@ -144,8 +147,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      * Do action when user closed his socket
      *
      * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer $statusCode
-     * @param string $reason
+     * @param integer                                $statusCode
+     * @param string                                 $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -197,7 +200,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         $json = $this->_queue->getJsonQueueItem($id);
 
-        foreach($this->getUsers() as $user) {
+        foreach ($this->getUsers() as $user) {
             $session = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOneById($user->getExtraData('session'));
@@ -217,7 +220,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      * Parse action text
      *
      * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param mixed $command
+     * @param mixed                                        $command
      */
     private function _gotAction(User $user, $command)
     {

@@ -107,12 +107,12 @@ class SaleItem
     private $discountType;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param integer $number
-     * @param integer $price
+     * @param \CudiBundle\Entity\Sale\Article        $article
+     * @param integer                                $number
+     * @param integer                                $price
      * @param \CudiBundle\Entity\Sale\QueueItem|null $queueItem
-     * @param string $discountType
-     * @param \Doctrine\ORM\EntityManager|null $entityManager
+     * @param string                                 $discountType
+     * @param \Doctrine\ORM\EntityManager|null       $entityManager
      */
     public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, $discountType = null, EntityManager $entityManager = null)
     {
@@ -150,6 +150,7 @@ class SaleItem
     public function setTimestamp(DateTime $timestamp)
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 
@@ -187,6 +188,7 @@ class SaleItem
         $this->purchasePrice = round($this->purchasePrice * $number / $this->number);
         $this->price = round($this->price * $number / $this->number);
         $this->number = $number;
+
         return $this;
     }
 

@@ -53,10 +53,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_academicYear = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \PublicationBundle\Entity\Publication $publication The publication to add an edition to.
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academic year.
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \PublicationBundle\Entity\Publication     $publication   The publication to add an edition to.
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear  The current academic year.
+     * @param null|string|int                           $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $name = null)
     {
@@ -111,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAllByPublicationAndAcademicYear($this->_publication, $this->_academicYear);
 
         $options = array();
-        foreach($pdfs as $pdf) {
+        foreach ($pdfs as $pdf) {
             $options[$pdf->getId()] = $pdf->getTitle();
         }
 
@@ -151,6 +151,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y',
+                            ),
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name' => 'file',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '30MB',
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'zip',
                             ),
                         ),
                     ),

@@ -63,8 +63,8 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event $event The event
-     * @param mixed $opts The validator's options
+     * @param \TicketBundle\Entity\Event  $event         The event
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Event $event, Person $person = null, $opts = null)
     {
@@ -79,8 +79,8 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     /**
      * Returns true if these does not exceed max
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -94,7 +94,8 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
                 $number += $context['number_non_member'];
             }
         } else {
-            foreach($this->_event->getOptions() as $option) {
+            $options = $this->_event->getOptions();
+            foreach ($options as $option) {
                 $number += $context['option_' . $option->getId() . '_number_member'];
                 if (!$this->_event->isOnlyMembers()) {
                     $number += $context['option_' . $option->getId() . '_number_non_member'];
@@ -112,6 +113,7 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
 
         if (null == $person && !isset($context['is_guest'])) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
@@ -122,12 +124,14 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
 
             if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);
+
                 return false;
             }
         }
 
         if ($number > $this->_event->getNumberFree() && $this->_event->getNumberOfTickets() != 0) {
             $this->error(self::EXCEEDS_MAX);
+
             return false;
         }
 

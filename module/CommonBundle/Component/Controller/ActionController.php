@@ -48,7 +48,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -88,13 +88,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->persistentFlashMessages = array();
         $result->authenticatedPerson = $authenticatedPerson;
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
         $result->setTerminal(true);
 
         $e->setResult($result);
+
         return $result;
     }
 
@@ -173,7 +173,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             } else {
                 Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
@@ -316,7 +316,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private function _getAcl()
     {
         if (null !== $this->getCache()) {
-            if(!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
+            if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
                 );
@@ -444,19 +444,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Add a persistent flash message
-     * @param mixed $result The result of onDispatch
-     * @param \CommonBundle\Component\FlashMessenger\FlashMessage $flashMessage The flash message
-     */
-    protected function addPersistentFlashMessage($result, FlashMessage $flashMessage)
-    {
-        $result->persistentFlashMessages = array_merge(
-            $result->persistentFlashMessages,
-            array($flashMessage)
-        );
-    }
-
-    /**
      * We want an easy method to retrieve the Mail Transport from
      * the DI container.
      *
@@ -470,8 +457,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Gets a parameter from a GET request.
      *
-     * @param string $param The parameter's key
-     * @param mixed $default The default value, returned when the parameter is not found
+     * @param  string $param   The parameter's key
+     * @param  mixed  $default The default value, returned when the parameter is not found
      * @return string
      */
     public function getParam($param, $default = null)

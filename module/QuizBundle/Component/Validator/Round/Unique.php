@@ -58,9 +58,9 @@ class Unique extends \Zend\Validator\AbstractValidator
     /**
      *
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \QuizBundle\Entity\Quiz $quiz The quiz where the round belongs to
-     * @param \QuizBundle\Entity\Round $round The round excluded
-     * @param mixed $opts The validator's options
+     * @param \QuizBundle\Entity\Quiz     $quiz          The quiz where the round belongs to
+     * @param \QuizBundle\Entity\Round    $round         The round excluded
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, Round $round = null, $opts = null)
     {
@@ -71,11 +71,13 @@ class Unique extends \Zend\Validator\AbstractValidator
         $this->_round = $round;
     }
 
-    public function isValid($value) {
+    public function isValid($value)
+    {
         $this->setValue($value);
 
         if (!is_numeric($value)) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 
@@ -92,6 +94,7 @@ class Unique extends \Zend\Validator\AbstractValidator
             return true;
 
         $this->error(self::NOT_VALID);
+
         return false;
     }
 }

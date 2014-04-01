@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'banner_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'banner_admin_banner' => array(
             '@common_jquery',
             '@admin_css',

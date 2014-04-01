@@ -33,7 +33,7 @@
         $(document).ready(function () {
             $('#articleSearch').typeaheadRemote(
                 {
-                    source: '{{ url("cudi_prof_article_typeahead", {"language": language.getAbbrev()})}}',
+                    source: '{{ url("cudi_prof_article_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

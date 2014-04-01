@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Quiz $quiz
+     * @param \QuizBundle\Entity\Quiz     $quiz
      * @var null|string|int $name Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
@@ -55,7 +55,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
         $this->_quiz = $quiz;
-
 
         $field = new Text('name');
         $field->setLabel('Name')

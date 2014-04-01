@@ -18,12 +18,6 @@
 
 return array(
     'controllers' => array(
-        'wiki_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'wiki_auth' => array(
             '@common_jquery',
             '@bootstrap_css',

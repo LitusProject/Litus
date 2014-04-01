@@ -32,7 +32,8 @@ return Config::create(
             'factories' => array(
                 'translator' => function ($serviceManager) {
                     $config = $serviceManager->get('Config');
-                    return new \Zend\Mvc\I18n\Translator($config['translator']);
+
+                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
                 },
 
                 'authentication' => function ($serviceManager) {
@@ -69,15 +70,21 @@ return Config::create(
                     return new \Zend\Authentication\Storage\Session('Litus_Auth');
                 },
 
-                'common_sessionstorage' => function($serviceManager) {
+                'common_sessionstorage' => function ($serviceManager) {
                     return new Zend\Session\Container('Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
+
+                'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
+                'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
             ),
             'invokables' => array(
                 'mail_transport' => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
+            ),
+            'aliases' => array(
+                'litus.console_application' => 'doctrine.cli',
             ),
         ),
         'translator' => array(

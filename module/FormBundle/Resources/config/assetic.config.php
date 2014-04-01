@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'form_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'form_admin_form' => array(
             '@common_jquery',
             '@admin_css',
@@ -93,7 +88,6 @@ return array(
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
-            '@common_download_file',
         ),
         'form_group' => array(
             '@common_jquery',
@@ -120,7 +114,7 @@ return array(
             '@bootstrap_js_popover',
             '@form_manage_css',
             '@common_jquery_form',
-            '@common_download_file',
+            '@common_remote_typeahead',
         ),
         'form_manage_group' => array(
             '@common_jquery',
@@ -134,7 +128,6 @@ return array(
             '@bootstrap_js_tab',
             '@form_manage_css',
             '@common_jquery_form',
-            '@common_download_file',
         ),
     ),
 

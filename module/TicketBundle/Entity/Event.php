@@ -141,17 +141,17 @@ class Event
 
     /**
      * @param \CalendarBundle\Entity\Node\Event $activity
-     * @param boolean $bookablePraesidium
-     * @param boolean $bookable
-     * @param \DateTime $bookingsCloseDate
-     * @param boolean $active
-     * @param boolean $ticketsGenerated
-     * @param integer $numberOfTickets
-     * @param integer $limitPerPerson
-     * @param boolean $allowRemove
-     * @param boolean $onlyMembers
-     * @param integer $priceMembers
-     * @param integer $priceNonMembers
+     * @param boolean                           $bookablePraesidium
+     * @param boolean                           $bookable
+     * @param \DateTime                         $bookingsCloseDate
+     * @param boolean                           $active
+     * @param boolean                           $ticketsGenerated
+     * @param integer                           $numberOfTickets
+     * @param integer                           $limitPerPerson
+     * @param boolean                           $allowRemove
+     * @param boolean                           $onlyMembers
+     * @param integer                           $priceMembers
+     * @param integer                           $priceNonMembers
      */
     public function __construct(CalendarEvent $activity, $bookablePraesidium, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
     {
@@ -187,12 +187,13 @@ class Event
     }
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event $activity
+     * @param  \CalendarBundle\Entity\Node\Event $activity
      * @return \TicketBunlde\Entity\Event
      */
     public function setActivity(CalendarEvent $activity)
     {
         $this->activity = $activity;
+
         return $this;
     }
 
@@ -213,12 +214,13 @@ class Event
     }
 
     /**
-     * @param boolean $bookablePraesidium
+     * @param  boolean                    $bookablePraesidium
      * @return \TicketBunlde\Entity\Event
      */
     public function setBookablePraesidium($bookablePraesidium)
     {
         $this->bookablePraesidium = $bookablePraesidium;
+
         return $this;
     }
 
@@ -239,12 +241,13 @@ class Event
     }
 
     /**
-     * @param boolean $bookable
+     * @param  boolean                    $bookable
      * @return \TicketBunlde\Entity\Event
      */
     public function setBookable($bookable)
     {
         $this->bookable = $bookable;
+
         return $this;
     }
 
@@ -257,12 +260,13 @@ class Event
     }
 
     /**
-     * @param \DateTime|null $bookingsCloseDate
+     * @param  \DateTime|null             $bookingsCloseDate
      * @return \TicketBunlde\Entity\Event
      */
     public function setBookingsCloseDate(DateTime $bookingsCloseDate = null)
     {
         $this->bookingsCloseDate = $bookingsCloseDate;
+
         return $this;
     }
 
@@ -271,16 +275,20 @@ class Event
      */
     public function isActive()
     {
+        if ($this->activity->getStartDate() < new DateTime())
+            return false;
+
         return $this->active;
     }
 
     /**
-     * @param boolean $active
+     * @param  boolean                    $active
      * @return \TicketBunlde\Entity\Event
      */
     public function setActive($active)
     {
         $this->active = $active;
+
         return $this;
     }
 
@@ -293,12 +301,13 @@ class Event
     }
 
     /**
-     * @param boolean $ticketsGenerated
+     * @param  boolean                    $ticketsGenerated
      * @return \TicketBunlde\Entity\Event
      */
     public function setTicketsGenerated($ticketsGenerated)
     {
         $this->ticketsGenerated = $ticketsGenerated;
+
         return $this;
     }
 
@@ -311,12 +320,13 @@ class Event
     }
 
     /**
-     * @param integer $numberOfTickets
+     * @param  integer                    $numberOfTickets
      * @return \TicketBunlde\Entity\Event
      */
     public function setNumberOfTickets($numberOfTickets)
     {
         $this->numberOfTickets = $numberOfTickets;
+
         return $this;
     }
 
@@ -329,12 +339,13 @@ class Event
     }
 
     /**
-     * @param integer $limitPerPerson
+     * @param  integer                    $limitPerPerson
      * @return \TicketBunlde\Entity\Event
      */
     public function setLimitPerPerson($limitPerPerson)
     {
         $this->limitPerPerson = $limitPerPerson;
+
         return $this;
     }
 
@@ -347,12 +358,13 @@ class Event
     }
 
     /**
-     * @param boolean $allowRemove
+     * @param  boolean                    $allowRemove
      * @return \TicketBunlde\Entity\Event
      */
     public function setAllowRemove($allowRemove)
     {
         $this->allowRemove = $allowRemove;
+
         return $this;
     }
 
@@ -365,12 +377,13 @@ class Event
     }
 
     /**
-     * @param boolean $onlyMembers
+     * @param  boolean                    $onlyMembers
      * @return \TicketBunlde\Entity\Event
      */
     public function setOnlyMembers($onlyMembers)
     {
         $this->onlyMembers = $onlyMembers;
+
         return $this;
     }
 
@@ -383,12 +396,13 @@ class Event
     }
 
     /**
-     * @param integer $priceMembers
+     * @param  integer                    $priceMembers
      * @return \TicketBunlde\Entity\Event
      */
     public function setPriceMembers($priceMembers)
     {
         $this->priceMembers = $priceMembers * 100;
+
         return $this;
     }
 
@@ -401,12 +415,13 @@ class Event
     }
 
     /**
-     * @param integer $priceNonMembers
+     * @param  integer                    $priceNonMembers
      * @return \TicketBunlde\Entity\Event
      */
     public function setPriceNonMembers($priceNonMembers)
     {
         $this->priceNonMembers = $priceNonMembers * 100;
+
         return $this;
     }
 
@@ -432,10 +447,11 @@ class Event
     public function getNumberSold()
     {
         $sold = 0;
-        foreach($this->tickets as $ticket) {
+        foreach ($this->tickets as $ticket) {
             if ($ticket->getStatusCode() == 'sold')
                 $sold++;
         }
+
         return $sold;
     }
 
@@ -445,10 +461,11 @@ class Event
     public function getNumberBooked()
     {
         $sold = 0;
-        foreach($this->tickets as $ticket) {
+        foreach ($this->tickets as $ticket) {
             if ($ticket->getStatusCode() == 'booked')
                 $sold++;
         }
+
         return $sold;
     }
 
@@ -458,7 +475,7 @@ class Event
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return integer
      */
     public function generateTicketNumber(EntityManager $entityManager)
@@ -468,7 +485,7 @@ class Event
             $ticket = $entityManager
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findOneByEventAndNumber($this, $number);
-        } while($ticket !== null);
+        } while ($ticket !== null);
 
         return $number;
     }
@@ -476,8 +493,8 @@ class Event
     /**
      * Check whether or not the given person can sign out from this shift.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
+     * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
      * @return boolean
      */
     public function canRemoveReservation(EntityManager $entityManager, Person $person)
@@ -505,14 +522,14 @@ class Event
     }
 
     /**
-     * @param \TicketBundle\Entity\Option $option
-     * @param boolean $member
+     * @param  \TicketBundle\Entity\Option $option
+     * @param  boolean                     $member
      * @return integer
      */
     public function getNumberSoldByOption(Option $option = null, $member)
     {
         $number = 0;
-        foreach($this->tickets as $ticket) {
+        foreach ($this->tickets as $ticket) {
             if ($ticket->getStatusCode() !== 'sold')
                 continue;
 
@@ -524,18 +541,19 @@ class Event
                     $number++;
             }
         }
+
         return $number;
     }
 
     /**
-     * @param \TicketBundle\Entity\Option $option
-     * @param boolean $member
+     * @param  \TicketBundle\Entity\Option $option
+     * @param  boolean                     $member
      * @return integer
      */
     public function getNumberBookedByOption(Option $option = null, $member)
     {
         $number = 0;
-        foreach($this->tickets as $ticket) {
+        foreach ($this->tickets as $ticket) {
             if ($ticket->getStatusCode() !== 'booked')
                 continue;
 
@@ -547,6 +565,7 @@ class Event
                     $number++;
             }
         }
+
         return $number;
     }
 }

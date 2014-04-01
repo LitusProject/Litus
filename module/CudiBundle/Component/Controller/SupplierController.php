@@ -32,7 +32,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * Execute the request.
      *
-     * @param \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -58,6 +58,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('organization_url');
 
         $e->setResult($result);
+
         return $result;
     }
 

@@ -38,10 +38,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class FormController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function viewAction()
+    public function indexAction()
     {
         if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'doodle') {
             $this->redirect()->toRoute(
@@ -77,7 +77,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($formSpecification, $person);
-        } elseif(isset($_COOKIE['LITUS_form'])) {
+        } elseif (isset($_COOKIE['LITUS_form'])) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -110,7 +110,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -171,10 +171,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->populateFromGuestInfo($guestInfo);
 
         if ($this->getRequest()->isPost()) {
-            $formData = array_merge(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
-            );
+            $formData = $this->getRequest()->getPost()->toArray();
             $form->setData($formData);
 
             if ($form->isValid() || isset($formData['save_as_draft'])) {
@@ -227,16 +224,83 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function viewAction()
+    {
+        if (!($entry = $this->_getEntry()))
+            return $this->notFoundAction();
+
+        $entry->getForm()->setEntityManager($this->getEntityManager());
+
+        $now = new DateTime();
+        $formClosed = ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive());
+
+        $group = $this->_getGroup($entry->getForm());
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please submit these forms in order.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'index',
+                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+
+        if (null !== $person) {
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
+        } elseif (isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            if ($guestInfo) {
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'formClosed'      => $formClosed,
+                'specification'   => $entry->getForm(),
+                'group'           => $group,
+                'progressBarInfo' => $progressBarInfo,
+                'entry'           => $entry,
+            )
+        );
+    }
+
     public function doodleAction()
     {
         if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'doodle',
+                    'action'   => 'index',
                     'id'       => $formSpecification->getId(),
                 )
             );
@@ -286,7 +350,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -309,7 +373,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif(isset($_COOKIE['LITUS_form'])) {
+        } elseif (isset($_COOKIE['LITUS_form'])) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -364,7 +428,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function saveDoodleAction()
     {
         if (!($formSpecification = $this->_getForm()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -424,7 +488,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif(isset($_COOKIE['LITUS_form'])) {
+        } elseif (isset($_COOKIE['LITUS_form'])) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -491,7 +555,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function editAction()
     {
         if (!($entry = $this->_getEntry()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $entry->getForm()->setEntityManager($this->getEntityManager());
 
@@ -523,7 +587,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -539,7 +603,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif(isset($_COOKIE['LITUS_form'])) {
+        } elseif (isset($_COOKIE['LITUS_form'])) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -566,7 +630,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if (!$result) {
                     return new ViewModel(
                         array(
-                            'specification' => $formSpecification,
+                            'specification' => $entry->getForm(),
                             'form'          => $form,
                         )
                     );
@@ -617,13 +681,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByValue($this->getParam('id'));
 
         if (null === $fieldEntry || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $this->getParam('id') . '"',
+            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
             'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));
@@ -643,7 +706,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
@@ -652,7 +714,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
@@ -664,7 +725,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getEntry()
     {
         if (null === $this->getParam('id')) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
@@ -672,33 +732,28 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneById($this->getParam('id'));
 
-        if (null === $entry || !$entry->getForm()->isEditableByUser()) {
-            $this->getResponse()->setStatusCode(404);
+        if (null === $entry || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft())) {
             return;
         }
 
         $now = new DateTime();
         if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
         $person = $this->getAuthentication()->getPersonObject();
         $guestInfo = null;
-        if(isset($_COOKIE['LITUS_form']) && null === $person) {
+        if (isset($_COOKIE['LITUS_form']) && null === $person) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($_COOKIE['LITUS_form']);
         }
 
         if ($person !== null && $entry->getCreationPerson() != $person) {
-            $this->getResponse()->setStatusCode(404);
             return;
         } elseif ($guestInfo !== null && $entry->getGuestInfo() !== $guestInfo) {
-            $this->getResponse()->setStatusCode(404);
             return;
         } elseif ($guestInfo === null && $person === null) {
-            $this->getResponse()->setStatusCode(404);
             return;
         }
 
@@ -732,7 +787,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
 
         if ($this->getAuthentication()->isAuthenticated()) {
-            foreach($group->getForms() as $groupForm) {
+            foreach ($group->getForms() as $groupForm) {
                 $formEntry = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findAllByFormAndPerson($groupForm->getForm(), $this->getAuthentication()->getPersonObject());
@@ -762,7 +817,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         } else {
             $guestInfo = null;
-            if(isset($_COOKIE['LITUS_form'])) {
+            if (isset($_COOKIE['LITUS_form'])) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($_COOKIE['LITUS_form']);
@@ -770,7 +825,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $guestInfo->renew();
             }
 
-            foreach($group->getForms() as $groupForm) {
+            foreach ($group->getForms() as $groupForm) {
                 $formEntry = array();
                 if (null !== $guestInfo) {
                     $formEntry = $this->getEntityManager()
@@ -822,7 +877,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['next_form'],
                     )
                 );
@@ -831,7 +886,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'view',
+                    'action'   => 'index',
                     'id'       => $formSpecification->getId(),
                 )
             );

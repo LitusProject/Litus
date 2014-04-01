@@ -83,7 +83,7 @@ class GuestInfo
 
             $guestInfo = $entityManager->getRepository('FormBundle\Entity\Node\GuestInfo')
                 ->findOneBySessionId($sessionId);
-        } while($guestInfo !== null);
+        } while ($guestInfo !== null);
 
         $this->sessionId = $sessionId;
 
@@ -114,6 +114,7 @@ class GuestInfo
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -133,6 +134,7 @@ class GuestInfo
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -160,6 +162,7 @@ class GuestInfo
     public function setEmail($email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -175,6 +178,7 @@ class GuestInfo
             '/',
             str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
         );
+
         return $this;
     }
 }

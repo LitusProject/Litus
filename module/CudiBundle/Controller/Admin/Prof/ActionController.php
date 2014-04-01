@@ -57,6 +57,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllCompletedQuery(),
             $this->getParam('page')
         );
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -73,6 +74,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 ->findAllRefusedQuery(),
             $this->getParam('page')
         );
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -112,7 +114,6 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             )
         );
 
-
         $this->redirect()->toRoute(
             'cudi_admin_prof_action',
             array(
@@ -139,7 +140,10 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         'id' => $action->getId(),
                     )
                 );
+
                 return new ViewModel();
+            } elseif ($action->getAction() == 'delete') {
+                $action->getEntity()->setIsHistory(true);
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();
@@ -196,6 +200,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         'id' => $action->getId(),
                     )
                 );
+
                 return new ViewModel();
             } else {
                 $action->getEntity()->setRemoved();
@@ -252,7 +257,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new ArticleForm($this->getEntityManager(), $action->getEntity());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -310,6 +315,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         'action' => 'completed'
                     )
                 );
+
                 return new ViewModel();
             }
         }
@@ -330,7 +336,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new FileForm($action->getEntity());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -353,6 +359,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                         'action' => 'completed'
                     )
                 );
+
                 return new ViewModel();
             }
         }

@@ -70,6 +70,7 @@ class Config extends EntityRepository
 
         if($config === null)
             throw new \RuntimeException('Configuration entry ' . $key . ' not found');
+
         return $config->getValue();
     }
 }

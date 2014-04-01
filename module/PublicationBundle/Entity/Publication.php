@@ -83,6 +83,7 @@ class Publication
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -92,6 +93,7 @@ class Publication
     public function delete()
     {
         $this->deleted = true;
+
         return $this;
     }
 }

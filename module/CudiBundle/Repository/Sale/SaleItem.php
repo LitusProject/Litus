@@ -137,7 +137,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -162,7 +162,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -331,7 +331,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -351,7 +351,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -381,7 +381,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -401,7 +401,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice)')
+            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -431,7 +431,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.session', 's')
@@ -450,7 +450,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price)')
+            $resultSet = $query->select('SUM(i.price * i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.session', 's')
                 ->where(
@@ -579,7 +579,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -737,7 +737,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -863,7 +863,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 
@@ -1012,7 +1012,7 @@ class SaleItem extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $item) {
+        foreach ($resultSet as $item) {
             $ids[] = $item['id'];
         }
 

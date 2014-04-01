@@ -49,10 +49,10 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
     protected $_currentList = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager      $entityManager       The EntityManager instance
      * @param \CommonBundle\Entity\User\Person $authenticatedPerson The authenticated person
-     * @param \MailBundle\Entity\MailingList $currentList The current list
-     * @param null|string|int $name Optional name for the element
+     * @param \MailBundle\Entity\MailingList   $currentList         The current list
+     * @param null|string|int                  $name                Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $authenticatedPerson, \MailBundle\Entity\MailingList $currentList, $name = null)
     {

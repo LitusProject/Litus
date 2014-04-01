@@ -25,10 +25,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\Validator\File\Count as CountValidator,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
-    Zend\Validator\File\ImageSize as ImageSizeValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,10 +36,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class BannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
-    const BANNER_WIDTH = 940;
-    const BANNER_HEIGHT = 100;
-    const BANNER_FILESIZE = '10MB';
 
     public function manageAction()
     {
@@ -108,16 +100,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $upload = new FileUpload();
+        $form = new AddForm($this->getEntityManager());
 
-        $upload->addValidator(new SizeValidator(array('max' => $this::BANNER_FILESIZE)));
-        $upload->addValidator(new ImageValidator());
-        $validator = new ImageSizeValidator();
-        $validator->setMinWidth($this::BANNER_WIDTH)
-            ->setMinHeight($this::BANNER_HEIGHT)
-            ->setMaxWidth($this::BANNER_WIDTH)
-            ->setMaxHeight($this::BANNER_HEIGHT);
-        $upload->addValidator($validator);
+        $upload = new FileUpload();
+        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
@@ -132,7 +118,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     ->getConfigValue('banner.image_path');
 
                 $fileName = '';
-                do{
+                do {
                     $fileName = '/' . sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
 
@@ -215,7 +201,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                         ->getConfigValue('banner.image_path');
 
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
 

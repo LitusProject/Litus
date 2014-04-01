@@ -47,11 +47,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_session;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
      * @param \CudiBundle\Entity\Sale\Session $session
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int                 $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Session $session, $name = null )
+    public function __construct(EntityManager $entityManager, Session $session, $name = null)
     {
         parent::__construct($name);
 
@@ -61,7 +61,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('restriction_type');
         $field->setLabel('Type')
             ->setRequired()
-            ->setAttribute('options', Restriction::$POSSIBLE_TYPES);
+            ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'Limit the students that can buy articles during this sale session:
+                <ul>
+                    <li><b>Name:</b> restrict by name</li>
+                    <li><b>Year:</b> restrict study year</li>
+                </ul>');
         $this->add($field);
 
         $field = new Text('start_value');

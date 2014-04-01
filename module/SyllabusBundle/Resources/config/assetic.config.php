@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'syllabus_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'syllabus_admin_update' => array(
             '@common_jquery',
             '@admin_css',
@@ -54,6 +49,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_remote_typeahead',
         ),
         'syllabus_admin_subject' => array(
             '@common_jquery',
@@ -61,6 +57,13 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_remote_typeahead',
+        ),
+        'syllabus_admin_subject_study' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_remote_typeahead',
         ),
         'syllabus_admin_subject_comment' => array(
             '@common_jquery',

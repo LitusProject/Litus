@@ -42,8 +42,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $bookings = $this->getEntityManager()
@@ -68,8 +67,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $this->initAjax();
 
         if (!($booking = $this->_getBooking())) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         if (!($booking->getArticle()->isUnbookable())) {
@@ -118,8 +116,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
-            $this->getResponse()->setStatusCode(404);
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $currentYear = $this->getCurrentAcademicYear();
@@ -133,7 +130,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllOpenByPerson($authenticatedPerson);
 
         $booked = array();
-        foreach($bookingsOpen as $booking) {
+        foreach ($bookingsOpen as $booking) {
             if (!isset($booked[$booking->getArticle()->getId()]))
                 $booked[$booking->getArticle()->getId()] = 0;
             $booked[$booking->getArticle()->getId()] += $booking->getNumber();
@@ -144,7 +141,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllSoldByPerson($authenticatedPerson);
 
         $sold = array();
-        foreach($bookingsSold as $booking) {
+        foreach ($bookingsSold as $booking) {
             if (!isset($sold[$booking->getArticle()->getId()]))
                 $sold[$booking->getArticle()->getId()] = 0;
             $sold[$booking->getArticle()->getId()] += $booking->getNumber();
@@ -223,11 +220,15 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $form->addInputsForArticles($articles);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $enableAssignment = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_assignment');
+
                 $total = 0;
                 foreach ($formData as $formKey => $formValue) {
                     $saleArticleId = substr($formKey, 8, strlen($formKey));
@@ -245,7 +246,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         if (!$saleArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager()))
                             continue;
 
-                        foreach($saleArticle->getRestrictions() as $restriction) {
+                        foreach ($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getRawType() == 'amount') {
                                 $amount = sizeof(
                                     $this->getEntityManager()
@@ -270,10 +271,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         );
 
                         $this->getEntityManager()->persist($booking);
-
-                        $enableAssignment = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.enable_automatic_assignment');
 
                         if ($enableAssignment) {
                             $currentPeriod = $this->getEntityManager()
@@ -318,7 +315,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'Success',
-                            'The textbooks have been booked!'
+                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.'
                         )
                     );
                 }
@@ -375,7 +372,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
 
         $booked = array();
-        foreach($bookingsOpen as $booking) {
+        foreach ($bookingsOpen as $booking) {
             if (!isset($booked[$booking->getArticle()->getId()]))
                 $booked[$booking->getArticle()->getId()] = 0;
             $booked[$booking->getArticle()->getId()] += $booking->getNumber();
@@ -386,14 +383,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllSoldByPerson($this->getAuthentication()->getPersonObject());
 
         $sold = array();
-        foreach($bookingsSold as $booking) {
+        foreach ($bookingsSold as $booking) {
             if (!isset($sold[$booking->getArticle()->getId()]))
                 $sold[$booking->getArticle()->getId()] = 0;
             $sold[$booking->getArticle()->getId()] += $booking->getNumber();
         }
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             if (!$article->isBookable() && $article->getMainArticle()->getType() == 'common')
                 continue;
 
@@ -404,7 +401,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $item->price = number_format($article->getSellPrice()/100, 2);
             $item->discounts = array();
 
-            foreach($article->getDiscounts() as $discount) {
+            foreach ($article->getDiscounts() as $discount) {
                 $item->discounts[] = array(
                     'type' => $this->getTranslator()->translate($discount->getType()),
                     'price' => number_format($discount->apply($article->getSellPrice())/100, 2),
@@ -422,7 +419,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('CudiBundle\Entity\Comment\Comment')
                 ->findAllSiteByArticle($article->getMainArticle());
 
-            foreach($comments as $comment) {
+            foreach ($comments as $comment) {
                 $item->comments[] = $comment->getText();
             }
 
@@ -438,7 +435,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function bookSearchAction()
     {
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
             $enableBookings = $this->getEntityManager()
@@ -460,7 +457,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 ->findOneActive();
             $currentPeriod->setEntityManager($this->getEntityManager());
 
-            foreach($formData as $id => $number) {
+            foreach ($formData as $id => $number) {
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($id);

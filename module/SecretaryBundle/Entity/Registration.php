@@ -155,6 +155,7 @@ class Registration
     {
         $this->payed = $payed;
         $this->payedTimestamp = $payed ? new DateTime() : null;
+
         return $this;
     }
 

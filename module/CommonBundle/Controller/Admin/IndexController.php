@@ -107,7 +107,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getVisitsGraph(Analytics $analytics)
     {
         if (null !== $this->getCache()) {
-            if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
+            if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now)
                     return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
@@ -148,7 +148,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getRegistrationsGraph()
     {
         if (null !== $this->getCache()) {
-            if($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationsGraph')) {
+            if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationsGraph')['expirationTime'] > $now)
                     return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationsGraph');
@@ -190,7 +190,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($registrations as $registration)
             $data[$registration->getTimestamp()->format('d/m/Y')]++;
 
-        foreach(array_reverse($data) as $label => $value) {
+        foreach (array_reverse($data) as $label => $value) {
             $registationGraphData['labels'][] = $label;
             $registationGraphData['dataset'][] = $value;
         }

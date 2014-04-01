@@ -19,10 +19,14 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
     DateTime,
+    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Form\Admin\Shift\Add as AddForm,
     ShiftBundle\Form\Admin\Shift\Edit as EditForm,
+    ShiftBundle\Form\Admin\Shift\Export as ExportForm,
+    Zend\Http\Headers,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -161,9 +165,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function addInterval(DateTime $time, $interval, $duplicate){
+    private function addInterval(DateTime $time, $interval, $duplicate)
+    {
         for ($i = 0; $i < $duplicate; $i++)
             $time = $time->add($interval);
+
         return clone $time;
     }
 
@@ -329,7 +335,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getResult();
 
         $result = array();
-        foreach($shifts as $shift) {
+        foreach ($shifts as $shift) {
             $item = (object) array();
             $item->id = $shift->getId();
             $item->name = $shift->getName();
@@ -347,13 +353,50 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function exportAction()
+    {
+        $form = new ExportForm($this->getEntityManager());
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function pdfAction()
+    {
+        if (!($event = $this->_getEvent()))
+            return new ViewModel();
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
+
+        $file = new TmpFile();
+        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="shift_list.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
 
     /**
     *   @return \Doctrine\ORM\Query
     */
     private function _search()
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift')
@@ -406,5 +449,52 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $shift;
+    }
+
+    private function _getEvent()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the event!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'calendar_admin_calendar',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $event = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $event) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No event with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'calendar_admin_calendar',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $event;
     }
 }

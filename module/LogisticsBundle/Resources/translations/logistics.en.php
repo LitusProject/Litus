@@ -95,9 +95,9 @@ return array(
     '<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
 
         <ul>
-            <li>every monday and thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+            <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
         </ul>
 
         <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
@@ -105,9 +105,9 @@ return array(
         <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>' => '<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
 
         <ul>
-            <li>every monday and thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+            <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
         </ul>
 
         <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
@@ -147,4 +147,7 @@ return array(
     'No lease with the given id was found!' => 'No lease with the given id was found!',
     'No id or barcode was given to identify the item!' => 'No id or barcode was given to identify the item!',
     'No item with the given id or barcode was found!' => 'No item with the given id or barcode was found!',
+
+    'General' => 'General',
+    'Personal' => 'Personal',
 );

@@ -78,10 +78,10 @@ class ReturnItem
     private $queueItem;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param integer $price
+     * @param \CudiBundle\Entity\Sale\Article        $article
+     * @param integer                                $price
      * @param \CudiBundle\Entity\Sale\QueueItem|null $queueItem
-     * @param \Doctrine\ORM\EntityManager|null $entityManager
+     * @param \Doctrine\ORM\EntityManager|null       $entityManager
      */
     public function __construct(Article $article, $price, QueueItem $queueItem = null, EntityManager $entityManager = null)
     {
@@ -116,6 +116,7 @@ class ReturnItem
     public function setTimestamp(DateTime $timestamp)
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 

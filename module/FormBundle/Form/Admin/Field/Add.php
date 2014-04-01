@@ -61,8 +61,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \FormBundle\Entity\Node\Form $form
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int $name Optional name for the element
+     * @param \Doctrine\ORM\EntityManager  $entityManager
+     * @param null|string|int              $name          Optional name for the element
      */
     public function __construct(Form $form, EntityManager $entityManager, Field $lastField = null ,$name = null)
     {
@@ -76,7 +76,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $tabContent = new TabContent('tab_content');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('tab_' . $language->getAbbrev());
@@ -105,6 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('order');
         $field->setLabel('Order')
+            ->setAttribute('data-help', 'The display order of the fields, lower numbers are displayed first.')
             ->setRequired(True);
         $this->add($field);
 
@@ -118,15 +119,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($string_form);
 
         $field = new Checkbox('multiline');
-        $field->setLabel('Multiline');
+        $field->setLabel('Multiline')
+            ->setAttribute('data-help', 'Allow multiple lines in the field (textarea).');
         $string_form->add($field);
 
         $field = new Text('charsperline');
-        $field->setLabel('Max. characters per line (or Infinite)');
+        $field->setLabel('Max. characters per line (or Infinite)')
+            ->setAttribute('data-help', 'The maximum numbers of characters on one line. Zero is infinite.');
         $string_form->add($field);
 
         $field = new Text('lines');
-        $field->setLabel('Max. number of lines (Multiline fields only)');
+        $field->setLabel('Max. number of lines (Multiline fields only)')
+            ->setAttribute('data-help', 'The maximum numbers of lines. Zero is infinite.');
         $string_form->add($field);
 
         $dropdown_form = new Collection('dropdown_form');
@@ -139,13 +143,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $dropdownTabContent = new TabContent('dropdown_tab_content');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $dropdownTabs->addTab(array($language->getName() => '#dropdown_tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('dropdown_tab_' . $language->getAbbrev());
 
             $field = new Text('options_' . $language->getAbbrev());
-            $field->setLabel('Options');
+            $field->setLabel('Options')
+                ->setAttribute('data-help', 'The options comma separated.');
             $pane->add($field);
 
             $dropdownTabContent->add($pane);
@@ -189,7 +194,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $timeslotTabContent = new TabContent('timeslot_tab_content');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $timeslotTabs->addTab(array($language->getName() => '#timeslot_tab_' . $language->getAbbrev()));
 
             $pane = new TabPane('timeslot_tab_' . $language->getAbbrev());
@@ -277,7 +282,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $data['timeslot_end_date'] = $endDate->format('d/m/Y H:i');
         }
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
 
             if ($field instanceof DropdownField) {
@@ -300,7 +305,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getVisibilityOptions()
     {
         $options = array(0 => 'Always');
-        foreach($this->_form->getFields() as $field) {
+        foreach ($this->_form->getFields() as $field) {
             if ($field instanceof StringField) {
                 $options[] = array(
                     'label' => $field->getLabel(),
@@ -309,7 +314,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'data-type' => 'string',
                     )
                 );
-            } else if ($field instanceof DropdownField) {
+            } elseif ($field instanceof DropdownField) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
@@ -336,6 +341,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 );
             }
         }
+
         return $options;
     }
 
@@ -353,7 +359,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $inputFilter->add(
                 $factory->createInput(
                     array(

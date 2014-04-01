@@ -18,12 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'api_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'api_admin_key' => array(
             '@common_jquery',
             '@admin_css',

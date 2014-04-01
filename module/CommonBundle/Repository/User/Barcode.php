@@ -28,7 +28,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Barcode extends EntityRepository
 {
-    function findOneByBarcode($barcode)
+    public function findOneByBarcode($barcode)
     {
         if (!is_numeric($barcode))
             return null;

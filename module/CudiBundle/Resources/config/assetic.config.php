@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'cudi_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'cudi_admin_article' => array(
             '@common_jquery',
             '@admin_css',
@@ -52,7 +47,6 @@ return array(
             '@admin_js',
             '@common_jquery_form',
             '@common_form_upload_progress',
-            '@common_download_file',
             '@common_permanent_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -63,7 +57,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
         'cudi_admin_sales_article_sale' => array(
             '@common_jquery',
@@ -143,7 +136,6 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
-            '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
@@ -195,7 +187,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
         'cudi_admin_stock_period' => array(
             '@common_jquery',
@@ -203,13 +194,11 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
         'cudi_admin_stock_order' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
-            '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
@@ -221,7 +210,6 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
-            '@common_download_file',
         ),
         'cudi_admin_stock_retour' => array(
             '@common_jquery',
@@ -230,13 +218,11 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
-            '@common_download_file',
         ),
         'cudi_admin_prof_action' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
-            '@common_download_file',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
@@ -310,6 +296,8 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
             '@common_remote_typeahead',
@@ -326,7 +314,6 @@ return array(
         'cudi_prof_file' => array(
             '@common_jquery',
             '@bootstrap_css',
-            '@common_download_file',
             '@common_permanent_modal',
             '@common_jquery_form',
             '@common_form_upload_progress',

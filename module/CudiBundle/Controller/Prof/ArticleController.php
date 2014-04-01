@@ -42,7 +42,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
 
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
         }
 
@@ -60,7 +60,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         $form = new AddForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -170,7 +170,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         $form = new AddWithSubjectForm($this->getEntityManager(), $subject);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -279,7 +279,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         $form = new EditForm($this->getEntityManager(), $article);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -416,14 +416,32 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    public function deleteAction()
+    {
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'delete');
+        $this->getEntityManager()->persist($action);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function typeaheadAction()
     {
+        $this->initAjax();
+
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
             $item->value = $article->getTitle() . ' - ' . $article->getYearPublished();

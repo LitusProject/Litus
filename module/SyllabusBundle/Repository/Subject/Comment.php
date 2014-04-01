@@ -82,12 +82,12 @@ class Comment extends EntityRepository
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $comments = array();
-        foreach($subjects as $subject) {
+        foreach ($subjects as $subject) {
             $commentsOfSubject = $this->_em
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')
                 ->findBySubject($subject->getSubject());
 
-            foreach($commentsOfSubject as $comment) {
+            foreach ($commentsOfSubject as $comment) {
                 $reply = $this->_em
                     ->getRepository('SyllabusBundle\Entity\Subject\Reply')
                     ->findLastByComment($comment);
@@ -100,6 +100,7 @@ class Comment extends EntityRepository
         }
 
         ksort($comments);
+
         return array_slice($comments, 0, 5);
     }
 }

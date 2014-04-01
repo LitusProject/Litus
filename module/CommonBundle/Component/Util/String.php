@@ -29,8 +29,8 @@ class String
      * Truncates a string preserving HTML tags
      *
      * @static
-     * @param string $string The string that will be truncated
-     * @param string $delimiter The delimiter used to replace spaces
+     * @param  string $string    The string that will be truncated
+     * @param  string $delimiter The delimiter used to replace spaces
      * @return string
      */
     public static function truncate($string, $length, $suffix = '...')
@@ -38,7 +38,7 @@ class String
         $i = 0;
         $tags = array();
         preg_match_all('/<[^>]+>([^<]*)/', $string, $m, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
-        foreach($m as $o){
+        foreach ($m as $o) {
             if($o[0][1] - $i >= $length)
                 break;
             $t = substr(strtok($o[0][0], " \t\n\r\0\x0B>"), 1);
@@ -48,6 +48,7 @@ class String
                 array_pop($tags);
             $i += $o[1][1] - $o[0][1];
         }
+
         return substr($string, 0, $length = min(strlen($string),  $length + $i)) . (count($tags = array_reverse($tags)) ? '</' . implode('></', $tags) . '>' : '') . (strlen($string) > $length ? $suffix : '');
     }
 
@@ -55,8 +56,8 @@ class String
      * Truncates a string removing HTML tags
      *
      * @static
-     * @param string $string The string that will be truncated
-     * @param string $delimiter The delimiter used to replace spaces
+     * @param  string $string    The string that will be truncated
+     * @param  string $delimiter The delimiter used to replace spaces
      * @return string
      */
     public static function truncateNoHtml($string, $length, $suffix = '...')

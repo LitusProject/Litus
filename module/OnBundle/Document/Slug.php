@@ -70,8 +70,8 @@ class Slug
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string $name
-     * @param string $url
+     * @param string                           $name
+     * @param string                           $url
      */
     public function __construct(Person $person, $name, $url)
     {
@@ -91,7 +91,7 @@ class Slug
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager      $entityManager
      * @return \CommonBundle\Entity\User\Person
      */
     public function getCreationPerson(EntityManager $entityManager)
@@ -109,12 +109,13 @@ class Slug
     }
 
     /**
-     * @param string $name
+     * @param  string                  $name
      * @return \OnBundle\Document\Slug
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -127,12 +128,13 @@ class Slug
     }
 
     /**
-     * @param string $url
+     * @param  string                  $url
      * @return \OnBundle\Document\Slug
      */
     public function setUrl($url)
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -150,6 +152,7 @@ class Slug
     public function incrementHits()
     {
         $this->hits++;
+
         return $this;
     }
 }

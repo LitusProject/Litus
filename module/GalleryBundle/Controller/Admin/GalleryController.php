@@ -69,14 +69,14 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']));
+                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']), $formData['watermark']);
                 $this->getEntityManager()->persist($album);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if ('' != $formData['title_' . $language->getAbbrev()]) {
                         $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
                         $this->getEntityManager()->persist($translation);
@@ -126,13 +126,14 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']));
+                $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']))
+                    ->setWatermark($formData['watermark']);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $album->getTranslation($language);
 
                     if ($translation) {
@@ -280,7 +281,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
             do {
                 $filename = sha1(uniqid()) . '.jpg';
-            } while(file_exists($filePath . $filename));
+            } while (file_exists($filePath . $filename));
 
             $image = new Imagick($upload->getFileName());
 
@@ -288,7 +289,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             unlink($upload->getFileName());
 
             if (isset($exif['Orientation'])) {
-                switch($exif['Orientation']) {
+                switch ($exif['Orientation']) {
                     case 1: // nothing
                         break;
                     case 2: // horizontal flip
@@ -319,14 +320,16 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
             $image->scaleImage(640, 480, true);
             $thumb = clone $image;
-            $watermark = new Imagick();
-            $watermark->readImage(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('gallery.watermark_path')
-            );
-            $watermark->scaleImage(57, 48);
-            $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            if ($album->hasWatermark()) {
+                $watermark = new Imagick();
+                $watermark->readImage(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('gallery.watermark_path')
+                );
+                $watermark->scaleImage(57, 48);
+                $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            }
             $image->writeImage($filePath . $filename);
 
             $thumb->cropThumbnailImage(150, 150);
@@ -344,6 +347,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
         }
+
+        $this->getResponse()->setStatusCode(500);
 
         return new ViewModel(
             array(

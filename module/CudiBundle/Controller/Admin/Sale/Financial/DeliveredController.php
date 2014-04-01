@@ -76,7 +76,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getResult();
 
         $result = array();
-        foreach($deliveries as $delivery) {
+        foreach ($deliveries as $delivery) {
             $item = (object) array();
             $item->id = $delivery->getId();
             $item->timestamp = $delivery->getTimestamp()->format('d/m/Y H:i');
@@ -97,7 +97,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     private function _individualSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Delivery')
@@ -126,7 +126,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -159,7 +159,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getResult();
 
         $result = array();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $article->setEntityManager($this->getEntityManager());
 
             $item = (object) array();
@@ -183,7 +183,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     private function _articlesSearch(AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -247,7 +247,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->getParam('page')
         );
 
-        foreach($paginator as $item) {
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
         }
 
@@ -315,7 +315,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getResult();
 
         $result = array();
-        foreach($deliveries as $delivery) {
+        foreach ($deliveries as $delivery) {
             $item = (object) array();
             $item->id = $delivery->getId();
             $item->timestamp = $delivery->getTimestamp()->format('d/m/Y H:i');
@@ -335,7 +335,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
-        switch($this->getParam('field')) {
+        switch ($this->getParam('field')) {
             case 'article':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Delivery')

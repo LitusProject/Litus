@@ -39,7 +39,7 @@ class Collection extends \Zend\Form\Element\Collection
      * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
      * name clashes if the same fieldset is used multiple times
      *
-     * @param  Form $form
+     * @param  Form       $form
      * @return mixed|void
      */
     public function prepareElement(FormInterface $form)
@@ -55,20 +55,31 @@ class Collection extends \Zend\Form\Element\Collection
     /**
      * Populate values
      *
-     * @param array|\Traversable $data
+     * @param  array|\Traversable                            $data
      * @throws \Zend\Form\Exception\InvalidArgumentException
      * @throws \Zend\Form\Exception\DomainException
      * @return void
      */
     public function populateValues($data)
     {
-        foreach($data as $key => $value) {
+        if (empty($data))
+            return;
+
+        foreach ($this->getFieldsets() as $fieldset) {
+            $fieldset->populateValues($data);
+        }
+
+        foreach ($data as $key => $value) {
             if (!$this->has($key))
                 unset($data[$key]);
         }
         foreach ($this->byName as $name => $element) {
-            if (!isset($data[$name]))
-                $data[$name] = '';
+            if (!isset($data[$name])) {
+                if ($this->get($name) instanceOf Fieldset)
+                    $data[$name] = array();
+                else
+                    $data[$name] = '';
+            }
         }
         parent::populateValues($data);
     }

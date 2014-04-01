@@ -22,8 +22,11 @@
 
         "packagist/yuicompressor-bin": "dev-master"
     },
+    "require-dev": {
+        "litus/php-cs": "dev-master"
+    },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "": "module/"
         }
     }

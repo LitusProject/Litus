@@ -44,7 +44,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 ->getConfigValue('secretary.membership_article')
         );
 
-        foreach($ids as $organizationId => $articleId) {
+        foreach ($ids as $organizationId => $articleId) {
             $membershipArticles[$organizationId] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($articleId);
@@ -73,7 +73,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
         $form = new ReturnForm($this->getEntityManager());
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -100,6 +100,26 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $price = $saleItem->getPrice() / $saleItem->getNumber();
                 } else {
                     $price = $article->getSellPrice();
+                }
+
+                $booking = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneSoldByArticleAndPerson($article, $person);
+
+                if ($booking->getNumber() > 1) {
+                    $remainder = new Booking(
+                        $this->getEntityManager(),
+                        $booking->getPerson(),
+                        $booking->getArticle(),
+                        'returned',
+                        1
+                    );
+                    $this->getEntityManager()->persist($remainder);
+
+                    $booking->setNumber($booking->getNumber() - 1)
+                        ->setStatus('sold', $this->getEntityManager());
+                } else {
+                    $booking->setStatus('returned', $this->getEntityManager());
                 }
 
                 $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
@@ -140,7 +160,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
             if (!isset($data['person']) || !isset($data['article']))

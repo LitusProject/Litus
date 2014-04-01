@@ -20,7 +20,6 @@ namespace MailBundle\Form\Admin\Volunteer;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Select,
@@ -45,7 +44,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -64,7 +63,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('minimum_rank');
         $field->setLabel('Minimum Rank')
             ->setRequired()
-            ->setAttribute('options', $this->_createRankArray());
+            ->setAttribute('options', $this->_createRanksArray());
         $this->add($field);
 
         $field = new Text('subject');
@@ -83,6 +82,22 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field->setValue('Send')
             ->setAttribute('class', 'mail');
         $this->add($field);
+    }
+
+    private function _createRanksArray()
+    {
+        $rankingCriteria = unserialize($this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shift.ranking_criteria')
+        );
+
+        $ranks = array(
+            'none' => ''
+        );
+        foreach ($rankingCriteria as $key => $criterium)
+            $ranks[$key] = ucfirst($criterium['name']);
+
+        return $ranks;
     }
 
     public function getInputFilter()
@@ -142,19 +157,5 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
 
         return $inputFilter;
-    }
-
-    private function _createRankArray()
-    {
-        $rankingCriteria = unserialize($this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.ranking_criteria')
-        );
-
-        $ranks = array();
-        foreach ($rankingCriteria as $key => $criterium)
-            $ranks[$key] = ucfirst($criterium['name']);
-
-        return $ranks;
     }
 }

@@ -18,20 +18,10 @@
 
 return array(
     'routes' => array(
-        'br_install' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/br[/]',
-                'defaults' => array(
-                    'controller' => 'br_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route' => '/admin/br/company[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -48,7 +38,7 @@ return array(
         'br_admin_company_event' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/event[/:action[/:id]][/]',
+                'route' => '/admin/br/company/event[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -62,7 +52,7 @@ return array(
         'br_admin_company_job' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/job[/:action[/:id]][/]',
+                'route' => '/admin/br/company/job[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -76,7 +66,7 @@ return array(
         'br_admin_company_user' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/user[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/br/company/user[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -91,7 +81,7 @@ return array(
         'br_admin_company_logo' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/company/logos[/:action[/:id]][/]',
+                'route' => '/admin/br/company/logos[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-zA-Z0-9_-]*',
@@ -105,7 +95,7 @@ return array(
         'br_admin_cv_entry' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
+                'route' => '/admin/br/cv/entry[/:action[/:id][/page/:page][/:academicyear]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -121,7 +111,7 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/contract[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/br/contract[/:action[/:id[/:confirm]]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -136,7 +126,7 @@ return array(
         'br_admin_section' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/section[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/br/section[/:action[/:id[/:confirm]]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
@@ -322,8 +312,6 @@ return array(
     ),
 
     'controllers' => array(
-        'br_install'               => 'BrBundle\Controller\Admin\InstallController',
-
         'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
         'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
         'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',

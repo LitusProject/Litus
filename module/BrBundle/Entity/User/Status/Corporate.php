@@ -72,8 +72,8 @@ class Corporate
     private $year;
 
     /**
-     * @param \BrBundle\Entity\User\Person\Corporate $person The person that should be given the status
-     * @param string $status The status that should be given to the person
+     * @param  \BrBundle\Entity\User\Person\Corporate $person The person that should be given the status
+     * @param  string                                 $status The status that should be given to the person
      * @throws \InvalidArgumentException
      */
     public function __construct(CorporatePerson $person, $status)
@@ -107,7 +107,7 @@ class Corporate
      * Returns whether the given user can have a corporate status.
      *
      * @static
-     * @param \BrBundle\Entity\User\Person\Corporate $person the user to check
+     * @param  \BrBundle\Entity\User\Person\Corporate $person the user to check
      * @return bool
      */
     public static function isValidPerson(CorporatePerson $person)

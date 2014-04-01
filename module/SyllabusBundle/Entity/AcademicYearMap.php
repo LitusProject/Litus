@@ -53,7 +53,7 @@ class AcademicYearMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Study $study
+     * @param \SyllabusBundle\Entity\Study              $study
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
      */
     public function __construct(Study $study, AcademicYear $academicYear)

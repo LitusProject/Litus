@@ -36,7 +36,7 @@ class Study
     private $id;
 
     /**
-     * @var integer The id of the KUL
+     * @var integer The id of the KU Leuven
      *
      * @ORM\Column(type="integer", name="kul_id", nullable=true)
      */
@@ -79,10 +79,10 @@ class Study
     private $children;
 
     /**
-     * @param string $title
-     * @param integer $kulId
-     * @param integer $phase
-     * @param string $language
+     * @param string                       $title
+     * @param integer                      $kulId
+     * @param integer                      $phase
+     * @param string                       $language
      * @param \SyllabusBundle\Entity\Study $parent
      */
     public function __construct($title, $kulId, $phase, $language, Study $parent = null)
@@ -103,6 +103,25 @@ class Study
     }
 
     /**
+     * @return integer
+     */
+    public function getKulId()
+    {
+        return $this->kulId;
+    }
+
+    /**
+     * @param  integer                      $kulId
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setKulId($kulId)
+    {
+        $this->kulId = $kulId;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -111,12 +130,13 @@ class Study
     }
 
     /**
-     * @param string $title
+     * @param  string                       $title
      * @return \SyllabusBundle\Entity\Study
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -145,6 +165,17 @@ class Study
     }
 
     /**
+     * @param  integer                      $phase
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setPhase($phase)
+    {
+        $this->phase = $phase;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLanguage()
@@ -153,11 +184,33 @@ class Study
     }
 
     /**
+     * @param  string                       $language
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
      * @return \SyllabusBundle\Entity\Study
      */
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param  \SyllabusBundle\Entity\Study $parent
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function setParent(Study $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
     }
 
     /**
@@ -191,6 +244,7 @@ class Study
         }
 
         $result = array_merge($result, $directChildren);
+
         return $result;
     }
 }

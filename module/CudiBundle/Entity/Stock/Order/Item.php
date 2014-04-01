@@ -60,9 +60,9 @@ class Item
     private $number;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article The article of the item
-     * @param \CudiBundle\Entity\Stock\Order\Order $order The order of the item
-     * @param integer $number The number of items ordered
+     * @param \CudiBundle\Entity\Sale\Article      $article The article of the item
+     * @param \CudiBundle\Entity\Stock\Order\Order $order   The order of the item
+     * @param integer                              $number  The number of items ordered
      */
     public function __construct(Article $article, Order $order, $number)
     {
@@ -111,6 +111,7 @@ class Item
     public function setNumber($number)
     {
         $this->number = $number;
+
         return $this;
     }
 

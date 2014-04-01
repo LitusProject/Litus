@@ -74,9 +74,9 @@ class Mapping
     private $removed;
 
     /**
-     * @param \CudiBundle\Entity\Article\Internal $article The article of the mapping
-     * @param \CudiBundle\Entity\File\File $file The file of the mapping
-     * @param boolean $printable Flag whether the file is the printable one or not
+     * @param \CudiBundle\Entity\Article\Internal $article   The article of the mapping
+     * @param \CudiBundle\Entity\File\File        $file      The file of the mapping
+     * @param boolean                             $printable Flag whether the file is the printable one or not
      */
     public function __construct(InternalArticle $article, File $file, $printable)
     {
@@ -127,6 +127,7 @@ class Mapping
     public function setPrintable($printable)
     {
         $this->printable = $printable;
+
         return $this;
     }
 
@@ -146,6 +147,7 @@ class Mapping
     public function setIsProf($isProf)
     {
         $this->isProf = $isProf;
+
         return $this;
     }
 
@@ -155,6 +157,7 @@ class Mapping
     public function setRemoved()
     {
         $this->removed = true;
+
         return $this;
     }
 }

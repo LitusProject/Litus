@@ -38,7 +38,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Form
 {
-    static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -65,12 +65,13 @@ class Form
         $formEntry->setDraft(isset($formData['save_as_draft']));
 
         foreach ($formSpecification->getFields() as $field) {
-            $value = $formData['field-' . $field->getId()];
+            $value = isset($formData['field-' . $field->getId()]) ? $formData['field-' . $field->getId()] : '';
 
             $fieldEntry = $entityManager
                 ->getRepository('FormBundle\Entity\Entry')
                 ->findOneByFormEntryAndField($formEntry, $field);
             $removed = false;
+            $readableValue = null;
 
             if ($field instanceof FileField) {
                 $value = '';
@@ -87,13 +88,13 @@ class Form
 
                         $entityManager->remove($fieldEntry);
                     }
-                } else {
+                } elseif (!isset($formData['field-' . $field->getId()])) {
                     $upload = new FileUpload();
                     $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
                     if ($upload->isValid('field-' . $field->getId())) {
                         if (null === $fieldEntry || $fieldEntry->getValue() == '') {
                             $fileName = '';
-                            do{
+                            do {
                                 $fileName = sha1(uniqid());
                             } while (file_exists($filePath . '/' . $fileName));
                         } else {
@@ -101,6 +102,8 @@ class Form
                             if (file_exists($filePath . '/' . $fileName))
                                 unlink($filePath . '/' . $fileName);
                         }
+
+                        $readableValue = basename($upload->getFileName('field-' . $field->getId()));
 
                         $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
                         $upload->receive('field-' . $field->getId());
@@ -115,6 +118,7 @@ class Form
 
                     if (sizeof($errors) > 0) {
                         $form->setMessages(array('field-' . $field->getId() => $errors));
+
                         return false;
                     } elseif ($value == '' && null !== $fieldEntry) {
                         $value = $fieldEntry->getValue();
@@ -124,9 +128,10 @@ class Form
 
             if (!$removed) {
                 if ($fieldEntry) {
-                    $fieldEntry->setValue($value);
+                    $fieldEntry->setValue($value)
+                        ->setReadableValue($readableValue);
                 } else {
-                    $fieldEntry = new FieldEntry($formEntry, $field, $value);
+                    $fieldEntry = new FieldEntry($formEntry, $field, $value, $readableValue);
                     $formEntry->addFieldEntry($fieldEntry);
                     $entityManager->persist($fieldEntry);
                 }

@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'notification_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/notification[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'notification_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'notification_admin_notification' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -48,7 +36,6 @@ return array(
     ),
 
     'controllers' => array(
-        'notification_install'            => 'NotificationBundle\Controller\Admin\InstallController',
         'notification_admin_notification' => 'NotificationBundle\Controller\Admin\NotificationController',
     ),
 );

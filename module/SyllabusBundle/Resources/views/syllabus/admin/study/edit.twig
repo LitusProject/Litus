@@ -15,6 +15,12 @@
         <p>Language: <b>{{ study.getLanguage() }}</b></p>
         <br />
 
+        {% if hasAccess('syllabus_admin_study', 'add') %}
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+            <br style="clear:both" />
+        {% endif %}
+
         <div id="subject_search" style="display:none;">
             <div style="padding:4px;text-align:right">
                 Search:
@@ -74,6 +80,19 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#studySearch').typeaheadRemote(
+                {
+                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#parentId').val($(this).data('value').id);
+                } else {
+                    $('#parentId').val('');
+                }
+            });
+
             {% if hasAccess('syllabus_admin_subject', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),

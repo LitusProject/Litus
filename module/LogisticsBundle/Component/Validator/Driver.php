@@ -40,9 +40,9 @@ class Driver extends \CommonBundle\Component\Validator\Academic
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed $opts The validator's options. An additional option 'byId' can be set
-     *                     to indicate whether a user id or user name is validated. By default
-     *                     this is false, indicating search by user name.
+     * @param mixed                       $opts          The validator's options. An additional option 'byId' can be set
+     *                                                   to indicate whether a user id or user name is validated. By default
+     *                                                   this is false, indicating search by user name.
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
@@ -52,8 +52,8 @@ class Driver extends \CommonBundle\Component\Validator\Academic
     /**
      * Returns true if a person exists for this value, but no driver exists for that person.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -70,6 +70,7 @@ class Driver extends \CommonBundle\Component\Validator\Academic
 
         if (null !== $driver) {
             $this->error(self::DRIVER_EXISTS);
+
             return false;
         }
 

@@ -38,7 +38,7 @@ class Edit extends Add
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {
@@ -62,7 +62,7 @@ class Edit extends Add
         if ($event->getEndDate())
             $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['location_' . $language->getAbbrev()] = $event->getLocation($language, false);
             $data['title_' . $language->getAbbrev()] = $event->getTitle($language, false);
             $data['content_' . $language->getAbbrev()] = $event->getContent($language, false);
@@ -75,7 +75,7 @@ class Edit extends Add
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $inputFilter->remove('title_' . $language->getAbbrev());
             $inputFilter->add(
                 $factory->createInput(

@@ -33,8 +33,8 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @param string $action
-     * @param null|string|int $name Optional name for the element
+     * @param string          $action
+     * @param null|string|int $name   Optional name for the element
      */
     public function __construct($action = '', $name = null)
     {

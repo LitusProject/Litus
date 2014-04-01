@@ -18,18 +18,6 @@
 
 return array(
     'routes' => array(
-        'banner_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/banner[/]',
-                'constraints' => array(
-                ),
-                'defaults' => array(
-                    'controller' => 'banner_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'banner_admin_banner' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -62,7 +50,6 @@ return array(
     ),
 
     'controllers' => array(
-        'banner_install'      => 'BannerBundle\Controller\Admin\InstallController',
         'banner_admin_banner' => 'BannerBundle\Controller\Admin\BannerController',
 
         'banner'              => 'BannerBundle\Controller\BannerController'

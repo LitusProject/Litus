@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Repository\Translation;
+namespace FormBundle\Repository\Mail;
 
 use Doctrine\ORM\EntityRepository;
 

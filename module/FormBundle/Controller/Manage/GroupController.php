@@ -50,6 +50,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($group = $this->_getGroup()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()

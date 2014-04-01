@@ -176,6 +176,36 @@ class Article extends EntityRepository
 
     public function findAllByProf(Person $person)
     {
+        $ids = array_merge(
+            $this->_getCurrentArticleIdsByProf($person),
+            $this->_getAddedArticleIdsByProf($person)
+        );
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.isHistory', 'false'),
+                    $query->expr()->in('a.id', $ids),
+                    $query->expr()->notIn('a.id', $this->_getRemovedArticleIds())
+                )
+            )
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $articles = array();
+        foreach ($resultSet as $article) {
+            if (!$article->isInternal() || $article->isOfficial())
+                $articles[] = $article;
+        }
+
+        return $articles;
+    }
+
+    private function _getCurrentArticleIdsByProf(Person $person)
+    {
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findByProf($person);
@@ -197,7 +227,7 @@ class Article extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($resultSet as $mapping) {
+        foreach ($resultSet as $mapping) {
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
@@ -209,11 +239,17 @@ class Article extends EntityRepository
             }
         }
 
+        return $ids;
+    }
+
+    private function _getAddedArticleIdsByProf(Person $person)
+    {
         $added = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndActionAndPerson('article', 'add', $person);
 
-        foreach($added as $add) {
+        $ids = array(0);
+        foreach ($added as $add) {
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $add->getEntityId(), 'edit');
@@ -225,26 +261,22 @@ class Article extends EntityRepository
             }
         }
 
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('a')
-            ->from('CudiBundle\Entity\Article', 'a')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->in('a.id', $ids)
-                )
-            )
-            ->orderBy('a.title', 'ASC')
-            ->getQuery()
-            ->getResult();
+        return $ids;
+    }
 
-        $articles = array();
-        foreach($resultSet as $article) {
-            if (!$article->isInternal() || $article->isOfficial())
-                $articles[] = $article;
+    private function _getRemovedArticleIds()
+    {
+        $removed = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Prof\Action')
+            ->findAllByEntityAndAction('article', 'delete');
+
+        $ids = array(0);
+        foreach ($removed as $remove) {
+            if (!$remove->isRefused())
+                $ids[] = $remove->getEntityId();
         }
 
-        return $articles;
+        return $ids;
     }
 
     public function findOneByIdAndProf($id, Person $person)

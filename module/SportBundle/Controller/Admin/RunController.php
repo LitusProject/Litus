@@ -218,7 +218,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         $this->initAjax();
 
         $baseDirectory = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-        system('kill $(ps aux | grep -i "php ' . $baseDirectory . '/bin/SportBundle/run.php --run" | grep -v grep | awk \'{print $2}\')');
+        system('kill $(ps aux | grep -i "php public/index.php socket:sport:run-queue --run" | grep -v grep | awk \'{print $2}\')');
 
         return new ViewModel(
             array(

@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Colored');
         $internal->add($field);
 
-        $subject = new Collection('subject');
+        $subject = new Collection('subject_form');
         $subject->setLabel('Subject Mapping')
             ->setAttribute('id', 'subject_form');
         $this->add($subject);

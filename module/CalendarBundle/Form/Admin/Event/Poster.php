@@ -30,6 +30,8 @@ use CommonBundle\Component\Form\Admin\Element\File,
  */
 class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '10MB';
+
     /**
      * @param null|string|int $name Optional name for the element
      */
@@ -42,6 +44,7 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new File('poster');
         $field->setLabel('Poster')
+            ->setAttribute('data-help', 'The poster must be an image of max ' . self::FILESIZE . '.')
             ->setRequired();
         $this->add($field);
 
@@ -60,18 +63,15 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'poster',
-                    'required' => false,
+                    'required' => true,
                     'validators' => array(
                         array(
-                            'name' => 'fileextension',
-                            'options' => array(
-                                'extension' => 'jpg,png',
-                            ),
+                            'name' => 'fileisimage',
                         ),
                         array(
                             'name' => 'filefilessize',
                             'options' => array(
-                                'max' => '2MB',
+                                'max' => self::FILESIZE,
                             ),
                         ),
                     ),

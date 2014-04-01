@@ -61,8 +61,8 @@ class StudyGroupMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Study $study
-     * @param \SyllabusBundle\Entity\Group $group
+     * @param \SyllabusBundle\Entity\Study              $study
+     * @param \SyllabusBundle\Entity\Group              $group
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
      */
     public function __construct(Study $study, Group $group, AcademicYear $academicYear)

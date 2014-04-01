@@ -18,16 +18,6 @@
 
 return array(
     'routes' => array(
-        'ticket_install' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/install/ticket[/]',
-                'defaults' => array(
-                    'controller' => 'ticket_install',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
         'ticket_admin_event' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -46,11 +36,13 @@ return array(
         'ticket_admin_ticket' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
                     'page'    => '[0-9]*',
+                    'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string'  => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_admin_ticket',
@@ -84,7 +76,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_sale_ticket',
-                    'action'     => 'sale',
+                    'action'     => 'overview',
                 ),
             ),
         ),
@@ -117,9 +109,8 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
-        'ticket_install'               => 'TicketBundle\Controller\Admin\InstallController',
         'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',
         'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
 

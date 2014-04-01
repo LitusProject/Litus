@@ -76,8 +76,8 @@ class Round
 
     /**
      * @param \QuizBundle\Entity\Quiz $quiz
-     * @param string $name
-     * @param integer $order
+     * @param string                  $name
+     * @param integer                 $order
      */
     public function __construct(Quiz $quiz, $name, $maxPoints, $order)
     {
@@ -113,12 +113,13 @@ class Round
     }
 
     /**
-     * @param string $name
+     * @param  string                   $name
      * @return \QuizBundle\Entity\Round
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -131,12 +132,13 @@ class Round
     }
 
     /**
-     * @param int $order
+     * @param  int                      $order
      * @return \QuizBundle\Entity\Round
      */
     public function setOrder($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -149,12 +151,13 @@ class Round
     }
 
     /**
-     * @param int $maxPoints
+     * @param  int                      $maxPoints
      * @return \QuizBundle\Entity\Round
      */
     public function setMaxPoints($maxPoints)
     {
         $this->maxPoints = $maxPoints;
+
         return $this;
     }
 }

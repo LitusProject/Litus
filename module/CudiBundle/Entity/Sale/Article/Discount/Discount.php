@@ -175,17 +175,18 @@ class Discount
         $this->value = null;
         $this->method = null;
         $this->type = null;
+
         return $this;
     }
 
     /**
      * @throws \InvalidArgumentException
      *
-     * @param integer $value The value of the discount
-     * @param string $method The method of the discount
-     * @param string $type The type of the discount
-     * @param string $rounding The type of the rounding
-     * @param boolean $applyOnce Apply the discount only once
+     * @param integer                                        $value        The value of the discount
+     * @param string                                         $method       The method of the discount
+     * @param string                                         $type         The type of the discount
+     * @param string                                         $rounding     The type of the rounding
+     * @param boolean                                        $applyOnce    Apply the discount only once
      * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
      *
      * @return \CudiBundle\Entity\Sale\Article\Discount\Discount
@@ -208,6 +209,7 @@ class Discount
         $this->rounding = $rounding;
         $this->applyOnce = $applyOnce;
         $this->organization = $organization;
+
         return $this;
     }
 
@@ -364,9 +366,9 @@ class Discount
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param \CudiBundle\Entity\Sale\Article  $article
      * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager      $entityManager
      *
      * @return boolean
      */
@@ -377,9 +379,9 @@ class Discount
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param \CommonBundle\Entity\User\Person          $person
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager               $entityManager
      *
      * @return boolean
      */
@@ -398,6 +400,7 @@ class Discount
                     return false;
             }
         }
+
         return true;
     }
 }

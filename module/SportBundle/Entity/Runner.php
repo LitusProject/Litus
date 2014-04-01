@@ -91,10 +91,10 @@ class Runner
     private $_entityManager;
 
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param \SportBundle\Entity\Group $group
-     * @param \SportBundle\Entity\Department $department
+     * @param string                                    $firstName
+     * @param string                                    $lastName
+     * @param \SportBundle\Entity\Group                 $group
+     * @param \SportBundle\Entity\Department            $department
      * @param \CommonBundle\Entity\User\Person\Academic $academic
      */
     public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
@@ -123,12 +123,13 @@ class Runner
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param  \CommonBundle\Entity\User\Person\Academic $academic
      * @return \SportBundle\Entity\Runner
      */
     public function setAcademic(Academic $academic)
     {
         $this->academic = $academic;
+
         return $this;
     }
 
@@ -141,12 +142,13 @@ class Runner
     }
 
     /**
-     * @param string $firstName
+     * @param  string                     $firstName
      * @return \SportBundle\Entity\Runner
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -159,22 +161,24 @@ class Runner
     }
 
     /**
-     * @param string $lastName
+     * @param  string                     $lastName
      * @return \SportBundle\Entity\Runner
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
     /**
-     * @param string $runnerIdentification
+     * @param  string                     $runnerIdentification
      * @return \SportBundle\Entity\Runner
      */
     public function setRunnerIdentification($runnerIdentification)
     {
         $this->runnerIdentification = $runnerIdentification;
+
         return $this;
     }
 
@@ -187,12 +191,13 @@ class Runner
     }
 
     /**
-     * @param \SportBundle\Entity\Group $group
+     * @param  \SportBundle\Entity\Group  $group
      * @return \SportBundle\Entity\Runner
      */
     public function setGroup(Group $group)
     {
         $this->group = $group;
+
         return $this;
     }
 
@@ -205,22 +210,24 @@ class Runner
     }
 
     /**
-     * @param \SportBundle\Entity\Department $department
+     * @param  \SportBundle\Entity\Department $department
      * @return \SportBundle\Entity\Runner
      */
     public function setDepartment(Department $department)
     {
         $this->department = $department;
+
         return $this;
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \SportBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 
@@ -235,10 +242,11 @@ class Runner
     /**
      * Returns the user's laps.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return array
      */
-    public function getLaps(AcademicYear $academicYear) {
+    public function getLaps(AcademicYear $academicYear)
+    {
         return $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findBy(
@@ -255,7 +263,7 @@ class Runner
     /**
      * Returns the current point total of the runner.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)

@@ -115,10 +115,10 @@ class Contract
     private $dirty;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $author The author of this contract
-     * @param \BrBundle\Entity\Contract $company The company for which this contract is meant
-     * @param int $discount The discount associated with this contract
-     * @param string $title The title of the contract
+     * @param \CommonBundle\Entity\User\Person $author   The author of this contract
+     * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
+     * @param int                              $discount The discount associated with this contract
+     * @param string                           $title    The title of the contract
      */
     public function __construct(Person $author, Company $company, $discount, $title)
     {
@@ -170,7 +170,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param \CommonBundle\Entity\User\Person $author
+     * @param  \CommonBundle\Entity\User\Person $author
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setAuthor(Person $author)
@@ -193,7 +193,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param \BrBundle\Entity\Company $company
+     * @param  \BrBundle\Entity\Company     $company
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setCompany(Company $company)
@@ -225,8 +225,8 @@ class Contract
     }
 
     /**
-     * @param \BrBundle\Entity\Br\Contracts\Section $section The section that should be added
-     * @param int $position The position of this section
+     * @param  \BrBundle\Entity\Br\Contracts\Section $section  The section that should be added
+     * @param  int                                   $position The position of this section
      * @return \BrBundle\Entity\Br\Contract
      */
     public function addSection(Section $section, $position)
@@ -239,7 +239,7 @@ class Contract
     }
 
     /**
-     * @param array $sections The array containing all sections that should be added; the array keys will be used as the position
+     * @param  array                        $sections The array containing all sections that should be added; the array keys will be used as the position
      * @return \BrBundle\Entity\Br\Contract
      */
     public function addSections(array $sections)
@@ -252,7 +252,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param int $discount The discount, $discount >= 0 && $discount <= 100
+     * @param  int                          $discount The discount, $discount >= 0 && $discount <= 100
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setDiscount($discount)
@@ -283,7 +283,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param string $title The title of the contract
+     * @param  string                       $title The title of the contract
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setTitle($title)
@@ -305,12 +305,13 @@ class Contract
     }
 
     /**
-     * @param bool $dirty
+     * @param  bool                         $dirty
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setDirty($dirty = true)
     {
         $this->dirty = ($dirty ? true : false);
+
         return $this;
     }
 
@@ -332,7 +333,7 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param int $invoiceNb
+     * @param  int                          $invoiceNb
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
@@ -354,7 +355,7 @@ class Contract
     }
 
     /**
-     * @param int $contractNb
+     * @param  int                          $contractNb
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setContractNb($contractNb)

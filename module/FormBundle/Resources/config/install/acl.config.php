@@ -34,13 +34,13 @@ return array(
             'add', 'delete', 'manage'
         ),
         'form_view' => array(
-            'doodle', 'downloadFile', 'edit', 'view', 'saveDoodle'
+            'doodle', 'downloadFile', 'edit', 'index', 'view', 'saveDoodle'
         ),
         'form_group' => array(
             'view',
         ),
         'form_manage' => array(
-            'delete', 'doodle', 'download', 'downloadFile', 'edit', 'index', 'view',
+            'add', 'delete', 'doodle', 'doodleAdd', 'download', 'downloadFile', 'downloadFiles', 'edit', 'index', 'view',
         ),
         'form_manage_group' => array(
             'index', 'view',

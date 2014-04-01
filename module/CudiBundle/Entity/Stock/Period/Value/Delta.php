@@ -85,11 +85,11 @@ class Delta
     private $comment;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person who added the delta
-     * @param \CudiBundle\Entity\Sale\Article $stockItem The article of the delta
-     * @param \CudiBundle\Entity\Stock\Period $period The period of the delta
-     * @param integer $value The value of the delta
-     * @param string $comment The comment of the delta
+     * @param \CommonBundle\Entity\User\Person $person    The person who added the delta
+     * @param \CudiBundle\Entity\Sale\Article  $stockItem The article of the delta
+     * @param \CudiBundle\Entity\Stock\Period  $period    The period of the delta
+     * @param integer                          $value     The value of the delta
+     * @param string                           $comment   The comment of the delta
      */
     public function __construct(Person $person, Article $article, Period $period, $value, $comment)
     {

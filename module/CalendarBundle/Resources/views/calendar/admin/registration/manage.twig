@@ -9,17 +9,7 @@
         <p>Download a webpage that can be used to check membership status at events.</p>
         <p>&nbsp;</p>
         {% if hasAccess('calendar_admin_calendar_registration', 'export') %}
-        <p><a href="#" class="download downloadFile" style="text-decoration: none;color: inherit;padding-left:16px;" data-file="{{ url('calendar_admin_calendar_registration', {"action": "export"}) }}">Download</a></p>
+        <p><a href="{{ url('calendar_admin_calendar_registration', {"action": "export"}) }}" class="download">Download</a></p>
         {% endif %}
     </div>
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-        });
-    </script>
 {% endblock %}

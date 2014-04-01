@@ -29,7 +29,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
 
-
 /**
  * StudyController
  *
@@ -55,7 +54,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
         $form = new MailForm($studies, $groups, $storedMessages);
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -63,8 +62,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
-
-                $upload->addValidator(new SizeValidator(array('max' => '50MB')));
+                $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
 
                 if ($upload->isValid()) {
                     $enrollments = array();
@@ -113,7 +111,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
                                 ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear(false));
 
-                            foreach  ($studies as $study) {
+                            foreach ($studies as $study) {
                                 $children = $study->getStudy()->getAllChildren();
 
                                 foreach ($children as $child) {
@@ -142,7 +140,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     foreach($enrollments as $enrollment)
                         $addresses[$enrollment->getAcademic()->getEmail()] = $enrollment->getAcademic()->getEmail();
 
-                    foreach($excludedMembers as $excludedMember) {
+                    foreach ($excludedMembers as $excludedMember) {
                         if (isset($addresses[$excludedMember]))
                             unset($addresses[$excludedMember]);
                     }

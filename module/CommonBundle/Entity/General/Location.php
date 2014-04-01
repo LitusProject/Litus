@@ -72,15 +72,15 @@ class Location
     private $longitude;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var bool Whether or not the location is active
      *
      * @ORM\Column(type="boolean")
      */
     private $active;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string $name
+     * @param \Doctrine\ORM\EntityManager          $entityManager
+     * @param string                               $name
      * @param \CommonBundle\Entity\General\Address $address
      */
     public function __construct($name, Address $address, $latitude, $longitude)
@@ -109,12 +109,13 @@ class Location
     }
 
     /**
-     * @param string $name
+     * @param  string                                $name
      * @return \CommonBundle\Entity\General\Location
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -127,7 +128,7 @@ class Location
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager          $entityManager
      * @param \CommonBundle\Entity\General\Address $address
      */
     public function setAddress(Address $address)
@@ -146,12 +147,13 @@ class Location
     }
 
     /**
-     * @param string $latitude
+     * @param  string                               $latitude
      * @return CommonBundle\Entity\General\Location
      */
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
+
         return $this;
     }
 
@@ -164,12 +166,13 @@ class Location
     }
 
     /**
-     * @param string $longitude
+     * @param  string                               $longitude
      * @return CommonBundle\Entity\General\Location
      */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
+
         return $this;
     }
 

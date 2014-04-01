@@ -55,7 +55,7 @@
                     <td>{{ mapping.getFile().getDescription() }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_prof_file', 'download') %}
-                            <a href="#" class="btn btn-info downloadFile" data-file="{{ url('cudi_prof_file', {"action": "download", "id": mapping.getId(), "language": language.getAbbrev()}) }}">{{ translate('Download') }}</a>
+                            <a href="{{ url('cudi_prof_file', {"action": "download", "id": mapping.getId()}) }}" class="btn btn-info">{{ translate('Download') }}</a>
                         {% endif %}
                         {% if hasAccess('cudi_prof_file', 'delete') %}
                             <a href="#" class="btn btn-danger delete" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getFile().getName() }}" data-description="{{ mapping.getFile().getDescription() }}">{{ translate('Delete') }}</a>
@@ -141,10 +141,6 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            $('.downloadFile').each(function () {
-                $(this).downloadFile($(this).data('file'));
-            });
-
             $('.item .delete').click(openDeleteModal);
 
             $('#addFile .save').click(function () {
@@ -186,12 +182,12 @@
 
                         {% if hasAccess('cudi_prof_file', 'download') %}
                             actions.append(
-                                $('<a>', {'href': '#', 'class': 'btn btn-info downloadFile'}).html('{{ translate('Download') }}').downloadFile('{{ url('cudi_prof_file', {"action": "download", "language": language.getAbbrev()}) }}' + data.info.mappingId),
+                                $('<a>', {'href': '{{ url('cudi_prof_file', {"action": "download"}) }}' + data.info.mappingId, 'class': 'btn btn-info'}).html('{{ translate('Download') }}'),
                                 ' '
                             );
                         {% endif %}
 
-                        {% if hasAccess('cudi_prof_file', 'download') %}
+                        {% if hasAccess('cudi_prof_file', 'delete') %}
                             actions.append(
                                 $('<a>', {'href': '#', 'class': 'btn btn-danger delete', 'data-id': data.info.mappingId, 'data-name': data.info.name, 'data-description': data.info.description}).html('{{ translate('Delete') }}').click(openDeleteModal)
                             );
@@ -225,7 +221,7 @@
             removeFile.find('.fileName').html($(this).data('name'));
             removeFile.find('.fileDescription').html($(this).data('description'));
             removeFile.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_file', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_file', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#file_removed_success').addClass('in');

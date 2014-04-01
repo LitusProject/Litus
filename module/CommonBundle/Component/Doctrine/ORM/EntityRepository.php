@@ -66,8 +66,8 @@ abstract class EntityRepository extends DoctrineEntityRepository
      * because they are implemented in {@link Doctrine\ORM\EntityRepository}, so {@link self::__call()}
      * will never be called for these functions. {@link self::findAll()} is special-cased below.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string       $method
+     * @param  array        $arguments
      * @return array|object
      */
     public function __call($method, $arguments)
@@ -81,8 +81,8 @@ abstract class EntityRepository extends DoctrineEntityRepository
     /**
      * Fetches the results from $this->$method, returning a {@link Query} in an array.
      *
-     * @param string $method
-     * @param array $arguments
+     * @param  string          $method
+     * @param  array           $arguments
      * @return array
      * @throws \LogicException When the method does not return a {@link Query}
      */
@@ -107,6 +107,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
             throw new \LogicException(get_class($this).'::'.$method.' must return an instance of Doctrine\ORM\Query.');
 
         /* @var $query Query */
+
         return $query->getResult();
     }
 

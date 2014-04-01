@@ -151,6 +151,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $contractCreated = true;
+
                 return new ViewModel(
                     array(
                         'contractCreated' => $contractCreated,
@@ -199,7 +200,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     //         $formData = $this->getRequest()->getPost();
     //         $form->setData($formData);
 
-    //         if($form->isValid()) {
+    //         if ($form->isValid()) {
     //             $company = $this->getEntityManager()
     //                 ->getRepository('Litus\Entity\Users\People\Company')
     //                 ->findOneById($formData['company']);

@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'br_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'br_admin_company' => array(
             '@common_jquery',
             '@admin_css',
@@ -94,7 +89,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_download_file',
         ),
         'br_admin_section' => array(
             '@common_jquery',

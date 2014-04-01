@@ -148,6 +148,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
         }
+
         return new ViewModel(
             array(
                 'quiz' => $team->getQuiz(),
@@ -222,7 +223,6 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
             return;
         }
-
 
         if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->addMessage(

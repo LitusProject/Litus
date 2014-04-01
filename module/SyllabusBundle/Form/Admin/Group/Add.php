@@ -43,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int $name Optional name for the element
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -62,13 +62,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Textarea('extra_members');
-        $field->setLabel('Extra Members')
-            ->setRequired();
+        $field->setLabel('Extra Members');
         $this->add($field);
 
         $field = new Textarea('excluded_members');
-        $field->setLabel('Excluded Members')
-            ->setRequired();
+        $field->setLabel('Excluded Members');
         $this->add($field);
 
         $field = new Submit('submit');

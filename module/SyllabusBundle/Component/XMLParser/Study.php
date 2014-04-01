@@ -73,10 +73,10 @@ class Study
     private $_subjects;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager             $entityManager
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param string $xmlPath
-     * @param array $callback
+     * @param string                                  $xmlPath
+     * @param array                                   $callback
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
     {
@@ -106,7 +106,7 @@ class Study
 
         $counter = 0;
 
-        foreach($urls as $url) {
+        foreach ($urls as $url) {
             $counter++;
             $entityManager->clear();
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
@@ -170,7 +170,7 @@ class Study
         $language = trim((string) $data->doceertaal);
         $mainTitle = html_entity_decode(ucfirst(trim((string) $data->titel)));
 
-        foreach($data->fases->children() as $phase) {
+        foreach ($data->fases->children() as $phase) {
             $phaseNumber = (int) $phase->attributes()->code;
 
             $subStudies = array();
@@ -187,13 +187,13 @@ class Study
             }
 
             if ($phase->tcs->children()->count() > 0) {
-                foreach($phase->tcs->children() as $studyData) {
+                foreach ($phase->tcs->children() as $studyData) {
                     $title = html_entity_decode(preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel));
                     $titles = explode('+', $title);
 
                     if (count($titles) == 2) {
-                        if (isset($subStudies[(string)$studyData->afstudeerrichting->attributes()->objid])) {
-                            $subStudy = $subStudies[(string)$studyData->afstudeerrichting->attributes()->objid];
+                        if (isset($subStudies[(string) $studyData->afstudeerrichting->attributes()->objid])) {
+                            $subStudy = $subStudies[(string) $studyData->afstudeerrichting->attributes()->objid];
                         } else {
                             $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[0])));
 
@@ -206,7 +206,7 @@ class Study
                             } else {
                                 $subStudy->setTitle($subTitle);
                             }
-                            $subStudies[(string)$studyData->afstudeerrichting->attributes()->objid] = $subStudy;
+                            $subStudies[(string) $studyData->afstudeerrichting->attributes()->objid] = $subStudy;
                         }
 
                         $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
@@ -241,6 +241,7 @@ class Study
                 $this->getEntityManager()->persist($map);
             }
         }
+
         return $studies;
     }
 
@@ -250,17 +251,17 @@ class Study
         if (null === $data->cg)
             return;
 
-        foreach($data->cg as $subjects) {
+        foreach ($data->cg as $subjects) {
             if ($subjects->tonen == 'N')
                 continue;
 
             if ($subjects->tc_cgs->children()->count() > 0) {
                 $activeStudies = array();
-                foreach($studies as $phaseNumber => $phase) {
+                foreach ($studies as $phaseNumber => $phase) {
                     if (is_array($phase)) {
                         $activeStudies[$phaseNumber] = array();
-                        foreach($phase as $studyId => $study) {
-                            foreach($subjects->tc_cgs->children() as $objId) {
+                        foreach ($phase as $studyId => $study) {
+                            foreach ($subjects->tc_cgs->children() as $objId) {
                                 if ($studyId == (string) $objId) {
                                     $activeStudies[$phaseNumber][$studyId] = $study;
                                     break;
@@ -276,7 +277,7 @@ class Study
             }
 
             if ($subjects->opos->children()->count() > 0) {
-                foreach($subjects->opos->opo as $subjectData) {
+                foreach ($subjects->opos->opo as $subjectData) {
                     $code = trim((string) $subjectData->attributes()->short);
                     $this->_callback('create_subjects', (string) $subjectData->titel);
 
@@ -302,10 +303,10 @@ class Study
 
                     $mandatory = $subjectData->attributes()->verplicht == 'J' ? true : false;
 
-                    foreach($subjectData->fases->children() as $phase) {
+                    foreach ($subjectData->fases->children() as $phase) {
                         $phaseNumber = (int) $phase;
                         if (is_array($activeStudies[$phaseNumber])) {
-                            foreach($activeStudies[$phaseNumber] as $activeStudy) {
+                            foreach ($activeStudies[$phaseNumber] as $activeStudy) {
                                 $map = new StudySubjectMap($activeStudy, $subject, $mandatory, $this->_academicYear);
                                 $this->getEntityManager()->persist($map);
                             }
@@ -326,7 +327,7 @@ class Study
     private function _createProf(SubjectEntity $subject, $profs)
     {
         $maps = array();
-        foreach($profs as $profData) {
+        foreach ($profs as $profData) {
             $identification = 'u' . substr(trim($profData->attributes()->persno), 1);
 
             $prof = $this->getEntityManager()
@@ -368,7 +369,7 @@ class Study
                                 ->getConfigValue('common.profile_path');
 
                             $fileName = '';
-                            do{
+                            do {
                                 $fileName = '/' . sha1(uniqid());
                             } while (file_exists($filePath . $fileName));
 
@@ -482,12 +483,12 @@ class Study
 
         $diplomas = array();
 
-        foreach($root->data->children() as $organization) {
-            foreach($organization->children() as $department) {
+        foreach ($root->data->children() as $organization) {
+            foreach ($organization->children() as $department) {
                 if (in_array($department->attributes()->objid, $departments)) {
-                    foreach($department->classificaties->children() as $classification) {
-                        foreach($classification->graad as $grade) {
-                            foreach($grade->diplomas->children() as $diploma) {
+                    foreach ($department->classificaties->children() as $classification) {
+                        foreach ($classification->graad as $grade) {
+                            foreach ($grade->diplomas->children() as $diploma) {
                                 $diplomas[] = array(
                                     'id' => (string) $diploma->attributes()->objid,
                                     'language' => $diploma->originele_titel->attributes()->taal,
@@ -509,7 +510,7 @@ class Study
 
         $urls = array();
 
-        foreach($diplomas as $diploma) {
+        foreach ($diplomas as $diploma) {
             $url = str_replace(
                 array(
                     '{{ language }}',
@@ -524,7 +525,7 @@ class Study
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
             $xml = simplexml_load_file($url);
 
-            foreach($xml->data->diploma->opleidingen->children() as $study) {
+            foreach ($xml->data->diploma->opleidingen->children() as $study) {
                 $urls[] = str_replace(
                     array(
                         '{{ language }}',

@@ -21,7 +21,7 @@
                 {% for form in group.getForms() %}
                     <tr>
                         <td>
-                            {% if hasAccess('form_view', 'view') %}
+                            {% if hasAccess('form_view', 'index') %}
                                 <a href="{{ url('form_view', {'id': form.getForm().getId()}) }}">
                                     {{ form.getForm().getTitle(language) }}
                                     <i class="glyphicon glyphicon-chevron-right pull-right" style="margin-left: 10px"></i>
@@ -43,7 +43,7 @@
                 {% endfor %}
             </table>
         </div>
-        {% if hasAccess('form_view', 'view') %}
+        {% if hasAccess('form_view', 'index') %}
             <div style="clear: both;text-align: center;">
                 <a href="{{ url('form_view', {'id': startForm.getId()}) }}" class="btn btn-primary">{% if isFirstForm %}{{ translate('Start') }}{% else %}{{ translate('Continue') }}{% endif %}</a>
             </div>

@@ -58,7 +58,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
         $form = new MailForm();
 
-        if($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -67,17 +67,17 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.mail');
+                    ->getConfigValue('system_mail_address');
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.mail_name');
+                    ->getConfigValue('system_mail_name');
 
                 $entries = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findAllByForm($formSpecification);
 
-                foreach($entries as $entry) {
+                foreach ($entries as $entry) {
                     $mail = new Message();
                     $mail->setBody($formData['message'])
                         ->setFrom($mailAddress, $mailName)

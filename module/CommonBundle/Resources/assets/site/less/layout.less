@@ -49,6 +49,10 @@ body {
     }
 }
 
+.navbar-collapse {
+    max-height: none;
+}
+
 header {
     background: @cHeaderLight;
     #gradient > .vertical(@start-color: @cHeaderDark; @end-color: @cHeaderLight; @start-percent: 0%; @end-percent: 50%);
@@ -58,12 +62,13 @@ header {
 
         .site-logo {
             float: left;
-            margin: 7px 20px 0 20px;
+            margin: 17px 20px 0 20px;
             height: 41px;
         }
 
         .site-name {
             margin: 0px;
+            padding-top: 20px;
         }
     }
 

@@ -19,18 +19,23 @@
 namespace FormBundle\Controller\Manage;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
+    FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
+    FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    ZipArchive;
 
 /**
  * FormController
@@ -65,6 +70,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($form = $this->_getForm()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()
@@ -109,6 +115,104 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'entries'  => $entries,
                 'viewer'   => $viewerMap,
                 'mailForm' => $mailForm,
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        if (!($person = $this->getAuthentication()->getPersonObject()))
+            return new ViewModel();
+
+        if(!($formSpecification = $this->_getForm()))
+
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'doodle') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'doodleAdd',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $viewerMap = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $formSpecification);
+
+        if (!$viewerMap || !$viewerMap->isEdit()) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'You don\'t have access to edit the given form!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'view',
+                    'id'     => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new SpecifiedFormAdd($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $person = null;
+                if ($formData['person_id']) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager());
+
+                if (!$result) {
+                    return new ViewModel(
+                        array(
+                            'formSpecification' => $formSpecification,
+                            'form'          => $form,
+                        )
+                    );
+                }
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The entry was successfully added.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $formSpecification->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'formSpecification' => $formSpecification,
             )
         );
     }
@@ -174,7 +278,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 if (!$result) {
                     return new ViewModel(
                         array(
-                            'specification' => $entry->getForm(),
+                            'specification' => $formEntry->getForm(),
                             'form'          => $form,
                         )
                     );
@@ -205,6 +309,68 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'form' => $form,
                 'formSpecification' => $formSpecification,
                 'entry' => $formEntry,
+            )
+        );
+    }
+
+    public function doodleAddAction()
+    {
+        if(!($formSpecification = $this->_getForm()))
+
+            return new ViewModel();
+
+        if ($formSpecification->getType() == 'form') {
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action'   => 'add',
+                    'id'       => $formSpecification->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $form = new DoodleAddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $person = null;
+                if ($formData['person_id']) {
+                    $person = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person')
+                        ->findOneById($formData['person_id']);
+                }
+
+                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The entry was successfully added.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_manage',
+                    array(
+                        'action'   => 'view',
+                        'id'       => $formSpecification->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'formSpecification' => $formSpecification,
             )
         );
     }
@@ -356,6 +522,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
 
         if(!($form = $this->_getForm()))
+
             return new ViewModel();
 
         $viewerMap = $this->getEntityManager()
@@ -401,7 +568,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     $result[] = $entry->getPersonInfo()->getEmail();
 
                 $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
-                foreach($entry->getFieldEntries() as $fieldEntry) {
+                foreach ($entry->getFieldEntries() as $fieldEntry) {
                     $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
                     $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
                 }
@@ -428,7 +595,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 if ($viewerMap->isMail())
                     $result[] = $entry->getPersonInfo()->getEmail();
 
-                foreach($fields as $field) {
+                foreach ($fields as $field) {
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($entry, $field);
@@ -479,6 +646,55 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return new ViewModel(
             array(
                 'data' => $data,
+            )
+        );
+    }
+
+    public function downloadFilesAction()
+    {
+        if (!($field = $this->_getField()) || $field->getType() != 'file')
+            return new ViewModel();
+
+        $entries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findAllByField($field);
+
+        $archive = new TmpFile();
+
+        $zip = new ZipArchive();
+        $now = new DateTime();
+
+        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+        $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
+        $zip->close();
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('form.file_upload_path') . '/';
+
+        foreach ($entries as $entry) {
+            $extension = pathinfo($entry->getReadableValue(), PATHINFO_EXTENSION);
+            $extension = $extension ? '.' . $extension : '';
+
+            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+            $zip->addFile(
+                $filePath . $entry->getValue(),
+                $field->getLabel($this->getLanguage()) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . $extension
+            );
+            $zip->close();
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
+            'Content-Type'        => mime_content_type($archive->getFileName()),
+            'Content-Length'      => filesize($archive->getFileName()),
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $archive->getContent(),
             )
         );
     }
@@ -579,4 +795,50 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return $entry;
     }
 
+    private function _getField()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the field!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        $field = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Field')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $field) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No field with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'form_manage',
+                array(
+                    'action' => 'index'
+                )
+            );
+
+            return;
+        }
+
+        return $field;
+    }
 }

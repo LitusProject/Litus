@@ -93,7 +93,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     if (
                         '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
                             && '' != $formData['content_' . $language->getAbbrev()]
@@ -164,7 +164,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
 
-                foreach($languages as $language) {
+                foreach ($languages as $language) {
                     $translation = $event->getEvent()->getTranslation($language, false);
 
                     if ($translation) {
@@ -267,14 +267,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
+        $form = new PosterForm();
+
         if ($this->getRequest()->isPost()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-            $upload->addValidator(new ImageValidator());
+            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
@@ -285,7 +286,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     $fileName = '/' . $event->getEvent()->getPoster();
                 } else {
                     $fileName = '';
-                    do{
+                    do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }

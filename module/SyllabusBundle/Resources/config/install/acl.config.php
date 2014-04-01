@@ -31,7 +31,10 @@ return array(
             'edit', 'manage', 'search', 'searchSubject', 'typeahead'
         ),
         'syllabus_admin_subject' => array(
-            'edit', 'manage', 'search', 'typeahead'
+            'add', 'edit', 'manage', 'search', 'typeahead'
+        ),
+        'syllabus_admin_subject_study' => array(
+            'add', 'delete', 'edit'
         ),
         'syllabus_admin_subject_comment' => array(
             'delete', 'manage', 'subject', 'reply'

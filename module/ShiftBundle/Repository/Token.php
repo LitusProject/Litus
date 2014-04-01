@@ -29,7 +29,8 @@ use CommonBundle\Entity\User\Person,
  */
 class Token extends DocumentRepository
 {
-    public function findOneByPerson(Person $person) {
-        return $this->findOneBy(array('person' => $person->getId()));
+    public function findOneByPerson(Person $person)
+    {
+        return $this->findOneBy(array('person' => (int) $person->getId()));
     }
 }

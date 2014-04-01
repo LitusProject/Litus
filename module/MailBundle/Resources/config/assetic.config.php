@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'mail_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'mail_admin_alias' => array(
             '@common_jquery',
             '@admin_css',
@@ -64,6 +59,13 @@ return array(
             '@common_jquery',
             '@gollum_css',
             '@gollum_js',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'mail_admin_promotion' => array(
+            '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',

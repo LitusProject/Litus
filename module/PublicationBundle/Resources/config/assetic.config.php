@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'publication_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'publication_admin_publication' => array(
             '@common_jquery',
             '@admin_css',
@@ -36,7 +31,6 @@ return array(
             '@admin_js',
             '@common_jquery_form',
             '@common_form_upload_progress',
-            '@common_download_file',
             '@common_permanent_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -51,7 +45,6 @@ return array(
             '@admin_js',
             '@common_jquery_form',
             '@common_form_upload_progress',
-            '@common_download_file',
             '@common_permanent_modal',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
