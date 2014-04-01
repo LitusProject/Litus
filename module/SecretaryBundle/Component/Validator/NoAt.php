@@ -31,14 +31,6 @@ class NoAt extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'This field should not contain an @',
     );
 
-    /**
-     * @param mixed $opts The validator's options
-     */
-    public function __construct($opts = null)
-    {
-        parent::__construct($opts);
-    }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
