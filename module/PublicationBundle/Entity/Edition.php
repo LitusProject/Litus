@@ -85,7 +85,7 @@ abstract class Edition
     /**
      * Creates a new edition with the given title
      *
-     * @param Publication $publication The publication to which this edition belongs
+     * @param Publication  $publication  The publication to which this edition belongs
      * @param AcademicYear $academicYear
      * @param string       $title        The title of this edition
      * @param DateTime     $date         The date of this edition

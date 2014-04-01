@@ -78,9 +78,9 @@ class Restriction
     );
 
     /**
-     * @param Article $article The article of the restriction
-     * @param string      $type  The type of the restriction
-     * @param string|null $value The value of the restriction
+     * @param Article     $article The article of the restriction
+     * @param string      $type    The type of the restriction
+     * @param string|null $value   The value of the restriction
      */
     public function __construct(Article $article, $type, $value = null)
     {

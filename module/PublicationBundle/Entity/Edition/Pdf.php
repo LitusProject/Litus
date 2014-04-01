@@ -36,9 +36,9 @@ class Pdf extends \PublicationBundle\Entity\Edition
      *
      * @param Publication $publication The publication to which this edition belongs
      * @param AcademicYear
-     * @param string   $title    The title of this edition
-     * @param DateTime $date     The date of this edition
-     * @param string   $fileName The file name of this edition
+     * @param string      $title       The title of this edition
+     * @param DateTime    $date        The date of this edition
+     * @param string      $fileName    The file name of this edition
      */
     public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date, $fileName)
     {

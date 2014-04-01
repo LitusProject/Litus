@@ -71,7 +71,7 @@ class Delivery
     /**
      * @param Article $article The article of the delivery
      * @param integer $number  The number of the article
-     * @param Person $person The person who ordered the order
+     * @param Person  $person  The person who ordered the order
      */
     public function __construct(Article $article, $number, Person $person)
     {
