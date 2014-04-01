@@ -44,14 +44,15 @@ class CancelRegistration extends \Zend\Validator\AbstractValidator
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field unique and valid.
      *
-     * @param string $value The value of the field that will be validated
-     * @param array $context The context of the field that will be validated
+     * @param  string  $value   The value of the field that will be validated
+     * @param  array   $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
         if ($value && $context['payed']) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 

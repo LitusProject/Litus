@@ -186,7 +186,7 @@ class Articles
                 ->getConfigValue('secretary.membership_article')
         );
 
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $membershipArticle = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);

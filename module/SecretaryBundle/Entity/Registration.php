@@ -167,6 +167,7 @@ class Registration
     public function setCancelled($cancel = false)
     {
         $this->cancelled = $cancel;
+
         return $this;
     }
 }
