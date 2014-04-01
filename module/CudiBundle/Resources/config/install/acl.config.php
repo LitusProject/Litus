@@ -103,7 +103,7 @@ return array(
             'login', 'logout', 'shibboleth',
         ),
         'cudi_prof_article' => array(
-            'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
+            'add', 'addFromSubject', 'delete', 'edit', 'manage', 'typeahead'
         ),
         'cudi_prof_article_mapping' => array(
             'activate', 'add', 'delete'

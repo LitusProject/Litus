@@ -83,7 +83,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             }
                         }
                     } else {
-                        foreach ($event->getOptions() as $option) {
+                        $options = $event->getOptions();
+                        foreach ($options as $option) {
                             $number = $formData['option_' . $option->getId() . '_number_member'];
                             for ($i = 0; $i < count($tickets) ; $i++) {
                                 if (0 == $number)

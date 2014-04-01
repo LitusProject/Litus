@@ -36,7 +36,7 @@ class Study
     private $id;
 
     /**
-     * @var integer The id of the KUL
+     * @var integer The id of the KU Leuven
      *
      * @ORM\Column(type="integer", name="kul_id", nullable=true)
      */

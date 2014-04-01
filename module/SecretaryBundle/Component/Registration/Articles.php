@@ -172,4 +172,78 @@ class Articles
             }
         }
     }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager               $entityManager
+     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     */
+    public static function cancel(EntityManager $entityManager, Academic $academic, AcademicYear $academicYear)
+    {
+        $ids = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        foreach ($ids as $id) {
+            $membershipArticle = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article')
+                ->findOneById($id);
+
+            $booking = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findOneBookedOrAssignedByArticleAndPersonInAcademicYear(
+                    $membershipArticle,
+                    $academic,
+                    $academicYear
+                );
+
+            if (null !== $booking)
+                $booking->setStatus('canceled', $entityManager);
+        }
+
+        $tshirts = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
+        $hasShirt = false;
+        foreach ($tshirts as $tshirt) {
+            $booking = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findOneBookedOrAssignedByArticleAndPersonInAcademicYear(
+                    $entityManager
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($tshirt),
+                    $academic,
+                    $academicYear
+                );
+
+            if (null !== $booking)
+                $booking->setStatus('canceled', $entityManager);
+        }
+
+        $registrationArticles = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.registration_articles')
+        );
+
+        foreach ($registrationArticles as $registrationArticle) {
+            $booking = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findOneBookedOrAssignedByArticleAndPersonInAcademicYear(
+                    $entityManager
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($registrationArticle),
+                    $academic,
+                    $academicYear
+                );
+
+            if (null !== $booking)
+                    $booking->setStatus('canceled', $entityManager);
+        }
+    }
 }
