@@ -18,7 +18,7 @@
 
 namespace SecretaryBundle\Component\Validator;
 
-class NoAt extends \Zend\Validator\AbstractValidator
+class CancelRegistration extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -28,7 +28,7 @@ class NoAt extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This field should not contain an @',
+        self::NOT_VALID => 'The registration needs to be uncancelled before it can be payed!',
     );
 
     /**
@@ -44,17 +44,14 @@ class NoAt extends \Zend\Validator\AbstractValidator
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field unique and valid.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param string $value The value of the field that will be validated
+     * @param array $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
-        $containsAt = strstr($value, '@');
-
-        if ($containsAt) {
+        if ($value && $context['payed']) {
             $this->error(self::NOT_VALID);
-
             return false;
         }
 

@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
+    SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\InputFilter\InputFilter,
@@ -62,9 +63,9 @@ class Edit extends Add
         $this->remove('person');
 
         $field = new Checkbox('cancel');
-        $field->setLabel('Cancelled');
+        $field->setLabel('Cancelled')
+            ->setValue($registration->isCancelled());
         $this->add($field);
-        $field->setValue($registration->isCancelled());
 
         $this->get('payed')->setValue($registration->hasPayed());
         if ($metaData) {
@@ -80,9 +81,22 @@ class Edit extends Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
         $inputFilter->remove('person_id');
         $inputFilter->remove('person');
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'cancel',
+                    'required' => false,
+                    'validators' => array(
+                        new CancelRegistrationValidator(),
+                    ),
+                )
+            )
+        );
 
         return $inputFilter;
     }

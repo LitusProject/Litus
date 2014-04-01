@@ -288,17 +288,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($formData['payed'] && $formData['cancel']) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'ERROR',
-                        'The registration needs to be uncancelled before it can be payed !'
-                    )
-                );
-            } elseif ($form->isValid()) {
+            if ($form->isValid()) {
                 $registration->setPayed($formData['payed'])
-                    ->setCancelled(false);
+                    ->setCancelled($formData['cancel']);
 
                 $organization = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization')
@@ -314,16 +306,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->persist(new AcademicYearMap($registration->getAcademic(), $registration->getAcademicYear(), $organization));
                 }
 
-                RegistrationArticles::book(
-                    $this->getEntityManager(),
-                    $registration->getAcademic(),
-                    $organization,
-                    $registration->getAcademicYear(),
-                    array(
-                        'payed' => $formData['payed'],
-                        'tshirtSize' => $formData['tshirt_size'],
-                    )
-                );
+                if (!$formData['cancel']) {
+                    RegistrationArticles::book(
+                        $this->getEntityManager(),
+                        $registration->getAcademic(),
+                        $organization,
+                        $registration->getAcademicYear(),
+                        array(
+                            'payed' => $formData['payed'],
+                            'tshirtSize' => $formData['tshirt_size'],
+                        )
+                    );
+                }
 
                 if (null === $metaData) {
                     $metaData = new MetaData(
@@ -340,6 +334,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         ->setTshirtSize($formData['tshirt_size']);
                 }
 
+                if ($formData['cancel'])
+                    $this->_cancelRegistration($registration);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -350,9 +347,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-            }
-
-            $this->redirect()->toRoute(
+                $this->redirect()->toRoute(
                     'secretary_admin_registration',
                     array(
                         'action' => 'edit',
@@ -360,7 +355,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     )
                 );
 
-            return new ViewModel();
+                return new ViewModel();
+            }
         }
 
         return new ViewModel(
@@ -398,16 +394,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 )
             );
         } else {
-            $metaData = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-                ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
-
-            if (null != $metaData)
-                $metaData->setBecomeMember(false);
-
-            $organizationStatus->setStatus('non_member');
-            $registration->setPayed(false)
-                ->setCancelled(true);
+            $this->_cancelRegistration($registration);
             $this->getEntityManager()->flush();
 
             return new ViewModel(
@@ -475,7 +462,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
                 $item->cancelled = $registration->isCancelled();
-                $item->name = $registration->getAcademic()->getFullName();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
                 $item->organization = $registration->getAcademic()->getOrganization($academicYear) ? $registration->getAcademic()->getOrganization($academicYear)->getName() : '';
                 $result[] = $item;
@@ -679,5 +665,24 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('organization'));
 
         return $organization;
+    }
+
+    private function _cancelRegistration(Registration $registration)
+    {
+        $academic = $registration->getAcademic();
+        $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
+
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
+
+        if (null != $metaData)
+            $metaData->setBecomeMember(false);
+
+        $organizationStatus->setStatus('non_member');
+        $registration->setPayed(false)
+            ->setCancelled(true);
+
+        RegistrationArticles::cancel($this->getEntityManager(), $academic, $registration->getAcademicYear());
     }
 }

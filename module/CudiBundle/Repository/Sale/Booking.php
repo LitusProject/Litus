@@ -567,6 +567,42 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    public function findOneBookedOrAssignedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
+    {
+        return $this->findOneBookedOrAssignedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
+    }
+
+    public function findOneBookedOrAssignedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('b')
+            ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->eq('b.article', ':article'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'assigned\''),
+                        $query->expr()->eq('b.status', '\'booked\'')
+                    ),
+                    $query->expr()->gte('b.bookDate', ':startDate'),
+                    null === $end ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                )
+            )
+            ->setParameter(':person', $person->getId())
+            ->setParameter(':article', $article->getId())
+            ->setParameter('startDate', $start);
+
+        if (null !== $end)
+            $query->setParameter('endDate', $end);
+
+        $resultSet = $query->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $resultSet;
+    }
+
     public function findOneSoldByArticleAndPerson(ArticleEntity $article, Person $person)
     {
         $period = $this->getEntityManager()
