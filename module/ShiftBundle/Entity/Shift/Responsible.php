@@ -21,6 +21,7 @@ namespace ShiftBundle\Entity\Shift;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     DateTime,
+    IllegalArgumentException,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,7 +49,7 @@ class Responsible
     private $signupTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person that volunteered
+     * @var Person The person that volunteered
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -56,15 +57,16 @@ class Responsible
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\User\Person          $person
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  Person                   $person
+     * @param  AcademicYear             $academicYear
+     * @throws IllegalArgumentException
      */
     public function __construct(Person $person, AcademicYear $academicYear)
     {
         $this->signupTime = new DateTime();
 
         if (!$person->isPraesidium($academicYear))
-            throw new \InvalidArgumentException('The given person cannot be a responsible');
+            throw new InvalidArgumentException('The given person cannot be a responsible');
 
         $this->person = $person;
     }
@@ -78,7 +80,7 @@ class Responsible
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSignupTime()
     {
@@ -86,7 +88,7 @@ class Responsible
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

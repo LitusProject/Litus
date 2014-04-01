@@ -33,14 +33,14 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Event extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var EventEntity
      */
     private $_event;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \TicketBundle\Entity\Event                $event
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param EventEntity   $event
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, EventEntity $event, TmpFile $file)
     {

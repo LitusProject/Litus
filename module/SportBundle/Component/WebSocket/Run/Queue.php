@@ -36,7 +36,7 @@ use CommonBundle\Component\Acl\Acl,
 class Queue extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -57,7 +57,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param User $user
      */
     protected function onConnect(User $user)
     {
@@ -243,6 +243,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->_entityManager->flush();
     }
 
+    /**
+     * @return string
+     */
     private function _getJsonQueue()
     {
         $nbLaps = $this->_entityManager
@@ -287,7 +290,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param string $state
+     * @param  Lap|null    $lap
+     * @param  string      $state
+     * @return object|null
      */
     private function _jsonLap(Lap $lap = null, $state)
     {
@@ -309,7 +314,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param string $data
+     * @param object $data
      */
     private function _deleteLap($data)
     {
@@ -342,6 +347,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findCurrent($this->_getAcademicYear());
     }
 
+    /**
+     * @return null|Lap
+     */
     private function _getNextLap()
     {
         return $this->_entityManager

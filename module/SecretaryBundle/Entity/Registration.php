@@ -41,7 +41,7 @@ class Registration
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person of the registration
+     * @var Academic The person of the registration
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -49,7 +49,7 @@ class Registration
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the registration
+     * @var AcademicYear The academic year of the registration
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -57,7 +57,7 @@ class Registration
     private $academicYear;
 
     /**
-     * @var \DateTime The time of the registration
+     * @var DateTime The time of the registration
      *
      * @ORM\Column(type="datetime")
      */
@@ -71,15 +71,15 @@ class Registration
     private $payed;
 
     /**
-     * @var \DateTime The time of the registration payement
+     * @var DateTime|null The time of the registration payement
      *
      * @ORM\Column(name="payed_timestamp", type="datetime", nullable=true)
      */
     private $payedTimestamp;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
      */
     public function __construct(Academic $academic, AcademicYear $academicYear)
     {
@@ -98,7 +98,7 @@ class Registration
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -106,7 +106,7 @@ class Registration
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -114,7 +114,7 @@ class Registration
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -130,7 +130,7 @@ class Registration
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getPayedTimestamp()
     {
@@ -138,9 +138,8 @@ class Registration
     }
 
     /**
-     * @param boolean $payed
-     *
-     * @return \SecretaryBundle\Entity\Registration
+     * @param  boolean $payed
+     * @return self
      */
     public function setPayed($payed = true)
     {

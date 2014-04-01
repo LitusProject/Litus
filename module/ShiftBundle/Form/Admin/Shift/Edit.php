@@ -31,8 +31,8 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Edit extends Add
 {
     /**
-     * @param \ShiftBundle\Entity\Shift $shift The shift we're going to modify
-     * @param null|string|int           $name  Optional name for the element
+     * @param Shift           $shift The shift we're going to modify
+     * @param null|string|int $name  Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Shift $shift, $name = null)
     {

@@ -33,14 +33,14 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \SyllabusBundle\Entity\Study
+     * @var Study
      */
     private $_study = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Study $study         The study we're going to modify
-     * @param null|string|int              $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Study           $study         The study we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Study $study, $name = null)
     {

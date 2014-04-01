@@ -42,7 +42,7 @@ class StudyEnrollment
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person of the enrollment
+     * @var Person\Academic The person of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -50,7 +50,7 @@ class StudyEnrollment
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the enrollment
+     * @var AcademicYear The academic year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -58,7 +58,7 @@ class StudyEnrollment
     private $academicYear;
 
     /**
-     * @var \DateTime The study of the enrollment
+     * @var Study The study of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinColumn(name="study", referencedColumnName="id")
@@ -66,9 +66,9 @@ class StudyEnrollment
     private $study;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SyllabusBundle\Entity\Study              $study
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param Study        $study
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Study $study)
     {
@@ -86,7 +86,7 @@ class StudyEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -94,7 +94,7 @@ class StudyEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -102,7 +102,7 @@ class StudyEnrollment
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Study
+     * @return Study
      */
     public function getStudy()
     {

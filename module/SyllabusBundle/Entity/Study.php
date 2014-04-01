@@ -18,7 +18,8 @@
 
 namespace SyllabusBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
@@ -64,7 +65,7 @@ class Study
     private $language;
 
     /**
-     * @var \SyllabusBundle\Entity\Study The parent study of the study
+     * @var Study The parent study of the study
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study", inversedBy="children")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -72,18 +73,18 @@ class Study
     private $parent;
 
     /**
-     * @var \SyllabusBundle\Entity\Study The parent study of the study
+     * @var ArrayCollection The children studies of the study
      *
      * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Study", mappedBy="parent")
      */
     private $children;
 
     /**
-     * @param string                       $title
-     * @param integer                      $kulId
-     * @param integer                      $phase
-     * @param string                       $language
-     * @param \SyllabusBundle\Entity\Study $parent
+     * @param string  $title
+     * @param integer $kulId
+     * @param integer $phase
+     * @param string  $language
+     * @param Study   $parent
      */
     public function __construct($title, $kulId, $phase, $language, Study $parent = null)
     {
@@ -92,6 +93,7 @@ class Study
         $this->phase = $phase;
         $this->language = $language;
         $this->parent = $parent;
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -111,8 +113,8 @@ class Study
     }
 
     /**
-     * @param  integer                      $kulId
-     * @return \SyllabusBundle\Entity\Study
+     * @param  integer $kulId
+     * @return self
      */
     public function setKulId($kulId)
     {
@@ -130,8 +132,8 @@ class Study
     }
 
     /**
-     * @param  string                       $title
-     * @return \SyllabusBundle\Entity\Study
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {
@@ -165,8 +167,8 @@ class Study
     }
 
     /**
-     * @param  integer                      $phase
-     * @return \SyllabusBundle\Entity\Study
+     * @param  integer $phase
+     * @return self
      */
     public function setPhase($phase)
     {
@@ -184,8 +186,8 @@ class Study
     }
 
     /**
-     * @param  string                       $language
-     * @return \SyllabusBundle\Entity\Study
+     * @param  string $language
+     * @return self
      */
     public function setLanguage($language)
     {
@@ -195,7 +197,7 @@ class Study
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Study
+     * @return Study
      */
     public function getParent()
     {
@@ -203,8 +205,8 @@ class Study
     }
 
     /**
-     * @param  \SyllabusBundle\Entity\Study $parent
-     * @return \SyllabusBundle\Entity\Study
+     * @param  Study $parent
+     * @return self
      */
     public function setParent(Study $parent = null)
     {
@@ -224,7 +226,7 @@ class Study
     }
 
     /**
-     * @return Study
+     * @return ArrayCollection
      */
     public function getChildren()
     {
@@ -233,10 +235,7 @@ class Study
 
     public function getAllChildren()
     {
-        if ($this->getChildren())
-            $directChildren = $this->getChildren()->toArray();
-        else
-            $directChildren = array();
+        $directChildren = $this->getChildren()->toArray();
 
         $result = array();
         foreach ($directChildren as $child) {

@@ -56,7 +56,7 @@ class Token
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
@@ -81,7 +81,7 @@ class Token
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson(EntityManager $entityManager)
     {

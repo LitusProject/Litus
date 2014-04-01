@@ -408,7 +408,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Shift
+     * @return Shift|null
      */
     private function _getShift()
     {

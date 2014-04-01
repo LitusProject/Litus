@@ -40,12 +40,12 @@ use CommonBundle\Component\Util\AcademicYear,
 class Study
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface
+     * @var TransportInterface
      */
     private $_mailTransport;
 
@@ -60,7 +60,7 @@ class Study
     private $_callback;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
     private $_academicYear;
 
@@ -70,10 +70,10 @@ class Study
     private $_subjects;
 
     /**
-     * @param \Doctrine\ORM\EntityManager             $entityManager
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param string                                  $xmlPath
-     * @param array                                   $callback
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param string             $xmlPath
+     * @param array              $callback
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
     {
@@ -152,7 +152,7 @@ class Study
     }
 
     /**
-     * @return Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEntityManager()
     {

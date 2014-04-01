@@ -30,20 +30,20 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \SecretaryBundle\Entity\Registration The registration data
+     * @var Registration The registration data
      */
     protected $_registration = null;
 
     /**
-     * @var \SecretaryBundle\Entity\Organization\MetaData The meta data
+     * @var MetaData The meta data
      */
     protected $_metaData = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager                   $entityManager The EntityManager instance
-     * @param \SecretaryBundle\Entity\Registration          $registration  The registration data
-     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData      The meta data
-     * @param null|string|int                               $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Registration    $registration  The registration data
+     * @param MetaData        $metaData      The meta data
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Registration $registration, MetaData $metaData = null, $name = null)
     {

@@ -31,7 +31,7 @@ use CommonBundle\Entity\User\Person,
 class Volunteer
 {
     /**
-     * @var integer The ID of this unit
+     * @var integer The ID of this Volunteer
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -40,14 +40,14 @@ class Volunteer
     private $id;
 
     /**
-     * @var string The unit's name
+     * @var DateTime The signup time
      *
      * @ORM\Column(name="signup_time", type="datetime")
      */
     private $signupTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person that volunteered
+     * @var Person The person that volunteered
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -80,7 +80,7 @@ class Volunteer
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSignupTime()
     {
@@ -88,7 +88,7 @@ class Volunteer
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -104,8 +104,8 @@ class Volunteer
     }
 
     /**
-     * @param  boolean   $payed
-     * @return Volunteer
+     * @param  boolean $payed
+     * @return self
      */
     public function setPayed($payed)
     {

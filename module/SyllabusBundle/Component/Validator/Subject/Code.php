@@ -31,12 +31,12 @@ class Code extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject exluded from this check
+     * @var Subject|null The subject exluded from this check
      */
     private $_exclude;
 
@@ -52,9 +52,9 @@ class Code extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $exclude
-     * @param mixed                          $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Subject|null  $exclude
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Subject $exclude = null, $opts = null)
     {

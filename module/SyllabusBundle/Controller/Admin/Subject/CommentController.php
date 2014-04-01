@@ -228,7 +228,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return \SyllabusBundle\Entity\Subject|null
      */
     private function _getSubject($id = null)
     {
@@ -280,7 +280,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Comment
+     * @return Comment|null
      */
     private function _getComment()
     {
@@ -329,6 +329,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $comment;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function _getAcademicYear()
     {
         $date = null;

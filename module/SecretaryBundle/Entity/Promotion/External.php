@@ -53,10 +53,10 @@ class External extends \SecretaryBundle\Entity\Promotion
     /**
      * Creates a new promotion with the given academic.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year for this promotion.
-     * @param string                                    $firstName    The first name to add
-     * @param string                                    $lastName     The last name to add
-     * @param string                                    $email        The e-mail address to add
+     * @param AcademicYear $academicYear The academic year for this promotion.
+     * @param string       $firstName    The first name to add
+     * @param string       $lastName     The last name to add
+     * @param string       $email        The e-mail address to add
      */
     public function __construct(AcademicYear $academicYear, $firstName, $lastName, $email)
     {

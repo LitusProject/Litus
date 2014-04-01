@@ -44,7 +44,7 @@ abstract class Promotion
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the promotion
+     * @var AcademicYear The year of the promotion
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -54,7 +54,7 @@ abstract class Promotion
     /**
      * Creates a new promotion for the given year.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year of this promotion.
+     * @param AcademicYear $academicYear The academic year of this promotion.
      */
     public function __construct(AcademicYear $academicYear)
     {
@@ -70,7 +70,7 @@ abstract class Promotion
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

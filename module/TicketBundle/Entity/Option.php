@@ -65,10 +65,10 @@ class Option
     private $priceNonMembers;
 
     /**
-     * @param \TicketBundle\Entity\Event $event
-     * @param string                     $name
-     * @param integer                    $priceMembers
-     * @param integer                    $priceNonMembers
+     * @param Event   $event
+     * @param string  $name
+     * @param integer $priceMembers
+     * @param integer $priceNonMembers
      */
     public function __construct(Event $event, $name, $priceMembers, $priceNonMembers)
     {
@@ -88,7 +88,7 @@ class Option
     }
 
     /**
-     * @return \TicketBundle\Entity\Event
+     * @return Event
      */
     public function getEvent()
     {
@@ -124,7 +124,7 @@ class Option
 
     /**
      * @param  integer $priceMembers
-     * @return Option
+     * @return self
      */
     public function setPriceMembers($priceMembers)
     {
@@ -143,7 +143,7 @@ class Option
 
     /**
      * @param  integer $priceNonMembers
-     * @return Option
+     * @return self
      */
     public function setPriceNonMembers($priceNonMembers)
     {

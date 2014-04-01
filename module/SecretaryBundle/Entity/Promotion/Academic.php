@@ -31,7 +31,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Academic extends \SecretaryBundle\Entity\Promotion
 {
     /**
-     * @var CommonBundle\Entity\User\Person\Academic The academic associated with this entry.
+     * @var AcademicPerson The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
@@ -41,8 +41,8 @@ class Academic extends \SecretaryBundle\Entity\Promotion
     /**
      * Creates a new promotion with the given academic.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year for this promotion.
-     * @param \CommonBundle\Entity\User\Person\Academic $academic     The academic to add.
+     * @param AcademicYear   $academicYear The academic year for this promotion.
+     * @param AcademicPerson $academic     The academic to add.
      */
     public function __construct(AcademicYear $academicYear, AcademicPerson $academic)
     {
@@ -52,7 +52,7 @@ class Academic extends \SecretaryBundle\Entity\Promotion
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return AcademicPerson
      */
     public function getAcademic()
     {

@@ -20,7 +20,8 @@ namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This entity represents a group of friends.
@@ -47,7 +48,7 @@ class Department
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The members of this department
+     * @var ArrayCollection The members of this department
      *
      * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="department")
      * @ORM\OrderBy({"lastName" = "ASC"})
@@ -62,7 +63,7 @@ class Department
     private $happyHours;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -74,6 +75,7 @@ class Department
     {
         $this->name = $name;
         $this->happyHours = serialize($happyHours);
+        $this->members = new ArrayCollection();
     }
 
     /**
@@ -109,8 +111,8 @@ class Department
     }
 
     /**
-     * @param  array      $happyHours
-     * @return Department
+     * @param  array $happyHours
+     * @return self
      */
     public function setHappyHours(array $happyHours)
     {
@@ -120,8 +122,8 @@ class Department
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return Department
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -133,7 +135,7 @@ class Department
     /**
      * Returns the current point total of the department.
      *
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)

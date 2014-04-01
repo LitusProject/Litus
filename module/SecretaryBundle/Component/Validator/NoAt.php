@@ -18,23 +18,8 @@
 
 namespace SecretaryBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager;
-
 class NoAt extends \Zend\Validator\AbstractValidator
 {
-    const NOT_VALID = 'notValid';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var \CommonBundle\Entity\User\Person
-     */
-    private $_person = null;
-
     /**
      * Error messages
      *

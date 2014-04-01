@@ -42,7 +42,7 @@ class Lap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     * @var AcademicYear The year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -50,7 +50,7 @@ class Lap
     private $academicYear;
 
     /**
-     * @var \SportBundle\Entity\Runner The person who ran this lap
+     * @var Runner The person who ran this lap
      *
      * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Runner", cascade={"persist"})
      * @ORM\JoinColumn(name="runner", referencedColumnName="id")
@@ -58,34 +58,34 @@ class Lap
     private $runner;
 
     /**
-     * @var \DateTime The time when this runner registered for this lap
+     * @var DateTime The time when this runner registered for this lap
      *
      * @ORM\Column(name="registration_time", type="datetime")
      */
     private $registrationTime;
 
     /**
-     * @var \DateTime The time this runner started his lap
+     * @var DateTime|null The time this runner started his lap
      *
      * @ORM\Column(name="start_time", type="datetime", nullable=true)
      */
     private $startTime;
 
     /**
-     * @var \DateTime The time this runner ended his lap
+     * @var DateTime|null The time this runner ended his lap
      *
      * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SportBundle\Entity\Runner                $runner
+     * @param AcademicYear $academicYear
+     * @param Runner       $runner
      */
     public function __construct(AcademicYear $academicYear, Runner $runner)
     {
@@ -104,7 +104,7 @@ class Lap
     }
 
     /**
-     * @return \SportBundle\Entity\Runner
+     * @return Runner
      */
     public function getRunner()
     {
@@ -112,8 +112,8 @@ class Lap
     }
 
     /**
-     * @param  \SportBundle\Entity\Runner $runner
-     * @return \SportBundle\Entity\Lap
+     * @param  Runner $runner
+     * @return self
      */
     public function setRunner(Runner $runner)
     {
@@ -123,7 +123,7 @@ class Lap
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getRegistrationTime()
     {
@@ -131,7 +131,7 @@ class Lap
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getStartTime()
     {
@@ -141,7 +141,7 @@ class Lap
     /**
      * Starts this lap.
      *
-     * @return \SportBundle\Entity\Lap
+     * @return self
      */
     public function start()
     {
@@ -151,7 +151,7 @@ class Lap
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getEndTime()
     {
@@ -159,8 +159,8 @@ class Lap
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \SportBundle\Entity\Lap
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -172,7 +172,7 @@ class Lap
     /**
      * Ends this lap.
      *
-     * @return \SportBundle\Entity\Lap
+     * @return self
      */
     public function stop()
     {
@@ -184,7 +184,7 @@ class Lap
     /**
      * Returns the duration of the lap.
      *
-     * @return \DateInterval
+     * @return DateInterval
      */
     public function getLapTime()
     {
@@ -194,7 +194,7 @@ class Lap
         if (null !== $this->endTime) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
-            $now = new \DateTime();
+            $now = new DateTime();
             $lapTime = $now->diff($this->startTime);
         }
 
@@ -233,7 +233,7 @@ class Lap
     /**
      * Converts a DateInterval to seconds.
      *
-     * @param  \DateInterval $interval The interval that should be converted
+     * @param  DateInterval $interval The interval that should be converted
      * @return integer
      */
     private function _convertDateIntervalToSeconds(DateInterval $interval)

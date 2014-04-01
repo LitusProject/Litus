@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -45,8 +45,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_allMembers = array();
 
     /**
+     * @param EntityManager   $entityManager
      * @param string[]        $allMembers
-     * @param null|string|int $name       Optional name for the element
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
     {
