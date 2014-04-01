@@ -238,6 +238,7 @@ class Article extends EntityRepository
                 $ids[] = $mapping->getArticle()->getId();
             }
         }
+
         return $ids;
     }
 
@@ -259,6 +260,7 @@ class Article extends EntityRepository
                 $ids[] = $add->getEntityId();
             }
         }
+
         return $ids;
     }
 
@@ -273,6 +275,7 @@ class Article extends EntityRepository
             if (!$remove->isRefused())
                 $ids[] = $remove->getEntityId();
         }
+
         return $ids;
     }
 
