@@ -89,6 +89,7 @@ return array(
 
     'Your Recent Activity' => 'Your Recent Activity',
     'added an article on <b>%date%</b>' => 'added an article on <b>%date%</b>',
+    'removed an article on <b>%date%</b>' => 'removed an article on <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'edited an article on <b>%date%</b>',
     'Status' => 'Status',
     'Confirmed' => 'Confirmed',

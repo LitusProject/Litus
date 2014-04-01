@@ -89,6 +89,7 @@ return array(
 
     'Your Recent Activity' => 'Je Recente Activiteiten',
     'added an article on <b>%date%</b>' => 'voegde een artikel toe op <b>%date%</b>',
+    'removed an article on <b>%date%</b>' => 'verwijderde een artikel op <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'bewerkte een artikel op <b>%date%</b>',
     'Status' => 'Status',
     'Confirmed' => 'Bevestigd',

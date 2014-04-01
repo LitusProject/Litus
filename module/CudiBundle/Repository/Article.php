@@ -225,13 +225,24 @@ class Article extends EntityRepository
             }
         }
 
+        $removed = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Prof\Action')
+            ->findAllByEntityAndAction('article', 'delete');
+
+        $notIds = array(0);
+        foreach ($removed as $remove) {
+            if (!$remove->isRefused())
+                $notIds[] = $remove->getEntityId();
+        }
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
-                    $query->expr()->in('a.id', $ids)
+                    $query->expr()->in('a.id', $ids),
+                    $query->expr()->notIn('a.id', $notIds)
                 )
             )
             ->orderBy('a.title', 'ASC')
