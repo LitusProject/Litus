@@ -84,9 +84,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                 $event = new Event(
                     $this->getAuthentication()->getPersonObject(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false
-                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date'])
                 );
                 $this->getEntityManager()->persist($event);
 
@@ -154,8 +153,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $event->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                $event->setStartDate(self::_loadDate($formData['start_date']))
+                    ->setEndDate(self::_loadDate($formDate['end_date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -459,5 +458,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

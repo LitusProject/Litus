@@ -147,8 +147,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Initializes the fallback language and stores it in the Registry so that it is
-     * accessible troughout the application.
+     * Initializes the fallback language and make it the default Locale.
      *
      * @return void
      */
@@ -175,6 +174,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch (\Exception $e) {
+            // ignore exceptions
         }
     }
 
@@ -332,8 +332,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         throw new \RuntimeException(
             'Do not extend \CommonBundle\Component\Controller\ActionController directly'
         );
-
-        return null;
     }
 
     /**

@@ -131,7 +131,7 @@ class Reply
     }
 
     /**
-     * @return Subject
+     * @return \SyllabusBundle\Entity\Subject
      */
     public function getSubject()
     {
