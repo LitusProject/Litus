@@ -171,7 +171,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Clears the persistent storage and deactivates the associated session.
      *
-     * @return void
+     * @return \CommonBundle\Entity\User\Session|null
      */
     public function clearIdentity()
     {

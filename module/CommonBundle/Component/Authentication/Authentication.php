@@ -84,7 +84,7 @@ class Authentication
     /**
      * Forget the current user.
      *
-     * @return void
+     * @return \CommonBundle\Entity\User\Session|null
      */
     public function forget()
     {

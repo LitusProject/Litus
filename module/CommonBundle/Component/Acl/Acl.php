@@ -38,9 +38,9 @@ class Acl extends \Zend\Permissions\Acl\Acl
     private $_entityManager = null;
 
     /**
-     * @param EntityManager|null $entityManager The EntityManager instance
+     * @param EntityManager $entityManager The EntityManager instance
      */
-    public function __construct(EntityManager $entityManager = null)
+    public function __construct(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
 

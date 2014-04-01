@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action,
-    Zend\Authentication\Storage\StorageInterface as StorageInterface,
+    Zend\Authentication\Adapter\AdapterInterface,
+    Zend\Authentication\Storage\StorageInterface,
     Zend\Http\PhpEnvironment\Request,
     Zend\Http\PhpEnvironment\Response,
     Zend\Http\Header\Cookie,
@@ -188,4 +189,17 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
         );
     }
+
+    /**
+     * @param  AdapterInterface|null $adapter
+     * @param  boolean               $rememberMe
+     * @param  boolean               $shibboleth
+     * @return Result
+     */
+    abstract public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false);
+
+    /**
+     * @return \CommonBundle\Entity\User\Session|null
+     */
+    abstract public function clearIdentity();
 }
