@@ -42,7 +42,7 @@ class Category
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The category's parent
+     * @var Page The category's parent
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -50,14 +50,14 @@ class Category
     private $parent;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this category
+     * @var ArrayCollection The translations of this category
      *
      * @ORM\OneToMany(targetEntity="PageBundle\Entity\Category\Translation", mappedBy="category", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var boolean Whether or not the category is active
      *
      * @ORM\Column(type="boolean")
      */
@@ -71,7 +71,7 @@ class Category
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -79,7 +79,7 @@ class Category
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @return Page
      */
     public function getParent()
     {
@@ -87,8 +87,8 @@ class Category
     }
 
     /**
-     * @param  \PageBundle\Entity\Node\Page $category The page's category
-     * @return \PageBundle\Entity\Category
+     * @param  Page $parent
+     * @return self
      */
     public function setParent(Page $parent)
     {
@@ -98,9 +98,9 @@ class Category
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language   $language
-     * @param  boolean                                 $allowFallback
-     * @return \PageBundle\Entity\Category\Translation
+     * @param  Language|null                                $language
+     * @param  boolean                                      $allowFallback
+     * @return \PageBundle\Entity\Category\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -121,8 +121,8 @@ class Category
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getName(Language $language = null, $allowFallback = true)

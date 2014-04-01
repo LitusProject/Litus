@@ -40,7 +40,7 @@ class Translation
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Category The category of this translation
+     * @var Category The category of this translation
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category", inversedBy="translations")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Translation
     private $category;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -63,9 +63,9 @@ class Translation
     private $name;
 
     /**
-     * @param \PageBundle\Entity\Category           $category
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $name
+     * @param Category $category
+     * @param Language $language
+     * @param string   $name
      */
     public function __construct(Category $category, Language $language, $name)
     {
@@ -75,7 +75,7 @@ class Translation
     }
 
     /**
-     * @return \PageBundle\Entity\Category
+     * @return Category
      */
     public function getCategory()
     {
@@ -83,7 +83,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -99,9 +99,8 @@ class Translation
     }
 
     /**
-     * @param string $name
-     *
-     * @return \PageBundle\Entity\Category\Translation
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {

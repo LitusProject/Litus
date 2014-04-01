@@ -33,12 +33,12 @@ class Name extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \GalleryBundle\Entity\Album\Album The album exluded from this check
+     * @var Album The album exluded from this check
      */
     private $_album;
 
@@ -50,9 +50,9 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \GalleryBundle\Entity\Adlum\Album The album exluded from this check
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Album|null $album The album exluded from this check
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Album $album = null, $opts = null)
     {

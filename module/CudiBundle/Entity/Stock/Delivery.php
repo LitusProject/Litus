@@ -39,7 +39,7 @@ class Delivery
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the delivery
+     * @var Article The article of the delivery
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -47,7 +47,7 @@ class Delivery
     private $article;
 
     /**
-     * @var \DateTime The time of the delivery
+     * @var DateTime The time of the delivery
      *
      * @ORM\Column(type="datetime")
      */
@@ -61,7 +61,7 @@ class Delivery
     private $number;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who ordered the order
+     * @var Person The person who ordered the order
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -69,9 +69,9 @@ class Delivery
     private $person;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article The article of the delivery
-     * @param integer                         $number  The number of the article
-     * @param \CommonBundle\Entity\User\Person The person who ordered the order
+     * @param Article $article The article of the delivery
+     * @param integer $number  The number of the article
+     * @param Person $person The person who ordered the order
      */
     public function __construct(Article $article, $number, Person $person)
     {
@@ -91,7 +91,7 @@ class Delivery
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -99,7 +99,7 @@ class Delivery
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -115,7 +115,7 @@ class Delivery
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

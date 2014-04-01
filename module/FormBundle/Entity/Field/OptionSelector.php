@@ -39,11 +39,11 @@ abstract class OptionSelector extends Field
     private $optionTranslations;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param boolean                     $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
+     * @param Form        $form
+     * @param integer     $order
+     * @param boolean     $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
@@ -51,8 +51,8 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getOptions(Language $language = null, $allowFallback = true)
@@ -66,8 +66,8 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return array
      */
     public function getOptionsArray(Language $language = null, $allowFallback = true)
@@ -81,7 +81,7 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language       $language
+     * @param  Language|null                               $language
      * @param  boolean                                     $allowFallback
      * @return \FormBundle\Entity\Field\Translation\Option
      */
@@ -103,8 +103,8 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
+     * @param  Language $language
+     * @param  boolean  $value
      * @return string
      */
     public function getValueString(Language $language, $value)

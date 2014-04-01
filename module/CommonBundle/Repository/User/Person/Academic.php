@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Repository\User\Person;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Academic

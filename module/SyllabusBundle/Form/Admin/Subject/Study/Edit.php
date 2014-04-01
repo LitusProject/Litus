@@ -21,7 +21,6 @@ namespace SyllabusBundle\Form\Admin\Subject\Study;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -33,9 +32,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager            $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\StudySubjectMap $mapping
-     * @param null|string|int                        $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param StudySubjectMap $mapping
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, StudySubjectMap $mapping, $name = null)
     {

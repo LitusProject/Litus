@@ -22,14 +22,10 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
     Locale,
-    Zend\Cache\StorageFactory,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,16 +43,16 @@ use CommonBundle\Component\Acl\Acl,
 class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
     private $_language;
 
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                       $e The MVC event
      * @return array
-     * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
+     * @throws Exception\HasNoAccessException The user does not have permissions to access this resource
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -110,7 +106,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * Does some initialization work for asynchronously requested actions.
      *
      * @return void
-     * @throws \CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
+     * @throws Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
      */
     protected function initAjax()
     {
@@ -217,7 +213,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      *
      * If this returns null, no redirection will take place.
      *
-     * @return void
+     * @return \Zend\Http\Response
      */
     protected function redirectAfterAuthentication()
     {
@@ -229,7 +225,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Initializes the authentication.
      *
-     * @return void
+     * @return \Zend\Http\Response|null
      */
     protected function initAuthentication()
     {
@@ -293,7 +289,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Returns the ACL object.
      *
-     * @return \CommonBundle\Component\Acl\Acl
+     * @return Acl
      */
     private function _getAcl()
     {
@@ -427,8 +423,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
     /**
      * Add a persistent flash message
-     * @param mixed                                               $result       The result of onDispatch
-     * @param \CommonBundle\Component\FlashMessenger\FlashMessage $flashMessage The flash message
+     * @param mixed        $result       The result of onDispatch
+     * @param FlashMessage $flashMessage The flash message
      */
     protected function addPersistentFlashMessage($result, FlashMessage $flashMessage)
     {

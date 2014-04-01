@@ -40,7 +40,7 @@ class Group
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Node\Group The group of this translation
+     * @var GroupEntity The group of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Group", inversedBy="translations")
      * @ORM\JoinColumn(name="form_group", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Group
     private $group;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -70,10 +70,10 @@ class Group
     private $introduction;
 
     /**
-     * @param \FormBundle\Entity\Node\Group         $group
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $title
-     * @param string                                $introduction
+     * @param GroupEntity $group
+     * @param Language    $language
+     * @param string      $title
+     * @param string      $introduction
      */
     public function __construct(GroupEntity $group, Language $language, $title, $introduction)
     {
@@ -84,7 +84,7 @@ class Group
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Group
+     * @return GroupEntity
      */
     public function getGroup()
     {
@@ -92,7 +92,7 @@ class Group
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -108,9 +108,8 @@ class Group
     }
 
     /**
-     * @param string $title
-     *
-     * @return \FormBundle\Entity\Node\Translation\Group
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {
@@ -128,9 +127,8 @@ class Group
     }
 
     /**
-     * @param string $introduction
-     *
-     * @return \FormBundle\Entity\Node\Translation\Group
+     * @param  string $introduction
+     * @return self
      */
     public function setIntroduction($introduction)
     {

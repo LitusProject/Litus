@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
+use CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
     Zend\View\Model\ViewModel;
 
 /**

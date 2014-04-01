@@ -32,8 +32,8 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Stock\Order\Item $item
-     * @param null|string|int                     $name Optional name for the element
+     * @param Item            $item
+     * @param null|string|int $name Optional name for the element
      */
     public function __construct(Item $item, $name = null)
     {

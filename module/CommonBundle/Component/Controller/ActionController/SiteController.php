@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Form\Auth\Login as LoginForm,
-    PageBundle\Entity\Node\Page,
+use PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -33,7 +32,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -175,7 +174,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Build a pages submenu.
      *
-     * @param  \PageBundle\Entity\Node\Page $page The page
+     * @param  Page  $page The page
      * @return array
      */
     protected function _buildSubmenu(Page $page)

@@ -83,6 +83,9 @@ EOT
         }
     }
 
+    /**
+     * @param string $str
+     */
     protected function writeln($str, $raw = false)
     {
         if (null !== $this->_lilo) {
@@ -116,6 +119,9 @@ EOT
         return $message;
     }
 
+    /**
+     * @param string $message
+     */
     private function _parseMessage($message)
     {
         $parser = new MessageParser($message);

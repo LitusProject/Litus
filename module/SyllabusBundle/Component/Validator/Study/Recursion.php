@@ -31,12 +31,12 @@ class Recursion extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Study The study exluded from this check
+     * @var Study The study exluded from this check
      */
     private $_study;
 
@@ -52,8 +52,9 @@ class Recursion extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Study         $study
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Study $study, $opts = null)
     {

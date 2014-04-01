@@ -49,14 +49,14 @@ class Log
     private $id;
 
     /**
-     * @var \DateTime The time of the log
+     * @var DateTime The time of the log
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person of the log
+     * @var Person The person of the log
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -71,8 +71,8 @@ class Log
     private $text;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $text
+     * @param Person $person
+     * @param string $text
      */
     public function __construct(Person $person, $text)
     {
@@ -90,7 +90,7 @@ class Log
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -98,7 +98,7 @@ class Log
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

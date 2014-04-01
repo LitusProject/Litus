@@ -583,7 +583,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     }
 
     /**
-    * @return \Doctrine\ORM\Query
+    * @return \Doctrine\ORM\Query|null
     */
     private function _search()
     {
@@ -783,6 +783,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $adminRole;
     }
 
+    /**
+     * @param boolean $adminEdit
+     */
     private function _checkAccess($list, $adminEdit)
     {
         $person = $this->getAuthentication()->getPersonObject();

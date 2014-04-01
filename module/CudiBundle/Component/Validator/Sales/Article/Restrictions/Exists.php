@@ -31,12 +31,12 @@ class Exists extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \CudiBundle\Entity\Article
+     * @var Article
      */
     private $_article;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -52,7 +52,9 @@ class Exists extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Restriction validator.
      *
-     * @param mixed $opts The validator's options
+     * @param Article       $article
+     * @param EntityManager $entityManager
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(Article $article, EntityManager $entityManager, $opts = null)
     {

@@ -247,7 +247,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Team
+     * @return null|Team
      */
     private function _getTeam()
     {

@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    CudiBundle\Entity\Sale\QueueItem,
+use CudiBundle\Entity\Sale\Article\Discount\Discount,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -48,14 +46,14 @@ class SaleItem
     private $id;
 
     /**
-     * @var \DateTime The time the sale item was created
+     * @var DateTime The time the sale item was created
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session The session of the sale item
+     * @var Session The session of the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
@@ -63,7 +61,7 @@ class SaleItem
     private $session;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the sale item
+     * @var Article The article of the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -92,7 +90,7 @@ class SaleItem
     private $price;
 
     /**
-     * @var \CudiBundle\Entity\Sale\QueueItem The queue item belonging to the sale item
+     * @var QueueItem The queue item belonging to the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\QueueItem", inversedBy="saleItems")
      * @ORM\JoinColumn(name="queue_item", referencedColumnName="id")
@@ -107,12 +105,12 @@ class SaleItem
     private $discountType;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article        $article
-     * @param integer                                $number
-     * @param integer                                $price
-     * @param \CudiBundle\Entity\Sale\QueueItem|null $queueItem
-     * @param string                                 $discountType
-     * @param \Doctrine\ORM\EntityManager|null       $entityManager
+     * @param Article            $article
+     * @param integer            $number
+     * @param integer            $price
+     * @param QueueItem|null     $queueItem
+     * @param string             $discountType
+     * @param EntityManager|null $entityManager
      */
     public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, $discountType = null, EntityManager $entityManager = null)
     {
@@ -143,9 +141,9 @@ class SaleItem
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Sale\Booking
+     * @return SaleItem
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -155,7 +153,7 @@ class SaleItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -163,7 +161,7 @@ class SaleItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Session
      */
     public function getSession()
     {
@@ -171,7 +169,7 @@ class SaleItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -181,7 +179,7 @@ class SaleItem
     /**
      * @param integer $number
      *
-     * @return \CudiBundle\Entity\Sale\SaleItem
+     * @return self
      */
     public function setNumber($number)
     {
@@ -201,11 +199,14 @@ class SaleItem
     }
 
     /**
-     * @return integer
+     * @param  integer $price
+     * @return self
      */
     public function setPurchasePrice($price)
     {
         $this->purchasePrice = $price;
+
+        return $this;
     }
 
     /**
@@ -225,7 +226,7 @@ class SaleItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @return QueueItem
      */
     public function getQueueItem()
     {
@@ -233,7 +234,7 @@ class SaleItem
     }
 
     /**
-     * @return \CommonBundle\Entity\User\person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

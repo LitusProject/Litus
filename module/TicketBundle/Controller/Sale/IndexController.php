@@ -252,6 +252,9 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
         return new ViewModel();
     }
 
+    /**
+     * @param boolean $member
+     */
     private function _createTicket(Event $event, Person $person = null, GuestInfo $guestInfo = null, $member, $payed, Option $option = null)
     {
         $ticket = new Ticket(

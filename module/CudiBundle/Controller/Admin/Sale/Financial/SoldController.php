@@ -634,6 +634,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @return Session
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {

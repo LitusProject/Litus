@@ -19,7 +19,6 @@
 namespace MailBundle\Entity\MailingList;
 
 use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
     MailBundle\Entity\MailingList;
 
 /**
@@ -47,7 +46,7 @@ abstract class Entry
     private $id;
 
     /**
-     * @var \MailBundle\Entity\MailingList The list associated with this entry
+     * @var MailingList The list associated with this entry
      *
      * @ORM\ManyToOne(targetEntity="MailBundle\Entity\MailingList", cascade={"persist"})
      * @ORM\JoinColumn(name="list", referencedColumnName="id")
@@ -57,7 +56,7 @@ abstract class Entry
     /**
      * Creates a new list entry for the given list.
      *
-     * @param \MailBundle\Entity\MailingList $list The list for this entry
+     * @param MailingList $list The list for this entry
      */
     public function __construct(MailingList $list)
     {
@@ -73,7 +72,7 @@ abstract class Entry
     }
 
     /**
-     * @return \MailBundle\Entity\MailingList
+     * @return MailingList
      */
     public function getList()
     {

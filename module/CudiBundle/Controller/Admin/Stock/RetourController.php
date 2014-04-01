@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Stock\Retour,
-    CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm,
     Zend\View\Model\ViewModel;
 

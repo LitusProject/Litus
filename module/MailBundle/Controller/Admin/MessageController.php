@@ -111,6 +111,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
+    /**
+     * @return \MailBundle\Document\Message|null
+     */
     private function _getMessage()
     {
         if (null === $this->getParam('id')) {

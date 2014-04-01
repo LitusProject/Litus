@@ -170,6 +170,9 @@ class LeaseController extends AdminController
         );
     }
 
+    /**
+     * @return Item
+     */
     private function _getItem()
     {
         if ($this->getParam('id') === null) {

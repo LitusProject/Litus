@@ -171,7 +171,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Quiz
+     * @return null|Quiz
      */
     private function _getQuiz()
     {

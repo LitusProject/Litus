@@ -105,8 +105,8 @@ class Group
     }
 
     /**
-     * @param  string                       $name
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -124,8 +124,8 @@ class Group
     }
 
     /**
-     * @param  boolean                      $cvBook
-     * @return \SyllabusBundle\Entity\Group
+     * @param  boolean $cvBook
+     * @return self
      */
     public function setCvBook($cvBook)
     {
@@ -135,7 +135,7 @@ class Group
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Group
+     * @return self
      */
     public function setRemoved()
     {

@@ -21,7 +21,6 @@ namespace SportBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     DateInterval,
-    DateTime,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
     Zend\View\Model\ViewModel;
 

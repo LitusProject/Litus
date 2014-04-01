@@ -31,9 +31,9 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends \CommonBundle\Form\Admin\Role\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Role $role          The role we're going to modify
-     * @param null|string|int                $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Role            $role          The role we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Role $role, $name = null)
     {

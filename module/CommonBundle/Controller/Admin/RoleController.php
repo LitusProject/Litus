@@ -24,7 +24,6 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\Acl\Resource,
     Zend\View\Model\ViewModel;
 
 /**
@@ -288,6 +287,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return Role
+     */
     private function _getRole()
     {
         if (null === $this->getParam('name')) {

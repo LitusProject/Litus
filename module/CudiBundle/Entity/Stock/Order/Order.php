@@ -39,7 +39,7 @@ class Order
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Supplier The supplier of the order
+     * @var Supplier The supplier of the order
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
@@ -47,35 +47,35 @@ class Order
     private $supplier;
 
     /**
-     * @var \DateTime The time the order was created
+     * @var DateTime The time the order was created
      *
      * @ORM\Column(name="date_created", type="datetime")
      */
     private $dateCreated;
 
     /**
-     * @var \DateTime The time the order was ordered
+     * @var DateTime The time the order was ordered
      *
      * @ORM\Column(name="date_ordered", type="datetime", nullable=true)
      */
     private $dateOrdered;
 
     /**
-     * @var \DateTime The time the delivery is expected
+     * @var DateTime The time the delivery is expected
      *
      * @ORM\Column(name="date_delivery", type="datetime", nullable=true)
      */
     private $dateDelivery;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The items ordered
+     * @var ArrayCollection The items ordered
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Stock\Order\Item", mappedBy="order")
      */
     private $items;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who ordered the order
+     * @var Person The person who ordered the order
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -90,7 +90,7 @@ class Order
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Supplier $supplier The supplier of this order
+     * @param Supplier $supplier The supplier of this order
      */
     public function __construct(Supplier $supplier, Person $person)
     {
@@ -110,7 +110,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Supplier
+     * @return Supplier
      */
     public function getSupplier()
     {
@@ -146,7 +146,7 @@ class Order
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateCreated()
     {
@@ -154,7 +154,7 @@ class Order
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDateOrdered()
     {
@@ -162,7 +162,7 @@ class Order
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return ArrayCollection
      */
     public function getItems()
     {
@@ -170,7 +170,7 @@ class Order
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -178,9 +178,9 @@ class Order
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param Person $person
      *
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return self
      */
     public function setPerson(Person $person)
     {
@@ -198,7 +198,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return self
      */
     public function order()
     {
@@ -208,7 +208,7 @@ class Order
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return self
      */
     public function cancel()
     {
@@ -218,9 +218,9 @@ class Order
     }
 
     /**
-     * @param \DateTime $deliveryDate
+     * @param DateTime $deliveryDate
      *
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return self
      */
     public function setDeliveryDate(DateTime $deliveryDate)
     {
@@ -231,7 +231,7 @@ class Order
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDeliveryDate()
     {
@@ -249,7 +249,7 @@ class Order
     /**
      * @param string $comment
      *
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return self
      */
     public function setComment($comment)
     {

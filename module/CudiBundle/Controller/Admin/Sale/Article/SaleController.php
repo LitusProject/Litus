@@ -117,6 +117,9 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {

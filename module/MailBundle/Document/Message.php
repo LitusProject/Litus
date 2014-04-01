@@ -69,7 +69,7 @@ class Message
     private $body;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The attachemnts for this message
+     * @var ArrayCollection The attachemnts for this message
      *
      * @ODM\ReferenceMany(targetDocument="MailBundle\Document\Message\Attachment", cascade={"persist", "remove"})
      */
@@ -93,7 +93,7 @@ class Message
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -101,7 +101,7 @@ class Message
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -117,8 +117,8 @@ class Message
     }
 
     /**
-     * @param  string                       $type
-     * @return \MailBundle\Document\Message
+     * @param  string $type
+     * @return self
      */
     public function setType($type)
     {
@@ -136,8 +136,8 @@ class Message
     }
 
     /**
-     * @param  string                       $subject
-     * @return \MailBundle\Document\Message
+     * @param  string $subject
+     * @return self
      */
     public function setSubject($subject)
     {
@@ -155,8 +155,8 @@ class Message
     }
 
     /**
-     * @param  string                       $message
-     * @return \MailBundle\Document\Message
+     * @param  string $body
+     * @return self
      */
     public function setBody($body)
     {
@@ -174,8 +174,8 @@ class Message
     }
 
     /**
-     * @param  array                        $attachments
-     * @return \MailBundle\Document\Message
+     * @param  array $attachments
+     * @return self
      */
     public function setAttachments(array $attachments)
     {

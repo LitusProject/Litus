@@ -88,7 +88,7 @@ class Corporate
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -124,7 +124,7 @@ class Corporate
     }
 
     /**
-     * @param $status string the status to set
+     * @param  string                                      $status string the status to set
      * @return \CommonBundle\Entity\User\UniversityStatus;
      */
     public function setStatus($status)
@@ -138,7 +138,7 @@ class Corporate
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string A status
+     * @param  string $status string A status
      * @return bool
      */
     public static function isValidStatus($status)

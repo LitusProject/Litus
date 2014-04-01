@@ -19,11 +19,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Form\Auth\Login as LoginForm,
-    DateInterval,
-    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -36,7 +32,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                                                          $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -85,6 +81,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      * Create the full Shibboleth URL.
      *
      * @return string
+     * @throws ShibbolethUrlException
      */
     private function _getShibbolethUrl()
     {

@@ -18,8 +18,7 @@
 
 namespace FormBundle\Entity\Node;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -68,9 +67,10 @@ class GuestInfo
     private $email;
 
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
+     * @param EntityManager $entityManager
+     * @param string        $firstName
+     * @param string        $lastName
+     * @param string        $email
      */
     public function __construct(EntityManager $entityManager, $firstName, $lastName, $email)
     {
@@ -109,7 +109,7 @@ class GuestInfo
     /**
      * @param string firstName
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setFirstName($firstName)
     {
@@ -129,7 +129,7 @@ class GuestInfo
     /**
      * @param string $lastName
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setLastName($lastName)
     {
@@ -157,7 +157,7 @@ class GuestInfo
     /**
      * @param string $email
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setEmail($email)
     {
@@ -167,7 +167,7 @@ class GuestInfo
     }
 
     /**
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function renew()
     {

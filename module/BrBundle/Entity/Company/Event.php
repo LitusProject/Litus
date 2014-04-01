@@ -20,7 +20,6 @@ namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
     CalendarBundle\Entity\Node\Event as CommonEvent,
-    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -67,7 +66,7 @@ class Event
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getId()
     {

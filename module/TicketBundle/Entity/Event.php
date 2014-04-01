@@ -23,7 +23,8 @@ use CalendarBundle\Entity\Node\Event as CalendarEvent,
     DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    \Doctrine\Common\Collection\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")
@@ -41,7 +42,7 @@ class Event
     private $id;
 
     /**
-     * @var string The activity of the event
+     * @var CalendarEvent The activity of the event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
      * @ORM\JoinColumn(name="activity", referencedColumnName="id")
@@ -63,7 +64,7 @@ class Event
     private $bookable;
 
     /**
-     * @var \DateTime The date the booking system will close
+     * @var DateTime|null The date the booking system will close
      *
      * @ORM\Column(name="bookings_close_date", type="datetime", nullable=true)
      */
@@ -126,32 +127,32 @@ class Event
     private $priceNonMembers;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Option", mappedBy="event")
      */
     private $options;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Ticket", mappedBy="event")
      */
     private $tickets;
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event $activity
-     * @param boolean                           $bookablePraesidium
-     * @param boolean                           $bookable
-     * @param \DateTime                         $bookingsCloseDate
-     * @param boolean                           $active
-     * @param boolean                           $ticketsGenerated
-     * @param integer                           $numberOfTickets
-     * @param integer                           $limitPerPerson
-     * @param boolean                           $allowRemove
-     * @param boolean                           $onlyMembers
-     * @param integer                           $priceMembers
-     * @param integer                           $priceNonMembers
+     * @param CalendarEvent $activity
+     * @param boolean       $bookablePraesidium
+     * @param boolean       $bookable
+     * @param DateTime      $bookingsCloseDate
+     * @param boolean       $active
+     * @param boolean       $ticketsGenerated
+     * @param integer       $numberOfTickets
+     * @param integer       $limitPerPerson
+     * @param boolean       $allowRemove
+     * @param boolean       $onlyMembers
+     * @param integer       $priceMembers
+     * @param integer       $priceNonMembers
      */
     public function __construct(CalendarEvent $activity, $bookablePraesidium, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
     {
@@ -166,6 +167,9 @@ class Event
         $this->onlyMembers = $onlyMembers;
         $this->allowRemove = $allowRemove;
 
+        $this->options = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
     }
@@ -179,7 +183,7 @@ class Event
     }
 
     /**
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return CalendarEvent
      */
     public function getActivity()
     {
@@ -187,8 +191,8 @@ class Event
     }
 
     /**
-     * @param  \CalendarBundle\Entity\Node\Event $activity
-     * @return \TicketBunlde\Entity\Event
+     * @param  CalendarEvent $activity
+     * @return self
      */
     public function setActivity(CalendarEvent $activity)
     {
@@ -214,8 +218,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $bookablePraesidium
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $bookablePraesidium
+     * @return self
      */
     public function setBookablePraesidium($bookablePraesidium)
     {
@@ -241,8 +245,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $bookable
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $bookable
+     * @return self
      */
     public function setBookable($bookable)
     {
@@ -252,7 +256,7 @@ class Event
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getBookingsCloseDate()
     {
@@ -260,8 +264,8 @@ class Event
     }
 
     /**
-     * @param  \DateTime|null             $bookingsCloseDate
-     * @return \TicketBunlde\Entity\Event
+     * @param  DateTime|null $bookingsCloseDate
+     * @return self
      */
     public function setBookingsCloseDate(DateTime $bookingsCloseDate = null)
     {
@@ -282,8 +286,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $active
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $active
+     * @return self
      */
     public function setActive($active)
     {
@@ -301,8 +305,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $ticketsGenerated
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $ticketsGenerated
+     * @return self
      */
     public function setTicketsGenerated($ticketsGenerated)
     {
@@ -320,8 +324,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $numberOfTickets
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $numberOfTickets
+     * @return self
      */
     public function setNumberOfTickets($numberOfTickets)
     {
@@ -339,8 +343,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $limitPerPerson
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $limitPerPerson
+     * @return self
      */
     public function setLimitPerPerson($limitPerPerson)
     {
@@ -358,8 +362,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $allowRemove
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $allowRemove
+     * @return self
      */
     public function setAllowRemove($allowRemove)
     {
@@ -377,8 +381,8 @@ class Event
     }
 
     /**
-     * @param  boolean                    $onlyMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  boolean $onlyMembers
+     * @return self
      */
     public function setOnlyMembers($onlyMembers)
     {
@@ -396,8 +400,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $priceMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $priceMembers
+     * @return self
      */
     public function setPriceMembers($priceMembers)
     {
@@ -415,8 +419,8 @@ class Event
     }
 
     /**
-     * @param  integer                    $priceNonMembers
-     * @return \TicketBunlde\Entity\Event
+     * @param  integer $priceNonMembers
+     * @return self
      */
     public function setPriceNonMembers($priceNonMembers)
     {
@@ -426,7 +430,7 @@ class Event
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return ArrayCollection
      */
     public function getTickets()
     {
@@ -434,7 +438,7 @@ class Event
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return ArrayCollection
      */
     public function getOptions()
     {
@@ -475,7 +479,7 @@ class Event
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
+     * @param  EntityManager $entityManager
      * @return integer
      */
     public function generateTicketNumber(EntityManager $entityManager)
@@ -493,8 +497,8 @@ class Event
     /**
      * Check whether or not the given person can sign out from this shift.
      *
-     * @param  \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
+     * @param  EntityManager $entityManager The EntityManager instance
+     * @param  Person        $person        The person that should be checked
      * @return boolean
      */
     public function canRemoveReservation(EntityManager $entityManager, Person $person)
@@ -522,8 +526,8 @@ class Event
     }
 
     /**
-     * @param  \TicketBundle\Entity\Option $option
-     * @param  boolean                     $member
+     * @param  Option|null $option
+     * @param  boolean     $member
      * @return integer
      */
     public function getNumberSoldByOption(Option $option = null, $member)
@@ -546,8 +550,8 @@ class Event
     }
 
     /**
-     * @param  \TicketBundle\Entity\Option $option
-     * @param  boolean                     $member
+     * @param  Option|null $option
+     * @param  boolean     $member
      * @return integer
      */
     public function getNumberBookedByOption(Option $option = null, $member)

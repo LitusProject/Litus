@@ -38,7 +38,7 @@ class Photo
     private $id;
 
     /**
-     * @var \GalleryBundle\Entity\Album\Album The album of this translation
+     * @var Album The album of this translation
      *
      * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="photos")
      * @ORM\JoinColumn(name="album", referencedColumnName="id")
@@ -60,8 +60,8 @@ class Photo
     private $censored = false;
 
     /**
-     * @param \GalleryBundle\Entity\Album\Album $album
-     * @param string                            $filePath
+     * @param Album  $album
+     * @param string $filePath
      */
     public function __construct(Album $album, $filePath)
     {
@@ -78,7 +78,7 @@ class Photo
     }
 
     /**
-     * @return \GalleryBundle\Entity\Album\Album
+     * @return Album
      */
     public function getAlbum()
     {
@@ -110,9 +110,8 @@ class Photo
     }
 
     /**
-     * @param boolean $censored
-     *
-     * @return \GalleryBundle\Entity\Album\Photo
+     * @param  boolean $censored
+     * @return self
      */
     public function setCensored($censored)
     {

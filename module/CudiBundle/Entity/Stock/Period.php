@@ -40,7 +40,7 @@ class Period
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created the period
+     * @var Person The person who created the period
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -48,26 +48,26 @@ class Period
     private $person;
 
     /**
-     * @var \DateTime The start time of the period
+     * @var DateTime The start time of the period
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end time of the period
+     * @var DateTime The end time of the period
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person who created the period
+     * @param Person $person The person who created the period
      */
     public function __construct(Person $person)
     {
@@ -86,7 +86,7 @@ class Period
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -94,7 +94,7 @@ class Period
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -102,7 +102,7 @@ class Period
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -118,7 +118,7 @@ class Period
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Period
+     * @return self
      */
     public function close()
     {
@@ -128,9 +128,9 @@ class Period
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Stock\Period
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -140,7 +140,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -154,7 +154,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -166,7 +166,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -178,7 +178,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -190,7 +190,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -202,7 +202,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -214,7 +214,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */
@@ -226,7 +226,7 @@ class Period
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param Article $article
      *
      * @return integer
      */

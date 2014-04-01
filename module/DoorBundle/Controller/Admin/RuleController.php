@@ -178,6 +178,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return Rule
+     */
     private function _getRule()
     {
         if (null === $this->getParam('id')) {

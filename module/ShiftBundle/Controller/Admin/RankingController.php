@@ -20,9 +20,6 @@ namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    DateTime,
-    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
     Zend\View\Model\ViewModel;
 
 /**

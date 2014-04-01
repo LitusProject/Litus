@@ -30,18 +30,18 @@ use CommonBundle\Component\Acl\Acl,
 class HasAccess
 {
     /**
-     * @var \CommonBundle\Component\Acl\Acl The ACL object
+     * @var Acl The ACL object
      */
     private $_acl = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication The authentication object
+     * @var Authentication The authentication object
      */
     private $_authentication = null;
 
     /**
-     * @param \CommonBundle\Component\Acl\Acl                       $acl            The ACL object
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
+     * @param Acl            $acl            The ACL object
+     * @param Authentication $authentication The authentication object
      */
     public function __construct(Acl $acl, Authentication $authentication)
     {
@@ -50,9 +50,9 @@ class HasAccess
     }
 
     /**
-     * @param  string $resource The resource that should be verified
-     * @param  string $action   The module that should be verified
-     * @return bool
+     * @param  string       $resource The resource that should be verified
+     * @param  string       $action   The module that should be verified
+     * @return boolean|null
      */
     public function __invoke($resource, $action)
     {

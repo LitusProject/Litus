@@ -187,6 +187,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return \BrBundle\Entity\Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -234,6 +237,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         return $company;
     }
 
+    /**
+     * @return Job
+     */
     private function _getJob()
     {
         if (null === $this->getParam('id')) {

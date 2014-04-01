@@ -36,6 +36,9 @@ class SubjectProfMap extends EntityRepository
         return $this->findOneBySubjectIdAndProfAndAcademicYear($subject->getId(), $prof, $academicYear);
     }
 
+    /**
+     * @param integer $subjectId
+     */
     public function findOneBySubjectIdAndProfAndAcademicYear($subjectId, Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();

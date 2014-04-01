@@ -36,7 +36,7 @@ class Frame
     const MAX_PAYLOAD_LEN = 1048576;
 
     /**
-     * @param mixed $data
+     * @param string $data
      */
     public function __construct($data)
     {
@@ -93,6 +93,7 @@ class Frame
 
     /**
      * @param string
+     * @param string $data
      */
     public function appendData($data)
     {
@@ -105,7 +106,7 @@ class Frame
     /**
      * Decode the received frame
      *
-     * @param mixed $frame
+     * @param string $frame
      */
     private function _decodeFrame($frame)
     {

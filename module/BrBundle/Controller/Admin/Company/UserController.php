@@ -22,7 +22,6 @@ use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     BrBundle\Form\Admin\Company\User\Add as AddForm,
     BrBundle\Form\Admin\Company\User\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Credential,
     Zend\View\Model\ViewModel;
 
 /**
@@ -219,6 +218,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return \BrBundle\Entity\Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -266,6 +268,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         return $company;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person
+     */
     private function _getUser()
     {
         if (null === $this->getParam('id')) {

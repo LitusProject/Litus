@@ -188,6 +188,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Template
+     */
     private function _getTemplate()
     {
         if (null === $this->getParam('id')) {

@@ -352,6 +352,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return Session
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
@@ -399,6 +402,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         return $session;
     }
 
+    /**
+     * @return CashRegister
+     */
     private function _getCashRegister()
     {
         if (null === $this->getParam('id')) {

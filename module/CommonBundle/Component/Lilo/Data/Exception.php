@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Lilo\Data;
 
-use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Authentication\Authentication,
+    Exception;
 
 /**
  * This class converts an exception to the right format for the
@@ -36,10 +37,10 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     /**
      * Construct a new Exception object.
      *
-     * @param \Exception                                            $exception      The exception that should be formatted
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
+     * @param Exception      $exception      The exception that should be formatted
+     * @param Authentication $authentication The authentication instance
      */
-    public function __construct(\Exception $exception, Authentication $authentication)
+    public function __construct(Exception $exception, Authentication $authentication)
     {
         $this->_data = array(
             'class' => get_class($exception),
@@ -71,10 +72,10 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     /**
      * Formats the exception's backtrace nicely.
      *
-     * @param  \Exception $exception The exception which trace should be formatted
+     * @param  Exception $exception The exception which trace should be formatted
      * @return array
      */
-    private function _formatBacktrace(\Exception $exception)
+    private function _formatBacktrace(Exception $exception)
     {
         $backtrace = array();
         foreach ($exception->getTrace() as $t) {

@@ -180,6 +180,7 @@ class Company
     }
 
     /**
+     * @param  string  $sector
      * @return boolean
      */
     public static function isValidSector($sector)
@@ -432,7 +433,6 @@ class Company
     }
 
     /**
-     * @param array $years
      *
      * @return \BrBundle\Entity\Company
      */

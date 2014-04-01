@@ -24,7 +24,6 @@ use Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Form\Address\Add as AddressForm,
@@ -43,7 +42,7 @@ use Doctrine\ORM\EntityManager,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
@@ -58,12 +57,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_enableOtherOrganization = false;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache                   The cache instance
-     * @param \Doctrine\ORM\EntityManager          $entityManager           The EntityManager instance
-     * @param string                               $identification          The university identification
-     * @param array|null                           $extraInfo               Extra information about the user
-     * @param boolean                              $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int                      $name                    Optional name for the element
+     * @param CacheStorage    $cache                   The cache instance
+     * @param EntityManager   $entityManager           The EntityManager instance
+     * @param string          $identification          The university identification
+     * @param array|null      $extraInfo               Extra information about the user
+     * @param boolean         $enableOtherOrganization Enable the "other organization" option
+     * @param null|string|int $name                    Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
     {

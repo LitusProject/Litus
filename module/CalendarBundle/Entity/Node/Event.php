@@ -40,14 +40,14 @@ class Event extends \CommonBundle\Entity\Node
     private $translations;
 
     /**
-     * @var \DateTime The start date of this event
+     * @var DateTime The start date of this event
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end date of this event
+     * @var DateTime The end date of this event
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
@@ -68,9 +68,9 @@ class Event extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime                        $startDate
-     * @param \DateTime                        $endDate
+     * @param Person   $person
+     * @param DateTime $startDate
+     * @param DateTime $endDate
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
     {
@@ -84,9 +84,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      *
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return self
      */
     public function setStartDate($startDate)
     {
@@ -96,7 +96,7 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -104,9 +104,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \DateTime $endDate
+     * @param DateTime $endDate
      *
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return self
      */
     public function setEndDate($endDate)
     {
@@ -116,7 +116,7 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -134,7 +134,7 @@ class Event extends \CommonBundle\Entity\Node
     /**
      * @param string $poster
      *
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return self
      */
     public function setPoster($poster)
     {
@@ -144,9 +144,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language   $language
-     * @param  boolean                                 $allowFallback
-     * @return \CalendarBundle\Entity\Node\Translation
+     * @param  Language    $language
+     * @param  boolean     $allowFallback
+     * @return Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -165,8 +165,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getLocation(Language $language = null, $allowFallback = true)
@@ -180,8 +180,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -195,8 +195,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -210,9 +210,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  integer                               $length
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  integer       $length
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getSummary($length = 100, Language $language = null, $allowFallback = true)
@@ -234,9 +234,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \CalendarBundle\Entity\Node\Translation $translation
+     * @param Translation $translation
      *
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return self
      */
     public function addTranslation(Translation $translation)
     {
@@ -246,9 +246,8 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param string $name
      *
-     * @return \NewsBundle\Entity\Node\News
+     * @return self
      */
     public function updateName()
     {

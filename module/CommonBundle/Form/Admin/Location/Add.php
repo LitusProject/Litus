@@ -19,7 +19,6 @@
 namespace CommonBundle\Form\Admin\Location;
 
 use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Zend\InputFilter\InputFilter,

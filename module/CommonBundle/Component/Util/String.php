@@ -29,8 +29,8 @@ class String
      * Truncates a string preserving HTML tags
      *
      * @static
-     * @param  string $string    The string that will be truncated
-     * @param  string $delimiter The delimiter used to replace spaces
+     * @param  string  $string The string that will be truncated
+     * @param  integer $length
      * @return string
      */
     public static function truncate($string, $length, $suffix = '...')
@@ -56,8 +56,8 @@ class String
      * Truncates a string removing HTML tags
      *
      * @static
-     * @param  string $string    The string that will be truncated
-     * @param  string $delimiter The delimiter used to replace spaces
+     * @param  string  $string The string that will be truncated
+     * @param  integer $length
      * @return string
      */
     public static function truncateNoHtml($string, $length, $suffix = '...')

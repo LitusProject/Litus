@@ -37,7 +37,7 @@ class Subscription
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person of this subscription
+     * @var Person The person of this subscription
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -45,7 +45,7 @@ class Subscription
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
@@ -61,7 +61,7 @@ class Subscription
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

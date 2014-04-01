@@ -39,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Mail\Mail The mail of this translation
+     * @var Mail The mail of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Mail\Mail", inversedBy="translations")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
@@ -47,7 +47,7 @@ class Translation
     private $mail;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -69,10 +69,10 @@ class Translation
     private $content;
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail          $mail
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $subject
-     * @param string                                $content
+     * @param Mail     $mail
+     * @param Language $language
+     * @param string   $subject
+     * @param string   $content
      */
     public function __construct(Mail $mail, Language $language, $subject, $content)
     {
@@ -83,7 +83,7 @@ class Translation
     }
 
     /**
-     * @return \FormBundle\Entity\Mail\Mail
+     * @return Mail
      */
     public function getMail()
     {
@@ -91,7 +91,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -107,9 +107,8 @@ class Translation
     }
 
     /**
-     * @param string $subject
-     *
-     * @return \FormBundle\Entity\Mail\Translation
+     * @param  string $subject
+     * @return self
      */
     public function setSubject($subject)
     {
@@ -127,9 +126,8 @@ class Translation
     }
 
     /**
-     * @param string $content
-     *
-     * @return \FormBundle\Entity\Mail\Translation
+     * @param  string $content
+     * @return self
      */
     public function setContent($content)
     {

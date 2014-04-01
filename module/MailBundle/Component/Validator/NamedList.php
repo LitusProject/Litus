@@ -18,8 +18,7 @@
 
 namespace MailBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
     MailBundle\Entity\MailingList\Named as MailingListEntity;
 
 /**
@@ -32,12 +31,12 @@ class NamedList extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \MailBundle\Entity\MailingList The list exluded from this check
+     * @var MailinglistEntity The list exluded from this check
      */
     private $_list;
 
@@ -49,9 +48,9 @@ class NamedList extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \MailBundle\Entity\MailingList The list exluded from this check
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param MailinglistEntity The list exluded from this check
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, MailingListEntity $list = null, $opts = null)
     {

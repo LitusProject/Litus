@@ -40,7 +40,7 @@ class Barcode
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person associated with this barcode
+     * @var Person The person associated with this barcode
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", inversedBy="barcodes")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -55,7 +55,7 @@ class Barcode
     private $barcode;
 
     /**
-     * @var \DateTime The time of creation
+     * @var DateTime The time of creation
      *
      * @ORM\Column(type="datetime")
      */
@@ -64,8 +64,8 @@ class Barcode
     /**
      * Constructs a new barcode
      *
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param integer                          $barcode
+     * @param Person  $person
+     * @param integer $barcode
      */
     public function __construct(Person $person, $barcode)
     {
@@ -82,7 +82,7 @@ class Barcode
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

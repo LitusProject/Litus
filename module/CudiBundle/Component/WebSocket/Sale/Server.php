@@ -21,7 +21,6 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -33,17 +32,17 @@ use CommonBundle\Component\Acl\Acl,
 class Server extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CudiBundle\Component\Websocket\Sale2\Queue
+     * @var Queue
      */
     private $_queue;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -60,8 +59,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {
@@ -146,9 +145,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when user closed his socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $statusCode
-     * @param string                                 $reason
+     * @param User    $user
+     * @param integer $statusCode
+     * @param string  $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -160,7 +159,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Send queue to one user
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
+     * @param User $user
      */
     private function sendQueue(User $user)
     {
@@ -219,8 +218,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param mixed                                        $command
+     * @param User  $user
+     * @param mixed $command
      */
     private function _gotAction(User $user, $command)
     {

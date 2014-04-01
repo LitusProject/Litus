@@ -40,7 +40,7 @@ class Form
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Node\Form The form of this translation
+     * @var FormEntity The form of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form", inversedBy="translations")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Form
     private $form;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -84,12 +84,12 @@ class Form
     private $updateText;
 
     /**
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $title
-     * @param string                                $introduction
-     * @param string                                $submitText
-     * @param string                                $updateText
+     * @param FormEntity $form
+     * @param Language   $language
+     * @param string     $title
+     * @param string     $introduction
+     * @param string     $submitText
+     * @param string     $updateText
      */
     public function __construct(FormEntity $form, Language $language, $title, $introduction, $submitText, $updateText)
     {
@@ -102,7 +102,7 @@ class Form
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form
+     * @return FormEntity
      */
     public function getForm()
     {
@@ -110,7 +110,7 @@ class Form
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -126,9 +126,8 @@ class Form
     }
 
     /**
-     * @param string $title
-     *
-     * @return \FormBundle\Entity\Node\Translation\Form
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {
@@ -146,9 +145,8 @@ class Form
     }
 
     /**
-     * @param string $introduction
-     *
-     * @return \FormBundle\Entity\Node\Translation\Form
+     * @param  string $introduction
+     * @return self
      */
     public function setIntroduction($introduction)
     {
@@ -166,9 +164,8 @@ class Form
     }
 
     /**
-     * @param string $submitText
-     *
-     * @return \FormBundle\Entity\Node\Translation\Form
+     * @param  string $submitText
+     * @return self
      */
     public function setSubmitText($submitText)
     {
@@ -186,9 +183,8 @@ class Form
     }
 
     /**
-     * @param string $updateText
-     *
-     * @return \FormBundle\Entity\Node\Translation\Form
+     * @param  string $updateText
+     * @return self
      */
     public function setUpdateText($updateText)
     {

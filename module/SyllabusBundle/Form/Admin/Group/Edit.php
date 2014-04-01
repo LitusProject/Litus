@@ -21,7 +21,6 @@ namespace SyllabusBundle\Form\Admin\Group;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
     SyllabusBundle\Entity\Group,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -33,14 +32,14 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \SyllabusBundle\Entity\Group
+     * @var Group
      */
     private $_group = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Group $group         The group we're going to modify
-     * @param null|string|int              $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Group           $group         The group we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Group $group, $name = null)
     {

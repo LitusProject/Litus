@@ -20,7 +20,6 @@ namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
     DateInterval,
-    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**

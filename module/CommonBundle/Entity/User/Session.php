@@ -40,21 +40,21 @@ class Session
     private $id;
 
     /**
-     * @var \DateTime The time at which this session was started
+     * @var DateTime The time at which this session was started
      *
      * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
-     * @var \DateTime The time at which this session will end
+     * @var DateTime The time at which this session will end
      *
      * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person associated with this session
+     * @var Person The person associated with this session
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", fetch="EAGER")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -90,10 +90,11 @@ class Session
     private $shibboleth;
 
     /**
-     * @param int|\DateTime                    $expirationTime
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $userAgent
-     * @param string                           $ip
+     * @param integer $expirationTime
+     * @param Person  $person
+     * @param string  $userAgent
+     * @param string  $ip
+     * @param string  $shibboleth
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -127,7 +128,7 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartTime()
     {
@@ -135,7 +136,7 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {
@@ -143,7 +144,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -191,7 +192,7 @@ class Session
     }
 
     /**
-     * @return boolean
+     * @return string
      */
     public function isShibboleth()
     {
@@ -205,9 +206,9 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param  string                      $userAgent     The user agent that should be checked
-     * @param  string                      $ip            The IP currently used to connect to the site
+     * @param  EntityManager $entityManager The EntityManager instance
+     * @param  string        $userAgent     The user agent that should be checked
+     * @param  string        $ip            The IP currently used to connect to the site
      * @return bool|string
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)

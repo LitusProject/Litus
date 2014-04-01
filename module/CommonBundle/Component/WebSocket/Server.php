@@ -42,7 +42,6 @@ class Server
     const OP_PONG = 0xa;
 
     /**
-     * @param string $address The file for the websocket master socket
      */
     public function __construct($file)
     {
@@ -124,7 +123,7 @@ class Server
     /**
      * Add a user socket to listen to
      *
-     * @param mixed $socket
+     * @param resource $socket
      */
     private function _addUserSocket($socket)
     {
@@ -157,8 +156,8 @@ class Server
     /**
      * Get a user by his socket
      *
-     * @param  mixed                                  $socket
-     * @return \CommonBundle\Component\WebSocket\User
+     * @param  mixed $socket
+     * @return User
      */
     public function getUserBySocket($socket)
     {
@@ -196,7 +195,7 @@ class Server
     /**
      * Remove a user
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param User $user
      */
     protected function removeUser(User $user)
     {
@@ -206,8 +205,8 @@ class Server
     /**
      * Process a frame send by a user to the master socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed                                  $data
+     * @param User   $user
+     * @param string $data
      */
     private function _processFrame(User $user, $data)
     {
@@ -235,8 +234,8 @@ class Server
     /**
      * Handle the received control frames
      *
-     * @param \CommonBundle\Component\WebSocket\User  $user
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param User  $user
+     * @param Frame $frame
      */
     private function _handleControlFrame(User $user, Frame $frame)
     {
@@ -265,8 +264,8 @@ class Server
     /**
      * Handle a received data frame
      *
-     * @param \CommonBundle\Component\WebSocket\User  $user
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param User  $user
+     * @param Frame $frame
      */
     protected function handleDataFrame(User $user, Frame $frame)
     {
@@ -280,8 +279,8 @@ class Server
     /**
      * Send text to a user socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param string                                 $text
+     * @param User   $user
+     * @param string $text
      */
     public function sendText($user, $text)
     {
@@ -341,8 +340,8 @@ class Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param string                                 $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {
@@ -351,8 +350,8 @@ class Server
     /**
      * Parse received binary
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param mixed                                  $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotBin(User $user, $data)
     {
@@ -361,9 +360,9 @@ class Server
     /**
      * Do action when user closed his socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $statusCode
-     * @param string                                 $reason
+     * @param User    $user
+     * @param integer $statusCode
+     * @param string  $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -373,7 +372,7 @@ class Server
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param User $user
      */
     protected function onConnect(User $user)
     {

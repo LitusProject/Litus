@@ -227,6 +227,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject|null
+     */
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -276,6 +279,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $subject;
     }
 
+    /**
+     * @return Comment|null
+     */
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
@@ -323,6 +329,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $comment;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function _getAcademicYear()
     {
         $date = null;

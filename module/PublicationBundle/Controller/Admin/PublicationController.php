@@ -149,6 +149,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    /**
+     * @return Publication
+     */
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {

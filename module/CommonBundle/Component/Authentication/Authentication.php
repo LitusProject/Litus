@@ -32,25 +32,25 @@ use CommonBundle\Component\Authentication\Action\Doctrine,
 class Authentication
 {
     /**
-     * @var \CommonBundle\Component\Authentication\Adapter\Doctrine The authentication adapter
+     * @var Doctrine The authentication adapter
      */
     private $_adapter = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\AbstractAuthenticationService The authentication service
+     * @var AuthenticationService The authentication service
      */
     private $_service = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Result The authentication result
+     * @var Result The authentication result
      */
     private $_result = null;
 
     /**
      * Construct a new Authentication object.
      *
-     * @param \Zend\Authentication\Adapter                                         $adapter The authentication adapter that should be used
-     * @param \CommonBundle\Component\Authentication\AbstractAuthenticationService $service The service that should be used
+     * @param AdapterInterface      $adapter The authentication adapter that should be used
+     * @param AuthenticationService $service The service that should be used
      */
     public function __construct(AdapterInterface $adapter, AuthenticationService $service)
     {
@@ -128,7 +128,7 @@ class Authentication
     /**
      * Return the person object.
      *
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPersonObject()
     {
@@ -143,7 +143,7 @@ class Authentication
     /**
      * Return the session object.
      *
-     * @return \CommonBundle\Entity\User\Session
+     * @return Session
      */
     public function getSessionObject()
     {

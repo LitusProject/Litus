@@ -160,6 +160,9 @@ class SectionController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @return Section
+     */
     private function _getSection()
     {
         if (null === $this->getParam('id')) {

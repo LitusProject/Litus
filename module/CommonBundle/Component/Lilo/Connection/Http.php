@@ -20,12 +20,8 @@ namespace CommonBundle\Component\Lilo\Connection;
 
 use CommonBundle\Component\Lilo\Data,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
-    CommonBundle\Component\Lilo\Data\Log as LogData,
-    Exception,
     Zend\Http\Client,
-    Zend\Http\Request,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent;
+    Zend\Http\Request;
 
 /**
  * This client provides all functions needed to store Litus exceptions.
@@ -66,7 +62,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Sends the given data object to the server.
      *
-     * @param  \CommonBundle\Component\Lilo\Data $data The data object that should be sent
+     * @param  Data $data The data object that should be sent
      * @return void
      */
     public function send(Data $data)
@@ -86,7 +82,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * Generates the request URL based on the data type.
      *
-     * @param  \CommonBundle\Component\Lilo\Data $data The data object
+     * @param  Data   $data The data object
      * @return string
      */
     private function _getRequestUrl(Data $data)

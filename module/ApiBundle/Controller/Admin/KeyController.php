@@ -162,6 +162,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return Key|null
+     */
     private function _getKey()
     {
         if (null === $this->getParam('id')) {

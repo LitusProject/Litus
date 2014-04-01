@@ -18,10 +18,8 @@
 
 namespace CommonBundle\Entity\User\Person;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -57,7 +55,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $universityIdentification;
 
     /**
-     * @var \DateTime The user's birthday
+     * @var DateTime The user's birthday
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -71,7 +69,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $photoPath;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The primary address of the academic
+     * @var Address The primary address of the academic
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="primary_address", referencedColumnName="id")
@@ -79,7 +77,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $primaryAddress;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The secondary address of the academic
+     * @var Address The secondary address of the academic
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="secondary_address", referencedColumnName="id")
@@ -94,14 +92,14 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $universityStatuses;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The user's organization mapping
+     * @var ArrayCollection The user's organization mapping
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
      */
     private $organizationMap;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The user's unit mapping
+     * @var ArrayCollection The user's unit mapping
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap", mappedBy="academic", cascade={"persist", "remove"})
      */
@@ -132,8 +130,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  string                                    $personalEmail
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  string $personalEmail
+     * @return self
      */
     public function setPersonalEmail($personalEmail)
     {
@@ -151,8 +149,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  string                                    $universityEmail
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  string $universityEmail
+     * @return self
      */
     public function setUniversityEmail($universityEmail)
     {
@@ -170,8 +168,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  string                                    $universityIdentification
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  string $universityIdentification
+     * @return self
      */
     public function setUniversityIdentification($universityIdentification)
     {
@@ -189,8 +187,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  string                                    $photoPath
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  string $photoPath
+     * @return self
      */
     public function setPhotoPath($photoPath)
     {
@@ -208,8 +206,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Status\University $universityStatus
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  UniversityStatus $universityStatus
+     * @return self
      */
     public function addUniversityStatus(UniversityStatus $universityStatus)
     {
@@ -219,8 +217,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Status\University $universityStatus
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  UniversityStatus $universityStatus
+     * @return self
      */
     public function removeUniversityStatus(UniversityStatus $universityStatus)
     {
@@ -230,8 +228,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear   $academicYear
-     * @return \CommonBundle\Entity\User\Status\University
+     * @param  AcademicYearEntity    $academicYear
+     * @return UniversityStatus|null
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
@@ -244,7 +242,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return boolean
      */
     public function canHaveUniversityStatus(AcademicYearEntity $academicYear)
@@ -264,8 +262,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \DateTime                                 $birthday
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  DateTime $birthday
+     * @return self
      */
     public function setBirthday(DateTime $birthday = null)
     {
@@ -275,7 +273,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
     public function getBirthday()
     {
@@ -283,8 +281,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Address      $primaryAddress
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  Address $primaryAddress
+     * @return self
      */
     public function setPrimaryAddress(Address $primaryAddress)
     {
@@ -295,7 +293,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getPrimaryAddress()
     {
@@ -303,8 +301,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Address      $secondaryAddress
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @param  Address $secondaryAddress
+     * @return self
      */
     public function setSecondaryAddress(Address $secondaryAddress)
     {
@@ -314,7 +312,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getSecondaryAddress()
     {
@@ -322,7 +320,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYearEntity                        $academicYear
      * @return \CommonBundle\Entity\General\Organization
      */
     public function getOrganization(AcademicYearEntity $academicYear)
@@ -336,7 +334,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear      $academicYear
+     * @param  AcademicYearEntity                             $academicYear
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getUnit(AcademicYearEntity $academicYear)

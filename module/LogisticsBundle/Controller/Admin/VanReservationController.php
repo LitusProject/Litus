@@ -278,6 +278,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         );
     }
 
+    /**
+     * @return VanReservation
+     */
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {

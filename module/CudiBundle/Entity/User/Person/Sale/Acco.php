@@ -39,7 +39,7 @@ class Acco
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person associated with this entity
+     * @var Person The person associated with this entity
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -54,8 +54,8 @@ class Acco
     private $hasAccoCard;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person      The person associated with this entity
-     * @param boolean                          $hasAccoCard Flag whether this person has an acco card
+     * @param Person  $person      The person associated with this entity
+     * @param boolean $hasAccoCard Flag whether this person has an acco card
      */
     public function __construct(Person $person, $hasAccoCard)
     {
@@ -72,7 +72,7 @@ class Acco
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -90,7 +90,7 @@ class Acco
     /**
      * @param boolean $hasAccoCard
      *
-     * @return \CudiBundle\Entity\User\Person\Sale\Acco
+     * @return self
      */
     public function setHasAccoCard($hasAccoCard)
     {

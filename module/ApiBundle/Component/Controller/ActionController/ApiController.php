@@ -21,10 +21,6 @@ namespace ApiBundle\Component\Controller\ActionController;
 use ApiBundle\Component\Controller\Request\Exception\NoPostRequestException,
     ApiBundle\Component\Controller\Request\Exception\NoKeyException,
     ApiBundle\Component\Controller\Request\Exception\InvalidKeyException,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -37,7 +33,7 @@ class ApiController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)

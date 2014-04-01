@@ -23,7 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\File\Add as AddForm,
-    Doctrine\ORM\EntityManager,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;

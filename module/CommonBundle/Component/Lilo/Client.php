@@ -21,7 +21,6 @@ namespace CommonBundle\Component\Lilo;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
@@ -35,19 +34,20 @@ use CommonBundle\Component\Authentication\Authentication,
 class Client
 {
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication $_authentication The authentication instance
+     * @var Authentication $_authentication The authentication instance
      */
     private $_authentication;
 
     /**
-     * @var \CommonBundle\Compnent\Lilo\Connection $_connection The connection to the Lilo server
+     * @var Connection $_connection The connection to the Lilo server
      */
     private $_connection;
 
     /**
      * Constructs a new Lilo client.
      *
-     * @param \CommonBundle\Compnent\Lilo\Connection $connection The connection to the Lilo server
+     * @param Connection          $connection     The connection to the Lilo server
+     * @param Authentication|null $authentication The authentication instance
      */
     public function __construct(Connection $connection, Authentication $authentication = null)
     {
@@ -72,7 +72,7 @@ class Client
     /**
      * Sends an exception to the server.
      *
-     * @param  \Exception $exception The exception that should be sent
+     * @param  Exception $exception The exception that should be sent
      * @return void
      */
     public function sendException(Exception $exception)
@@ -86,7 +86,7 @@ class Client
      * Handler that can be attached to Zend's EventManager and extracts the exception
      * from an MvcEvent
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent passed by the EventManager
+     * @param  MvcEvent $e The MvcEvent passed by the EventManager
      * @return void
      */
     public function handleMvcEvent(MvcEvent $e)

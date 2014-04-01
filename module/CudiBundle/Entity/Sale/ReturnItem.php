@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\QueueItem,
-    DateTime,
+use DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -40,14 +38,14 @@ class ReturnItem
     private $id;
 
     /**
-     * @var \DateTime The time the sale item was created
+     * @var DateTime The time the sale item was created
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session The session of the sale item
+     * @var Session The session of the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
@@ -55,7 +53,7 @@ class ReturnItem
     private $session;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the sale item
+     * @var Article The article of the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -70,7 +68,7 @@ class ReturnItem
     private $price;
 
     /**
-     * @var \CudiBundle\Entity\Sale\QueueItem The queue item belonging to the sale item
+     * @var QueueItem The queue item belonging to the sale item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\QueueItem", inversedBy="saleItems")
      * @ORM\JoinColumn(name="queue_item", referencedColumnName="id")
@@ -78,10 +76,10 @@ class ReturnItem
     private $queueItem;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article        $article
-     * @param integer                                $price
-     * @param \CudiBundle\Entity\Sale\QueueItem|null $queueItem
-     * @param \Doctrine\ORM\EntityManager|null       $entityManager
+     * @param Article            $article
+     * @param integer            $price
+     * @param QueueItem|null     $queueItem
+     * @param EntityManager|null $entityManager
      */
     public function __construct(Article $article, $price, QueueItem $queueItem = null, EntityManager $entityManager = null)
     {
@@ -109,9 +107,9 @@ class ReturnItem
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Sale\Booking
+     * @return self
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -121,7 +119,7 @@ class ReturnItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -129,7 +127,7 @@ class ReturnItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Session
      */
     public function getSession()
     {
@@ -137,7 +135,7 @@ class ReturnItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -153,7 +151,7 @@ class ReturnItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @return QueueItem
      */
     public function getQueueItem()
     {
@@ -161,7 +159,7 @@ class ReturnItem
     }
 
     /**
-     * @return \CommonBundle\Entity\User\person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson()
     {

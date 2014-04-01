@@ -18,9 +18,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
-    IntlDateFormatter,
+use DateTime,
     LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Form\VanReservation\Edit as EditForm,
     LogisticsBundle\Document\Token,
@@ -512,6 +510,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         return $reservations;
     }
 
+    /**
+     * @return VanReservation
+     */
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {

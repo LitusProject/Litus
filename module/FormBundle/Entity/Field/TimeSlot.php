@@ -34,14 +34,14 @@ use CommonBundle\Entity\General\Language,
 class TimeSlot extends Field
 {
     /**
-     * @var \DateTime The start date of the timeslot
+     * @var DateTime The start date of the timeslot
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end date of the timeslot
+     * @var DateTime The end date of the timeslot
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
@@ -55,13 +55,13 @@ class TimeSlot extends Field
     private $timeslotTranslations;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param bool                        $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
-     * @param \DateTime                   $startDate
-     * @param \DateTime                   $endDate
+     * @param Form        $form
+     * @param integer     $order
+     * @param bool        $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
+     * @param DateTime    $startDate
+     * @param DateTime    $endDate
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
     {
@@ -72,7 +72,7 @@ class TimeSlot extends Field
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -80,8 +80,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param  \DateTime                          $startDate
-     * @return \FormBundle\Entity\Fields\TimeSlot
+     * @param  DateTime $startDate
+     * @return self
      */
     public function setStartDate($startDate)
     {
@@ -91,7 +91,7 @@ class TimeSlot extends Field
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -99,8 +99,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param  \DateTime                          $endDate
-     * @return \FormBundle\Entity\Fields\TimeSlot
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEndDate($endDate)
     {
@@ -110,8 +110,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
      * @return string
      */
@@ -143,8 +143,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
      * @return string
      */
@@ -159,8 +159,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
      * @return string
      */
@@ -175,10 +175,10 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
-     * @return \FormBundle\Entity\Translation
+     * @return \FormBundle\Entity\Field\Translation\TimeSlot
      */
     public function getTimeSlotTranslation(Language $language = null, $allowFallback = true)
     {
@@ -197,8 +197,8 @@ class TimeSlot extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
+     * @param  Language $language
+     * @param  string   $value
      * @return string
      */
     public function getValueString(Language $language, $value)

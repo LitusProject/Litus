@@ -23,7 +23,6 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -35,15 +34,14 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 class Edit extends Add
 {
     /**
-     * @var \LogisticsBundle\Entity\Reservation\PianoReservation
+     * @var PianoReservation
      */
     private $_reservation;
 
     /**
-     * @param \Doctrine\ORM\EntityManager                       $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear         $academicYear  The academic year
-     * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
-     * @param null|string|int                                   $name          Optional name for the element
+     * @param EntityManager    $entityManager The EntityManager instance
+     * @param PianoReservation $reservation
+     * @param null|string|int  $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager,PianoReservation $reservation, $name = null)
     {

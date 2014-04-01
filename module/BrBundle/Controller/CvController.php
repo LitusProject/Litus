@@ -24,7 +24,6 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Form\Cv\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**

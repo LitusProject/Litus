@@ -143,9 +143,8 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-    *
-    * @return \Doctrine\ORM\Query
-    */
+     * @return \Doctrine\ORM\Query|null
+     */
     private function _search()
     {
         switch ($this->getParam('field')) {
