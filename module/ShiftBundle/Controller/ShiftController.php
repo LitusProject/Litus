@@ -459,7 +459,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return \ShiftBundle\Entity\Shift|null
      */
     private function _getShift()
     {
@@ -474,7 +474,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person|null
      */
     private function _getPerson()
     {

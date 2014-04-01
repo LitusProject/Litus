@@ -335,6 +335,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return BrBundle\Entity\Company|null
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -383,7 +386,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return \BrBundle\Entity\Company\Event|null
      */
     private function _getEvent()
     {

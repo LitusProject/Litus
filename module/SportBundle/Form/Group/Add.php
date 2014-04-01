@@ -116,8 +116,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _cleanHappyHoursArray(array $optionsArray, array $groups)
     {
         $returnArray = $optionsArray;
-        for ($i = 0; $i < (count($groups) % 6); $i++) {
-            $happyHours = $groups[$i]->getHappyHours();
+        foreach ($groups as $group) {
+            $happyHours = $group->getHappyHours();
 
             if (isset($returnArray[$happyHours[0]]))
                 unset($returnArray[$happyHours[0]]);
