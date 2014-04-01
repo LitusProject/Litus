@@ -31,13 +31,14 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends Add
 {
     /**
-     * @param \PageBundle\Entity\Node\Page
+     * @var Page
      */
     private $_page;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Page            $page
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Page $page, $name = null)
     {

@@ -51,8 +51,8 @@ class Round extends EntityRepository
 
     /**
      * Gets the order for the next round in the quiz
-     * @param  \QuizBundle\Entity\Quiz $quiz
-     * @return int
+     * @param  QuizEntity $quiz
+     * @return integer
      */
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {

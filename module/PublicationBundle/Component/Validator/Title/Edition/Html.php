@@ -32,22 +32,22 @@ class Html extends \Zend\Validator\AbstractValidator
     const TITLE_EXISTS = 'titleExists';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var int The ID to ignore
+     * @var integer The ID to ignore
      */
     private $_id;
 
     /**
-     * @var PublicationBundle\Entity\Publication The publication
+     * @var Publication The publication
      */
     private $_publication;
 
     /**
-     * @var CommonBundle\Entity\General\AcademicYear The year
+     * @var AcademicYear The year
      */
     private $_academicYear;
 
@@ -59,9 +59,11 @@ class Html extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param $id The ID that should be ignored when checking for duplicate titles.
-     * @param mixed                       $opts          The validator's options.
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Publication   $publication
+     * @param Academicyear  $academicYear
+     * @param integer       $id            The ID that should be ignored when checking for duplicate titles.
+     * @param mixed         $opts          The validator's options.
      */
     public function __construct(EntityManager $entityManager, Publication $publication, Academicyear $academicYear, $id = null, $opts = array())
     {

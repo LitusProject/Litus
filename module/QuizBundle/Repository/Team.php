@@ -51,7 +51,7 @@ class Team extends EntityRepository
 
     /**
      * Gets the number for the next team in the quiz
-     * @param  \QuizBundle\Entity\Quiz $quiz
+     * @param  QuizEntity $quiz
      * @return int
      */
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)

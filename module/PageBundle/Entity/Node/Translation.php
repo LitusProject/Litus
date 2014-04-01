@@ -39,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The page of this translation
+     * @var Page The page of this translation
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page", inversedBy="translations")
      * @ORM\JoinColumn(name="page", referencedColumnName="id")
@@ -47,7 +47,7 @@ class Translation
     private $page;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -69,10 +69,10 @@ class Translation
     private $content;
 
     /**
-     * @param \PageBundle\Entity\Node\Page          $page
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $title
-     * @param string                                $content
+     * @param Page     $page
+     * @param Language $language
+     * @param string   $title
+     * @param string   $content
      */
     public function __construct(Page $page, Language $language, $title, $content)
     {
@@ -83,7 +83,7 @@ class Translation
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @return Page
      */
     public function getPage()
     {
@@ -91,7 +91,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -107,9 +107,8 @@ class Translation
     }
 
     /**
-     * @param string $title
-     *
-     * @return \PageBundle\Entity\Node\Translation
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {
@@ -127,9 +126,8 @@ class Translation
     }
 
     /**
-     * @param string $content
-     *
-     * @return \PageBundle\Entity\Node\Translation
+     * @param  string $content
+     * @return self
      */
     public function setContent($content)
     {

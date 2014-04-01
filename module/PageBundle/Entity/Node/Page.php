@@ -36,21 +36,21 @@ use CommonBundle\Component\Util\Url,
 class Page extends \CommonBundle\Entity\Node
 {
     /**
-     * @var \Datetime The time at which this version was created
+     * @var Datetime The time at which this version was created
      *
      * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
-     * @var \Datetime The time at which this version was rendered obsolete
+     * @var Datetime The time at which this version was rendered obsolete
      *
      * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The page's category
+     * @var Category The page's category
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
@@ -58,7 +58,7 @@ class Page extends \CommonBundle\Entity\Node
     private $category;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this page
+     * @var ArrayCollection The roles that can edit this page
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -70,7 +70,7 @@ class Page extends \CommonBundle\Entity\Node
     private $editRoles;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The page's parent
+     * @var Page|null The page's parent
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -85,17 +85,17 @@ class Page extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this page
+     * @var ArrayCollection The translations of this page
      *
      * @ORM\OneToMany(targetEntity="PageBundle\Entity\Node\Translation", mappedBy="page", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $name
-     * @param array                            $editRoles
-     * @param string                           $name
+     * @param Person   $person
+     * @param string   $name
+     * @param Category $category
+     * @param array    $editRoles
      */
     public function __construct(Person $person, $name, Category $category, array $editRoles)
     {
@@ -111,7 +111,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartTime()
     {
@@ -119,8 +119,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \DateTime                    $endTime
-     * @return \PageBundle\Entity\Node\Page
+     * @param  DateTime $endTime
+     * @return self
      */
     public function setEndTime($endTime)
     {
@@ -130,7 +130,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndTime()
     {
@@ -138,10 +138,10 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \PageBundle\Entity\Category  $category
-     * @return \PageBundle\Entity\Node\Page
+     * @param  Category $category
+     * @return self
      */
-    public function setCategory($category)
+    public function setCategory(Category$category)
     {
         $this->category = $category;
 
@@ -149,7 +149,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \PageBundle\Entity\Category
+     * @return Category
      */
     public function getCategory()
     {
@@ -157,8 +157,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  array                        $editRoles
-     * @return \PageBundle\Entity\Node\Page
+     * @param  array $editRoles
+     * @return self
      */
     public function setEditRoles(array $editRoles)
     {
@@ -176,7 +176,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @param  Page|null $parent
+     * @return Page
      */
     public function setParent(Page $parent)
     {
@@ -186,7 +187,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @return Page|null
      */
     public function getParent()
     {
@@ -202,9 +203,9 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
-     * @return \PageBundle\Entity\Node\Translation
+     * @param  Language|null    $language
+     * @param  boolean          $allowFallback
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -225,8 +226,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -240,8 +241,8 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -268,7 +269,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * Checks whether or not the given user can edit the page.
      *
-     * @param  \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  Person  $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

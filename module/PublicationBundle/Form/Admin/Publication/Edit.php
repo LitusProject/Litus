@@ -32,14 +32,14 @@ use Doctrine\ORM\EntityManager,
 class Edit extends \PublicationBundle\Form\Admin\Publication\Add
 {
     /**
-     * @var \PublicationBundle\Entity\Publication
+     * @var Publication
      */
     private $_id;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \PublicationBundle\Entity\Publication $publication
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Publication     $publication
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, $name = null)
     {

@@ -32,14 +32,14 @@ use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
 class Edit extends Add
 {
     /**
-     * @var \QuizBundle\Entity\Round $round
+     * @var Round $round
      */
     private $_round;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Round    $round         The quiz round to populate the form with
-     * @param null|string|int             $name          Optional name for the form
+     * @param EntityManager   $entityManager
+     * @param Round           $round         The quiz round to populate the form with
+     * @param null|string|int $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Round $round, $name = null)
     {

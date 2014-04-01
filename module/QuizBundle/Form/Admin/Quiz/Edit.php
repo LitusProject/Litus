@@ -29,9 +29,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Quiz     $quiz          The quiz to populate the form with
-     * @param null|string|int             $name          Optional name for the form
+     * @param EntityManager   $entityManager
+     * @param Quiz            $quiz          The quiz to populate the form with
+     * @param null|string|int $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
     {

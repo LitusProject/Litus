@@ -48,7 +48,7 @@ class Quiz
     private $name;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person created this quiz
+     * @var Person The person created this quiz
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -56,28 +56,28 @@ class Quiz
     private $person;
 
     /**
-     * @var \DateTime The create time
+     * @var DateTime The create time
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The rounds in this quiz
+     * @var ArrayCollection The rounds in this quiz
      *
      * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Round", mappedBy="quiz", cascade="remove")
      */
     private $rounds;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The teams in this quiz
+     * @var ArrayCollection The teams in this quiz
      *
      * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Team", mappedBy="quiz", cascade="remove")
      */
     private $teams;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The roles that can edit this quiz
+     * @var ArrayCollection The roles that can edit this quiz
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -89,9 +89,9 @@ class Quiz
     private $editRoles;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $name
-     * @param array                            $editRoles
+     * @param Person $person
+     * @param string $name
+     * @param array  $editRoles
      */
     public function __construct(Person $person, $name, $editRoles)
     {
@@ -128,8 +128,8 @@ class Quiz
     }
 
     /**
-     * @param  string                  $name
-     * @return \QuizBundle\Entity\Quiz
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -147,8 +147,8 @@ class Quiz
     }
 
     /**
-     * @param  array                   $editRoles
-     * @return \QuizBundle\Entity\Quiz
+     * @param  array $editRoles
+     * @return self
      */
     public function setEditRoles(array $editRoles)
     {
@@ -168,7 +168,7 @@ class Quiz
     /**
      * Checks whether or not the given user can edit the quiz.
      *
-     * @param  \CommonBundle\Entity\User\Person $person The person that should be checked
+     * @param  Person  $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
