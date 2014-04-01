@@ -34,10 +34,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \FormBundle\Form\SpecifiedForm\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager    $entityManager
+     * @param General\Language $language
+     * @param Form             $form
+     * @param null|string|int  $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
     {

@@ -42,7 +42,7 @@ class Retour
     private $id;
 
     /**
-     * @var \DateTime The time the retour item was created
+     * @var DateTime The time the retour item was created
      *
      * @ORM\Column(type="datetime")
      */
@@ -56,7 +56,7 @@ class Retour
     private $number;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the retour
+     * @var Article The article of the retour
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -64,7 +64,7 @@ class Retour
     private $article;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person of the retour
+     * @var Person The person of the retour
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
@@ -79,10 +79,10 @@ class Retour
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article  $article The article of the retour
-     * @param integer                          $number  The number of the retour
-     * @param \CommonBundle\Entity\User\Person $person  The person of the retour
-     * @param string                           $comment The comment of the retour
+     * @param Article $article The article of the retour
+     * @param integer $number  The number of the retour
+     * @param Person  $person  The person of the retour
+     * @param string  $comment The comment of the retour
      */
     public function __construct(Article $article, $number, Person $person, $comment)
     {
@@ -103,7 +103,7 @@ class Retour
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -111,7 +111,7 @@ class Retour
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -119,7 +119,7 @@ class Retour
     }
 
     /**
-     * @return \CommonBundle\Entity\User\person
+     * @return Person
      */
     public function getPerson()
     {

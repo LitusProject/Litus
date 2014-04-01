@@ -30,9 +30,9 @@ use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
 class Edit extends Add
 {
     /**
-     * @param OpeningHour                 $openingHour
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param OpeningHour     $openingHour
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(OpeningHour $openingHour, EntityManager $entityManager, $name = null)
     {

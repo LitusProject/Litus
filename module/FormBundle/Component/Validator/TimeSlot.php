@@ -44,26 +44,26 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @var \FormBundle\Entity\Field\TimeSlot
+     * @var TimeSlotField
      */
     private $_timeSlot;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person;
 
     /**
      * Sets validator options
      *
-     * @param \FormBundle\Entity\Field\TimeSlot
-     * @param  \Doctrine\ORM\EntityManager      $entityManager
-     * @param  \CommonBundle\Entity\User\Person $person
+     * @param TimeSlotField
+     * @param  EntityManager $entityManager
+     * @param  Person        $person
      * @return void
      */
     public function __construct(TimeSlotField $timeSlot, EntityManager $entityManager, Person $person = null, $opts = null)

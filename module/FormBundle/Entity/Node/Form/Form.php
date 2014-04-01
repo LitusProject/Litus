@@ -41,8 +41,8 @@ class Form extends BaseForm
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
      * @return string
      */
     protected function _getSummary(Entry $entry, Language $language)

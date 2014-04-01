@@ -24,10 +24,10 @@ use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
 class Printer
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string                      $printer
-     * @param EntityQueueItem             $queueItem
-     * @param array                       $bookings
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $bookings
      */
     public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
@@ -59,10 +59,10 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string                      $printer
-     * @param EntityQueueItem             $queueItem
-     * @param array                       $bookings
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $bookings
      */
     public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
@@ -94,10 +94,10 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string                      $printer
-     * @param EntityQueueItem             $queueItem
-     * @param array                       $saleItems
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $saleItems
      */
     public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
     {
@@ -129,9 +129,11 @@ class Printer
     }
 
     /**
-     * @param string $printer
+     * @param EntityManager $entityManager
+     * @param string        $printer
+     * @param array         $data
      */
-    private static function _print(EntityManager $entityManager, $printer, $data)
+    private static function _print(EntityManager $entityManager, $printer, array $data)
     {
         $enablePrinters = $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_printers');

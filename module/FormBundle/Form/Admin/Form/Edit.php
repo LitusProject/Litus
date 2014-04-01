@@ -37,9 +37,9 @@ class Edit extends Add
     private $_group;
 
     /**
-     * @param \Doctrine\ORM\EntityManager  $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Node\Form $form          The notification we're going to modify
-     * @param null|string|int              $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Form            $form          The notification we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Form $form, $name = null)
     {

@@ -34,14 +34,14 @@ use CommonBundle\Component\Util\AcademicYear,
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var Article
      */
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article           $article       The article
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Article       $article       The article
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
     {

@@ -33,9 +33,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent             $e The MVC event
      * @return array
-     * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
+     * @throws HasNoAccessException The user does not have permissions to access this resource
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -73,6 +73,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      * Create the full Shibboleth URL.
      *
      * @return string
+     * @throws ShibbolethUrlException
      */
     private function _getShibbolethUrl()
     {

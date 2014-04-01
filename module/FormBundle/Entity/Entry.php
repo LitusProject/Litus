@@ -31,7 +31,7 @@ use CommonBundle\Entity\General\Language,
 class Entry
 {
     /**
-     * @var FormBundle\Entity\Node\Entry The form entry's id.
+     * @var NodeEntry The form entry's id.
      *
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Entry", cascade={"persist"})
@@ -40,7 +40,7 @@ class Entry
     private $formEntry;
 
     /**
-     * @var FormBundle\Entity\Field The field this entry is for.
+     * @var Field The field this entry is for.
      *
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Field", cascade={"persist"})
@@ -63,10 +63,10 @@ class Entry
     private $readableValue;
 
     /**
-     * @param \FormBundle\Entity\Node\Entry $formEntry
-     * @param \FormBundle\Entity\Field      $field
-     * @param string                        $value
-     * @param string                        $readableValue
+     * @param NodeEntry $formEntry
+     * @param Field     $field
+     * @param string    $value
+     * @param string    $readableValue
      */
     public function __construct(NodeEntry $formEntry, Field $field, $value, $readableValue = null)
     {
@@ -77,7 +77,7 @@ class Entry
     }
 
     /**
-     * @return The form entry this entry belongs to.
+     * @return NodeEntry The form entry this entry belongs to.
      */
     public function getFormEntry()
     {
@@ -85,7 +85,7 @@ class Entry
     }
 
     /**
-     * @return The field this entry belongs to.
+     * @return Field The field this entry belongs to.
      */
     public function getField()
     {
@@ -101,8 +101,8 @@ class Entry
     }
 
     /**
-     * @param  string                   $value;
-     * @return \FormBundle\Entity\Entry
+     * @param  string $value;
+     * @return self
      */
     public function setValue($value)
     {
@@ -120,8 +120,8 @@ class Entry
     }
 
     /**
-     * @param  string                   $readableValue;
-     * @return \FormBundle\Entity\Entry
+     * @param  string $readableValue;
+     * @return self
      */
     public function setReadableValue($readableValue)
     {
@@ -131,7 +131,7 @@ class Entry
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Language $language
      * @return string
      */
     public function getValueString(Language $language)

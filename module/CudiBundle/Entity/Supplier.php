@@ -54,7 +54,7 @@ class Supplier
     private $phoneNumber;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The address of the supplier
+     * @var Address The address of the supplier
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
@@ -90,16 +90,17 @@ class Supplier
     );
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
     /**
-     * @param string                               $name
-     * @param string                               $phoneNumber
-     * @param \CommonBundle\Entity\General\Address $address
-     * @param string                               $vatNumber
-     * @param strign                               $template
+     * @param string  $name
+     * @param string  $phoneNumber
+     * @param Address $address
+     * @param string  $vatNumber
+     * @param string  $template
+     * @param boolean $contact
      */
     public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
     {
@@ -115,6 +116,7 @@ class Supplier
     }
 
     /**
+     * @param  string  $template
      * @return boolean
      */
     public static function isValidTemplate($template)
@@ -141,7 +143,7 @@ class Supplier
     /**
      * @param string $name
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setName($name)
     {
@@ -161,7 +163,7 @@ class Supplier
     /**
      * @param string $phoneNumber
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -171,7 +173,7 @@ class Supplier
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getAddress()
     {
@@ -179,9 +181,9 @@ class Supplier
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param Address $address
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setAddress(Address $address)
     {
@@ -201,7 +203,7 @@ class Supplier
     /**
      * @param string $vatNumber
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setVatNumber($vatNumber)
     {
@@ -221,7 +223,7 @@ class Supplier
     /**
      * @param string $template
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setTemplate($template)
     {
@@ -234,9 +236,9 @@ class Supplier
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -246,8 +248,8 @@ class Supplier
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -258,7 +260,7 @@ class Supplier
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNumberDelivered(AcademicYear $academicYear)
@@ -269,7 +271,7 @@ class Supplier
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNumberOrdered(AcademicYear $academicYear)
@@ -280,8 +282,8 @@ class Supplier
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
@@ -292,8 +294,8 @@ class Supplier
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getTotalPurchase(AcademicYear $academicYear, Organization $organization = null)
@@ -315,7 +317,7 @@ class Supplier
      * @param boolean
      * @param boolean $contact
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return self
      */
     public function setContact($contact)
     {

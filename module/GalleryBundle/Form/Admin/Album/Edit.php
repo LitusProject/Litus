@@ -28,8 +28,8 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Album $album, $name = null)
     {

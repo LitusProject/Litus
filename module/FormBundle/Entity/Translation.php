@@ -39,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Field The field of this translation
+     * @var Field The field of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field", inversedBy="translations")
      * @ORM\JoinColumn(name="field", referencedColumnName="id")
@@ -47,7 +47,7 @@ class Translation
     private $field;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -62,9 +62,9 @@ class Translation
     private $label;
 
     /**
-     * @param \FormBundle\Entity\Field field
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $label
+     * @param Field field
+     * @param Language $language
+     * @param string   $label
      */
     public function __construct(Field $field, Language $language, $label)
     {
@@ -74,7 +74,7 @@ class Translation
     }
 
     /**
-     * @return \FormBundle\Entity\Field
+     * @return Field
      */
     public function getField()
     {
@@ -82,7 +82,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -98,9 +98,8 @@ class Translation
     }
 
     /**
-     * @param string $label
-     *
-     * @return \FormBundle\Entity\Translation
+     * @param  string $label
+     * @return self
      */
     public function setLabel($label)
     {

@@ -48,17 +48,17 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     private $_onlyInStock;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
     private $_academicYear;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param string                                    $articles      The kind of articles to export
-     * @param string                                    $order         The ordering of the articles to export
-     * @param boolean                                   $onlyInStock   Print only articles in stock
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $articles      The kind of articles to export
+     * @param string        $order         The ordering of the articles to export
+     * @param boolean       $onlyInStock   Print only articles in stock
+     * @param AcademicYear  $academicYear
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, $articles, $order, $onlyInStock, AcademicYear $academicYear, TmpFile $file)
     {

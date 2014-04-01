@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var Order
      */
     private $_order;
 
@@ -42,10 +42,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_sortOrder;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param Order                                     $order         The order
-     * @param string                                    $sortOrder
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Order         $order         The order
+     * @param string        $sortOrder
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Order $order, $sortOrder, TmpFile $file)
     {

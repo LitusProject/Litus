@@ -35,12 +35,12 @@ use CommonBundle\Entity\General\Language,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param \FormBundle\Entity\Node\Entry         $entry
-     * @param null|Person                           $person
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param Entry           $entry
+     * @param null|Person     $person
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Entry $entry, Person $person = null, $name = null)
     {

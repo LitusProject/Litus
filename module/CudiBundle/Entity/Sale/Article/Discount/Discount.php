@@ -20,9 +20,11 @@ namespace CudiBundle\Entity\Sale\Article\Discount;
 
 use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as Article,
+    CommonBundle\Entity\General\Organization,
+    CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Discount")
@@ -40,7 +42,7 @@ class Discount
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article\Discount\Template The template of the discount
+     * @var Template The template of the discount
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article\Discount\Template")
      * @ORM\JoinColumn(name="template", referencedColumnName="id")
@@ -83,7 +85,7 @@ class Discount
     private $applyOnce;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the discount
+     * @var Article The article of the discount
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -91,7 +93,7 @@ class Discount
     private $article;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     * @var Organization|null The organization for the discount
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
      * @ORM\JoinColumn(name="organization", referencedColumnName="id")
@@ -157,7 +159,7 @@ class Discount
     );
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article The article of the discount
+     * @param Article The article of the discount
      */
     public function __construct(Article $article)
     {
@@ -165,9 +167,9 @@ class Discount
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article\Discount\Template The template of the discount
+     * @param Template The template of the discount
      *
-     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount
+     * @return self
      */
     public function setTemplate(Template $template)
     {
@@ -180,18 +182,18 @@ class Discount
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * @param integer                                        $value        The value of the discount
-     * @param string                                         $method       The method of the discount
-     * @param string                                         $type         The type of the discount
-     * @param string                                         $rounding     The type of the rounding
-     * @param boolean                                        $applyOnce    Apply the discount only once
-     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
+     * @param integer           $value        The value of the discount
+     * @param string            $method       The method of the discount
+     * @param string            $type         The type of the discount
+     * @param string            $rounding     The type of the rounding
+     * @param boolean           $applyOnce    Apply the discount only once
+     * @param Organization|null $organization The organization for the discount
      *
-     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount
+     * @return self
      */
-    public function setDiscount($value, $method, $type, $rounding, $applyOnce, $organization = null)
+    public function setDiscount($value, $method, $type, $rounding, $applyOnce, Organization $organization = null)
     {
         if (!self::isValidDiscountType($type))
             throw new \InvalidArgumentException('The discount type is not valid.');
@@ -249,7 +251,7 @@ class Discount
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article\Discount\Template
+     * @return Template
      */
     public function getTemplate()
     {
@@ -297,7 +299,7 @@ class Discount
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -305,7 +307,7 @@ class Discount
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization
+     * @return Organization|null
      */
     public function getOrganization()
     {
@@ -369,9 +371,9 @@ class Discount
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article  $article
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param Article       $article
+     * @param Person        $person
+     * @param EntityManager $entityManager
      *
      * @return boolean
      */
@@ -382,9 +384,9 @@ class Discount
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person          $person
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \Doctrine\ORM\EntityManager               $entityManager
+     * @param Person        $person
+     * @param AcademicYear  $academicYear
+     * @param EntityManager $entityManager
      *
      * @return boolean
      */

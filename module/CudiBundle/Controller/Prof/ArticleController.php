@@ -438,7 +438,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return Article
+     * @return Article|null
      */
     private function _getArticle($id = null)
     {
@@ -492,7 +492,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return \SyllabusBundle\Entity\Subject|null
      */
     private function _getSubject()
     {

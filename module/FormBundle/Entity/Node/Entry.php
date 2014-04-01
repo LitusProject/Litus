@@ -42,14 +42,14 @@ class Entry
     private $id;
 
     /**
-     * @var \DateTime The time of creation of this node
+     * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this node
+     * @var Person|null The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id", nullable=true)
@@ -57,7 +57,7 @@ class Entry
     private $creationPerson;
 
     /**
-     * @var \FormBundle\Entity\Node\GuestInfo The guest who created this node
+     * @var GuestInfo|null The guest who created this node
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\GuestInfo")
      * @ORM\JoinColumn(name="guest_info", referencedColumnName="id", nullable=true)
@@ -65,7 +65,7 @@ class Entry
     private $guestInfo;
 
     /**
-     * @var FormBundle\Entity\Node\Form The form this entry is part of.
+     * @var Form The form this entry is part of.
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
@@ -80,15 +80,17 @@ class Entry
     private $draft;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry", cascade={"all"})
      */
     private $fieldEntries;
 
     /**
-     * @param \CommonBundle\Entity\User\Person  $person
-     * @param \FormBundle\Entity\Node\GuestInfo $guestInfo
-     * @param \FormBundle\Entity\Node\Form      $form
-     * @param boolean                           $draft
+     * @param Person|null    $person
+     * @param GuestInfo|null $guestInfo
+     * @param Form           $form
+     * @param boolean        $draft
      */
     public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form, $draft = false)
     {
@@ -109,7 +111,7 @@ class Entry
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -117,7 +119,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person|null
      */
     public function getCreationPerson()
     {
@@ -125,7 +127,7 @@ class Entry
     }
 
     /**
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return GuestInfo|null
      */
     public function getGuestInfo()
     {
@@ -133,7 +135,7 @@ class Entry
     }
 
     /**
-     * @return \CommonBundle\Entity\Users\Person|\FormBundle\Entity\Node\GuestInfo
+     * @return Person|GuestInfo
      */
     public function getPersonInfo()
     {
@@ -152,7 +154,7 @@ class Entry
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form
+     * @return Form
      */
     public function getForm()
     {
@@ -160,7 +162,8 @@ class Entry
     }
 
     /**
-     * @param \FormBundle\Entity\Entry The entry to add to this form.
+     * @param FieldEntry The entry to add to this form.
+     * @return self
      */
     public function addFieldEntry(FieldEntry $fieldEntry)
     {
@@ -178,9 +181,8 @@ class Entry
     }
 
     /**
-     * @param boolean $draft
-     *
-     * @return \FormBundle\Entity\Node\Entry
+     * @param  boolean $draft
+     * @return self
      */
     public function setDraft($draft)
     {

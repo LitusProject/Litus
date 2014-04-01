@@ -39,7 +39,7 @@ class SubjectMap
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The article of the mapping
+     * @var Article The article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -47,7 +47,7 @@ class SubjectMap
     private $article;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+     * @var Subject The subject of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
      * @ORM\JoinColumn(name="subject", referencedColumnName="id")
@@ -55,7 +55,7 @@ class SubjectMap
     private $subject;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     * @var AcademicYear The year of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -84,10 +84,10 @@ class SubjectMap
     private $removed;
 
     /**
-     * @param \CudiBundle\Entity\Article                $article      The article of the mapping
-     * @param \SyllabusBundle\Entity\Subject            $subject      The subject of the mapping
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
-     * @param boolean                                   $mandatory    Flag whether the article is mandatory
+     * @param Article      $article      The article of the mapping
+     * @param Subject      $subject      The subject of the mapping
+     * @param AcademicYear $academicYear The year of the mapping
+     * @param boolean      $mandatory    Flag whether the article is mandatory
      */
     public function __construct(Article $article, Subject $subject, AcademicYear $academicYear, $mandatory)
     {
@@ -108,7 +108,7 @@ class SubjectMap
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -116,7 +116,7 @@ class SubjectMap
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return Subject
      */
     public function getSubject()
     {
@@ -124,7 +124,7 @@ class SubjectMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -150,7 +150,7 @@ class SubjectMap
     /**
      * @param boolean $isProf
      *
-     * @return SubjectMap
+     * @return self
      */
     public function setIsProf($isProf)
     {
@@ -160,7 +160,7 @@ class SubjectMap
     }
 
     /**
-     * @return \CudiBundle\Entity\Article\SubjectMap
+     * @return self
      */
     public function setRemoved()
     {

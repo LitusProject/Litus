@@ -31,9 +31,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager                       $entityManager
-     * @param \CudiBundle\Entity\Sale\Article\Discount\Template $template      The template we're going to modify
-     * @param null|string|int                                   $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Template        $template      The template we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Template $template, $name = null)
     {

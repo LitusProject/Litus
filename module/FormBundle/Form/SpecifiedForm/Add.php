@@ -47,16 +47,16 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param null|Person                           $person
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param null|Person     $person
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
     {

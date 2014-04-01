@@ -548,7 +548,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Order\Item
+     * @return \CudiBundle\Entity\Stock\Order\Item|null
      */
     private function _getOrderItem()
     {

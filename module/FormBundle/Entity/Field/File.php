@@ -39,11 +39,11 @@ class File extends Field
     private $maxSize;
 
     /**
-     * @param Form                     $form
-     * @param integer                  $order
-     * @param bool                     $required
-     * @param \FormBundle\Entity\Field $visibityDecisionField
-     * @param string                   $visibilityValue
+     * @param Form        $form
+     * @param integer     $order
+     * @param bool        $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $maxSize)
     {
@@ -75,8 +75,8 @@ class File extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
+     * @param  Language $language
+     * @param  boolean  $value
      * @return boolean
      */
     public function getValueString(Language $language, $value)

@@ -39,19 +39,19 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var Article
      */
     protected $_article;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param \Doctrine\ORM\EntityManager     $entityManager
-     * @param null|string|int                 $name          Optional name for the element
+     * @param Article         $article
+     * @param EntityManager   $entityManager
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(Article $article, EntityManager $entityManager, $name = null)
     {

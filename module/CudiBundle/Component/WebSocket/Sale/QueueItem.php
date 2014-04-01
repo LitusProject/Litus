@@ -40,12 +40,12 @@ class QueueItem
     private $_id;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CommonBundle\Component\WebSocket\User
+     * @var User
      */
     private $_user;
 
@@ -75,7 +75,8 @@ class QueueItem
     }
 
     /**
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param  User $user
+     * @return self
      */
     public function setUser(User $user)
     {
@@ -85,7 +86,7 @@ class QueueItem
     }
 
     /**
-     * @return \CommonBundle\Component\WebSocket\User
+     * @return User
      */
     public function getUser()
     {

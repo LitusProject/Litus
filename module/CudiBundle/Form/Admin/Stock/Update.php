@@ -33,8 +33,8 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param null|string|int                 $name    Optional name for the element
+     * @param Article         $article
+     * @param null|string|int $name    Optional name for the element
      */
     public function __construct(Article $article, $name = null)
     {

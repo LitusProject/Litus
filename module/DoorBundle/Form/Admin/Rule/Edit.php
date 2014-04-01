@@ -30,14 +30,14 @@ use Doctrine\ODM\MongoDB\DocumentManager,
 class Edit extends Add
 {
     /**
-     * @var \DoorBundle\Document\Rule The rule we're going to modify
+     * @var Rule The rule we're going to modify
      */
     private $_rule = null;
 
     /**
-     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \DoorBundle\Document\Rule             $rule            The rule we're going to modify
-     * @param null|string|int                       $name            Optional name for the element
+     * @param DocumentManager $documentManager The DocumentManager instance
+     * @param Rule            $rule            The rule we're going to modify
+     * @param null|string|int $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, Rule $rule, $name = null)
     {

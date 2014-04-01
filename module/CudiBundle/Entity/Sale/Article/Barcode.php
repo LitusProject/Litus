@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Entity\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article as Article,
+use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,7 +44,7 @@ class Barcode
     private $barcode;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the discount
+     * @var Article The article of the discount
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article", inversedBy="barcodes")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -59,7 +59,7 @@ class Barcode
     private $main;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article The article of the barcode
+     * @param Article The article of the barcode
      * @param integer $barcode The barcode of the article
      * @param boolean $main    Flag whether this is the main barcode
      */
@@ -89,7 +89,7 @@ class Barcode
     /**
      * @param integer $barcode
      *
-     * @return \CudiBundle\Entity\Sale\Article\Barcode
+     * @return self
      */
     public function setBarcode($barcode)
     {
@@ -99,7 +99,7 @@ class Barcode
     }
 
     /**
-     * @return
+     * @return Article
      */
     public function getArticle()
     {
@@ -117,7 +117,7 @@ class Barcode
     /**
      * @param boolean $main
      *
-     * @return \CudiBundle\Entity\Sale\Article\Barcode
+     * @return self
      */
     public function setIsMain($main)
     {

@@ -45,7 +45,7 @@ class Start
     private $value;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the value
+     * @var Article The article of the value
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -53,7 +53,7 @@ class Start
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Period The period of the value
+     * @var Period The period of the value
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Period")
      * @ORM\JoinColumn(name="period", referencedColumnName="id")
@@ -61,8 +61,9 @@ class Start
     private $period;
 
     /**
-     * @param \CudiBundle\Entity\Stock\Period $period The period of the value
-     * @param integer                         $value  The value of the value
+     * @param Article $article The article of the value
+     * @param Period  $period  The period of the value
+     * @param integer $value   The value of the value
      */
     public function __construct(Article $article, Period $period, $value)
     {
@@ -90,7 +91,7 @@ class Start
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -98,7 +99,7 @@ class Start
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Period
+     * @return Period
      */
     public function getPeriod()
     {

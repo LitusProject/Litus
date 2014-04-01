@@ -40,7 +40,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
 class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
@@ -50,23 +50,23 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_occupiedSlots;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param null|Person                           $person
-     * @param \FormBundle\Entity\Node\Entry|null    $entry
-     * @param boolean                               $forceEdit
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param null|Person     $person
+     * @param Entry|null      $entry
+     * @param boolean         $forceEdit
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
     {

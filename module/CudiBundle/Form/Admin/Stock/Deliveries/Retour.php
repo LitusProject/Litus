@@ -33,9 +33,9 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
 class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $barcodePrefix
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param string          $barcodePrefix
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {

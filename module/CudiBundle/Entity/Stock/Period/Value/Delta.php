@@ -40,14 +40,14 @@ class Delta
     private $id;
 
     /**
-     * @var \DateTime The time of the delta
+     * @var DateTime The time of the delta
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who added the delta
+     * @var Person The person who added the delta
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -62,7 +62,7 @@ class Delta
     private $value;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the delta
+     * @var Article The article of the delta
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -70,7 +70,7 @@ class Delta
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Period The period of the delta
+     * @var Period The period of the delta
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Period")
      * @ORM\JoinColumn(name="period", referencedColumnName="id")
@@ -85,10 +85,11 @@ class Delta
     private $comment;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person  The person who added the delta
-     * @param \CudiBundle\Entity\Stock\Period  $period  The period of the delta
-     * @param integer                          $value   The value of the delta
-     * @param string                           $comment The comment of the delta
+     * @param Person  $person  The person who added the delta
+     * @param Article $article The article of the delta
+     * @param Period  $period  The period of the delta
+     * @param integer $value   The value of the delta
+     * @param string  $comment The comment of the delta
      */
     public function __construct(Person $person, Article $article, Period $period, $value, $comment)
     {
@@ -111,7 +112,7 @@ class Delta
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -119,7 +120,7 @@ class Delta
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -135,7 +136,7 @@ class Delta
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -143,7 +144,7 @@ class Delta
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Period
+     * @return Period
      */
     public function getPeriod()
     {

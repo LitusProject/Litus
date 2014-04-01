@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class Queue
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -63,7 +63,7 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session The sale session
+     * @param Session $session The sale session
      *
      * @return string
      */
@@ -135,7 +135,7 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session The sale session
+     * @param Session $session The sale session
      *
      * @return string
      */
@@ -161,8 +161,8 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session                  The sale session
-     * @param string                          $universityIdentification
+     * @param Session $session                  The sale session
+     * @param string  $universityIdentification
      *
      * @return string
      */
@@ -220,7 +220,7 @@ class Queue
     }
 
     /**
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param User $user
      */
     public function unlockByUser(User $user)
     {
@@ -241,8 +241,8 @@ class Queue
     }
 
     /**
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $id
+     * @param User    $user
+     * @param integer $id
      */
     public function startCollecting(User $user, $id, $bulk = false)
     {

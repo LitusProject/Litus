@@ -102,7 +102,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return \CudiBundle\Entity\Sale\Article|null
      */
     private function _getSaleArticle()
     {

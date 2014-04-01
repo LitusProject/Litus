@@ -32,8 +32,8 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @param \SyllabusBundle\Entity\StudentEnrollment $enrollment
-     * @param null|string|int                          $name       Optional name for the element
+     * @param StudentEnrollment $enrollment
+     * @param null|string|int   $name       Optional name for the element
      */
     public function __construct(StudentEnrollment $enrollment = null, $name = null)
     {

@@ -39,21 +39,21 @@ class OpeningHour
     private $id;
 
     /**
-     * @var \DateTime The start time of this period
+     * @var DateTime The start time of this period
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end time of this period
+     * @var DateTime The end time of this period
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
     private $endDate;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this entity
+     * @var Person The person who created this entity
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -61,23 +61,23 @@ class OpeningHour
     private $person;
 
     /**
-     * @var \DateTime The time this entity was created
+     * @var DateTime The time this entity was created
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this opening hour
+     * @var ArrayCollection The translations of this opening hour
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\Translation", mappedBy="openingHour", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @param \DateTime                        $startDate
-     * @param \DateTime                        $endDate
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param Person   $person
      */
     public function __construct(DateTime $startDate, DateTime $endDate, Person $person)
     {
@@ -96,7 +96,7 @@ class OpeningHour
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStart()
     {
@@ -104,8 +104,8 @@ class OpeningHour
     }
 
     /**
-     * @param  \DateTime   $startDate
-     * @return OpeningHour
+     * @param  DateTime $startDate
+     * @return self
      */
     public function setStart(DateTime $startDate)
     {
@@ -115,7 +115,7 @@ class OpeningHour
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEnd()
     {
@@ -123,8 +123,8 @@ class OpeningHour
     }
 
     /**
-     * @param  \DateTime                                               $endDate
-     * @return \CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEnd(DateTime $endDate)
     {
@@ -134,7 +134,7 @@ class OpeningHour
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -142,9 +142,9 @@ class OpeningHour
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language                   $language
-     * @param  boolean                                                 $allowFallback
-     * @return \CudiBundle\Entity\Sale\Session\OpeningHour\Translation
+     * @param  Language         $language
+     * @param  boolean          $allowFallback
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -163,7 +163,7 @@ class OpeningHour
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Language $language
      * @return string
      */
     public function getComment(Language $language, $allowFallback = true)

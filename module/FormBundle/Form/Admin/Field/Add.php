@@ -50,19 +50,20 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager = null;
 
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param \Doctrine\ORM\EntityManager  $entityManager
-     * @param null|string|int              $name          Optional name for the element
+     * @param Form            $form
+     * @param EntityManager   $entityManager
+     * @param Field|null      $lastField
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(Form $form, EntityManager $entityManager, Field $lastField = null ,$name = null)
     {

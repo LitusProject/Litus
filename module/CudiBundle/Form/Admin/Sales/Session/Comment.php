@@ -30,8 +30,8 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
 class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session
-     * @param null|string|int                 $name    Optional name for the element
+     * @param Session         $session
+     * @param null|string|int $name    Optional name for the element
      */
     public function __construct(Session $session, $name = null)
     {

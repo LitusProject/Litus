@@ -34,14 +34,14 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
 {
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
     private $_academicYear;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param AcademicYear  $academicYear
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, TmpFile $file)
     {

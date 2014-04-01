@@ -41,14 +41,14 @@ class Rule
     private $id;
 
     /**
-     * @var \DateTime The start date of the rule
+     * @var DateTime The start date of the rule
      *
      * @ODM\Field(type="date")
      */
     private $startDate;
 
     /**
-     * @var \DateTime The end date of the rule
+     * @var DateTime The end date of the rule
      *
      * @ODM\Field(type="date")
      */
@@ -76,11 +76,11 @@ class Rule
     private $academic;
 
     /**
-     * @param \DateTime                                 $startDate
-     * @param \DateTime                                 $endDate
-     * @param int                                       $startTime
-     * @param int                                       $endTime
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param int      $startTime
+     * @param int      $endTime
+     * @param Academic $academic
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $startTime, $endTime, Academic $academic)
     {
@@ -108,8 +108,8 @@ class Rule
     }
 
     /**
-     * @param  \DateTime                 $startDate
-     * @return \DoorBundle\Document\Rule
+     * @param  DateTime $startDate
+     * @return self
      */
     public function setStartDate(DateTime $startDate)
     {
@@ -119,7 +119,7 @@ class Rule
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -127,8 +127,8 @@ class Rule
     }
 
     /**
-     * @param  \DateTime                 $endDate
-     * @return \DoorBundle\Document\Rule
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEndDate(DateTime $endDate)
     {
@@ -146,8 +146,8 @@ class Rule
     }
 
     /**
-     * @param  int                       $startTime
-     * @return \DoorBundle\Document\Rule
+     * @param  int  $startTime
+     * @return self
      */
     public function setStartTime($startTime)
     {
@@ -165,8 +165,8 @@ class Rule
     }
 
     /**
-     * @param  int                       $endTime
-     * @return \DoorBundle\Document\Rule
+     * @param  int  $endTime
+     * @return self
      */
     public function setEndTime($endTime)
     {
@@ -176,8 +176,8 @@ class Rule
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager   $entityManager
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function getAcademic(EntityManager $entityManager)
     {

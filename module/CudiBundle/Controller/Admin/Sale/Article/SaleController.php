@@ -118,7 +118,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return \CudiBundle\Entity\Sale\Article|null
      */
     private function _getSaleArticle()
     {

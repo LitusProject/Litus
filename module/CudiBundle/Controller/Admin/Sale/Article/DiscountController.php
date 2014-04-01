@@ -130,7 +130,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return \CudiBundle\Entity\Sale\Article|null
      */
     private function _getSaleArticle()
     {

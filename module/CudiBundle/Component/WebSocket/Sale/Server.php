@@ -32,12 +32,12 @@ use CommonBundle\Component\Acl\Acl,
 class Server extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CudiBundle\Component\Websocket\Sale2\Queue
+     * @var Queue
      */
     private $_queue;
 
@@ -145,9 +145,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when user closed his socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $statusCode
-     * @param string                                 $reason
+     * @param User    $user
+     * @param integer $statusCode
+     * @param string  $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {

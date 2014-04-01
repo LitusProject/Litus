@@ -37,7 +37,7 @@ class Mapping
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The article of the mapping
+     * @var Article The article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -45,7 +45,7 @@ class Mapping
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Comment\Comment The comment of the mapping
+     * @var Comment The comment of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Comment\Comment")
      * @ORM\JoinColumn(name="comment", referencedColumnName="id")
@@ -53,7 +53,8 @@ class Mapping
     private $comment;
 
     /**
-     * @param \CudiBundle\Entity\Article $article
+     * @param Article $article
+     * @param Comment $comment
      */
     public function __construct(Article $article, Comment $comment)
     {
@@ -70,7 +71,7 @@ class Mapping
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -78,7 +79,7 @@ class Mapping
     }
 
     /**
-     * @return \CudiBundle\Entity\Comment\Comment
+     * @return Comment
      */
     public function getComment()
     {

@@ -51,7 +51,7 @@ abstract class Field
     private $id;
 
     /**
-     * @var FormBundle\Entity\Node\Form The form this field is part of.
+     * @var Form The form this field is part of.
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form", inversedBy="fields")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
@@ -73,7 +73,7 @@ abstract class Field
     private $required;
 
     /**
-     * @var \FormBundle\Entity\Field The field responsible for the visibility of this field
+     * @var Field|null The field responsible for the visibility of this field
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field")
      * @ORM\JoinColumn(name="visibility_decission_field", referencedColumnName="id")
@@ -88,7 +88,7 @@ abstract class Field
     private $visibilityValue;
 
     /**
-     * @var array The translations of this field
+     * @var ArrayCollection The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Translation", mappedBy="field", cascade={"remove"})
      */
@@ -105,11 +105,11 @@ abstract class Field
     );
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param integer                      $order
-     * @param boolean                      $required
-     * @param \FormBundle\Entity\Field     $visibityDecisionField
-     * @param string                       $visibilityValue
+     * @param Form        $form
+     * @param integer     $order
+     * @param boolean     $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
     {
@@ -130,7 +130,7 @@ abstract class Field
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form
+     * @return Form
      */
     public function getForm()
     {
@@ -140,7 +140,7 @@ abstract class Field
     /**
      * @param int $order
      *
-     * @return \FormBundle\Entity\Field
+     * @return self
      */
     public function setOrder($order)
     {
@@ -160,7 +160,7 @@ abstract class Field
     /**
      * @param boolean $required
      *
-     * @return \FormBundle\Entity\Field
+     * @return self
      */
     public function setRequired($required)
     {
@@ -178,9 +178,9 @@ abstract class Field
     }
 
     /**
-     * @param \FormBundle\Entity\Field $visibityDecisionField
+     * @param Field $visibityDecisionField
      *
-     * @return \FormBundle\Entity\Field
+     * @return self
      */
     public function setVisibilityDecissionField(Field $visibityDecisionField = null)
     {
@@ -190,7 +190,7 @@ abstract class Field
     }
 
     /**
-     * @return \FormBundle\Entity\Field
+     * @return Field
      */
     public function getVisibilityDecissionField()
     {
@@ -200,7 +200,7 @@ abstract class Field
     /**
      * @param string $visibilityValue
      *
-     * @return \FormBundle\Entity\Field
+     * @return self
      */
     public function setVisibilityValue($visibilityValue)
     {
@@ -218,8 +218,8 @@ abstract class Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
      * @return string
      */
@@ -234,10 +234,10 @@ abstract class Field
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param boolean                               $allowFallback
+     * @param Language|null $language
+     * @param boolean       $allowFallback
      *
-     * @return \FormBundle\Entity\Translation
+     * @return Translation
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

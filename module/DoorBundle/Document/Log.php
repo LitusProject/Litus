@@ -55,7 +55,7 @@ class Log
     private $academic;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param Academic $academic
      */
     public function __construct(Academic $academic)
     {
@@ -80,8 +80,8 @@ class Log
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager   $entityManager
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  EntityManager $entityManager
+     * @return Academic
      */
     public function getAcademic(EntityManager $entityManager)
     {

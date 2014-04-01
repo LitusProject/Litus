@@ -161,7 +161,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return \SyllabusBundle\Entity\Subject|null
      */
     private function _getSubject($id = null)
     {

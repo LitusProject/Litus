@@ -31,12 +31,12 @@ class Unique extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The sale article to be ignored
+     * @var Article The sale article to be ignored
      */
     private $_saleArticle = array();
 
@@ -52,9 +52,9 @@ class Unique extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Unique Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article $saleArticle   The sale article to be ignored
-     * @param mixed                           $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Article       $saleArticle   The sale article to be ignored
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Article $saleArticle = null, $opts = null)
     {
