@@ -53,7 +53,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 
         $this->_entityManager = $entityManager;
 
-        $articleCollection = new Collection('article');
+        $articleCollection = new Collection('article_form');
         $articleCollection->setLabel('Article')
             ->setAttribute('id', 'article_form');
         $this->add($articleCollection);
@@ -120,7 +120,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
             ->setAttribute('data-help', 'Enabling this flag will show extra options for articles that will be printed by the owners of the store. Articles that are printed by and bought from another supplier doesn\'t need these options.');
         $articleCollection->add($field);
 
-        $internal = new Collection('internal');
+        $internal = new Collection('internal_form');
         $internal->setLabel('Internal Article')
             ->setAttribute('id', 'internal_form');
         $this->add($internal);
