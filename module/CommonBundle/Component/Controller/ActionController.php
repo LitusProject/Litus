@@ -88,7 +88,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->persistentFlashMessages = array();
         $result->authenticatedPerson = $authenticatedPerson;
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
@@ -442,19 +441,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_language = $language;
 
         return $language;
-    }
-
-    /**
-     * Add a persistent flash message
-     * @param mixed                                               $result       The result of onDispatch
-     * @param \CommonBundle\Component\FlashMessenger\FlashMessage $flashMessage The flash message
-     */
-    protected function addPersistentFlashMessage($result, FlashMessage $flashMessage)
-    {
-        $result->persistentFlashMessages = array_merge(
-            $result->persistentFlashMessages,
-            array($flashMessage)
-        );
     }
 
     /**

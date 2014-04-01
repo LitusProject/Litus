@@ -201,6 +201,7 @@ class Album
     public function setWatermark($watermark)
     {
         $this->watermark = $watermark;
+
         return $this;
     }
 
