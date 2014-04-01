@@ -60,7 +60,7 @@ class Study
     private $_callback;
 
     /**
-     * @var AcademicYear
+     * @var AcademicYearEntity
      */
     private $_academicYear;
 

@@ -24,7 +24,9 @@ use Zend\Mvc\Exception,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
     DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+    Zend\ServiceManager\ServiceLocatorInterface,
+    Doctrine\ORM\QueryBuilder,
+    Doctrine\ORM\Query;
 
 /**
  * A controller plugin containing some utility methods for pagination.
@@ -139,11 +141,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * Create a paginator for the given Doctrine ORM query
      *
-     * @param  QueryBuilder  $query       The query that should be paginated
-     * @param  int           $currentPage The page we now are on
+     * @param  Query|QueryBuilder $query       The query that should be paginated
+     * @param  int                $currentPage The page we now are on
      * @return ZendPaginator
      */
-    public function createFromQuery(QueryBuilder $query, $currentPage)
+    public function createFromQuery($query, $currentPage)
     {
         $this->_paginator = new ZendPaginator(
             new DoctrinePaginatorAdapter(new DoctrinePaginator($query))

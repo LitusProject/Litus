@@ -47,7 +47,7 @@ class Event extends \CommonBundle\Entity\Node
     private $startDate;
 
     /**
-     * @var DateTime The end date of this event
+     * @var DateTime|null The end date of this event
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
@@ -68,9 +68,9 @@ class Event extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @param Person   $person
-     * @param DateTime $startDate
-     * @param DateTime $endDate
+     * @param Person        $person
+     * @param DateTime      $startDate
+     * @param DateTime|null $endDate
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
     {
@@ -104,7 +104,7 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param DateTime $endDate
+     * @param DateTime|null $endDate
      *
      * @return self
      */
@@ -116,7 +116,7 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
     public function getEndDate()
     {

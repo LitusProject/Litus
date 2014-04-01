@@ -275,7 +275,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @param  array   $formData
+     * @param  object|array $formData
      * @return Address
      */
     protected function _getPrimaryAddress($formData)
