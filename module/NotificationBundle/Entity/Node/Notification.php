@@ -61,7 +61,10 @@ class Notification extends \CommonBundle\Entity\Node
     private $active;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param Person   $person
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param boolean  $active
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active)
     {
@@ -73,9 +76,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param DateTime $startDate
-     *
-     * @return \NotificationBundle\Entity\Node\Notification
+     * @param  DateTime $startDate
+     * @return self
      */
     public function setStartDate($startDate)
     {
@@ -93,9 +95,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param DateTime $endDate
-     *
-     * @return \NotificationBundle\Entity\Node\Notification
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEndDate($endDate)
     {
@@ -113,9 +114,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $active
-     *
-     * @return \NotificationBundle\Entity\Node\Notification
+     * @param  boolean $active
+     * @return self
      */
     public function setActive($active)
     {
@@ -133,8 +133,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \NotificationBundle\Entity\Node\Translation  $translation
-     * @return \NotificationBundle\Entity\Node\Notification
+     * @param  Translation $translation
+     * @return self
      */
     public function addTranslation(Translation $translation)
     {
@@ -144,9 +144,9 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language       $language
-     * @param  boolean                                     $allowFallback
-     * @return \NotificationBundle\Entity\Node\Translation
+     * @param  Language|null    $language
+     * @param  boolean          $allowFallback
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -165,8 +165,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -180,8 +180,8 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getSummary($length = 200, Language $language = null, $allowFallback = true)
@@ -193,5 +193,4 @@ class Notification extends \CommonBundle\Entity\Node
 
         return '';
     }
-
 }

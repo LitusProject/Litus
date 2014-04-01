@@ -39,10 +39,10 @@ class Driver extends \CommonBundle\Component\Validator\Academic
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options. An additional option 'byId' can be set
-     *                                                   to indicate whether a user id or user name is validated. By default
-     *                                                   this is false, indicating search by user name.
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param mixed         $opts          The validator's options. An additional option 'byId' can be set
+     *                                     to indicate whether a user id or user name is validated. By default
+     *                                     this is false, indicating search by user name.
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

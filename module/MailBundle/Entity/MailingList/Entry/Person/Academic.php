@@ -31,7 +31,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
 class Academic extends \MailBundle\Entity\MailingList\Entry\Person
 {
     /**
-     * @var CommonBundle\Entity\User\Person\Academic The academic associated with this entry.
+     * @var AcademicEntity The academic associated with this entry.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id", nullable=false)
@@ -41,8 +41,8 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * Creates a new list entry for the given list with the given academic?
      *
-     * @param \MailBundle\Entity\MailingList            $list     The list for this entry
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic to add
+     * @param MailingList    $list     The list for this entry
+     * @param AcademicEntity $academic The academic to add
      */
     public function __construct(MailingList $list, AcademicEntity $academic)
     {
@@ -51,7 +51,7 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return AcademicEntity
      */
     public function getAcademic()
     {

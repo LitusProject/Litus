@@ -43,7 +43,7 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -56,8 +56,8 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @param  boolean                     $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
+     * @param  EntityManager $entityManager
+     * @param  boolean       $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
      * @return void
      */
     public function __construct(EntityManager $entityManager, $mustBeLeased = false)

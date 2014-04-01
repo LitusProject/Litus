@@ -51,7 +51,7 @@ class PianoDuration extends \Zend\Validator\AbstractValidator
     private $_format;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 

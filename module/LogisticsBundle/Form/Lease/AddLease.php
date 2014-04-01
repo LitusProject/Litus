@@ -36,13 +36,13 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
 class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $name          Optional name for the element
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

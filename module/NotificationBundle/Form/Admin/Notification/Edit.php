@@ -31,9 +31,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager                  $entityManager The EntityManager instance
-     * @param \NotificationBundle\Entity\Node\Notification $notification  The notification we're going to modify
-     * @param null|string|int                              $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Notification    $notification  The notification we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Notification $notification, $name = null)
     {

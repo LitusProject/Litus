@@ -48,7 +48,7 @@ class Reservation
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The creator of this reservation
+     * @var Person The creator of this reservation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id")
@@ -56,7 +56,7 @@ class Reservation
     private $creator;
 
     /**
-     * @var \LogisticsBundle\Entity\Reservation\ReservableResource The resource associated with this reservation.
+     * @var ReservableResource The resource associated with this reservation.
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Reservation\ReservableResource", inversedBy="reservations")
      * @ORM\JoinColumn(name="resource_name", referencedColumnName="name")
@@ -92,12 +92,12 @@ class Reservation
     private $endDate;
 
     /**
-     * @param \DateTime                                              $startDate
-     * @param \DateTime                                              $endDate
-     * @param string                                                 $reason
-     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string                                                 $additionalInfo
-     * @param \CommonBundle\Entity\User\Person                       $creator
+     * @param DateTime           $startDate
+     * @param DateTime           $endDate
+     * @param string             $reason
+     * @param ReservableResource $resource
+     * @param string             $additionalInfo
+     * @param Person             $creator
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $reason, ReservableResource $resource, $additionalInfo, Person $creator)
     {
@@ -118,7 +118,7 @@ class Reservation
     }
 
     /**
-     * @return \LogisticsBundle\Entity\Reservation\ReservableResource
+     * @return ReservableResource
      */
     public function getResource()
     {
@@ -126,7 +126,7 @@ class Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getCreator()
     {
@@ -134,9 +134,8 @@ class Reservation
     }
 
     /**
-     * @param string $reason
-     *
-     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     * @param  string $reason
+     * @return self
      */
     public function setReason($reason)
     {
@@ -154,9 +153,8 @@ class Reservation
     }
 
     /**
-     * @param \DateTime $startDate
-     *
-     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     * @param  DateTime $startDate
+     * @return self
      */
     public function setStartDate(DateTime $startDate)
     {
@@ -166,7 +164,7 @@ class Reservation
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
@@ -174,9 +172,8 @@ class Reservation
     }
 
     /**
-     * @param \DateTime $endDate
-     *
-     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEndDate(DateTime $endDate)
     {
@@ -186,7 +183,7 @@ class Reservation
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -194,9 +191,8 @@ class Reservation
     }
 
     /**
-     * @param string $additionalInfo
-     *
-     * @return \LogisticsBundle\Entity\Reservation\Reservation
+     * @param  string $additionalInfo
+     * @return self
      */
     public function setAdditionalInfo($additionalInfo)
     {

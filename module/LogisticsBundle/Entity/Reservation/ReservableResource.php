@@ -29,7 +29,6 @@ use Doctrine\ORM\Mapping as ORM,
  */
 class ReservableResource
 {
-
     /**
      * @var string The name of this resource.
      *
@@ -39,7 +38,7 @@ class ReservableResource
     private $name;
 
     /**
-     * @var array An array of \LogisticsBundle\Entity\Reservation\Reservation indicating when this resource is reserved.
+     * @var ArrayCollection An array of \LogisticsBundle\Entity\Reservation\Reservation indicating when this resource is reserved.
      *
      * @ORM\OneToMany(targetEntity="LogisticsBundle\Entity\Reservation\Reservation", mappedBy="resource_id")
      */

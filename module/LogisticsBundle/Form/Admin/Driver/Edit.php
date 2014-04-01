@@ -30,14 +30,14 @@ use LogisticsBundle\Entity\Driver,
 class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 {
     /**
-     * @var \LogisticsBundle\Entity\Driver
+     * @var Driver
      */
     private $_driver;
 
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \LogisticsBundle\Entity\Driver $driver
-     * @param null|string|int                $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Driver          $driver
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Driver $driver, $name = null)
     {

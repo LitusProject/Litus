@@ -30,14 +30,14 @@ use Doctrine\ODM\MongoDB\DocumentManager,
 class Edit extends Add
 {
     /**
-     * @var \OnBundle\Document\Slug The slug we're going to modify
+     * @var Slug The slug we're going to modify
      */
     private $_slug = null;
 
     /**
-     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \OnBundle\Document\Slug               $slug            The slug we're going to modify
-     * @param null|string|int                       $name            Optional name for the element
+     * @param DocumentManager $documentManager The DocumentManager instance
+     * @param Slug            $slug            The slug we're going to modify
+     * @param null|string|int $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, Slug $slug, $name = null)
     {

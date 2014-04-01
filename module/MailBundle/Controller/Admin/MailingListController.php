@@ -583,7 +583,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     }
 
     /**
-    * @return \Doctrine\ORM\Query
+    * @return \Doctrine\ORM\Query|null
     */
     private function _search()
     {

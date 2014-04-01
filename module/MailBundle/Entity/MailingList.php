@@ -45,21 +45,21 @@ abstract class MailingList
     private $id;
 
     /**
-     * @var array The entries of this list
+     * @var ArrayCollection The entries of this list
      *
      * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\Entry", mappedBy="list", cascade={"remove"})
      */
     private $entries;
 
     /**
-     * @var array The admins of this list
+     * @var ArrayCollection The admins of this list
      *
      * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\AdminMap", mappedBy="list", cascade={"remove"})
      */
     private $admins;
 
     /**
-     * @var array The admins of this list
+     * @var ArrayCollection The admins of this list
      *
      * @ORM\OneToMany(targetEntity="MailBundle\Entity\MailingList\AdminRoleMap", mappedBy="list", cascade={"remove"})
      */
@@ -88,8 +88,8 @@ abstract class MailingList
     /**
      * This method checks whether the list can be edited by the given academic.
      *
-     * @param  \CommonBundle\Entity\User\Person\Academic $academic  The academic that should be checked
-     * @param  boolean                                   $editAdmin Whether or not to check for permission to edit the admins of the list
+     * @param  Academic     $academic  The academic that should be checked
+     * @param  boolean      $editAdmin Whether or not to check for permission to edit the admins of the list
      * @return boolean|null
      */
     public function canBeEditedBy(Academic $academic, $editAdmin = false)

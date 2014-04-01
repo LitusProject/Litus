@@ -112,7 +112,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * @return \MailBundle\Document\Message
+     * @return \MailBundle\Document\Message|null
      */
     private function _getMessage()
     {

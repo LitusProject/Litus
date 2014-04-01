@@ -33,7 +33,6 @@ use CommonBundle\Entity\User\Person,
  */
 class VanReservation extends Reservation
 {
-
     const VAN_RESOURCE_NAME = 'Van';
 
     /**
@@ -60,13 +59,13 @@ class VanReservation extends Reservation
     private $load;
 
     /**
-     * @param \DateTime                                              $startDate
-     * @param \DateTime                                              $endDate
-     * @param string                                                 $reason
-     * @param string                                                 $load
-     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string                                                 $additionalInfo
-     * @param \CommonBundle\Entity\User\Person                       $creator
+     * @param DateTime           $startDate
+     * @param DateTime           $endDate
+     * @param string             $reason
+     * @param string             $load
+     * @param ReservableResource $resource
+     * @param string             $additionalInfo
+     * @param Person             $creator
      */
     public function __construct(DateTime $startDate, DateTime $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, Person $creator)
     {
@@ -78,7 +77,7 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getDriver()
     {
@@ -86,9 +85,8 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @param Driver $driver
-     *
-     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     * @param  Driver $driver
+     * @return self
      */
     public function setDriver(Driver $driver)
     {
@@ -98,7 +96,7 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPassenger()
     {
@@ -106,9 +104,8 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $passenger
-     *
-     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     * @param  Person $passenger
+     * @return self
      */
     public function setPassenger(Person $passenger)
     {
@@ -126,9 +123,8 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @param string $load
-     *
-     * @return \LogisticsBundle\Entity\Reservation\VanReservation
+     * @param  string $load
+     * @return self
      */
     public function setLoad($load)
     {

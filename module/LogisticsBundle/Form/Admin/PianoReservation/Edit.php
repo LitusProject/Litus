@@ -34,14 +34,14 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 class Edit extends Add
 {
     /**
-     * @var \LogisticsBundle\Entity\Reservation\PianoReservation
+     * @var PianoReservation
      */
     private $_reservation;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param PianoReservation            $reservation
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager    $entityManager The EntityManager instance
+     * @param PianoReservation $reservation
+     * @param null|string|int  $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager,PianoReservation $reservation, $name = null)
     {

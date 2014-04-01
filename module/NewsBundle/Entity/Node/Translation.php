@@ -40,7 +40,7 @@ class Translation
     private $id;
 
     /**
-     * @var \NewsBundle\Entity\Node\News The news of this translation
+     * @var News The news of this translation
      *
      * @ORM\ManyToOne(targetEntity="NewsBundle\Entity\Node\News", inversedBy="translations")
      * @ORM\JoinColumn(name="news", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Translation
     private $news;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -70,10 +70,10 @@ class Translation
     private $content;
 
     /**
-     * @param \NewsBundle\Entity\Node\News          $news
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $title
-     * @param string                                $content
+     * @param News     $news
+     * @param Language $language
+     * @param string   $title
+     * @param string   $content
      */
     public function __construct(News $news, Language $language, $title, $content)
     {
@@ -84,7 +84,7 @@ class Translation
     }
 
     /**
-     * @return \NewsBundle\Entity\Node\News
+     * @return News
      */
     public function getNews()
     {
@@ -92,7 +92,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -108,9 +108,8 @@ class Translation
     }
 
     /**
-     * @param string $title
-     *
-     * @return \NewsBundle\Entity\Node\Translation
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {
@@ -140,8 +139,7 @@ class Translation
 
     /**
      * @param string $content
-     *
-     * @param \NewsBundle\Entity\Node\Translation
+     * @param self
      */
     public function setContent($content)
     {
