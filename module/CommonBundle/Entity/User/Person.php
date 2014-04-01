@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Acl\Role,
+use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,

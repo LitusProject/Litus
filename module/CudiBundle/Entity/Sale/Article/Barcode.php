@@ -59,7 +59,7 @@ class Barcode
     private $main;
 
     /**
-     * @param Article The article of the barcode
+     * @param Article $article The article of the barcode
      * @param integer $barcode The barcode of the article
      * @param boolean $main    Flag whether this is the main barcode
      */

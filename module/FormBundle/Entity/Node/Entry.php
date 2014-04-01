@@ -162,7 +162,7 @@ class Entry
     }
 
     /**
-     * @param FieldEntry The entry to add to this form.
+     * @param FieldEntry $fieldEntry The entry to add to this form.
      * @return self
      */
     public function addFieldEntry(FieldEntry $fieldEntry)

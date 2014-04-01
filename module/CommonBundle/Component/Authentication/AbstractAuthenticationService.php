@@ -85,7 +85,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     }
 
     /**
-     * @param Action The action that should be taken after authentication
+     * @param Action $action The action that should be taken after authentication
      *
      * @return self
      */

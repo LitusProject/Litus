@@ -41,7 +41,7 @@ class Html extends \PublicationBundle\Entity\Edition
     /**
      * Creates a new edition with the given title
      *
-     * @param Publication The publication to which this edition belongs
+     * @param Publication $publication The publication to which this edition belongs
      * @param AcademicYear
      * @param string   $title    The title of this edition
      * @param string   $html     The html of this edition

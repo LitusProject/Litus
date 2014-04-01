@@ -58,7 +58,7 @@ class Name extends \Zend\Validator\AbstractValidator
     /**
      * @param EntityManager $entityManager The EntityManager instance
      * @param Language      $language
-     * @param Event The event exluded from this check
+     * @param Event $event The event exluded from this check
      * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Language $language, Event $event = null, $opts = null)

@@ -200,7 +200,7 @@ class Template
     }
 
     /**
-     * @param  Organization|null $organization
+     * @param  Organization $organization
      * @return self
      */
     public function setOrganization(Organization $organization)

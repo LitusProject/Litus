@@ -53,7 +53,7 @@ class Recursion extends \Zend\Validator\AbstractValidator
      * Create a new Article Barcode validator.
      *
      * @param EntityManager $entityManager The EntityManager instance
-     * @param Study         $stury
+     * @param Study         $study
      * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Study $study, $opts = null)

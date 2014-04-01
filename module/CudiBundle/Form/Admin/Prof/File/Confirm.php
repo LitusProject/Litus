@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param Mapping         $mapping
+     * @param FileMapping     $mapping
      * @param null|string|int $name    Optional name for the element
      */
     public function __construct(FileMapping $mapping, $name = null)

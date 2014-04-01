@@ -176,7 +176,7 @@ class Page extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Page|null $parent
+     * @param  Page $parent
      * @return Page
      */
     public function setParent(Page $parent)

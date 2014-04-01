@@ -234,7 +234,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param Field The field to add to this form.
+     * @param Field $field The field to add to this form.
      * @return self
      */
     public function addField(Field $field)

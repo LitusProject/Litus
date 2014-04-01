@@ -314,7 +314,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @param object $data
+     * @param string $data
      */
     private function _deleteLap($data)
     {

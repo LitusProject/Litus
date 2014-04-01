@@ -51,7 +51,7 @@ class Name extends \Zend\Validator\AbstractValidator
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param Album The album exluded from this check
+     * @param Album|null $album The album exluded from this check
      * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Album $album = null, $opts = null)

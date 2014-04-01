@@ -159,7 +159,7 @@ class Discount
     );
 
     /**
-     * @param Article The article of the discount
+     * @param Article $article The article of the discount
      */
     public function __construct(Article $article)
     {
@@ -167,7 +167,7 @@ class Discount
     }
 
     /**
-     * @param Template The template of the discount
+     * @param Template $template The template of the discount
      *
      * @return self
      */

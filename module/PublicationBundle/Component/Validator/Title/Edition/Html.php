@@ -61,7 +61,7 @@ class Html extends \Zend\Validator\AbstractValidator
     /**
      * @param EntityManager $entityManager The EntityManager instance
      * @param Publication   $publication
-     * @param Academicyear  $academicYear
+     * @param AcademicYear  $academicYear
      * @param integer       $id            The ID that should be ignored when checking for duplicate titles.
      * @param mixed         $opts          The validator's options.
      */

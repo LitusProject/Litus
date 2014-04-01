@@ -20,7 +20,6 @@ namespace SecretaryBundle\Entity\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     SyllabusBundle\Entity\Subject;
 

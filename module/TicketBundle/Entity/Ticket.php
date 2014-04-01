@@ -342,7 +342,7 @@ class Ticket
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function isMember()
     {
