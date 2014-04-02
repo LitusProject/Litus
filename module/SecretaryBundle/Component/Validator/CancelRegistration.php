@@ -31,7 +31,6 @@ class CancelRegistration extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The registration needs to be uncancelled before it can be payed!',
     );
 
-
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field unique and valid.

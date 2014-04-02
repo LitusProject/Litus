@@ -31,7 +31,6 @@ class NoAt extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'This field should not contain an @',
     );
 
-
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field unique and valid.
