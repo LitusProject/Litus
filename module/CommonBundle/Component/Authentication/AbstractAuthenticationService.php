@@ -190,16 +190,24 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
         );
     }
 
+    // The following methods exist because we need to update their signatures.
+
     /**
      * @param  AdapterInterface|null $adapter
      * @param  boolean               $rememberMe
      * @param  boolean               $shibboleth
      * @return Result
      */
-    abstract public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false);
+    public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
+    {
+        return parent::authenticate($adapter);
+    }
 
     /**
      * @return \CommonBundle\Entity\User\Session|null
      */
-    abstract public function clearIdentity();
+    public function clearIdentity()
+    {
+        return parent::clearIdentity()
+    }
 }
