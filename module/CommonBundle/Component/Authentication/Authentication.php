@@ -128,7 +128,7 @@ class Authentication
     /**
      * Return the person object.
      *
-     * @return Person
+     * @return null|\CommonBundle\Entity\User\Person
      */
     public function getPersonObject()
     {
@@ -143,7 +143,7 @@ class Authentication
     /**
      * Return the session object.
      *
-     * @return Session
+     * @return null|\CommonBundle\Entity\User\Session
      */
     public function getSessionObject()
     {

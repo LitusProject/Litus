@@ -19,7 +19,6 @@
 namespace CommonBundle\Component\Authentication\Adapter\Doctrine;
 
 use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\QueryBuilder;
 
 /**
