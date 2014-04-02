@@ -77,7 +77,7 @@
                             }
                             $this.trigger('change');
                         } else if ($(this).is('select')) {
-                            if ($(this).find('option:selected').html() == $this.data('visible_if_value') && $(this).is(':visible')) {
+                            if ($(this).find('option:selected').val() == $this.data('visible_if_value') && $(this).is(':visible')) {
                                 $this.closest('.form-group').show();
                             } else {
                                 $this.closest('.form-group').hide();
