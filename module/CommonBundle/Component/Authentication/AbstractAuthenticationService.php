@@ -208,6 +208,6 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function clearIdentity()
     {
-        return parent::clearIdentity()
+        return parent::clearIdentity();
     }
 }
