@@ -33,17 +33,18 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
 {
     public function getActiveAction()
     {
-        $authenticatedPerson = $this->getAccesToken()->getPerson();
+        $this->initJson();
+
+        $authenticatedPerson = $this->getAccessToken()->getPerson($this->getEntityManager());
         if (null === $authenticatedPerson)
             return $this->error(401, '');
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByPerson($authticatedPerson);
+            ->findAllActiveByPerson($authenticatedPerson);
 
+        $result = array();
         foreach ($shifts as $shift) {
-            $hasSignedUp = false;
-
             $result[] = array(
                 'id'                    => $shift->getId(),
 
@@ -52,13 +53,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                 'description'           => $shift->getDescription(),
                 'currentNbResponsibles' => count($shift->getResponsibles()),
                 'currentNbVolunteers'   => count($shift->getVolunteers()),
-                'endDate'               => $shift->getEndDate(),
-                'hasSignedUp'           => $hasSignedUp,
+                'endDate'               => $shift->getEndDate()->format('c'),
+                'hasSignedUp'           => true,
                 'manager'               => $shift->getManager()->getFullName(),
                 'name'                  => $shift->getName(),
                 'nbResponsibles'        => $shift->getNbResponsibles(),
                 'nbVolunteers'          => $shift->getNbVolunteers(),
-                'startDate'             => $shift->getStartDate(),
+                'startDate'             => $shift->getStartDate()->format('c'),
 
                 'location'              => array(
                     'id'        => $shift->getLocation()->getId(),

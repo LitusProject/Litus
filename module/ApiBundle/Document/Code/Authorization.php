@@ -165,4 +165,14 @@ class Authorization
     {
         return null !== $this->exchangeTime;
     }
+
+    /**
+     * Whether this authorization code has expired.
+     *
+     * @return boolean
+     */
+    public function hasExpired()
+    {
+        return $this->expirationTime < new DateTime();
+    }
 }
