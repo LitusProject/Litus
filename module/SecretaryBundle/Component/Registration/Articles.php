@@ -209,7 +209,6 @@ class Articles
                 ->getConfigValue('cudi.tshirt_article')
         );
 
-        $hasShirt = false;
         foreach ($tshirts as $tshirt) {
             $booking = $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')

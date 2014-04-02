@@ -63,8 +63,8 @@
                 } else if ($(this).find('option:selected').data('type') == 'dropdown') {
                     $('#visible_value').html('').closest('.row').show();
                     var values = $(this).find('option:selected').data('values').split(',');
-                    $(values).each(function () {
-                        $('#visible_value').append($('<option>').html(this));
+                    $(values).each(function (index) {
+                        $('#visible_value').append($('<option>', {'value': index}).html(this));
                     });
                     $('#visible_value').val($('#visible_value').data('current_value'));
                 } else if ($(this).find('option:selected').data('type') == 'checkbox') {
