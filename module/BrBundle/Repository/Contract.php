@@ -18,7 +18,8 @@
 
 namespace BrBundle\Repository;
 
-use BrBundle\Entity\Company,
+//TODO why do I need to do this?
+use BrBundle\Entity\Company as Comp,
     CommonBundle\Entity\User\Person,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
@@ -60,8 +61,10 @@ class Contract extends EntityRepository
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
             ->where(
-                $query->expr()->eq('c.author', ':person')
+                $query->expr()->eq('c.author', ':person'),
+                $query->expr()->eq('o.old', 'FALSE')
             )
             ->setParameter('person', $person)
             ->getQuery();
@@ -147,13 +150,15 @@ class Contract extends EntityRepository
     //____________
     //____________
 
-    public function findContractsByCompanyIDQuery(Company $company)
+    public function findContractsByCompanyIDQuery(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
             ->where(
-                $query->expr()->eq('c.company', ':company')
+                $query->expr()->eq('c.company', ':company'),
+                $query->expr()->eq('o.old', 'FALSE')
             )
             ->setParameter('company', $company)
             ->getQuery();
@@ -175,7 +180,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractAmountByCompany(Company $company)
+    public function getContractAmountByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('count(c)')
@@ -190,7 +195,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractedRevenueByCompany(Company $company)
+    public function getContractedRevenueByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('sum(o.totalCost)')
@@ -206,7 +211,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getPaidRevenueByCompany(Company $company)
+    public function getPaidRevenueByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('sum(o.totalCost)')

@@ -48,6 +48,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -106,12 +107,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $quantity = $formData['product-' . $product->getId()];
                     if ($quantity != 0)
                     {
-                        if($tax){
-                            $cost = $cost + (($product->getPrice() / 100) * $quantity);
-                        } else
-                            $cost = $cost + ( ( ($product->getPrice() / 100) + (($product->getPrice() / 100) * ($product->getVatPercentage($this->getEntityManager()) / 100)) )
-                             * $quantity);
-
+                        $cost = $cost + $this->_calculateCost($tax, ($product->getPrice() / 100), $quantity, ($product->getVatPercentage($this->getEntityManager()) / 100));
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                         $order->setEntry($orderEntry);
@@ -183,9 +179,15 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
 
+                if ($formData['tax'] == true) {
+                    $tax = true;
+                } else
+                    $tax = false;
+
                 $updatedOrder = new Order(
                     $contact,
-                    $this->getAuthentication()->getPersonObject()
+                    $this->getAuthentication()->getPersonObject(),
+                    $tax
                 );
 
                 $updatedContract = new Contract($updatedOrder,
@@ -206,6 +208,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
                 $counter = 0;
+                $cost = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
@@ -219,8 +222,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         $counter++;
                         $this->getEntityManager()->persist($updatedOrderEntry);
                         $this->getEntityManager()->persist($updatedContractEntry);
+                        $cost = $cost + $this->_calculateCost($tax, ($product->getPrice() / 100), $quantity, ($product->getVatPercentage($this->getEntityManager()) / 100));
                     }
                 }
+                $discount = (integer) $formData['discount'];
+                $updatedOrder->setTotalCost($cost * (1-($discount/100)));
 
                 $this->getEntityManager()->persist($updatedOrder);
                 $this->getEntityManager()->persist($updatedContract);

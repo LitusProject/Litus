@@ -111,23 +111,16 @@ class Order
     private $old;
 
     /**
-     * @var bool True if this order is tax free or not.
+     * @var bool True if this order is tax free, false if not.
      *
      * @ORM\Column(name="tax_free", type="boolean")
      */
     private $taxFree;
 
     /**
-     * @var bool True if this order is old or not.
-     *
-     * @ORM\Column(name="total_cost", type="decimal")
-     */
-    private $totalCost;
-
-    /**
      * @var int that determines the maximum cost that can be given to an order.
      **/
-    private static $MAX_TOTAL_COST = 25000;
+    private static $MAX_TOTAL_COST = 50000;
 
     /**
      */
@@ -149,8 +142,19 @@ class Order
         $this->totalCost = $cost;
     }
 
-    public function getTotalCost(){
-        return $this->totalCost;
+    public function getTotalCost(EntityManager $entityManager){
+        $cost = 0;
+        if($this->taxFree){
+            foreach ($this->orderEntries as $orderEntry) {
+                $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+            }
+        }
+        else{
+            foreach ($this->orderEntries as $orderEntry) {
+                $cost = $cost + ( ($orderEntry->getProduct()->getPrice()*(1 + $orderEntry->getProduct()->getVatPercentage($entityManager)/100)) * $orderEntry->getQuantity()) ;
+            }
+        }
+        return $cost / 100;
     }
 
     public function isTaxFree(){

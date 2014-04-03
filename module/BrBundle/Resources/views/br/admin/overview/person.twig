@@ -10,12 +10,14 @@
         <table class="full_width manage">
             <tr>
                 <th>Amount of contracts</th>
-                <th>Contracted Revenue</th>
-                <th>Paid Revenue</th>
+                <th>Contracted</th>
+                <th>Signed</th>
+                <th>Paid</th>
             </tr>
             <tr class="overview">
                     <td>{{totals['amount']}}</td>
                     <td>&euro; {{totals['contract']}}</td>
+                    <td>&euro; {{totals['signed']}}</td>
                     <td>&euro; {{totals['paid']}}</td>
             </tr>
         </table><br>
@@ -25,8 +27,9 @@
             <tr>
                 <th>Person</th>
                 <th>Amount of contracts</th>
-                <th>Contracted Revenue</th>
-                <th>Paid Revenue</th>
+                <th>Contracted</th>
+                <th>Signed</th>
+                <th>Paid</th>
                 <th width="70px">Actions</th>
             </tr>
             {% for entry in array %}
@@ -34,6 +37,7 @@
                     <td>{{entry['person'].getFullName()}}</td>
                     <td>{{entry['amount']}}</td>
                     <td>&euro; {{entry['contract']}}</td>
+                    <td>&euro; {{entry['signed']}}</td>
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">
                     	{% if hasAccess('br_admin_overview', 'view') %}
