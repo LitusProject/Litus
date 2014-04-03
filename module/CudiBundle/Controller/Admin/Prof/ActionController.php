@@ -142,6 +142,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
+            } elseif ($action->getAction() == 'delete') {
+                $action->getEntity()->setIsHistory(true);
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();

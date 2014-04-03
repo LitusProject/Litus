@@ -10,12 +10,12 @@
             {% if hasAccess('cudi_prof_article_comment', 'manage') %}
                 <h3>{{ translate('Comments') }}</h3>
                 <p>{{ translate('View comments on this article and add one.') }}</p>
-                <p><a href="{{ url("cudi_prof_article_comment", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-default">{{ translate('Comments') }}</a></p>
+                <p><a href="{{ url("cudi_prof_article_comment", {"action": "manage", "id": article.getId()}) }}" class="btn btn-default">{{ translate('Comments') }}</a></p>
             {% endif %}
             {% if hasAccess('cudi_prof_file', 'manage') and article.isInternal() %}
                 <h3>{{ translate('Files') }}</h3>
                 <p>{{ translate('Manage the files of this article.') }}</p>
-                <p><a href="{{ url("cudi_prof_file", {"action": "manage", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-default">{{ translate('Files') }}</a></p>
+                <p><a href="{{ url("cudi_prof_file", {"action": "manage", "id": article.getId()}) }}" class="btn btn-default">{{ translate('Files') }}</a></p>
             {% endif %}
         </div>
     </div>
