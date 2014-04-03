@@ -29,8 +29,8 @@
 
                     {% for submenu in menu.general %}
                         <ul>
-                            {% for controller, settings in submenu %}
-                                <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
+                            {% for settings in submenu %}
+                                <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
                             {% endfor %}
                         </ul>
                     {% endfor %}
@@ -50,8 +50,8 @@
                                     {{ submenu.subtitle }}
                                 </div>
                                 <ul{% if submenu.active %} style="display: block;"{% endif %}>
-                                    {% for controller, settings in submenu.items %}
-                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
+                                    {% for settings in submenu.items %}
+                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>

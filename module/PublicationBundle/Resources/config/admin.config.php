@@ -21,7 +21,7 @@ return array(
         'Publications' => array(
             'subtitle'    => array('Editions', 'Publications'),
             'items'       => array(
-                'publication_admin_publication' => 'Publications'
+                'publication_admin_publication' => array('title' => 'Publications'),
             ),
             'controllers' => array(
                 'publication_admin_edition_html',

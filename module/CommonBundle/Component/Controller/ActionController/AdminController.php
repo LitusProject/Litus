@@ -21,6 +21,7 @@ namespace CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
+    CommonBundle\Component\Util\NamedPriorityQueue,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -141,9 +142,15 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $settings = array('title' => $settings);
         if (!array_key_exists('action', $settings))
             $settings['action'] = 'manage';
+        $settings['controller'] = $controller;
+
+        if (array_key_exists('priority', $settings))
+            $priority = array($settings['priority'], $settings['title']);
+        else
+            $priority = $settings['title'];
 
         if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
-            $menu[$controller] = $settings;
+            $menu->insert($settings, $priority);
 
             return true;
         }
@@ -158,22 +165,17 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentController = $this->getParam('controller');
 
-        $titleNatCmp = function (array $a, array $b) {
-            return strnatcmp($a['title'], $b['title']);
-        };
-
         $general = array();
 
         foreach ($config['general'] as $name => $submenu) {
-            $newSubmenu = array();
+            $newSubmenu = new NamedPriorityQueue();
 
             foreach ($submenu as $controller => $settings) {
                 $this->_addToMenu($controller, $settings, $newSubmenu);
             }
 
             if (count($newSubmenu)) {
-                uasort($newSubmenu, $titleNatCmp);
-                $general[$name] = $newSubmenu;
+                $general[$name] = $newSubmenu->toArray();
             }
         }
 
@@ -187,7 +189,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
 
             $active = false;
-            $newSubmenuItems = array();
+            $newSubmenuItems = new NamedPriorityQueue();
 
             foreach ($submenu['items'] as $controller => $settings) {
                 $this->_addToMenu($controller, $settings, $newSubmenuItems);
@@ -206,9 +208,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $newSubmenu['active'] = $active;
-
-            uasort($newSubmenuItems, $titleNatCmp);
-            $newSubmenu['items']  = $newSubmenuItems;
+            $newSubmenu['items']  = $newSubmenuItems->toArray();
 
             if (count($newSubmenu['items']))
                 $submenus[$name] = $newSubmenu;
