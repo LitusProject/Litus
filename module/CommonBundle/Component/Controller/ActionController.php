@@ -423,6 +423,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
+        if (!isset($language) && isset($this->getSessionStorage()->language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getSessionStorage()->language);
+        }
+
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
@@ -437,6 +443,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 $this->getEntityManager()->flush();
             }
         }
+
+        $this->getSessionStorage()->language = $language->getAbbrev();
 
         $this->_language = $language;
 
