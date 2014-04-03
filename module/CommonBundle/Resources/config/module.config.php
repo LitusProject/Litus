@@ -71,7 +71,7 @@ return Config::create(
                 },
 
                 'common_sessionstorage' => function ($serviceManager) {
-                    return new Zend\Session\Container('Litus_Common');
+                    return new \Zend\Session\Container('Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
