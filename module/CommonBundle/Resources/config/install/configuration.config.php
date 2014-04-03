@@ -35,20 +35,22 @@ return array(
                     'subject' => 'VTK Account Deactivated',
                     'content' => 'Dear {{ name }},
 
-Your account on VTK has been deactivated.
+Your account has been deactivated.
 Click here to activate it again: http://litus/account/activate/code/{{ code }}
 
-With best regards,
+Kind regards,
+
 VTK'
                 ),
                 'nl' => array(
                     'subject' => 'VTK Account Gedeactiveerd',
                     'content' => 'Beste {{ name }},
 
-Uw account op VTK is gedeactiveerd.
+Uw account werd gedeactiveerd.
 Klik hier om deze opnieuw te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
+
 VTK'
                 ),
             )
@@ -63,20 +65,22 @@ VTK'
                     'subject' => 'VTK Account Activated',
                     'content' => 'Dear {{ name }},
 
-An account for you was created on VTK with username {{ username }}.
+An account was created for you with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}
 
-With best regards,
+Kind regards,
+
 VTK'
                 ),
                 'nl' => array(
                     'subject' => 'VTK Account Geactiveerd',
                     'content' => 'Beste {{ name }},
 
-Een account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Een account werd voor u aangemaakt met gebruikersnaam{{ username }}.
 Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
+
 VTK'
                 ),
             )
