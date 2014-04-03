@@ -101,13 +101,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
                 $counter = 0;
-                $cost = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
                     if ($quantity != 0)
                     {
-                        $cost = $cost + $this->_calculateCost($tax, ($product->getPrice() / 100), $quantity, ($product->getVatPercentage($this->getEntityManager()) / 100));
                         $orderEntry = new OrderEntry($order, $product, $quantity);
                         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                         $order->setEntry($orderEntry);
@@ -119,8 +117,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 if ($counter > 0) {
-                    $discount = (integer) $formData['discount'];
-                    $order->setTotalCost($cost * (1-($discount/100)));
                     $this->getEntityManager()->persist($order);
                     $this->getEntityManager()->persist($contract);
                     $this->getEntityManager()->flush();
@@ -208,7 +204,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findByAcademicYear($this->getCurrentAcademicYear());
 
                 $counter = 0;
-                $cost = 0;
                 foreach ($products as $product)
                 {
                     $quantity = $formData['product-' . $product->getId()];
@@ -222,11 +217,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         $counter++;
                         $this->getEntityManager()->persist($updatedOrderEntry);
                         $this->getEntityManager()->persist($updatedContractEntry);
-                        $cost = $cost + $this->_calculateCost($tax, ($product->getPrice() / 100), $quantity, ($product->getVatPercentage($this->getEntityManager()) / 100));
                     }
                 }
-                $discount = (integer) $formData['discount'];
-                $updatedOrder->setTotalCost($cost * (1-($discount/100)));
 
                 $this->getEntityManager()->persist($updatedOrder);
                 $this->getEntityManager()->persist($updatedContract);
