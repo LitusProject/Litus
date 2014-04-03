@@ -210,7 +210,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             uasort($newSubmenuItems, $titleNatCmp);
             $newSubmenu['items']  = $newSubmenuItems;
 
-            if (count($newSubmenu))
+            if (count($newSubmenu['items']))
                 $submenus[$name] = $newSubmenu;
         }
 

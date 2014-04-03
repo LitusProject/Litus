@@ -44,19 +44,17 @@
 
                     <ul class="subsubmenu">
                         {% for submenu_name, submenu in menu.submenus %}
-                            {% if submenu.items|length > 0 %}
-                                <li>
-                                    <div class="subtitle">
-                                        <b>{{ submenu_name }}</b><br />
-                                        {{ submenu.subtitle }}
-                                    </div>
-                                    <ul{% if submenu.active %} style="display: block;"{% endif %}>
-                                        {% for controller, settings in submenu.items %}
-                                            <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endif %}
+                            <li>
+                                <div class="subtitle">
+                                    <b>{{ submenu_name }}</b><br />
+                                    {{ submenu.subtitle }}
+                                </div>
+                                <ul{% if submenu.active %} style="display: block;"{% endif %}>
+                                    {% for controller, settings in submenu.items %}
+                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
                         {% endfor %}
                     </ul>
                 </li>
