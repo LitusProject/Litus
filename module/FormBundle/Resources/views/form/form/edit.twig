@@ -28,9 +28,11 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('input[name="save_as_draft"]:disabled').addClass('disabled').removeAttr('disabled').tooltip({'trigger': 'hover', 'title': '{{ translate('You have already a draft of this form') }}'}).click(function (e) {
-                e.preventDefault();
-            });
+            {% if specification.isEditableByUser() %}
+                $('input[name="save_as_draft"]:disabled').addClass('disabled').removeAttr('disabled').tooltip({'trigger': 'hover', 'title': '{{ translate('You have already a draft of this form') }}'}).click(function (e) {
+                    e.preventDefault();
+                });
+            {% endif %}
 
             $('span[data-toggle=tooltip]').tooltip({'trigger': 'hover'});
             $('input[type=file]').each(function () {
