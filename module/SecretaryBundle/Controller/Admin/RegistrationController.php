@@ -664,8 +664,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
 
-        if (null != $metaData)
+        if (null != $metaData) {
             $metaData->setBecomeMember(false);
+        }
 
         $organizationStatus->setStatus('non_member');
         $registration->setPayed(false)
