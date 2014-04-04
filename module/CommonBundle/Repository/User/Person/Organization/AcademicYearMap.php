@@ -51,21 +51,22 @@ class AcademicYearMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization)
+    public function findAllByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $query->select('m')
             ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('m.organization', ':organization'),
+                    null !== $organization ? $query->expr()->eq('m.organization', ':organization') : '1=1',
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
             )
-            ->setParameter('organization', $organization)
-            ->setParameter('academicYear', $academicYear)
-            ->getQuery();
+            ->setParameter('academicYear', $academicYear);
 
-        return $resultSet;
+        if (null !== $organization)
+            $query->setParameter('organization', $organization);
+
+        return $query->getQuery();
     }
 }
