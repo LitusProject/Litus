@@ -161,6 +161,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
+        if($order->getContract()->isSigned() == true)
+            return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
 
