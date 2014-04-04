@@ -490,40 +490,40 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $academicYear = $this->_getAcademicYear();
         $organization = $this->_getOrganization();
 
-        if ($organization) {
-            $mappings = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-                ->findByAcademicYearAndOrganization($academicYear, $organization);
-        } else {
-            $mappings = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-                ->findByAcademicYear($academicYear);
-        }
+        $mappings = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+            ->findAllByAcademicYearAndOrganization($academicYear, $organization);
 
+        $members = array();
         foreach ($mappings as $mapping) {
+            $academic = $mapping->getAcademic();
+
             $registration = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Registration')
-                ->findOneByAcademicAndAcademicYear($mapping->getAcademic(), $academicYear);
+                ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-            if (null === $registration || $registration->hasPayed() == false)
+            if (null === $registration || !$registration->hasPayed())
                 continue;
 
+            $primaryAddress = $academic->getPrimaryAddress();
+            $secondaryAddress = $academic->getSecondaryAddress();
+
             $members[$mapping->getAcademic()->getId()] = array(
-                'academicFirstName'               => $mapping->getAcademic()->getFirstName(),
-                'academicLastName'                => $mapping->getAcademic()->getLastName(),
-                'academicEmail'                   => $mapping->getAcademic()->getEmail(),
-                'academicPrimaryAddressStreet'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getStreet() : '',
-                'academicPrimaryAddressNumber'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getNumber() : '',
-                'academicPrimaryAddressMailbox'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getMailbox() : '',
-                'academicPrimaryAddressPostal'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getPostal() : '',
-                'academicPrimaryAddressCity'      => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCity() : '',
-                'academicPrimaryAddressCountry'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCountry() : '',
-                'academicSecondaryAddressStreet'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getStreet() : '',
-                'academicSecondaryAddressNumber'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getNumber() : '',
-                'academicSecondaryAddressMailbox' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getMailbox() : '',
-                'academicSecondaryAddressPostal'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getPostal() : '',
-                'academicSecondaryAddressCity'    => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCity() : '',
-                'academicSecondaryAddressCountry' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCountry() : '',
+                'academicFirstName'               => $academic->getFirstName(),
+                'academicLastName'                => $academic->getLastName(),
+                'academicEmail'                   => $academic->getEmail(),
+                'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
+                'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
+                'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
+                'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
+                'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
+                'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
+                'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
+                'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
+                'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
+                'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
+                'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
+                'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
             );
         }
 
@@ -550,10 +550,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()
-            ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="members_'.$academicYear->getCode().'.csv"',
-            'Content-Type' => 'text/csv',
-        ));
+            ->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="members_' . $academicYear->getCode() . '.csv"',
+                'Content-Type' => 'text/csv',
+            )
+        );
 
         return new ViewModel(
             array(

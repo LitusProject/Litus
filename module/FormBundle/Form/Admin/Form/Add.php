@@ -143,7 +143,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field = new Checkbox('editable_by_user');
         $field->setLabel('Allow Users To Edit Their Info')
             ->setAttribute('class', 'form doodle')
-            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries.');
+            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries. This will also enable the "Save as Concept" button.');
         $this->add($field);
 
         $field = new Checkbox('names_visible_for_others');
