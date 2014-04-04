@@ -116,6 +116,7 @@
     }
 
   , listen: function () {
+      this.$element.attr( "autocomplete", "off" );
       this.$element
         .on('blur',     $.proxy(this.blur, this))
         .on('keypress', $.proxy(this.keypress, this))

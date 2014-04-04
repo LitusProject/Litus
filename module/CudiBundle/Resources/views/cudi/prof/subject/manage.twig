@@ -25,10 +25,10 @@
                     <td>{{ subject.getSubject().getCredits() }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_prof_subject_comment', 'manage') %}
-                            <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
+                            <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": subject.getSubject().getId()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
                         {% endif %}
                         {% if hasAccess('cudi_prof_subject', 'subject') %}
-                            <a href="{{ url("cudi_prof_subject", {"action": "subject", "id": subject.getSubject().getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
+                            <a href="{{ url("cudi_prof_subject", {"action": "subject", "id": subject.getSubject().getId()}) }}" class="btn btn-primary">{{ translate('View') }}</a>
                         {% endif %}
                     </td>
                 </tr>

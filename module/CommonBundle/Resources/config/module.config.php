@@ -33,7 +33,7 @@ return Config::create(
                 'translator' => function ($serviceManager) {
                     $config = $serviceManager->get('Config');
 
-                    return new \Zend\Mvc\I18n\Translator($config['translator']);
+                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
                 },
 
                 'authentication' => function ($serviceManager) {
@@ -71,7 +71,7 @@ return Config::create(
                 },
 
                 'common_sessionstorage' => function ($serviceManager) {
-                    return new Zend\Session\Container('Litus_Common');
+                    return new \Zend\Session\Container('Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',

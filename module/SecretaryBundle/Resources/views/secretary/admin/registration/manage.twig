@@ -3,6 +3,19 @@
 {% block content %}
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage success_message full_width registration_cancelled_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The registration was successfully cancelled !</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width registration_cancelled_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to cancel a registration. Is the person a member of praesidium ?</p>
+        </div>
+    </div>
+
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
     {% include 'secretary/admin/registration/partials/years.twig' %}
@@ -24,15 +37,34 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="200px">University Identification</th>
+                    <th width="130px">Identification</th>
                     <th>Name</th>
                     <th width="120px">Date</th>
-                    <th width="120px">Payed</th>
-                    <th width="120px">Barcode</th>
+                    <th width="80px">Payed</th>
+                    <th width="80px">Cancelled</th>
+                    <th width="100px">Barcode</th>
                     <th width="120px">Organization</th>
                     <th width="70px">Action</th>
                 </tr>
             </table>
+        </div>
+    </div>
+    <div class="modal hide fade" id="cancelRegistration">
+        <div class="modal-header">
+            <span>Litus Admin</span>
+            /Cancel Registration
+        </div>
+        <div class="modal-body">
+            <p>
+                You are about to cancel the following registration: <b class="registerName"></b>!
+            </p>
+            <p>
+                Are you sure you want to continue?
+            </p>
+            <div class="footer">
+                <input type="button" class="delete" value="Yes">
+                <input type="button" class="cancel" data-dismiss="modal" value="No">
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -54,6 +86,7 @@
                             .append('<td>' + this.name + '</td>')
                             .append('<td>' + this.date + '</td>')
                             .append('<td>' + (this.payed ? '&times;' : '') + '</td>')
+                            .append('<td class="registrationCancelled">' + (this.cancelled ? '&times;' : '') + '</td>')
                             .append('<td>' + this.barcode + '</td>')
                             .append('<td>' + this.organization + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
@@ -64,7 +97,15 @@
                         {% if hasAccess('secretary_admin_registration', 'edit') %}
                             actions.append('<a href="{{ url('secretary_admin_registration', {"action": "edit"}) }}' + this.id +'/organization/{{ currentOrganization.getId() }}" class="edit">Edit</a>');
                         {% endif %}
+                        {% if hasAccess('secretary_admin_registration', 'cancel') %}
+                            actions.append(deleteButton = $('<a href="#" class="delete">Cancel</a>'))
+                            deleteButton.data({
+                                id: this.id,
+                                name: this.name,
+                            });
+                        {% endif %}
                     });
+                    $('#registration_search table .delete').click(openCancelModal);
                     $('#registration_search table').change();
                 },
                 clear: function () {
@@ -72,6 +113,35 @@
                 }
             });
             {% endif %}
+            $('.delete').click(openCancelModal);
         });
+
+        function openCancelModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var cancelRegistration = $('#cancelRegistration');
+            var id = $this.data('id');
+            cancelRegistration.find('.registerName').html($(this).data('name'));
+            cancelRegistration.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('secretary_admin_registration', {"action": "cancel"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.registration_cancelled_success').removeClass('hide');
+                        $('tr.item item-'+id).find('td.registrationCancelled').text('&times;');
+                        cancelRegistration.modal('hide');
+                    } else {
+                        errorCancel();
+                    }
+                }, 'json').error(errorCancel);
+            });
+            cancelRegistration.modal();
+        }
+
+        function errorCancel() {
+            $('.flashmessage').addClass('hide');
+            $('.registration_cancelled_error').removeClass('hide');
+            $('#cancelRegistration').modal('hide');
+        }
+
     </script>
 {% endblock %}

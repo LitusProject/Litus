@@ -89,6 +89,7 @@ return array(
 
     'Your Recent Activity' => 'Your Recent Activity',
     'added an article on <b>%date%</b>' => 'added an article on <b>%date%</b>',
+    'removed an article on <b>%date%</b>' => 'removed an article on <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'edited an article on <b>%date%</b>',
     'Status' => 'Status',
     'Confirmed' => 'Confirmed',
@@ -125,6 +126,9 @@ return array(
     'Are you sure you want to activate the following article' => 'Are you sure you want to activate the following article',
     'Will the content of the article be the same af previous year?' => 'Will the content of the article be the same af previous year?',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.',
+
+    'An error occurred while removing the article.' => 'An error occurred while removing the article.',
+    'The article was succesfully removed.' => 'The article was succesfully removed.',
 
     'Textbook from Other Publisher' => 'Textbook from Other Publisher',
     'Published by {{ unionShortName }}' => 'Published by {{ unionShortName }}',

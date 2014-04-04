@@ -44,4 +44,6 @@ return array(
 
     'The number of tickets is not valid' => 'The number of tickets is not valid',
     'The number of tickets exceeds the maximum' => 'The number of tickets exceeds the maximum',
+
+    'The event isn\'t active anymore.' => 'The event isn\'t active anymore.',
 );

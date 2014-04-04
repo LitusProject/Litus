@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'calendar_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'calendar_admin_calendar' => array(
             '@common_jquery',
             '@admin_css',

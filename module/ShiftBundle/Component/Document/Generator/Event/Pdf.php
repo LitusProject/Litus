@@ -35,7 +35,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var \CalendarBundle\Entity\Node\Event
      */
     private $_event;
 

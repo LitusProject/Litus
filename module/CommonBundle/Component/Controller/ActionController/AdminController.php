@@ -63,30 +63,18 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
 
-            if (null === $period) {
-                $this->addPersistentFlashMessage(
-                    $result,
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
-                    )
-                );
-            } elseif ($period->getStartDate()->format('Y') < date('Y') || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()) {
-                $this->addPersistentFlashMessage(
-                    $result,
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
-                    )
-                );
-            }
+            $result->createNewStockPeriod = (
+                null === $period
+                || $period->getStartDate()->format('Y') < date('Y')
+                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()
+            );
         }
 
         $result->servedBy = null;
         if (false !== getenv('SERVED_BY'))
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
+
+        $result->menu = $this->_getMenu();
 
         $e->setResult($result);
 
@@ -146,5 +134,92 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     protected function getCurrentAcademicYear($organization = true)
     {
         return parent::getCurrentAcademicYear($organization);
+    }
+
+    private function _addToMenu($controller, $settings, &$menu)
+    {
+        if (!is_array($settings))
+            $settings = array('title' => $settings);
+        if (!array_key_exists('action', $settings))
+            $settings['action'] = 'manage';
+
+        if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
+            $menu[$controller] = $settings;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function _getMenu()
+    {
+        $config = $this->getServiceLocator()->get('Config');
+        $config = $config['litus']['admin'];
+
+        $currentController = $this->getParam('controller');
+
+        $titleNatCmp = function (array $a, array $b) {
+            return strnatcmp($a['title'], $b['title']);
+        };
+
+        $general = array();
+
+        foreach ($config['general'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            foreach ($submenu as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenu);
+            }
+
+            if (count($newSubmenu)) {
+                uasort($newSubmenu, $titleNatCmp);
+                $general[$name] = $newSubmenu;
+            }
+        }
+
+        $submenus = array();
+
+        foreach ($config['submenus'] as $name => $submenu) {
+            $newSubmenu = array();
+
+            natsort($submenu['subtitle']);
+            $lastSubtitle = array_pop($submenu['subtitle']);
+            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+
+            $active = false;
+            $newSubmenuItems = array();
+
+            foreach ($submenu['items'] as $controller => $settings) {
+                $this->_addToMenu($controller, $settings, $newSubmenuItems);
+
+                if ($currentController === $controller)
+                    $active = true;
+            }
+
+            if (!$active && array_key_exists('controllers', $submenu)) {
+                foreach ($submenu['controllers'] as $controller) {
+                    if ($currentController === $controller) {
+                        $active = true;
+                        break;
+                    }
+                }
+            }
+
+            $newSubmenu['active'] = $active;
+
+            uasort($newSubmenuItems, $titleNatCmp);
+            $newSubmenu['items']  = $newSubmenuItems;
+
+            if (count($newSubmenu))
+                $submenus[$name] = $newSubmenu;
+        }
+
+        uksort($submenus, 'strnatcmp');
+
+        return array(
+            'general'  => $general,
+            'submenus' => $submenus,
+        );
     }
 }

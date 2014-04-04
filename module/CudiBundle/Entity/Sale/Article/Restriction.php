@@ -62,7 +62,7 @@ class Restriction
     private $value;
 
     /**
-     * @var array The possible types of a discount
+     * @var array The possible types of a restriction
      */
     public static $POSSIBLE_TYPES = array(
         'member' => 'Member',
@@ -70,7 +70,7 @@ class Restriction
     );
 
     /**
-     * @var array The possible types of a discount
+     * @var array The possible value types of a restriction
      */
     public static $VALUE_TYPES = array(
         'member' => 'boolean',

@@ -138,7 +138,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if ($formEntry->getCreationPerson() == $person)
+            if (null !== $person && $formEntry->getCreationPerson() == $person)
                 continue;
 
             foreach ($formEntry->getFieldEntries() as $fieldEntry) {

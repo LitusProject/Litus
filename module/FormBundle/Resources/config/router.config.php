@@ -105,7 +105,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'form_view',
-                    'action'     => 'view',
+                    'action'     => 'index',
                 ),
             ),
         ),

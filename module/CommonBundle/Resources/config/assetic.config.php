@@ -18,17 +18,6 @@
 
 return array(
     'controllers' => array(
-        'common_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-        'all_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
-
         'common_admin_academic' => array(
             '@common_jquery',
             '@admin_css',
@@ -329,6 +318,22 @@ return array(
             'filters' => array('css'),
             'options' => array(
                 'output' => 'jcrop_css.css',
+            ),
+        ),
+
+        'resizableColumns_js' => array(
+            'assets' => array(
+                'common/js/resizableColumns.js',
+            ),
+            'filters' => array('js'),
+        ),
+        'resizableColumns_css' => array(
+            'assets' => array(
+                'common/css/resizableColumns.css',
+            ),
+            'filters' => array('css'),
+            'options' => array(
+                'output' => 'resizableColumns_css.css',
             ),
         ),
     ),

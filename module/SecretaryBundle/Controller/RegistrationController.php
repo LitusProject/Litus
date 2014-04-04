@@ -56,11 +56,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if (!$enableRegistration) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
-        }
+        if (!$enableRegistration)
+            return $this->notFoundAction();
 
         return $result;
     }
