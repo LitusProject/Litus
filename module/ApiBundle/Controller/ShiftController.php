@@ -54,7 +54,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                 'currentNbResponsibles' => count($shift->getResponsibles()),
                 'currentNbVolunteers'   => count($shift->getVolunteers()),
                 'endDate'               => $shift->getEndDate()->format('c'),
-                'hasSignedUp'           => true,
+                'signedUp'              => true,
                 'manager'               => $shift->getManager()->getFullName(),
                 'name'                  => $shift->getName(),
                 'nbResponsibles'        => $shift->getNbResponsibles(),
