@@ -24,7 +24,7 @@ return array(
         ),
         'actions' => array(
             'secretary_registration' => array(
-                'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects','cancel'
+                'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
             ),
         ),
     ),

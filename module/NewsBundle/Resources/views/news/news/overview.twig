@@ -11,14 +11,13 @@
     </div>
 
     {% for item in paginator %}
-        <h3>{{ item.getTitle(language) }}</h3>
+        <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
 
-        <div class="item date-left">
-            <h4 class="date left">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</h4>
-            <blockquote>{{ hideEmail(item.getSummary(400, language))|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
-            </blockquote>
+        <div style="margin-left: 5px;">
+            {{ hideEmail(item.getSummary(400, language))|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+            &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
         </div>
+        <hr>
     {% endfor %}
 
     {% include 'site/partials/paginationControl.twig' %}
