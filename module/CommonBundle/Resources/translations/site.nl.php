@@ -21,6 +21,8 @@ return array(
     'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
+    'Vlaamse Technische Kring is the student organization of the Faculty of Engineering at the KU Leuven.' => 'De Vlaamse Technische Kring is de studentenvereniging van de faculteitskring van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
+
     'Dutch' => 'Nederlands',
     'English' => 'English',
     'French' => 'Français',
@@ -95,6 +97,8 @@ return array(
     'Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.' => 'Momenteel is er <span class="label label-info">%number%</span> student in de rij bij Cudi.',
     'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="label label-info">%number%</span> studenten in de rij bij Cudi.',
     'Opening Hours' => 'Openingsuren',
+    'Cudi is currently closed.' => 'Cudi is momenteel gesloten.',
+    'Reservate textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
 
