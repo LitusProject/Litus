@@ -21,7 +21,8 @@ return array(
     'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
-    'Vlaamse Technische Kring is the student organization of the Faculty of Engineering at the KU Leuven.' => 'De Vlaamse Technische Kring is de studentenvereniging van de faculteitskring van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
+    'Welcome' => 'Welkom',
+    'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welkom op de website van de Vlaamse Technische Kring, de studentenvereniging van de faculteitskring van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
 
     'Dutch' => 'Nederlands',
     'English' => 'English',

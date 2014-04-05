@@ -135,11 +135,25 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     'events' => array()
                 );
             }
+
+            $fullTime = '';
+            if (null !== $event->getEndDate()) {
+                if ($event->getEndDate()->format('d/M/Y') == $event->getStartDate()->format('d/M/Y')) {
+                    $fullTime = $hourFormatter->format($event->getStartDate()) . ' - ' . $hourFormatter->format($event->getEndDate());
+                } else {
+                    $fullTime = $dayFormatter->format($event->getStartDate()) . ' ' . $hourFormatter->format($event->getStartDate()) . ' - ' . $dayFormatter->format($event->getEndDate()) . ' ' . $hourFormatter->format($event->getEndDate());
+                }
+            } else {
+                $fullTime = $hourFormatter->format($event->getStartDate());
+            }
+
             $calendarItems[$date]->events[] = (object) array(
                 'id' => $event->getId(),
                 'title' => $event->getTitle($this->getLanguage()),
                 'startDate' => $hourFormatter->format($event->getStartDate()),
+                'summary' => $event->getSummary(100, $this->getLanguage()),
                 'content' => $event->getSummary(200, $this->getLanguage()),
+                'fullTime' => $fullTime,
                 'url' => $this->url()->fromRoute(
                     'calendar',
                     array(

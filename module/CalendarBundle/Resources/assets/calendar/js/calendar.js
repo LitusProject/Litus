@@ -91,16 +91,32 @@
                 column.append(
                     day = $('<div>', {'class': 'item date-left'}).append(
                         $('<h4>', {'class': 'date left'}).html(value.date),
-                        dayItem = $('<div>', {'class': 'dayItem'})
+                        dayItem = $('<div>', {'class': 'dayItem'}).css('margin-left', '5px')
                     )
                 );
                 $(value.events).each(function () {
                     dayItem.append(
-                        $('<p>', {'class': 'calendarItem'}).append(
-                            $('<span>', {'class': 'glyphicon glyphicon-time time'}), ' ',
-                            $('<a>', {'href': this.url, 'rel': 'popover', 'data-original-title': this.title, 'data-content': this.content}).append(
-                                this.startDate, '&mdash;', this.title
-                            )
+                        $('<div>').append(
+                            $('<a>',
+                                {
+                                    'href': this.url,
+                                    'rel': 'popover',
+                                    'data-original-title': this.title,
+                                    'data-content': $('<div>').append(
+                                        $('<small>').append(
+                                            $('<em>').append(
+                                                $('<span>', {'class': 'glyphicon glyphicon-time time'}),
+                                                ' ' + this.fullTime
+                                            )
+                                        ),
+                                        $('<p>').html(this.content)
+                                    ).html()
+                                }
+                            ).append(
+                                this.title
+                            ),
+                            $('<br>'),
+                            this.summary
                         )
                     );
                 });
