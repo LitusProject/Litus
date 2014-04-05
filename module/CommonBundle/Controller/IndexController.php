@@ -128,7 +128,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getNewsItems()
     {
         $maxAge = new DateTime();
-        $maxAge->add(
+        $maxAge->sub(
             new DateInterval(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
