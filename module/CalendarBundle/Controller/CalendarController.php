@@ -97,9 +97,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $date = $this->getParam('name');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
-        if (!$first) {
+        if (!$first)
             return $this->notFoundAction();
-        }
 
         $last = clone $first;
         $last->add(new DateInterval('P1M'));
@@ -117,6 +116,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             'd MMM'
         );
 
+        $monthFormatter = new IntlDateFormatter(
+            $this->getTranslator()->getLocale(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'LLL'
+        );
+
         $hourFormatter = new IntlDateFormatter(
             $this->getTranslator()->getLocale(),
             IntlDateFormatter::NONE,
@@ -131,7 +139,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'date' => $dayFormatter->format($event->getStartDate()),
+                    'day' => ucfirst($event->getStartDate()->format('d')),
+                    'month' => $monthFormatter->format($event->getStartDate()),
                     'events' => array()
                 );
             }

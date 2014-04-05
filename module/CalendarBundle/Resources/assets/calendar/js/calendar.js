@@ -89,9 +89,12 @@
 
             $.each(data.days, function (key, value) {
                 column.append(
-                    day = $('<div>', {'class': 'item date-left'}).append(
-                        $('<h4>', {'class': 'date left'}).html(value.date),
-                        dayItem = $('<div>', {'class': 'dayItem'}).css('margin-left', '5px')
+                    day = $('<div>', {'class': 'item'}).append(
+                        $('<div>', {'class': 'date'}).append(
+                            $('<div>', {'class': 'month'}).html(value.month),
+                            $('<div>', {'class': 'day'}).html(value.day)
+                        ),
+                        dayItem = $('<div>', {'class': 'dayItem'})
                     )
                 );
                 $(value.events).each(function () {
