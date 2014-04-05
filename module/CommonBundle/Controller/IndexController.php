@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Controller;
 
-use Zend\View\Model\ViewModel;
+use DateInterval,
+    DateTime,
+    Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -35,6 +37,22 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('NotificationBundle\Entity\Node\Notification')
             ->findAllActive();
 
+        return new ViewModel(
+            array(
+                'bookings' => $this->_getBookings(),
+                'calendarItems' => $this->_getCalendarItems(),
+                'cudi' => $this->_getCudiInfo(),
+                'newsItems' => $this->_getNewsItems(),
+                'notifications' => $notifications,
+                'piwik' => $this->_getPiwikInfo(),
+                'sportInfo' => $this->_getSportResults(),
+                'myShifts' => $this->_getMyShifts(),
+            )
+        );
+    }
+
+    private function _getBookings()
+    {
         $bookings = null;
         if (null !== $this->getAuthentication()->getPersonObject()) {
             $bookings = $this->getEntityManager()
@@ -50,10 +68,27 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $bookings = null;
         }
 
-        $newsItems = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Node\News')
-            ->findNbSite(5);
+        return $bookings;
+    }
 
+    private function _getNewsItems()
+    {
+        $maxAge = new DateTime();
+        $maxAge->add(
+            new DateInterval(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('news.max_age_site')
+            )
+        );
+
+        return $this->getEntityManager()
+            ->getRepository('NewsBundle\Entity\Node\News')
+            ->findNbSite(5, $maxAge);
+    }
+
+    private function _getCalendarItems()
+    {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
@@ -70,6 +105,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $calendarItems[$date]->events[] = $event;
         }
 
+        return $calendarItems;
+    }
+
+    private function _getCudiInfo()
+    {
         $cudi = array();
         $cudi['currentOpeningHour'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
@@ -90,42 +130,38 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findPeriodFromNow('P14D');
 
+        return $cudi;
+    }
+
+    private function _getPiwikInfo()
+    {
         $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.enable_piwik');
 
-        $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
-            $piwik = array(
-                'url' => parse_url(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('common.piwik_api_url'),
-                    PHP_URL_HOST
-                ),
-                'site_id' => $this->getEntityManager()
+        if ('development' == getenv('APPLICATION_ENV') || !$enablePiwik)
+            return null;
+
+        return array(
+            'url' => parse_url(
+                $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.piwik_id_site')
-            );
-        }
-
-        $myShifts = null;
-        if ($this->getAuthentication()->getPersonObject()) {
-            $myShifts = $this->getEntityManager()
-                ->getRepository('ShiftBundle\Entity\Shift')
-                ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
-        }
-
-        return new ViewModel(
-            array(
-                'bookings' => $bookings,
-                'calendarItems' => $calendarItems,
-                'cudi' => $cudi,
-                'newsItems' => $newsItems,
-                'notifications' => $notifications,
-                'piwik' => $piwik,
-                'myShifts' => $myShifts,
-            )
+                    ->getConfigValue('common.piwik_api_url'),
+                PHP_URL_HOST
+            ),
+            'site_id' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.piwik_id_site')
         );
+    }
+
+    private function _getMyShifts()
+    {
+        if (!$this->getAuthentication()->getPersonObject())
+            return null;
+
+        return $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
     }
 }
