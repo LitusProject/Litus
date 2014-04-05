@@ -38,6 +38,11 @@ return array(
         'description' => 'Whether the CV Book is currently open for entries or not',
     ),
     array(
+            'key'         => 'br.contract_language',
+            'value'       => 'en',
+            'description' => 'The language the contracts are in',
+    ),
+    array(
         'key'         => 'br.account_activated_mail',
         'value'       => serialize(
             array(
@@ -73,6 +78,16 @@ Het VTK Bedrijvenrelaties Team'
         'key'         => 'br.cv_book_language',
         'value'       => 'nl',
         'description' => 'The language used in the printed version of the CV Book',
+    ),
+    array(
+            'key'         => 'br.contract_name',
+            'value'       => 'Will see where I show up!',
+            'description' => 'I have no idea',
+    ),
+    array(
+            'key'         => 'br.contract_footer',
+            'value'       => 'Will see where I show up contract_footer!!',
+            'description' => 'I have no idea contract_footer',
     ),
     array(
         'key'         => 'br.cv_book_foreword',

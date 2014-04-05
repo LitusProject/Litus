@@ -35,7 +35,6 @@ use \Zend\Registry;
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
 class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
->>>>>>> 3e62d0589cd6e099840e9a709affae906458bf53
 {
     /**
      * @var \BrBundle\Entity\Invoice
