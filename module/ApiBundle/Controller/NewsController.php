@@ -28,13 +28,13 @@ use Markdown_Parser,
  */
 class NewsController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getLastAction()
+    public function allAction()
     {
         $this->initJson();
 
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findAllSite();
+            ->findAll();
 
         $result = array();
         foreach ($items as $item) {

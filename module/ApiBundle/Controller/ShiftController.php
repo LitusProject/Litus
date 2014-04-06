@@ -31,7 +31,7 @@ use DateInterval,
  */
 class ShiftController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getActiveAction()
+    public function activeAction()
     {
         $this->initJson();
 
