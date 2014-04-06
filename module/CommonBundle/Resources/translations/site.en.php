@@ -21,6 +21,9 @@ return array(
     'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
+    'Welcome' => 'Welcome',
+    'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.',
+
     'Dutch' => 'Nederlands',
     'English' => 'English',
     'French' => 'Français',
@@ -95,6 +98,8 @@ return array(
     'Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.' => 'Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.',
     'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.',
     'Opening Hours' => 'Opening Hours',
+    'Cudi is currently closed.' => 'Cudi is currently closed.',
+    'Reservate textbooks and other study material.' => 'Reservate textbooks and other study material.',
 
     'The value may not be zero' => 'The value may not be zero',
 
