@@ -27,7 +27,8 @@ use DateInterval,
 /**
  * ShiftController
  *
- * @author Koen Certyn
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class ShiftController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {

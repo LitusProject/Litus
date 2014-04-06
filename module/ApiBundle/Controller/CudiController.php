@@ -26,7 +26,7 @@ use DateInterval,
 /**
  * CudiController
  *
- * @author Koen Certyn
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
 
 class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController

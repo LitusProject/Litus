@@ -28,6 +28,7 @@ use DateInterval,
  * CalendarController
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Marïen <kristof.marien@litus.cc>
  */
 class CalendarController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
