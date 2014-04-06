@@ -35,11 +35,15 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllActive();
+
         $authenticatedPerson = $this->getAccessToken()->getPerson($this->getEntityManager());
         if (null === $authenticatedPerson)
             return $this->error(401, '');
 
-        $shifts = $this->getEntityManager()
+        $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($authenticatedPerson);
 
@@ -54,7 +58,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                 'currentNbResponsibles' => count($shift->getResponsibles()),
                 'currentNbVolunteers'   => count($shift->getVolunteers()),
                 'endDate'               => $shift->getEndDate()->format('c'),
-                'signedUp'              => true,
+                'signedUp'              => in_array($shift, $myShifts),
                 'manager'               => $shift->getManager()->getFullName(),
                 'name'                  => $shift->getName(),
                 'nbResponsibles'        => $shift->getNbResponsibles(),
