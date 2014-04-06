@@ -58,6 +58,19 @@ return array(
                 ),
             ),
         ),
+        'api_config' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/api/config[/:action][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'api_config',
+                ),
+            ),
+        ),
         'api_cudi' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -142,6 +155,7 @@ return array(
 
         'api_auth'      => 'ApiBundle\Controller\AuthController',
         'api_calendar'  => 'ApiBundle\Controller\CalendarController',
+        'api_config'    => 'ApiBundle\Controller\ConfigController',
         'api_cudi'      => 'ApiBundle\Controller\CudiController',
         'api_door'      => 'ApiBundle\Controller\DoorController',
         'api_mail'      => 'ApiBundle\Controller\MailController',
