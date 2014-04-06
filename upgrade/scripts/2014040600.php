@@ -20,4 +20,3 @@ pg_query($connection, 'ALTER TABLE general.config ADD published BOOLEAN');
 pg_query($connection, 'UPDATE general.config SET published = FALSE');
 
 publishConfigValue($connection, 'shift.signout_treshold');
-publishConfigValue($connection, 'shift.responsible_signout_treshold');

@@ -27,7 +27,6 @@ return array(
         'key'         => 'shift.responsible_signout_treshold',
         'value'       => 'PT12H',
         'description' => 'The date interval after which a responsible cannot be signed out from a shift',
-        'published'   => true,
     ),
     array(
         'key'         => 'shift.mail',
