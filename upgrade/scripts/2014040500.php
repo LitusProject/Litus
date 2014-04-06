@@ -16,16 +16,4 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'student' => array(
-        'system' => true,
-        'parents' => array(
-            'guest',
-        ),
-        'actions' => array(
-            'secretary_registration' => array(
-                'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
-            ),
-        ),
-    ),
-);
+ addConfigKey($connection, 'news.max_age_site', 'P3M', 'The maximum age of news items shown on the homepage');

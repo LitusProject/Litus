@@ -62,7 +62,7 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
             $factory->createInput(
                 array(
                     'name'     => 'logo',
-                    'required' => true,
+                    'required' => false,
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
