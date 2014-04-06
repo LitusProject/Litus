@@ -281,6 +281,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $upload->receive();
 
                 $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
 
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
                     $fileName = '/' . $event->getEvent()->getPoster();

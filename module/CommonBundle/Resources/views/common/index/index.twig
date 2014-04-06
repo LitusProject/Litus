@@ -36,26 +36,39 @@
 
     <div class="row">
         <div class="col-md-4">
-            <a class="heading" href="{{ url('calendar') }}">
-                <h2>
-                    <span class="glyphicon glyphicon-calendar"></span>
-                    {{ translate('Calendar') }}
-                </h2>
-            </a>
+            <div class="page-header" style="margin-top: 20px;">
+                <a class="heading" href="{{ url('calendar') }}">
+                    <h3>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        {{ translate('Calendar') }}
+                    </h3>
+                </a>
+            </div>
 
             {% for day in calendarItems %}
-                <div class="item date-left">
-                    <h4 class="date left">{{ dateLocalized(day.date, 'd MMM') }}</h4>
+                <div class="item">
+                    <div class="date">
+                        <div class="month">{{ dateLocalized(day.date, 'LLL')|capitalize }}</div>
+                        <div class="day">{{ dateLocalized(day.date, 'd') }}</div>
+                    </div>
 
                     <div class="dayItem">
                         {% for event in day.events %}
-                            <div class="calendarItem">
-                                <span class="glyphicon glyphicon-time time"></span>
-                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="{{ event.getSummary(200, language) }}">{{ dateLocalized(event.getStartDate(), 'HH:mm') }}&mdash;{{ event.getTitle(language) }}</a><br />
+                            <div>
+                                <a href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}" rel="popover" data-original-title="{{ event.getTitle(language) }}" data-content="<small><em><span class='glyphicon glyphicon-time time'></span>{% if event.getEndDate() %}
+                                    {% if event.getEndDate().format('d/M/Y') == event.getStartDate().format('d/M/Y')%}
+                                        {{ dateLocalized(event.getStartDate(), 'HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'HH:mm') }}
+                                    {% else %}
+                                        {{ dateLocalized(event.getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'd MMM HH:mm') }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ dateLocalized(event.getStartDate(), 'HH:mm') }}
+                                {% endif %}</em></small><p>{{ event.getSummary(200, language) }}</p>">{{ event.getTitle(language) }}</a><br />
                                 {{ event.getSummary(100, language) }}
                             </div>
                         {% endfor %}
                     </div>
+                    <br style="clear:both;" />
                 </div>
             {% else %}
                 <div class="heading-spacer"></div>
@@ -66,17 +79,24 @@
             {% endfor %}
         </div>
 
-        <div class="col-md-3">
-            <a class="heading" href="{{ url('cudi_booking') }}">
-                <h2>
-                    <span class="glyphicon glyphicon-book"></span>
-                    {{ translate('Bookstore') }}
-                </h2>
-            </a>
+        <div class="col-md-8">
+            <div class="page-header" style="margin-top: 20px;">
+                <h2>{{ translate('Welcome') }}</h2>
+            </div>
+            <p>
+                {{ translate('Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.') }}
+            </p>
+        </div>
 
-            {% if hasAccess('cudi_booking', 'view') %}
-                <p><a href="{{ url('cudi_booking') }}" class="btn btn-primary">{{ translate('Reservations') }}</a></p>
-            {% endif %}
+        <div class="col-md-4">
+            <div class="page-header" style="margin-top: 20px;">
+                <a class="heading" href="{{ url('cudi_booking') }}">
+                    <h3>
+                        <span class="glyphicon glyphicon-book"></span>
+                        {{ translate('Bookstore') }}
+                    </h3>
+                </a>
+            </div>
 
             {% if cudi.currentOpeningHour %}
                 <h3>{{ translate('Open Session') }}</h3>
@@ -100,6 +120,19 @@
                         </p>
                     {% endautoescape %}
                 {% endif %}
+            {% else %}
+                <div class="alert alert-info" style="margin-bottom: 20px;">
+                    {{ translate('Cudi is currently closed.') }}
+                </div>
+            {% endif %}
+
+            {% if hasAccess('cudi_booking', 'view') %}
+                <p style="text-align: left;">
+                    {{ translate('Reservate textbooks and other study material.') }}
+                </p>
+                <p>
+                    <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
+                </p>
             {% endif %}
 
             {% if cudi.openingHours|length > 0 %}
@@ -127,12 +160,14 @@
             {% endif %}
 
             {% if myShifts is not null and myShifts|length > 0 %}
-                <a class="heading" href="{{ url('shift') }}">
-                    <h2>
-                        <span class="glyphicon glyphicon-tasks"></span>
-                        {{ translate('Shifts') }}
-                    </h2>
-                </a>
+                <div class="page-header" style="margin-top: 20px;">
+                    <a class="heading" href="{{ url('shift') }}">
+                        <h3>
+                            <span class="glyphicon glyphicon-tasks"></span>
+                            {{ translate('Shifts') }}
+                        </h3>
+                    </a>
+                </div>
 
                 {% for shift in myShifts %}
                     <div class="panel-group" id="shift-{{ shift.getId() }}">
@@ -163,29 +198,29 @@
             {% endif %}
         </div>
 
-        <div class="col-md-5">
-            <a class="heading" href="{{ url('news') }}">
-                <h2>
-                    <span class="glyphicon glyphicon-inbox"></span>
-                    {{ translate('News') }}
-                </h2>
-            </a>
+        <div class="col-md-4">
+            <div class="page-header" style="margin-top: 20px;">
+                <a class="heading" href="{{ url('news') }}">
+                    <h3>
+                        <span class="glyphicon glyphicon-inbox"></span>
+                        {{ translate('News') }}
+                    </h3>
+                </a>
+            </div>
 
             {% for item in newsItems %}
-                <div class="item date-right">
-                    <h4 class="date right">{{ dateLocalized(item.getCreationTime(), 'd MMM') }}</h4>
+                <div class="item">
+                    <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
 
-                    <h3>{{ item.getTitle(language) }}</h3>
-
-                    <blockquote>
-                        {{ hideEmail(item.getSummary(400, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                    <div style="padding-left: 5px">
+                        {{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
-                    </blockquote>
+                    </div>
                 </div>
             {% else %}
                 <div class="heading-spacer"></div>
 
-                <div class="alert">
+                <div class="alert alert-warning">
                     {{ translate('No news items were posted yet.') }}
                 </div>
             {% endfor %}

@@ -281,6 +281,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $upload->receive();
 
                 $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
 
                 $fileName = '';
                 do {

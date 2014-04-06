@@ -504,7 +504,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\Translator
+     * @return \Zend\Mvc\I18n\Translator
      */
     public function getTranslator()
     {
