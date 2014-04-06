@@ -16,11 +16,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-function renameConfigKey($connection, $oldName, $newName, $description = null)
+function addConfigKey($connection, $name, $value, $description)
 {
-    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
-    if (null !== $description)
-        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
+    pg_query($connection, 'INSERT INTO general.config VALUES (\'' . $name . '\', \'' . $value . '\', \'' . $description . '\')');
 }
 
 function getConfigValue($connection, $name)
@@ -32,19 +30,26 @@ function getConfigValue($connection, $name)
     return pg_fetch_row($result)[0];
 }
 
-function addConfigKey($connection, $name, $value, $description)
+function removeConfigKey($connection, $name)
 {
-    pg_query($connection, 'INSERT INTO general.config VALUES (\'' . $name . '\', \'' . $value . '\', \'' . $description . '\')');
+    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
+}
+
+function renameConfigKey($connection, $oldName, $newName, $description = null)
+{
+    pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
+    if (null !== $description)
+        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
+}
+
+function publishConfigValue($connection, $name)
+{
+    pg_query($connection, 'UPDATE general.config SET published = TRUE WHERE key = \'' . $name . '\'');
 }
 
 function updateConfigKey($connection, $name, $value)
 {
     pg_query($connection, 'UPDATE general.config SET value = \'' . $value . '\' WHERE key = \'' . $name . '\'');
-}
-
-function removeConfigKey($connection, $name)
-{
-    pg_query($connection, 'DELETE FROM general.config WHERE key = \'' . $name . '\'');
 }
 
 function removeAclAction($connection, $resource, $action)
