@@ -36,9 +36,10 @@ return array(
         'api_auth' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/api/auth[/:action][/]',
+                'route' => '[/:language]/api/auth[/:action][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
                     'controller' => 'api_auth',
@@ -87,9 +88,10 @@ return array(
         'api_door' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/api/door[/:action][/]',
+                'route' => '[/:language]/api/door[/:action][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
                     'controller' => 'api_door',
@@ -99,10 +101,11 @@ return array(
         'api_mail' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/api/mail[/:action[/type/:type]][/]',
+                'route' => '[/:language]/api/mail[/:action[/type/:type]][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'type'   => '(tar|zip)'
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
+                    'type'     => '(tar|zip)'
                 ),
                 'defaults' => array(
                     'controller' => 'api_mail',
