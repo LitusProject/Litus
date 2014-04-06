@@ -143,7 +143,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (!array_key_exists('action', $settings))
             $settings['action'] = 'manage';
 
-        if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
+        if ($this->hasAccess()->toResourceAction($controller, $settings['action'])) {
             $menu[$controller] = $settings;
 
             return true;
