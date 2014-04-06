@@ -18,14 +18,12 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use \Litus\Util\Xml\XmlGenerator;
-use \Litus\Util\Xml\XmlObject;
-
-use \Litus\Util\TmpFile;
-
-use \Litus\Entity\Br\Contract;
-
-use \Zend\Registry;
+use CommonBundle\Component\Util\File\TmpFile,
+     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
+     CommonBundle\Component\Util\Xml\Object as XmlObject,
+     BrBundle\Entity\Contract,
+     BrBundle\Entity\Invoice as InvoiceEntity,
+     Doctrine\ORM\EntityManager;
 
 /**
  * Generate a PDF for an invoice.
@@ -75,13 +73,14 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $dueDate = $this->_invoice->getExpirationTime($this->getEntityManager())->format('j/m/Y');
         $clientVat = $this->_invoice->getOrder()->getCompany()->getVatNumber();
         $reference = '/'; // TODO? (this was here already)
+        
         // TODO: invoice numbers
         $invoiceNb = '2013-1-1';
         // $invoiceNb = $this->_invoice->getInvoiceNb();
 
-        $unionName = $configs->getConfigValue('union_name');
-        $unionAddressArray = unserialize($configs->getConfigValue('union_address_array'));
-        $logo = $configs->getConfigValue('union_logo');
+        $unionName = $configs->getConfigValue('organization_name');
+        $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
+        $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
         $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation');
