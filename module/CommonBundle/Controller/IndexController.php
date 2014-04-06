@@ -139,6 +139,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findNbSite(5, $maxAge);
+    }
 
     private function _getCalendarItems()
     {
