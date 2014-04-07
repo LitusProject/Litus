@@ -46,8 +46,8 @@ return array(
                     'content' => 'Dear {{ name }},
 
 A corporate account was created for you with username {{ username }}.
-Click here to activate it: http://vtk.be/account/activate/code/{{ code }}
-You can use this account to view the CV Book at http://vtk.be/corporate
+Click here to activate it: http://litus/account/activate/code/{{ code }}
+You can use this account to view the CV Book at http://litus/corporate
 
 Kind regards,
 
@@ -58,8 +58,8 @@ The VTK Corporate Relations Team'
                     'content' => 'Beste {{ name }},
 
 Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
-Klik hier om deze te activeren: http://vtk.be/account/activate/code/{{ code }}
-U kan dit account gebruiken om het CV Book te bekijken op http://vtk.be/corporate
+Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
+U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
 
