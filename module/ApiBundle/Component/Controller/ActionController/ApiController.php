@@ -326,9 +326,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
-        $code = $this->getRequest()->getPost($field);
-        if (!$this->getRequest()->isPost() || null === $code)
-            $code = $this->getRequest()->getQuery($field);
+        $code = $this->getRequest()->getQuery($field);
+        if (null === $code && $this->getRequest()->isPost())
+            $code = $this->getRequest()->getPost($field);
 
         $key = $this->getEntityManager()
             ->getRepository('ApiBundle\Entity\Key')
@@ -345,9 +345,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getAccessToken($field = 'access_token')
     {
-        $code = $this->getRequest()->getPost($field);
-        if (!$this->getRequest()->isPost() || null === $code)
-            $code = $this->getRequest()->getQuery($field);
+        $code = $this->getRequest()->getQuery($field);
+        if (null === $code && $this->getRequest()->isPost())
+            $code = $this->getRequest()->getPost($field);
 
         $accessToken = $this->getDocumentManager()
             ->getRepository('ApiBundle\Document\Token\Access')
