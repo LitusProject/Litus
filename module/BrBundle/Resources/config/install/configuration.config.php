@@ -33,9 +33,39 @@ return array(
         'description' => 'The path to the PDF generator files',
     ),
     array(
-        'key'         => 'br.cv_book_open',
-        'value'       => '0',
-        'description' => 'Whether the CV Book is currently open for entries or not',
+            'key'         => 'br.cv_book_open',
+            'value'       => '0',
+            'description' => 'Whether the CV Book is currently open for entries or not',
+    ),
+    array(
+        'key'         => 'br.invoice_expire_time',
+        'value'       => 'P30D',
+        'description' => 'The time interval within which a invoice must be paid. See http://www.php.net/manual/en/dateinterval.construct.php for the format.',
+    ),
+    array(
+            'key'         => 'br.vat_number',
+            'value'       => 'BE0479-482-282',
+            'description' => 'The VAT number of the organisation sending the invoice.',
+    ),
+    array(
+            'key'         => 'br.invoice_vat_explanation',
+            'value'       => 'CHANGE ME I should explain VAT',
+            'description' => 'Explains what the VAT',
+    ),
+    array(
+            'key'         => 'br.invoice_below_entries',
+            'value'       => 'CHANGE ME br.invoice_below_entries',
+            'description' => 'CHANGE ME  I have no Idea',
+    ),
+    array(
+            'key'         => 'br.invoice_footer',
+            'value'       => 'CHANGE ME br.invoice_footer',
+            'description' => 'The footer of the invoice',
+    ),
+    array(
+            'key'         => 'br.contract_language',
+            'value'       => 'en',
+            'description' => 'The language the contracts are in',
     ),
     array(
         'key'         => 'br.account_activated_mail',
@@ -73,6 +103,16 @@ Het VTK Bedrijvenrelaties Team'
         'key'         => 'br.cv_book_language',
         'value'       => 'nl',
         'description' => 'The language used in the printed version of the CV Book',
+    ),
+    array(
+            'key'         => 'br.contract_name',
+            'value'       => 'Will see where I show up!',
+            'description' => 'I have no idea',
+    ),
+    array(
+            'key'         => 'br.contract_footer',
+            'value'       => 'Will see where I show up contract_footer!!',
+            'description' => 'I have no idea contract_footer',
     ),
     array(
         'key'         => 'br.cv_book_foreword',

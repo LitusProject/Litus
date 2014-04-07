@@ -32,6 +32,7 @@ use BrBundle\Entity\Contract as ContractEntity,
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
@@ -84,28 +85,28 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getFullName();
         $entries = $this->_contract->getEntries();
 
-        $unionName = $configs->getConfigValue('union_name');
-        $unionNameShort = $configs->getConfigValue('union_short_name');
-        $unionAddressArray = unserialize($configs->getConfigValue('union_address_array'));
+        $unionName = $configs->getConfigValue('organization_name');
+        $unionNameShort = $configs->getConfigValue('organization_short_name');
+        $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
 
         $location = $unionAddressArray['city'];
 
         $brName = $configs->getConfigValue('br.contract_name');
-        $logo = $configs->getConfigValue('union_logo');
+        $logo = $configs->getConfigValue('organization_logo');
 
         $finalEntry = $configs->getConfigValue('br.contract_final_entry');
 
         $sub_entries = $configs->getConfigValue('br.contract_below_entries');
-        $footer = XmlObject::fromString($configs->getConfigValue('br.contract_footer'));
+        $footer = $configs->getConfigValue('br.contract_footer');
 
         // Generate the xml
-
         $entry_s = array();
         foreach($entries as $entry) {
-            $entry_s[] = XmlObject::fromString($entry->getContractText());
+            $entry_s[] = new XmlObject('entry', null, $entry->getContractText());
         }
-        $entry_s[] = XmlObject::fromString($finalEntry);
 
+        var_dump($entry_s);
+        
         $xml->append(
             new XmlObject(
                 'contract',
@@ -235,7 +236,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
                     new XmlObject('entries', null, $entry_s),
 
-                    new XmlObject('sub_entries', null, $sub_entries),
+                    //new XmlObject('sub_entries', null, $sub_entries),
 
                     new XmlObject('footer', null, $footer)
                 )
