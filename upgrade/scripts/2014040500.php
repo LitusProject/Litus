@@ -16,17 +16,4 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'submenus' => array(
-        'Publications' => array(
-            'subtitle'    => array('Editions', 'Publications'),
-            'items'       => array(
-                'publication_admin_publication' => array('title' => 'Publications'),
-            ),
-            'controllers' => array(
-                'publication_admin_edition_html',
-                'publication_admin_edition_pdf',
-            ),
-        ),
-    ),
-);
+ addConfigKey($connection, 'news.max_age_site', 'P3M', 'The maximum age of news items shown on the homepage');

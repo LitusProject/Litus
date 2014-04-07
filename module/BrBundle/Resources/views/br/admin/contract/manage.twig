@@ -5,6 +5,19 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage success_message full_width change_signed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract's signed status was successfully changed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width change_signed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to change the contract's signed status.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
 
         <div id="normal_page">
@@ -27,10 +40,10 @@
                             <td>{{ contract.getAuthor().getFirstName() }} {{ contract.getAuthor().getLastName() }}</td>
                             <td>{{ contract.getTitle() }}</td>
                             <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                            <td>{{ contract.getContractNb() }}</td>
-                            <td>{% if contract.isSigned() %} Yes
-                                {% else %} No
-                                {% endif %}</td>
+                            <td>{{ contract.getId() }}</td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" id="{{ contract.getId() }}" {% if contract.isSigned() %}checked="checked"{% endif %} />
+                            </td>
                             <td class="actions">
                                 {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
                                     <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
@@ -64,5 +77,32 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item input[type=checkbox]').click(changeSigned);
+        });
+
+        function changeSigned(e) {
+            alert($(this).attr('id'));
+            $.get('{{ url('br_admin_contract', {"action": "signed"}) }}' +  $(this).attr('id') + $(this).is(':checked') + '/', function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.change_signed_success').removeClass('hide');
+                } else {
+                    errorRemove();
+                }
+            }, 'json').error(errorChangeSigned);
+
+            $('.flashmessage').delay(2000).addClass('hide')
+        }
+
+        function errorChangeSigned() {
+            $('.flashmessage').addClass('hide');
+            $('.change_signed_error').removeClass('hide');
+        }
+    </script>
 {% endblock %}
 

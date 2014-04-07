@@ -4,10 +4,10 @@
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_overview', 'manage') %}
-                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "person"}) }}">Overview By Persons</a></li>
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "person"}) }}">Persons</a></li>
             {% endif %}
             {% if hasAccess('br_admin_overview', 'manage') %}
-                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "company"}) }}">Overview By Companies</a></li>
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "company"}) }}">Companies</a></li>
             {% endif %}
         </ul>
     </nav>

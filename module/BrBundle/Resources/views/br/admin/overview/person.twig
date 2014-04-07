@@ -7,26 +7,17 @@
 
 	<div id="controller_action">
         <h2><b>General overview</b></h2>
-        <table class="full_width manage">
-            <tr>
-                <th>Amount of contracts</th>
-                <th>Contracted</th>
-                <th>Signed</th>
-                <th>Paid</th>
-            </tr>
-            <tr class="overview">
-                    <td>{{totals['amount']}}</td>
-                    <td>&euro; {{totals['contract']}}</td>
-                    <td>&euro; {{totals['signed']}}</td>
-                    <td>&euro; {{totals['paid']}}</td>
-            </tr>
-        </table><br>
+
+        <p>Total Number of contracts: <b>{{totals['amount']}}</b></p>
+        <p>Total Contracted: <b>&euro; {{totals['contract']}}</b></p>
+        <p>Total Signed: <b>&euro; {{totals['signed']}}</b></p>
+        <p>Total Paid: <b>&euro; {{totals['paid']}}</b></p><br>
 
         <h2><b>Individual overview</b></h2>
 		<table class="full_width manage">
             <tr>
                 <th>Person</th>
-                <th>Amount of contracts</th>
+                <th>Number of Contracts</th>
                 <th>Contracted</th>
                 <th>Signed</th>
                 <th>Paid</th>

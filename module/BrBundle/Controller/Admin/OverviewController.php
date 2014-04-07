@@ -88,7 +88,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         //TODO extremely dirty solution -> can be put in one single query normally!
         //TODO has to be cleaned up..
 
-        $contractNmbr = 0;
+        $companyNmbr = 0;
         $totalContracted = 0;
         $totalSigned = 0;
         $totalPaid = "TODO";
@@ -111,11 +111,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('BrBundle\Entity\Contract')
                     ->findContractsByCompanyID($comp);
 
+                $companyNmbr = $companyNmbr + 1;
+
                 $contracted = 0;
                 $signed = 0;
                 $paid = 0;
                 foreach ($contracts as $contract) {
-                    $contractNmbr = $contractNmbr + 1;
                     $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
                     $contracted = $contracted + $value;
                     $totalContracted = $totalContracted + $value;
@@ -129,34 +130,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $result['amount'] = sizeof($contracts);
                 $result['contract'] = $contracted;
                 $result['signed'] = $signed;
-
-                //TODO
                 $result['paid'] = "TODO";
-
-
-                // $result['company'] = $comp;
-                // $amount = $this->getEntityManager()
-                //     ->getRepository('BrBundle\Entity\Contract')
-                //     ->getContractAmountByCompany($comp);
-                // $result['amount'] = $amount;
-                // $contractNmbr += $amount;
-
-                // $amount = $this->getEntityManager()
-                //     ->getRepository('BrBundle\Entity\Contract')
-                //     ->getContractedRevenueByCompany($comp);
-                // $result['contract'] = $amount;
-                // $totalContractRevenue += $amount;
-
-                // $amount = $this->getEntityManager()
-                //     ->getRepository('BrBundle\Entity\Contract')
-                //     ->getPaidRevenueByCompany($comp);
-                // $result['paid'] = $amount;
-                // $totalPaidRevenue += $amount;
 
                 array_push($collection, $result);
             }
         }
-        $totals = array('amount' => $contractNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
+        $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
         return array('array' => $collection,'totals' => $totals);
     }
 

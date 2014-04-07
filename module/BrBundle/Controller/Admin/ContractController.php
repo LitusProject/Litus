@@ -133,6 +133,30 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function signedAction()
+    {
+        $this->initAjax();
+
+        $contract = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $contract)
+            return new ViewModel();
+
+        $contract->setSigned('true' == $this->getParam('signed') ? true : false);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
     public function signAction()
     {
         if (!($contract = $this->_getContract(false)))

@@ -5,10 +5,9 @@
         <h2>{{ translate('News') }}</h2>
     </div>
 
-    <h3>{{ news.getTitle(language) }}</h3>
+    <h3>{{ news.getTitle(language) }} <small>&mdash; {{ dateLocalized(news.getCreationTime(), 'd MMMM') }}</small></h3>
 
-    <div class="item date-left">
-        <h4 class="date left">{{ dateLocalized(news.getCreationTime(), 'd MMM') }}</h4>
-        <blockquote>{{ hideEmail(markdown(news.getContent(language)))|raw }}</blockquote>
+    <div style="margin-left: 5px;">
+        {{ hideEmail(markdown(news.getContent(language)))|raw }}
     </div>
 {% endblock %}

@@ -25,16 +25,16 @@ return array(
             ),
         ),
         'general_1' => array(
-            'common_admin_cache'  => 'Cache',
-            'common_admin_config' => 'Configuration',
+            'common_admin_cache'  => array('title' => 'Cache'),
+            'common_admin_config' => array('title' => 'Configuration'),
         ),
         'general_2' => array(
-            'common_admin_academic' =>'Academics',
-            'common_admin_role'     => 'Roles',
+            'common_admin_academic' => array('title' => 'Academics'),
+            'common_admin_role'     => array('title' => 'Roles'),
         ),
         'general_3' => array(
-            'common_admin_location' => 'Locations',
-            'common_admin_unit'     => 'Units'
+            'common_admin_location' => array('title' => 'Locations'),
+            'common_admin_unit'     => array('title' => 'Units')
         ),
     ),
 );
