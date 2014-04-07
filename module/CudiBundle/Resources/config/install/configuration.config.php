@@ -418,4 +418,21 @@ VTK Cudi
         'value'       => '1',
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
     ),
+    array(
+        'key'         => 'cudi.location',
+        'value'       => serialize(
+            array(
+                'latitude'  => 50.8631728,
+                'longitude' => 4.682316600000036,
+            )
+        ),
+        'description' => 'The coordinates of the cudi',
+        'published'   => true,
+    ),
+    array(
+        'key'         => 'cudi.minimum_signin_distance',
+        'value'       => '50',
+        'description' => 'The minimum distance the user should be from the cudi to be able to sign in (in meters)',
+        'published'   => true,
+    ),
 );
