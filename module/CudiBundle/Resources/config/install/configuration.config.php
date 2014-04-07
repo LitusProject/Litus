@@ -430,9 +430,9 @@ VTK Cudi
         'published'   => true,
     ),
     array(
-        'key'         => 'cudi.minimum_signin_distance',
+        'key'         => 'cudi.maximum_signin_distance',
         'value'       => '50',
-        'description' => 'The minimum distance the user should be from the cudi to be able to sign in (in meters)',
+        'description' => 'The maximum distance the user can be from the cudi to be able to sign in (in meters)',
         'published'   => true,
     ),
 );
