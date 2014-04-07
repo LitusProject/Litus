@@ -121,10 +121,11 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/contract[/:action[/:id]][/]',
+                'route' => '/admin/br/contract[/:action[/:id[/:signed]]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
+                    'signed'  => '(true|false)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',

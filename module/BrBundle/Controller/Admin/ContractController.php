@@ -141,8 +141,18 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('BrBundle\Entity\Contract')
             ->findOneById($this->getParam('id'));
 
-        if (null === $contract)
-            return new ViewModel();
+        if ('true' == $this->getParam('signed')) {
+
+            $invoice = new Invoice($contract->getOrder());
+
+            foreach ($contract->getEntries() as $entry)
+            {
+                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition());
+                $this->getEntityManager()->persist($invoiceEntry);
+            }
+
+            $this->getEntityManager()->persist($invoice);
+        }
 
         $contract->setSigned('true' == $this->getParam('signed') ? true : false);
 
