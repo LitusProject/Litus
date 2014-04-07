@@ -18,7 +18,9 @@
 
 namespace ApiBundle\Controller;
 
-use Zend\View\Model\ViewModel;
+use DateInterval,
+    DateTime,
+    Zend\View\Model\ViewModel;
 
 /**
  * ConfigController
@@ -36,8 +38,24 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
             ->findByPublished(true);
 
         $result = array();
-        foreach ($entries as $entry)
-            $result[$entry->getKey()] = $entry->getValue();
+        foreach ($entries as $entry) {
+            $value = $entry->getValue();
+
+            try {
+                $now = new DateTime();
+
+                $nowWithInterval = clone $now;
+                $nowWithInterval->add(new DateInterval($entry->getValue()));
+
+                $value = $nowWithInterval->getTimestamp() - $now->getTimestamp();
+            } catch (\Exception $e) {
+                try {
+                    $value = unserialize($entry->getValue());
+                } catch (\Exception $e) {}
+            }
+
+            $result[$entry->getKey()] = $value;
+        }
 
         return new ViewModel(
             array(
