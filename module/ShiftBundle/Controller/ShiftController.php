@@ -346,7 +346,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function signoutAction()
+    public function signOutAction()
     {
         $this->initAjax();
 
@@ -358,7 +358,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canSignout($this->getEntityManager(), $person))) {
+        if (!($shift->canSignOut($this->getEntityManager(), $person))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')
@@ -367,7 +367,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $remove = $shift->removePerson($person);
-
         if (null !== $remove)
             $this->getEntityManager()->remove($remove);
 
