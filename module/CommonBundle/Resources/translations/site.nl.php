@@ -42,7 +42,7 @@ return array(
     'Calendar' => 'Kalender',
     'Twitter' => 'Twitter',
     'News' => 'Nieuws',
-    'No news items were posted yet.' => 'Er zijn nog geen nieuws items geplaatst.',
+    'No news items were posted recently.' => 'Er zijn geen recente nieuws items.',
     'No events were created yet.' => 'Er zijn nog geen evenementen aangemaakt.',
     'Read More' => 'Lees Meer',
 

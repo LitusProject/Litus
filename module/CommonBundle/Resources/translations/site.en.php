@@ -42,7 +42,7 @@ return array(
     'Calendar' => 'Calendar',
     'Twitter' => 'Twitter',
     'News' => 'News',
-    'No news items were posted yet.' => 'No news items were posted yet.',
+    'No news items were posted recently.' => 'No news items were posted recently.',
     'No events were created yet.' => 'No events were created yet.',
     'Read More' => 'Read More',
 
