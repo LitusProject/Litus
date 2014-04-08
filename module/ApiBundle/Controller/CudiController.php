@@ -63,6 +63,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function currentSessionAction()
     {
+        $this->initJson();
+
         $sessions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
@@ -89,6 +91,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function weekAction()
     {
+        $this->initJson();
+
         $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findCurrentWeek();
