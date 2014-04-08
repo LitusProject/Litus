@@ -61,48 +61,50 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    public function currentSessionAction()
+    {
+        $sessions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOpen();
+
+        if (sizeof($sessions) >= 1) {
+            $result = array(
+                'status' => 'open',
+                'numberInQueue' => $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\QueueItem')
+                    ->findNbBySession($sessions[0]),
+            );
+        } else {
+            $result = array(
+                'status' => 'closed',
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     public function weekAction()
     {
         $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
             ->findCurrentWeek();
-        echo implode(",", $openingHours);
-        $start = new DateTime();
-        $start->setTime(0, 0);
-        if ($start->format('N') > 5)
-            $start->add(new DateInterval('P' . (8 - $start->format('N')) .'D'));
-        else
-            $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
 
-        $startHour = 12;
-        $endHour = 20;
-
-        $week = array();
-        $openingHoursArray = array();
-        $start->sub(new DateInterval('P1D'));
-        for ($i = 0 ; $i < 5 ; $i ++) {
-            $start->add(new DateInterval('P1D'));
-            $week[] = clone $start;
-            $openingHoursArray[$i] = array();
-        }
-
+        $result = array();
         foreach ($openingHours as $openingHour) {
-            if ($openingHour->getStart()->format('H') < $startHour)
-                $startHour = $openingHour->getStart()->format('H');
-
-            if ($openingHour->getEnd()->format('H') > $endHour)
-                $endHour = $openingHour->getEnd()->format('H');
-
-            $openingHoursArray[$openingHour->getStart()->format('N') - 1][] = $openingHour;
+            $result[] = array(
+                'startDate' => $openingHour->getStart()->format('c'),
+                'endDate' => $openingHour->getEnd()->format('c'),
+                'comment' => $openingHour->getComment($this->getLanguage()),
+            );
         }
 
         return new ViewModel(
             array(
-                'openingHours' => $openingHours,
-                'openingHoursTimeline' => $openingHoursArray,
-                'week' => $week,
-                'startHour' => $startHour,
-                'endHour' => $endHour,
+                'result' => $result,
             )
         );
     }

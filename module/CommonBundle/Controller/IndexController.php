@@ -170,9 +170,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findCurrent();
 
         $sessions = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session')
-                ->findOpen();
-        if (sizeof($sessions) == 1) {
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOpen();
+
+        if (sizeof($sessions) >= 1) {
             $cudi['currentSession'] = $sessions[0];
 
             $cudi['currentStudents'] = $this->getEntityManager()
