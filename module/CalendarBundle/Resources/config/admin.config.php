@@ -21,7 +21,7 @@ return array(
         'Site' => array(
             'subtitle' => array('Calendar'),
             'items'    => array(
-                'calendar_admin_calendar' => 'Calendar',
+                'calendar_admin_calendar' => array('title' => 'Calendar'),
             ),
         ),
     ),
