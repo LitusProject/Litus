@@ -89,7 +89,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
-    public function weekAction()
+    public function openingHoursAction()
     {
         $this->initJson();
 
