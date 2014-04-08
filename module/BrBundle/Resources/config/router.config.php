@@ -136,10 +136,11 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/invoice[/:action[/:id][/date/:date]][/]',
+                'route' => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
+                    'payed'  => '(true|false)',
                     'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}'
                 ),
                 'defaults' => array(

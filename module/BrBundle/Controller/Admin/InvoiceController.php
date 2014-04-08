@@ -114,6 +114,29 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function payedAction()
+    {
+        $this->initAjax();
+
+        $invoice = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findOneById($this->getParam('id'));
+
+        if ('true' == $this->getParam('payed')) {
+            $invoice->setPayed();
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
+            )
+        );
+    }
+
    private function _getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {

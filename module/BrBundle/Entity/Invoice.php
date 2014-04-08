@@ -99,6 +99,20 @@ class Invoice
         return $this->id;
     }
 
+    public function isPayed()
+    {
+        if ($this->paidTime == null)
+            return false;
+        return true;
+    }
+
+    public function setPayed(){
+        if ($this->isPayed())
+            throw new \InvalidArgumentException('This invoice has already been paid');
+        $this->paidTime = new DateTime();
+        return $this;
+    }
+
     /**
      * @return BrBundle\Entity\Product\Order
      */
