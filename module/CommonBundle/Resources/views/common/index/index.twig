@@ -38,10 +38,7 @@
         <div class="col-md-4">
             <div class="page-header" style="margin-top: 20px;">
                 <a class="heading" href="{{ url('calendar') }}">
-                    <h3>
-                        <span class="glyphicon glyphicon-calendar"></span>
-                        {{ translate('Calendar') }}
-                    </h3>
+                    <h2>{{ translate('Calendar') }}</h2>
                 </a>
             </div>
 
@@ -91,10 +88,7 @@
         <div class="col-md-4">
             <div class="page-header" style="margin-top: 20px;">
                 <a class="heading" href="{{ url('cudi_booking') }}">
-                    <h3>
-                        <span class="glyphicon glyphicon-book"></span>
-                        {{ translate('Bookstore') }}
-                    </h3>
+                    <h3>{{ translate('Bookstore') }}</h3>
                 </a>
             </div>
 
@@ -162,10 +156,7 @@
             {% if myShifts is not null and myShifts|length > 0 %}
                 <div class="page-header" style="margin-top: 20px;">
                     <a class="heading" href="{{ url('shift') }}">
-                        <h3>
-                            <span class="glyphicon glyphicon-tasks"></span>
-                            {{ translate('Shifts') }}
-                        </h3>
+                        <h3>{{ translate('Shifts') }}</h3>
                     </a>
                 </div>
 
@@ -201,10 +192,7 @@
         <div class="col-md-4">
             <div class="page-header" style="margin-top: 20px;">
                 <a class="heading" href="{{ url('news') }}">
-                    <h3>
-                        <span class="glyphicon glyphicon-inbox"></span>
-                        {{ translate('News') }}
-                    </h3>
+                    <h3>{{ translate('News') }}</h3>
                 </a>
             </div>
 
@@ -221,7 +209,7 @@
                 <div class="heading-spacer"></div>
 
                 <div class="alert alert-warning">
-                    {{ translate('No news items were posted yet.') }}
+                    {{ translate('No news items were posted recently.') }}
                 </div>
             {% endfor %}
         </div>
