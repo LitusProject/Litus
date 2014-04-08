@@ -35,7 +35,7 @@ return array(
     'Volunteers' => 'Vrijwilligers',
     'Location' => 'Locatie',
     'Results' => 'Resultaten',
-    'Signout' => 'Uitschrijven',
+    'Sign Out' => 'Uitschrijven',
     'There are no shifts to be shown yet; please use the search functions on the left.' => 'Er worden nog geen shiften getoond; gebruik de zoekfuncties aan de linkerkant.',
     'You were singed out from the selected shift!' => 'Je hebt je uitgeschreven van de geselecteerde shift!',
     'You have not yet signed up for any shifts. You can use the search functions on the left to look for some!' => 'Je hebt je nog niet ingeschreven voor shiften. Gebruik de zoekfuncties aan de linkerkant om shiften te zoeken!',

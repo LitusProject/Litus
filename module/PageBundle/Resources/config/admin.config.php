@@ -21,7 +21,7 @@ return array(
         'Site' => array(
             'subtitle'    => array('Pages'),
             'items'       => array(
-                'page_admin_page' => 'Pages',
+                'page_admin_page' => array('title' => 'Pages'),
             ),
             'controllers' => array(
                 'page_admin_category',

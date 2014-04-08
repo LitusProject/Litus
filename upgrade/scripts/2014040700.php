@@ -16,22 +16,4 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'shiftbundle' => array(
-        'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search'
-        ),
-        'shift_admin_shift_counter' => array(
-            'delete', 'index', 'payed', 'search', 'units', 'view'
-        ),
-        'shift_admin_shift_ranking' => array(
-            'index'
-        ),
-        'shift_admin_shift_subscription' => array(
-            'manage', 'delete',
-        ),
-        'shift' => array(
-            'export', 'index', 'responsible', 'signOut', 'volunteer'
-        ),
-    ),
-);
+ renameAclAction($connection, 'shift', 'signout', 'signOut');
