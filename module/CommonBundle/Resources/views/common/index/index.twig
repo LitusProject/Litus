@@ -76,7 +76,7 @@
         <div class="col-md-4">
             <div class="page-header" style="margin-top: 20px;">
                 <a class="heading" href="{{ url('cudi_booking') }}">
-                    <h3>{{ translate('Bookstore') }}</h3>
+                    <h3>{{ translate('Cudi') }}</h3>
                 </a>
             </div>
 
@@ -110,7 +110,7 @@
 
             {% if hasAccess('cudi_booking', 'view') %}
                 <p style="text-align: left;">
-                    {{ translate('Reservate textbooks and other study material.') }}
+                    {{ translate('Reserve textbooks and other study material.') }}
                 </p>
                 <p>
                     <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
