@@ -17,7 +17,7 @@
  */
 
 return array(
-    'My Bookings' => 'Mijn Cursus Reservaties',
+    'My Bookings' => 'Mijn Reservaties',
 
     'Please login to view your bookings.' => 'Meld je aan om je cursusreservaties te bekijken.',
     'Please login to book textbooks.' => 'Meld je aan om cursussen te reserveren.',
