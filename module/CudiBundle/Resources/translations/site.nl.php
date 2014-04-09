@@ -47,7 +47,7 @@ return array(
 
     'General' => 'Algemeen',
 
-    'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.' => 'De boeken zijn gereserveerd! Gelieve te wachten totdat deze toegewezen zijn voor je naar de cursusdienst komt.',
+    'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.' => 'De boeken zijn gereserveerd! Gelieve te wachten totdat deze toegewezen zijn voor je naar de cursusdienst komt.',
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'Er zijn nieuwe reservaties aan je toegewezen, die je mag komen afhalen.',
     'View Bookings' => 'Bekijk Reservaties',
