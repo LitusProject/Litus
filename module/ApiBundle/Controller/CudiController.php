@@ -48,11 +48,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'id'             => $booking->getId(),
                 'expirationDate' => (null !== $booking->getExpirationDate() ? $booking->getExpirationDate()->format('c') : null),
                 'number'         => $booking->getNumber(),
-                'article'        => array(
-                    'id'    => $booking->getArticle()->getId(),
-                    'title' => $booking->getArticle()->getMainArticle()->getTitle(),
-                    'price' => $booking->getArticle()->getSellPrice()/100,
-                ),
+                'article'        => $booking->getArticle()->getId(),
             );
         }
 
