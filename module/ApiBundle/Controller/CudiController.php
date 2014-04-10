@@ -18,7 +18,8 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
+use CudiBundle\Entity\Sale\Booking,
+    DateInterval,
     DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -180,6 +181,88 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    public function bookAction()
+    {
+        $this->initJson();
+
+        if (!$this->getRequest()->isPost())
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+
+        if (null === $this->getAccessToken())
+            return $this->error(401, 'The access token is not valid');
+
+        if (null === $this->_getArticle())
+            return $this->error(500, 'The article was not found');
+
+        $authenticatedPerson = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($this->_getPerson()->getId());
+
+        if (null === $authenticatedPerson)
+            return $this->error(500, 'The person is not an academic');
+
+        $enableBookings = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_bookings');
+
+        $bookingsClosedExceptions = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.bookings_closed_exceptions')
+        );
+
+        if (!$this->_getArticle()->isBookable() || !($enableBookings || in_array($this->_getArticle()->getId(), $bookingsClosedExceptions)))
+            return $this->error(500, 'The article is not bookable');
+
+        $booking = new Booking(
+            $this->getEntityManager(),
+            $this->_getPerson(),
+            $this->_getArticle(),
+            'booked',
+            1
+        );
+
+        $this->getEntityManager()->persist($booking);
+
+        $enableAssignment = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_automatic_assignment');
+
+        $currentPeriod = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+        $currentPeriod->setEntityManager($this->getEntityManager());
+
+        if ($enableAssignment) {
+            $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+            if ($available > 0) {
+                if ($available >= $booking->getNumber()) {
+                    $booking->setStatus('assigned', $this->getEntityManager());
+                } else {
+                    $new = new Booking(
+                        $this->getEntityManager(),
+                        $booking->getPerson(),
+                        $booking->getArticle(),
+                        'booked',
+                        $booking->getNumber() - $available
+                    );
+
+                    $this->getEntityManager()->persist($new);
+                    $booking->setNumber($available)
+                        ->setStatus('assigned', $this->getEntityManager());
+                }
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array()
+            )
+        );
+    }
+
     public function currentSessionAction()
     {
         $this->initJson();
@@ -239,6 +322,16 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneById($this->getRequest()->getPost('id'));
+    }
+
+    private function _getArticle()
+    {
+        if (null === $this->getRequest()->getPost('id'))
+            return null;
+
+        return $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($this->getRequest()->getPost('id'));
     }
 
