@@ -31,34 +31,6 @@ use DateInterval,
 
 class CudiController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function bookingsAction()
-    {
-        $this->initJson();
-
-        if (null === $this->getAccessToken())
-            return $this->error(401, 'The access token is not valid');
-
-        $bookings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllOpenByPerson($this->_getPerson());
-
-        $result = array();
-        foreach ($bookings as $booking) {
-            $result[] = array(
-                'id'             => $booking->getId(),
-                'expirationDate' => (null !== $booking->getExpirationDate() ? $booking->getExpirationDate()->format('c') : null),
-                'number'         => $booking->getNumber(),
-                'article'        => $booking->getArticle()->getId(),
-            );
-        }
-
-        return new ViewModel(
-            array(
-                'result' => (object) $result
-            )
-        );
-    }
-
     public function articlesAction()
     {
         $this->initJson();
@@ -154,6 +126,60 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    public function bookingsAction()
+    {
+        $this->initJson();
+
+        if (null === $this->getAccessToken())
+            return $this->error(401, 'The access token is not valid');
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($this->_getPerson());
+
+        $result = array();
+        foreach ($bookings as $booking) {
+            $result[] = array(
+                'id'             => $booking->getId(),
+                'expirationDate' => (null !== $booking->getExpirationDate() ? $booking->getExpirationDate()->format('c') : null),
+                'number'         => $booking->getNumber(),
+                'article'        => $booking->getArticle()->getId(),
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result
+            )
+        );
+    }
+
+    public function cancelBookingAction()
+    {
+        $this->initJson();
+
+        if (!$this->getRequest()->isPost())
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+
+        if (null === $this->getAccessToken())
+            return $this->error(401, 'The access token is not valid');
+
+        if (null === $this->_getBooking())
+            return $this->error(500, 'The booking was not found');
+
+        if (!($this->_getBooking()->getArticle()->isUnbookable()))
+            return $this->error(500, 'This article cannot be unbooked');
+
+        $this->_getBooking()->setStatus('canceled', $this->getEntityManager());
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array()
+            )
+        );
+    }
+
     public function currentSessionAction()
     {
         $this->initJson();
@@ -204,6 +230,16 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'result' => (object) $result
             )
         );
+    }
+
+    private function _getBooking()
+    {
+        if (null === $this->getRequest()->getPost('id'))
+            return null;
+
+        return $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneById($this->getRequest()->getPost('id'));
     }
 
     private function _getPerson()

@@ -64,9 +64,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->_getBooking()))
             return $this->notFoundAction();
-        }
 
         if (!($booking->getArticle()->isUnbookable())) {
             $this->flashMessenger()->addMessage(
