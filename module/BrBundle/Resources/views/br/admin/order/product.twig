@@ -1,0 +1,38 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+	{% include 'br/admin/order/partials/navigation.twig' %}
+
+	<div id="controller_action">
+		{% include 'admin/partials/flashMessenger.twig' %}
+
+		<h1>Admin Roles</h1>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(addProductForm) }}
+
+        <br style="clear:both">
+
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="90px">Amount</th>
+                <th width="90px">Price</th>
+                <th width="90px">Actions</th>
+            </tr>
+            {% for entry in entries %}
+                <tr class="item-adminRole item-adminRole-{{ adminRole.getId() }}">
+                    <td>{{ entry.getProduct().getName() }}</td>
+                    <td>{{ entry.getQuantity() }}</td>
+                    <td>&euro; {{ entry.getQuantity() * entry.getProduct().getPrice() / 100 }}</td>
+                    <td>
+                        {% if hasAccess('br_admin_order', 'delete') %}
+                            <a href="#" data-id="{{ product.getId() }}" class="delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+	</div>
+{% endblock %}

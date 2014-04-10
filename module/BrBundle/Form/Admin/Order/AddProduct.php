@@ -36,7 +36,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class AddProduct extends \CommonBundle\Component\Form\Admin\Form
 {
 
     /**
@@ -74,70 +74,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_currentYear = $currentYear;
 
-        $field = new Text('title');
-        $field->setLabel('Order title')
-            ->setRequired(true)
-            ->setAttribute('class', 'input-very-mini');
+        $field = new Select('product');
+        $field->setLabel('Product')
+            ->setRequired()
+            ->setAttribute('options', $this->_createProductArray());
         $this->add($field);
 
-        $field = new Select('company');
-        $field->setLabel('Company')
-            ->setAttribute('options', $this->_createCompanyArray())
-            ->setRequired(true);
-        $this->add($field);
-
-        $this->_contacts = new Select('contact');
-        $this->_contacts->setLabel('Contact')
-            ->setRequired(true)
-            ->setAttribute('options', array());
-        $this->add($this->_contacts);
-
-        //$this->addInputs();
-
-        // $field = new Select('product');
-        // $field->setLabel('Product')
-        //     ->setRequired(true)
-        //     ->setAttribute('options', $this->_createProductArray());
-        // $this->add($field);
-
-        // $field = new Text('amount');
-        // $field->setLabel('Amount')
-        //     ->setRequired(true)
-        //     ->setAttribute('class', 'input-very-mini');
-        // $this->add($field);
-
-        // $field = new Text('discount');
-        // $field->setLabel('Discount')
-        //     ->setRequired(true)
-        //     ->setAttribute('class', 'input-very-mini');
-        // $this->add($field);
-
-        $field = new Select('tax');
-        $field->setLabel('Tax Free')
-            ->setAttribute('options', array(false => 'No', true => 'Yes'));
+        $field = new Text('amount');
+        $field->setLabel('Amount');
         $this->add($field);
 
         $field = new Submit('submit');
-        $field->setValue('Add Products')
+        $field->setValue('Add')
             ->setAttribute('class', 'product_add');
         $this->add($field);
-    }
-
-    private function _createCompanyArray()
-    {
-        $companies = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Company')
-            ->findAll();
-
-        $companyArray = array(
-            '' => ''
-        );
-        foreach ($companies as $company)
-            $companyArray[$company->getId()] = $company->getName();
-
-        return $companyArray;
     }
 
     private function _createProductArray()
@@ -153,66 +104,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $productArray[$product->getId()] = $product->getName();
 
         return $productArray;
-    }
-
-    private function _createContactsArray(Company $company)
-    {
-        $contacts = $company->getContacts();
-
-        $contactsArray = array(
-            '' => ''
-        );
-        foreach ($contacts as $contact)
-            $contactsArray[$contact->getId()] = $contact->getFullName();
-
-        return $contactsArray;
-    }
-
-    private function addInputs()
-    {
-
-        $products = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->_currentYear);
-
-        foreach ($products as $product) {
-            if(! $product->isOld()){
-                $field = new Text('product-' . $product->getId());
-                $field->setLabel($product->getName())
-                    ->setAttribute('class', 'input-very-mini')
-                    ->setAttribute('placeholder', '0');
-                $this->add($field);
-
-                $this->_inputs[] = $field;
-            }
-        }
-    }
-
-    public function populateFromOrder(Order $order)
-    {
-        $this->_contacts
-            ->setAttribute('options', $this->_createContactsArray($order->getCompany()));
-
-        $formData = array(
-            'title' => $order->getContract()->getTitle(),
-            'company' => $order->getCompany()->getId(),
-            'contact' => $order->getContact()->getId(),
-            'discount' => $order->getContract()->getDiscount()
-        );
-
-
-        $products = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->_currentYear);
-
-        foreach ($products as $product) {
-            $orderEntry = $this->_entityManager->getRepository('BrBundle\Entity\Product\OrderEntry')
-                ->findOneByOrderAndProduct($order, $product);
-
-            $formData['product-' . $product->getId()] = null === $orderEntry ? 0 : $orderEntry->getQuantity();
-        }
-
-        $this->setData($formData);
     }
 
     public function getInputFilter()

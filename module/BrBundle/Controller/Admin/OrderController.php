@@ -26,6 +26,7 @@ use BrBundle\Entity\Contract,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
     BrBundle\Form\Admin\Order\Edit as EditForm,
+    BrBundle\Form\Admin\Order\AddProduct as AddProductForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
@@ -83,66 +84,69 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $tax
                 );
 
-                $contract = new Contract($order,
-                    $this->getAuthentication()->getPersonObject(),
-                    $company,
-                    $formData['discount'],
-                    $formData['title']
-                );
+                // $contract = new Contract($order,
+                //     $this->getAuthentication()->getPersonObject(),
+                //     $company,
+                //     $formData['discount'],
+                //     $formData['title']
+                // );
 
-                $contract->setContractNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextContractNb()
-                );
+                // $contract->setContractNb(
+                //     $this->getEntityManager()
+                //         ->getRepository('BrBundle\Entity\Contract')
+                //         ->findNextContractNb()
+                // );
 
-                $products = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Product')
-                    ->findByAcademicYear($this->getCurrentAcademicYear());
+                // $products = $this->getEntityManager()
+                //     ->getRepository('BrBundle\Entity\Product')
+                //     ->findByAcademicYear($this->getCurrentAcademicYear());
 
-                $counter = 0;
-                foreach ($products as $product)
-                {
-                    $quantity = $formData['product-' . $product->getId()];
-                    if ($quantity != 0)
-                    {
-                        $orderEntry = new OrderEntry($order, $product, $quantity);
-                        $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
-                        $order->setEntry($orderEntry);
-                        $contract->setEntry($contractEntry);
-                        $counter++;
-                        $this->getEntityManager()->persist($orderEntry);
-                        $this->getEntityManager()->persist($contractEntry);
-                    }
-                }
+                // $counter = 0;
+                // foreach ($products as $product)
+                // {
+                //     $quantity = $formData['product-' . $product->getId()];
+                //     if ($quantity != 0)
+                //     {
+                //         $orderEntry = new OrderEntry($order, $product, $quantity);
+                //         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
+                //         $order->setEntry($orderEntry);
+                //         $contract->setEntry($contractEntry);
+                //         $counter++;
+                //         $this->getEntityManager()->persist($orderEntry);
+                //         $this->getEntityManager()->persist($contractEntry);
+                //     }
+                // }
 
-                if ($counter > 0) {
-                    $this->getEntityManager()->persist($order);
-                    $this->getEntityManager()->persist($contract);
-                    $this->getEntityManager()->flush();
+                $this->getEntityManager()->persist($order);
 
-                    $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The order was succesfully created!'
-                        )
-                    );
-                }
-                else{
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The order has to contain some products!'
-                        )
-                    );
-                }
+                // if ($counter > 0) {
+                //     $this->getEntityManager()->persist($order);
+                //     $this->getEntityManager()->persist($contract);
+                //     $this->getEntityManager()->flush();
+
+                //     $this->flashMessenger()->addMessage(
+                //     new FlashMessage(
+                //         FlashMessage::SUCCESS,
+                //         'Success',
+                //         'The order was succesfully created!'
+                //         )
+                //     );
+                // }
+                // else{
+                //     $this->flashMessenger()->addMessage(
+                //         new FlashMessage(
+                //             FlashMessage::ERROR,
+                //             'Error',
+                //             'The order has to contain some products!'
+                //         )
+                //     );
+                // }
 
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
-                        'action' => 'manage',
+                        'action' => 'product',
+                        'id' => $order->getId(),
                     )
                 );
 
@@ -156,6 +160,25 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
+
+    public function productAction()
+    {
+       if (!($order = $this->_getOrder(false)))
+            return new ViewModel();
+        if($order->getContract()->isSigned() == true)
+            return new ViewModel();
+
+       $addProductForm = new AddProductForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+
+       $entries = $this->_getOrder(false)->getEntries();
+
+       return new ViewModel(
+            array(
+                'entries' => $entries,
+                'addProductForm' => $addProductForm,
+            )
+        );
+   }
 
     public function editAction()
     {

@@ -41,6 +41,9 @@
 	                    <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
 	                    <td>{{ order.getCreationPerson().getFullName() }}</td>
 	                    <td class="actions">
+	                    	{% if hasAccess('br_admin_order', 'product') and not order.getContract().isSigned() %}
+	                        	<a href="{{ url('br_admin_order', {"action": "product", "id": order.getId()}) }}" class="product">Products</a>
+	                        {% endif %}
 	                    	{% if hasAccess('br_admin_order', 'edit') and not order.getContract().isSigned() %}
 	                        	<a href="{{ url('br_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
