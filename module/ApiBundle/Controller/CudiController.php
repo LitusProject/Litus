@@ -142,6 +142,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         foreach ($bookings as $booking) {
             $result[] = array(
                 'id'             => $booking->getId(),
+                'assigned'       => $booking->getStatus() == 'assigned',
                 'expirationDate' => (null !== $booking->getExpirationDate() ? $booking->getExpirationDate()->format('c') : null),
                 'number'         => $booking->getNumber(),
                 'article'        => $booking->getArticle()->getId(),
