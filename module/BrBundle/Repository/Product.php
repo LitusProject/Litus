@@ -2,7 +2,7 @@
 
 namespace BrBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Product
@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class Product extends EntityRepository
 {
+	public function findProductByIdQuery($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('p')
+            ->from('BrBundle\Entity\Product', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.id', ':id'),
+                    $query->expr()->eq('p.old', 'FALSE')
+                )
+            )
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $result;
+    }
 }

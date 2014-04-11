@@ -28,6 +28,7 @@ use BrBundle\Entity\Product,
 /**
  * ProductController
  *
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

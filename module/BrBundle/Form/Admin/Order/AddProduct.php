@@ -69,7 +69,7 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
      * @param \CommonBundle\Entity\General\AcademicYear
      * @param mixed $opts The validator's options
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
+    public function __construct(Array $currentProducts, EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
     {
         parent::__construct($opts);
 
@@ -78,7 +78,7 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('product');
         $field->setLabel('Product')
             ->setRequired()
-            ->setAttribute('options', $this->_createProductArray());
+            ->setAttribute('options', $this->_createProductArray($currentProducts));
         $this->add($field);
 
         $field = new Text('amount');
@@ -91,7 +91,7 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _createProductArray()
+    private function _createProductArray(Array $currentProducts)
     {
         $products = $this->_entityManager
             ->getRepository('BrBundle\Entity\Product')
@@ -101,7 +101,8 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
             '' => ''
         );
         foreach ($products as $product)
-            $productArray[$product->getId()] = $product->getName();
+            if(! in_array($product, $currentProducts) && $product->isOld() == false)
+                $productArray[$product->getId()] = $product->getName();
 
         return $productArray;
     }
@@ -110,41 +111,6 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-
-        foreach ($this->_inputs as $input) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => $input->getName(),
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'digits',
-                            ),
-                            array(
-                                'name' => 'between',
-                                'options' => array(
-                                    'min' => 0,
-                                    'max' => self::MAX_ORDER_NUMBER,
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'contact',
-                    'required' => true,
-                )
-            )
-        );
 
         return $inputFilter;
     }

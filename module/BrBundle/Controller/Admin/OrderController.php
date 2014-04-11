@@ -163,19 +163,94 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-       if (!($order = $this->_getOrder(false)))
+        if (!($order = $this->_getOrder(false)))
             return new ViewModel();
         if($order->getContract()->isSigned() == true)
             return new ViewModel();
 
-       $addProductForm = new AddProductForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $entries = $this->_getOrder(false)->getEntries();
 
-       $entries = $this->_getOrder(false)->getEntries();
+        $oldContract = $order->getContract();
 
-       return new ViewModel(
+        $currentProducts = array();
+        foreach ($entries as $entry) {
+            array_push($currentProducts, $entry->getProduct());
+        }
+        $form = new AddProductForm($currentProducts, $this->getEntityManager(), $this->getCurrentAcademicYear());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $updatedOrder = new Order(
+                    $order->getContact(),
+                    $this->getAuthentication()->getPersonObject(),
+                    $order->isTaxFree()
+                );
+
+                $contract = new Contract($updatedOrder,
+                    $this->getAuthentication()->getPersonObject(),
+                    $oldContract->getCompany(),
+                    $oldContract->getDiscount(),
+                    $oldContract->getTitle()
+                );
+
+                $contract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
+
+                $counter = 0;
+
+                foreach ($entries as $entry) {
+                    $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
+                    $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
+                    $order->setEntry($orderEntry);
+                    $contract->setEntry($contractEntry);
+                    $counter++;
+                    $this->getEntityManager()->persist($orderEntry);
+                    $this->getEntityManager()->persist($contractEntry);
+                }
+
+                $newProduct = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Product')
+                    ->findProductById($formData['product']);
+
+                $orderEntry = new OrderEntry($updatedOrder, $newProduct, $formData['amount']);
+                $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
+                $order->setEntry($orderEntry);
+                $contract->setEntry($contractEntry);
+
+                $this->getEntityManager()->persist($orderEntry);
+                $this->getEntityManager()->persist($contractEntry);
+                $this->getEntityManager()->persist($updatedOrder);
+                $this->getEntityManager()->persist($contract);
+
+                $order->setOld();
+
+                $this->getEntityManager()->persist($order);
+
+                $this->getEntityManager()->flush();
+
+
+                $this->redirect()->toRoute(
+                    'br_admin_order',
+                    array(
+                        'action' => 'product',
+                        'id' => $updatedOrder->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
             array(
                 'entries' => $entries,
-                'addProductForm' => $addProductForm,
+                'addProductForm' => $form,
             )
         );
    }
