@@ -258,11 +258,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $this->getEntityManager()->flush();
 
-        return new ViewModel(
-            array(
-                'result' => (object) array()
-            )
-        );
+        return $this->bookingsAction();
     }
 
     public function currentSessionAction()
