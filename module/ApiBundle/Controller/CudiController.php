@@ -94,6 +94,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         'bookable'       => $article->isBookable()
                             && $article->canBook($authenticatedPerson, $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
+                        'unbookable'       => $article->isUnbookable(),
                     );
                 }
             }
