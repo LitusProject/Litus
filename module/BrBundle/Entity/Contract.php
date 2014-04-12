@@ -87,7 +87,7 @@ class Contract
     private $contractEntries;
 
     /**
-     * @var int The discount the company gets, in %.
+     * @var int The discount the company gets.
      *
      * @ORM\Column(type="integer")
      */
@@ -288,12 +288,12 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  int                          $discount The discount, $discount >= 0 && $discount <= 100
+     * @param  int                          $discount The discount, $discount >= 0.
      * @return \BrBundle\Entity\Br\Contract
      */
     public function setDiscount($discount)
     {
-        if (($discount < 0) || ($discount > 100))
+        if ($discount < 0)
             throw new \InvalidArgumentException('Invalid discount');
 
         $this->discount = $discount;

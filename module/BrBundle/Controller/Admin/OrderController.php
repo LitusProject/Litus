@@ -220,7 +220,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\Product')
                     ->findProductById($formData['product']);
 
-                $orderEntry = new OrderEntry($updatedOrder, $newProduct, $formData['amount']);
+                $orderEntry = new OrderEntry($updatedOrder, $newProduct[0], $formData['amount']);
                 $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                 $order->setEntry($orderEntry);
                 $contract->setEntry($contractEntry);
@@ -289,7 +289,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $updatedContract = new Contract($updatedOrder,
                     $this->getAuthentication()->getPersonObject(),
                     $order->getCompany(),
-                    $order->getContract()->getDiscount(),
+                    $formData['discount'],
                     $formData['title']
                 );
 
@@ -299,25 +299,17 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
-                $products = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Product')
-                    ->findByAcademicYear($this->getCurrentAcademicYear());
+                $entries = $order->getEntries();
 
                 $counter = 0;
-                foreach ($products as $product)
+                foreach ($entries as $entry)
                 {
-                    $quantity = $formData['product-' . $product->getId()];
-                    $orderEntry = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Product\OrderEntry')
-                        ->findOneByOrderAndProduct($order, $product);
-                    if (0 != $quantity)
-                    {
-                        $updatedOrderEntry = new OrderEntry($updatedOrder, $product, $quantity);
-                        $updatedContractEntry = new ContractEntry($updatedContract, $updatedOrderEntry,$counter, 0);
-                        $counter++;
-                        $this->getEntityManager()->persist($updatedOrderEntry);
-                        $this->getEntityManager()->persist($updatedContractEntry);
-                    }
+                    $updatedOrderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
+                    $updatedContractEntry = new ContractEntry($updatedContract, $updatedOrderEntry,$counter, 0);
+                    $counter++;
+                    $this->getEntityManager()->persist($updatedOrderEntry);
+                    $this->getEntityManager()->persist($updatedContractEntry);
+
                 }
 
                 $this->getEntityManager()->persist($updatedOrder);
@@ -375,6 +367,22 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
         $this->getEntityManager()->remove($order);
         $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function deleteProductAction()
+    {
+        $this->initAjax();
+
+        // if (!($order = $this->_getOrder(false)))
+        //     return new ViewModel();
+        // if($order->getContract()->isSigned() == true)
+        //     return new ViewModel();
 
         return new ViewModel(
             array(

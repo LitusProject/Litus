@@ -153,9 +153,9 @@ return array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route' => '/admin/br/order[/:action[/:id]][/]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
+                'constraints'   => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'        => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_order',

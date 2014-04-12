@@ -154,7 +154,7 @@ class Order
                 $cost = $cost + ( ($orderEntry->getProduct()->getPrice()*(1 + $orderEntry->getProduct()->getVatPercentage($entityManager)/100)) * $orderEntry->getQuantity()) ;
             }
         }
-        return $cost / 100;
+        return ($cost / 100) - $this->getContract()->getDiscount();
     }
 
     public function isTaxFree(){

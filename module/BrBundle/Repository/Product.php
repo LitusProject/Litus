@@ -25,7 +25,6 @@ class Product extends EntityRepository
             )
             ->setParameter('id', $id)
             ->getQuery();
-
         return $result;
     }
 }

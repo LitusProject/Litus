@@ -94,25 +94,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', array());
         $this->add($this->_contacts);
 
-        //$this->addInputs();
-
-        // $field = new Select('product');
-        // $field->setLabel('Product')
-        //     ->setRequired(true)
-        //     ->setAttribute('options', $this->_createProductArray());
-        // $this->add($field);
-
-        // $field = new Text('amount');
-        // $field->setLabel('Amount')
-        //     ->setRequired(true)
-        //     ->setAttribute('class', 'input-very-mini');
-        // $this->add($field);
-
-        // $field = new Text('discount');
-        // $field->setLabel('Discount')
-        //     ->setRequired(true)
-        //     ->setAttribute('class', 'input-very-mini');
-        // $this->add($field);
+        $field = new Text('discount');
+        $field->setLabel('Discount')
+            ->setRequired(true)
+            ->setAttribute('class', 'input-very-mini');
+        $this->add($field);
 
         $field = new Select('tax');
         $field->setLabel('Tax Free')

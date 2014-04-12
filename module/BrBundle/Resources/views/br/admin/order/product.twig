@@ -21,18 +21,17 @@
                 <th width="90px">Actions</th>
             </tr>
             {% for entry in entries %}
-                <tr class="item-adminRole item-adminRole-{{ adminRole.getId() }}">
+                <tr class="item item-{{ entry.getProduct().getId() }}">
                     <td>{{ entry.getProduct().getName() }}</td>
                     <td>{{ entry.getQuantity() }}</td>
                     <td>&euro; {{ entry.getQuantity() * entry.getProduct().getPrice() / 100 }}</td>
                     <td>
                         {% if hasAccess('br_admin_order', 'delete') %}
-                            <a href="#" data-id="{{ product.getId() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ entry.getProduct().getId() }}" data-name="{{ entry.getProduct().getName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
-	</div>
 {% endblock %}
