@@ -42,7 +42,7 @@ return array(
     'Calendar' => 'Calendar',
     'Twitter' => 'Twitter',
     'News' => 'News',
-    'No news items were posted yet.' => 'No news items were posted yet.',
+    'No news items were posted recently.' => 'No news items were posted recently.',
     'No events were created yet.' => 'No events were created yet.',
     'Read More' => 'Read More',
 
@@ -91,7 +91,7 @@ return array(
     'Your password was succesfully changed!' => 'Your password was succesfully changed!',
     'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.' => 'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.',
 
-    'Bookstore' => 'Bookstore',
+    'Cudi' => 'Cudi',
     'Reservations' => 'Reservations',
     'Open Session' => 'Open Session',
     'Cudi is open until <span class="label label-warning">%time%</span>.' => 'Cudi is open until <span class="label label-warning">%time%</span>.',
@@ -99,7 +99,7 @@ return array(
     'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.',
     'Opening Hours' => 'Opening Hours',
     'Cudi is currently closed.' => 'Cudi is currently closed.',
-    'Reservate textbooks and other study material.' => 'Reservate textbooks and other study material.',
+    'Reserve textbooks and other study material.' => 'Reserve textbooks and other study material.',
 
     'The value may not be zero' => 'The value may not be zero',
 

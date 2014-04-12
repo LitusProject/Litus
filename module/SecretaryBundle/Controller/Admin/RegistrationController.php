@@ -22,8 +22,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Barcode,
+    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateInterval,
     DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
@@ -678,13 +679,24 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
 
-        if (null != $metaData) {
+        if (null !== $metaData) {
             $metaData->setBecomeMember(false)
                 ->setReceiveIrReeelAtCudi(false)
                 ->setTshirtSize(null);
         }
 
-        $organizationStatus->setStatus('non_member');
+        if (null !== $organizationStatus) {
+            $organizationStatus->setStatus('non_member');
+        } else {
+            $academic->addOrganizationStatus(
+                new OrganizationStatus(
+                    $academic,
+                    'non_member',
+                    $registration->getAcademicYear()
+                )
+            );
+        }
+
         $registration->setPayed(false)
             ->setCancelled(true);
 
