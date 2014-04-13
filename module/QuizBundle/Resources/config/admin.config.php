@@ -21,7 +21,7 @@ return array(
         'Apps' => array(
             'subtitle' => array('Quiz'),
             'items'    => array(
-                'quiz_admin_quiz' => 'Quiz',
+                'quiz_admin_quiz' => array('title' => 'Quiz'),
             ),
         ),
     ),

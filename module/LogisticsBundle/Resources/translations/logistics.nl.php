@@ -95,9 +95,9 @@ return array(
     '<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
 
         <ul>
-            <li>every monday and thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+            <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
         </ul>
 
         <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
@@ -105,15 +105,15 @@ return array(
         <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>' => '<p>Voor de cultuurliefhebbers die het nog niet wisten, VTK heeft een eigen vleugelpiano! Die kan je vinden in lokaal 01.52 (naast de proclamatiezaal) van het kasteel. Studenten mogen hier wekelijks en gratis gebruik van maken, en wel op volgende tijdstippen:<p>
 
         <ul>
-            <li>elke maandag- en donderdagavond van 19h tot 22h van week 39 t.e.m. 21, uitgezonderd collectieve sluitingsdagen van de KUL</li>
-            <li>alle werkdagen tussen 9h en 18h in de kerst- en paasvakantie, uitgezonderd collectieve sluitingsdagen van de KUL</li>
-            <li>alle werkdagen tussen 9h en 18h in juli (vanaf week 28) en augustus, uitgezonderd collectieve sluitingsdagen van de KUL</li>
+            <li>elke maandag-, dinsdag- en donderdagavond van 19h tot 22h van week 39 t.e.m. 21, uitgezonderd collectieve sluitingsdagen van de KU Leuven</li>
+            <li>alle werkdagen tussen 9h en 18h in de kerst- en paasvakantie, uitgezonderd collectieve sluitingsdagen van de KU Leuven</li>
+            <li>alle werkdagen tussen 9h en 18h in juli (vanaf week 28) en augustus, uitgezonderd collectieve sluitingsdagen van de KU Leuven</li>
         </ul>
 
         <p>Kies hieronder dus een moment waarop je wilt spelen, en reserveer het! 1 reservatie per week krijg je gegarandeerd toegewezen, als je meerdere keren per week wilt spelen krijgen anderen voorrang.</p>
 
         <p>Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.</p>',
-    'Please login to reservate a slot.' => 'Gelieve aan te melden om een slot te reserveren.',
+    'Please login to reserve a slot.' => 'Gelieve aan te melden om een slot te reserveren.',
 
     'Lease' => 'Uitlenen',
     'Return' => 'Terugbrengen',

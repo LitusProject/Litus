@@ -22,8 +22,9 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Barcode,
+    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateInterval,
     DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
@@ -289,7 +290,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $registration->setPayed($formData['payed']);
+                $registration->setPayed($formData['payed'])
+                    ->setCancelled($formData['cancel']);
 
                 $organization = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization')
@@ -305,16 +307,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getEntityManager()->persist(new AcademicYearMap($registration->getAcademic(), $registration->getAcademicYear(), $organization));
                 }
 
-                RegistrationArticles::book(
-                    $this->getEntityManager(),
-                    $registration->getAcademic(),
-                    $organization,
-                    $registration->getAcademicYear(),
-                    array(
-                        'payed' => $formData['payed'],
-                        'tshirtSize' => $formData['tshirt_size'],
-                    )
-                );
+                if (!$formData['cancel']) {
+                    RegistrationArticles::book(
+                        $this->getEntityManager(),
+                        $registration->getAcademic(),
+                        $organization,
+                        $registration->getAcademicYear(),
+                        array(
+                            'payed' => $formData['payed'],
+                            'tshirtSize' => $formData['tshirt_size'],
+                        )
+                    );
+                }
 
                 if (null === $metaData) {
                     $metaData = new MetaData(
@@ -330,6 +334,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         ->setBakskeByMail($formData['bakske'])
                         ->setTshirtSize($formData['tshirt_size']);
                 }
+
+                if ($formData['cancel'])
+                    $this->_cancelRegistration($registration);
 
                 $this->getEntityManager()->flush();
 
@@ -363,6 +370,40 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'currentOrganization' => $this->_getOrganization(),
             )
         );
+    }
+
+    public function cancelAction()
+    {
+        $this->initAjax();
+
+        if (!($registration = $this->_getRegistration()))
+            return new ViewModel();
+
+        $academic = $registration->getAcademic();
+        $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
+
+        if (null !== $organizationStatus && $organizationStatus->getStatus() == 'praesidium') {
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        } elseif ($registration->isCancelled()) {
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        } else {
+            $this->_cancelRegistration($registration);
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                    array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        }
     }
 
     public function searchAction()
@@ -421,6 +462,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $item->name = $registration->getAcademic()->getFullName();
                 $item->date = $registration->getTimestamp()->format('d/m/Y H:i');
                 $item->payed = $registration->hasPayed();
+                $item->cancelled = $registration->isCancelled();
                 $item->barcode = $registration->getAcademic()->getBarcode() ? $registration->getAcademic()->getBarcode()->getBarcode() : '';
                 $item->organization = $registration->getAcademic()->getOrganization($academicYear) ? $registration->getAcademic()->getOrganization($academicYear)->getName() : '';
                 $result[] = $item;
@@ -461,40 +503,40 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $academicYear = $this->_getAcademicYear();
         $organization = $this->_getOrganization();
 
-        if ($organization) {
-            $mappings = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-                ->findByAcademicYearAndOrganization($academicYear, $organization);
-        } else {
-            $mappings = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-                ->findByAcademicYear($academicYear);
-        }
+        $mappings = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
+            ->findAllByAcademicYearAndOrganization($academicYear, $organization);
 
+        $members = array();
         foreach ($mappings as $mapping) {
+            $academic = $mapping->getAcademic();
+
             $registration = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Registration')
-                ->findOneByAcademicAndAcademicYear($mapping->getAcademic(), $academicYear);
+                ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-            if (null === $registration || $registration->hasPayed() == false)
+            if (null === $registration || !$registration->hasPayed())
                 continue;
 
+            $primaryAddress = $academic->getPrimaryAddress();
+            $secondaryAddress = $academic->getSecondaryAddress();
+
             $members[$mapping->getAcademic()->getId()] = array(
-                'academicFirstName'               => $mapping->getAcademic()->getFirstName(),
-                'academicLastName'                => $mapping->getAcademic()->getLastName(),
-                'academicEmail'                   => $mapping->getAcademic()->getEmail(),
-                'academicPrimaryAddressStreet'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getStreet() : '',
-                'academicPrimaryAddressNumber'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getNumber() : '',
-                'academicPrimaryAddressMailbox'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getMailbox() : '',
-                'academicPrimaryAddressPostal'    => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getPostal() : '',
-                'academicPrimaryAddressCity'      => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCity() : '',
-                'academicPrimaryAddressCountry'   => $mapping->getAcademic()->getPrimaryAddress() ? $mapping->getAcademic()->getPrimaryAddress()->getCountry() : '',
-                'academicSecondaryAddressStreet'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getStreet() : '',
-                'academicSecondaryAddressNumber'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getNumber() : '',
-                'academicSecondaryAddressMailbox' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getMailbox() : '',
-                'academicSecondaryAddressPostal'  => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getPostal() : '',
-                'academicSecondaryAddressCity'    => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCity() : '',
-                'academicSecondaryAddressCountry' => $mapping->getAcademic()->getSecondaryAddress() ? $mapping->getAcademic()->getSecondaryAddress()->getCountry() : '',
+                'academicFirstName'               => $academic->getFirstName(),
+                'academicLastName'                => $academic->getLastName(),
+                'academicEmail'                   => $academic->getEmail(),
+                'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
+                'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
+                'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
+                'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
+                'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
+                'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
+                'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
+                'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
+                'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
+                'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
+                'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
+                'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
             );
         }
 
@@ -521,10 +563,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()
-            ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="members_'.$academicYear->getCode().'.csv"',
-            'Content-Type' => 'text/csv',
-        ));
+            ->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="members_' . $academicYear->getCode() . '.csv"',
+                'Content-Type' => 'text/csv',
+            )
+        );
 
         return new ViewModel(
             array(
@@ -624,5 +668,38 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('organization'));
 
         return $organization;
+    }
+
+    private function _cancelRegistration(Registration $registration)
+    {
+        $academic = $registration->getAcademic();
+        $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
+
+        $metaData = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+            ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
+
+        if (null !== $metaData) {
+            $metaData->setBecomeMember(false)
+                ->setReceiveIrReeelAtCudi(false)
+                ->setTshirtSize(null);
+        }
+
+        if (null !== $organizationStatus) {
+            $organizationStatus->setStatus('non_member');
+        } else {
+            $academic->addOrganizationStatus(
+                new OrganizationStatus(
+                    $academic,
+                    'non_member',
+                    $registration->getAcademicYear()
+                )
+            );
+        }
+
+        $registration->setPayed(false)
+            ->setCancelled(true);
+
+        RegistrationArticles::cancel($this->getEntityManager(), $academic, $registration->getAcademicYear());
     }
 }

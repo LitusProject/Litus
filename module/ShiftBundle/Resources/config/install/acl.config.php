@@ -31,7 +31,7 @@ return array(
             'manage', 'delete',
         ),
         'shift' => array(
-            'export', 'index', 'responsible', 'signout', 'volunteer'
+            'export', 'index', 'responsible', 'signOut', 'volunteer'
         ),
     ),
 );

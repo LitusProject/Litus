@@ -38,7 +38,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
  */
 class FormController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function viewAction()
+    public function indexAction()
     {
         if (!($formSpecification = $this->_getForm()))
             return $this->notFoundAction();
@@ -110,7 +110,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -224,6 +224,73 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function viewAction()
+    {
+        if (!($entry = $this->_getEntry()))
+            return $this->notFoundAction();
+
+        $entry->getForm()->setEntityManager($this->getEntityManager());
+
+        $now = new DateTime();
+        $formClosed = ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive());
+
+        $group = $this->_getGroup($entry->getForm());
+        $progressBarInfo = null;
+
+        if ($group) {
+            $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
+
+            if ($progressBarInfo['uncompleted_before_current'] > 0) {
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::WARNING,
+                        'Warning',
+                        'Please submit these forms in order.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'form_view',
+                    array(
+                        'action'   => 'index',
+                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+        $guestInfo = null;
+
+        if (null !== $person) {
+            $draftVersion = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\Entry')
+                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
+        } elseif (isset($_COOKIE['LITUS_form'])) {
+            $guestInfo = $this->getEntityManager()
+                ->getRepository('FormBundle\Entity\Node\GuestInfo')
+                ->findOneBySessionId($_COOKIE['LITUS_form']);
+
+            if ($guestInfo) {
+                $draftVersion = $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'formClosed'      => $formClosed,
+                'specification'   => $entry->getForm(),
+                'group'           => $group,
+                'progressBarInfo' => $progressBarInfo,
+                'entry'           => $entry,
+            )
+        );
+    }
+
     public function doodleAction()
     {
         if (!($formSpecification = $this->_getForm()))
@@ -233,7 +300,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'view',
+                    'action'   => 'index',
                     'id'       => $formSpecification->getId(),
                 )
             );
@@ -283,7 +350,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -520,7 +587,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
@@ -810,7 +877,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'view',
+                        'action'   => 'index',
                         'id'       => $progressBarInfo['next_form'],
                     )
                 );
@@ -819,7 +886,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'view',
+                    'action'   => 'index',
                     'id'       => $formSpecification->getId(),
                 )
             );

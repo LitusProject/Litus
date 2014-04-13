@@ -131,7 +131,7 @@
                         $('<label>', {'class': 'checkbox pull-left'}).append(
                             hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                             settings.tHideHold
-                        ),
+                        ).css('margin-left', '20px'),
                         undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'

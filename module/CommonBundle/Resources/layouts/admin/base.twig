@@ -29,8 +29,8 @@
 
                     {% for submenu in menu.general %}
                         <ul>
-                            {% for controller, settings in submenu %}
-                                <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
+                            {% for settings in submenu %}
+                                <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
                             {% endfor %}
                         </ul>
                     {% endfor %}
@@ -50,8 +50,8 @@
                                     {{ submenu.subtitle }}
                                 </div>
                                 <ul{% if submenu.active %} style="display: block;"{% endif %}>
-                                    {% for controller, settings in submenu.items %}
-                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(controller) }}">{{ settings.title }}</a></li>
+                                    {% for settings in submenu.items %}
+                                        <li{% if settings.help %} data-help="{{ settings.help }}"{% endif %}><a href="{{ url(settings.controller) }}">{{ settings.title }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>
@@ -62,6 +62,14 @@
         </nav>
 
         <div id="content_controller">
+            {% if createNewStockPeriod %}
+                <div class="flashmessage warning_message full_width">
+                    <div class="title">Warning</div>
+                    <div class="content">
+                        <p>Please create a new stock period! To do so, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.</p>
+                    </div>
+                </div>
+            {% endif %}
             {% block content %} {% endblock %}
         </div>
     </div>

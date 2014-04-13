@@ -231,7 +231,7 @@ class MetaData
     }
 
     /**
-     * @param boolean $tshirtSize
+     * @param string $tshirtSize
      *
      * @return \SecretaryBundle\Entity\Organization\MetaData
      */

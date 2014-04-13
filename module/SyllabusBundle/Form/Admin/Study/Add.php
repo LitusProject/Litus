@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('kul_id');
-        $field->setLabel('KUL Id')
+        $field->setLabel('KU Leuven Id')
             ->setRequired();
         $this->add($field);
 

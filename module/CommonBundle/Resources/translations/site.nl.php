@@ -21,6 +21,9 @@ return array(
     'VTK' => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
+    'Welcome' => 'Welkom',
+    'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
+
     'Dutch' => 'Nederlands',
     'English' => 'English',
     'French' => 'Français',
@@ -39,7 +42,7 @@ return array(
     'Calendar' => 'Kalender',
     'Twitter' => 'Twitter',
     'News' => 'Nieuws',
-    'No news items were posted yet.' => 'Er zijn nog geen nieuws items geplaatst.',
+    'No news items were posted recently.' => 'Er zijn geen recente nieuws items.',
     'No events were created yet.' => 'Er zijn nog geen evenementen aangemaakt.',
     'Read More' => 'Lees Meer',
 
@@ -88,13 +91,15 @@ return array(
     'Your password was succesfully changed!' => 'Je nieuw wachtwoord is opgeslagen!',
     'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan enkele minuten duren voordat je kan inloggen op de server.',
 
-    'Bookstore' => 'Cudi',
+    'Cudi' => 'Cudi',
     'Reservations' => 'Reservaties',
     'Open Session' => 'Open Sessie',
     'Cudi is open until <span class="label label-warning">%time%</span>.' => 'Cudi is open tot <span class="label label-warning">%time%</span>.',
     'Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.' => 'Momenteel is er <span class="label label-info">%number%</span> student in de rij bij Cudi.',
     'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="label label-info">%number%</span> studenten in de rij bij Cudi.',
     'Opening Hours' => 'Openingsuren',
+    'Cudi is currently closed.' => 'Cudi is momenteel gesloten.',
+    'Reserve textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
 

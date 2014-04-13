@@ -11,9 +11,9 @@
             {{ translate('You were signed in as a volunteer for the selected shift!') }}
         </div>
     </div>
-    <div class="flashmessage alert alert-success fade" id="signout">
+    <div class="flashmessage alert alert-success fade" id="sign_out">
         <div class="content">
-            {{ translate('You were singed out from the selected shift!') }}
+            {{ translate('You were signed out from the selected shift!') }}
         </div>
     </div>
     <div class="flashmessage alert alert-danger fade" id="error">
@@ -149,6 +149,13 @@
                                     $('#responsible_success').addClass('in');
 
                                     updateButton(button, parseInt(data.ratio, 10), count);
+                                    var panel = $(button.data('panel')).clone();
+                                    panel.find('.buttons').html('').css('display', 'none');
+
+                                    $('#shifts-myShifts .alert').remove();
+                                    $('#shifts-myShifts').prepend(panel);
+                                    panel.fadeIn();
+                                    $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                                 } else {
                                     errorSave();
                                 }
@@ -218,17 +225,17 @@
                 });
             });
 
-            $('.signout').click(function () {
+            $('.signOut').click(function () {
                 var button = $(this);
                 button.addClass('disabled');
 
                 $.post(
-                    '{{ url('shift', {"action": "signout"}) }}',
+                    '{{ url('shift', {"action": "signOut"}) }}',
                     {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
                     function (data) {
                         if (data && 'success' == data.status) {
                             $('.flashmessage').removeClass('in');
-                            $('#signout').addClass('in');
+                            $('#sign_out').addClass('in');
 
                             var panel = $(button.data('panel')).clone();
                             panel.find('.buttons').html('').css('display', 'none');
@@ -398,9 +405,9 @@
             </button>
         {% endif %}
     {% else %}
-        {% if shift.canSignout(entityManager, authenticatedPerson) %}
-            <button class="btn btn-default btn-xs signout" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
-                {{ translate('Signout') }}
+        {% if shift.canSignOut(entityManager, authenticatedPerson) %}
+            <button class="btn btn-default btn-xs signOut" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+                {{ translate('Sign Out') }}
             </button>
         {% endif %}
     {% endif %}

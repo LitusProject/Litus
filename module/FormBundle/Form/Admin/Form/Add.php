@@ -130,27 +130,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Text('max');
         $field->setLabel('Total Max Entries')
-            ->setAttribute('class', 'form');
+            ->setAttribute('class', 'form')
+            ->setAttribute('data-help', 'The maximum number of form submittions possible.');
         $this->add($field);
 
         $field = new Checkbox('non_members');
         $field->setLabel('Allow Entry Without Login')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'Allow users to submit this form without login. A name and email field will be added as first fields of this form.');
         $this->add($field);
 
         $field = new Checkbox('editable_by_user');
         $field->setLabel('Allow Users To Edit Their Info')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries. This will also enable the "Save as Concept" button.');
         $this->add($field);
 
         $field = new Checkbox('names_visible_for_others');
         $field->setLabel('Names Are Visible For Others')
-            ->setAttribute('class', 'doodle');
+            ->setAttribute('class', 'doodle')
+            ->setAttribute('data-help', 'Display the name of other person registered for slots in this doodle.');
         $this->add($field);
 
         $field = new Checkbox('multiple');
         $field->setLabel('Multiple Entries Per Person')
-            ->setAttribute('class', 'form doodle');
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'The maximum number of form submittions possible for each user.');
         $this->add($field);
 
         $field = new Checkbox('mail');
@@ -212,7 +217,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $field = new Checkbox('reminder_mail');
         $field->setLabel('Send Reminder Mail')
-            ->setAttribute('class', 'doodle');
+            ->setAttribute('class', 'doodle')
+            ->setAttribute('data-help', 'This mail will be sent the day before the timeslot starts. <br><br> If the slot is on Tuesday, the user will receive an email on Sunday morning.');
         $this->add($field);
 
         $reminder = new Collection('reminder_mail_form');

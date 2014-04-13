@@ -88,7 +88,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->persistentFlashMessages = array();
         $result->authenticatedPerson = $authenticatedPerson;
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
@@ -424,6 +423,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
+        if (!isset($language) && isset($this->getSessionStorage()->language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getSessionStorage()->language);
+        }
+
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
@@ -439,22 +444,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             }
         }
 
+        $this->getSessionStorage()->language = $language->getAbbrev();
+
         $this->_language = $language;
 
         return $language;
-    }
-
-    /**
-     * Add a persistent flash message
-     * @param mixed                                               $result       The result of onDispatch
-     * @param \CommonBundle\Component\FlashMessenger\FlashMessage $flashMessage The flash message
-     */
-    protected function addPersistentFlashMessage($result, FlashMessage $flashMessage)
-    {
-        $result->persistentFlashMessages = array_merge(
-            $result->persistentFlashMessages,
-            array($flashMessage)
-        );
     }
 
     /**
@@ -494,7 +488,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\Translator
+     * @return \Zend\Mvc\I18n\Translator
      */
     public function getTranslator()
     {

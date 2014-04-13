@@ -1,4 +1,4 @@
-Litus
+Litus [![Build Status](https://travis-ci.org/LitusProject/Litus.svg?branch=master)](https://travis-ci.org/LitusProject/Litus) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LitusProject/Litus/badges/quality-score.png?s=0d13a9ff23150e59e7b76e017699c17fd92fa91a)](https://scrutinizer-ci.com/g/LitusProject/Litus/)
 =====
 
 <p align="center">
