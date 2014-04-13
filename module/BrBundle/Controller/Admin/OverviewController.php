@@ -48,7 +48,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'array' => $array,
-                'totals' => $totals,
+                'totals'=> $totals,
             )
         );
     }
@@ -147,7 +147,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $contractNmbr = 0;
         $totalContracted = 0;
         $totalSigned = 0;
-        $totalPaid = "TODO";
+        $totalPaid = 0;
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
@@ -178,6 +178,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     if($contract->isSigned()){
                         $signed = $signed + $value;
                         $totalSigned = $totalSigned + $value;
+                        if($contract->getOrder()->getInvoice()->isPaid()){
+                            $paid = $paid + $value;
+                            $totalPaid = $totalPaid + $value;
+                        }
                     }
                 }
 
@@ -185,9 +189,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $result['amount'] = sizeof($contracts);
                 $result['contract'] = $contracted;
                 $result['signed'] = $signed;
-
-                //TODO
-                $result['paid'] = "TODO";
+                $result['paid'] = $paid;
 
                 array_push($collection, $result);
             }

@@ -257,54 +257,6 @@ class Contract
         return $this;
     }
 
-    //TODO remove compositions
-
-    /**
-     * @return array
-     */
-    public function getComposition()
-    {
-        return $this->composition->toArray();
-    }
-
-    /**
-     * @return \BrBundle\Entity\Br\Contract
-     */
-    public function resetComposition()
-    {
-        $this->composition->clear();
-
-        return $this;
-    }
-
-    //TODO remove sections
-
-    /**
-     * @param  \BrBundle\Entity\Br\Contracts\Section $section  The section that should be added
-     * @param  int                                   $position The position of this section
-     * @return \BrBundle\Entity\Br\Contract
-     */
-    public function addSection(Section $section, $position)
-    {
-        $this->composition->add(
-            new Composition($this, $section, $position)
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param  array                        $sections The array containing all sections that should be added; the array keys will be used as the position
-     * @return \BrBundle\Entity\Br\Contract
-     */
-    public function addSections(array $sections)
-    {
-        foreach ($sections as $position => $section)
-            $this->addSection($section, $position);
-
-        return $this;
-    }
-
     /**
      * @throws \InvalidArgumentException
      * @param  int                          $discount The discount, $discount >= 0.
