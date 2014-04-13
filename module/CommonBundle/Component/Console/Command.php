@@ -98,7 +98,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      */
     protected function writeln($string, $raw = false)
     {
-        if ($raw) {
+        if ($raw || false === $this->_logName) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
