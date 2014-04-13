@@ -19,6 +19,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contract,
+    BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
@@ -96,10 +97,23 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $contract->setTitle($formData['title']);
 
+                $contractVersion = $contract->getVersion();
+
+                $newVersionNb = 0;
+
                 foreach ($contract->getEntries() as $entry)
                 {
-                    $entry->setContractText($formData['entry_' . $entry->getId()]);
+                    if($entry->getVersion() == $contractVersion){
+                        $newVersionNb = $entry->getVersion() + 1;
+                        $newContractEntry = new ContractEntry($contract,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
+
+                        $this->getEntityManager()->persist($newContractEntry);
+
+                        $newContractEntry->setContractText($formData['entry_' . $entry->getId()]);
+                    }
                 }
+
+                $contract->setVersion($newVersionNb);
 
                 $this->getEntityManager()->flush();
 

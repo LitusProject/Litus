@@ -70,8 +70,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findOneById($formData['contact']);
 
                 $company = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company')
-                ->findOneById($formData['company']);
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']);
 
                 if ($formData['tax'] == true) {
                     $tax = true;
@@ -84,63 +84,23 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $tax
                 );
 
-                // $contract = new Contract($order,
-                //     $this->getAuthentication()->getPersonObject(),
-                //     $company,
-                //     $formData['discount'],
-                //     $formData['title']
-                // );
+                $contract = new Contract($order,
+                    $this->getAuthentication()->getPersonObject(),
+                    $company,
+                    $formData['discount'],
+                    $formData['title']
+                );
 
-                // $contract->setContractNb(
-                //     $this->getEntityManager()
-                //         ->getRepository('BrBundle\Entity\Contract')
-                //         ->findNextContractNb()
-                // );
-
-                // $products = $this->getEntityManager()
-                //     ->getRepository('BrBundle\Entity\Product')
-                //     ->findByAcademicYear($this->getCurrentAcademicYear());
-
-                // $counter = 0;
-                // foreach ($products as $product)
-                // {
-                //     $quantity = $formData['product-' . $product->getId()];
-                //     if ($quantity != 0)
-                //     {
-                //         $orderEntry = new OrderEntry($order, $product, $quantity);
-                //         $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
-                //         $order->setEntry($orderEntry);
-                //         $contract->setEntry($contractEntry);
-                //         $counter++;
-                //         $this->getEntityManager()->persist($orderEntry);
-                //         $this->getEntityManager()->persist($contractEntry);
-                //     }
-                // }
+                $contract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
 
                 $this->getEntityManager()->persist($order);
+                $this->getEntityManager()->persist($contract);
 
-                // if ($counter > 0) {
-                //     $this->getEntityManager()->persist($order);
-                //     $this->getEntityManager()->persist($contract);
-                //     $this->getEntityManager()->flush();
-
-                //     $this->flashMessenger()->addMessage(
-                //     new FlashMessage(
-                //         FlashMessage::SUCCESS,
-                //         'Success',
-                //         'The order was succesfully created!'
-                //         )
-                //     );
-                // }
-                // else{
-                //     $this->flashMessenger()->addMessage(
-                //         new FlashMessage(
-                //             FlashMessage::ERROR,
-                //             'Error',
-                //             'The order has to contain some products!'
-                //         )
-                //     );
-                // }
+                $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'br_admin_order',
@@ -449,7 +409,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
             return;
         }
-
         if ($order->getContract()->isSigned() && !$allowSigned) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -468,7 +427,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
             return;
         }
-
         return $order;
     }
 }

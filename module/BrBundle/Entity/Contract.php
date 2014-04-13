@@ -26,6 +26,7 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -129,6 +130,13 @@ class Contract
     private $signed;
 
     /**
+     * @var Integer that resembles the version of this contract.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
      * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract
@@ -142,12 +150,23 @@ class Contract
         $this->setCompany($company);
         $this->setDiscount($discount);
         $this->setTitle($title);
+        $this->setVersion(0);
 
         $this->setDirty();
         $this->setInvoiceNb();
 
         $this->contractEntries = new ArrayCollection();
         $this->signed = false;
+    }
+
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    public function setVersion($versionNb)
+    {
+        return $this->version = $versionNb;
     }
 
     /**
@@ -417,9 +436,23 @@ class Contract
     /**
      * @return array
      */
-    public function getEntries()
+    public function getAllEntries()
     {
         return $this->contractEntries->toArray();
+    }
+
+    public function getEntries()
+    {
+        $array = array();
+
+        $entries = $this->getAllEntries();
+
+        foreach ($entries as $entry) {
+            if($entry->getVersion() == $this->version)
+                array_push($array, $entry);
+        }
+
+        return $array;
     }
 
     public function setEntry(ContractEntry $entry)

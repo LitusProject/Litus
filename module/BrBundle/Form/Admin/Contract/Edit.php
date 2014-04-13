@@ -40,7 +40,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
 
-        $this->_createFromContract($contract);
+        $this->_createFromContract($contract,$entityManager);
 
         $field = new Submit('Save');
         $field->setValue('Save')
@@ -48,7 +48,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _createFromContract(Contract $contract)
+    private function _createFromContract(Contract $contract,$em)
     {
         $field = new Text('title');
         $field->setLabel('Title')
@@ -62,7 +62,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($contract->getInvoiceNb());
         $this->add($field);
 
-        foreach ($contract->getEntries() as $entry)
+        foreach ($contract->getEntries($em) as $entry)
         {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())

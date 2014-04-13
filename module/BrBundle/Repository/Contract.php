@@ -45,6 +45,22 @@ class Contract extends EntityRepository
         return $return;
     }
 
+    public function findCurrentVersionNb($id)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $highestVersionNb = $query->select('MAX(e.version)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.contractEntries','e')
+            ->where(
+                $query->expr()->eq('c.id', ':id')
+            )
+            ->getQuery()
+            ->setParameter('id', $id)
+            ->getSingleScalarResult();
+
+        return $highestVersionNb;
+    }
+
     public function findNextContractNb()
     {
         $query = $this->_em->createQueryBuilder();
