@@ -215,6 +215,16 @@ VTK'
         'description' => 'The abbreviation of the language that will be used of no other translation is present',
     ),
     array(
+        'key'         => 'socket_log',
+        'value'       => '/var/log/litus/sockets.log',
+        'description' => 'The absolute path of the socket logfile',
+    ),
+    array(
+        'key'         => 'socket_path',
+        'value'       => '/var/run/litus',
+        'description' => 'The location of pid/socket files',
+    ),
+    array(
         'key'         => 'common.geocoding_api_url',
         'value'       => 'http://maps.googleapis.com/maps/api/geocode/',
         'description' => 'The URL to Google\'s geocoding API',
