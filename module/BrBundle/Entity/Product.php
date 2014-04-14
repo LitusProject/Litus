@@ -147,11 +147,17 @@ class Product
         $this->old = false;
     }
 
+    /**
+     * @return \BrBundle\Entity\Product
+     */
     public function setOld(){
         $this->old = true;
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
     public function isOld(){
         return $this->old;
     }

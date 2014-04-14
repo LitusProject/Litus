@@ -132,16 +132,12 @@ class Order
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
         $this->setTaxFree($taxFree);
-        $this->totalCost = 0;
     }
 
-    public function setTotalCost($cost){
-        if($cost <= 0 or $cost > self::$MAX_TOTAL_COST){
-            throw new \InvalidArgumentException('Invalid total cost');
-        }
-        $this->totalCost = $cost;
-    }
-
+    /**
+     * @param   EntityManager   $entityManager
+     * @return  double          cost of this order
+     */
     public function getTotalCost(EntityManager $entityManager){
         $cost = 0;
         if($this->taxFree){
@@ -157,21 +153,35 @@ class Order
         return ($cost / 100) - $this->getContract()->getDiscount();
     }
 
+    /**
+     * @return boolean
+     */
     public function isTaxFree(){
         return $this->taxFree;
     }
 
+    /**
+     * @param boolean $taxfree
+     */
     public function setTaxFree($taxFree){
         $this->taxFree = $taxFree;
     }
 
+    /**
+     * @return boolean
+     */
     public function isOld(){
         return $this->old;
     }
 
+    /**
+     * @note    This order gets set to old.
+     *          This means the boolean $old is set to true.
+     */
     public function setOld(){
         $this->old = true;
     }
+
     /**
      * @return int
      */

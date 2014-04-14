@@ -99,12 +99,19 @@ class Invoice
         $this->setVersion(0);
     }
 
+    /**
+     * @param int $version
+     * @return \BrBundle\Entity\Invoice
+     */
     public function setVersion($version)
     {
         $this->version = $version;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getVersion()
     {
         return $this->version;
@@ -117,6 +124,9 @@ class Invoice
         return $this->id;
     }
 
+    /**
+     * @return boolean
+     */
     public function isPayed()
     {
         if ($this->paidTime == null)
@@ -124,6 +134,11 @@ class Invoice
         return true;
     }
 
+    /**
+     * @return \BrBundle\Entity\Invoice
+     * @throws  InvalidArgumentExeption
+     *          Exception gets thrown if the invoice is already payed.
+     */
     public function setPayed(){
         if ($this->isPayed())
             throw new \InvalidArgumentException('This invoice has already been paid');
@@ -215,6 +230,10 @@ class Invoice
         return $this->invoiceEntries->toArray();
     }
 
+    /**
+     * @return  array
+     * @note    Only the most recent entries get returned in the array.
+     */
     public function getEntries()
     {
         $version = $this->getVersion();
@@ -222,8 +241,6 @@ class Invoice
         $array = array();
 
         foreach ($this->getAllEntries() as $entry) {
-            print_r("version  :".$version);
-            print_r("   entry version ".$entry->getVersion());
             if($entry->getVersion() == $version)
                 array_push($array, $entry);
         }

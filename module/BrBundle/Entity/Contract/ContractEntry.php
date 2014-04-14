@@ -102,6 +102,7 @@ class ContractEntry
     }
 
     /**
+     * @param int $versionNmbr
      * @return int
      */
     private function _setVersion($versionNmbr)
@@ -110,7 +111,6 @@ class ContractEntry
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
         $this->version = $versionNmbr;
     }
-
 
     /**
      * @return int

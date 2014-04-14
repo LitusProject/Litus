@@ -159,14 +159,20 @@ class Contract
         $this->signed = false;
     }
 
+    /**
+     * @return int
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
+    /**
+     * @param int $versionNb
+     */
     public function setVersion($versionNb)
     {
-        return $this->version = $versionNb;
+        $this->version = $versionNb;
     }
 
     /**
@@ -393,6 +399,10 @@ class Contract
         return $this->contractEntries->toArray();
     }
 
+    /**
+     * @return  array
+     * @note    The array that is returned only contains the most recent entries.
+     */
     public function getEntries()
     {
         $array = array();
@@ -407,6 +417,10 @@ class Contract
         return $array;
     }
 
+    /**
+     * @param ContractEntry $entry
+     * @return \BrBundle\Entity\Contract
+     */
     public function setEntry(ContractEntry $entry)
     {
         $this->contractEntries->add($entry);

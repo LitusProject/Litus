@@ -21,8 +21,6 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
-    BrBundle\Entity\Contract\Section,
-    BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
     BrBundle\Form\Admin\Order\Edit as EditForm,

@@ -101,7 +101,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return int
+     * @param int $versionNmbr
      */
     private function _setVersion($versionNmbr)
     {
@@ -110,6 +110,10 @@ class InvoiceEntry
         $this->version = $versionNmbr;
     }
 
+    /**
+     * @param int $text
+     * @return \BrBundle\Entity\Invoice\InvoiceEntry
+     */
     public function setInvoiceText($text)
     {
         $this->invoiceText = $text;
@@ -117,10 +121,14 @@ class InvoiceEntry
         return $this;
     }
 
+    /**
+     * @return text
+     */
     public function getInvoiceText()
     {
         return $this->invoiceText;
     }
+
     /**
      * @return int
      */
