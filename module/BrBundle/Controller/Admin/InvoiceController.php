@@ -20,6 +20,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
+    BrBundle\Form\Admin\Invoice\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File as FileUtil,
@@ -30,6 +31,7 @@ use BrBundle\Entity\Invoice,
 /**
  * InvoiceController
  *
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
 class InvoiceController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -66,14 +68,62 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-                'BrBundle\Entity\Invoice',
-                $this->getParam('page')
-            );
+        if (!($invoice = $this->_getInvoice(false)))
+            return new ViewModel();
+
+        $form = new EditForm($this->getEntityManager(), $invoice);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $invoiceVersion = $invoice->getVersion();
+
+                $newVersionNb = 0;
+
+                foreach ($invoice->getEntries() as $entry)
+                {
+                    if($entry->getVersion() == $invoiceVersion){
+                        $newVersionNb = $entry->getVersion() + 1;
+                        $newInvoiceEntry = new InvoiceEntry($invoice,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
+
+                        $this->getEntityManager()->persist($newInvoiceEntry);
+
+                        $newInvoiceEntry->setInvoiceText($formData['entry_' . $entry->getId()]);
+                    }
+                }
+
+                $invoice->setVersion($newVersionNb);
+
+                $this->getEntityManager()->flush();
+
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The invoice was succesfully updated!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_invoice',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'form' => $form,
             )
         );
     }

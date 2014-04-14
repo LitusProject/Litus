@@ -81,6 +81,13 @@ class Invoice
     private $invoiceEntries;
 
     /**
+     * @var Integer that resembles the version of this contract.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * Creates a new invoice
      *
      * @param \BrBundle\Entity\Product\Order $order The order to create the invoice for.
@@ -89,8 +96,19 @@ class Invoice
     {
         $this->setOrder($order);
         $this->creationTime = new DateTime();
+        $this->setVersion(0);
     }
 
+    public function setVersion($version)
+    {
+        $this->version = $version;
+        return $this;
+    }
+
+    public function getVersion()
+    {
+        return $this->version;
+    }
     /**
      * @return int
      */
@@ -192,9 +210,25 @@ class Invoice
     /**
      * @return array
      */
-    public function getEntries()
+    public function getAllEntries()
     {
         return $this->invoiceEntries->toArray();
+    }
+
+    public function getEntries()
+    {
+        $version = $this->getVersion();
+
+        $array = array();
+
+        foreach ($this->getAllEntries() as $entry) {
+            print_r("version  :".$version);
+            print_r("   entry version ".$entry->getVersion());
+            if($entry->getVersion() == $version)
+                array_push($array, $entry);
+        }
+
+        return $array;
     }
 
 }

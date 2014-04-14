@@ -50,6 +50,13 @@ class InvoiceEntry
     private $invoice;
 
     /**
+     * @var string The contract text of this product
+     *
+     * @ORM\Column(name="contract_text", type="text")
+     */
+    private $invoiceText;
+
+    /**
      * @var \BrBundle\Entity\Product\OrderEntry The order entry of which this is an entry in the invoice.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\OrderEntry")
@@ -65,17 +72,55 @@ class InvoiceEntry
     private $position;
 
     /**
+     * @var int The version of the contract this entry belongs too.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * @param \BrBundle\Entity\Invoice $invoice The invoice of which this entry is part.
      * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this invoice entry.
      * @param int $position The position number of the entry in the invoice
      */
-    public function __construct(Invoice $invoice, OrderEntry $orderEntry, $position)
+    public function __construct(Invoice $invoice, OrderEntry $orderEntry, $position, $version)
     {
         $this->invoice = $invoice;
         $this->orderEntry = $orderEntry;
         $this->position = $position;
+        $this->setInvoiceText($orderEntry->getProduct()->getInvoiceDescription());
+        $this->_setVersion($version);
     }
 
+    /**
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return int
+     */
+    private function _setVersion($versionNmbr)
+    {
+        if($versionNmbr < 0)
+            throw new \InvalidArgumentException("version number must be larger or equal to zero");
+        $this->version = $versionNmbr;
+    }
+
+    public function setInvoiceText($text)
+    {
+        $this->invoiceText = $text;
+
+        return $this;
+    }
+
+    public function getInvoiceText()
+    {
+        return $this->invoiceText;
+    }
     /**
      * @return int
      */
