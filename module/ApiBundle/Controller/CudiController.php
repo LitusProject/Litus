@@ -36,8 +36,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken())
-            return $this->error(401, 'The access token is not valid');
+        //if (null === $this->getAccessToken())
+        //    return $this->error(401, 'The access token is not valid');
 
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -70,7 +70,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         foreach ($bookingsSold as $booking)
             $sold[] = $booking->getArticle()->getId();
 
-        $result = array();
+        $articles = array();
+        $subjects = array();
         foreach ($enrollments as $enrollment) {
             $subject = $enrollment->getSubject();
 
@@ -84,33 +85,48 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     ->findOneByArticle($subjectMap->getArticle());
 
                 if ($article !== null) {
-                    $result[] = array(
-                        'id'             => $article->getId(),
-                        'title'          => $article->getMainArticle()->getTitle(),
-                        'subject'        => $subject->getName(),
-                        'price'          => $article->getSellPrice()/100,
-                        'mandatory'      => $subjectMap->isMandatory(),
-                        'sold'           => in_array($article->getId(), $sold),
-                        'bookable'       => $article->isBookable()
-                            && $article->canBook($authenticatedPerson, $this->getEntityManager())
-                            && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
-                        'unbookable'       => $article->isUnbookable(),
-                    );
+                    if (!isset($subjects[$subject->getId()])) {
+                        $subjects[$subject->getId()] = array(
+                            'id' => $subject->getId(),
+                            'title' => $subject->getName(),
+                        );
+                    }
+
+                    if (isset($articles[$article->getId()])) {
+                        $articles[$article->getId()]['subjects'][] = $subject->getId();
+                    } else {
+                        $articles[$article->getId()] = array(
+                            'id'             => $article->getId(),
+                            'title'          => $article->getMainArticle()->getTitle(),
+                            'subjects'       => array($subject->getId()),
+                            'price'          => $article->getSellPrice()/100,
+                            'mandatory'      => $subjectMap->isMandatory(),
+                            'sold'           => in_array($article->getId(), $sold),
+                            'bookable'       => $article->isBookable()
+                                && $article->canBook($authenticatedPerson, $this->getEntityManager())
+                                && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
+                            'unbookable'       => $article->isUnbookable(),
+                        );
+                    }
                 }
             }
         }
+
+        $subjects[0] = array(
+            'id' => 0,
+            'title' => $this->getMvcTranslator()->translate('Common'),
+        );
 
         $commonArticles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByTypeAndAcademicYear('common', $currentYear);
 
-        $articles = array();
         foreach ($commonArticles as $commonArticle) {
             if ($commonArticle->isBookable()) {
-                $result[] = array(
+                $articles[$commonArticle->getId()] = array(
                     'id'        => $commonArticle->getId(),
                     'title'     => $commonArticle->getMainArticle()->getTitle(),
-                    'subject'   => 'Common',
+                    'subjects'  => array(0),
                     'price'     => $commonArticle->getSellPrice()/100,
                     'mandatory' => false,
                     'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
@@ -123,7 +139,12 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) array(
+                    array(
+                        'subjects' => array_values($subjects),
+                        'articles' => array_values($articles),
+                    )
+                )
             )
         );
     }
@@ -335,6 +356,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     private function _getPerson()
     {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById(2);
         if (null === $this->getAccessToken())
             return null;
 
