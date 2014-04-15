@@ -343,13 +343,45 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        system('kill $(ps aux | grep -i "php public/index.php socket:cudi:sale-queue --run" | grep -v grep | awk \'{print $2}\')');
+        $output = array();
+        $return = 0;
 
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
-        );
+        $pidDir = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('socket_path');
+
+        $pid = exec('cat ' . shellescapearg($pidDir) . '/pids/cudi:sale-queue.pid', null, $return);
+
+        if (0 !== $return) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                        'reason' => 'no_pid_file',
+                    ),
+                )
+            );
+        }
+
+        exec('kill ' . $pid, $output, $return);
+
+        if (0 === $return) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'success'),
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                        'reason' => 'kill_failed',
+                        'output' => implode("\n", $output),
+                    ),
+                )
+            );
+        }
     }
 
     private function _getSession()
