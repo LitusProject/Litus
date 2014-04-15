@@ -350,7 +350,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('socket_path');
 
-        $pid = exec('cat ' . escapeshellarg($pidDir) . '/pids/cudi:sale-queue.pid', null, $return);
+        $pid = exec('cat ' . escapeshellarg($pidDir) . '/pids/cudi:sale-queue.pid', array(), $return);
 
         if (0 !== $return) {
             return new ViewModel(
