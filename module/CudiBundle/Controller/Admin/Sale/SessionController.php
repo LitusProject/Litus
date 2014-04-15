@@ -19,6 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
     CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
@@ -343,47 +344,11 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $output = array();
-        $return = 0;
-
-        $pidDir = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('socket_path');
-
-        $pid = exec('cat ' . escapeshellarg($pidDir) . '/pids/cudi:sale-queue.pid', $output, $return);
-
-        if (0 !== $return) {
-            return new ViewModel(
-                array(
-                    'result' => (object) array(
-                        'status' => 'error',
-                        'reason' => 'pid_file',
-                        'output' => implode("\n", $output),
-                    ),
-                )
-            );
-        }
-
-        $output = array();
-        exec('kill ' . $pid, $output, $return);
-
-        if (0 === $return) {
-            return new ViewModel(
-                array(
-                    'result' => (object) array('status' => 'success'),
-                )
-            );
-        } else {
-            return new ViewModel(
-                array(
-                    'result' => (object) array(
-                        'status' => 'error',
-                        'reason' => 'kill_failed',
-                        'output' => implode("\n", $output),
-                    ),
-                )
-            );
-        }
+        return new ViewModel(
+            array(
+                'result' => WebSocketUtil::kill($this->getEntityManager(), 'cudi:sale-queue'),
+            )
+        );
     }
 
     private function _getSession()
