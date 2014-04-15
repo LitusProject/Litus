@@ -47,8 +47,10 @@
                         {% endif %}
 
                         <td class="actions">
-                            {% if hasAccess('br_admin_invoice', 'edit') %}
-                                <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
+                            {% if invoice.isPayed() == false %}
+                                {% if hasAccess('br_admin_invoice', 'edit') %}
+                                    <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
                             {% endif %}
                             {% if hasAccess('br_admin_invoice', 'view') %}
                                 <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
@@ -56,8 +58,10 @@
                             {% if hasAccess('br_admin_invoice', 'download') %}
                                 <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
                             {% endif %}
-                            {% if hasAccess('br_admin_invoice', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ invoice.getId() }}" data-name="{{ invoice.getTitle() }}">Delete</a>
+                            {% if invoice.isPayed() == false %}
+                                {% if hasAccess('br_admin_invoice', 'delete') %}
+                                    <a href="#" class="delete" data-id="{{ invoice.getId() }}" data-name="{{ invoice.getTitle() }}">Delete</a>
+                                {% endif %}
                             {% endif %}
                         </td>
                     </tr>
