@@ -22,6 +22,14 @@
             <p>The socket was successfully killed!</p>
         </div>
     </div>
+    <div class="flashmessage danger_message full_width hide" id="socket_killed_failure">
+        <div class="title">Error</div>
+        <div class="content">
+            <p class="reason"></p>
+            <pre class="output"></pre>
+            <p>Please notify the system administrator of this issue.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <table class="manage">
@@ -135,15 +143,33 @@
             $('#killSocket').click(function(e) {
                 e.preventDefault();
                 $.post('{{ url('sport_admin_run', {"action": "killSocket"})}}', function (data) {
-                    if (data && 'success' == data.status) {
+                    if (!data) return;
+
+                    if ('success' == data.status) {
                         $('.flashmessage').addClass('hide');
+                        $('#socket_killed_failure').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
+
+                        setTimeout(function() {
+                            $('#socket_killed_success').addClass('hide');
+                        }, 2000);
+                    } else {
+                        var $reason = $('#socket_killed_failure .reason');
+
+                        if (!data.reason)
+                            $reason.text('An unknown error occured.');
+                        else if (data.reason == 'pid_file')
+                            $reason.text('Couldn\'t find socket.');
+                        else if (data.reason == 'kill_failed')
+                            $reason.text('Couldn\'t acces the socket.');
+
+                        $('#socket_killed_failure .output').text(data.output);
+
+                        $('.flashmessage').addClass('hide');
+                        $('#socket_killed_success').addClass('hide');
+                        $('#socket_killed_failure').removeClass('hide');
                     }
                 }, 'json');
-
-                setTimeout(function() {
-                    $('#socket_killed_success').addClass('hide');
-                }, 2000);
             });
             {% endif %}
 
