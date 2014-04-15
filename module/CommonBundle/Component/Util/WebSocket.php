@@ -44,7 +44,7 @@ class WebSocket
         $pidDir = $em->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('socket_path');
 
-        $pidFile = $pidDir . '/pids' . $name . '.pid';
+        $pidFile = $pidDir . '/pids/' . $name . '.pid';
 
         $output = array();
         $return = 0;
