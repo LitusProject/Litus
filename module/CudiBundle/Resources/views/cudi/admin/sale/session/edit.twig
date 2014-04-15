@@ -210,6 +210,10 @@
                         $('.flashmessage').addClass('hide');
                         $('#socket_killed_failure').addClass('hide');
                         $('#socket_killed_success').removeClass('hide');
+
+                        setTimeout(function() {
+                            $('#socket_killed_success').addClass('hide');
+                        }, 2000);
                     } else {
                         var $reason = $('#socket_killed_failure .reason');
 
@@ -226,11 +230,6 @@
                         $('#socket_killed_success').addClass('hide');
                         $('#socket_killed_failure').removeClass('hide');
                     }
-
-                    setTimeout(function() {
-                        $('#socket_killed_success').addClass('hide');
-                        $('#socket_killed_failure').addClass('hide');
-                    }, 2000);
                 }, 'json');
             });
             {% endif %}
