@@ -93,14 +93,21 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     }
 
                     if (isset($articles[$article->getId()])) {
-                        $articles[$article->getId()]['subjects'][] = $subject->getId();
+                        $articles[$article->getId()]['subjects'][] = array(
+                            'id'        => $subject->getId(),
+                            'mandatory' => $subjectMap->isMandatory(),
+                        );
                     } else {
                         $articles[$article->getId()] = array(
                             'id'             => $article->getId(),
                             'title'          => $article->getMainArticle()->getTitle(),
-                            'subjects'       => array($subject->getId()),
+                            'subjects'       => array(
+                                array(
+                                    'id'        => $subject->getId(),
+                                    'mandatory' => $subjectMap->isMandatory(),
+                                )
+                            ),
                             'price'          => $article->getSellPrice()/100,
-                            'mandatory'      => $subjectMap->isMandatory(),
                             'sold'           => in_array($article->getId(), $sold),
                             'bookable'       => $article->isBookable()
                                 && $article->canBook($authenticatedPerson, $this->getEntityManager())
@@ -126,9 +133,13 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 $articles[$commonArticle->getId()] = array(
                     'id'        => $commonArticle->getId(),
                     'title'     => $commonArticle->getMainArticle()->getTitle(),
-                    'subjects'  => array(0),
+                    'subjects'  => array(
+                        array(
+                            'id'        => 0,
+                            'mandatory' => false,
+                        )
+                    ),
                     'price'     => $commonArticle->getSellPrice()/100,
-                    'mandatory' => false,
                     'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
                     'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($authenticatedPerson, $this->getEntityManager())
