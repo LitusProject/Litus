@@ -36,16 +36,21 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findBy(
-                array(
-                    'endTime' => null
-                ),
-                array(
-                    'name' => 'ASC'
-                )
-            );
+        if (null !== $this->getParam('field'))
+            $pages = $this->_search();
+
+        if (!isset($pages)) {
+            $pages = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Node\Page')
+                ->findBy(
+                    array(
+                        'endTime' => null
+                    ),
+                    array(
+                        'name' => 'ASC'
+                    )
+                );
+        }
 
         foreach ($pages as $key => $page) {
             if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject()))
@@ -53,7 +58,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $pages, $this->getParam('page')
+            $pages,
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -339,6 +345,51 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     )
                 )
             );
+        }
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $pages = $this->_search();
+
+        foreach ($pages as $key => $page) {
+            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+                unset($pages[$key]);
+        }
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($pages, $numResults);
+
+        $result = array();
+        foreach ($pages as $page) {
+            $item = (object) array();
+            $item->id = $page->getId();
+            $item->title = $page->getTitle($this->getLanguage());
+            $item->category = $page->getCategory() ? $page->getCategory()->getName($this->getLanguage()) : '';
+            $item->parent = $page->getParent() ? $page->getParent()->getTitle($this->getLanguage()) : '';
+            $item->author = $page->getCreationPerson()->getFullName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    private function _search()
+    {
+        switch ($this->getParam('field')) {
+            case 'title':
+                return $this->getEntityManager()
+                    ->getRepository('PageBundle\Entity\Node\Page')
+                    ->findAllByTitle($this->getParam('string'));
         }
     }
 
