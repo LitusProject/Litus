@@ -283,6 +283,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $image = new Imagick($upload->getFileName());
                 unlink($upload->getFileName());
 
+                $fileName = '';
+                do {
+                    $fileName = '/' . sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
                 if ($event->getPoster() != '' || $event->getPoster() !== null) {
                     $fileName = '/' . $event->getPoster();
                 } else {
@@ -291,6 +296,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
+
                 $image->writeImage($filePath . $fileName);
                 $event->setPoster($fileName);
 

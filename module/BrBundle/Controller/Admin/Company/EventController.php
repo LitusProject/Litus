@@ -291,6 +291,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
+
                 $image->writeImage($filePath . $fileName);
                 $event->getEvent()->setPoster($fileName);
 

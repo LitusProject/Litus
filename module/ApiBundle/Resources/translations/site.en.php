@@ -16,13 +16,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
-
-/**
- * Thrown when someone tries to access the API without issuing a POST request.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-class NoPostRequestException extends \RuntimeException
-{
-}
+return array(
+    'The requested response type is not supported.' => 'The requested response type is not supported.',
+);

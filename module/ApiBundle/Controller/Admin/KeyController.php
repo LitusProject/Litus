@@ -47,14 +47,14 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = new AddForm($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -69,9 +69,25 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                         ->findOneByCode($code);
                 } while (isset($found));
 
+                $roles = array();
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('student');
+
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        if ('student' == $role) continue;
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
                 $key = new Key(
                     $formData['host'],
-                    $code
+                    $code,
+                    $formData['check_host'],
+                    $roles
                 );
                 $this->getEntityManager()->persist($key);
 
@@ -108,7 +124,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         if (!($key = $this->_getKey()))
             return new ViewModel();
 
-        $form = new EditForm($key);
+        $form = new EditForm($this->getEntityManager(), $key);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -116,7 +132,24 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                $key->setHost($formData['host']);
+
+                $roles = array();
+                $roles[] = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('student');
+
+                if (isset($formData['roles'])) {
+                    foreach ($formData['roles'] as $role) {
+                        if ('student' == $role) continue;
+                        $roles[] = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\Acl\Role')
+                            ->findOneByName($role);
+                    }
+                }
+
+                $key->setHost($formData['host'])
+                    ->setCheckHost($formData['check_host'])
+                    ->setRoles($roles);
 
                 $this->getEntityManager()->flush();
 
