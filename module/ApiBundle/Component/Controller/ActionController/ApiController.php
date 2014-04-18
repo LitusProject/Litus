@@ -96,6 +96,12 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
                 return $error;
             }
+        } else {
+            $error = $this->error(401, 'No key or OAuth token was provided');
+            $error->setOptions($result->getOptions());
+            $e->setResult($error);
+
+            return $error;
         }
 
         if (false !== getenv('SERVED_BY')) {
