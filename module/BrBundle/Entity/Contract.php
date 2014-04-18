@@ -95,6 +95,13 @@ class Contract
     private $discount;
 
     /**
+     * @var string A possible context for the discount
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $discountContext;
+
+    /**
      * @var string The title of the contract
      *
      * @ORM\Column(type="string")
@@ -157,6 +164,22 @@ class Contract
 
         $this->contractEntries = new ArrayCollection();
         $this->signed = false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountContext()
+    {
+        return $this->discountContext;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setDiscountContext($text)
+    {
+        $this->discountContext = $text;
     }
 
     /**

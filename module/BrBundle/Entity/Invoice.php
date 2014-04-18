@@ -81,7 +81,7 @@ class Invoice
     private $invoiceEntries;
 
     /**
-     * @var Integer that resembles the version of this contract.
+     * @var Integer that resembles the version of this invoice.
      *
      * @ORM\Column(type="integer")
      */
@@ -97,6 +97,11 @@ class Invoice
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
+    }
+
+    public function getInvoiceNumber()
+    {
+        return $this->creationTime->format('Y').str_pad($this->order->getContract()->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
     }
 
     /**

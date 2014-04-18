@@ -27,6 +27,7 @@
                     <th>Company</th>
                     <th>Order Description</th>
                     <th>Creation Time</th>
+                    <th>Invoice Number</th>
                     <th width="70px">Paid</th>
                     <th width="70px">Actions</th>
                 </tr>
@@ -36,6 +37,7 @@
                         <td>{{ invoice.getOrder().getCompany().getName()}}</td>
                         <td>{{ invoice.getOrder().getDescription() }}</td>
                         <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
+                        <td>{{ invoice.getInvoiceNumber() }}</td>
                         {% if invoice.isPayed() %}
                                 <td style="text-align: center;">
                                     <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>

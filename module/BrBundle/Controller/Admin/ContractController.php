@@ -165,6 +165,11 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->persist($invoiceEntry);
             }
 
+            $contract->setInvoiceNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextInvoiceNb());
+
             $this->getEntityManager()->persist($invoice);
         }
 

@@ -100,6 +100,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'input-very-mini');
         $this->add($field);
 
+        $field = new Textarea('discount_context');
+        $field->setLabel('Discount Context')
+            ->setAttribute('class', 'input-very-mini');
+        $this->add($field);
+
         $field = new Select('tax');
         $field->setLabel('Tax Free')
             ->setAttribute('options', array(false => 'No', true => 'Yes'));

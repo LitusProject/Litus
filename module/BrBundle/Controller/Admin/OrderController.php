@@ -95,6 +95,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
+                if(! $formData['discount_context'] == "")
+                    $contract->setDiscountContext($formData['discount_context']);
+
                 $this->getEntityManager()->persist($order);
                 $this->getEntityManager()->persist($contract);
 
