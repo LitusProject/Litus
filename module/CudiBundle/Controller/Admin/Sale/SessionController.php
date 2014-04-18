@@ -19,6 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
     CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
@@ -343,11 +344,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        system('kill $(ps aux | grep -i "php public/index.php socket:cudi:sale-queue --run" | grep -v grep | awk \'{print $2}\')');
-
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => WebSocketUtil::kill($this->getEntityManager(), 'cudi:sale-queue'),
             )
         );
     }

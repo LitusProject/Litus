@@ -89,6 +89,27 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function initLocalization()
     {
+        $language = $this->getLanguage();
+
+        $this->getTranslator()->setCache($this->getCache())
+            ->setLocale($language->getAbbrev());
+
+        $this->getMvcTranslator()->setCache($this->getCache())
+            ->setLocale($language->getAbbrev());
+
+        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+    }
+
+    /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->_language)
+            return $this->_language;
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
@@ -97,17 +118,14 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $language = new Language(
                 'en', 'English'
             );
+
             $this->getEntityManager()->persist($language);
             $this->getEntityManager()->flush();
         }
 
-        $this->getTranslator()->setCache($this->getCache())
-            ->setLocale($language->getAbbrev());
+        $this->_language = $language;
 
-        $this->getMvcTranslator()->setCache($this->getCache())
-            ->setLocale($language->getAbbrev());
-
-        AbstractValidator::setDefaultTranslator($this->getTranslator());
+        return $language;
     }
 
     /**

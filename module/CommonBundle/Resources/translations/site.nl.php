@@ -42,7 +42,7 @@ return array(
     'Calendar' => 'Kalender',
     'Twitter' => 'Twitter',
     'News' => 'Nieuws',
-    'No news items were posted yet.' => 'Er zijn nog geen nieuws items geplaatst.',
+    'No news items were posted recently.' => 'Er zijn geen recente nieuws items.',
     'No events were created yet.' => 'Er zijn nog geen evenementen aangemaakt.',
     'Read More' => 'Lees Meer',
 
@@ -91,7 +91,7 @@ return array(
     'Your password was succesfully changed!' => 'Je nieuw wachtwoord is opgeslagen!',
     'Your account was successfully created! Please note that it may take a few minutes before your account is accessible.' => 'Je account werd geactiveerd! Het kan enkele minuten duren voordat je kan inloggen op de server.',
 
-    'Bookstore' => 'Cudi',
+    'Cudi' => 'Cudi',
     'Reservations' => 'Reservaties',
     'Open Session' => 'Open Sessie',
     'Cudi is open until <span class="label label-warning">%time%</span>.' => 'Cudi is open tot <span class="label label-warning">%time%</span>.',
@@ -99,7 +99,7 @@ return array(
     'Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.' => 'Momenteel zijn er <span class="label label-info">%number%</span> studenten in de rij bij Cudi.',
     'Opening Hours' => 'Openingsuren',
     'Cudi is currently closed.' => 'Cudi is momenteel gesloten.',
-    'Reservate textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
+    'Reserve textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
 
     'The value may not be zero' => 'De waarde mag niet nul zijn',
 

@@ -311,7 +311,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'Success',
-                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.'
+                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.'
                         )
                     );
                 }
