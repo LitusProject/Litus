@@ -18,7 +18,8 @@
 
 namespace ApiBundle\Entity;
 
-use CommonBundle\Component\Acl\RoleAware,
+use CommonBundle\Entity\Acl\Role,
+    CommonBundle\Component\Acl\RoleAware,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
