@@ -19,14 +19,14 @@
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess,
+    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    Locale,
     Zend\Cache\StorageFactory,
+    Zend\Http\Headers,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
     Zend\Paginator\Adapter\ArrayAdapter,
@@ -41,9 +41,9 @@ use CommonBundle\Component\Acl\Acl,
 class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var \CommonBundle\Entity\General\Language The current language
      */
-    private $_language;
+    private $_language = null;
 
     /**
      * Execute the request.
@@ -117,6 +117,47 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * Initializes the authentication.
+     *
+     * @return void
+     */
+    protected function initAuthentication()
+    {
+        $authenticationHandler = $this->getAuthenticationHandler();
+        if (null !== $authenticationHandler) {
+            if (
+                $this->hasAccess()->toResourceAction(
+                    $this->getParam('controller'), $this->getParam('action')
+                )
+            ) {
+                if ($this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $authenticationHandler['controller'] == $this->getParam('controller')
+                            && $authenticationHandler['action'] == $this->getParam('action')
+                    ) {
+                        return $this->redirectAfterAuthentication();
+                    }
+                }
+            } else {
+                if (!$this->getAuthentication()->isAuthenticated()) {
+                    if (
+                        $authenticationHandler['controller'] != $this->getParam('controller')
+                            && $authenticationHandler['action'] != $this->getParam('action')
+                    ) {
+                        return $this->redirect()->toRoute(
+                            $authenticationHandler['auth_route']
+                        );
+                    }
+                } else {
+                    throw new Exception\HasNoAccessException(
+                        'You do not have sufficient permissions to access this resource'
+                    );
+                }
+            }
+        }
+    }
+
+    /**
      * Initializes our custom controller plugins.
      *
      * @return void
@@ -133,9 +174,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->getPluginManager()->setInvokableClass(
             'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
         );
+
         $this->hasAccess()->setDriver(
-            new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+            new HasAccessDriver(
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
 
@@ -146,7 +190,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Initializes the fallback language and stores it in the Registry so that it is
+     * Initializes the fallback language and sets it as the default so that it is
      * accessible troughout the application.
      *
      * @return void
@@ -167,11 +211,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                     new FlashMessage(
                         FlashMessage::WARNING,
                         'Warning',
-                        'The specified fallback language does not exist!'
+                        'The specified fallback language does not exist'
                     )
                 );
             } else {
-                Locale::setDefault($fallbackLanguage->getAbbrev());
+                \Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch (\Exception $e) {
         }
@@ -199,8 +243,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
         );
         $renderer->plugin('hasAccess')->setDriver(
-            new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+            new HasAccessDriver(
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
 
@@ -231,58 +277,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Redirects after a successful authentication.
+     * Modifies the reponse headers for a JSON reponse.
      *
-     * If this returns null, no redirection will take place.
-     *
+     * @param  array $additionalHeaders Any additional headers that should be set
      * @return void
      */
-    protected function redirectAfterAuthentication()
+    protected function initJson(array $additionalHeaders = array())
     {
-        return $this->redirect()->toRoute(
-            $this->getAuthenticationHandler()['redirect_route']
-        );
-    }
+        unset($additionalHeaders['Content-Type']);
 
-    /**
-     * Initializes the authentication.
-     *
-     * @return void
-     */
-    protected function initAuthentication()
-    {
-        $authenticationHandler = $this->getAuthenticationHandler();
-        if (null !== $authenticationHandler) {
-            if (
-                $this->hasAccess()->resourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
-            ) {
-                if ($this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] == $this->getParam('controller')
-                            && $authenticationHandler['action'] == $this->getParam('action')
-                    ) {
-                        return $this->redirectAfterAuthentication();
-                    }
-                }
-            } else {
-                if (!$this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] != $this->getParam('controller')
-                            && $authenticationHandler['action'] != $this->getParam('action')
-                    ) {
-                        return $this->redirect()->toRoute(
-                            $authenticationHandler['auth_route']
-                        );
-                    }
-                } else {
-                    throw new Exception\HasNoAccessException(
-                        'You do not have sufficient permissions to access this resource'
-                    );
-                }
-            }
-        }
+        $headers = $this->getResponse()->getHeaders();
+
+        if ($headers->has('Content-Type'))
+            $headers->removeHeader('Content-Type');
+
+        $headers->addHeaders(
+            array_merge(
+                array(
+                    'Content-Type' => 'application/json',
+                ),
+                $additionalHeaders
+            )
+        );
     }
 
     /**
@@ -515,5 +531,18 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     public function getMvcTranslator()
     {
         return $this->getServiceLocator()->get('MvcTranslator');
+    }
+
+    /**
+     * Redirects after a successful authentication.
+     * If this returns null, no redirection will take place.
+     *
+     * @return void
+     */
+    protected function redirectAfterAuthentication()
+    {
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
     }
 }

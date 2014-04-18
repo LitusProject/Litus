@@ -21,6 +21,7 @@ return array(
         'key'         => 'shift.signout_treshold',
         'value'       => 'P1D',
         'description' => 'The date interval after which a person cannot sign out from a shift',
+        'published'   => true,
     ),
     array(
         'key'         => 'shift.responsible_signout_treshold',

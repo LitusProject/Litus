@@ -22,7 +22,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Language,
     CommonBundle\Form\Auth\Login as LoginForm,
     CommonBundle\Component\Util\NamedPriorityQueue,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    Zend\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.
@@ -58,7 +59,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'display' => date('l, F j Y, H:i', time())
         );
 
-        if ($this->hasAccess()->resourceAction('cudi_admin_stock_period', 'new')) {
+        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
             $period = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
@@ -106,6 +107,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
+        if (null !== $this->_language)
+            return $this->_language;
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
@@ -164,7 +168,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         else
             $priority = $settings['title'];
 
-        if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
+        if ($this->hasAccess()->toResourceAction($controller, $settings['action'])) {
             $menu->insert($settings, $priority);
 
             return true;

@@ -17,33 +17,35 @@
         </div>
     </div>
 
-    <div id="controller_action">
-        <table class="full_width manage">
-            <thead>
-                <tr>
-                    <th>Host</th>
-                    <th width="300px">Code</th>
-                    <th width="70px">Actions</th>
-                </tr>
-            </thead>
+	<div id="controller_action">
+	    <table class="full_width manage">
+	        <thead>
+	            <tr>
+	                <th>Host</th>
+	                <th width="300px">Code</th>
+	                <th width="100px">Check Host</th>
+	                <th width="70px">Actions</th>
+	            </tr>
+	        </thead>
 
-            <tbody>
-                {% for key in paginator %}
-                    <tr class="item item-{{ key.getId() }}">
-                        <td>{{ key.getHost() }}</td>
-                        <td>{{ key.getCode() }}</td>
-                        <td class="actions">
-                            {% if hasAccess('api_admin_key', 'edit') %}
-                                <a href="{{ url('api_admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('api_admin_key', 'delete') %}
-                                <a href="#" data-id="{{ key.getId() }}" data-host="{{ key.getHost() }}" class="delete">Delete</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+	        <tbody>
+	            {% for key in paginator %}
+	                <tr class="item item-{{ key.getId() }}">
+	                    <td>{{ key.getHost() }}</td>
+	                    <td>{{ key.getCode() }}</td>
+	                    <td>{% if key.checkHost() %}&times;{% endif %}</td>
+	                    <td class="actions">
+	                        {% if hasAccess('api_admin_key', 'edit') %}
+	                            <a href="{{ url('api_admin_key', {"action": "edit", "id": key.getId()}) }}" class="edit">Edit</a>
+	                        {% endif %}
+	                        {% if hasAccess('api_admin_key', 'delete') %}
+	                            <a href="#" data-id="{{ key.getId() }}" data-host="{{ key.getHost() }}" class="delete">Delete</a>
+	                        {% endif %}
+	                    </td>
+	                </tr>
+	            {% endfor %}
+	        </tbody>
+	    </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
