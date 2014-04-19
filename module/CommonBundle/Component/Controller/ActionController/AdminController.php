@@ -79,17 +79,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function initLocalization()
     {
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        if (null === $language) {
-            $language = new Language(
-                'en', 'English'
-            );
-            $this->getEntityManager()->persist($language);
-            $this->getEntityManager()->flush();
-        }
+        $language = $this->getLanguage();
 
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
