@@ -83,7 +83,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         if ($this->_validateKey() || $this->_validateOAuth()) {
-            $this->hasAccess()->setDriver($this->_hasAccessDriver);
+            if ('development' != getenv('APPLICATION_ENV'))
+                $this->hasAccess()->setDriver($this->_hasAccessDriver);
 
             if (
                 !$this->hasAccess()->toResourceAction(
@@ -445,28 +446,27 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateKey()
     {
-        if ('development' != getenv('APPLICATION_ENV')) {
-            $key = $this->getKey();
-            if (null === $key)
-                return false;
-
-            $validateKey = $key->validate(
-                isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
-            );
-
-            if (!$validateKey)
-                return false;
-
-            $this->_hasAccessDriver = new HasAccessDriver(
-                $this->_getAcl(),
-                true,
-                $key
-            );
-
+        if ('development' == getenv('APPLICATION_ENV'))
             return true;
-        }
 
-        return false;
+        $key = $this->getKey();
+        if (null === $key)
+            return false;
+
+        $validateKey = $key->validate(
+            isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+        );
+
+        if (!$validateKey)
+            return false;
+
+        $this->_hasAccessDriver = new HasAccessDriver(
+            $this->_getAcl(),
+            true,
+            $key
+        );
+
+        return true;
     }
 
     /**
@@ -476,20 +476,19 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateOAuth()
     {
-        if ('development' != getenv('APPLICATION_ENV')) {
-            $accessToken = $this->getAccessToken();
-            if (null === $accessToken)
-                return false;
-
-            $this->_hasAccessDriver = new HasAccessDriver(
-                $this->_getAcl(),
-                true,
-                $accessToken->getPerson($this->getEntityManager())
-            );
-
+        if ('development' == getenv('APPLICATION_ENV'))
             return true;
-        }
 
-        return false;
+        $accessToken = $this->getAccessToken();
+        if (null === $accessToken)
+            return false;
+
+        $this->_hasAccessDriver = new HasAccessDriver(
+            $this->_getAcl(),
+            true,
+            $accessToken->getPerson($this->getEntityManager())
+        );
+
+        return true;
     }
 }
