@@ -43,17 +43,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $result = parent::onDispatch($e);
 
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        if (null === $language) {
-            $language = new Language(
-                'en', 'English'
-            );
-        }
-
-        $result->language = $language;
+        $result->language = $this->getLanguage();
         $result->now = array(
             'iso8601' => date('c', time()),
             'display' => date('l, F j Y, H:i', time())
@@ -89,17 +79,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function initLocalization()
     {
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        if (null === $language) {
-            $language = new Language(
-                'en', 'English'
-            );
-            $this->getEntityManager()->persist($language);
-            $this->getEntityManager()->flush();
-        }
+        $language = $this->getLanguage();
 
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
@@ -108,6 +88,35 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             ->setLocale($language->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+    }
+
+    /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->_language)
+            return $this->_language;
+
+
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        if (null === $language) {
+            $language = new Language(
+                'en', 'English'
+            );
+
+            $this->getEntityManager()->persist($language);
+            $this->getEntityManager()->flush();
+        }
+
+        $this->_language = $language;
+
+        return $language;
     }
 
     /**
