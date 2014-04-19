@@ -43,7 +43,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * @var \CommonBundle\Entity\General\Language The current language
      */
-    private $_language = null;
+    protected $_language = null;
 
     /**
      * Execute the request.
