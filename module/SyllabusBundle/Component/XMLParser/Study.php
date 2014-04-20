@@ -393,7 +393,7 @@ class Study
         }
     }
 
-    private function _cleanUpAcademicYear(AcademicYear $academicYear)
+    private function _cleanUpAcademicYear(AcademicYearEntity $academicYear)
     {
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
