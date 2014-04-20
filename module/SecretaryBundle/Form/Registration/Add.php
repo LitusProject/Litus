@@ -204,7 +204,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
     }
 
-    public function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
+    protected function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
     {
         $universityEmail = $academic->getUniversityEmail();
 

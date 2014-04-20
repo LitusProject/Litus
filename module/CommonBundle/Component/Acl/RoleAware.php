@@ -16,13 +16,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
+namespace CommonBundle\Component\Acl;
 
 /**
- * Thrown when someone tries to access the API without issuing a POST request.
+ * All entities that support roles should implement this.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class NoPostRequestException extends \RuntimeException
+interface RoleAware
 {
+    /**
+     * Return an array with all the entity's roles.
+     *
+     * @return array
+     */
+    public function getRoles();
 }

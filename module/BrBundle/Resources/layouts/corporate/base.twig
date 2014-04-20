@@ -91,7 +91,7 @@
                                             {% set buttons = [] %}
                                             {{ form().openTag(loginForm) }}
                                                 {% for element in loginForm.getElements() %}
-                                                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
                                                         {{ formElement(element) }}
                                                     {% elseif element.getAttribute('type') == 'checkbox' %}
                                                         <div class="remember_me">
@@ -101,8 +101,8 @@
                                                             </label>
                                                         </div>
                                                     {% else %}
-                                                        <div class="{% if element.getMessages()|length > 0 %}has-error{% endif %}">
-                                                            <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
+                                                            <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
                                                             <div>{{ formElement(element) }}</div>
                                                             {% if element.getMessages()|length > 0 %}
                                                                 <div class="help-block">

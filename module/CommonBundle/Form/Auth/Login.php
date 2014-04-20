@@ -38,12 +38,11 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function __construct($action = '', $name = null)
     {
-        parent::__construct($name);
+        parent::__construct($name, false);
 
         $this->setAttribute('action', $action);
 
-        $this->setAttribute('id', 'login')
-            ->setAttribute('class', 'form-horizontal');
+        $this->setAttribute('id', 'login');
 
         $field = new Text('username');
         $field->setLabel('Username')

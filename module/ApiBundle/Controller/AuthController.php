@@ -30,13 +30,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getPersonAction()
     {
-        if (null === ($person = $this->_getPerson())) {
-            return new ViewModel(
-                array(
-                    'result' => null
-                )
-            );
-        }
+        $this->initJson();
+
+        if (null === ($person = $this->_getPerson()))
+            return $this->error(500, 'The person was not found');
 
         $result = array(
             'username' => $person->getUsername(),
@@ -66,6 +63,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     private function _getPerson()
     {
+        if (null !== $this->getAccessToken())
+            return $this->getAccessToken()->getPerson($this->getEntityManager());
+
         if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Session')

@@ -16,13 +16,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
+return array(
+    'The requested response type is not supported.' => 'Het gevraagde type antwoord wordt niet ondersteund.',
 
-/**
- * Thrown when someone tries to access the API without using an API key.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-class NoKeyException extends \RuntimeException
-{
-}
+    'Common' => 'Algemeen',
+);

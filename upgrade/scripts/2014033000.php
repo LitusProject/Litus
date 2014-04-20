@@ -17,4 +17,4 @@
  */
 
 pg_query($connection, 'ALTER TABLE gallery.albums ADD watermark BOOLEAN');
-pg_query($connection, 'UPDATE gallery.albums SET watermark = true');
+pg_query($connection, 'UPDATE gallery.albums SET watermark = TRUE');

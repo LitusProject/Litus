@@ -104,4 +104,35 @@ class Page extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByTitleQuery($title)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $translations = $query->select('p.id')
+            ->from('PageBundle\Entity\Node\Translation', 't')
+            ->innerJoin('t.page', 'p')
+            ->where(
+                $query->expr()->like($query->expr()->lower('t.title'), ':title')
+            )
+            ->setParameter('title', '%' . strtolower($title) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach($translations as $translation)
+            $ids[] = $translation['id'];
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PageBundle\Entity\Node\Page', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('p.id', $ids),
+                    $query->expr()->isNull('p.endTime')
+                )
+            )
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

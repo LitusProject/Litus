@@ -32,6 +32,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getRulesAction()
     {
+        $this->initJson();
+
         $result = array();
 
         $statuses = $this->getEntityManager()
@@ -71,11 +73,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function logAction()
     {
-        $this->getDocumentManager()->persist(
-            new Log(
-                $this->_getAcademic()
-            )
-        );
+        $this->initJson();
+
+        $log = new Log($this->_getAcademic());
+
+        $this->getDocumentManager()->persist($log);
         $this->getDocumentManager()->flush();
 
         return new ViewModel(

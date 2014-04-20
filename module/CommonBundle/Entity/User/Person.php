@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Acl\RoleAware,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -48,7 +49,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *      "supplier"="CudiBundle\Entity\User\Person\Supplier"
  * })
  */
-abstract class Person
+abstract class Person implements RoleAware
 {
     /**
      * @var string The persons unique identifier
@@ -75,7 +76,7 @@ abstract class Person
     private $credential;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection;
+     * @var \Doctrine\Common\Collections\ArrayCollection The person's roles
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -505,8 +506,10 @@ abstract class Person
      */
     public function setFailedLogins($failedLogins)
     {
-        if($failedLogins > 32767) // Limit of Postgres smallint datatype
+         // Limit of Postgres smallint datatype
+        if ($failedLogins > 32767)
             $failedLogins = 32767;
+
         $this->failedLogins = $failedLogins;
 
         return $this;
