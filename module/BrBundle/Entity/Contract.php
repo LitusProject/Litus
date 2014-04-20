@@ -144,6 +144,13 @@ class Contract
     private $version;
 
     /**
+     * @var Integer that resembles who of br started the contract
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $brNumber;
+
+    /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
      * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract

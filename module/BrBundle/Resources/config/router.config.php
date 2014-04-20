@@ -28,6 +28,22 @@ return array(
                 ),
             ),
         ),
+
+        'br_admin_collaborator' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/collaborator[/:action[/:id]][/]',
+                'constraints'   => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'        => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_collaborator',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -396,31 +412,32 @@ return array(
         ),
     ),
     'controllers' => array(
-        'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
-        'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
-        'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',
-        'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
-        'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
-        'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
-        'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
+        'br_admin_company'          => 'BrBundle\Controller\Admin\CompanyController',
+        'br_admin_company_event'    => 'BrBundle\Controller\Admin\Company\EventController',
+        'br_admin_company_job'      => 'BrBundle\Controller\Admin\Company\JobController',
+        'br_admin_company_user'     => 'BrBundle\Controller\Admin\Company\UserController',
+        'br_admin_company_logo'     => 'BrBundle\Controller\Admin\Company\LogoController',
+        'br_admin_cv_entry'         => 'BrBundle\Controller\Admin\CvController',
+        'br_admin_section'          => 'BrBundle\Controller\Admin\SectionController',
 
-        'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
-        'br_admin_order'           => 'BrBundle\Controller\Admin\OrderController',
-        'br_admin_product'         => 'BrBundle\Controller\Admin\ProductController',
-        'br_admin_invoice'         => 'BrBundle\Controller\Admin\InvoiceController',
-        'br_admin_overview'        => 'BrBundle\Controller\Admin\OverviewController',
+        'br_admin_collaborator'     => 'BrBundle\Controller\Admin\CollaboratorController',
+        'br_admin_contract'         => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_order'            => 'BrBundle\Controller\Admin\OrderController',
+        'br_admin_product'          => 'BrBundle\Controller\Admin\ProductController',
+        'br_admin_invoice'          => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_overview'         => 'BrBundle\Controller\Admin\OverviewController',
 
-        'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
-        'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
-        'br_corporate_auth'        => 'BrBundle\Controller\Corporate\AuthController',
-        'br_corporate_vacancy'     => 'BrBundle\Controller\Corporate\VacancyController',
+        'br_corporate_index'        => 'BrBundle\Controller\Corporate\IndexController',
+        'br_corporate_cv'           => 'BrBundle\Controller\Corporate\CvController',
+        'br_corporate_auth'         => 'BrBundle\Controller\Corporate\AuthController',
+        'br_corporate_vacancy'      => 'BrBundle\Controller\Corporate\VacancyController',
 
-        'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
-        'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
-        'br_career_internship'     => 'BrBundle\Controller\Career\InternshipController',
-        'br_career_event'          => 'BrBundle\Controller\Career\EventController',
-        'br_career_company'        => 'BrBundle\Controller\Career\CompanyController',
+        'br_career_index'           => 'BrBundle\Controller\Career\IndexController',
+        'br_career_vacancy'         => 'BrBundle\Controller\Career\VacancyController',
+        'br_career_internship'      => 'BrBundle\Controller\Career\InternshipController',
+        'br_career_event'           => 'BrBundle\Controller\Career\EventController',
+        'br_career_company'         => 'BrBundle\Controller\Career\CompanyController',
 
-        'br_cv_index'              => 'BrBundle\Controller\CvController',
+        'br_cv_index'               => 'BrBundle\Controller\CvController',
     ),
 );

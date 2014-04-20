@@ -18,6 +18,15 @@
 
 return array(
     'controllers'  => array(
+        'br_admin_collaborator' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_css',
+        ),
         'br_admin_company' => array(
             '@common_jquery',
             '@admin_css',
