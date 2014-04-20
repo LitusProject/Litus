@@ -24,11 +24,29 @@ return array(
         'api_auth' => array(
             'getPerson'
         ),
+        'api_calendar' => array(
+            'activeEvents', 'poster'
+        ),
+        'api_config' => array(
+            'entries'
+        ),
+        'api_cudi' => array(
+            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours'
+        ),
         'api_door' => array(
             'getRules', 'log'
         ),
         'api_mail' => array(
             'getAliases', 'getListsArchive'
+        ),
+        'api_news' => array(
+            'all'
+        ),
+        'api_oauth' => array(
+            'authorize', 'token'
+        ),
+        'api_shift' => array(
+            'active', 'responsible', 'volunteer', 'signOut'
         ),
     ),
 );
