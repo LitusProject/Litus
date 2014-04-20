@@ -100,7 +100,6 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         if (null !== $this->_language)
             return $this->_language;
 
-
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
