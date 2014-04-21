@@ -5,4 +5,32 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div id="controller_action">
+
+        <h2><b>Collaborator overview</b></h2>
+		<table class="full_width manage">
+            <tr>
+                <th>Person</th>
+                <th width="70px">Number</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for collaborator in paginator %}
+				<tr class="item item-{{ collaborator.getId() }}">
+                    <td>{{collaborator.getPerson().getFullName()}}</td>
+                    <td>{{collaborator.getNumber() }}</td>
+                    <td class="actions">
+                    	{% if hasAccess('br_admin_collaborator', 'edit') and not order.getContract().isSigned() %}
+	                        	<a href="{{ url('br_admin_collaborator', {"action": "edit", "id": collaborator.getId()}) }}" class="edit">Edit</a>
+	                        {% endif %}
+	                    {% if hasAccess('br_admin_collaborator', 'delete') %}
+	                        	<a href="#" class="delete" data-id="{{ collaborator.getId() }}" data-name="{{ collaborator.getPerson().getFullName() }}">Delete</a>
+	                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+	    </table>
+
+		{% include 'admin/partials/paginationControl.twig' %}
+	</div>
+
 {% endblock %}

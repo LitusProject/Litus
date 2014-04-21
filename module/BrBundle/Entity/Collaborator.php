@@ -25,7 +25,7 @@ use CommonBundle\Entity\User\Person,
  * This is a person that is a collaborator of corporate relations.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Collaborator")
- * @ORM\Table(name="collaborator")
+ * @ORM\Table(name="br.collaborator")
  */
 class Collaborator
 {
@@ -69,6 +69,14 @@ class Collaborator
         $this->_setPerson($person);
         $this->_setNumber($number);
         $this->setActive(true);
+    }
+
+     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     private function _setPerson(Person $person)

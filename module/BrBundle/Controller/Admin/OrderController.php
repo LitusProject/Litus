@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Contract,
+use BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
@@ -76,14 +77,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 } else
                     $tax = false;
 
+                $collaborator = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Collaborator')
+                    ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
+
                 $order = new Order(
                     $contact,
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $tax
                 );
 
                 $contract = new Contract($order,
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $company,
                     $formData['discount'],
                     $formData['title']
@@ -146,14 +151,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                $collaborator = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Collaborator')
+                    ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
+
                 $updatedOrder = new Order(
                     $order->getContact(),
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $order->isTaxFree()
                 );
 
                 $contract = new Contract($updatedOrder,
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $oldContract->getCompany(),
                     $oldContract->getDiscount(),
                     $oldContract->getTitle()
@@ -232,6 +241,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             if($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                $collaborator = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Collaborator')
+                    ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
+
                 $contact = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
@@ -243,12 +256,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $updatedOrder = new Order(
                     $contact,
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $tax
                 );
 
                 $updatedContract = new Contract($updatedOrder,
-                    $this->getAuthentication()->getPersonObject(),
+                    $collaborator[0],
                     $order->getCompany(),
                     $formData['discount'],
                     $formData['title']

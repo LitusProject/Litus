@@ -39,7 +39,7 @@
 	                    <td>{% if order.isTaxFree() %} Yes {% else %} No {% endif %} </td>
 	                    <td> &euro; {{ order.getTotalCost(entityManager) }}</td>
 	                    <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
-	                    <td>{{ order.getCreationPerson().getFullName() }}</td>
+	                    <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
 	                    <td class="actions">
 	                    	{% if hasAccess('br_admin_order', 'product') and not order.getContract().isSigned() %}
 	                        	<a href="{{ url('br_admin_order', {"action": "product", "id": order.getId()}) }}" class="product">Products</a>

@@ -19,6 +19,7 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Collaborator,
     BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\Section,
     BrBundle\Entity\Contract\ContractEntry,
@@ -65,7 +66,7 @@ class Contract
     /**
      * @var \CommonBundle\Entity\User\Person The author of this contract
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
@@ -144,19 +145,12 @@ class Contract
     private $version;
 
     /**
-     * @var Integer that resembles who of br started the contract
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $brNumber;
-
-    /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
      * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract
      * @param string                           $title    The title of the contract
      */
-    public function __construct(Order $order, Person $author, Company $company, $discount, $title)
+    public function __construct(Order $order, Collaborator $author, Company $company, $discount, $title)
     {
         $this->setOrder($order);
         $this->setDate();
@@ -260,7 +254,7 @@ class Contract
      * @param  \CommonBundle\Entity\User\Person $author
      * @return \BrBundle\Entity\Br\Contract
      */
-    public function setAuthor(Person $author)
+    public function setAuthor(Collaborator $author)
     {
         if ($author === null)
             throw new \InvalidArgumentException('Author cannot be null');
@@ -401,10 +395,14 @@ class Contract
 
     /**
      * @return int
-     */
+     *
+     * @note    The contractnumber gets constructed by the following format "AAxYYY"
+     *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and
+     *          YYY the number of current contract.
+     **/
     public function getContractNb()
     {
-        return $this->contractNb;
+        return '22'.$this->getAuthor()->getNumber().str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**

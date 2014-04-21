@@ -19,6 +19,7 @@
 namespace BrBundle\Entity\Product;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Collaborator,
     BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -98,7 +99,7 @@ class Order
     /**
      * @var \CommonBundle\Entity\User\Person The person who created this node
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
      */
     private $creationPerson;
@@ -124,7 +125,7 @@ class Order
 
     /**
      */
-    public function __construct(CorporatePerson $contact, Person $creationPerson, $taxFree)
+    public function __construct(CorporatePerson $contact, Collaborator $creationPerson, $taxFree)
     {
         $this->setContact($contact);
         $this->creationTime = new DateTime();

@@ -18,7 +18,6 @@
 
 namespace BrBundle\Repository;
 
-//TODO why do I need to do this?
 use BrBundle\Entity\Company as Comp,
     CommonBundle\Entity\User\Person,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
@@ -174,8 +173,6 @@ class Contract extends EntityRepository
 
         return $result;
     }
-    //____________
-    //____________
 
     public function findContractsByCompanyIDQuery(Comp $company)
     {

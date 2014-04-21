@@ -29,7 +29,19 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        return new ViewModel();
+        if (null === $this->getParam('field')) {
+            $paginator = $this->paginator()->createFromEntity(
+                'BrBundle\Entity\Collaborator',
+                $this->getParam('page')
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function addAction()
