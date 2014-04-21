@@ -19,7 +19,7 @@
                     <td>{{collaborator.getPerson().getFullName()}}</td>
                     <td>{{collaborator.getNumber() }}</td>
                     <td class="actions">
-                    	{% if hasAccess('br_admin_collaborator', 'edit') and not order.getContract().isSigned() %}
+                    	{% if hasAccess('br_admin_collaborator', 'edit') %}
 	                        	<a href="{{ url('br_admin_collaborator', {"action": "edit", "id": collaborator.getId()}) }}" class="edit">Edit</a>
 	                        {% endif %}
 	                    {% if hasAccess('br_admin_collaborator', 'delete') %}

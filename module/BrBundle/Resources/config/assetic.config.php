@@ -26,6 +26,7 @@ return array(
             '@bootstrap_js_modal',
             '@common_jqueryui',
             '@common_jqueryui_css',
+            '@common_remote_typeahead',
         ),
         'br_admin_company' => array(
             '@common_jquery',

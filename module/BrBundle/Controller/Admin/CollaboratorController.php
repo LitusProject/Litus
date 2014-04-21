@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Form\Admin\Collaborator\Add as AddForm,
+    BrBundle\Form\Admin\Collaborator\Edit as EditForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * CollaboratorController
@@ -46,16 +48,75 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
+        $form = new AddForm($this->getEntityManager());
 
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction()
     {
+        $form = new EditForm($this->getEntityManager(), $this->_getCollaborator());
 
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()
     {
 
+    }
+
+    private function _getCollaborator()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the collaborator!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_collaborator',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $collaborator = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Collaborator')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $collaborator) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No collaborator with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_collaborator',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $collaborator;
     }
 }
