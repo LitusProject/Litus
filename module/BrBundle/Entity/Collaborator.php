@@ -84,7 +84,7 @@ class Collaborator
         $this->person = $person;
     }
 
-    private function _setNumber($number)
+    public function setNumber($number)
     {
         $this->number = $number;
     }

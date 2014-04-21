@@ -18,8 +18,10 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Form\Admin\Collaborator\Add as AddForm,
+use BrBundle\Entity\Collaborator,
+    BrBundle\Form\Admin\Collaborator\Add as AddForm,
     BrBundle\Form\Admin\Collaborator\Edit as EditForm,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -50,6 +52,40 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
     {
         $form = new AddForm($this->getEntityManager());
 
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+                $person = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($formData['person_id']);
+
+                $collaborator = new Collaborator($person,$formData['number']);
+
+                $this->getEntityManager()->persist($collaborator);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The collaborator was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_collaborator',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
         return new ViewModel(
             array(
                 'form' => $form,
@@ -59,7 +95,40 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        $form = new EditForm($this->getEntityManager(), $this->_getCollaborator());
+        $collaborator = $this->_getCollaborator();
+
+        $form = new EditForm($this->getEntityManager(), $collaborator);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+
+                $collaborator->setNumber($formData['number']);
+
+                $this->getEntityManager()->persist($collaborator);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The collaborator was succesfully created!'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_collaborator',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         return new ViewModel(
             array(

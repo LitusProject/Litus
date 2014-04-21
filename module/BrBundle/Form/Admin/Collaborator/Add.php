@@ -53,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Text('person_name');
-        $field->setLabel('Admin')
+        $field->setLabel('Person')
             ->setRequired(true)
             ->setAttribute('id', 'personSearch')
             ->setAttribute('autocomplete', 'off')
