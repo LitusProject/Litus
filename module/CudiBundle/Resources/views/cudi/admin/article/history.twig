@@ -26,54 +26,58 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal hide fade" id="viewArticle">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /View Article
-        </div>
-        <div class="modal-body">
-            <p>
-                <dl>
-                    <dt>Title</dt>
-                    <dd class="title">...</dd>
-                    <dt>Authors</dt>
-                    <dd class="authors">...</dd>
-                    <dt>Publishers</dt>
-                    <dd class="publishers">...</dd>
-                    <dt>Year Published</dt>
-                    <dd class="yearPublished">...</dd>
-                    <dt>ISBN</dt>
-                    <dd class="isbn">...</dd>
-                    <dt>URL</dt>
-                    <dd class="url">...</dd>
-                    <dt>Downloadable</dt>
-                    <dd class="downloadable">...</dd>
-                    <dt>Type</dt>
-                    <dd class="type">...</dd>
-                </dl>
-                <dl class="internal">
-                    <dt>Number Black And White Pages</dt>
-                    <dd class="nbBlackAndWhite">...</dd>
-                    <dt>Number Colored Pages</dt>
-                    <dd class="nbcolored">...</dd>
-                    <dt>Binding</dt>
-                    <dd class="binding">...</dd>
-                    <dt>Official</dt>
-                    <dd class="isOfficial">...</dd>
-                    <dt>Recto Verso</dt>
-                    <dd class="isRectoVerso">...</dd>
-                    <dt>Front Color</dt>
-                    <dd class="frontColor">...</dd>
-                    <dt>Perforated</dt>
-                    <dd class="isPerforated">...</dd>
-                    <dt>Colored</dt>
-                    <dd class="isColored">...</dd>
-                    <dt>Hard Covered</dt>
-                    <dd class="isHardCovered">...</dd>
-                </dl>
-            </p>
-            <div class="footer">
-                <button data-dismiss="modal">Close</button>
+    <div class="modal fade" id="viewArticle" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /View Article
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <dl>
+                            <dt>Title</dt>
+                            <dd class="title">...</dd>
+                            <dt>Authors</dt>
+                            <dd class="authors">...</dd>
+                            <dt>Publishers</dt>
+                            <dd class="publishers">...</dd>
+                            <dt>Year Published</dt>
+                            <dd class="yearPublished">...</dd>
+                            <dt>ISBN</dt>
+                            <dd class="isbn">...</dd>
+                            <dt>URL</dt>
+                            <dd class="url">...</dd>
+                            <dt>Downloadable</dt>
+                            <dd class="downloadable">...</dd>
+                            <dt>Type</dt>
+                            <dd class="type">...</dd>
+                        </dl>
+                        <dl class="internal">
+                            <dt>Number Black And White Pages</dt>
+                            <dd class="nbBlackAndWhite">...</dd>
+                            <dt>Number Colored Pages</dt>
+                            <dd class="nbcolored">...</dd>
+                            <dt>Binding</dt>
+                            <dd class="binding">...</dd>
+                            <dt>Official</dt>
+                            <dd class="isOfficial">...</dd>
+                            <dt>Recto Verso</dt>
+                            <dd class="isRectoVerso">...</dd>
+                            <dt>Front Color</dt>
+                            <dd class="frontColor">...</dd>
+                            <dt>Perforated</dt>
+                            <dd class="isPerforated">...</dd>
+                            <dt>Colored</dt>
+                            <dd class="isColored">...</dd>
+                            <dt>Hard Covered</dt>
+                            <dd class="isHardCovered">...</dd>
+                        </dl>
+                    </p>
+                    <div class="footer">
+                        <button data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
