@@ -82,7 +82,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
         $date = $formatter->format($this->_contract->getOrder()->getCreationTime());
 
-        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getFullName();
+        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
         $entries = $this->_contract->getEntries();
 
         $unionName = $configs->getConfigValue('organization_name');
@@ -106,7 +106,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         var_dump($entry_s);
-        
+
         $xml->append(
             new XmlObject(
                 'contract',

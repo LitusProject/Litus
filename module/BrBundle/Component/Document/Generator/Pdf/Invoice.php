@@ -73,10 +73,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $dueDate = $this->_invoice->getExpirationTime($this->getEntityManager())->format('j/m/Y');
         $clientVat = $this->_invoice->getOrder()->getCompany()->getVatNumber();
         $reference = '/'; // TODO? (this was here already)
-        
-        // TODO: invoice numbers
-        $invoiceNb = '2013-1-1';
-        // $invoiceNb = $this->_invoice->getInvoiceNb();
+
+        $invoiceNb = $this->_invoice->getInvoiceNumber();
 
         $unionName = $configs->getConfigValue('organization_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
