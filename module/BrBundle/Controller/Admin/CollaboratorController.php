@@ -137,9 +137,32 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    public function deleteAction()
+    public function retireAction()
     {
+        if (!($collaborator = $this->_getCollaborator()))
+            return new ViewModel();
 
+        $collaborator->retire();
+
+        $this->getEntityManager()->persist($collaborator);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The collaborator succesfully retired!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_admin_collaborator',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
     }
 
     private function _getCollaborator()

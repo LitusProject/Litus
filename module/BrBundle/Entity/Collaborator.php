@@ -68,7 +68,7 @@ class Collaborator
     {
         $this->_setPerson($person);
         $this->_setNumber($number);
-        $this->setActive(true);
+        $this->activate();
     }
 
      /**
@@ -89,9 +89,14 @@ class Collaborator
         $this->number = $number;
     }
 
-    public function setActive($bool)
+    public function activate()
     {
-        $this->active = $bool;
+        $this->active = true;
+    }
+
+    public function retire()
+    {
+        $this->active = false;
     }
 
     public function getPerson()

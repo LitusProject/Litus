@@ -19,7 +19,7 @@
 namespace BrBundle\Repository;
 
 use BrBundle\Entity\Company as Comp,
-    BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Collaborator as Coll,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
@@ -82,7 +82,7 @@ class Contract extends EntityRepository
         return ++$highestContractNb;
     }
 
-    public function findContractsByAuthorIDQuery(Collaborator $person)
+    public function findContractsByAuthorIDQuery(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
@@ -112,7 +112,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractAmountByPerson(Collaborator $person)
+    public function getContractAmountByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('count(c)')
@@ -127,7 +127,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractedRevenueByPerson(Collaborator $person)
+    public function getContractedRevenueByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('sum(o.totalCost)')
@@ -143,7 +143,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getPaidRevenueByPerson(Collaborator $person)
+    public function getPaidRevenueByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('sum(o.totalCost)')

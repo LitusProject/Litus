@@ -27,6 +27,8 @@ return array(
             '@common_jqueryui',
             '@common_jqueryui_css',
             '@common_remote_typeahead',
+            '@gollum_css',
+            '@gollum_js',
         ),
         'br_admin_company' => array(
             '@common_jquery',
