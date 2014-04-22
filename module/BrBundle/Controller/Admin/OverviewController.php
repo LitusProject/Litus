@@ -91,7 +91,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $companyNmbr = 0;
         $totalContracted = 0;
         $totalSigned = 0;
-        $totalPaid = "TODO";
+        $totalPaid = 0;
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
@@ -123,6 +123,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     if($contract->isSigned()){
                         $signed = $signed + $value;
                         $totalSigned = $totalSigned + $value;
+                        if($contract->getOrder()->getInvoice()->isPaid()){
+                            $paid = $paid + $value;
+                            $totalPaid = $totalPaid + $value;
+                        }
                     }
                 }
 
@@ -130,7 +134,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $result['amount'] = sizeof($contracts);
                 $result['contract'] = $contracted;
                 $result['signed'] = $signed;
-                $result['paid'] = "TODO";
+                $result['paid'] = $paid;
 
                 array_push($collection, $result);
             }

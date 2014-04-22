@@ -37,7 +37,7 @@
                     {% if contract.getOrder().isOld() == false or contract.isSigned() == true  %}
                         <tr class="item item-{{ contract.getId() }}">
                             <td>{{ contract.getCompany().getName() }}</td>
-                            <td>{{ contract.getAuthor().getFirstName() }} {{ contract.getAuthor().getLastName() }}</td>
+                            <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
                             <td>{{ contract.getTitle() }}</td>
                             <td>{{ contract.getDate().format('j/m/Y') }}</td>
                             <td>{{ contract.getContractNb() }}</td>

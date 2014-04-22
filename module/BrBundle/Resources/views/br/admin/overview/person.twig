@@ -25,7 +25,7 @@
             </tr>
             {% for entry in array %}
 				<tr class="item item-{{ entry['person'].getId() }}">
-                    <td>{{entry['person'].getFullName()}}</td>
+                    <td>{{entry['person'].getPerson().getFullName()}}</td>
                     <td>{{entry['amount']}}</td>
                     <td>&euro; {{entry['contract']}}</td>
                     <td>&euro; {{entry['signed']}}</td>
