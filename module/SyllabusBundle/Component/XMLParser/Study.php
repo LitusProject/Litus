@@ -116,7 +116,7 @@ class Study
             $this->_academicYear = $this->_getAcademicYear($xml->properties->academiejaar->startjaar);
 
             if ($counter <= 1) {
-                $this->_cleanUpAcademicYear($academicYear);
+                $this->_cleanUpAcademicYear($this->_academicYear);
                 $this->_callback('cleanup', '');
             }
 
@@ -532,7 +532,7 @@ class Study
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(
             new DateTime($start . '-12-25 0:0')
         );
-        $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
+        $academicYear = $this->_entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
 
         if (null === $academicYear) {
@@ -545,7 +545,9 @@ class Study
             );
             $organizationStart = new DateTime($organizationStart);
             $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $entityManager->persist($academicYear);
+            $this->_entityManager->persist($academicYear);
         }
+
+        return $academicYear;
     }
 }
