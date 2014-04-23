@@ -23,12 +23,11 @@ use BrBundle\Entity\Company,
     Zend\View\Model\ViewModel;
 
 /**
- * VacancyController
+ * InternshipController
  *
- * @author Incalza Dario <dario.incalza@litus.cc>
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class VacancyController extends \BrBundle\Component\Controller\CorporateController
+class InternshipController extends \BrBundle\Component\Controller\CorporateController
 {
     public function overviewAction()
     {
@@ -36,7 +35,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'vacancy');
+            ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'internship');
 
         $paginator = $this->paginator()->createFromQuery(
             $query,
@@ -58,8 +57,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function viewAction()
     {
-        print_r("called");
-
         $vacancy = $this->_getVacancy();
 
         $logoPath = $this->getEntityManager()

@@ -396,6 +396,22 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_internship' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/corporate/internship[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '[a-z]{2}',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_internship',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_cv_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -431,6 +447,7 @@ return array(
         'br_corporate_cv'           => 'BrBundle\Controller\Corporate\CvController',
         'br_corporate_auth'         => 'BrBundle\Controller\Corporate\AuthController',
         'br_corporate_vacancy'      => 'BrBundle\Controller\Corporate\VacancyController',
+        'br_corporate_internship'   => 'BrBundle\Controller\Corporate\InternshipController',
 
         'br_career_index'           => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'         => 'BrBundle\Controller\Career\VacancyController',

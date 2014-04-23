@@ -147,6 +147,15 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_collapse',
         ),
+        'br_corporate_internship' => array(
+            '@bootstrap_css',
+            '@corporate_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_collapse',
+        ),
         'br_corporate_cv' => array(
             '@bootstrap_css',
             '@corporate_css',

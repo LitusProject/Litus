@@ -42,6 +42,11 @@
                                 <a href="{{ url("br_corporate_vacancy", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Vacancies') }}</a>
                             </li>
                         {% endif %}
+                        {% if hasAccess('br_corporate_internship', 'overview') %}
+                            <li {% if 'overview' == getParam('action') and 'br_corporate_internship' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("br_corporate_internship", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Internship') }}</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav pull-right lang-nav hidden-xs hidden-sm">
                         <li class="dropdown">
