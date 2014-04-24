@@ -53,6 +53,10 @@ return array(
                     'title' => 'Products',
                     'help'  => 'Here you can manage all the products VTK has to offer to every company.'
                 ),
+                'br_admin_request'  => array(
+                    'title' => 'Requests',
+                    'help'  => 'Here you can manage all requests that are made by the companies.'
+                ),
             ),
         ),
     ),

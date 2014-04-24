@@ -138,6 +138,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'br_admin_request' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'br_corporate_index' => array(
             '@bootstrap_css',
             '@corporate_css',

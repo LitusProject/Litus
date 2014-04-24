@@ -207,22 +207,21 @@ return array(
                 ),
             ),
         ),
-
-        'br_admin_section' => array(
+        'br_admin_request' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/section[/:action[/:id]][/]',
+                'route' => '/admin/br/request[/:action[/:id[/:approved]]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
+                    'approved'  => '(true|false)',
                 ),
                 'defaults' => array(
-                    'controller' => 'br_admin_section',
+                    'controller' => 'br_admin_request',
                     'action'     => 'manage',
                 ),
             ),
         ),
-
         'br_career_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -434,7 +433,6 @@ return array(
         'br_admin_company_user'     => 'BrBundle\Controller\Admin\Company\UserController',
         'br_admin_company_logo'     => 'BrBundle\Controller\Admin\Company\LogoController',
         'br_admin_cv_entry'         => 'BrBundle\Controller\Admin\CvController',
-        'br_admin_section'          => 'BrBundle\Controller\Admin\SectionController',
 
         'br_admin_collaborator'     => 'BrBundle\Controller\Admin\CollaboratorController',
         'br_admin_contract'         => 'BrBundle\Controller\Admin\ContractController',
@@ -442,6 +440,7 @@ return array(
         'br_admin_product'          => 'BrBundle\Controller\Admin\ProductController',
         'br_admin_invoice'          => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'         => 'BrBundle\Controller\Admin\OverviewController',
+        'br_admin_request'          => 'BrBundle\Controller\Admin\RequestController',
 
         'br_corporate_index'        => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'           => 'BrBundle\Controller\Corporate\CvController',
