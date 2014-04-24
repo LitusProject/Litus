@@ -26,36 +26,40 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal hide fade" id="viewArticle">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /View Article
-        </div>
-        <div class="modal-body">
-            <p>
-                <dl>
-                    <dt>Title</dt>
-                    <dd class="title">...</dd>
-                    <dt>Authors</dt>
-                    <dd class="authors">...</dd>
-                    <dt>Barcode</dt>
-                    <dd class="barcode">...</dd>
-                    <dt>Purchase Price</dt>
-                    <dd class="purchasePrice">...</dd>
-                    <dt>Sell Price</dt>
-                    <dd class="sellPrice">...</dd>
-                    <dt>bookable</dt>
-                    <dd class="bookable">...</dd>
-                    <dt>Unbookable</dt>
-                    <dd class="unbookable">...</dd>
-                    <dt>Can Expire</dt>
-                    <dd class="canExpire">...</dd>
-                    <dt>Supplier</dt>
-                    <dd class="supplierName">...</dd>
-                </dl>
-            </p>
-            <div class="footer">
-                <button data-dismiss="modal">Close</button>
+    <div class="modal fade" id="viewArticle" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /View Article
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <dl>
+                            <dt>Title</dt>
+                            <dd class="title">...</dd>
+                            <dt>Authors</dt>
+                            <dd class="authors">...</dd>
+                            <dt>Barcode</dt>
+                            <dd class="barcode">...</dd>
+                            <dt>Purchase Price</dt>
+                            <dd class="purchasePrice">...</dd>
+                            <dt>Sell Price</dt>
+                            <dd class="sellPrice">...</dd>
+                            <dt>bookable</dt>
+                            <dd class="bookable">...</dd>
+                            <dt>Unbookable</dt>
+                            <dd class="unbookable">...</dd>
+                            <dt>Can Expire</dt>
+                            <dd class="canExpire">...</dd>
+                            <dt>Supplier</dt>
+                            <dd class="supplierName">...</dd>
+                        </dl>
+                    </p>
+                    <div class="footer">
+                        <button data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
