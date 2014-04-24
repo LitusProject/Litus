@@ -16,22 +16,26 @@
     </nav>
 </header>
 
-<div class="modal hide fade" id="updatePromotion">
-    <div class="modal-header">
-        <span>Litus Admin</span>
-        /Update Promotion
-    </div>
-    <div class="modal-body">
-        <p>
-            You are about to update the following promotion: <b>{{ activeAcademicYear.getCode() }}</b>!
-            Please note that this operation cannot be undone!
-        </p>
-        <p>
-            Are you sure you want to continue?
-        </p>
-        <div class="footer">
-            <a href="{{ url('secretary_admin_promotion', {'action': 'update', 'academicyear': activeAcademicYear.getCode()}) }}"><button>Yes</button></a>
-            <button class="cancel" data-dismiss="modal">No</button>
+<div class="modal fade" id="updatePromotion" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Litus Admin</span>
+                /Update Promotion
+            </div>
+            <div class="modal-body">
+                <p>
+                    You are about to update the following promotion: <b>{{ activeAcademicYear.getCode() }}</b>!
+                    Please note that this operation cannot be undone!
+                </p>
+                <p>
+                    Are you sure you want to continue?
+                </p>
+                <div class="footer">
+                    <a href="{{ url('secretary_admin_promotion', {'action': 'update', 'academicyear': activeAcademicYear.getCode()}) }}"><button>Yes</button></a>
+                    <button class="cancel" data-dismiss="modal">No</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

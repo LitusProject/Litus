@@ -628,6 +628,8 @@ abstract class Person implements RoleAware
      * @param \Doctrine\ORM\EntityManager             $entityManager
      * @param \Zend\Mail\Transport\TransportInterface $mailTransport
      * @param boolean                                 $onlyShibboleth Activate only login by Shibboleth
+     * @param string                                  $messageConfig  The config key for the mail
+     * @param integer                                 $time           The expiration time of the activation code
      *
      * @return \CommonBundle\Entity\User\Person
      */
