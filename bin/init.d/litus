@@ -239,6 +239,7 @@ init() {
         cat <<EOF > /var/run/litus/printers.sh
 #!/bin/bash
 set -e
+cd /opt/litus
 exec java -jar /opt/litus/PrintDaemon.jar 4444 4445 >/var/log/litus/printer.log 2>&1
 EOF
         chmod +x /var/run/litus/printers.sh
