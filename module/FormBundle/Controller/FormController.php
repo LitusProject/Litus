@@ -670,6 +670,31 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function loginAction()
+    {
+        if (!($form = $this->_getForm()) || null === $this->getParam('key'))
+            return $this->notFoundAction();
+
+        $guestInfo = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\GuestInfo')
+            ->findOneByFormAndSessionId($form, $this->getParam('key'));
+
+        if (null !== $guestInfo)
+            $guestInfo->renew();
+        else
+            $this->notFoundAction();
+
+        $this->redirect()->toRoute(
+            'form_view',
+            array(
+                'action'   => 'index',
+                'id'       => $form->getId(),
+            )
+        );
+
+        return new ViewModel();
+    }
+
     public function downloadFileAction()
     {
         $filePath = $this->getEntityManager()
