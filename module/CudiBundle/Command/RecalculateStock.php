@@ -80,7 +80,7 @@ EOT
         $bookingRepository = $em->getRepository('CudiBundle\Entity\Sale\Booking');
 
         foreach ($articles as $article) {
-            if (is_array($article->getId(), $membershipArticles)) {
+            if (in_array($article->getId(), $membershipArticles)) {
                 $article->setStockValue(0);
                 continue;
             }
