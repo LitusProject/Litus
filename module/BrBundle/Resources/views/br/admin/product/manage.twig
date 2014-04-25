@@ -48,24 +48,28 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-	<div class="modal hide fade" id="removeProduct">
-		<div class="modal-header">
-			<span>Litus Admin</span>
-			/Delete Product
-		</div>
-		<div class="modal-body">
-			<p>
-				You are about to delete the following product: <b class="productName"></b>!
-				Please note that this operation cannot be undone!
-			</p>
-			<p>
-				Are you sure you want to continue?
-			</p>
-			<div class="footer">
-				<input type="button" class="delete" value="Yes">
-				<input type="button" class="cancel" data-dismiss="modal" value="No">
-			</div>
-		</div>
+	<div class="modal hide fade" id="removeProduct"tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+        		<div class="modal-header">
+        			<span>Litus Admin</span>
+        			/Delete Product
+        		</div>
+        		<div class="modal-body">
+        			<p>
+        				You are about to delete the following product: <b class="productName"></b>!
+        				Please note that this operation cannot be undone!
+        			</p>
+        			<p>
+        				Are you sure you want to continue?
+        			</p>
+        			<div class="footer">
+        				<input type="button" class="delete" value="Yes">
+        				<input type="button" class="cancel" data-dismiss="modal" value="No">
+        			</div>
+        		</div>
+            </div>
+        </div>
 	</div>
 
 {% endblock %}
