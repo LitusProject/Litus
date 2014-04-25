@@ -30,7 +30,7 @@ return array(
                                 'name' => 'memcached',
                                 'options' => array(
                                     'ttl' => 0,
-                                    'namespace' => 'VTK';
+                                    'namespace' => 'VTK',
                                     'servers' => array(
                                         array('localhost', 11211)
                                     )
