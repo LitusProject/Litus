@@ -32,6 +32,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $overview = $this->_getPersonOverview();
         $array = $overview['array'];
         $totals = $overview['totals'];
+
         return new ViewModel(
             array(
                 'array' => $array,
@@ -45,6 +46,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $overview = $this->_getCompanyOverview();
         $array = $overview['array'];
         $totals = $overview['totals'];
+
         return new ViewModel(
             array(
                 'array' => $array,
@@ -83,8 +85,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCompanyOverview(){
-
+    private function _getCompanyOverview()
+    {
         //TODO extremely dirty solution -> can be put in one single query normally!
         //TODO has to be cleaned up..
 
@@ -120,10 +122,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
                     $contracted = $contracted + $value;
                     $totalContracted = $totalContracted + $value;
-                    if($contract->isSigned()){
+                    if ($contract->isSigned()) {
                         $signed = $signed + $value;
                         $totalSigned = $totalSigned + $value;
-                        if($contract->getOrder()->getInvoice()->isPaid()){
+                        if ($contract->getOrder()->getInvoice()->isPaid()) {
                             $paid = $paid + $value;
                             $totalPaid = $totalPaid + $value;
                         }
@@ -140,11 +142,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
+
         return array('array' => $collection,'totals' => $totals);
     }
 
-    private function _getPersonOverview(){
-
+    private function _getPersonOverview()
+    {
         //TODO extremely dirty solution -> can be put in one single query normally!
         //TODO has to be cleaned up..
 
@@ -179,10 +182,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
                     $contracted = $contracted + $value;
                     $totalContracted = $totalContracted + $value;
-                    if($contract->isSigned()){
+                    if ($contract->isSigned()) {
                         $signed = $signed + $value;
                         $totalSigned = $totalSigned + $value;
-                        if($contract->getOrder()->getInvoice()->isPaid()){
+                        if ($contract->getOrder()->getInvoice()->isPaid()) {
                             $paid = $paid + $value;
                             $totalPaid = $totalPaid + $value;
                         }
@@ -199,8 +202,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
         }
         $totals = array('amount' => $contractNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
-        return array('array' => $collection,'totals' => $totals);
 
+        return array('array' => $collection,'totals' => $totals);
 
     }
 

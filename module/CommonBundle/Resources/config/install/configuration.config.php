@@ -115,7 +115,7 @@ VTK'
     array(
             'key'         => 'organization_address_array',
             'value'       => serialize(array(
-                            'street' => 'Studentenwijk Arenberg', 
+                            'street' => 'Studentenwijk Arenberg',
                             'number' => '6',
                             'mailbox' => '1',
                             'postal' => '3001',

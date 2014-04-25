@@ -105,12 +105,13 @@ class Invoice
     }
 
     /**
-     * @param int $version
+     * @param  int                      $version
      * @return \BrBundle\Entity\Invoice
      */
     public function setVersion($version)
     {
         $this->version = $version;
+
         return $this;
     }
 
@@ -141,13 +142,15 @@ class Invoice
 
     /**
      * @return \BrBundle\Entity\Invoice
-     * @throws  InvalidArgumentExeption
-     *          Exception gets thrown if the invoice is already payed.
+     * @throws InvalidArgumentExeption
+     *                                  Exception gets thrown if the invoice is already payed.
      */
-    public function setPayed(){
+    public function setPayed()
+    {
         if ($this->isPayed())
             throw new \InvalidArgumentException('This invoice has already been paid');
         $this->paidTime = new DateTime();
+
         return $this;
     }
 
@@ -160,12 +163,13 @@ class Invoice
     }
 
     /**
-     * @param \BrBundle\Entity\Product\Order $order
+     * @param  \BrBundle\Entity\Product\Order $order
      * @return \BrBundle\Entity\Invoice
      */
     public function setOrder(Order $order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -183,6 +187,7 @@ class Invoice
     public function isExpired(EntityManager $entityManager)
     {
         $now = new DateTime();
+
         return !$this->isPaid() && $now > $this->getExpirationTime($entityManager);
     }
 
@@ -236,7 +241,7 @@ class Invoice
     }
 
     /**
-     * @return  array
+     * @return array
      * @note    Only the most recent entries get returned in the array.
      */
     public function getEntries()

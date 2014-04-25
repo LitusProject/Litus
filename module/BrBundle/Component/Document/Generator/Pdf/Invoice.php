@@ -41,7 +41,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Invoice $invoice The invoice for which we want to generate a PDF
+     * @param \BrBundle\Entity\Invoice    $invoice       The invoice for which we want to generate a PDF
      */
     public function __construct(EntityManager $entityManager, InvoiceEntity $invoice)
     {
@@ -130,7 +130,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         // TODO: reenable discounts
         $discount = 0;
         // $discount = $this->_invoice->getDiscount();
-        if($discount != 0) {
+        if ($discount != 0) {
             $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, '-' . $discount . '%'),

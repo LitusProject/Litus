@@ -124,14 +124,14 @@ class Product
     private $invoiceDescription;
 
     /**
-     * @param string                           $name        The name of this section
-     * @param string                           $description The description on the invoice of this section
-     * @param string                           $content     The content of this section
-     * @param \CommonBundle\Entity\User\Person $author      The author of this section
-     * @param int                              $price
-     * @param string                           $vatType     see setVatType($vatType)
+     * @param string                                    $name         The name of this section
+     * @param string                                    $description  The description on the invoice of this section
+     * @param string                                    $content      The content of this section
+     * @param \CommonBundle\Entity\User\Person          $author       The author of this section
+     * @param int                                       $price
+     * @param string                                    $vatType      see setVatType($vatType)
      * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academicYear
-     * @param DateTime                         $deliveryDate The deliveryDate
+     * @param DateTime                                  $deliveryDate The deliveryDate
      */
     public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
     {
@@ -150,15 +150,18 @@ class Product
     /**
      * @return \BrBundle\Entity\Product
      */
-    public function setOld(){
+    public function setOld()
+    {
         $this->old = true;
+
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function isOld(){
+    public function isOld()
+    {
         return $this->old;
     }
 
@@ -201,7 +204,7 @@ class Product
     }
 
     /**
-     * @param  \Litus\Entity\Users\Person        $author The author of this section
+     * @param  \Litus\Entity\Users\Person $author The author of this section
      * @return \BrBundle\Entity\Product
      */
     public function setAuthor(Person $author)
@@ -223,7 +226,7 @@ class Product
     }
 
     /**
-     * @param  string                            $content The content of this section
+     * @param  string                   $content The content of this section
      * @return \BrBundle\Entity\Product
      */
     public function setContractText($contractText)
@@ -245,8 +248,8 @@ class Product
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager       $entityManager The EntityManager instance
-     * @param  string                            $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param  string                      $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
      * @return \BrBundle\Entity\Product
      */
@@ -288,7 +291,7 @@ class Product
     }
 
     /**
-     * @param  float                             $price
+     * @param  float                    $price
      * @return \BrBundle\Entity\Product
      */
     public function setPrice($price)
@@ -322,7 +325,7 @@ class Product
     }
 
     /**
-     * @param string|null $description
+     * @param  string|null              $description
      * @return \BrBundle\Entity\Product
      */
     public function setDescription($description)
@@ -344,7 +347,7 @@ class Product
     }
 
     /**
-     * @param  string|null                       $description
+     * @param  string|null              $description
      * @return \BrBundle\Entity\Product
      */
     public function setInvoiceDescription($description)
@@ -366,12 +369,13 @@ class Product
     }
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event $event
+     * @param  \CalendarBundle\Entity\Node\Event $event
      * @return \ShiftBundle\Entity\Shift
      */
     public function setEvent($event)
     {
         $this->event = $event;
+
         return $this;
     }
 
@@ -384,7 +388,7 @@ class Product
     }
 
     /**
-     * @param DateTime|null $deliveryDate
+     * @param  DateTime|null            $deliveryDate
      * @return \BrBundle\Entity\Product
      */
     public function setDeliveryDate($deliveryDate)

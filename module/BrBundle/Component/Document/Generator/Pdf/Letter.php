@@ -31,8 +31,8 @@ use \Litus\Entity\Br\Contract;
 
 use \Zend\Registry;
 
-class Letter extends DocumentGenerator {
-
+class Letter extends DocumentGenerator
+{
     /**
      * @var \Litus\Entity\Br\Contractt
      */

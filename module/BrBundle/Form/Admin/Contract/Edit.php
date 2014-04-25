@@ -62,8 +62,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($contract->getInvoiceNb());
         $this->add($field);
 
-        foreach ($contract->getEntries($em) as $entry)
-        {
+        foreach ($contract->getEntries($em) as $entry) {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
                 ->setValue($entry->getContractText())

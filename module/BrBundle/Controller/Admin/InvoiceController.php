@@ -77,16 +77,15 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $invoiceVersion = $invoice->getVersion();
 
                 $newVersionNb = 0;
 
-                foreach ($invoice->getEntries() as $entry)
-                {
-                    if($entry->getVersion() == $invoiceVersion){
+                foreach ($invoice->getEntries() as $entry) {
+                    if ($entry->getVersion() == $invoiceVersion) {
                         $newVersionNb = $entry->getVersion() + 1;
                         $newInvoiceEntry = new InvoiceEntry($invoice,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
 
@@ -99,7 +98,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 $invoice->setVersion($newVersionNb);
 
                 $this->getEntityManager()->flush();
-
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -119,7 +117,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 return new ViewModel();
             }
         }
-
 
         return new ViewModel(
             array(

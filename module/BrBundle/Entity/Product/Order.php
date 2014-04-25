@@ -27,7 +27,6 @@ use BrBundle\Entity\Company,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
-
 /**
  * An order of several products.
  *
@@ -136,42 +135,46 @@ class Order
     }
 
     /**
-     * @param   EntityManager   $entityManager
-     * @return  double          cost of this order
+     * @param  EntityManager $entityManager
+     * @return double        cost of this order
      */
-    public function getTotalCost(EntityManager $entityManager){
+    public function getTotalCost(EntityManager $entityManager)
+    {
         $cost = 0;
-        if($this->taxFree){
+        if ($this->taxFree) {
             foreach ($this->orderEntries as $orderEntry) {
                 $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
             }
-        }
-        else{
+        } else {
             foreach ($this->orderEntries as $orderEntry) {
                 $cost = $cost + ( ($orderEntry->getProduct()->getPrice()*(1 + $orderEntry->getProduct()->getVatPercentage($entityManager)/100)) * $orderEntry->getQuantity()) ;
             }
         }
+
         return ($cost / 100) - $this->getContract()->getDiscount();
     }
 
     /**
      * @return boolean
      */
-    public function isTaxFree(){
+    public function isTaxFree()
+    {
         return $this->taxFree;
     }
 
     /**
      * @param boolean $taxfree
      */
-    public function setTaxFree($taxFree){
+    public function setTaxFree($taxFree)
+    {
         $this->taxFree = $taxFree;
     }
 
     /**
      * @return boolean
      */
-    public function isOld(){
+    public function isOld()
+    {
         return $this->old;
     }
 
@@ -179,7 +182,8 @@ class Order
      * @note    This order gets set to old.
      *          This means the boolean $old is set to true.
      */
-    public function setOld(){
+    public function setOld()
+    {
         $this->old = true;
     }
 
@@ -213,6 +217,7 @@ class Order
     public function setContact(CorporatePerson $contact)
     {
         $this->contact = $contact;
+
         return $this;
     }
 
@@ -243,6 +248,7 @@ class Order
     public function setEntry(OrderEntry $entry)
     {
         $this->orderEntries->add($entry);
+
         return $this;
     }
 
@@ -268,8 +274,7 @@ class Order
     public function getDescription()
     {
         $result = '';
-        foreach ($this->getEntries() as $entry)
-        {
+        foreach ($this->getEntries() as $entry) {
             $result = $result .
                 $entry->getProduct()->getName() . ': ' .
                 $entry->getQuantity() . ', ';

@@ -86,6 +86,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
                 return new ViewModel();
             }
         }
+
         return new ViewModel(
             array(
                 'form' => $form,

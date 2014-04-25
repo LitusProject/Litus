@@ -55,8 +55,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-
-
     public function viewAction()
     {
         if (!($contract = $this->_getContract()))
@@ -92,7 +90,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $contract->setTitle($formData['title']);
@@ -101,9 +99,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $newVersionNb = 0;
 
-                foreach ($contract->getEntries() as $entry)
-                {
-                    if($entry->getVersion() == $contractVersion){
+                foreach ($contract->getEntries() as $entry) {
+                    if ($entry->getVersion() == $contractVersion) {
                         $newVersionNb = $entry->getVersion() + 1;
                         $newContractEntry = new ContractEntry($contract,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
 
@@ -116,7 +113,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $contract->setVersion($newVersionNb);
 
                 $this->getEntityManager()->flush();
-
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -138,7 +134,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             }
         }
 
-
         return new ViewModel(
             array(
                 'contract' => $contract,
@@ -159,8 +154,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
             $invoice = new Invoice($contract->getOrder());
 
-            foreach ($contract->getEntries() as $entry)
-            {
+            foreach ($contract->getEntries() as $entry) {
                 $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
                 $this->getEntityManager()->persist($invoiceEntry);
             }
@@ -193,8 +187,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         $invoice = new Invoice($contract->getOrder());
 
-        foreach ($contract->getEntries() as $entry)
-        {
+        foreach ($contract->getEntries() as $entry) {
             $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition());
             $this->getEntityManager()->persist($invoiceEntry);
         }
@@ -267,8 +260,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($postData['contractId']);
 
         // Don't allow reordering signed contract
-        if ($contract->isSigned())
-        {
+        if ($contract->isSigned()) {
             return new ViewModel();
         }
 

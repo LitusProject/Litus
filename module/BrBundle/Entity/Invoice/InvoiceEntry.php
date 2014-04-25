@@ -79,9 +79,9 @@ class InvoiceEntry
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Invoice $invoice The invoice of which this entry is part.
+     * @param \BrBundle\Entity\Invoice            $invoice    The invoice of which this entry is part.
      * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this invoice entry.
-     * @param int $position The position number of the entry in the invoice
+     * @param int                                 $position   The position number of the entry in the invoice
      */
     public function __construct(Invoice $invoice, OrderEntry $orderEntry, $position, $version)
     {
@@ -111,7 +111,7 @@ class InvoiceEntry
     }
 
     /**
-     * @param int $text
+     * @param  int                                   $text
      * @return \BrBundle\Entity\Invoice\InvoiceEntry
      */
     public function setInvoiceText($text)

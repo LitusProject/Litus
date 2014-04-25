@@ -91,7 +91,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $factory = new InputFactory();
 
         //TODO
-
         return $inputFilter;
     }
 }
