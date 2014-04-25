@@ -30,12 +30,6 @@ return Config::create(
     array(
         'service_manager' => array(
             'factories' => array(
-                'translator' => function ($serviceManager) {
-                    $config = $serviceManager->get('Config');
-
-                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
-                },
-
                 'authentication' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Authentication(
                         $serviceManager->get('authentication_credentialadapter'),
@@ -85,6 +79,7 @@ return Config::create(
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
+                'translator' => 'MvcTranslator',
             ),
         ),
         'translator' => array(
