@@ -30,7 +30,7 @@ return array(
                                 'name' => 'memcached',
                                 'options' => array(
                                     'ttl' => 0,
-                                    'namespace' => 'Litus',
+                                    'namespace' => getenv('ORGANIZATION') . '_LITUS',
                                     'servers' => array(
                                         array('localhost', 11211)
                                     )
