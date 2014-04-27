@@ -19,7 +19,6 @@
 if (false === getenv('APPLICATION_ENV'))
     putenv('APPLICATION_ENV=development');
 
-
 if (false === getenv('ORGANIZATION'))
     putenv('ORGANIZATION=Litus');
 

@@ -25,6 +25,9 @@ chdir(dirname(__DIR__));
 
 include 'init_autoloader.php';
 
+if (false === getenv('ORGANIZATION'))
+putenv('ORGANIZATION=Litus');
+
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
 
