@@ -137,12 +137,14 @@ abstract class Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('fop_command');
 
-        $result = system(
-            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
+        $command = escapeshellcmd($fopCommand . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath);
+        
+        $result = exec(
+            $command, $output, $resultValue
         );
 
         if ($resultValue != 0)
-            throw new \RuntimeException('The FOP command failed with return value ' . $resultValue);
+            throw new \RuntimeException('The FOP command failed with return value ' . $resultValue . '. Returnvalue 127 can indicate that the command can not be found. Output: ' . implode('\n', $output));
     }
 
     /**

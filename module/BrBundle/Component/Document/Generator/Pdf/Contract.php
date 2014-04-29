@@ -105,8 +105,6 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $entry_s[] = new XmlObject('entry', null, $entry->getContractText());
         }
 
-        var_dump($entry_s);
-
         $xml->append(
             new XmlObject(
                 'contract',
