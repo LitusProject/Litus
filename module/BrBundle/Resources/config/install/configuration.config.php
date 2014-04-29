@@ -115,6 +115,16 @@ Het VTK Bedrijvenrelaties Team'
             'description' => 'I have no idea contract_footer',
     ),
     array(
+            'key'         => 'br.contract_final_entry',
+            'value'       => 'Will see where I show up contract_final_entry!!',
+            'description' => 'I have no idea contract_final_entry',
+    ),
+    array(
+            'key'         => 'br.contract_below_entries',
+            'value'       => 'CHANGE ME br.contract_below_entries',
+            'description' => 'CHANGE ME  I have no Idea',
+    ),
+    array(
         'key'         => 'br.cv_book_foreword',
         'value'       => '<section title="Example section">
 <content>
