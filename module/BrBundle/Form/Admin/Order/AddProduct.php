@@ -67,7 +67,7 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear
-     * @param mixed $opts The validator's options
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(Array $currentProducts, EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
     {

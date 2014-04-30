@@ -428,7 +428,7 @@ class Contract
     }
 
     /**
-     * @return  array
+     * @return array
      * @note    The array that is returned only contains the most recent entries.
      */
     public function getEntries()
@@ -446,12 +446,13 @@ class Contract
     }
 
     /**
-     * @param ContractEntry $entry
+     * @param  ContractEntry             $entry
      * @return \BrBundle\Entity\Contract
      */
     public function setEntry(ContractEntry $entry)
     {
         $this->contractEntries->add($entry);
+
         return $this;
     }
 }

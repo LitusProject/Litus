@@ -15,16 +15,16 @@
             </tr>
 
             {% for product in paginator %}
-            	{% if product.isOld() == true %}
-					<tr class="item item-{{ product.getId() }}">
-	                    <td>{{ product.getName() }}</td>
-	                    <td>{{ product.getAuthor().getFullName() }}</td>
-	                    <td class="actions">
-	                        {% if hasAccess('br_admin_product', 'delete') %}
-	                        	<a href="#" class="delete" data-id="{{ product.getId() }}" data-name="{{ product.getName() }}">Delete</a>
-	                        {% endif %}
-	                    </td>
-	                </tr>
+                {% if product.isOld() == true %}
+                    <tr class="item item-{{ product.getId() }}">
+                        <td>{{ product.getName() }}</td>
+                        <td>{{ product.getAuthor().getFullName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('br_admin_product', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ product.getId() }}" data-name="{{ product.getName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endif %}
             {% endfor %}
         </table>
@@ -33,4 +33,3 @@
     </div>
 
 {% endblock %}
-

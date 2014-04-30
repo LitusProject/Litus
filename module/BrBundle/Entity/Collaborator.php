@@ -67,7 +67,7 @@ class Collaborator
     public function __construct(Person $person, $number)
     {
         $this->_setPerson($person);
-        $this->_setNumber($number);
+        $this->setNumber($number);
         $this->activate();
     }
 

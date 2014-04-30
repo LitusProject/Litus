@@ -79,10 +79,10 @@ class ContractEntry
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Contract $contract               The contract of which this entry is part.
-     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry   The order entry corresponding to this contract entry.
-     * @param int $position                                     The position number of the entry in the contract
-     * @param int $version                                      The version number of this contract entry
+     * @param \BrBundle\Entity\Contract           $contract   The contract of which this entry is part.
+     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this contract entry.
+     * @param int                                 $position   The position number of the entry in the contract
+     * @param int                                 $version    The version number of this contract entry
      */
     public function __construct(Contract $contract, OrderEntry $orderEntry, $position, $version)
     {
@@ -102,7 +102,7 @@ class ContractEntry
     }
 
     /**
-     * @param int $versionNmbr
+     * @param  int $versionNmbr
      * @return int
      */
     private function _setVersion($versionNmbr)
@@ -145,12 +145,13 @@ class ContractEntry
     }
 
     /**
-     * @param string $contractText
+     * @param  string                                  $contractText
      * @return \BrBundle\Entity\Contract\ContractEntry
      */
     public function setContractText($contractText)
     {
         $this->contractText = $contractText;
+
         return $this;
     }
 

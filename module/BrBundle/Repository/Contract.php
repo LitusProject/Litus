@@ -160,6 +160,7 @@ class Contract extends EntityRepository
             ->getSingleScalarResult();
 
         if($result == '')
+
             return 0;
         return $result;
     }
@@ -252,6 +253,7 @@ class Contract extends EntityRepository
             ->getSingleScalarResult();
 
         if($result == '')
+
             return 0;
         return $result;
     }

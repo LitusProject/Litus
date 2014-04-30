@@ -51,7 +51,7 @@ class ProductName extends \Zend\Validator\AbstractValidator
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed    $opts     The validator's options
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Product $product = null, $opts = null)
     {

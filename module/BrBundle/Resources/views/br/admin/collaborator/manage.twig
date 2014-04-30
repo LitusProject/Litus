@@ -8,7 +8,7 @@
     <div id="controller_action">
 
         <h2><b>Active</b></h2>
-		<table class="full_width manage">
+        <table class="full_width manage">
             <tr>
                 <th>Person</th>
                 <th width="70px">Number</th>
@@ -16,21 +16,21 @@
             </tr>
             {% for collaborator in paginator %}
                 {% if collaborator.isActive() == true %}
-				<tr class="item item-{{ collaborator.getId() }}">
+                <tr class="item item-{{ collaborator.getId() }}">
                     <td>{{collaborator.getPerson().getFullName()}}</td>
                     <td>{{collaborator.getNumber() }}</td>
                     <td class="actions">
-                    	{% if hasAccess('br_admin_collaborator', 'edit') %}
-	                        	<a href="{{ url('br_admin_collaborator', {"action": "edit", "id": collaborator.getId()}) }}" class="edit">Edit</a>
-	                        {% endif %}
-	                    {% if hasAccess('br_admin_collaborator', 'retire') %}
-	                        	<a href="{{ url('br_admin_collaborator', {"action": "retire", "id": collaborator.getId()}) }}" class="retire">Retire</a>
-	                    {% endif %}
+                        {% if hasAccess('br_admin_collaborator', 'edit') %}
+                                <a href="{{ url('br_admin_collaborator', {"action": "edit", "id": collaborator.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        {% if hasAccess('br_admin_collaborator', 'retire') %}
+                                <a href="{{ url('br_admin_collaborator', {"action": "retire", "id": collaborator.getId()}) }}" class="retire">Retire</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endif %}
             {% endfor %}
-	    </table><br>
+        </table><br>
 
         <h2><b>Retired</b></h2>
         <table class="full_width manage">
@@ -48,7 +48,7 @@
             {% endfor %}
         </table>
 
-		{% include 'admin/partials/paginationControl.twig' %}
-	</div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
 
 {% endblock %}

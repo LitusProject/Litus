@@ -101,11 +101,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         // Generate the xml
         $entry_s = array();
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $entry_s[] = new XmlObject('entry', null, $entry->getContractText());
         }
-
-        var_dump($entry_s);
 
         $xml->append(
             new XmlObject(

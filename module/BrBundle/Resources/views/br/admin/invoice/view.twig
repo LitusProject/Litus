@@ -31,18 +31,22 @@
     </div>
 
     {% if not invoice.isPaid() %}
-    <div class="modal hide fade" id="payInvoice">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Pay Invoice
-        </div>
-        <div class="modal-body">
-            <p>
-                Please select the date when the invoice has been paid: <input type="text" id="paydate" class='input-medium start' placeholder='dd/mm/yyyy' data-datepicker="1"></input>
-            </p>
-            <div class="footer">
-                <input type="button" class="pay" value="Pay">
-                <input type="button" class="cancel" data-dismiss="modal" value="Cancel">
+    <div class="modal fade" id="payInvoice"tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Pay Invoice
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Please select the date when the invoice has been paid: <input type="text" id="paydate" class='input-medium start' placeholder='dd/mm/yyyy' data-datepicker="1"></input>
+                    </p>
+                    <div class="footer">
+                        <input type="button" class="pay" value="Pay">
+                        <input type="button" class="cancel" data-dismiss="modal" value="Cancel">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

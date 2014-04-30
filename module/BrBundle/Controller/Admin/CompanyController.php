@@ -423,7 +423,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         $contacts = $company->getContacts();
 
         $result = array();
-        foreach($contacts as $contact) {
+        foreach ($contacts as $contact) {
             $item = (object) array();
             $item->id = $contact->getId();
             $item->value = $contact->getFullName();

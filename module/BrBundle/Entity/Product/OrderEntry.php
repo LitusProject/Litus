@@ -65,9 +65,9 @@ class OrderEntry
     private $quantity;
 
     /**
-     * @param \BrBundle\Entity\Product\Order $order The order of which this entry is part.
-     * @param \BrBundle\Entity\Product $product The product belonging to this entry.
-     * @param int $quantity The quantity of this product that was ordered
+     * @param \BrBundle\Entity\Product\Order $order    The order of which this entry is part.
+     * @param \BrBundle\Entity\Product       $product  The product belonging to this entry.
+     * @param int                            $quantity The quantity of this product that was ordered
      */
     public function __construct(Order $order, Product $product, $quantity)
     {
@@ -117,12 +117,13 @@ class OrderEntry
     }
 
     /**
-     * @param int $quantity
+     * @param  int                                 $quantity
      * @return \BrBundle\Entity\Product\OrderEntry
      */
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
         return $this;
     }
 }

@@ -132,6 +132,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
         if($order->getContract()->isSigned() == true)
+
             return new ViewModel();
 
         $entries = $this->_getOrder(false)->getEntries();
@@ -206,7 +207,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
@@ -230,6 +230,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
         if($order->getContract()->isSigned() == true)
+
             return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
@@ -238,7 +239,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
                 $collaborator = $this->getEntityManager()
@@ -276,8 +277,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $entries = $order->getEntries();
 
                 $counter = 0;
-                foreach ($entries as $entry)
-                {
+                foreach ($entries as $entry) {
                     $updatedOrderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
                     $updatedContractEntry = new ContractEntry($updatedContract, $updatedOrderEntry,$counter, 0);
                     $counter++;
@@ -357,7 +357,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         //     return new ViewModel();
         // if($order->getContract()->isSigned() == true)
         //     return new ViewModel();
-
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -441,6 +440,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
             return;
         }
+
         return $order;
     }
 }

@@ -59,8 +59,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
     private function _createFromInvoice(Invoice $invoice,$em)
     {
-        foreach ($invoice->getEntries($em) as $entry)
-        {
+        foreach ($invoice->getEntries($em) as $entry) {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
                 ->setValue($entry->getInvoiceText())

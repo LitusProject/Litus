@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \CommonBundle\Entity\General\AcademicYear
-     * @param mixed $opts The validator's options
+     * @param mixed                       $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
     {
@@ -167,7 +167,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findByAcademicYear($this->_currentYear);
 
         foreach ($products as $product) {
-            if(! $product->isOld()){
+            if (! $product->isOld()) {
                 $field = new Text('product-' . $product->getId());
                 $field->setLabel($product->getName())
                     ->setAttribute('class', 'input-very-mini')
