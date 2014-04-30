@@ -113,25 +113,29 @@
         {% endif %}
     </aside>
 
-    <div class="modal hide fade" id="overDelivery">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delivery Warning
-        </div>
-        <div class="modal-body">
-            <p>
-                The given delivery number is higher than the not delivered value (<b>{{ maxDelivery }}</b>)!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <p>
-                You can also create a virtual order so the delta of this delivery will not cause these dialogs in the future.
-            </p>
-            <div class="footer">
-                <button class="virtualOrder">Create Virtual Order</button>
-                <button class="continue">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+    <div class="modal fade" id="overDelivery" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delivery Warning
+                </div>
+                <div class="modal-body">
+                    <p>
+                        The given delivery number is higher than the not delivered value (<b>{{ maxDelivery }}</b>)!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <p>
+                        You can also create a virtual order so the delta of this delivery will not cause these dialogs in the future.
+                    </p>
+                    <div class="footer">
+                        <button class="virtualOrder">Create Virtual Order</button>
+                        <button class="continue">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

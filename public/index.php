@@ -19,6 +19,9 @@
 if (false === getenv('APPLICATION_ENV'))
     putenv('APPLICATION_ENV=development');
 
+if (false === getenv('ORGANIZATION'))
+    putenv('ORGANIZATION=Litus');
+
 if ('development' == getenv('APPLICATION_ENV')) {
     ini_set('display_errors', true);
     error_reporting(E_ALL);

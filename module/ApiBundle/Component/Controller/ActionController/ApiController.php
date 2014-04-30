@@ -225,9 +225,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
-        $this->getMvcTranslator()->setCache($this->getCache())
-            ->setLocale($this->getLanguage()->getAbbrev());
-
         AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
 
@@ -426,17 +423,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     public function getTranslator()
     {
         return $this->getServiceLocator()->get('translator');
-    }
-
-    /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\I18n\Translator\Translator
-     */
-    public function getMvcTranslator()
-    {
-        return $this->getServiceLocator()->get('MvcTranslator');
     }
 
     /**

@@ -33,19 +33,23 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal hide fade" id="reservationModal">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Reservation
-        </div>
-        <div class="modal-body">
-            <p>
-                Reservation of <b class="reservationPlayer"></b> on <b class="reservationStartDate"></b>!
-            </p>
-            <p class="reservationAdditionalInformation">
-            </p>
-            <div class="footer">
-                <button class="cancel" data-dismiss="modal">Close</button>
+    <div class="modal fade" id="reservationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Reservation
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Reservation of <b class="reservationPlayer"></b> on <b class="reservationStartDate"></b>!
+                    </p>
+                    <p class="reservationAdditionalInformation">
+                    </p>
+                    <div class="footer">
+                        <button class="cancel" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

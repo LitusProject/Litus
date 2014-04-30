@@ -370,7 +370,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $subjects[0] = array(
             'id' => 0,
-            'title' => $this->getMvcTranslator()->translate('Common'),
+            'title' => $this->getTranslator()->translate('Common'),
         );
 
         $commonArticles = $this->getEntityManager()
