@@ -27,7 +27,7 @@
                                         {% if action.isCompleted() %}
                                             <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                         {% elseif action.isRefused() %}
-                                            <span class="label label-important">{{ translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
+                                            <span class="label label-danger">{{ translate('Refused') }}</span> by {{ action.getCompletedPerson().getFullName() }}
                                         {% else %}
                                             <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                         {% endif %}
@@ -46,7 +46,7 @@
                                 {{ translate('Status') }}: <b>{% if action.isCompleted() %}
                                         <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                     {% elseif action.isRefused() %}
-                                        <span class="label label-important">{{ translate('Refused') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                                        <span class="label label-danger">{{ translate('Refused') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                     {% else %}
                                         <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                     {% endif %}</b>
@@ -64,7 +64,7 @@
                                 {{ translate('Status') }}: <b>{% if action.isCompleted() %}
                                         <span class="label label-success">{{ translate('Confirmed') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                     {% elseif action.isRefused() %}
-                                        <span class="label label-important">{{ translate('Refused') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
+                                        <span class="label label-danger">{{ translate('Refused') }}</span> {{ translate('by %name%')|replace({'%name%': action.getCompletedPerson().getFullName()}) }}
                                     {% else %}
                                         <span class="label label-warning">{{ translate('Not confirmed') }}</span>
                                     {% endif %}</b>
