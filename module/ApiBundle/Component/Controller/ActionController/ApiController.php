@@ -247,7 +247,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _isAuthorizeAction()
     {
-        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller'));
+        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
     }
 
     /**
