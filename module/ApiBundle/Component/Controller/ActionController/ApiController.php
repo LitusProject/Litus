@@ -127,7 +127,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        if (!$this->_isOAuthAction())
+        if (!$this->_isAuthorizeAction())
             $this->initJson();
 
         $this->getResponse()->setStatusCode($code);
@@ -241,13 +241,23 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Checks if the current action is the OAuth authorize action.
+     *
+     * @return boolean
+     */
+    private function _isAuthorizeAction()
+    {
+        return ($this->getParam('action') == 'authorize' && $this->getParam('controller') == 'api_oauth');
+    }
+
+    /**
      * Checks if the current action is an OAuth action.
      *
      * @return boolean
      */
     private function _isOAuthAction()
     {
-        return $this->getParam('controller') == 'api_oauth';
+        return 'api_oauth' == $this->getParam('controller');
     }
 
     /**
