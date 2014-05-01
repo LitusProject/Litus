@@ -67,6 +67,8 @@ class GuestInfo
      */
     private $email;
 
+    public static $cookieNamespace = 'Litus_Form';
+
     /**
      * @param string $firstName
      * @param string $lastName
@@ -172,7 +174,7 @@ class GuestInfo
     public function renew()
     {
         setcookie(
-            'LITUS_form',
+            self::$cookieNamespace,
             $this->sessionId,
             time() + (60*60*24*25),
             '/',
