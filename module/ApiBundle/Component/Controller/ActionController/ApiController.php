@@ -247,7 +247,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _isAuthorizeAction()
     {
-        return ($this->getParam('action') == 'authorize' && $this->getParam('controller') == 'api_oauth');
+        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller'));
     }
 
     /**
@@ -470,6 +470,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         if ('development' == getenv('APPLICATION_ENV'))
             return true;
 
+        if ($this->_isAuthorizeAction())
+            return true;
+
         $key = $this->getKey();
         if (null === $key)
             return false;
@@ -498,6 +501,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _validateOAuth()
     {
         if ('development' == getenv('APPLICATION_ENV'))
+            return true;
+
+        if ($this->_isAuthorizeAction())
             return true;
 
         $accessToken = $this->getAccessToken();
