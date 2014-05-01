@@ -127,7 +127,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        $this->initJson();
+        if (!$this->_isAuthorizeAction())
+            $this->initJson();
+
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
@@ -239,6 +241,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Checks if the current action is the OAuth authorize action.
+     *
+     * @return boolean
+     */
+    private function _isAuthorizeAction()
+    {
+        return ($this->getParam('action') == 'authorize' && $this->getParam('controller') == 'api_oauth');
+    }
+
+    /**
+     * Checks if the current action is an OAuth action.
+     *
+     * @return boolean
+     */
+    private function _isOAuthAction()
+    {
+        return 'api_oauth' == $this->getParam('controller');
+    }
+
+    /**
      * Returns the ACL object.
      *
      * @return \CommonBundle\Component\Acl\Acl
@@ -330,6 +352,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
+        if ($this->_isOAuthAction())
+            $field = 'client_id';
+
         $code = $this->getRequest()->getQuery($field);
         if (null === $code && $this->getRequest()->isPost())
             $code = $this->getRequest()->getPost($field);
