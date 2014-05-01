@@ -97,7 +97,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
                 return $error;
             }
-        } elseif(!$this->_isAuthorizeAction()) {
+        } else {
             $error = $this->error(401, 'No key or OAuth token was provided');
             $error->setOptions($result->getOptions());
             $e->setResult($error);
@@ -127,8 +127,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        if (!$this->_isAuthorizeAction())
+        if (!$this->_isOAuthAction())
             $this->initJson();
+
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
@@ -240,6 +241,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Checks if the current action is an OAuth action.
+     *
+     * @return boolean
+     */
+    private function _isOAuthAction()
+    {
+        return $this->getParam('controller') == 'api_oauth';
+    }
+
+    /**
      * Returns the ACL object.
      *
      * @return \CommonBundle\Component\Acl\Acl
@@ -331,6 +342,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
+        if ($this->_isOAuthAction())
+            $field = 'client_id';
+
         $code = $this->getRequest()->getQuery($field);
         if (null === $code && $this->getRequest()->isPost())
             $code = $this->getRequest()->getPost($field);
@@ -477,15 +491,5 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
 
         return true;
-    }
-
-    /**
-     * Checks if current action is for authorization.
-     *
-     * @return boolean
-     */
-    private function _isAuthorizeAction()
-    {
-        return ($this->getParam('action') == 'authorize' && $this->getParam('controller') == 'api_oauth');
     }
 }
