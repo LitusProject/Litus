@@ -97,7 +97,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
                 return $error;
             }
-        } else {
+        } elseif(!$this->_isAuthorizeAction()) {
             $error = $this->error(401, 'No key or OAuth token was provided');
             $error->setOptions($result->getOptions());
             $e->setResult($error);
@@ -127,7 +127,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        $this->initJson();
+        if (!$this->_isAuthorizeAction())
+            $this->initJson();
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
@@ -476,5 +477,15 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
 
         return true;
+    }
+
+    /**
+     * Checks if current action is for authorization.
+     *
+     * @return boolean
+     */
+    private function _isAuthorizeAction()
+    {
+        return ($this->getParam('action') == 'authorize' && $this->getParam('controller') == 'api_oauth');
     }
 }
