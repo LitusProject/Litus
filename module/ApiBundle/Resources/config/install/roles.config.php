@@ -22,9 +22,9 @@ return array(
         'parents' => array(
         ),
         'actions' => array(
-            'api_auth' => array(
-                'getPerson'
-            ),
+            'api_oauth' => array(
+                'authorize', 'shibboleth'
+            )
         ),
     ),
     'student' => array(
