@@ -43,7 +43,7 @@ return array(
             'all'
         ),
         'api_oauth' => array(
-            'authorize', 'token'
+            'authorize', 'shibboleth', 'token'
         ),
         'api_shift' => array(
             'active', 'responsible', 'volunteer', 'signOut'
