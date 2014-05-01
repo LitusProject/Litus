@@ -130,10 +130,10 @@ return array(
             'options' => array(
                 'route' => '[/:language]/api/oauth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
                     'hash'           => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'language'       => '[a-z]{2}',
                 ),
                 'defaults' => array(
                     'controller' => 'api_oauth',
