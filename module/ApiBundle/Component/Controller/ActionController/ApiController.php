@@ -440,6 +440,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Retrieve the common session storage from the DI container.
+     *
+     * @return \Zend\Session\Container
+     */
+    public function getSessionStorage()
+    {
+        return $this->getServiceLocator()->get('common_sessionstorage');
+    }
+
+    /**
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *

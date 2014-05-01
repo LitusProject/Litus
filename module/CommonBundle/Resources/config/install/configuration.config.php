@@ -167,6 +167,7 @@ VTK'
         'value'       => serialize(
             array(
                 'admin'     => 'https://vtk.be/admin/auth/shibboleth/',
+                'api'       => 'https://vtk.be/api/oauth/shibboleth/',
                 'prof'      => 'https://vtk.be/cudi/prof/auth/shibboleth/',
                 'site'      => 'https://vtk.be/auth/shibboleth/',
                 'register'  => 'https://vtk.be/secretary/registration/',
