@@ -137,6 +137,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'api_oauth',
+                    'action'     => 'authorize',
                 ),
             ),
         ),
