@@ -79,6 +79,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     $this->redirect()->toUrl(
                         $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode()
                     );
+
+                    return new ViewModel();
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -150,14 +152,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         $this->redirect()->toUrl(
                             $code->getRedirect() . '?code=' . $authorizationCode->getCode()
                         );
-                    } else {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Error',
-                                'The given username and password did not match. Please try again.'
-                            )
-                        );
+
+                        return new ViewModel();
                     }
                 }
             }
