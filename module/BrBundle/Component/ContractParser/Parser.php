@@ -31,21 +31,35 @@ class Parser
     
     public function __construct()
     {
-        $this->rootEntry = new Entry();
+        $this->rootEntry = new EntriesOnlyEntry();
     }
     
     public function parse($text)
     {
         $lines = explode('\n', $text);
         
+        $lineNb = 1;
+        
         foreach ($lines as $line)
         {
+            try{
             $this->parseLine($line);
+            }catch(IllegalFormatException $e)
+            {
+                $e->setLineNumber($lineNb);
+                throw $e;
+            }
+            $lineNb++;
         }
     }
     
     protected function parseLine($line)
     {
         $this->rootEntry->parse($line);
+    }
+    
+    public function getEntries()
+    {
+        return $this->rootEntry->getEntries();
     }
 }

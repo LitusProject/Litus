@@ -18,22 +18,28 @@
 
 namespace BrBundle\Component\ContractParser;
 
+use CommonBundle\Component\Util\Xml\Object as XmlObject;
+
 /**
  * 
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class IllegalFormatException extends \Exception
+class EntriesOnlyEntry extends Entry
 {
-    private $lineNb;
-    
-    public function setLineNumber($lineNumber)
+    protected function parseText($text)
     {
-        $this->lineNb = $lineNumber;
+        throw new IllegalFormatException();
     }
     
-    public function getLineNumber()
+    public function getEntries()
     {
-        return $this->lineNb;
+        if(count($this->getNodes()) == 0)
+            return null;
+        
+        if(count($this->getNodes()) == 1)
+            return $this->getNodes()[0];
+        else
+            throw new \Exception("There should be only one or zero entries.");
     }
 }

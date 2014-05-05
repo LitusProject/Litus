@@ -43,6 +43,11 @@ class Entry
         $this->indent = $indent;
     }
     
+    public function getNodes()
+    {
+        return $this->nodes;
+    }
+    
     public function parse($text)
     {
         $indent = $this->nbSpacesLeadingLine($text);
@@ -66,18 +71,29 @@ class Entry
         {
             if($text[0] == '*')
             {
-                $text[0] = ' ';
-                $this->state = $this->state->addEntry($text);
+                $this->parseEntry($text);
             }
             else
             {
-                $this->state = $this->state->addText($text);
+                
+                $this->parseText($text);
             }
         }
         else
         {
             $this->state->passOn($indent-$this->indent, $text);
         } 
+    }
+    
+    protected function parseEntry($textWithSymbol)
+    {
+        $textWithSymbol[0] = ' ';
+        $this->state = $this->state->addEntry($textWithSymbol);
+    }
+    
+    protected function parseText($text)
+    {
+        $this->state = $this->state->addText($text);
     }
     
     protected function nbSpacesLeadingLine($line)
