@@ -41,7 +41,7 @@ abstract class EntryState
     
     public function passOn($indent, $text)
     {
-        throw new IllegalFormatException();
+        throw new IllegalFormatException("Check your indents.");
     }
     
     public abstract function addEntry($text);

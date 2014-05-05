@@ -25,24 +25,35 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class EntriesOnlyEntry extends Entry
+class XmlNodeVisitor
 {
-    public function addNodeToList($node)
-    {
-        if($node instanceof Text)
-            throw new IllegalFormatException('There is no text allowed without a parent-entry at the place');
+    private $string = '';
     
-        parent::addNodeToList($node);
+    public function visitEntry($entry)
+    {
+        $this->string .= '<entry>';
+        foreach($entry->getNodes() as $node)
+        {
+            $node->visitNode($this);
+        }
+        $this->string .= '</entry>';
+    }
+    public function visitEntries($entries)
+    {
+        $this->string .= '<entries>';
+        foreach($entries->getEntries() as $entry)
+        {
+            $entry->visitNode($this);
+        }
+        $this->string .= '</entries>';
+    }
+    public function visitText($text)
+    {
+        $this->string .= $text->getText();
     }
     
-    public function getEntries()
+    public function getXml()
     {
-        if(count($this->getNodes()) == 0)
-            return null;
-        
-        if(count($this->getNodes()) == 1)
-            return $this->getNodes()[0];
-        else
-            throw new \Exception("There should be only one or zero entries.");
+        return $this->string;
     }
 }

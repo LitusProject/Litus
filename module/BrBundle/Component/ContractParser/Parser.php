@@ -58,8 +58,10 @@ class Parser
         $this->rootEntry->parse($line);
     }
     
-    public function getEntries()
+    public function getXml()
     {
-        return $this->rootEntry->getEntries();
+        $XmlNodeVisitor = new XmlNodeVisitor();
+        $this->rootEntry->visitNode($XmlNodeVisitor);
+        return $XmlNodeVisitor->getXml();
     }
 }

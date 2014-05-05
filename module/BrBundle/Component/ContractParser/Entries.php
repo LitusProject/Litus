@@ -25,13 +25,14 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class Entries extends Node
+class Entries extends EntryItem
 {
     private $lastEntry;
     private $entries;
     
     public function __construct($text)
     {
+        $this->entries = [];
         $this->lastEntry = new Entry();
         $this->lastEntry->parse($text);
     }
@@ -44,5 +45,21 @@ class Entries extends Node
     public function passOn($indent, $text)
     {
         $this->lastEntry->handleLine($indent, $text);
+    }
+    
+    public function addEntry($entry)
+    {
+        $this->entries[] = $entry;
+        $this->lastEntry = $entry;
+    }
+    
+    public function getEntries()
+    {
+        return $this->entries;
+    }
+    
+    public function visitNode($nodeVisitor)
+    {
+        $nodeVisitor->visitEntries($this);
     }
 }

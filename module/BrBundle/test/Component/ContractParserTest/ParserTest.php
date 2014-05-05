@@ -30,6 +30,8 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         $parser->parse('*  Test');
+        $xml = '<entries><entry>Test</entry></entries>';
+        $this->assertEquals($xml, $parser->getXml());
     }
     
     public function testOneLiner2()
@@ -53,18 +55,22 @@ class ParserTest extends PHPUnit_Framework_TestCase
     public function testTwoLevels1()
     {
         $parser = new Parser();
-        $parser->parse('* One\n     * One Point One');
+        $parser->parse('* One\n'+
+                       '  * One Point One');
     }
     
     public function testTwoLevels2()
     {
         $parser = new Parser();
-        $parser->parse('*  \n  One\n     * One Point One');
+        $parser->parse('*  \n' + 
+                       '  One\n' + 
+                       '  * One Point One');
     }
     public function testTwoLevels3()
     {
         $parser = new Parser();
-        $parser->parse('*    *  One Point One\n        AndSomeMore TExt');
+        $parser->parse('*    *  One Point One\n' + 
+                       '        AndSomeMore TExt');
     }
     
     public function testIllegalText1()

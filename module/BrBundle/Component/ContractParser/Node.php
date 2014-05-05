@@ -25,7 +25,7 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-abstract class Node
+interface Node
 {
-
+    public function visitNode($nodeVisitor);
 }

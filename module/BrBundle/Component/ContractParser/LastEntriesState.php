@@ -37,9 +37,10 @@ class LastEntriesState extends EntryState
     
     public function addEntry($text)
     {   
-        $entries = new Entries($text);
+        $entry = new Entry();
+        $this->lastEntries->addEntry($entry);
     
-        $this->getEntry()->addNodeToList($entries);
+        $entry->parse($text);
 
         return $this;
     }

@@ -25,7 +25,7 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
-class Entry
+class Entry implements Node
 {
     private $indent;
     private $state;
@@ -88,7 +88,8 @@ class Entry
     protected function parseEntry($textWithSymbol)
     {
         $textWithSymbol[0] = ' ';
-        $this->state = $this->state->addEntry($textWithSymbol);
+        $textWithoutSymbol = $textWithSymbol;
+        $this->state = $this->state->addEntry($textWithoutSymbol);
     }
     
     protected function parseText($text)
@@ -109,6 +110,11 @@ class Entry
         }
     
         return $i;
+    }
+    
+    public function visitNode($nodeVisitor)
+    {
+        $nodeVisitor->visitEntry($this);
     }
     
     /**
