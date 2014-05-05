@@ -27,11 +27,11 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  */
 class Parser
 {
-    private $rootEntries;
+    private $rootEntry;
     
     public function __construct()
     {
-        $this->rootEntries = new Entries();
+        $this->rootEntry = new Entry();
     }
     
     public function parse($text)
@@ -46,8 +46,6 @@ class Parser
     
     protected function parseLine($line)
     {
-        $this->rootEntries->parse($line);
+        $this->rootEntry->parse($line);
     }
-    
-    
 }

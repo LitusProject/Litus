@@ -29,17 +29,20 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         $parser->parse('*  Test');
+        var_dump($parser);
     }
     
     public function testTwoLiner()
     {
         $parser = new Parser();
         $parser->parse('*  Two \n* Liner');
+        var_dump($parser);
     }
     
     public function testTextNextLine()
     {
         $parser = new Parser();
         $parser->parse('*\n    Next');
+        var_dump($parser);        
     }
 }

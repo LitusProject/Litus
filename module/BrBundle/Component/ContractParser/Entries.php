@@ -30,9 +30,10 @@ class Entries extends Node
     private $lastEntry;
     private $entries;
     
-    public function __construct()
+    public function __construct($text)
     {
         $this->lastEntry = new Entry();
+        $this->lastEntry->parse($text);
     }
     
     public function parse($text)

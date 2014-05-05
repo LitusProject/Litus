@@ -51,15 +51,11 @@ class Entry
         if(strlen($rest) == 0)
             return;
         
-       $this->testOrSetIndent($indent);
-        
         $this->handleLine($indent, $rest);
     }
     
     public function handleLine($indent, $text)
     {
-        $this->testOrSetIndent($indent);
-        
         if($this->indent == -1)
             $this->indent = $indent;
         
@@ -70,6 +66,7 @@ class Entry
         {
             if($text[0] == '*')
             {
+                $text[0] = ' ';
                 $this->state = $this->state->addEntry($text);
             }
             else
@@ -80,12 +77,7 @@ class Entry
         else
         {
             $this->state->passOn($indent-$this->indent, $text);
-        }
-    }
-    
-    protected function testOrSetIndent($indent)
-    {
-        
+        } 
     }
     
     protected function nbSpacesLeadingLine($line)

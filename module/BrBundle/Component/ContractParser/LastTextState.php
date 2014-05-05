@@ -45,7 +45,7 @@ class LastTextState extends EntryState
     
     public function addEntry($text)
     {        
-        $entries = new Entries();
+        $entries = new Entries($text);
         
         $this->getEntry()->addNodeToList($entries);
         
