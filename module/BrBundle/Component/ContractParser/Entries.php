@@ -33,8 +33,7 @@ class Entries extends EntryItem
     public function __construct($text)
     {
         $this->entries = [];
-        $this->lastEntry = new Entry();
-        $this->lastEntry->parse($text);
+        $this->lastEntry = new Entry($text);
         $this->entries[] = $this->lastEntry;
     }
     

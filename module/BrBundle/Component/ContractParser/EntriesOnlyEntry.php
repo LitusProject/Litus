@@ -27,6 +27,11 @@ use CommonBundle\Component\Util\Xml\Object as XmlObject;
  */
 class EntriesOnlyEntry extends Entry
 {
+    public function __construct()
+    {
+        parent::__construct('');
+    }
+    
     public function addNodeToList($node)
     {
         if($node instanceof Text)

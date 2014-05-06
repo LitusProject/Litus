@@ -32,10 +32,11 @@ class Entry implements Node
     
     private $nodes;
     
-    public function __construct()
+    public function __construct($text)
     {
         $this->indent = -1;
         $this->state = new NewState($this);
+        $this->parse($text);
     }
     
     public function setIndent($indent)
