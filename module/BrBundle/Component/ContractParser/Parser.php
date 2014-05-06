@@ -42,8 +42,9 @@ class Parser
         
         foreach ($lines as $line)
         {
+            $line = rtrim($line);
             try{
-            $this->parseLine($line);
+                $this->parseLine($line);
             }catch(IllegalFormatException $e)
             {
                 $e->setLineNumber($lineNb);
@@ -61,7 +62,7 @@ class Parser
     public function getXml()
     {
         $XmlNodeVisitor = new XmlNodeVisitor();
-        $this->rootEntry->visitNode($XmlNodeVisitor);
+        $this->rootEntry->getEntries()->visitNode($XmlNodeVisitor);
         return $XmlNodeVisitor->getXml();
     }
 }

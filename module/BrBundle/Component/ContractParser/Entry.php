@@ -63,9 +63,8 @@ class Entry implements Node
     {
         if($this->indent == -1)
             $this->indent = $indent;
-        
         elseif($indent < $this->indent)
-            throw new IllegalFormatException();
+            throw new IllegalFormatException('Illegal Indent');
         
         if($indent == $this->indent)
         {
@@ -75,7 +74,6 @@ class Entry implements Node
             }
             else
             {
-                
                 $this->parseText($text);
             }
         }

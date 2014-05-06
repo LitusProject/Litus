@@ -35,6 +35,7 @@ class Entries extends EntryItem
         $this->entries = [];
         $this->lastEntry = new Entry();
         $this->lastEntry->parse($text);
+        $this->entries[] = $this->lastEntry;
     }
     
     public function parse($text)

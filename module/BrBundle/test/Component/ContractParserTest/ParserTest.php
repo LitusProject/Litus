@@ -26,51 +26,85 @@ use BrBundle\Component\ContractParser\IllegalFormatException;
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
-    public function testOneLiner1()
+    protected function parserTester($text, $xml)
     {
         $parser = new Parser();
-        $parser->parse('*  Test');
-        $xml = '<entries><entry>Test</entry></entries>';
+        $parser->parse($text);
         $this->assertEquals($xml, $parser->getXml());
+    }
+    
+    public function testOneLiner1()
+    {
+        $this->parserTester('*  Test',
+                '<entries><entry>Test</entry></entries>');
     }
     
     public function testOneLiner2()
     {
-        $parser = new Parser();
-        $parser->parse('*Test');
+        $this->parserTester(
+                '*Test',
+                
+                '<entries><entry>Test</entry></entries>');
     }
     
     public function testTwoLiner()
     {
-        $parser = new Parser();
-        $parser->parse('*  Two \n* Liner');
+        $this->parserTester(
+                '*  Two\n'.
+                '*  Liner',
+                
+                '<entries>' .
+                '<entry>Two</entry>'.
+                '<entry>Liner</entry>'.
+                '</entries>');
+    }
+    
+    public function testClearTrailingSpaces()
+    {
+        $this->parserTester(
+                '*  Two    \n'.
+                '*  Liner',
+        
+                '<entries>' .
+                '<entry>Two</entry>'.
+                '<entry>Liner</entry>'.
+                '</entries>');
     }
     
     public function testTextNextLine()
     {
-        $parser = new Parser();
-        $parser->parse('*\n    Next');
+        $this->parserTester('*\n    Next',
+                 '<entries><entry>Next</entry></entries>');
     }
     
     public function testTwoLevels1()
     {
-        $parser = new Parser();
-        $parser->parse('* One\n'+
-                       '  * One Point One');
+        $t =    '* One\n'.
+                '  * One Point One';
+        $x =    '<entries><entry>One<entries><entry>One Point One'.
+                '</entry></entries></entry></entries>';
+        
+        $this->parserTester($t, $x);
     }
     
     public function testTwoLevels2()
     {
-        $parser = new Parser();
-        $parser->parse('*  \n' + 
-                       '  One\n' + 
-                       '  * One Point One');
+        $t =   '*  \n' .
+               '  One\n' .
+               '  * One Point One';
+        $x =   '<entries><entry>One<entries><entry>One Point One'.
+                '</entry></entries></entry></entries>';
+        
+        $this->parserTester($t, $x);
     }
     public function testTwoLevels3()
     {
         $parser = new Parser();
-        $parser->parse('*    *  One Point One\n' + 
-                       '        AndSomeMore TExt');
+        $t =   '*    *  One Point One\n' .
+               '        AndSomeMore TExt';
+        
+        $x =   '<entries><entry>One<entries><entry>One Point One\mAndSomeMore TExt' .
+               '</entry></entries></entry></entries>';
     }
     
     public function testIllegalText1()
