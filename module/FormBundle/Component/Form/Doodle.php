@@ -26,7 +26,8 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Entry as FormEntry,
     Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface as MailTransport;
+    Zend\Mail\Transport\TransportInterface as MailTransport,
+    Zend\Mvc\Controller\Plugin\Url;
 
 /**
  * Doodle actions
@@ -35,7 +36,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Doodle
 {
-    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -71,10 +72,18 @@ class Doodle
         $entityManager->flush();
 
         if ($formSpecification->hasMail() && isset($mailTransport)) {
+            $urlString = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $url->fromRoute(
+                'form_view',
+                array(
+                    'action' => 'login',
+                    'id' => $formSpecification->getId(),
+                    'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : ''
+                )
+            );
             $mailAddress = $formSpecification->getMail()->getFrom();
 
             $mail = new Message();
-            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language))
+            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
                 ->setFrom($mailAddress)
                 ->setSubject($formSpecification->getMail()->getSubject())
                 ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());

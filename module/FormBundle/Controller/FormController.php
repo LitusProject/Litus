@@ -178,7 +178,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 if (!$result) {
                     return new ViewModel(
@@ -396,7 +396,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -511,7 +511,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 return new ViewModel(
                     array(
@@ -626,7 +626,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 if (!$result) {
                     return new ViewModel(

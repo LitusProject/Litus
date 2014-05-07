@@ -23,8 +23,8 @@ $config = getConfigValue($connection, 'form.mail_confirmation');
 
 $config = unserialize($config);
 
-foreach($config as $key => $item) {
-    $config[$key]['content'] = str_replace('%entry_summary%', '%entry_summary%' . PHP_EOL . PHP_EOL . '%guest_login%', $item['content']);
-}
+$config['en']['content'] = str_replace('%entry_summary%', '%entry_summary%' . PHP_EOL . PHP_EOL . '#guest_login_text#JYou can view and edit (if allowed) your subscription here:#guest_login_text#%guest_login%', $item['content']);
+$config['nl']['content'] = str_replace('%entry_summary%', '%entry_summary%' . PHP_EOL . PHP_EOL . '#guest_login_text#Je kan je inschrijving hier bekijken en bewerken (indien toegestaan):#guest_login_text#%guest_login%', $item['content']);
+
 
 updateConfigKey($connection, 'form.mail_confirmation', serialize($config));
