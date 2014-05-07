@@ -20,6 +20,7 @@ namespace FormBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Entity\Node\GuestInfo,
     Zend\View\Model\ViewModel;
 
 /**
@@ -75,10 +76,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif (isset($_COOKIE['LITUS_form'])) {
+            } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($_COOKIE['LITUS_form']);
+                    ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
 
                 $guestInfo->renew();
 

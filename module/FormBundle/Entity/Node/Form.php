@@ -80,6 +80,13 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $editableByUser;
 
     /**
+     * @var boolean Send a mail to guests after submitting form to login later and edit/view their submission
+     *
+     * @ORM\Column(name="send_guest_login_mail", type="boolean")
+     */
+    private $sendGuestLoginMail;
+
+    /**
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
      *
      * @ORM\OrderBy({"order" = "ASC"})
@@ -136,8 +143,9 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param boolean                          $multiple
      * @param boolean                          $nonMember
      * @param boolean                          $editableByUser
+     * @param boolean                          $sendGuestLoginMail
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail)
     {
         parent::__construct($person);
 
@@ -145,6 +153,7 @@ abstract class Form extends \CommonBundle\Entity\Node
         $this->multiple = $multiple;
         $this->nonMember = $nonMember;
         $this->editableByUser = $editableByUser;
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -230,6 +239,26 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function isNonMember()
     {
         return $this->nonMember;
+    }
+
+    /**
+     * @param boolean $sendGuestLoginMail
+     *
+     * @return \FormBundle\Entity\Node\Form
+     */
+    public function setSendGuestLoginMail($sendGuestLoginMail)
+    {
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function sendGuestLoginMail()
+    {
+        return $this->sendGuestLoginMail;
     }
 
     /**
