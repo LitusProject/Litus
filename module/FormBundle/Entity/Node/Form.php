@@ -527,9 +527,10 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param  \FormBundle\Entity\Node\Entry         $entry
      * @param  \CommonBundle\Entity\General\Language $language
+     * @param  string                                $url
      * @return string
      */
-    public function getCompletedMailBody(Entry $entry, Language $language)
+    public function getCompletedMailBody(Entry $entry, Language $language, $url)
     {
         $body = $this->getMail()->getContent($language);
         $body = str_replace('%id%', $entry->getId(), $body);
@@ -537,6 +538,13 @@ abstract class Form extends \CommonBundle\Entity\Node
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
 
         $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+
+        if ($this->sendGuestLoginMail() && $entry->isGuestEntry()) {
+            $body = str_replace('#guest_login_text#', '', $body);
+            $body = str_replace('%guest_login%', $url, $body);
+        } else {
+            $body = preg_replace('/#guest_login_text#.*#guest_login_text#\%guest_login\%/', '', $body);
+        }
 
         return $body;
     }

@@ -101,7 +101,7 @@ class GuestInfo
     }
 
     /**
-     * @return string firstName
+     * @return string
      */
     public function getFirstName()
     {
@@ -121,7 +121,7 @@ class GuestInfo
     }
 
     /**
-     * @return string lastName
+     * @return string
      */
     public function getLastName()
     {
@@ -141,7 +141,7 @@ class GuestInfo
     }
 
     /**
-     * @return string The full name
+     * @return string
      */
     public function getFullName()
     {
@@ -149,7 +149,7 @@ class GuestInfo
     }
 
     /**
-     * @return string $email
+     * @return string
      */
     public function getEmail()
     {
@@ -166,6 +166,14 @@ class GuestInfo
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
     }
 
     /**
