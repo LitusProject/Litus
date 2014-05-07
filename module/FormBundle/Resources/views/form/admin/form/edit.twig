@@ -90,13 +90,16 @@
             toggleMail();
             $('#reminder_mail').click(toggleReminder);
             toggleReminder();
+            $('#send_guest_login_mail').change(toggleGuestMail);
         });
 
         function toggleMail() {
-            if ($('#mail').is(':checked'))
+            if ($('#mail').is(':checked')) {
                 $('#mail_form').show();
-            else
+            } else {
                 $('#mail_form').hide();
+                $('#send_guest_login_mail').prop('checked', false);
+            }
         }
 
         function toggleReminder() {
@@ -104,6 +107,12 @@
                 $('#reminder_mail_form').show();
             else
                 $('#reminder_mail_form').hide();
+        }
+
+        function toggleGuestMail() {
+            if ($(this).is(':checked')) {
+                $('#mail').prop('checked', true).change();
+            }
         }
     </script>
 {% endblock %}

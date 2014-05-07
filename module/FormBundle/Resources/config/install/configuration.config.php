@@ -33,6 +33,8 @@ Your subscription was successful. Your unique subscription id is %id%. Below is 
 
 %entry_summary%
 
+%guest_login%
+
 With best regards,
 VTK',
                 ),
@@ -42,6 +44,8 @@ VTK',
 Uw inschrijving was succesvol. Uw unieke inschrijving id is %id%. Hieronder is een overzicht van de ingevulde waarden:
 
 %entry_summary%
+
+%guest_login%
 
 Met vriendelijke groeten,
 VTK',

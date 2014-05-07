@@ -18,3 +18,13 @@
 
 pg_query($connection, 'ALTER TABLE nodes.forms ADD send_guest_login_mail BOOLEAN');
 pg_query($connection, 'UPDATE nodes.forms SET send_guest_login_mail = FALSE');
+
+$config = getConfigValue($connection, 'form.mail_confirmation');
+
+$config = unserialize($config);
+
+foreach($config as $key => $item) {
+    $config[$key]['content'] = str_replace('%entry_summary%', '%entry_summary%' . PHP_EOL . PHP_EOL . '%guest_login%', $item['content']);
+}
+
+updateConfigKey($connection, 'form.mail_confirmation', serialize($config));
