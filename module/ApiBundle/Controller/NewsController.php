@@ -18,7 +18,9 @@
 
 namespace ApiBundle\Controller;
 
-use Markdown_Parser,
+use DateInterval,
+    DateTime,
+    Markdown_Parser,
     Zend\View\Model\ViewModel;
 
 /**
