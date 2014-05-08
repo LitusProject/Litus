@@ -20,6 +20,7 @@ namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Booking,
+    CudiBundle\Entity\Sale\QueueItem,
     DateInterval,
     DateTime,
     Zend\Http\Headers,
@@ -250,12 +251,22 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOpen();
 
         if (sizeof($sessions) >= 1) {
+            $session = $sessions[0];
             $result = array(
                 'status' => 'open',
                 'numberInQueue' => $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-                    ->findNbBySession($sessions[0]),
+                    ->findNbBySession($session),
             );
+
+            if ($person = $this->_getPerson()) {
+                $bookings = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findAllAssignedByPerson($this->_getPerson());
+
+                $result['canSignIn'] = $session->canSignIn($this->getEntityManager(), $this->_getPerson());
+                $result['hasBookings'] = !empty($bookings);
+            }
         } else {
             $result = array(
                 'status' => 'closed',
@@ -289,6 +300,63 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         return new ViewModel(
             array(
                 'result' => (object) $result
+            )
+        );
+    }
+
+    public function signInAction()
+    {
+        $this->initJson();
+
+        if (null === $this->getAccessToken())
+            return $this->error(401, 'The access token is not valid');
+
+        $authenticatedPerson = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($this->_getPerson()->getId());
+
+        if (null === $authenticatedPerson)
+            return $this->error(500, 'The person is not an academic');
+
+        $sessions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOpen();
+
+        if (sizeof($sessions) == 0)
+            return $this->error(500, 'The is no open sale session');
+
+        $session = $sessions[0];
+
+        if (!$session->canSignIn($this->getEntityManager(), $authenticatedPerson))
+            return $this->error(500, 'You cannot sign in');
+
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllAssignedByPerson($authenticatedPerson);
+
+        if (empty($bookings))
+            return $this->error(500, 'You cannot sign in');
+
+        $queueItem = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
+            ->findOneByPersonNotSold($session, $authenticatedPerson);
+
+        if (null == $queueItem) {
+            $queueItem = new QueueItem($this->getEntityManager(), $authenticatedPerson, $session);
+
+            $this->getEntityManager()->persist($queueItem);
+            $this->getEntityManager()->flush();
+        } elseif ($queueItem->getStatus() == 'hold') {
+            $queueItem->setStatus('signed_in');
+            $this->getEntityManager()->flush();
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array(
+                    'status' => 'success',
+                    'number' => $queueItem->getQueueNumber(),
+                ),
             )
         );
     }

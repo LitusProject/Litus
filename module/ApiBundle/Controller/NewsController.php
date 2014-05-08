@@ -32,9 +32,18 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
+        $maxAge = new DateTime();
+        $maxAge->sub(
+            new DateInterval(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('news.max_age_site')
+            )
+        );
+
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findAll();
+            ->findApi($maxAge);
 
         $result = array();
         foreach ($items as $item) {
