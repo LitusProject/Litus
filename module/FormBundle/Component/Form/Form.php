@@ -29,7 +29,8 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface as MailTransport;
+    Zend\Mail\Transport\TransportInterface as MailTransport,
+    Zend\Mvc\Controller\Plugin\Url;
 
 /**
  * Form actions
@@ -38,7 +39,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Form
 {
-    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
@@ -142,10 +143,18 @@ class Form
 
         if (!isset($formData['save_as_draft'])) {
             if ($formSpecification->hasMail() && isset($mailTransport)) {
+                $urlString = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $url->fromRoute(
+                    'form_view',
+                    array(
+                        'action' => 'login',
+                        'id' => $formSpecification->getId(),
+                        'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : ''
+                    )
+                );
                 $mailAddress = $formSpecification->getMail()->getFrom();
 
                 $mail = new Message();
-                $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language))
+                $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
                     ->setFrom($mailAddress)
                     ->setSubject($formSpecification->getMail()->getSubject())
                     ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());

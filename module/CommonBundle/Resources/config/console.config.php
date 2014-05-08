@@ -17,12 +17,13 @@
  */
 
 return array(
-    'install.all'     => 'CommonBundle\Command\AllInstall',
-    'install.common'  => 'CommonBundle\Command\Install',
+    'install.all'         => 'CommonBundle\Command\AllInstall',
+    'install.common'      => 'CommonBundle\Command\Install',
 
-    'common.gc'      => 'CommonBundle\Command\GarbageCollect',
-    'common.config'  => 'CommonBundle\Command\Config',
+    'common.gc'           => 'CommonBundle\Command\GarbageCollect',
+    'common.config'       => 'CommonBundle\Command\Config',
+    'common.test-config'  => 'CommonBundle\Command\TestConfig',
 
-    'assetic.build'   => 'CommonBundle\Command\Assetic\Build',
-    'assetic.setup'   => 'CommonBundle\Command\Assetic\Setup',
+    'assetic.build'       => 'CommonBundle\Command\Assetic\Build',
+    'assetic.setup'       => 'CommonBundle\Command\Assetic\Setup',
 );
