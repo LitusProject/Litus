@@ -58,11 +58,12 @@ class Doodle extends BaseForm
      * @param boolean                          $multiple
      * @param boolean                          $nonMember
      * @param boolean                          $editableByUser
+     * @param boolean                          $sendGuestLoginMail
      * @param boolean                          $namesVisibleForOthers
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $namesVisibleForOthers)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail, $namesVisibleForOthers)
     {
-        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser);
+        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail);
 
         $this->namesVisibleForOthers = $namesVisibleForOthers;
     }

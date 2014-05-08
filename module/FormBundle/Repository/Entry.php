@@ -19,7 +19,9 @@
 namespace FormBundle\Repository;
 
 use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    FormBundle\Entity\Field as FieldEntity,
+    FormBundle\Entity\Node\Entry as FormEntryEntity;
 
 /**
  * Entry
@@ -29,7 +31,7 @@ use DateTime,
  */
 class Entry extends EntityRepository
 {
-    public function findAllByFieldQuery($field)
+    public function findAllByFieldQuery(FieldEntity $field)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -43,7 +45,7 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByFormEntryQuery($formEntry)
+    public function findAllByFormEntryQuery(FormEntryEntity $formEntry)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -59,7 +61,7 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByFormEntryAndField($formEntry, $field)
+    public function findOneByFormEntryAndField(FormEntryEntity $formEntry, FieldEntity $field)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
