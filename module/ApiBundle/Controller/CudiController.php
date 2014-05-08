@@ -143,8 +143,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        //if (null === $this->getAccessToken())
-        //    return $this->error(401, 'The access token is not valid');
+        if (null === $this->getAccessToken())
+            return $this->error(401, 'The access token is not valid');
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -423,9 +423,6 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     private function _getPerson()
     {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById(2);
         if (null === $this->getAccessToken())
             return null;
 
