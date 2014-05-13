@@ -43,8 +43,13 @@ EOT
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByAcademicYear($this->_getCurrentAcademicYear());
 
+        $period = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Stock\Period')
+            ->findOneActive();
+        $period->setEntityManager($this->getEntityManager());
+
         foreach ($articles as $article) {
-            if ($article->getStockValue() == 0 && $article->isBookable()) {
+            if ($article->getStockValue() - $period->getNbAssigned($article) - $period->getNbBooked($article) <= 0 && $article->isBookable()) {
                 $this->writeln('Disable booking for <comment>' . $article->getMainArticle()->getTitle() . '</comment>');
                 $article->setIsBookable(false);
             }

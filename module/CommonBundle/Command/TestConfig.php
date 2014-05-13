@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
-
 /**
  * Performs garbage collection on the sessions.
  */
@@ -43,13 +41,13 @@ EOT
             ->findAll();
 
         $number = 0;
-        foreach($values as $value) {
+        foreach ($values as $value) {
             if (strpos($value->getValue(), 'a:') !== 0)
                 continue;
             try {
                 $number++;
                 unserialize($value->getValue());
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->writeln('Couldn\'t unserialize <comment>' . $value->getKey() . '</comment>');
             }
         }
