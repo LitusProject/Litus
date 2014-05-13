@@ -18,7 +18,8 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Group
@@ -28,4 +29,17 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Group extends EntityRepository
 {
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('g')
+            ->from('SportBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->eq('g.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }
