@@ -265,7 +265,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             if ($refreshToken->hasExpired())
                 return $this->error(401, 'This refresh token has expired');
 
-            if ($refreshToken->hasBeenExhanged()) {
+            if ($refreshToken->hasBeenExchanged()) {
                 $tokens = array_merge(
                     $this->getDocumentManager()
                         ->getRepository('ApiBundle\Document\Token\Access')
