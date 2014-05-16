@@ -228,7 +228,7 @@ class Album
     {
         do {
             $num = rand(0, count($this->photos) - 1);
-        } while ($this->photos[$num]->isCensored());
+        } while (isset($this->photos[$num]) && $this->photos[$num]->isCensored());
 
         return $this->photos[$num];
     }
