@@ -7,18 +7,20 @@
 
     <h2>{{ currentYear }}</h2>
     {% for album in attribute(albums, currentYear).albums %}
-        <div class="album">
-            <div class="title">{{ album.getTitle(language) }}</div>
-            <a href="{{ url('gallery', {'action': 'album', 'name': album.getName()}) }}">
-                <img src="{{ filePath }}/{{ album.getId() }}/{{ album.getPhoto().getThumbPath() }}" alt="{{ album.getTitle(language) }}" />
-            </a>
-        </div>
+        {% if album.getPhotos()|length > 0 %}
+            <div class="album">
+                <div class="title">{{ album.getTitle(language) }}</div>
+                <a href="{{ url('gallery', {'action': 'album', 'name': album.getName()}) }}">
+                    <img src="{{ filePath }}/{{ album.getId() }}/{{ album.getPhoto().getThumbPath() }}" alt="{{ album.getTitle(language) }}" />
+                </a>
+            </div>
+        {% endif %}
     {% endfor %}
     <br style="clear:both" />
 
     <h2>{{ translate('Archive') }}</h2>
     {% for year in albums %}
-        {% if year.year != currentYear %}
+        {% if year.year != currentYear && album.getPhotos()|length > 0 %}
             <div class="album">
                 <div class="title">{{ year.year }}</div>
                 <a href="{{ url('gallery', {'action': 'year', 'name': year.year}) }}">
