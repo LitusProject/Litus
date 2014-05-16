@@ -20,7 +20,7 @@
 
     <h2>{{ translate('Archive') }}</h2>
     {% for year in albums %}
-        {% if year.year != currentYear && album.getPhotos()|length > 0 %}
+        {% if year.year != currentYear and album.getPhotos()|length > 0 %}
             <div class="album">
                 <div class="title">{{ year.year }}</div>
                 <a href="{{ url('gallery', {'action': 'year', 'name': year.year}) }}">
