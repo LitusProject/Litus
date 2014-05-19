@@ -25,7 +25,7 @@ namespace ApiBundle\Component\Uri;
  */
 class Litus extends \Zend\Uri\Uri
 {
-    protected static $validSchemes = array('litus');
+    protected static $validSchemes = array('vtk.litus');
 
     /**
      * User Info part is not used in Litus URIs.
