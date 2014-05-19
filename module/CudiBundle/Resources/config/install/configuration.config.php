@@ -422,8 +422,8 @@ VTK Cudi
         'key'         => 'cudi.location',
         'value'       => serialize(
             array(
-                'latitude'  => 50.8631728,
-                'longitude' => 4.682316600000036,
+                'latitude'  => 50.8612181,
+                'longitude' => 4.6837506,
             )
         ),
         'description' => 'The coordinates of the cudi',

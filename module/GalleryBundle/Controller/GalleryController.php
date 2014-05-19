@@ -38,6 +38,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach ($albums as $album) {
+            if (sizeof($album->getPhotos()) == 0)
+                continue;
+
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
             $year = AcademicYear::getAcademicYear($date);
@@ -77,9 +80,15 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $start->sub(new DateInterval('P1W'));
         $end->sub(new DateInterval('P1W'));
 
-        $albums = $this->getEntityManager()
+        $albumsFound = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findAllFromTo($start, $end);
+
+        $albums = array();
+        foreach($albumsFound as $album) {
+            if (sizeof($album->getPhotos()) >= 0)
+                $albums[] = $album;
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -106,7 +115,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess()->resourceAction('gallery', 'censor') && $this->hasAccess()->resourceAction('gallery', 'uncensor'))
+                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor'))
                 $allowCensor = true;
         }
 

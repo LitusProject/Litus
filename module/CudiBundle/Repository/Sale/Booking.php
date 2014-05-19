@@ -740,30 +740,16 @@ class Booking extends EntityRepository
 
     public function findAllSoldByPersonQuery(Person $person)
     {
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneActive();
-
-        if ($period === null)
-            throw new Exception("There is no active stock period!");
-
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where($query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
-                    $query->expr()->eq('b.status', '\'sold\''),
-                    $query->expr()->gte('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    $query->expr()->eq('b.status', '\'sold\'')
                 )
             )
             ->setParameter(':person', $person->getId())
-            ->setParameter('startDate', $period->getStartDate());
-
-        if (!$period->isOpen())
-            $query->setParameter('endDate', $period->getEndDate());
-
-        $resultSet = $query->getQuery();
+            ->getQuery();
 
         return $resultSet;
     }

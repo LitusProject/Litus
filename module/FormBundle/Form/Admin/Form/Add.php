@@ -146,6 +146,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries. This will also enable the "Save as Concept" button.');
         $this->add($field);
 
+        $field = new Checkbox('send_guest_login_mail');
+        $field->setLabel('Send Guest Login Mail')
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'Send a mail to guests after submitting form to login later and edit/view their submission.<br>For this option the confirmation mail must be enabled!');
+        $this->add($field);
+
         $field = new Checkbox('names_visible_for_others');
         $field->setLabel('Names Are Visible For Others')
             ->setAttribute('class', 'doodle')

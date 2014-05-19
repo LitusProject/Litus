@@ -16,15 +16,5 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'install.all'             => 'CommonBundle\Command\AllInstall',
-    'install.common'          => 'CommonBundle\Command\Install',
-
-    'common.gc'               => 'CommonBundle\Command\GarbageCollect',
-    'common.config'           => 'CommonBundle\Command\Config',
-    'common.test-config'      => 'CommonBundle\Command\TestConfig',
-    'common.destroy-account'  => 'CommonBundle\Command\DestroyAccount',
-
-    'assetic.build'           => 'CommonBundle\Command\Assetic\Build',
-    'assetic.setup'           => 'CommonBundle\Command\Assetic\Setup',
-);
+publishConfigValue($connection, 'cudi.location');
+publishConfigValue($connection, 'cudi.maximum_signin_distance');

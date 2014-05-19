@@ -395,7 +395,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
-            ->findAll($this->_getAcademicYear());
+            ->findAllByAcademicYear($this->_getAcademicYear());
 
         $returnArray = array();
         $sort = array();

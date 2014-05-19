@@ -67,6 +67,8 @@ class GuestInfo
      */
     private $email;
 
+    public static $cookieNamespace = 'Litus_Form';
+
     /**
      * @param string $firstName
      * @param string $lastName
@@ -99,7 +101,7 @@ class GuestInfo
     }
 
     /**
-     * @return string firstName
+     * @return string
      */
     public function getFirstName()
     {
@@ -119,7 +121,7 @@ class GuestInfo
     }
 
     /**
-     * @return string lastName
+     * @return string
      */
     public function getLastName()
     {
@@ -139,7 +141,7 @@ class GuestInfo
     }
 
     /**
-     * @return string The full name
+     * @return string
      */
     public function getFullName()
     {
@@ -147,7 +149,7 @@ class GuestInfo
     }
 
     /**
-     * @return string $email
+     * @return string
      */
     public function getEmail()
     {
@@ -167,12 +169,20 @@ class GuestInfo
     }
 
     /**
+     * @return string
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
      * @return \FormBundle\Entity\Node\GuestInfo
      */
     public function renew()
     {
         setcookie(
-            'LITUS_form',
+            self::$cookieNamespace,
             $this->sessionId,
             time() + (60*60*24*25),
             '/',

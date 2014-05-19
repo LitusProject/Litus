@@ -18,7 +18,8 @@
 
 namespace FormBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    FormBundle\Entity\Node\Form as FormEntity;
 
 /**
  * GuestInfo
@@ -28,4 +29,40 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class GuestInfo extends EntityRepository
 {
+    public function findOneByFormAndSessionId(FormEntity $form, $sessionId)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $guestInfo = $query->select('g')
+            ->from('FormBundle\Entity\Node\GuestInfo', 'g')
+            ->where(
+                $query->expr()->eq('g.sessionId', ':sessionId')
+            )
+            ->setParameter(':sessionId', $sessionId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $guestInfo)
+            return null;
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('FormBundle\Entity\Node\Entry', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('e.form', ':form'),
+                    $query->expr()->eq('e.guestInfo', ':guestInfo')
+                )
+            )
+            ->setParameter(':form', $form)
+            ->setParameter(':guestInfo', $guestInfo)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $resultSet)
+            return null;
+
+        return $guestInfo;
+    }
 }
