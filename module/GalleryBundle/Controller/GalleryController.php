@@ -85,7 +85,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllFromTo($start, $end);
 
         $albums = array();
-        foreach($albumsFound as $album) {
+        foreach ($albumsFound as $album) {
             if (sizeof($album->getPhotos()) >= 0)
                 $albums[] = $album;
         }

@@ -599,6 +599,19 @@ class Article
 
     /**
      * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  string                                    $discount
+     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @return integer
+     */
+    public function getNumberSoldWithDiscount(AcademicYear $academicYear, $discount, Organization $organization = null)
+    {
+        return $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+            ->findNumberByArticleAndAcademicYearAndDiscount($this, $academicYear, $discount, $organization);
+    }
+
+    /**
+     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
      * @param  \CommonBundle\Entity\General\Organization $organization
      * @return integer
      */
