@@ -325,6 +325,56 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
+    public function findNumberByArticleAndAcademicYearAndDiscount(ArticleEntity $article, AcademicYear $academicYear, $discount, Organization $organization = null)
+    {
+        if (null !== $organization) {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->eq('i.discountType', ':discount')
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('discount', $discount)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } else {
+            $query = $this->getEntityManager()->createQueryBuilder();
+            $resultSet = $query->select('SUM(i.number)')
+                ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
+                ->innerJoin('i.queueItem', 'q')
+                ->innerJoin('i.session', 's')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('i.article', ':article'),
+                        $query->expr()->gt('s.openDate', ':start'),
+                        $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->eq('i.discountType', ':discount')
+                    )
+                )
+                ->setParameter('article', $article)
+                ->setParameter('start', $academicYear->getStartDate())
+                ->setParameter('end', $academicYear->getEndDate())
+                ->setParameter('discount', $discount)
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+        if (null == $resultSet)
+            return 0;
+
+        return $resultSet;
+    }
+
     public function findTotalRevenueBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
