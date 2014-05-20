@@ -407,6 +407,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->getSession()->setEntityManager($this->getEntityManager());
         }
 
+        // discounts
+
         return new ViewModel(
             array(
                 'article' => $article,
