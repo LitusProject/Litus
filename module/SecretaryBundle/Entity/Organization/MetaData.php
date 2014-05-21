@@ -66,14 +66,14 @@ class MetaData
     /**
      * @var boolean Whether the academic wants to receive it's Ir.Reëel at Cudi or not
      *
-     * @ORM\Column(name="irreeel_at_cudi", type="boolean", nullable=true)
+     * @ORM\Column(name="irreeel_at_cudi", type="boolean")
      */
     private $irreeelAtCudi;
 
     /**
      * @var boolean Whether the academic wants to receive 't Baske by email or not
      *
-     * @ORM\Column(name="bakske_by_mail", type="boolean", nullable=true)
+     * @ORM\Column(name="bakske_by_mail", type="boolean")
      */
     private $bakskeByMail;
 
