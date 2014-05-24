@@ -50,11 +50,11 @@
         <dt>{{ translate('Student Association') }}</dt>
         <dd>{{ academic.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
         <dt>{{ translate('Membership') }}</dt>
-        <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}Yes{% else %}No{% endif %}</dd>
+        <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
         <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-        <dd>{% if metaData.receiveIrReeelAtCudi() %}Yes{% else %}No{% endif %}</dd>
+        <dd>{% if metaData.receiveIrReeelAtCudi() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
         <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-        <dd>{% if metaData.bakskeByMail() %}Yes{% else %}No{% endif %}</dd>
+        <dd>{% if metaData.bakskeByMail() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
         <dt>{{ translate('T-shirt Size') }}</dt>
         <dd>{{ metaData.getTshirtSizeName() }}&nbsp;</dd>
     </dl>
