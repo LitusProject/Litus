@@ -49,7 +49,7 @@ return array(
     'University E-mail' => 'Universiteits E-mail',
     'Personal E-mail' => 'Persoonlijke E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'Ik wil e-mail ontvangen op mijn persoonlijk e-mail adres',
-    'Student Organization' => 'Studentenkring',
+    'Student Association' => 'Studentenkring',
     'I want to become a member of the student association (&euro; { price })' => 'Ik wil lid worden van de studentenkring (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
     'Register' => 'Schrijf In',
