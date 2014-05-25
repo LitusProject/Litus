@@ -19,9 +19,11 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
+    SecretaryBundle\Form\Admin\Export\Export as ExportForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,31 +35,59 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function exportAction()
     {
-        $academicYear = $this->_getAcademicYear();
-
-        $academicYears = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        $organizations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
+        $form = new ExportForm($this->getEntityManager());
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'secretary_admin_export', array('action' => 'download')
+            )
+        );
 
         return new ViewModel(
             array(
-                'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
-                'organizations' => $organizations,
-                'currentOrganization' => $this->_getOrganization(),
+                'form' => $form,
             )
         );
     }
 
     public function downloadAction()
     {
-        $academicYear = $this->_getAcademicYear();
-        $organization = $this->_getOrganization();
+        $form = new ExportForm($this->getEntityManager());
 
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $academicYear = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                    ->findOneById($formData['academic_year']);
+
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById($formData['organization']);
+
+                $this->getResponse()->getHeaders()
+                    ->addHeaders(
+                    array(
+                        'Content-Disposition' => 'attachment; filename="members_' . strtolower($organization->getName()) . '_' . $academicYear->getCode() . '.csv"',
+                        'Content-Type' => 'text/csv',
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => $this->_generateFile($organization, $academicYear),
+                    )
+                );
+            }
+        }
+
+        return $this->notFoundAction();
+    }
+
+    private function _generateFile(Organization $organization, AcademicYear $academicYear)
+    {
         $mappings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
             ->findAllByAcademicYearAndOrganization($academicYear, $organization);
@@ -117,64 +147,6 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
         $csvGenerator = new CsvGenerator($header, $members);
         $csvGenerator->generateDocument($exportFile);
 
-        $this->getResponse()->getHeaders()
-            ->addHeaders(
-            array(
-                'Content-Disposition' => 'attachment; filename="members_' . $academicYear->getCode() . '.csv"',
-                'Content-Type' => 'text/csv',
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'result' => $exportFile->getContent(),
-            )
-        );
-    }
-
-    private function _getAcademicYear()
-    {
-        if (null === $this->getParam('academicyear'))
-            return $this->getCurrentAcademicYear();
-
-        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $start->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
-
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_registration',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
-    }
-
-    private function _getOrganization()
-    {
-        if (null === $this->getParam('organization'))
-            return;
-
-        $organization = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findOneById($this->getParam('organization'));
-
-        return $organization;
+        return $exportFile->getContent();
     }
 }
