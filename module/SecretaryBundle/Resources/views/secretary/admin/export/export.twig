@@ -5,11 +5,9 @@
 
     {% include 'secretary/admin/registration/partials/navigation.twig' %}
 
-    {% include 'secretary/admin/registration/partials/years.twig' %}
-
-    {% include 'secretary/admin/registration/partials/organizations.twig' %}
-
     <div id="controller_action">
-        <a class="download" href="{{ url('secretary_admin_registration', {"action": "download", "academicyear": activeAcademicYear.getCode(), "organization": currentOrganization.getId()}) }}" style="padding-left: 18px;cursor: pointer;border-width: 2px;">Download</a>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
