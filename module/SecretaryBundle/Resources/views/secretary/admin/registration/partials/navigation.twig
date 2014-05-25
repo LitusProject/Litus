@@ -3,8 +3,8 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('secretary_admin_registration', 'export') %}
-                <li><a href="{{ url('secretary_admin_registration', {"action": "export"}) }}">Export</a></li>
+            {% if hasAccess('secretary_admin_export', 'export') %}
+                <li><a href="{{ url('secretary_admin_export', {"action": "export"}) }}">Export</a></li>
             {% endif %}
             {% if hasAccess('secretary_admin_registration', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('secretary_admin_registration', {"action": "add"}) }}">Add</a></li>

@@ -22,7 +22,10 @@ return array(
             'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects'
         ),
         'secretary_admin_registration' => array(
-            'add', 'barcode', 'download', 'cancel', 'edit', 'export', 'manage', 'search'
+            'add', 'barcode', 'cancel', 'edit', 'manage', 'search'
+        ),
+        'secretary_admin_export' => array(
+            'download', 'export'
         ),
         'secretary_admin_promotion' => array(
             'add', 'delete', 'manage', 'search', 'update'
