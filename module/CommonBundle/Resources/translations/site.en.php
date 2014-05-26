@@ -43,7 +43,7 @@ return array(
     'Twitter' => 'Twitter',
     'News' => 'News',
     'No news items were posted recently.' => 'No news items were posted recently.',
-    'No events were created yet.' => 'No events were created yet.',
+    'No upcoming events are available.' => 'No upcoming events are available.',
     'Read More' => 'Read More',
 
     'Username' => 'Username',
