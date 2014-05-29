@@ -176,7 +176,11 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndPreviousIdAndAction('article', $mapping->getArticle()->getId(), 'edit');
 
-            if (!isset($actions[0]) || !$actions[0]->isRefused()) {
+            $removed = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Prof\Action')
+                ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete');
+
+            if ((!isset($actions[0]) || !$actions[0]->isRefused()) && null === $removed) {
                 if (isset($edited[0]) && !$edited[0]->isRefused()) {
                     $edited[0]->setEntityManager($this->getEntityManager());
                     $article = $edited[0]->getEntity();

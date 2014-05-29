@@ -26,5 +26,6 @@ return Config::create(
         'directory'         => __DIR__,
         'translation_files' => array('logistics'),
         'has_layouts'       => true,
+        'has_documents'     => true,
     )
 );

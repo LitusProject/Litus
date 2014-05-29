@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'cudi_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'cudi_admin_article' => array(
             '@common_jquery',
             '@admin_css',
@@ -301,6 +296,8 @@ return array(
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
             '@common_remote_typeahead',

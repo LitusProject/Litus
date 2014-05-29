@@ -1,3 +1,4 @@
+.DS_Store
 # These files contain sensitive data
 config/database.config.php
 config/ldap.config.php
@@ -25,5 +26,4 @@ public/_br/img
 
 # Exclude Composer configuration and dependencies
 vendor/
-composer.lock
 composer.phar

@@ -22,7 +22,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old'
         ),
         'ticket_admin_ticket' => array(
-            'export', 'manage', 'print'
+            'export', 'manage', 'print', 'search'
         ),
         'ticket_sale_index' => array(
             'sale', 'validate'

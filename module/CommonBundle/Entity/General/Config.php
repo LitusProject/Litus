@@ -57,17 +57,25 @@ class Config
     private $description;
 
     /**
-     * @param  string                    $key   The entry's key
-     * @param  string                    $value The entry's value
+     * @var string Whether this entry is published
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $published;
+
+    /**
+     * @param  string                    $key
+     * @param  string                    $value
      * @throws \InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
     {
-        if(!is_string($key))
+        if (!is_string($key))
             throw new \InvalidArgumentException('Key must be a string');
 
         $this->key = $key;
         $this->setValue($value);
+        $this->published = false;
     }
 
     /**
@@ -87,13 +95,13 @@ class Config
     }
 
     /**
-     * @param  string                             $value The entry's value
+     * @param  string                             $value
      * @return \CommonBundle\Entity\Public\Config
      * @throws \InvalidArgumentException          Value must be a string
      */
     public function setValue($value)
     {
-        if(!is_string($value))
+        if (!is_string($value))
             throw new \InvalidArgumentException('Value must be a string');
 
         $this->value = $value;
@@ -110,15 +118,34 @@ class Config
     }
 
     /**
-    * @param string $description A description for this configuration entry
+    * @param string $description
     * @return \CommonBundle\Entity\Public\Config
     * @throws \InvalidArgumentException Description must be a string or null
      */
     public function setDescription($description = null)
     {
-        if(($description !== null) && !is_string($description))
+        if (($description !== null) && !is_string($description))
             throw new \InvalidArgumentException('Description must be a string or null');
 
         $this->description = $description;
+    }
+
+    /**
+     * @param  boolean                            $published
+     * @return \CommonBundle\Entity\Public\Config
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPublished()
+    {
+        return $this->published;
     }
 }

@@ -132,4 +132,14 @@ abstract class Token
     {
         return $this->expirationTime;
     }
+
+    /**
+     * Whether this token has expired.
+     *
+     * @return boolean
+     */
+    public function hasExpired()
+    {
+        return $this->expirationTime < new DateTime();
+    }
 }

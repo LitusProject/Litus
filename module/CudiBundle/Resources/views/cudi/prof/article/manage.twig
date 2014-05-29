@@ -1,6 +1,19 @@
 {% extends 'prof/base.twig' %}
 
 {% block content %}
+    <div class="flashmessage alert alert-danger fade" id="article_removed_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while removing the article.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="article_removed_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The article was succesfully removed.') }}
+        </div>
+    </div>
+
     <div class="page-header">
         <h2>{{ translate('Articles') }}</h2>
     </div>
@@ -14,7 +27,7 @@
                 <th width="120px">{{ translate('Publish Year') }}</th>
                 <th width="130px">{{ translate('ISBN') }}</th>
                 <th width="120px">{{ translate('Price') }}</th>
-                <th width="130px">{{ translate('Actions') }}</th>
+                <th width="170px">{{ translate('Actions') }}</th>
             </tr>
         </thead>
 
@@ -29,8 +42,11 @@
                     <td>{{ article.getISBN() }}</td>
                     <td>{% if article.getSaleArticle() %}&euro;{{ (article.getSaleArticle().getSellPrice()/100)|number_format(2) }}{% endif %}</td>
                     <td class="actions">
+                        {% if hasAccess('cudi_prof_article', 'delete') %}
+                            <a href="#" class="btn btn-sm btn-danger removeArticle" data-id="{{ article.getId() }}" data-article="{{ article.getTitle() }}">{{ translate('Remove') }}</a>
+                        {% endif %}
                         {% if hasAccess('cudi_prof_article', 'edit') %}
-                            <a href="{{ url("cudi_prof_article", {"action": "edit", "id": article.getId(), "language": language.getAbbrev()}) }}" class="btn btn-primary">{{ translate('Edit') }}</a>
+                            <a href="{{ url("cudi_prof_article", {"action": "edit", "id": article.getId()}) }}" class="btn btn-sm btn-primary">{{ translate('Edit') }}</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -39,8 +55,65 @@
     </table>
     <div class="pull-right">
         {% if hasAccess("cudi_prof_article", "add") %}
-            <a href="{{ url("cudi_prof_article", {"action": "add", "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Create Article') }}</a>
+            <a href="{{ url("cudi_prof_article", {"action": "add"}) }}" class="btn btn-success">{{ translate('Create Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
+
+    <div id="modalRemoveArticle" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Remove Article') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.removeArticle').click(openRemoveArticleModal);
+        });
+
+        function openRemoveArticleModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeArticle = $('#modalRemoveArticle');
+            removeArticle.find('.articleTitle').html($(this).data('article'));
+            removeArticle.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('cudi_prof_article', {"action": "delete"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#article_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        removeArticle.modal('hide');
+                    } else {
+                        errorRemoveArticle();
+                    }
+                }, 'json').error(errorRemoveArticle);
+            });
+            removeArticle.modal();
+        }
+
+        function errorRemoveArticle() {
+            $('.flashmessage').removeClass('in');
+            $('#article_removed_error').addClass('in');
+            $('#modalRemoveArticle').modal('hide');
+        }
+    </script>
 {% endblock %}

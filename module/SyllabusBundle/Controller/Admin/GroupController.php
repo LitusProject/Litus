@@ -317,17 +317,27 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
             foreach ($enrollments as $enrollment) {
                 $ac = $enrollment->getAcademic();
+
+                $primaryAddress = $ac->getPrimaryAddress();
+                $secondaryAddress = $ac->getSecondaryAddress();
+
                 $academics[$ac->getId()] = array(
-                    'academicFirstName'             => $ac->getFirstName(),
-                    'academicLastName'              => $ac->getLastName(),
-                    'academicEmail'                 => $ac->getEmail(),
-                    'academicPrimaryAddressStreet'  => $ac->getPrimaryAddress()->getStreet(),
-                    'academicPrimaryAddressNumber'  => $ac->getPrimaryAddress()->getNumber(),
-                    'academicPrimaryAddressMailbox' => $ac->getPrimaryAddress()->getMailbox(),
-                    'academicPrimaryAddressPostal'  => $ac->getPrimaryAddress()->getPostal(),
-                    'academicPrimaryAddressCity'    => $ac->getPrimaryAddress()->getCity(),
-                    'academicPrimaryAddressCountry' => $ac->getPrimaryAddress()->getCountry(),
-                    'study'                         => $study->getFullTitle(),
+                    'academicFirstName'               => $ac->getFirstName(),
+                    'academicLastName'                => $ac->getLastName(),
+                    'academicEmail'                   => $ac->getEmail(),
+                    'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
+                    'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
+                    'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
+                    'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
+                    'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
+                    'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
+                    'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
+                    'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
+                    'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
+                    'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
+                    'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
+                    'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
+                    'study'                           => $study->getFullTitle(),
                 );
             }
 
@@ -337,13 +347,19 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             'First name',
             'Last name',
             'Email',
-            'Street',
-            'Number',
-            'Mailbox',
-            'Postal',
-            'City',
-            'Country',
-            'City',
+            'Street (Primary Address)',
+            'Number (Primary Address)',
+            'Mailbox (Primary Address)',
+            'Postal (Primary Address)',
+            'City (Primary Address)',
+            'Country (Primary Address)',
+            'Street (Secondary Address)',
+            'Number (Secondary Address)',
+            'Mailbox (Secondary Address)',
+            'Postal (Secondary Address)',
+            'City (Secondary Address)',
+            'Country (Secondary Address)',
+            'Study',
         );
         $exportFile = new CsvFile();
         $csvGenerator = new CsvGenerator($header, $academics);
@@ -351,7 +367,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getResponse()->getHeaders()
             ->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="'.$group->getName().'_'.$academicYear->getCode().'.csv"',
+            'Content-Disposition' => 'attachment; filename="'.$group->getName().'_'.$academicYear->getCode().'.csv"',
             'Content-Type' => 'text/csv',
         ));
 

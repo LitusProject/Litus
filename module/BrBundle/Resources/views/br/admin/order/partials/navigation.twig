@@ -1,0 +1,17 @@
+<header id="controller_header">
+    <div class="title"><span class="order">Orders</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('br_admin_order', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_order', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_order', 'history') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "history"}) }}">History</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

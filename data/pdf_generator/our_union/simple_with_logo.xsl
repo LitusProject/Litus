@@ -6,9 +6,11 @@
 
     <xsl:template match="our_union">
         <fo:block>
-            <xsl:apply-templates select="logo"/>
-            <fo:block font-size="8pt">
-                <xsl:apply-templates select="name/p"/>
+            <fo:block text-align="center">
+                <xsl:apply-templates select="logo"/>
+            </fo:block>
+            <fo:block font-size="12pt" font-weight="bold" text-align="center">
+                <xsl:apply-templates select="name"/>
             </fo:block>
         </fo:block>
     </xsl:template>

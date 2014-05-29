@@ -83,7 +83,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         if ($this->_validateKey() || $this->_validateOAuth()) {
-            $this->hasAccess()->setDriver($this->_hasAccessDriver);
+            if ('development' != getenv('APPLICATION_ENV'))
+                $this->hasAccess()->setDriver($this->_hasAccessDriver);
 
             if (
                 !$this->hasAccess()->toResourceAction(
@@ -96,6 +97,12 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
                 return $error;
             }
+        } else {
+            $error = $this->error(401, 'No key or OAuth token was provided');
+            $error->setOptions($result->getOptions());
+            $e->setResult($error);
+
+            return $error;
         }
 
         if (false !== getenv('SERVED_BY')) {
@@ -120,7 +127,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        $this->initJson();
+        if (!$this->_isAuthorizeAction())
+            $this->initJson();
+
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
@@ -218,9 +227,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
-        $this->getMvcTranslator()->setCache($this->getCache())
-            ->setLocale($this->getLanguage()->getAbbrev());
-
         AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
 
@@ -232,6 +238,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _initUriScheme()
     {
         UriFactory::registerScheme('litus', 'ApiBundle\Component\Uri\Litus');
+    }
+
+    /**
+     * Checks if the current action is the OAuth authorize action.
+     *
+     * @return boolean
+     */
+    private function _isAuthorizeAction()
+    {
+        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
+    }
+
+    /**
+     * Checks if the current action is an OAuth action.
+     *
+     * @return boolean
+     */
+    private function _isOAuthAction()
+    {
+        return 'api_oauth' == $this->getParam('controller');
     }
 
     /**
@@ -326,9 +352,12 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
-        $code = $this->getRequest()->getPost($field);
-        if (!$this->getRequest()->isPost() || null === $code)
-            $code = $this->getRequest()->getQuery($field);
+        if ($this->_isOAuthAction())
+            $field = 'client_id';
+
+        $code = $this->getRequest()->getQuery($field);
+        if (null === $code && $this->getRequest()->isPost())
+            $code = $this->getRequest()->getPost($field);
 
         $key = $this->getEntityManager()
             ->getRepository('ApiBundle\Entity\Key')
@@ -345,9 +374,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getAccessToken($field = 'access_token')
     {
-        $code = $this->getRequest()->getPost($field);
-        if (!$this->getRequest()->isPost() || null === $code)
-            $code = $this->getRequest()->getQuery($field);
+        $code = $this->getRequest()->getQuery($field);
+        if (null === $code && $this->getRequest()->isPost())
+            $code = $this->getRequest()->getPost($field);
 
         $accessToken = $this->getDocumentManager()
             ->getRepository('ApiBundle\Document\Token\Access')
@@ -411,6 +440,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Retrieve the common session storage from the DI container.
+     *
+     * @return \Zend\Session\Container
+     */
+    public function getSessionStorage()
+    {
+        return $this->getServiceLocator()->get('common_sessionstorage');
+    }
+
+    /**
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
@@ -422,45 +461,43 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\I18n\Translator\Translator
-     */
-    public function getMvcTranslator()
-    {
-        return $this->getServiceLocator()->get('MvcTranslator');
-    }
-
-    /**
      * Authenticates an application if an API key is provided.
      *
      * @return boolean
      */
     private function _validateKey()
     {
-        if ('development' != getenv('APPLICATION_ENV')) {
-            $key = $this->getKey();
-            if (null === $key)
-                return false;
+        if ('development' == getenv('APPLICATION_ENV'))
+            return true;
 
-            $validateKey = $key->validate(
-                isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
-            );
-
-            if (!$validateKey)
-                return false;
-
+        if ($this->_isAuthorizeAction()) {
             $this->_hasAccessDriver = new HasAccessDriver(
                 $this->_getAcl(),
-                true,
-                $key
+                false,
+                null
             );
 
             return true;
         }
 
-        return false;
+        $key = $this->getKey();
+        if (null === $key)
+            return false;
+
+        $validateKey = $key->validate(
+            isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+        );
+
+        if (!$validateKey)
+            return false;
+
+        $this->_hasAccessDriver = new HasAccessDriver(
+            $this->_getAcl(),
+            true,
+            $key
+        );
+
+        return true;
     }
 
     /**
@@ -470,20 +507,29 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateOAuth()
     {
-        if ('development' != getenv('APPLICATION_ENV')) {
-            $accessToken = $this->getAccessToken();
-            if (null === $accessToken)
-                return false;
+        if ('development' == getenv('APPLICATION_ENV'))
+            return true;
 
+        if ($this->_isAuthorizeAction()) {
             $this->_hasAccessDriver = new HasAccessDriver(
                 $this->_getAcl(),
-                true,
-                $accessToken->getPerson($this->getEntityManager())
+                false,
+                null
             );
 
             return true;
         }
 
-        return false;
+        $accessToken = $this->getAccessToken();
+        if (null === $accessToken)
+            return false;
+
+        $this->_hasAccessDriver = new HasAccessDriver(
+            $this->_getAcl(),
+            true,
+            $accessToken->getPerson($this->getEntityManager())
+        );
+
+        return true;
     }
 }

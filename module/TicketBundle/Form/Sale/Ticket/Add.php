@@ -48,8 +48,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_event;
 
     /**
-     * @param \TicketBundle\Entity\Event $event
-     * @param null|string|int            $name  Optional name for the element
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \TicketBundle\Entity\Event  $event
+     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {

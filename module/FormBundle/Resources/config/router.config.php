@@ -97,15 +97,16 @@ return array(
         'form_view' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/form[/:action[/:id]][/]',
+                'route' => '[/:language]/form[/:action[/:id][/key/:key]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
+                    'key'      => '[a-zA-Z0-9_-]*'
                 ),
                 'defaults' => array(
                     'controller' => 'form_view',
-                    'action'     => 'view',
+                    'action'     => 'index',
                 ),
             ),
         ),

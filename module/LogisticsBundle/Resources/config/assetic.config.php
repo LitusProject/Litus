@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'logistics_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'logistics_admin_driver' => array(
             '@common_jquery',
             '@common_remote_typeahead',

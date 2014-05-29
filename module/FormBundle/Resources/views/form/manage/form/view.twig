@@ -1,4 +1,4 @@
-{% extends 'manage/base.twig' %}
+{% extends 'form/base.twig' %}
 
 {% block content %}
     <div class="flashmessage alert alert-success fade" id="mail_send_success">
@@ -27,10 +27,31 @@
                 </a>
             {% endif %}
             {% if hasAccess('form_manage', 'download') %}
-                <a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-arrow-down"></span>
-                    {{ translate("Download") }}
-                </a>
+                <div class="btn-group">
+                    <a class="btn btn-default" href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}">
+                        <span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}
+                    </a>
+                    {% set numberFiles = 0 %}
+                    {% for field in fields %}
+                        {% if field.getType() == 'file' %}
+                            {% set numberFiles = numberFiles + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if numberFiles > 0 and hasAccess('form_manage', 'downloadFiles') %}
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url("form_manage", {"action" : "download", "id" : form.getId()}) }}">{{ translate('CSV') }}</a></li>
+                            <li class="divider"></li>
+                            {% for field in fields %}
+                                {% if field.getType() == 'file' %}
+                                    <li><a href="{{ url('form_manage', {'action': 'downloadFiles', 'id': field.getId()}) }}">{{ field.getLabel(language) }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
             {% endif %}
             {% if hasAccess('form_manage_mail', 'send') and viewer.isMail() %}
                 <a class="btn btn-default" id="sendMail">
@@ -51,6 +72,8 @@
                             {% if form.getType != 'doodle' %}
                                 {% for field in fields %}
                                     <th>{{ field.getLabel(language) }}</th>
+                                {% else %}
+                                    <th>&nbsp;</th>
                                 {% endfor %}
                             {% else %}
                                 <th>{{ translate('Subscriptions') }}</th>
@@ -111,6 +134,8 @@
                                     {% else %}
                                         <td class="column-{{ field.getId() }}">{{ form.getValueFor(entry, field, language)|nl2br }}&nbsp;</td>
                                     {% endif %}
+                                {% else %}
+                                    <td>&nbsp;</td>
                                 {% endfor %}
                             {% else %}
                                 <td>

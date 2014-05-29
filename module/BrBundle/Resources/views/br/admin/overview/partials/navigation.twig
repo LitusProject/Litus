@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="financial">Overview</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('br_admin_overview', 'manage') %}
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "person"}) }}">Persons</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_overview', 'manage') %}
+                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "company"}) }}">Companies</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

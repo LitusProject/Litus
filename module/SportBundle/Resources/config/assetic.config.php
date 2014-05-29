@@ -18,11 +18,6 @@
 
 return array(
     'controllers'  => array(
-        'sport_install' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-        ),
         'sport_admin_run' => array(
             '@common_jquery',
             '@admin_css',

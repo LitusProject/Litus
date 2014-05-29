@@ -1,0 +1,286 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          litus
+# Required-Start:    $local_fs $network $named $time $syslog
+# Required-Stop:     $local_fs $network $named $time $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       Control litus sockets and printer daemons
+### END INIT INFO
+
+##
+# Configuration, can be overriden by creating /etc/default/litus
+#
+
+USER='www-data'
+LITUS=$(cd $(dirname $(readlink -f "$0"))/../.. && pwd)
+HAVE_PRINTERS=0
+
+##
+# Override configuration
+#
+
+[ -f /etc/default/litus ] && . /etc/default/litus
+
+##
+# Don't bail out if something goes wrong!
+#
+
+set +e
+
+##
+# Quit if we're not root or $USER
+#
+
+if [[ "$EUID" != "0" ]] && [[ $(whoami) != "$USER" ]]; then
+    echo "You're not root or $USER, aborting..." >&2
+    exit 5
+fi
+
+##
+# Load init helper functions
+#
+
+. /lib/lsb/init-functions
+
+##
+# Helper functions
+#
+
+litus() {
+    log "running \"$@\" on litus in $(pwd)"
+    php public/index.php "$@"
+    return $?
+}
+
+run() {
+    cd "$1"
+    shift
+
+    log "running \"$@\" in $(pwd)"
+
+    "$@"
+    local status=$?
+
+    cd - >/dev/null 2>&1
+
+    log "running \"$@\" finished with $status"
+    return $status;
+}
+
+run_all() {
+    log "run_all called: \"$@\""
+
+    for litus in $LITUS
+    do
+        run $litus "$@"
+    done
+
+    log 'run_all ended'
+}
+
+##
+# Logging
+#
+
+if [[ "$1" =~ -v|--verbose ]]; then
+    shift
+    log() {
+        echo "$@" >&2
+    }
+else
+    log() {
+        :
+    }
+fi
+
+##
+# Socket Functions
+#
+
+start_socket() {
+    SOCKET_DIR=$(litus common:config get socket_path)
+    log "socket directory: $SOCKET_DIR"
+
+    log_daemon_msg "Starting sockets in $(pwd)"
+    /sbin/start-stop-daemon -b -c "$USER" -d "$(pwd)" -p "$SOCKET_DIR/pid" --start --exec bin/sockets.sh -- --daemon || return $?
+    log_end_msg 0
+}
+
+start_sockets() {
+    run_all start_socket
+}
+
+status_socket() {
+    SOCKET_DIR=$(litus common:config get socket_path)
+
+    status_of_proc -p "$SOCKET_DIR/pid" bin/sockets.sh "litus socket in $SOCKET_DIR"
+    return $?
+}
+
+status_sockets() {
+    for litus in $LITUS
+    do
+        run $litus status_socket || return $?
+    done
+
+    return 0;
+}
+
+stop_socket() {
+    status_socket >/dev/null 2>&1 || return 0
+
+    SOCKET_DIR=$(litus common:config get socket_path)
+
+    log_daemon_msg "Stopping sockets in $(pwd)"
+    killproc -p "$SOCKET_DIR/pid" bin/sockets.sh SIGINT || return $?
+    log_end_msg 0
+}
+
+stop_sockets() {
+    local status=0
+
+    for litus in $LITUS
+    do
+        run $litus stop_socket || status=$?
+    done
+
+    return $status;
+}
+
+restart_socket() {
+    SOCKET_DIR=$(litus common:config get socket_path)
+
+    if status_socket >/dev/null 2>&1; then
+        log_daemon_msg "Restarting sockets in $SOCKET_DIR"
+        killproc -p "$SOCKET_DIR/pid" bin/sockets.sh SIGUSR1 || return $?
+        log_end_msg 0
+    else
+        log_warning_msg "Socket in $(pwd) was not running"
+        start_socket || $?
+    fi
+}
+
+restart_sockets() {
+    run_all restart_socket
+}
+
+##
+# Printer Functions
+#
+
+PRINTERS_PID=/var/run/litus/printers.pid
+PRINTERS_SCR=/var/run/litus/printers.sh
+
+have_printers() {
+    [ -f /opt/litus/PrintDaemon.jar ] && return 0
+
+    # stay silent if printers are disabled
+    [ $HAVE_PRINTERS -eq 0 ] && return 1
+
+    log_error_msg "Cannot find PrintDaemon.jar in /opt/litus, printer disabled"
+    HAVE_PRINTERS=0
+    return 1
+}
+
+start_printers() {
+    have_printers || return $?
+
+    log_daemon_msg "Starting printer daemon"
+    /sbin/start-stop-daemon -b -m -c "$USER" -d / -p "$PRINTERS_PID" --start --exec $PRINTERS_SCR || return $?
+    log_end_msg 0
+}
+
+status_printers() {
+    have_printers || return $?
+
+    status_of_proc -p $PRINTERS_PID $PRINTERS_SCR 'litus printer daemon' || return $?
+}
+
+stop_printers() {
+    status_printers >/dev/null 2>&1 || return 0
+
+    log_daemon_msg "Stopping printer daemon"
+    killproc -p $PRINTERS_PID $PRINTERS_SCR || return $?
+    log_end_msg 0
+}
+
+restart_printers() {
+    have_printers || return $?
+
+    if status_printers >/dev/null 2>&1; then
+        stop_printers || return $?
+        sleep 1
+        start_printers || return $?
+    else
+        log_warning_msg "Printer daemon wasn't running"
+        start_printers || return $?
+    fi
+}
+
+##
+# Initialisation
+#
+
+init() {
+    if [ ! -d /var/run/litus ]; then
+        mkdir -p /var/run/litus
+        chown $USER:admin /var/run/litus
+        chmod 700 /var/run/litus
+    fi
+
+    if [ ! -d /var/log/litus ]; then
+        mkdir -p /var/log/litus
+        chown $USER:admin /var/log/litus
+        chmod 750 /var/log/litus
+    fi
+
+    if have_printers && [ ! -f /var/run/litus/printers.sh ]; then
+        cat <<EOF > /var/run/litus/printers.sh
+#!/bin/bash
+set -e
+cd /opt/litus
+exec java -jar /opt/litus/PrintDaemon.jar 4444 4445 >/var/log/litus/printer.log 2>&1
+EOF
+        chmod +x /var/run/litus/printers.sh
+    fi
+}
+
+##
+# Main execution
+#
+
+init
+
+status=0
+
+case $1 in
+    start)
+        start_sockets || status=$?
+        [ $HAVE_PRINTERS -eq 0 ] || start_printers
+        ;;
+    stop)
+        stop_sockets || status=$?
+        [ $HAVE_PRINTERS -eq 0 ] || stop_printers
+        ;;
+    restart|safe-restart)
+        restart_sockets || status=$?
+        [ $HAVE_PRINTERS -eq 0 ] || restart_printers
+        ;;
+    force-restart)
+        stop_sockets || status=$?
+        sleep 2
+        start_sockets || status=$?
+        [ $HAVE_PRINTERS -eq 0 ] || restart_printers
+        ;;
+    status)
+        status_sockets || status=$?
+        [ $HAVE_PRINTERS -eq 0 ] || (status_printers || status=$?)
+        ;;
+    *)
+        echo "Usage: service litus <start|stop|restart|force-restart|status>" >&2
+        status=1;
+        ;;
+esac
+
+exit $status

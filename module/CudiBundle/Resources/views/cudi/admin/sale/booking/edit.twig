@@ -28,6 +28,14 @@
         <p>Date: <b>{{ booking.getBookDate().format('d/m/Y H:i') }}</b></p>
         <p>Expires: <b>{{ booking.getExpirationDate().format('d/m/Y H:i') }}</b></p>
         <p>Status: <b>{{ booking.getStatus()|capitalize }}</b></p>
+
+        {% if booking.getStatus() == 'canceled' %}
+            <p>Canceled: <b>{{ booking.getCancelationDate().format('d/m/Y H:i') }}</b></p>
+        {% endif %}
+        {% if booking.getStatus() == 'returned' %}
+            <p>Returned: <b>{{ booking.getReturnDate().format('d/m/Y H:i') }}</b></p>
+        {% endif %}
+
         <p>Price: <b>&euro; {{ (booking.getArticle().getSellPrice() * booking.getNumber()/100)|number_format(2) }}</b></p>
 
         <h1>Other bookings of {{ booking.getPerson().getFullName() }}</h1>
@@ -139,140 +147,215 @@
                 </div>
             </div>
         {% endif %}
+        {% if booking.getStatus() == 'sold' and hasAccess('cudi_admin_sales_booking', 'return') %}
+            <div class="sidebox">
+                <div class="title">Return Booking</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to return this sold booking!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="return">&rarr; Return Booking</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
-    <div class="modal hide fade" id="sendMail">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Send Mail
-        </div>
-        <div class="modal-body">
-            <p>
-                {% import 'admin/partials/form.twig' as forms %}
-                {{ forms.renderForm(mailForm) }}
-                <br style="clear: both;">
-            </p>
-            <div class="footer">
-                <button class="send">Send</button>
-                <button class="cancel" data-dismiss="modal">Cancel</button>
+    <div class="modal fade" id="sendMail" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Send Mail
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {% import 'admin/partials/form.twig' as forms %}
+                        {{ forms.renderForm(mailForm) }}
+                        <br style="clear: both;">
+                    </p>
+                    <div class="footer">
+                        <button class="send">Send</button>
+                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal hide fade" id="removeBooking">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delete Booking
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-                Please note that this operation cannot be undone!
-            </p>
-            {% if booking.getNumber() > 1 %}
-                <p>
-                    Only delete <select id="removeNbBookings">
-                        {% for i in 1..booking.getNumber() %}
-                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
-                        {% endfor %}
-                    </select> bookings
-                </p>
-            {% endif %}
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="delete">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+
+    <div class="modal fade" id="removeBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    {% if booking.getNumber() > 1 %}
+                        <p>
+                            Only delete <select id="removeNbBookings">
+                                {% for i in 1..booking.getNumber() %}
+                                    <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select> bookings
+                        </p>
+                    {% endif %}
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal hide fade" id="assignBooking">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Assign Booking
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to assign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-            </p>
-            {% if booking.getNumber() > 1 %}
-                <p>
-                    Only assign <select id="assignNbBookings">
-                        {% for i in 1..booking.getNumber() %}
-                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
-                        {% endfor %}
-                    </select> bookings
-                </p>
-            {% endif %}
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="assign">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+
+    <div class="modal fade" id="assignBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Assign Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to assign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                    </p>
+                    {% if booking.getNumber() > 1 %}
+                        <p>
+                            Only assign <select id="assignNbBookings">
+                                {% for i in 1..booking.getNumber() %}
+                                    <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select> bookings
+                        </p>
+                    {% endif %}
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="assign">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal hide fade" id="unassignBooking">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Unassign Booking
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-            </p>
-            {% if booking.getNumber() > 1 %}
-                <p>
-                    Only unassign <select id="unassignNbBookings">
-                        {% for i in 1..booking.getNumber() %}
-                            <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
-                        {% endfor %}
-                    </select> bookings
-                </p>
-            {% endif %}
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="unassign">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+
+    <div class="modal fade" id="unassignBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Unassign Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to unassign the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                    </p>
+                    {% if booking.getNumber() > 1 %}
+                        <p>
+                            Only unassign <select id="unassignNbBookings">
+                                {% for i in 1..booking.getNumber() %}
+                                    <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select> bookings
+                        </p>
+                    {% endif %}
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="unassign">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal hide fade" id="expireBooking">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Expire Booking
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to expire the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="expire">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+
+    <div class="modal fade" id="expireBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Expire Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to expire the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="expire">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="modal hide fade" id="extendBooking">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Extend Booking
+
+    <div class="modal fade" id="extendBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Extend Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to extend the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="extend">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>
-                You are about to extend the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="extend">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+    </div>
+
+    <div class="modal fade" id="returnBooking" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Return Booking
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to return the following booking of <b>{{ booking.getPerson().getFullName() }}</b>: <b>{{ booking.getArticle().getMainArticle().getTitle() }}</b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    {% if booking.getNumber() > 1 %}
+                        <p>
+                            Only return <select id="returnNbBookings">
+                                {% for i in 1..booking.getNumber() %}
+                                    <option value="{{ i }}" {% if loop.last %}selected="selected"{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select> bookings
+                        </p>
+                    {% endif %}
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -291,6 +374,7 @@
             $('aside .unassign').click(openUnassignModal);
             $('aside .expire').click(openExpireModal);
             $('aside .extend').click(openExtendModal);
+            $('aside .return').click(openReturnModal);
             $('aside .sendMail').click(openSendMailModal);
         });
 
@@ -391,6 +475,21 @@
                 window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "extend", "id": booking.getId()})}}';
             });
             expireBooking.modal();
+        }
+
+        function openReturnModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var returnBooking = $('#returnBooking');
+            returnBooking.find('.delete').unbind('click').click(function () {
+                if (returnBooking.find('#returnNbBookings').val())
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "return", "id": booking.getId()})}}number/' + returnBooking.find('#returnNbBookings').val();
+                else
+                    window.location.href = '{{ url('cudi_admin_sales_booking', {"action": "return", "id": booking.getId()})}}';
+
+            });
+            returnBooking.modal();
         }
     </script>
 {% endblock %}

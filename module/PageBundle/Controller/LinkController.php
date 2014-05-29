@@ -34,9 +34,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     public function viewAction()
     {
         if (!($link = $this->_getLink())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $this->redirect()->toUrl($link->getUrl($this->getLanguage()));

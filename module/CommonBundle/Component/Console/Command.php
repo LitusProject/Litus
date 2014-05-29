@@ -98,7 +98,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      */
     protected function writeln($string, $raw = false)
     {
-        if ($raw) {
+        if ($raw || false === $this->_logName) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
@@ -202,5 +202,13 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected function getConsole()
     {
         return $this->getServiceLocator()->get('Console');
+    }
+
+    /**
+     * @return \Symfony\Component\Console\Helper\DialogHelper
+     */
+    protected function getDialog()
+    {
+        return $this->getHelperSet()->get('dialog');
     }
 }

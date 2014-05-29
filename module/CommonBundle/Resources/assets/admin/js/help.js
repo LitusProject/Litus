@@ -30,7 +30,7 @@
                 $('.help-question-mark').animate({'opacity': 0}, 500, function () {$(this).remove()})
             } else {
                 $('.help-question-mark').remove();
-                $('[data-help]').each(function () {
+                $('[data-help]:visible').each(function () {
                     $('body').append(
                         $('<div>', {'class': 'help-question-mark'}).html('?').css({
                             'width': 20,
@@ -56,17 +56,21 @@
         }
 
         function showHelpModal(e) {
-            var modal = $('<div>', {'class': 'modal hide fade'}).append(
-                $('<div>', {'class': 'modal-header'}).append(
-                    $('<span>').html('Litus Admin'),
-                    '/Help'
-                ),
-                $('<div>', {'class': 'modal-body'}).append(
-                    $('<div>').append(
-                        $('<p>').html($(e.target).data('text'))
-                    ),
-                    $('<div>', {'class': 'footer'}).append(
-                        $('<input>', {'type': 'button', 'data-dismiss': 'modal', 'value': 'Close'})
+            var modal = $('<div>', {'class': 'modal fade', 'tabindex': '-1'}).append(
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<span>').html('Litus Admin'),
+                            '/Help'
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<div>').append(
+                                $('<p>').html($(e.target).data('text'))
+                            ),
+                            $('<div>', {'class': 'footer'}).append(
+                                $('<input>', {'type': 'button', 'data-dismiss': 'modal', 'value': 'Close'})
+                            )
+                        )
                     )
                 )
             );

@@ -109,6 +109,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $formData['multiple'],
                         $formData['non_members'],
                         $formData['editable_by_user'],
+                        $formData['send_guest_login_mail'],
                         $formData['names_visible_for_others']
                     );
 
@@ -136,7 +137,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $max,
                         $formData['multiple'],
                         $formData['non_members'],
-                        $formData['editable_by_user']
+                        $formData['editable_by_user'],
+                        $formData['send_guest_login_mail']
                     );
                 }
 
@@ -263,7 +265,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         ->setActive($formData['active'])
                         ->setMax($max)
                         ->setEditableByUser($formData['editable_by_user'])
-                        ->setNonMember($formData['non_members']);
+                        ->setNonMember($formData['non_members'])
+                        ->setSendGuestLoginMail($formData['send_guest_login_mail']);
                 }
 
                 $formSpecification->setMultiple($formData['multiple']);

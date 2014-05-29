@@ -59,7 +59,7 @@
     <aside>
         {% if not order.isOrdered() %}
             {% if hasAccess('cudi_admin_stock_order', 'place') %}
-                <div class="sidebox">
+                <div class="sidebox" data-help="These order items are still in the order queue, to finalise the order and pass it to the supplier, please press 'Place Order'">
                     <div class="title">Place Order</div>
                     <div class="content">
                         <p>
@@ -128,71 +128,85 @@
         {% endif %}
     </aside>
 
-    <div class="modal hide fade" id="removeOrder">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delete Order
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to delete the following order item: <b class="articleTitle"></b> (x <span class="orderNumber"></span>)!
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="delete">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-    <div class="modal hide fade" id="cancelOrderModal">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Cancel Order
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to cancel the order for: <b>{{ order.getSupplier().getName() }}</b>!
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="cancelOrder">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-    <div class="modal hide fade" id="deliveryDateModal">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delivery Date
-        </div>
-        <div class="modal-body">
-            <div class="form">
-                <p>Enter here the prefered delivery date: </p>
-                <div class="row">
-                    <span class="label">
-                        <label class="required" for="deliveryDate">Delivery Date</label>
-                    </span>
-                    <span class="field">
-                        <input type="text" id="deliveryDate" value="{{ order.getDeliveryDate().format('d/m/Y') }}" placeholder="dd/mm/yyyy">
-                    </span>
-                    <div class="errors hide">
-                        <ul>
-                            <li>Please enter a valid date</li>
-                        </ul>
+    <div class="modal fade" id="removeOrder" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Order
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following order item: <b class="articleTitle"></b> (x <span class="orderNumber"></span>)!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
-                <br style="clear: both;">
-                <p>The generation of the xml's can take a while, so please be patient.</p>
             </div>
-            <div class="footer">
-                <button class="exportOrder">Export</button>
-                <button data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Cancel Order
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to cancel the order for: <b>{{ order.getSupplier().getName() }}</b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="cancelOrder">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                <div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deliveryDateModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delivery Date
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <p>Enter here the prefered delivery date: </p>
+                        <div class="row">
+                            <span class="label">
+                                <label class="required" for="deliveryDate">Delivery Date</label>
+                            </span>
+                            <span class="field">
+                                <input type="text" id="deliveryDate" value="{{ order.getDeliveryDate().format('d/m/Y') }}" placeholder="dd/mm/yyyy">
+                            </span>
+                            <div class="errors hide">
+                                <ul>
+                                    <li>Please enter a valid date</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br style="clear: both;">
+                        <p>The generation of the xml's can take a while, so please be patient.</p>
+                    </div>
+                    <div class="footer">
+                        <button class="exportOrder">Export</button>
+                        <button data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

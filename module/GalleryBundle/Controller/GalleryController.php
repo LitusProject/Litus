@@ -38,6 +38,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach ($albums as $album) {
+            if (sizeof($album->getPhotos()) == 0)
+                continue;
+
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
             $year = AcademicYear::getAcademicYear($date);
@@ -77,9 +80,15 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $start->sub(new DateInterval('P1W'));
         $end->sub(new DateInterval('P1W'));
 
-        $albums = $this->getEntityManager()
+        $albumsFound = $this->getEntityManager()
             ->getRepository('GalleryBundle\Entity\Album\Album')
             ->findAllFromTo($start, $end);
+
+        $albums = array();
+        foreach ($albumsFound as $album) {
+            if (sizeof($album->getPhotos()) >= 0)
+                $albums[] = $album;
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -97,7 +106,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function albumAction()
     {
         if (!($album = $this->_getAlbumByName()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -106,7 +115,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess('gallery', 'censor') && $this->hasAccess('gallery', 'uncensor'))
+                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor'))
                 $allowCensor = true;
         }
 
@@ -122,13 +131,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function censorAction()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return;
+            return $this->notFoundAction();
         }
 
         if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
@@ -145,13 +152,11 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function uncensorAction()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return;
+            return $this->notFoundAction();
         }
 
         if (!($photo = $this->_getPhoto()))
-            return new ViewModel();
+            return $this->notFoundAction();
 
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
@@ -168,8 +173,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function _getAlbumByName()
     {
         if (null === $this->getParam('name')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -178,8 +181,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneByName($this->getParam('name'));
 
         if (null === $album) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -189,8 +190,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function _getPhoto()
     {
         if (null === $this->getParam('name')) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 
@@ -199,8 +198,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('name'));
 
         if (null === $album) {
-            $this->getResponse()->setStatusCode(404);
-
             return;
         }
 

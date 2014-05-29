@@ -33,9 +33,39 @@ return array(
         'description' => 'The path to the PDF generator files',
     ),
     array(
-        'key'         => 'br.cv_book_open',
-        'value'       => '0',
-        'description' => 'Whether the CV Book is currently open for entries or not',
+            'key'         => 'br.cv_book_open',
+            'value'       => '0',
+            'description' => 'Whether the CV Book is currently open for entries or not',
+    ),
+    array(
+        'key'         => 'br.invoice_expire_time',
+        'value'       => 'P30D',
+        'description' => 'The time interval within which a invoice must be paid. See http://www.php.net/manual/en/dateinterval.construct.php for the format.',
+    ),
+    array(
+            'key'         => 'br.vat_number',
+            'value'       => 'BE0479-482-282',
+            'description' => 'The VAT number of the organisation sending the invoice.',
+    ),
+    array(
+            'key'         => 'br.invoice_vat_explanation',
+            'value'       => 'CHANGE ME I should explain VAT',
+            'description' => 'Explains what the VAT',
+    ),
+    array(
+            'key'         => 'br.invoice_below_entries',
+            'value'       => 'CHANGE ME br.invoice_below_entries',
+            'description' => 'CHANGE ME  I have no Idea',
+    ),
+    array(
+            'key'         => 'br.invoice_footer',
+            'value'       => 'CHANGE ME br.invoice_footer',
+            'description' => 'The footer of the invoice',
+    ),
+    array(
+            'key'         => 'br.contract_language',
+            'value'       => 'en',
+            'description' => 'The language the contracts are in',
     ),
     array(
         'key'         => 'br.account_activated_mail',
@@ -45,22 +75,24 @@ return array(
                     'subject' => 'VTK Corporate Account',
                     'content' => 'Dear {{ name }},
 
-A corporate account for you was created on VTK with username {{ username }}.
+A corporate account was created for you with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}
 You can use this account to view the CV Book at http://litus/corporate
 
-With best regards,
-The VTK Corporate Team'
+Kind regards,
+
+The VTK Corporate Relations Team'
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Bedrijven Account',
+                    'subject' => 'VTK Bedrijfsaccount',
                     'content' => 'Beste {{ name }},
 
-Een bedrijven account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
 Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
+
 Het VTK Bedrijvenrelaties Team'
                 ),
             )
@@ -71,6 +103,26 @@ Het VTK Bedrijvenrelaties Team'
         'key'         => 'br.cv_book_language',
         'value'       => 'nl',
         'description' => 'The language used in the printed version of the CV Book',
+    ),
+    array(
+            'key'         => 'br.contract_name',
+            'value'       => 'Will see where I show up!',
+            'description' => 'I have no idea',
+    ),
+    array(
+            'key'         => 'br.contract_footer',
+            'value'       => 'Will see where I show up contract_footer!!',
+            'description' => 'I have no idea contract_footer',
+    ),
+    array(
+            'key'         => 'br.contract_final_entry',
+            'value'       => 'Will see where I show up contract_final_entry!!',
+            'description' => 'I have no idea contract_final_entry',
+    ),
+    array(
+            'key'         => 'br.contract_below_entries',
+            'value'       => 'CHANGE ME br.contract_below_entries',
+            'description' => 'CHANGE ME  I have no Idea',
     ),
     array(
         'key'         => 'br.cv_book_foreword',

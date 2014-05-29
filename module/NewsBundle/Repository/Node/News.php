@@ -18,7 +18,8 @@
 
 namespace NewsBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * News
@@ -57,18 +58,44 @@ class News extends EntityRepository
         return $resultSet;
     }
 
-    public function findNbSiteQuery($nbResults = 3)
+    public function findApiQuery(DateTime $maxAge)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->gte('n.endDate', ':now'),
-                    $query->expr()->isNull('n.endDate')
+                $query->expr()->andX(
+                    $query->expr()->gt('n.creationTime', ':maxAge'),
+                    $query->expr()->orX(
+                        $query->expr()->gte('n.endDate', ':now'),
+                        $query->expr()->isNull('n.endDate')
+                    )
                 )
             )
             ->setParameter('now', new \DateTime())
+            ->setParameter('maxAge', $maxAge)
+            ->orderBy('n.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findNbSiteQuery($nbResults, DateTime $maxAge)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('n')
+            ->from('NewsBundle\Entity\Node\News', 'n')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('n.creationTime', ':maxAge'),
+                    $query->expr()->orX(
+                        $query->expr()->gte('n.endDate', ':now'),
+                        $query->expr()->isNull('n.endDate')
+                    )
+                )
+            )
+            ->setParameter('now', new \DateTime())
+            ->setParameter('maxAge', $maxAge)
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)
             ->getQuery();

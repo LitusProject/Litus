@@ -31,7 +31,7 @@
 
             {% if error is not null %}
                 <div class="flashmessage alert alert-danger fade in">
-                    {% autoescape false %}{{ translate(error) }}{% endautoescape %}
+                    {% autoescape false %}{{ translate(error.message) }}{% endautoescape %}
                 </div>
             {% else %}
                 <div class="row">

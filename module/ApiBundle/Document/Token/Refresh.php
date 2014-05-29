@@ -91,4 +91,14 @@ class Refresh extends \ApiBundle\Document\Token
 
         return $this;
     }
+
+    /**
+     * Whether this refresh token has already been exchanged.
+     *
+     * @return boolean
+     */
+    public function hasBeenExchanged()
+    {
+        return null !== $this->exchangeTime;
+    }
 }

@@ -78,43 +78,51 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal hide fade" id="moreInformation">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Reservation
-        </div>
-        <div class="modal-body">
-            <h1><span class="reason"/> by <span class="creator"/></h1>
-            <table class="full-width">
-                <tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
-                <tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
-                <tr><td><b>Driver</b></td><td><span class="moreinfoDriver"/></td></tr>
-                <tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
-                <tr><td><b>Start</b></td><td><span class="start"/></td></tr>
-                <tr><td><b>End</b></td><td><span class="end"/></td></tr>
-            </table>
-            <div class="footer">
-                <button class="cancel" data-dismiss="modal">Close</button>
+    <div class="modal fade" id="moreInformation" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Reservation
+                </div>
+                <div class="modal-body">
+                    <h1><span class="reason"/> by <span class="creator"/></h1>
+                    <table class="full-width">
+                        <tr><td width="90px"><b>Load</b></td><td><span class="load"/></td></tr>
+                        <tr><td><b>Additional Info</b></td><td><span class="additional"/></td></tr>
+                        <tr><td><b>Driver</b></td><td><span class="moreinfoDriver"/></td></tr>
+                        <tr><td><b>Passenger</b></td><td><span class="passenger"/></td></tr>
+                        <tr><td><b>Start</b></td><td><span class="start"/></td></tr>
+                        <tr><td><b>End</b></td><td><span class="end"/></td></tr>
+                    </table>
+                    <div class="footer">
+                        <button class="cancel" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal hide fade" id="removeReservation">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delete Reservation
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to delete the following reservation: <b class="reservationReason"></b>!
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="delete">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+    <div class="modal fade" id="removeReservation" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Reservation
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following reservation: <b class="reservationReason"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

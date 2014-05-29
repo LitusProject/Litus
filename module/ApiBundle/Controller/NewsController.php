@@ -18,7 +18,9 @@
 
 namespace ApiBundle\Controller;
 
-use Markdown_Parser,
+use DateInterval,
+    DateTime,
+    Markdown_Parser,
     Zend\View\Model\ViewModel;
 
 /**
@@ -28,13 +30,22 @@ use Markdown_Parser,
  */
 class NewsController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getLastAction()
+    public function allAction()
     {
         $this->initJson();
 
+        $maxAge = new DateTime();
+        $maxAge->sub(
+            new DateInterval(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('news.max_age_site')
+            )
+        );
+
         $items = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
-            ->findAllSite();
+            ->findApi($maxAge);
 
         $result = array();
         foreach ($items as $item) {

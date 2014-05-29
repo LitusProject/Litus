@@ -66,12 +66,13 @@ header {
 
         .site-logo {
             float: left;
-            margin: 7px 20px 0 20px;
+            margin: 17px 20px 0 20px;
             height: 41px;
         }
 
         .site-name {
             margin: 0px;
+            padding-top: 20px;
         }
     }
 
@@ -120,54 +121,30 @@ header {
     }
 
     .item {
-        min-height: 75px;
-
-        &.date-right {
-            margin-right: 20px;
-        }
-
-        &.date-left {
-            margin-left: 20px;
-        }
-
-        .time {
-            font-size: 90%;
-        }
-
-        .calendarItem {
-            text-indent: -10px;
-            padding-left: 25px;
-            margin-bottom: 5px;
-        }
+        min-height: 60px;
 
         .date {
-            position: absolute;
+            float: left;
+            border: 1px solid @grayDark;
+            width: 50px;
+            border-radius: 2px;
+            text-align: center;
 
-            text-transform: uppercase;
-            width: auto !important;
-            display: inline-block;
-
-            margin: 0;
-            text-rendering: optimizelegibility;
-
-            &.left {
-                width: 100px !important;
-                text-align: right;
-                margin-left: -120px !important;
-
-                .rotate(-90deg);
-                .rotate-origin(100% 0%);
+            .month {
+                background: @grayDark;
+                color: @white;
             }
 
-            &.right {
-                width: 100px !important;
-                margin-top: 40px;
-                margin-right: -80px !important;
-                right: 0;
-
-                .rotate(90deg);
-                .rotate-origin(0% 0%);
+            .day {
+                height: 30px;
+                line-height: 30px;
+                font-size: 16px;
+                font-weight: bold;
             }
+        }
+
+        .dayItem {
+            margin-left: 55px;
         }
     }
 
@@ -263,7 +240,7 @@ footer {
 }
 
 .alert {
-    margin-bottom: 0px;
+    margin-bottom: 3px;
 
     .title {
         font-weight: bold;

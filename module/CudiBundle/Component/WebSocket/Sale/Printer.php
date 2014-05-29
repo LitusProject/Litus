@@ -158,14 +158,14 @@ class Printer
         );
 
         $socket = socket_create(AF_INET, SOCK_STREAM, getprotobyname('tcp'));
-        socket_connect(
+        @socket_connect(
             $socket,
             $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_address'),
             $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.print_socket_port')
         );
-        socket_write($socket, $data);
+        @socket_write($socket, $data);
         socket_close($socket);
     }
 }

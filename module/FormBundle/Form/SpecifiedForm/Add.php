@@ -128,10 +128,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        $field = new Submit('save_as_draft');
-        $field->setValue('Save as Draft')
-            ->setAttribute('class', 'btn btn-info');
-        $this->add($field);
+        if ($form->isEditableByUser()) {
+            $field = new Submit('save_as_draft');
+            $field->setValue('Save as Draft')
+                ->setAttribute('class', 'btn btn-info');
+            $this->add($field);
+        }
 
         $field = new Submit('submit');
         $field->setValue($form->getSubmitText($language))
@@ -211,7 +213,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $factory->createInput(
                         array(
                             'name'     => 'field-' . $fieldSpecification->getId(),
-                            'required' => $fieldSpecification->isRequired(),
+                            'required' => false,
                             'validators' => array(
                                 array(
                                     'name' => 'filefilessize',

@@ -23,6 +23,7 @@ return array(
     'cudi.catalog-update' => 'CudiBundle\Command\CatalogUpdate',
     'cudi.test-printer'   => 'CudiBundle\Command\TestPrinter',
     'cudi.recalculate-stock' => 'CudiBundle\Command\RecalculateStock',
+    'cudi.disable-bookings-out-of-stock' => 'CudiBundle\Command\DisableBookingsOutOfStock',
 
     'cudi.socket.sale' => 'CudiBundle\Command\Socket\SaleQueue',
 );

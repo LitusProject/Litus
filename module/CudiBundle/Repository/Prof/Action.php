@@ -196,4 +196,23 @@ class Action extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByEntityAndActionQuery($entity, $action)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a')
+            ->from('CudiBundle\Entity\Prof\Action', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('a.entity', ':entity'),
+                    $query->expr()->eq('a.action', ':action')
+                )
+            )
+            ->setParameter('entity', $entity)
+            ->setParameter('action', $action)
+            ->orderBy('a.timestamp', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

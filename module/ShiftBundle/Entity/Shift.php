@@ -623,7 +623,7 @@ class Shift
      * @param  \CommonBundle\Entity\User\Person $person        The person that should be checked
      * @return boolean
      */
-    public function canSignout(EntityManager $entityManager, Person $person)
+    public function canSignOut(EntityManager $entityManager, Person $person)
     {
         $now = new DateTime();
 

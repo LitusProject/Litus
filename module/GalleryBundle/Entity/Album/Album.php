@@ -77,6 +77,13 @@ class Album
     private $name;
 
     /**
+     * @var boolean Flag whether the photo's will have a watermark or not
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $watermark;
+
+    /**
      * @var array The photos of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
@@ -87,13 +94,15 @@ class Album
     /**
      * @param \CommonBundle\Entity\User\Person $person
      * @param \DateTime                        $date
+     * @param boolean                          $watermark
      */
-    public function __construct(Person $person, DateTime $date)
+    public function __construct(Person $person, DateTime $date, $watermark = true)
     {
         $this->createTime = new DateTime();
         $this->createPerson = $person;
         $this->dateActivity = $date;
         $this->name = $date->format('d_m_Y_H_i');
+        $this->watermark = $watermark;
     }
 
     /**
@@ -185,6 +194,26 @@ class Album
     }
 
     /**
+     * @param boolean $watermark
+     *
+     * @return \GalleryBundle\Entity\Album\Album
+     */
+    public function setWatermark($watermark)
+    {
+        $this->watermark = $watermark;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasWatermark()
+    {
+        return $this->watermark;
+    }
+
+    /**
      * @return array
      */
     public function getPhotos()
@@ -199,7 +228,7 @@ class Album
     {
         do {
             $num = rand(0, count($this->photos) - 1);
-        } while ($this->photos[$num]->isCensored());
+        } while (isset($this->photos[$num]) && $this->photos[$num]->isCensored());
 
         return $this->photos[$num];
     }

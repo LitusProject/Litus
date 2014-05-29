@@ -1,0 +1,1 @@
+fop -xml test.xml -xsl contract.xsl -pdf test.pdf

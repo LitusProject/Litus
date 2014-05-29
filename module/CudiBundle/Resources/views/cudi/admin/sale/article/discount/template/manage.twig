@@ -54,22 +54,26 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal hide fade" id="removeTemplate">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delete Discount Template
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to delete the following discount template: <b class="templateTitle"></b> !
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="delete">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+    <div class="modal fade" id="removeTemplate" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Discount Template
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following discount template: <b class="templateTitle"></b> !
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

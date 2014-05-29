@@ -18,12 +18,15 @@
 
 return array(
     'controllers'  => array(
-        'secretary_install' => array(
+        'secretary_admin_registration' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
         ),
-        'secretary_admin_registration' => array(
+        'secretary_admin_export' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

@@ -61,7 +61,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('restriction_type');
         $field->setLabel('Type')
             ->setRequired()
-            ->setAttribute('options', Restriction::$POSSIBLE_TYPES);
+            ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('data-help', 'Limit the students that can buy articles during this sale session:
+                <ul>
+                    <li><b>Name:</b> restrict by name</li>
+                    <li><b>Year:</b> restrict study year</li>
+                </ul>');
         $this->add($field);
 
         $field = new Text('start_value');

@@ -1,0 +1,39 @@
+{% extends 'corporate/partials/internship.twig' %}
+
+{% block content %}
+    <h1>{{ translate('Internship') }}</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+                {% for internship in paginator %}
+                    <tr>
+                        <td width="120">
+                            <a href="{{ url('br_corporate_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                {% if internship.getCompany().getLogo() is not empty %}
+                                    <img width="120" src="/{{ logoPath }}/{{ internship.getCompany().getLogo() }}" alt="{{ internship.getCompany().getName() }}">
+                                {% else %}
+                                    <center class="company-name">{{ internship.getCompany().getName() }}</center>
+                                {% endif %}
+                            </a>
+                        </td>
+
+                        <td>
+                            <strong>{{ internship.getCompany().getName() }} - {{ internship.getName() }}</strong>
+                            <br/>
+                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                            <br/>
+                            {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <div class="flashmessage alert alert-warning fade in">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('No items found') }}
+                    </div>
+                {% endfor %}
+            </table>
+
+            {% include 'site/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}

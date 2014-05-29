@@ -102,6 +102,26 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $price = $article->getSellPrice();
                 }
 
+                $booking = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneSoldByArticleAndPerson($article, $person);
+
+                if ($booking->getNumber() > 1) {
+                    $remainder = new Booking(
+                        $this->getEntityManager(),
+                        $booking->getPerson(),
+                        $booking->getArticle(),
+                        'returned',
+                        1
+                    );
+                    $this->getEntityManager()->persist($remainder);
+
+                    $booking->setNumber($booking->getNumber() - 1)
+                        ->setStatus('sold', $this->getEntityManager());
+                } else {
+                    $booking->setStatus('returned', $this->getEntityManager());
+                }
+
                 $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
 
                 $article->setStockValue($article->getStockValue() + 1);

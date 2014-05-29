@@ -28,10 +28,11 @@ use DateInterval,
  * CalendarController
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Marïen <kristof.marien@litus.cc>
  */
 class CalendarController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getActiveEventsAction()
+    public function activeEventsAction()
     {
         $this->initJson();
 
@@ -59,7 +60,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function getPosterAction()
+    public function posterAction()
     {
         if (null === ($poster = $this->_getPoster()))
             return $this->error(404, 'No poster key was provided with the request');

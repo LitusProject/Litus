@@ -79,16 +79,17 @@ class Edit extends Add
     private function _populateFromForm(Form $form)
     {
         $data = array(
-            'start_date'       => $form->getStartDate()->format('d/m/Y H:i'),
-            'end_date'         => $form->getEndDate()->format('d/m/Y H:i'),
-            'active'           => $form->isActive(),
-            'max'              => $form->getMax(),
-            'multiple'         => $form->isMultiple(),
-            'editable_by_user' => $form->isEditableByUser(),
-            'non_members'      => $form->isNonMember(),
-            'mail'             => $form->hasMail(),
-            'mail_from'        => $form->hasMail() ? $form->getMail()->getFrom() : '',
-            'mail_bcc'         => $form->hasMail() ? $form->getMail()->getBcc() : '',
+            'start_date'            => $form->getStartDate()->format('d/m/Y H:i'),
+            'end_date'              => $form->getEndDate()->format('d/m/Y H:i'),
+            'active'                => $form->isActive(),
+            'max'                   => $form->getMax(),
+            'multiple'              => $form->isMultiple(),
+            'editable_by_user'      => $form->isEditableByUser(),
+            'send_guest_login_mail' => $form->sendGuestLoginMail(),
+            'non_members'           => $form->isNonMember(),
+            'mail'                  => $form->hasMail(),
+            'mail_from'             => $form->hasMail() ? $form->getMail()->getFrom() : '',
+            'mail_bcc'              => $form->hasMail() ? $form->getMail()->getBcc() : '',
         );
 
         foreach ($this->getLanguages() as $language) {
@@ -96,8 +97,12 @@ class Edit extends Add
             $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
             $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
             $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
-            $data['mail_subject_' . $language->getAbbrev()] = $form->hasMail() ? $form->getMail()->getSubject($language, false) : '';
-            $data['mail_body_' . $language->getAbbrev()] = $form->hasMail() ? $form->getMail()->getContent($language, false) : '';
+            if ($form->hasMail()) {
+                $data['mail_subject_' . $language->getAbbrev()] = $form->getMail()->getSubject($language, false);
+
+                if ($form->getMail()->getContent($language, false) != '')
+                    $data['mail_body_' . $language->getAbbrev()] = $form->getMail()->getContent($language, false);
+            }
         }
 
         if ($form instanceOf Doodle) {
@@ -107,9 +112,12 @@ class Edit extends Add
             if ($form->hasReminderMail()) {
                 $data['reminder_mail_from'] = $form->getReminderMail()->getFrom();
                 $data['reminder_mail_bcc'] = $form->getReminderMail()->getBcc();
+
                 foreach ($this->getLanguages() as $language) {
                     $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
-                    $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
+
+                    if ($form->getReminderMail()->getContent($language, false) != '')
+                        $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
                 }
             }
         }

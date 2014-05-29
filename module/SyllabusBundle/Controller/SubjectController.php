@@ -31,9 +31,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     public function typeaheadAction()
     {
         if (!($academicYear = $this->_getAcademicYear())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
+            return $this->notFoundAction();
         }
 
         $subjects = $this->getEntityManager()

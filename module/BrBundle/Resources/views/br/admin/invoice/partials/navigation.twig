@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="invoice">Invoices</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('br_admin_invoice', 'manage') %}
+                <li><a {% if 'view' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

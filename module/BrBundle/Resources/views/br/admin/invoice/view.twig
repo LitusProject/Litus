@@ -1,0 +1,128 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/invoice/partials/navigation.twig' %}
+
+    <div class="flashmessage success_message full_width invoice_paid_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The invoice was successfully marked as paid!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width invoice_paid_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to mark the invoice as paid.</p>
+        </div>
+    </div>
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1><b>{{invoice.getOrder().getContract().getTitle()}}</b></h1>
+        <h2><b>Products</b></h2>
+        <table class="full_width manage">
+            <tr>
+                <th>Discription</th>
+                <th width="90px">Price</th>
+            </tr>
+
+            {% for entry in invoice.getEntries() %}
+                <tr class="item item-{{ entry.getId() }}">
+                    <td>{{ entry.getInvoiceText() }}</td>
+                    <td>{{ entry.getOrderEntry().getProduct().getPrice() }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+
+        {% if invoice.getOrder().getContract().hasDiscount() %}
+        <h2><b>Discount</b></h2>
+        {% if invoice.getOrder().getContract().getDiscountContext == "" %}
+            <h3><b>!! no context has been set for the discount (this is not required, but advised) !!</b></h3>
+        {% endif %}
+        <table class="full_width manage">
+            <tr>
+                <th>Discription</th>
+                <th width="90px">Discount</th>
+            </tr>
+            <tr class="item item-{{ entry.getId() }}">
+                <td>{{ invoice.getOrder().getContract().getDiscountContext() }}</td>
+                <td>{{ invoice.getOrder().getContract().getDiscount() }}</td>
+            </tr>
+        </table>
+        {% endif %}
+
+
+        {% if not invoice.isPaid() %}
+            <div class="unpaid">
+                <i><b>Warning: </b> when an invoice is paid, the invoice can no longer be edited!</i><br/>
+                <input type="submit" id="pay" name="pay" class="invoice_pay" value="Mark as Paid"/>
+            </div>
+        {% endif %}
+        <form action="{{ url('br_admin_invoice', {"action" : "download", "id" : invoice.getId()})}}"><input type="submit" class="invoice" value="Download"/></form>
+
+    </div>
+
+    {% if not invoice.isPaid() %}
+    <div class="modal fade" id="payInvoice"tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Pay Invoice
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Please select the date when the invoice has been paid: <input type="text" id="paydate" class='input-medium start' placeholder='dd/mm/yyyy' data-datepicker="1"></input>
+                    </p>
+                    <div class="footer">
+                        <input type="button" class="pay" value="Pay">
+                        <input type="button" class="cancel" data-dismiss="modal" value="Cancel">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+    {% if not invoice.isPaid() %}
+
+    $(document).ready(function() {
+        $('#pay').click(openModal);
+    });
+
+    function openModal(e) {
+        var $this = $(this);
+
+        e.preventDefault();
+        var payInvoice = $('#payInvoice');
+        payInvoice.find('.pay').unbind('click').click(function () {
+            $.post('{{ url('br_admin_invoice', {"action" : "pay", "id" : invoice.getId()})}}date/' + $('#paydate').val(), function(data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.invoice_paid_success').removeClass('hide');
+                    $('.unpaid').remove();
+                    payInvoice.modal('hide');
+                } else {
+                    errorPay();
+                }
+            }, 'json').error(errorPay);
+        });
+        payInvoice.modal();
+    }
+
+    function errorPay() {
+        $('.flashmessage').addClass('hide');
+        $('.invoice_paid_error').removeClass('hide');
+        $('#payInvoice').modal('hide');
+    }
+
+    {% endif %}
+
+    </script>
+{% endblock %}

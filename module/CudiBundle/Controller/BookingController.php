@@ -41,20 +41,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
-        if (null === $authenticatedPerson) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
-        }
+        if (null === $authenticatedPerson)
+            return $this->notFoundAction();
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
         $total = 0;
-        foreach ($bookings as $booking) {
+        foreach ($bookings as $booking)
             $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
-        }
 
         return new ViewModel(
             array(
@@ -68,11 +64,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking())) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
-        }
+        if (!($booking = $this->_getBooking()))
+            return $this->notFoundAction();
 
         if (!($booking->getArticle()->isUnbookable())) {
             $this->flashMessenger()->addMessage(
@@ -119,11 +112,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
-        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
-            $this->getResponse()->setStatusCode(404);
-
-            return new ViewModel();
-        }
+        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic))
+            return $this->notFoundAction();
 
         $currentYear = $this->getCurrentAcademicYear();
 
@@ -321,7 +311,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         new FlashMessage(
                             FlashMessage::SUCCESS,
                             'Success',
-                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.'
+                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.'
                         )
                     );
                 }

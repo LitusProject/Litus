@@ -18,10 +18,17 @@
 
 return array(
     'controllers'  => array(
-        'br_install' => array(
+        'br_admin_collaborator' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_css',
+            '@common_remote_typeahead',
+            '@gollum_css',
+            '@gollum_js',
         ),
         'br_admin_company' => array(
             '@common_jquery',
@@ -95,7 +102,43 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'br_admin_section' => array(
+        'br_admin_invoice' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
+        ),
+        'br_admin_order' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'br_admin_overview' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'br_admin_product' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
+        ),
+        'br_admin_request' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
@@ -111,7 +154,25 @@ return array(
             '@bootstrap_js_alert',
             '@bootstrap_js_collapse',
         ),
+        'br_corporate_internship' => array(
+            '@bootstrap_css',
+            '@corporate_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_collapse',
+        ),
         'br_corporate_cv' => array(
+            '@bootstrap_css',
+            '@corporate_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_collapse',
+        ),
+        'br_corporate_vacancy' => array(
             '@bootstrap_css',
             '@corporate_css',
             '@common_jquery',

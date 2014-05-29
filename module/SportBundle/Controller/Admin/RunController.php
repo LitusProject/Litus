@@ -20,6 +20,7 @@ namespace SportBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
     DateTime,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
@@ -217,12 +218,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        $baseDirectory = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-        system('kill $(ps aux | grep -i "php public/index.php socket:sport:run-queue --run" | grep -v grep | awk \'{print $2}\')');
-
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => WebSocketUtil::kill($this->getEntityManager(), 'sport:run-queue'),
             )
         );
     }
