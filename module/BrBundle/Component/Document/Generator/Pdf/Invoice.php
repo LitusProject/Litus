@@ -127,21 +127,18 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
-        // TODO: reenable discounts
-        $discount = 0;
-        // $discount = $this->_invoice->getDiscount();
+        $discount = $this->_invoice->getOrder()->getContract()->getDiscount();
         if ($discount != 0) {
             $entries[] = new XmlObject('entry', null,
                 array(
-                    new XmlObject('description', null, '-' . $discount . '%'),
-                    new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format(( -($discount * $totalExclusive) / 100 ), 2))),
+                    new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
+                    new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
                     new XmlObject('vat_type', null, ' ')
                 )
             );
         }
 
-        $totalExclusive -= ($discount * $totalExclusive) / 100;
-        $totalVat -= ($discount * $totalVat) / 100;
+        $totalExclusive = $totalExclusive - $discount;
 
         $total = $totalExclusive + $totalVat;
 
