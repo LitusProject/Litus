@@ -22,6 +22,8 @@ use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Document\Token\Access as AccessToken,
     ApiBundle\Document\Token\Refresh as RefreshToken,
     CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     DateTime,
@@ -43,6 +45,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 )
             );
         }
+
+        $this->getSessionStorage()->key = $this->getRequest()->getQuery('client_id');
 
         $form = new LoginForm();
 
@@ -75,6 +79,8 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     $this->redirect()->toUrl(
                         $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode()
                     );
+
+                    return new ViewModel();
                 } else {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
@@ -97,9 +103,75 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
+                'shibbolethUrl' => $this->_getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
             )
         );
+    }
+
+    public function shibbolethAction()
+    {
+        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+            $authentication = new Authentication(
+                new ShibbolethAdapter(
+                    $this->getEntityManager(),
+                    'CommonBundle\Entity\User\Person\Academic',
+                    'universityIdentification'
+                ),
+                $this->getServiceLocator()->get('authentication_doctrineservice')
+            );
+
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
+                ->findLastByUniversityIdentification($this->getParam('identification'));
+
+            if (null !== $code) {
+                if ($code->validate($this->getParam('hash'))) {
+                    $this->getEntityManager()->remove($code);
+                    $this->getEntityManager()->flush();
+
+                    $this->getAuthentication()->forget();
+
+                    $authentication->authenticate(
+                        $this->getParam('identification'), '', true, true
+                    );
+
+                    if ($this->getAuthentication()->isAuthenticated()) {
+                        $key = $this->getEntityManager()
+                            ->getRepository('ApiBundle\Entity\Key')
+                            ->findOneActiveByCode($this->getSessionStorage()->key);
+
+                        $authorizationCode = new AuthorizationCode(
+                            $this->getAuthentication()->getPersonObject(),
+                            $key
+                        );
+
+                        $this->getDocumentManager()->persist($authorizationCode);
+                        $this->getDocumentManager()->flush();
+
+                        $this->redirect()->toUrl(
+                            $code->getRedirect() . '?code=' . $authorizationCode->getCode()
+                        );
+
+                        return new ViewModel();
+                    }
+                }
+            }
+        }
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'Something went wrong while logging you in. Please try again later.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'api_oauth'
+        );
+
+        return new ViewModel();
     }
 
     public function tokenAction()
@@ -193,7 +265,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             if ($refreshToken->hasExpired())
                 return $this->error(401, 'This refresh token has expired');
 
-            if ($refreshToken->hasBeenExhanged()) {
+            if ($refreshToken->hasBeenExchanged()) {
                 $tokens = array_merge(
                     $this->getDocumentManager()
                         ->getRepository('ApiBundle\Document\Token\Access')
@@ -247,5 +319,35 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
         }
 
         return $this->error(400, 'The grant type is invalid');
+    }
+
+    /**
+     * Create the full Shibboleth URL.
+     *
+     * @return string
+     */
+    protected function _getShibbolethUrl($redirect = '')
+    {
+        $shibbolethUrl = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shibboleth_url');
+
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch (\ErrorException $e) {}
+
+        $shibbolethUrl .= '%3Fsource=api';
+
+        if ('' != $redirect)
+            $shibbolethUrl .= '%26redirect=' . urlencode($redirect);
+
+        return $shibbolethUrl;
     }
 }

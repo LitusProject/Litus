@@ -43,7 +43,7 @@ return array(
     'Twitter' => 'Twitter',
     'News' => 'Nieuws',
     'No news items were posted recently.' => 'Er zijn geen recente nieuws items.',
-    'No events were created yet.' => 'Er zijn nog geen evenementen aangemaakt.',
+    'No upcoming events are available.' => 'Er zijn geen aankomende evenementen beschikbaar.',
     'Read More' => 'Lees Meer',
 
     'Username' => 'Gebruikersnaam',

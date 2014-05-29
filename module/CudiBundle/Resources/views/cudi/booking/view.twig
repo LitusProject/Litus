@@ -44,7 +44,7 @@
                     <td>{{ booking.getNumber() }}</td>
                     <td class="hidden-xs">{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</td>
                     <td class="hidden-xs">{{ translate(booking.getStatus()) }}</td>
-                    <td class="visible-xs">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
+                    <td class="visible-xs" style="text-align: center;">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
                     <td class="hidden-xs actions">
                         {% if booking.getArticle().isUnbookable() %}
                             <a href="#" class="btn btn-default btn-sm cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">

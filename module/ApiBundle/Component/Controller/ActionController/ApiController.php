@@ -127,7 +127,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        $this->initJson();
+        if (!$this->_isAuthorizeAction())
+            $this->initJson();
+
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
@@ -239,6 +241,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Checks if the current action is the OAuth authorize action.
+     *
+     * @return boolean
+     */
+    private function _isAuthorizeAction()
+    {
+        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
+    }
+
+    /**
+     * Checks if the current action is an OAuth action.
+     *
+     * @return boolean
+     */
+    private function _isOAuthAction()
+    {
+        return 'api_oauth' == $this->getParam('controller');
+    }
+
+    /**
      * Returns the ACL object.
      *
      * @return \CommonBundle\Component\Acl\Acl
@@ -330,6 +352,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
+        if ($this->_isOAuthAction())
+            $field = 'client_id';
+
         $code = $this->getRequest()->getQuery($field);
         if (null === $code && $this->getRequest()->isPost())
             $code = $this->getRequest()->getPost($field);
@@ -415,6 +440,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Retrieve the common session storage from the DI container.
+     *
+     * @return \Zend\Session\Container
+     */
+    public function getSessionStorage()
+    {
+        return $this->getServiceLocator()->get('common_sessionstorage');
+    }
+
+    /**
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
@@ -434,6 +469,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     {
         if ('development' == getenv('APPLICATION_ENV'))
             return true;
+
+        if ($this->_isAuthorizeAction()) {
+            $this->_hasAccessDriver = new HasAccessDriver(
+                $this->_getAcl(),
+                false,
+                null
+            );
+
+            return true;
+        }
 
         $key = $this->getKey();
         if (null === $key)
@@ -464,6 +509,16 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     {
         if ('development' == getenv('APPLICATION_ENV'))
             return true;
+
+        if ($this->_isAuthorizeAction()) {
+            $this->_hasAccessDriver = new HasAccessDriver(
+                $this->_getAcl(),
+                false,
+                null
+            );
+
+            return true;
+        }
 
         $accessToken = $this->getAccessToken();
         if (null === $accessToken)
