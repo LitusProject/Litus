@@ -84,6 +84,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
                 $newVersionNb = 0;
 
+                $invoice->setVATContext($formData['VATContext']);
+
                 foreach ($invoice->getEntries() as $entry) {
                     if ($entry->getVersion() == $invoiceVersion) {
                         $newVersionNb = $entry->getVersion() + 1;
@@ -95,6 +97,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                     }
                 }
 
+                $this->getEntityManager()->persist($invoice);
                 $invoice->setVersion($newVersionNb);
 
                 $this->getEntityManager()->flush();

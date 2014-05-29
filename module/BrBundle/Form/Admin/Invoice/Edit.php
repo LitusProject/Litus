@@ -67,5 +67,11 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             $this->add($field);
 
         }
+
+        $field = new Textarea('VATContext');
+        $field->setLabel("VAT Context")
+            ->setValue($invoice->getVATContext())
+            ->setRequired(false);
+        $this->add($field);
     }
 }

@@ -81,7 +81,10 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation');
+        if($this->_invoice->getVATContext() == "")
+            $vatTypeExplanation = "";
+        else
+            $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();
         $subEntries = $configs->getConfigValue('br.invoice_below_entries');
         $footer = $configs->getConfigValue('br.invoice_footer');
 
@@ -129,13 +132,22 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $discount = $this->_invoice->getOrder()->getContract()->getDiscount();
         if ($discount != 0) {
-            $entries[] = new XmlObject('entry', null,
+            if($this->_invoice->getOrder()->getContract()->getDiscountContext() == "")
+                $entries[] = new XmlObject('entry', null,
                 array(
-                    new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
+                    new XmlObject('description', null,"Korting"),//TODO need translation later
                     new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
                     new XmlObject('vat_type', null, ' ')
                 )
             );
+            else
+                $entries[] = new XmlObject('entry', null,
+                    array(
+                        new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
+                        new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
+                        new XmlObject('vat_type', null, ' ')
+                    )
+                );
         }
 
         $totalExclusive = $totalExclusive - $discount;

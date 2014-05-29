@@ -88,6 +88,13 @@ class Invoice
     private $version;
 
     /**
+     * @var String that provides any possible context for the VAT
+     *
+     * @ORM\Column(type="string")
+     */
+    private $VATcontext;
+
+    /**
      * Creates a new invoice
      *
      * @param \BrBundle\Entity\Product\Order $order The order to create the invoice for.
@@ -97,11 +104,24 @@ class Invoice
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
+        $this->setVATContext();
     }
 
     public function getInvoiceNumber()
     {
         return $this->creationTime->format('Y').str_pad($this->order->getContract()->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
+    }
+
+    public function setVATContext($text = "")
+    {
+        $this->VATcontext = $text;
+
+        return $this;
+    }
+
+    public function getVATContext()
+    {
+        return $this->VATcontext;
     }
 
     /**
