@@ -99,6 +99,11 @@ class Collaborator
         $this->active = false;
     }
 
+    public function rehire()
+    {
+        $this->active = true;
+    }
+
     public function getPerson()
     {
         return $this->person;

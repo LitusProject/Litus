@@ -37,12 +37,18 @@
             <tr>
                 <th>Person</th>
                 <th width="70px">Number</th>
+                <th width="70px">Actions</th>
             </tr>
             {% for collaborator in paginator %}
                 {% if collaborator.isActive() == false %}
                 <tr class="item item-{{ collaborator.getId() }}">
                     <td>{{collaborator.getPerson().getFullName()}}</td>
                     <td>{{collaborator.getNumber() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_collaborator', 'rehire') %}
+                                <a href="{{ url('br_admin_collaborator', {"action": "rehire", "id": collaborator.getId()}) }}" class="rehire">Rehire</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endif %}
             {% endfor %}

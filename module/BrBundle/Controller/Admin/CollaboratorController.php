@@ -166,6 +166,34 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel();
     }
 
+    public function rehireAction()
+    {
+        if (!($collaborator = $this->_getCollaborator()))
+            return new ViewModel();
+
+        $collaborator->rehire();
+
+        $this->getEntityManager()->persist($collaborator);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The collaborator succesfully rehired!'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_admin_collaborator',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
     private function _getCollaborator()
     {
         if (null === $this->getParam('id')) {
