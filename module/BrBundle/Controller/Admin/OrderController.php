@@ -175,6 +175,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
+                $contract->setDiscountContext($order->getContract()->getDiscountContext());
+
                 $counter = 0;
 
                 foreach ($entries as $entry) {

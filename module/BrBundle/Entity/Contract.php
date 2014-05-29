@@ -183,6 +183,11 @@ class Contract
         $this->discountContext = $text;
     }
 
+    public function hasDiscount()
+    {
+        return $this->discount > 0;
+    }
+
     /**
      * @return int
      */

@@ -196,6 +196,11 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         $contract->setSigned();
 
+        $contract->setInvoiceNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextInvoiceNb());
+
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
