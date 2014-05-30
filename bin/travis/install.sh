@@ -26,3 +26,6 @@ wget -q -O- http://npmjs.org/install.sh | sudo sh
 
 # install lessc
 sudo npm install -g less
+
+# try a possible fix...
+(cd vendor/kriswallsmith/assetic && wget -q -O- https://github.com/alex-pex/assetic/commit/380536cf8f7571a4301b4c42a3f6f8ce4636c48d.patch | git apply)
