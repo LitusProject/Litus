@@ -30,7 +30,16 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        return new ViewModel();
+        $vacancyRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\VacancyRequest')
+            ->findNewRequests();
+
+        //TODO add internships
+        return new ViewModel(
+            array(
+                'vacancyRequests' => $vacancyRequests,
+            )
+        );
     }
 
     public function approveAction()

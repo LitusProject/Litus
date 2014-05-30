@@ -135,6 +135,13 @@ class Job
     private $sector;
 
     /**
+     * @var boolean If this job has been approved by our BR team
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
      * @param string                   $name        The job's name
      * @param string                   $description The job's description
      * @param string                   $benefits    The job's benefits
@@ -158,6 +165,23 @@ class Job
         $this->type = $type;
         $this->company = $company;
         $this->dateUpdated = new DateTime();
+    }
+
+    public function approve()
+    {
+        $this->approved = true;
+    }
+
+    public function pending()
+    {
+        $this->approved = false;
+    }
+
+    public function canShow()
+    {
+        if($this->approved === NULL)
+            return true;
+        return $this->approved;
     }
 
     /**

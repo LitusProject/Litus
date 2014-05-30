@@ -19,7 +19,11 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
+    BrBundle\Entity\Company\Request\VacancyRequest,
+    BrBundle\Form\Corporate\Vacancy\Add as AddForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -58,8 +62,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function viewAction()
     {
-        print_r("called");
-
         $vacancy = $this->_getVacancy();
 
         $logoPath = $this->getEntityManager()
@@ -70,6 +72,68 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             array(
                 'vacancy' => $vacancy,
                 'logoPath' => $logoPath,
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        $form = new AddForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $contact = $this->getAuthentication()->getPersonObject();
+
+                $job = new Job(
+                    $formData['job_name'],
+                    $formData['description'],
+                    $formData['benefits'],
+                    $formData['profile'],
+                    $formData['contact'],
+                    $formData['city'],
+                    $contact->getCompany(),
+                    'vacancy',
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['sector']
+                );
+
+                $job->pending();
+
+                $this->getEntityManager()->persist($job);
+
+                $request = new VacancyRequest($job, 'add', $contact);
+
+                $this->getEntityManager()->persist($request);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The job has been sent to our administrators for approval.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_vacancy',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }

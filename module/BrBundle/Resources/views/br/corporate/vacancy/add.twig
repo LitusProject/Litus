@@ -1,0 +1,34 @@
+{% extends 'corporate/partials/vacancy.twig' %}
+
+{% block content %}
+    <h1>{{ translate('Vacancies') }}</h1>
+    {% do form.prepare() %}
+    {{ form().openTag(form)|raw }}
+        <div class="form-group">
+            <div class="input-group">
+            	<h4>Job Name</h4>
+                {{ translate(formElement(form.get('job_name'))) }}
+                <h4>Start Date</h4>
+                {{ translate(formElement(form.get('start_date'))) }}
+                <h4>Start Date</h4>
+                {{ translate(formElement(form.get('end_date'))) }}
+                <h4>Sector</h4>
+                {{ translate(formElement(form.get('sector'))) }}
+                <h4>Description</h4>
+                {{ translate(formElement(form.get('description'))) }}
+                <h4>benefits</h4>
+                {{ translate(formElement(form.get('benefits'))) }}
+                <h4>profile</h4>
+                {{ translate(formElement(form.get('profile'))) }}
+                <h4>contact</h4>
+                {{ translate(formElement(form.get('contact'))) }}
+                <h4>city</h4>
+                {{ translate(formElement(form.get('city'))) }}
+            </div>
+            <br>
+            <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit">{{ translate('Submit') }}</button>
+            </div>
+        </div>
+    {{ form().closeTag()|raw }}
+{% endblock %}

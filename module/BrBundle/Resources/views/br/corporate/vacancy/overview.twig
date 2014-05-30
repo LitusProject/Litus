@@ -1,11 +1,16 @@
 {% extends 'corporate/partials/vacancy.twig' %}
 
 {% block content %}
-    <h1>{{ translate('Vacancies') }}</h1>
+    {#TODO add translations#}
+    <h1>Jobs</h1>
+    <a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}">Voeg Andere Job Toe</a>
+    <br>
+    <br>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
                 {% for vacancy in paginator %}
+                    {% if not vacancy.canShow() == false %}
                     <tr>
                         <td width="120">
                             <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
@@ -24,7 +29,20 @@
                             <br/>
                             {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
+                        <td width="90">
+                        <br>
+                        <div class="col-md-2">
+                            <table>
+                                <tr>
+                                    {#TODO insert hrefs to proper fields#}
+                                    <td><button class="btn btn-default" type="submit">View</button></td>
+                                    <td><button class="btn btn-default" type="submit">Delete</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        </td>
                     </tr>
+                {% endif %}
                 {% else %}
                     <div class="flashmessage alert alert-warning fade in">
                         <a class="close" data-dismiss="alert">&times;</a>
@@ -34,10 +52,6 @@
             </table>
 
             {% include 'site/partials/paginationControl.twig' %}
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-default" type="submit">View</button>
-            <button class="btn btn-default" type="submit">Delete</button>
         </div>
     </div>
 {% endblock %}
