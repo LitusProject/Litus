@@ -87,9 +87,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     private function _getCompanyOverview()
     {
-        //TODO extremely dirty solution -> can be put in one single query normally!
-        //TODO has to be cleaned up..
-
         $companyNmbr = 0;
         $totalContracted = 0;
         $totalSigned = 0;
@@ -98,48 +95,45 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractCompany();
+
         $collection = array();
-        foreach ($ids as $id => $val) {
+        foreach ($ids as $id) {
             $result = array();
 
             $company = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findCompanyByID($val[1]);
+                ->findCompanyByID($id);
 
-            //TODO this query returns a array instead of a single element, has to be fixed.  So loop can be avoided.
+            $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findContractsByCompanyID($company);
 
-            foreach ($company as $comp) {
-                $contracts = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Contract')
-                    ->findContractsByCompanyID($comp);
+            $companyNmbr = $companyNmbr + 1;
 
-                $companyNmbr = $companyNmbr + 1;
-
-                $contracted = 0;
-                $signed = 0;
-                $paid = 0;
-                foreach ($contracts as $contract) {
-                    $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
-                    $contracted = $contracted + $value;
-                    $totalContracted = $totalContracted + $value;
-                    if ($contract->isSigned()) {
-                        $signed = $signed + $value;
-                        $totalSigned = $totalSigned + $value;
-                        if ($contract->getOrder()->getInvoice()->isPaid()) {
-                            $paid = $paid + $value;
-                            $totalPaid = $totalPaid + $value;
-                        }
+            $contracted = 0;
+            $signed = 0;
+            $paid = 0;
+            foreach ($contracts as $contract) {
+                $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
+                $contracted = $contracted + $value;
+                $totalContracted = $totalContracted + $value;
+                if ($contract->isSigned()) {
+                    $signed = $signed + $value;
+                    $totalSigned = $totalSigned + $value;
+                    if ($contract->getOrder()->getInvoice()->isPaid()) {
+                        $paid = $paid + $value;
+                        $totalPaid = $totalPaid + $value;
                     }
                 }
-
-                $result['company'] = $comp;
-                $result['amount'] = sizeof($contracts);
-                $result['contract'] = $contracted;
-                $result['signed'] = $signed;
-                $result['paid'] = $paid;
-
-                array_push($collection, $result);
             }
+
+            $result['company'] = $company;
+            $result['amount'] = sizeof($contracts);
+            $result['contract'] = $contracted;
+            $result['signed'] = $signed;
+            $result['paid'] = $paid;
+
+            array_push($collection, $result);
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
 
@@ -148,9 +142,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     private function _getPersonOverview()
     {
-        //TODO extremely dirty solution -> can be put in one single query normally!
-        //TODO has to be cleaned up..
-
         $contractNmbr = 0;
         $totalContracted = 0;
         $totalSigned = 0;
@@ -160,46 +151,41 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthors();
         $collection = array();
-        foreach ($ids as $id => $val) {
+        foreach ($ids as $id) {
             $result = array();
 
             $person = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAuthorByID($val[1]);
+                ->findAuthorByID($id);
 
-            //TODO this query returns a array instead of a single element, has to be fixed.  So loop can be avoided.
-
-            foreach ($person as $pers) {
-                $contracts = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Contract')
-                    ->findContractsByAuthorID($pers);
-
-                $contracted = 0;
-                $signed = 0;
-                $paid = 0;
-                foreach ($contracts as $contract) {
-                    $contractNmbr = $contractNmbr + 1;
-                    $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
-                    $contracted = $contracted + $value;
-                    $totalContracted = $totalContracted + $value;
-                    if ($contract->isSigned()) {
-                        $signed = $signed + $value;
-                        $totalSigned = $totalSigned + $value;
-                        if ($contract->getOrder()->getInvoice()->isPaid()) {
-                            $paid = $paid + $value;
-                            $totalPaid = $totalPaid + $value;
-                        }
+            $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findContractsByAuthorID($person);
+            $contracted = 0;
+            $signed = 0;
+            $paid = 0;
+            foreach ($contracts as $contract) {
+                $contractNmbr = $contractNmbr + 1;
+                $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
+                $contracted = $contracted + $value;
+                $totalContracted = $totalContracted + $value;
+                if ($contract->isSigned()) {
+                    $signed = $signed + $value;
+                    $totalSigned = $totalSigned + $value;
+                    if ($contract->getOrder()->getInvoice()->isPaid()) {
+                        $paid = $paid + $value;
+                        $totalPaid = $totalPaid + $value;
                     }
                 }
-
-                $result['person'] = $pers;
-                $result['amount'] = sizeof($contracts);
-                $result['contract'] = $contracted;
-                $result['signed'] = $signed;
-                $result['paid'] = $paid;
-
-                array_push($collection, $result);
             }
+
+            $result['person'] = $person;
+            $result['amount'] = sizeof($contracts);
+            $result['contract'] = $contracted;
+            $result['signed'] = $signed;
+            $result['paid'] = $paid;
+
+            array_push($collection, $result);
         }
         $totals = array('amount' => $contractNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
 
@@ -228,12 +214,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $array = $this->getEntityManager()
+        $person = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAuthorByID($this->getParam('id'));
-        foreach ($array as $pers) {
-            $person = $pers;
-        }
 
         if (null === $person) {
             $this->flashMessenger()->addMessage(

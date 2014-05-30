@@ -83,12 +83,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $order = new Order(
                     $contact,
-                    $collaborator[0],
+                    $collaborator,
                     $tax
                 );
 
                 $contract = new Contract($order,
-                    $collaborator[0],
+                    $collaborator,
                     $company,
                     $formData['discount'],
                     $formData['title']
@@ -158,12 +158,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $updatedOrder = new Order(
                     $order->getContact(),
-                    $collaborator[0],
+                    $collaborator,
                     $order->isTaxFree()
                 );
 
                 $contract = new Contract($updatedOrder,
-                    $collaborator[0],
+                    $collaborator,
                     $oldContract->getCompany(),
                     $oldContract->getDiscount(),
                     $oldContract->getTitle()
@@ -259,12 +259,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $updatedOrder = new Order(
                     $contact,
-                    $collaborator[0],
+                    $collaborator,
                     $tax
                 );
 
                 $updatedContract = new Contract($updatedOrder,
-                    $collaborator[0],
+                    $collaborator,
                     $order->getCompany(),
                     $formData['discount'],
                     $formData['title']

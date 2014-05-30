@@ -98,7 +98,7 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function findAuthorByIDQuery($id)
+    public function findAuthorByID($id)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('p')
@@ -107,7 +107,8 @@ class Contract extends EntityRepository
                 $query->expr()->eq('p.id', ':id')
             )
             ->setParameter('id', $id)
-            ->getQuery();
+            ->getQuery()
+            ->getSingleResult();
 
         return $result;
     }
@@ -165,17 +166,18 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function findContractAuthorsQuery()
+    public function findContractAuthors()
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('distinct(c.author)')
             ->from('BrBundle\Entity\Contract', 'c')
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
         return $result;
     }
 
-    public function findContractsByCompanyIDQuery(Comp $company)
+    public function findContractsByCompanyID(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
@@ -186,12 +188,13 @@ class Contract extends EntityRepository
                 $query->expr()->eq('o.old', 'FALSE')
             )
             ->setParameter('company', $company)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
         return $result;
     }
 
-    public function findCompanyByIDQuery($id)
+    public function findCompanyByID($id)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
@@ -200,7 +203,8 @@ class Contract extends EntityRepository
                 $query->expr()->eq('c.id', ':id')
             )
             ->setParameter('id', $id)
-            ->getQuery();
+            ->getQuery()
+            ->getSingleResult();
 
         return $result;
     }
