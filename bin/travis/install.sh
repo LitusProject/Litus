@@ -27,5 +27,17 @@ wget -q -O- http://npmjs.org/install.sh | sudo sh
 # install lessc
 sudo npm install -g less
 
-# try a possible fix...
-(cd vendor/kriswallsmith/assetic && wget -q -O- https://github.com/alex-pex/assetic/commit/380536cf8f7571a4301b4c42a3f6f8ce4636c48d.patch | git apply)
+# patch assetic
+cd vendor/kriswallsmith/assetic
+wget -q -O../assetic.patch https://github.com/alex-pex/assetic/commit/380536cf8f7571a4301b4c42a3f6f8ce4636c48d.patch
+
+# Composer can install two branches
+# The patch differs for these two branches
+# Try master first
+if ! git apply ../assetic.patch; then
+    # try 1.1.x branch now
+    cat ../assetic.patch | sed -e "s/':'/PATH_SEPARATOR/" | git patch
+fi
+rm ../assetic.patch
+
+cd -
