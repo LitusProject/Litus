@@ -25,10 +25,10 @@ use BrBundle\Entity\Company\Job,
 /**
  * This is the entity for an event.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request\VacancyRequest")
- * @ORM\Table(name="br.companies_vacancy_request")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request\RequestVacancy")
+ * @ORM\Table(name="br.companies_request_vacancy")
  */
-class VacancyRequest
+class RequestVacancy extends \BrBundle\Entity\Company\Request
 {
 	/**
      * @var request's ID
@@ -38,14 +38,6 @@ class VacancyRequest
      * @ORM\GeneratedValue
      */
     private $id;
-
-     /**
-     * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
-     *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")
-     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
-     */
-    private $contact;
 
     /**
      * @static
@@ -72,35 +64,17 @@ class VacancyRequest
      */
     private $job;
 
-    /**
-     * @var \DateTime The time of creation of this node
-     *
-     * @ORM\Column(name="creation_time", type="datetime")
-     */
-    private $creationTime;
-
-    /**
-     * @var string The type of the request
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $handled;
-
 	public function __construct(Job $job, $requestType, $contact)
     {
+        parent::__construct($contact);
         $this->job = $job;
-        $this->creationTime = new DateTime();
-        $this->requestType = $requestType;
-        $this->contact = $contact;
-        $this->handled = false;
+        $this->_setRequestType($requestType);
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreationTime()
-    {
-        return $this->creationTime;
+    private function _setRequestType($type){
+        if(! in_array($type, self::$possibleRequests))
+            throw new Exception("The requested type does not exist for the vacancy requests");
+        $this->requestType = $type;
     }
 
     public function getJob()
@@ -115,11 +89,37 @@ class VacancyRequest
 
     public function approveRequest()
     {
+        switch ($this->requestType) {
+            case 'add':
+                $this->getJob()->approve();
+                break;
 
+            case 'edit':
+                # code...
+                break;
+
+            case 'delete':
+                $this->getJob()->removed();
+                break;
+
+            default:break;
+        }
     }
 
     public function rejectRequest()
     {
+        switch ($this->requestType) {
+            case 'add':
+                break;
 
+            case 'edit':
+                # code...
+                break;
+
+            case 'delete':
+                break;
+
+            default:break;
+        }
     }
 }

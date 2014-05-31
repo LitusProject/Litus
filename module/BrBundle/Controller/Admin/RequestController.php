@@ -31,7 +31,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         $vacancyRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\VacancyRequest')
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
             ->findNewRequests();
 
         //TODO add internships
@@ -42,13 +42,118 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function approveAction()
+    public function viewAction()
     {
 
     }
 
+    public function approveAction()
+    {
+        $request = $this->_getRequest();
+        $request->approveRequest();
+        $request->handled();
+
+        $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'The request was succesfully approved.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_admin_request',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
+    }
+
     public function rejectAction()
     {
+        $request = $this->_getRequest();
+        $request->rejectRequest();
+        $request->handled();
 
+        $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::ERROR,
+                'Error',
+                'The request was succesfully rejected.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_admin_request',
+            array(
+                'action' => 'manage'
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    private function _getRequest()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the request!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_request',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findRequestById($this->getParam('id'));
+
+        if (null === $request) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No request with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_request',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $request;
+    }
+
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector)
+            $sectorArray[$key] = $sector;
+
+        return $sectorArray;
     }
 }

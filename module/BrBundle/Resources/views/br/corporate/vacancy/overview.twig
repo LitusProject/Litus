@@ -36,7 +36,7 @@
                                 <tr>
                                     {#TODO insert hrefs to proper fields#}
                                     <td><button class="btn btn-default" type="submit">View</button></td>
-                                    <td><button class="btn btn-default" type="submit">Delete</button></td>
+                                    <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">Delete</a></td>
                                 </tr>
                             </table>
                         </div>

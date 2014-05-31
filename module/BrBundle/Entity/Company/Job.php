@@ -177,6 +177,11 @@ class Job
         $this->approved = false;
     }
 
+    public function removed()
+    {
+        $this->approved = false;
+    }
+
     public function canShow()
     {
         if($this->approved === NULL)

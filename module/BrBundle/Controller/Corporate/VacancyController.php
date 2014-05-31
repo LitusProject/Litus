@@ -20,7 +20,7 @@ namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request\VacancyRequest,
+    BrBundle\Entity\Company\Request\RequestVacancy,
     BrBundle\Form\Corporate\Vacancy\Add as AddForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
@@ -107,7 +107,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new VacancyRequest($job, 'add', $contact);
+                $request = new RequestVacancy($job, 'add', $contact);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
@@ -116,7 +116,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     new FlashMessage(
                         FlashMessage::SUCCESS,
                         'Success',
-                        'The job has been sent to our administrators for approval.'
+                        'The request has been sent to our administrators for approval.'
                     )
                 );
 
@@ -136,6 +136,35 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                 'form' => $form,
             )
         );
+    }
+
+    public function deleteAction()
+    {
+        $vacancy = $this->_getVacancy();
+
+        $contact = $this->getAuthentication()->getPersonObject();
+
+        $request = new RequestVacancy($vacancy, 'delete', $contact);
+
+        $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The request has been sent to our administrators for approval.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_corporate_vacancy',
+            array(
+                'action' => 'overview',
+            )
+        );
+
+        return new ViewModel();
     }
 
     private function _getVacancy()
