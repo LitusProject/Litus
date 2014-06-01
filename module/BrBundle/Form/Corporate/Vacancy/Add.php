@@ -31,6 +31,7 @@ use BrBundle\Entity\Company,
 /**
  * Add Job
  *
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form

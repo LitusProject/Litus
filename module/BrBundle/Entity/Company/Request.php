@@ -26,7 +26,7 @@ use BrBundle\Entity\Company\Job,
  * This entity stores the node item.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request")
- * @ORM\Table(name="br.company_request")
+ * @ORM\Table(name="br.companies_request")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
@@ -43,6 +43,14 @@ abstract class Request
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(
+     *      targetEntity="BrBundle\Entity\Company\Request",
+     *      mappedBy="request")
+     */
+    //TODO WHY DOES THIS NOT WORK??
+    private $coupledRequest;
 
      /**
      * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
@@ -64,6 +72,13 @@ abstract class Request
      *
      * @ORM\Column(type="boolean")
      */
+    private $coupled;
+
+    /**
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $handled;
 
 	public function __construct($contact)
@@ -71,6 +86,31 @@ abstract class Request
         $this->creationTime = new DateTime();
         $this->contact = $contact;
         $this->handled = false;
+        $this->coupled = false;
+        $this->coupledRequest = array();
+    }
+
+    public function isCoupled()
+    {
+        return $this->coupled;
+    }
+
+    public function setCoupled()
+    {
+        $this->coupled = true;
+    }
+
+    public function addCoupledRequest(Request $request)
+    {
+        print_r(sizeof($this->coupledRequest));
+        array_push($this->coupledRequest, $request);
+        print_r(sizeof($this->coupledRequest));
+        $request->setCoupled();
+    }
+
+    public function getCoupledRequests()
+    {
+        return $this->coupledRequest;
     }
 
     public function getId()

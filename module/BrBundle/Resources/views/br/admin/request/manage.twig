@@ -14,6 +14,7 @@
             </tr>
 
             {% for request in vacancyRequests %}
+                {% if not request.isCoupled == true %}
                 <tr class="item item-{{ request.getId() }}">
                     <td>{{ request.getJob().getCompany().getName() }}</td>
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
@@ -30,6 +31,7 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </table>
         <br>

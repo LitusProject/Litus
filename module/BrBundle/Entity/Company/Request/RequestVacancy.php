@@ -95,7 +95,10 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
                 break;
 
             case 'edit':
-                # code...
+                $this->getJob()->approve();
+                foreach ($this->getCoupledRequests() as $request) {
+                    $request->approve();
+                }
                 break;
 
             case 'delete':

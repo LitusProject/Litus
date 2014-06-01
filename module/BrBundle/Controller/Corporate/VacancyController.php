@@ -22,13 +22,14 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestVacancy,
     BrBundle\Form\Corporate\Vacancy\Add as AddForm,
+    BrBundle\Form\Corporate\Vacancy\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
 /**
  * VacancyController
- *
+ * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Incalza Dario <dario.incalza@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
@@ -60,18 +61,71 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         );
     }
 
-    public function viewAction()
+    public function editAction()
     {
-        $vacancy = $this->_getVacancy();
+        if (!($oldJob = $this->_getJob()))
+            return new ViewModel();
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
+        $form = new EditForm($oldJob);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $contact = $this->getAuthentication()->getPersonObject();
+
+                $job = new Job(
+                    $formData['job_name'],
+                    $formData['description'],
+                    $formData['benefits'],
+                    $formData['profile'],
+                    $formData['contact'],
+                    $formData['city'],
+                    $contact->getCompany(),
+                    'vacancy',
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['sector']
+                );
+
+                $job->pending();
+
+                $this->getEntityManager()->persist($job);
+
+                $request = new RequestVacancy($job, 'edit', $contact);
+                $deleteRequest = new RequestVacancy($oldJob, 'delete', $contact);
+                $request->addCoupledRequest($deleteRequest);
+
+                $this->getEntityManager()->persist($request);
+                $this->getEntityManager()->persist($deleteRequest);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The request has been sent to our administrators for approval.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_vacancy',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         return new ViewModel(
             array(
-                'vacancy' => $vacancy,
-                'logoPath' => $logoPath,
+                'form' => $form,
             )
         );
     }
@@ -221,5 +275,52 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $sectorArray[$key] = $sector;
 
         return $sectorArray;
+    }
+
+    private function _getJob()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the job!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $job = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Job')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $job) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No job with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_company',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $job;
     }
 }

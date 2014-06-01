@@ -8,7 +8,7 @@
     <br>
     <div class="row">
         <div class="col-md-12">
-            <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
+            <table class="table table-hover full-width">
                 {% for vacancy in paginator %}
                     {% if not vacancy.canShow() == false %}
                     <tr>
@@ -30,16 +30,16 @@
                             {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
                         <td width="90">
-                        <br>
-                        <div class="col-md-2">
-                            <table>
-                                <tr>
-                                    {#TODO insert hrefs to proper fields#}
-                                    <td><button class="btn btn-default" type="submit">View</button></td>
-                                    <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">Delete</a></td>
-                                </tr>
-                            </table>
-                        </div>
+                            <br>
+                            <div class="col-md-2">
+                                <table>
+                                    <tr>
+                                        <td><a class="btn btn-default" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">View</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">Edit</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">Delete</a></td>
+                                    </tr>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 {% endif %}
