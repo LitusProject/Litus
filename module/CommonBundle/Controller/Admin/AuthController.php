@@ -164,6 +164,17 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
+        try {
+            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+                if (false === getenv('SERVED_BY'))
+                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+
+                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            }
+        } catch (\ErrorException $e) {}
+
         $shibbolethUrl .= '?source=admin';
 
         if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
