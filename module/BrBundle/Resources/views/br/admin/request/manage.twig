@@ -24,10 +24,10 @@
                             <a href="{{ url('br_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_request', 'approve') %}
-                            <a href="{{ url('br_admin_request', {"action": "approve", "id": request.getId()}) }}" class="approve">Approve</a>
+                            <a href="{{ url('br_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
                         {% endif %}
                         {% if hasAccess('br_admin_request', 'reject') %}
-                            <a href="{{ url('br_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject">Reject</a>
+                            <a href="{{ url('br_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
                         {% endif %}
                     </td>
                 </tr>
