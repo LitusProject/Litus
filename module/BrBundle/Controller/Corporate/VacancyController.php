@@ -95,12 +95,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestVacancy($job, 'edit', $contact);
-                $deleteRequest = new RequestVacancy($oldJob, 'delete', $contact);
-                $request->addCoupledRequest($deleteRequest);
+                $request = new RequestVacancy($job, 'edit', $contact,$oldJob);
 
                 $this->getEntityManager()->persist($request);
-                $this->getEntityManager()->persist($deleteRequest);
 
                 $this->getEntityManager()->flush();
 

@@ -18,7 +18,8 @@
 
 namespace BrBundle\Entity\Company\Request;
 
-use BrBundle\Entity\Company\Job,
+use BrBundle\Entity\Company\Request,
+    BrBundle\Entity\Company\Job,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -64,14 +65,25 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
      */
     private $job;
 
-	public function __construct(Job $job, $requestType, $contact)
+    /**
+     * @var BrBundle\Entity\Company\Job
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
+     * @ORM\JoinColumn(name="edit_job", referencedColumnName="id", nullable=true)
+     */
+    private $editJob;
+
+	public function __construct(Job $job, $requestType, $contact, Job $editJob = null)
     {
         parent::__construct($contact);
         $this->job = $job;
         $this->_setRequestType($requestType);
+        if($editJob != null)
+            $this->editJob = $editJob;
     }
 
-    private function _setRequestType($type){
+    private function _setRequestType($type)
+    {
         if(! in_array($type, self::$possibleRequests))
             throw new Exception("The requested type does not exist for the vacancy requests");
         $this->requestType = $type;
@@ -80,6 +92,11 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     public function getJob()
     {
         return $this->job;
+    }
+
+    public function getEditJob()
+    {
+        return $this->editJob;
     }
 
     public function getRequestType()
@@ -91,14 +108,12 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     {
         switch ($this->requestType) {
             case 'add':
-                $this->getJob()->approve();
+                $this->getJob()->approved();
                 break;
 
             case 'edit':
                 $this->getJob()->approve();
-                foreach ($this->getCoupledRequests() as $request) {
-                    $request->approve();
-                }
+                $this->getEditJob()->removed();
                 break;
 
             case 'delete':
@@ -116,7 +131,6 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
                 break;
 
             case 'edit':
-                # code...
                 break;
 
             case 'delete':
