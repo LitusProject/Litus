@@ -16,8 +16,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-use BrBundle\Component\ContractParser\Parser;
-use BrBundle\Component\ContractParser\IllegalFormatException;
+namespace BrBundle\Test\Component\ContractParserTest;
+
+use BrBundle\Component\ContractParser\Parser,
+    BrBundle\Component\ContractParser\IllegalFormatException,
+    PHPUnit_Framework_TestCase;
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
