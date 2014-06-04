@@ -45,7 +45,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'newsItems' => $this->_getNewsItems(),
                 'notifications' => $notifications,
                 'piwik' => $this->_getPiwikInfo(),
-                'sportInfo' => $this->_getSportResults(),
                 'myShifts' => $this->_getMyShifts(),
             )
         );
