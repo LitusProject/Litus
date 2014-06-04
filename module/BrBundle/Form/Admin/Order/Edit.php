@@ -48,7 +48,7 @@ class Edit extends Add
 
         $field = new Submit('save');
         $field->setValue('Save')
-            ->setAttribute('class', 'order_edit');
+            ->setAttribute('class', 'product_edit');
         $this->add($field);
 
         $this->populateFromOrder($order);

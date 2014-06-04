@@ -37,7 +37,7 @@
                         <td>{{ order.getCompany().getName() }}</td>
                         <td>{{ order.getDescription() }}</td>
                         <td>{% if order.isTaxFree() %} Yes {% else %} No {% endif %} </td>
-                        <td> &euro; {{ order.getTotalCost(entityManager) }}</td>
+                        <td> &euro; {{ order.getTotalCost(entityManager)|number_format(2) }}</td>
                         <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
                         <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
                         <td class="actions">
