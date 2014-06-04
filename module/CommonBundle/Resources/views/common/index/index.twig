@@ -72,134 +72,135 @@
                 {{ translate('Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.') }}
             </p>
 
-            <div class="col-md-6">
-                <div class="page-header" style="margin-top: 20px;">
-                    <a class="heading" href="{{ url('cudi_booking') }}">
-                        <h3>{{ translate('Cudi') }}</h3>
-                    </a>
-                </div>
-
-                {% if cudi.currentOpeningHour %}
-                    <h3>{{ translate('Open Session') }}</h3>
-                    {% autoescape false %}
-                        <p>
-                            {{ translate('Cudi is open until <span class="label label-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
-                            {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
-                                <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
-                            {% endif %}
-                        </p>
-                    {% endautoescape %}
-
-                    {% if cudi.currentSession %}
-                        {% autoescape false %}
-                            <p>
-                                {% if cudi.currentStudents == 1 %}
-                                    {{ translate('Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
-                                {% else %}
-                                    {{ translate('Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
-                                {% endif %}
-                            </p>
-                        {% endautoescape %}
-                    {% endif %}
-                {% else %}
-                    <div class="alert alert-info" style="margin-bottom: 20px;">
-                        {{ translate('Cudi is currently closed.') }}
-                    </div>
-                {% endif %}
-
-                {% if hasAccess('cudi_booking', 'view') %}
-                    <p style="text-align: left;">
-                        {{ translate('Reserve textbooks and other study material.') }}
-                    </p>
-                    <p>
-                        <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
-                    </p>
-                {% endif %}
-
-                {% if cudi.openingHours|length > 0 %}
-                    <h3>{{ translate('Opening Hours') }}</h3>
-
-                    {% set previousDay = '' %}
-                    {% for openingHour in cudi.openingHours %}
-                        <div>
-                            {% if previousDay != openingHour.getStart().format('d/M') %}
-                                <div class="label label-info" style="display: block; width: 110px; text-align: center;">
-                                    {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
-                                </div>
-                            {% endif %}
-                            <div style="margin-left: 20px;">
-                                {% if openingHour.getComment(language)|length > 0 %}
-                                    <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
-                                    <small>{{ openingHour.getComment(language) }}</small>
-                                {% else %}
-                                    <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
-                                {% endif %}
-                            </div>
-                            {% set previousDay = openingHour.getStart().format('d/M') %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                {% if myShifts is not null and myShifts|length > 0 %}
+            <div class="row">
+                <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
-                        <a class="heading" href="{{ url('shift') }}">
-                            <h3>{{ translate('Shifts') }}</h3>
+                        <a class="heading" href="{{ url('cudi_booking') }}">
+                            <h3>{{ translate('Cudi') }}</h3>
                         </a>
                     </div>
 
-                    {% for shift in myShifts %}
-                        <div class="panel-group" id="shift-{{ shift.getId() }}">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <a class="pannel-title" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
-                                        {{ shift.getName() }}
-                                    </a>
+                    {% if cudi.currentOpeningHour %}
+                        <h3>{{ translate('Open Session') }}</h3>
+                        {% autoescape false %}
+                            <p>
+                                {{ translate('Cudi is open until <span class="label label-warning">%time%</span>.')|replace({'%time%': dateLocalized(cudi.currentOpeningHour.getEnd(), 'H:mm')}) }}
+                                {% if cudi.currentOpeningHour.getComment(language)|length > 0 %}
+                                    <br><small style="margin-left: 20px;">{{ cudi.currentOpeningHour.getComment(language) }}</small>
+                                {% endif %}
+                            </p>
+                        {% endautoescape %}
+
+                        {% if cudi.currentSession %}
+                            {% autoescape false %}
+                                <p>
+                                    {% if cudi.currentStudents == 1 %}
+                                        {{ translate('Currently there is <span class="label label-info">%number%</span> student in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% else %}
+                                        {{ translate('Currently there are <span class="label label-info">%number%</span> students in the queue at Cudi.')|replace({'%number%': cudi.currentStudents}) }}
+                                    {% endif %}
+                                </p>
+                            {% endautoescape %}
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-info" style="margin-bottom: 20px;">
+                            {{ translate('Cudi is currently closed.') }}
+                        </div>
+                    {% endif %}
+
+                    {% if hasAccess('cudi_booking', 'view') %}
+                        <p style="text-align: left;">
+                            {{ translate('Reserve textbooks and other study material.') }}
+                        </p>
+                        <p>
+                            <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
+                        </p>
+                    {% endif %}
+
+                    {% if cudi.openingHours|length > 0 %}
+                        <h3>{{ translate('Opening Hours') }}</h3>
+
+                        {% set previousDay = '' %}
+                        {% for openingHour in cudi.openingHours %}
+                            <div>
+                                {% if previousDay != openingHour.getStart().format('d/M') %}
+                                    <div class="label label-info" style="display: block; width: 110px; text-align: center;">
+                                        {{ dateLocalized(openingHour.getStart(), 'EEEE (d/M)')|capitalize }}
+                                    </div>
+                                {% endif %}
+                                <div style="margin-left: 20px;">
+                                    {% if openingHour.getComment(language)|length > 0 %}
+                                        <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}:</b>
+                                        <small>{{ openingHour.getComment(language) }}</small>
+                                    {% else %}
+                                        <b>{{ dateLocalized(openingHour.getStart(), 'H:mm') }}&mdash;{{ dateLocalized(openingHour.getEnd(), 'H:mm') }}</b>
+                                    {% endif %}
                                 </div>
-                                <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <h5>{{ shift.getName() }}</h5>
-                                        <p>
-                                            {% if (shift.getStartDate().format('d/M/Y') == shift.getEndDate().format('d/M/Y')) %}
-                                                {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
-                                            {% else %}
-                                                {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}
-                                            {% endif %}
-                                        </p>
-                                        <p>
-                                            @ {{ shift.getLocation().getName() }}
-                                        </p>
+                                {% set previousDay = openingHour.getStart().format('d/M') %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if myShifts is not null and myShifts|length > 0 %}
+                        <div class="page-header" style="margin-top: 20px;">
+                            <a class="heading" href="{{ url('shift') }}">
+                                <h3>{{ translate('Shifts') }}</h3>
+                            </a>
+                        </div>
+
+                        {% for shift in myShifts %}
+                            <div class="panel-group" id="shift-{{ shift.getId() }}">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a class="pannel-title" data-toggle="collapse" data-parent="#shifts-{{ accordionName }}" href="#collapse_{{ accordionName }}_shift-{{ shift.getId() }}" style="overflow: hidden;">
+                                            {{ shift.getName() }}
+                                        </a>
+                                    </div>
+                                    <div id="collapse_{{ accordionName }}_shift-{{ shift.getId() }}" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <h5>{{ shift.getName() }}</h5>
+                                            <p>
+                                                {% if (shift.getStartDate().format('d/M/Y') == shift.getEndDate().format('d/M/Y')) %}
+                                                    {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
+                                                {% else %}
+                                                    {{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }} - {{ dateLocalized(shift.getEndDate(), 'd/M/y HH:mm') }}
+                                                {% endif %}
+                                            </p>
+                                            <p>
+                                                @ {{ shift.getLocation().getName() }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-            </div>
-
-            <div class="col-md-6">
-                <div class="page-header" style="margin-top: 20px;">
-                    <a class="heading" href="{{ url('news') }}">
-                        <h3>{{ translate('News') }}</h3>
-                    </a>
+                        {% endfor %}
+                    {% endif %}
                 </div>
 
-                {% for item in newsItems %}
-                    <div class="item">
-                        <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
+                <div class="col-md-6">
+                    <div class="page-header" style="margin-top: 20px;">
+                        <a class="heading" href="{{ url('news') }}">
+                            <h3>{{ translate('News') }}</h3>
+                        </a>
+                    </div>
 
-                        <div style="padding-left: 5px">
-                            {{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                            &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                    {% for item in newsItems %}
+                        <div class="item">
+                            <h4>{{ item.getTitle(language) }} <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small></h4>
+
+                            <div style="padding-left: 5px">
+                                {{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                                &mdash; <a href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                            </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="heading-spacer"></div>
+                    {% else %}
+                        <div class="heading-spacer"></div>
 
-                    <div class="alert alert-warning">
-                        {{ translate('No news items were posted recently.') }}
-                    </div>
-                {% endfor %}
+                        <div class="alert alert-warning">
+                            {{ translate('No news items were posted recently.') }}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
