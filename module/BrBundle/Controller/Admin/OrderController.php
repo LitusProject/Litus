@@ -366,7 +366,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function historyAction()
+    public function oldAction()
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product\Order',
