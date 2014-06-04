@@ -31,7 +31,7 @@ use BrBundle\Entity\Company\Request,
  */
 class RequestVacancy extends \BrBundle\Entity\Company\Request
 {
-	/**
+    /**
      * @var request's ID
      *
      * @ORM\Id
@@ -57,7 +57,7 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
      */
     private $requestType;
 
-	/**
+    /**
      * @var BrBundle\Entity\Company\Job
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
@@ -73,7 +73,7 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
      */
     private $editJob;
 
-	public function __construct(Job $job, $requestType, $contact, Job $editJob = null)
+    public function __construct(Job $job, $requestType, $contact, Job $editJob = null)
     {
         parent::__construct($contact);
         $this->job = $job;

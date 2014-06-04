@@ -18,10 +18,8 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
@@ -31,21 +29,23 @@ class EntriesOnlyEntry extends Entry
     {
         parent::__construct('');
     }
-    
+
     public function addNodeToList($node)
     {
         if($node instanceof Text)
             throw new IllegalFormatException('There is no text allowed without a parent-entry at the place');
-    
+
         parent::addNodeToList($node);
     }
-    
+
     public function getEntries()
     {
         if(count($this->getNodes()) == 0)
+
             return null;
-        
+
         if(count($this->getNodes()) == 1)
+
             return $this->getNodes()[0];
         else
             throw new \Exception("There should be only one or zero entries.");

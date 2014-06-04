@@ -51,5 +51,3 @@ class Edit extends Add
         $this->populateFromJob($job);
     }
 }
-
-

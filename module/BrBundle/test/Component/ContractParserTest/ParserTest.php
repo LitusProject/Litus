@@ -16,11 +16,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-use StoreBundle\Component\Storage;
-use StoreBundle\Component\StorageFactory;
-use StoreBundle\Component\Article\ArticleFactory;
-use StoreBundle\Component\Unit\UnitFactory;
-use StoreBundle\Component\Valuta\ValutaFactory;
 use BrBundle\Component\ContractParser\Parser;
 use BrBundle\Component\ContractParser\IllegalFormatException;
 
@@ -32,61 +27,61 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $parser->parse($text);
         $this->assertEquals($xml, $parser->getXml());
     }
-    
+
     public function testOneLiner1()
     {
         $this->parserTester('*  Test',
                 '<entries><entry>Test</entry></entries>');
     }
-    
+
     public function testOneLiner2()
     {
         $this->parserTester(
                 '*Test',
-                
+
                 '<entries><entry>Test</entry></entries>');
     }
-    
+
     public function testTwoLiner()
     {
         $this->parserTester(
                 '*  Two\n'.
                 '*  Liner',
-                
+
                 '<entries>' .
                 '<entry>Two</entry>'.
                 '<entry>Liner</entry>'.
                 '</entries>');
     }
-    
+
     public function testClearTrailingSpaces()
     {
         $this->parserTester(
                 '*  Two    \n'.
                 '*  Liner',
-        
+
                 '<entries>' .
                 '<entry>Two</entry>'.
                 '<entry>Liner</entry>'.
                 '</entries>');
     }
-    
+
     public function testTextNextLine()
     {
         $this->parserTester('*\n    Next',
                  '<entries><entry>Next</entry></entries>');
     }
-    
+
     public function testTwoLevels1()
     {
         $t =    '* One\n'.
                 '  * One Point One';
         $x =    '<entries><entry>One<entries><entry>One Point One'.
                 '</entry></entries></entry></entries>';
-        
+
         $this->parserTester($t, $x);
     }
-    
+
     public function testTwoLevels2()
     {
         $t =   '*  \n' .
@@ -94,7 +89,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
                '  * One Point One';
         $x =   '<entries><entry>One<entries><entry>One Point One'.
                 '</entry></entries></entry></entries>';
-        
+
         $this->parserTester($t, $x);
     }
     public function testTwoLevels3()
@@ -102,67 +97,62 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $parser = new Parser();
         $t =   '*    *  One Point One\n' .
                '        AndSomeMore TExt';
-        
+
         $x =   '<entries><entry>One<entries><entry>One Point One\mAndSomeMore TExt' .
                '</entry></entries></entry></entries>';
     }
-    
+
     public function testIllegalText1()
     {
         $parser = new Parser();
-        try{
+        try {
             $parser->parse('IllegalText');
             $this->fail('No exception thrown');
-        }catch (IllegalFormatException $e)
-        {
+        } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 1);
         }
     }
-    
+
     public function testIllegalText2()
     {
         $parser = new Parser();
-        try{
+        try {
             $parser->parse('* ValidBullet\nIllegalText');
             $this->fail('No exception thrown');
-        }catch (IllegalFormatException $e)
-        {
+        } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
         }
     }
-    
+
     public function testTextIndentToFar()
     {
         $parser = new Parser();
-        try{
+        try {
             $parser->parse('*  A\n    IllegalText');
             $this->fail('No exception thrown');
-        }catch (IllegalFormatException $e)
-        {
+        } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
         }
     }
-    
+
     public function testTextIndentToShort()
     {
         $parser = new Parser();
-        try{
+        try {
             $parser->parse('*  A\n IllegalText');
             $this->fail('No exception thrown');
-        }catch (IllegalFormatException $e)
-        {
+        } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
         }
     }
-    
+
     public function testEntryIndentToShort()
     {
         $parser = new Parser();
-        try{
+        try {
             $parser->parse('*  A\n *    IllegalText');
             $this->fail('No exception thrown');
-        }catch (IllegalFormatException $e)
-        {
+        } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
         }
     }

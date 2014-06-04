@@ -184,8 +184,9 @@ class Job
 
     public function canShow()
     {
-        if($this->approved === NULL)
+        if (null === $this->approved)
             return true;
+
         return $this->approved;
     }
 
@@ -225,7 +226,7 @@ class Job
      */
     public function setType($type)
     {
-        if ((null === $type) || !is_string($type))
+        if (null === $type || !is_string($type))
             throw new \InvalidArgumentException('Invalid type');
 
         $this->type = $type;
