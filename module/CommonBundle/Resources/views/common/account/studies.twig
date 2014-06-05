@@ -22,11 +22,11 @@
 
     {% include 'common/account/partials/navigation.twig' %}
 
+    <div class="pull-right">
+        <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+    </div>
     <h2>
         {{ translate('Choose Your Study') }}
-        <div class="pull-right">
-            <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
-        </div>
     </h2>
     <div id="studies">
         {{ _self.displayStudies(studies, enrollments) }}
