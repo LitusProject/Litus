@@ -116,8 +116,20 @@ EOT
         $modules = $this->_getModules();
 
         foreach($modules as $module)
-            $acl = array_merge($acl, include 'module/' . $module . '/Resources/config/install/acl.config.php');
+            $acl = array_merge($acl, $this->_getAclConfiguration($module));
 
         return $acl;
+    }
+
+    private function _getAclConfiguration($module)
+    {
+        $configuration = $this->getServiceLocator()->get('Config');
+        $configuration = $configuration['litus']['install'];
+        $configuration = array_change_key_case($configuration);
+
+        if (isset($configuration[strtolower($module)]['acl']))
+            return include $configuration[strtolower($module)]['acl'];
+
+        return array();
     }
 }
