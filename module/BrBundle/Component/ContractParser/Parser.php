@@ -34,7 +34,7 @@ class Parser
 
     public function parse($text)
     {
-        $lines = explode('\n', $text);
+        $lines = explode("\n", $text);
 
         $lineNb = 1;
 

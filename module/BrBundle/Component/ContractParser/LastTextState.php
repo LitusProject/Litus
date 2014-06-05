@@ -52,7 +52,7 @@ class LastTextState extends EntryState
 
     public function addText($text)
     {
-        $this->lastText->append('\n' . $text);
+        $this->lastText->append("\n" . $text);
 
         return $this;
     }
