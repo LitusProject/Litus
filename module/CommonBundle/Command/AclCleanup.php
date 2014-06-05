@@ -37,6 +37,8 @@ EOT
 
     protected function executeCommand()
     {
+        $removedEntities = false;
+
         $allActions = $this->_getAllActions();
 
         $currentActions = $this->getEntityManager()
@@ -63,6 +65,7 @@ EOT
                 $this->getEntityManager()->flush();
 
             $this->getEntityManager()->remove($action);
+            $removedEntities = true;
         }
 
         $currentResources = $this->getEntityManager()
@@ -83,12 +86,17 @@ EOT
             }
 
             $this->getEntityManager()->remove($resource);
+            $removedEntities = true;
         }
 
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
             $this->getEntityManager()->flush();
             $this->writeln(' done.', true);
+        }
+
+        if (!$removedEntities) {
+            $this->writeln('Nothing removed, acl was clean.');
         }
     }
 
@@ -116,8 +124,20 @@ EOT
         $modules = $this->_getModules();
 
         foreach($modules as $module)
-            $acl = array_merge($acl, include 'module/' . $module . '/Resources/config/install/acl.config.php');
+            $acl = array_merge($acl, $this->_getAclConfiguration($module));
 
         return $acl;
+    }
+
+    private function _getAclConfiguration($module)
+    {
+        $configuration = $this->getServiceLocator()->get('Config');
+        $configuration = $configuration['litus']['install'];
+        $configuration = array_change_key_case($configuration);
+
+        if (isset($configuration[strtolower($module)]['acl']))
+            return include $configuration[strtolower($module)]['acl'];
+
+        return array();
     }
 }
