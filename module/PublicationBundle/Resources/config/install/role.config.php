@@ -17,21 +17,17 @@
  */
 
 return array(
-    'pagebundle' => array(
-        'page_admin_page' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'upload'
+    'guest' => array(
+        'system' => true,
+        'parents' => array(
         ),
-        'page_admin_category' => array(
-            'add', 'delete', 'edit', 'manage'
-        ),
-        'page_admin_link' => array(
-            'add', 'delete', 'edit', 'manage'
-        ),
-        'page_link' => array(
-            'view'
-        ),
-        'page' => array(
-            'file', 'view'
+        'actions' => array(
+            'publication_edition_html' => array(
+                'view',
+            ),
+            'publication_archive' => array(
+                'overview', 'view', 'year',
+            ),
         ),
     ),
 );

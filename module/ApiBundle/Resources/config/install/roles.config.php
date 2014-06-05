@@ -24,7 +24,7 @@ return array(
         'actions' => array(
             'api_oauth' => array(
                 'authorize', 'shibboleth'
-            )
+            ),
         ),
     ),
     'student' => array(
