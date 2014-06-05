@@ -29,8 +29,8 @@ done
 ./bin/upgrade.sh
 
 # Updating the database
-#run orm:schema-tool:update --force
-#run orm:generate-proxies data/proxies/
+run orm:schema-tool:update --force
+run orm:generate-proxies data/proxies/
 
 # Run installation
 run install:all
@@ -38,6 +38,6 @@ run install:all
 # Making sure our LESS stylesheets are recompiled
 touch module/*/Resources/assets/*/less/base.less
 
-#run assetic:build
+run assetic:build
 
 ./bin/litus.sh common:acl-cleanup
