@@ -32,7 +32,6 @@ use BrBundle\Entity\Collaborator,
  */
 class Edit extends Add
 {
-
     /**
      * @var \BrBundle\Entity\Product\Collaborator
      */
@@ -53,5 +52,4 @@ class Edit extends Add
 
         $this->populateFromCollaborator($collaborator);
     }
-
 }

@@ -123,6 +123,9 @@ class Order
     private static $MAX_TOTAL_COST = 50000;
 
     /**
+     * @param \BrBundle\Entity\User\Person\Corporate $contact
+     * @param \BrBundle\Entity\Collaborator          $creationPerson
+     * @param boolean                                $taxFree
      */
     public function __construct(CorporatePerson $contact, Collaborator $creationPerson, $taxFree)
     {
@@ -142,13 +145,11 @@ class Order
     {
         $cost = 0;
         if ($this->taxFree) {
-            foreach ($this->orderEntries as $orderEntry) {
+            foreach ($this->orderEntries as $orderEntry)
                 $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
-            }
         } else {
-            foreach ($this->orderEntries as $orderEntry) {
+            foreach ($this->orderEntries as $orderEntry)
                 $cost = $cost + ( ($orderEntry->getProduct()->getPrice()*(1 + $orderEntry->getProduct()->getVatPercentage($entityManager)/100)) * $orderEntry->getQuantity()) ;
-            }
         }
 
         return ($cost / 100) - $this->getContract()->getDiscount();

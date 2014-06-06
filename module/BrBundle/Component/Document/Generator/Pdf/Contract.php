@@ -73,7 +73,6 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $title = $this->_contract->getTitle();
-        /** @var \Litus\Entity\Users\People\Company $company  */
         $company = $this->_contract->getOrder()->getCompany();
 
         $locale = $configs->getConfigValue('br.contract_language');
@@ -99,51 +98,35 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $sub_entries = $configs->getConfigValue('br.contract_below_entries');
         $footer = $configs->getConfigValue('br.contract_footer');
 
-        // Generate the xml
         $entry_s = array();
-        foreach ($entries as $entry) {
+        foreach ($entries as $entry)
             $entry_s[] = new XmlObject('entry', null, $entry->getContractText());
-        }
 
         $xml->append(
             new XmlObject(
                 'contract',
-
-                // params of <contract>
                 array(
                     'location' => $location,
                     'date' => $date
                 ),
-
-                // children of <contract>
                 array(
                     new XmlObject('title', null, $title),
-
                     new XmlObject(
                         'our_union',
-
-                        // params of <our_union>
                         array(
                              'short_name' => $unionNameShort,
                              'contact_person' => $ourContactPerson
                         ),
-
-                        // children of <our_union>
                         array(
                             new XmlObject('name', null, $brName),
                             new XmlObject('logo', null, $logo)
                         )
                     ),
-
                     new XmlObject(
                         'company',
-
-                        // params of <company>
                         array(
                             'contact_person' => $this->_contract->getOrder()->getContact()->getFullName(),
                         ),
-
-                        // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
                             new XmlObject(
@@ -184,14 +167,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                             )
                         )
                     ),
-
                     new XmlObject(
                         'union_address',
-
-                        // params of <union_address>
                         null,
-
-                        // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
                             new XmlObject(
@@ -229,13 +207,11 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                         $unionAddressArray['country']
                                     )
                                 )
-                            )                        )
+                            )
+                        )
                     ),
-
                     new XmlObject('entries', null, $entry_s),
-
                     //new XmlObject('sub_entries', null, $sub_entries),
-
                     new XmlObject('footer', null, $footer)
                 )
             )

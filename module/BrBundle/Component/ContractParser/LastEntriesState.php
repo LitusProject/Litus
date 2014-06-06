@@ -18,40 +18,38 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class LastEntriesState extends EntryState
 {
     private $lastEntries;
-    
+
     public function __construct($entries, $entry)
     {
         parent::__construct($entry);
         $this->lastEntries = $entries;
     }
-    
+
     public function addEntry($text)
-    {   
+    {
         $entry = new Entry($text);
         $this->lastEntries->addEntry($entry);
 
         return $this;
     }
-    
+
     public function addText($text)
     {
         $t = new Text($text);
-        
+
         $this->getEntry()->addNodeToList($t);
-    
+
         return new LastTextState($t, $this->getEntry());
     }
-    
+
     public function passOn($indent, $text)
     {
         $this->lastEntries->passOn($indent, $text);

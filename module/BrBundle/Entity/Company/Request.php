@@ -35,7 +35,7 @@ use BrBundle\Entity\Company\Job,
  */
 abstract class Request
 {
-	/**
+    /**
      * @var request's ID
      *
      * @ORM\Id
@@ -66,7 +66,7 @@ abstract class Request
      */
     private $handled;
 
-	public function __construct($contact)
+    public function __construct($contact)
     {
         $this->creationTime = new DateTime();
         $this->contact = $contact;
@@ -91,7 +91,7 @@ abstract class Request
         $this->handled = true;
     }
 
-    public abstract function approveRequest();
+    abstract public function approveRequest();
 
-    public abstract function rejectRequest();
+    abstract public function rejectRequest();
 }

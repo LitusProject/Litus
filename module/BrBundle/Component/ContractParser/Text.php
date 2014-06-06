@@ -18,10 +18,8 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
@@ -33,17 +31,17 @@ class Text extends EntryItem
     {
         $this->text = $text;
     }
-    
+
     public function append($text)
     {
         $this->text .= $text;
     }
-    
+
     public function getText()
     {
         return $this->text;
     }
-    
+
     public function visitNode($nodeVisitor)
     {
         $nodeVisitor->visitText($this);

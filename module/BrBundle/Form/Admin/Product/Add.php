@@ -99,6 +99,7 @@ A single entry is a single bullet on the contract. Formatting options are indica
 
         $field = new Text('delivery_date');
         $field->setLabel('Delivery Date')
+            ->setRequired(true)
             ->setAttribute('placeholder', 'dd/mm/yyyy')
             ->setAttribute('data-datepicker', true)
             ->setAttribute('class', $field->getAttribute('class') . ' input-medium start');
@@ -117,21 +118,19 @@ A single entry is a single bullet on the contract. Formatting options are indica
             ->findAllActive();
 
         $eventsArray = array(
-        );
-        $eventsArray[] =
             array(
                 'label' => '',
                 'value' => '',
-            );
+            )
+        );
         foreach ($events as $event) {
-            $eventsArray[] =
-                array(
-                    'label' => $event->getTitle(),
-                    'value' => $event->getId(),
-                    'attributes' => array(
-                        'data-date' => $event->getStartDate()->format('d/m/Y')
-                    ),
-                );
+            $eventsArray[] = array(
+                'label' => $event->getTitle(),
+                'value' => $event->getId(),
+                'attributes' => array(
+                    'data-date' => $event->getStartDate()->format('d/m/Y')
+                ),
+            );
         }
 
         return $eventsArray;
@@ -244,7 +243,7 @@ A single entry is a single bullet on the contract. Formatting options are indica
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'start_date',
+                    'name'     => 'delivery_date',
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),

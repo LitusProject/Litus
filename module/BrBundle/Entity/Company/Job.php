@@ -32,15 +32,6 @@ use BrBundle\Entity\Company,
 class Job
 {
     /**
-     * @static
-     * @var array All the possible types allowed
-     */
-    public static $possibleTypes = array(
-        'internship' => 'Internship',
-        'vacancy' => 'Vacancy',
-    );
-
-    /**
      * @var string The job's ID
      *
      * @ORM\Id
@@ -142,6 +133,15 @@ class Job
     private $approved;
 
     /**
+     * @static
+     * @var array All the possible types allowed
+     */
+    public static $possibleTypes = array(
+        'internship' => 'Internship',
+        'vacancy' => 'Vacancy',
+    );
+
+    /**
      * @param string                   $name        The job's name
      * @param string                   $description The job's description
      * @param string                   $benefits    The job's benefits
@@ -184,8 +184,9 @@ class Job
 
     public function canShow()
     {
-        if($this->approved === NULL)
+        if (null === $this->approved)
             return true;
+
         return $this->approved;
     }
 
@@ -203,7 +204,7 @@ class Job
      */
     public function setName($name)
     {
-        if ((null === $name) || !is_string($name))
+        if (null === $name || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
 
         $this->name = $name;
@@ -225,7 +226,7 @@ class Job
      */
     public function setType($type)
     {
-        if ((null === $type) || !is_string($type))
+        if (null === $type || !is_string($type))
             throw new \InvalidArgumentException('Invalid type');
 
         $this->type = $type;
@@ -437,6 +438,7 @@ class Job
     {
         if (!Company::isValidSector($sector))
             throw new \InvalidArgumentException('The sector is not valid.');
+
         $this->sector = $sector;
 
         return $this;

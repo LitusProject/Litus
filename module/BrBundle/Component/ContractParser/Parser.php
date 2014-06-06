@@ -18,51 +18,48 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Parser
 {
     private $rootEntry;
-    
+
     public function __construct()
     {
         $this->rootEntry = new EntriesOnlyEntry();
     }
-    
+
     public function parse($text)
     {
-        $lines = explode('\n', $text);
-        
+        $lines = explode("\n", $text);
+
         $lineNb = 1;
-        
-        foreach ($lines as $line)
-        {
+
+        foreach ($lines as $line) {
             $line = rtrim($line);
-            try{
+            try {
                 $this->parseLine($line);
-            }catch(IllegalFormatException $e)
-            {
+            } catch (IllegalFormatException $e) {
                 $e->setLineNumber($lineNb);
                 throw $e;
             }
             $lineNb++;
         }
     }
-    
+
     protected function parseLine($line)
     {
         $this->rootEntry->parse($line);
     }
-    
+
     public function getXml()
     {
         $XmlNodeVisitor = new XmlNodeVisitor();
         $this->rootEntry->getEntries()->visitNode($XmlNodeVisitor);
+
         return $XmlNodeVisitor->getXml();
     }
 }

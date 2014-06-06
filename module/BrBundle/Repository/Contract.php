@@ -116,7 +116,7 @@ class Contract extends EntityRepository
     public function getContractAmountByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('count(c)')
+        $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
                 $query->expr()->eq('c.author', ':person')
@@ -131,7 +131,7 @@ class Contract extends EntityRepository
     public function getContractedRevenueByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -147,7 +147,7 @@ class Contract extends EntityRepository
     public function getPaidRevenueByPerson(Coll $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -169,7 +169,7 @@ class Contract extends EntityRepository
     public function findContractAuthors()
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('distinct(c.author)')
+        $result = $query->select('DISTINCT(c.author)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery()
             ->getResult();
@@ -212,7 +212,7 @@ class Contract extends EntityRepository
     public function getContractAmountByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('count(c)')
+        $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
                 $query->expr()->eq('c.company', ':company')
@@ -227,7 +227,7 @@ class Contract extends EntityRepository
     public function getContractedRevenueByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -243,7 +243,7 @@ class Contract extends EntityRepository
     public function getPaidRevenueByCompany(Comp $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -265,7 +265,7 @@ class Contract extends EntityRepository
     public function findContractCompanyQuery()
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('distinct(c.company)')
+        $result = $query->select('DISTINCT(c.company)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery();
 

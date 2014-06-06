@@ -38,7 +38,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
     /**
      * The maximum number allowed to enter in the corporate order form.
      */
@@ -161,7 +160,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     private function addInputs()
     {
-
         $products = $this->_entityManager
             ->getRepository('BrBundle\Entity\Product')
             ->findByAcademicYear($this->_currentYear);
@@ -240,8 +238,44 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'title',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'company',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'contact',
                     'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'discount',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'digits')
+                    )
                 )
             )
         );

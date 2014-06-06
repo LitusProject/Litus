@@ -31,7 +31,6 @@ use BrBundle\Entity\Contract,
  */
 class ContractEntry
 {
-
     /**
      * @var int A generated ID
      *
@@ -109,6 +108,7 @@ class ContractEntry
     {
         if($versionNmbr < 0)
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+
         $this->version = $versionNmbr;
     }
 

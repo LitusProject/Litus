@@ -18,10 +18,8 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
@@ -29,35 +27,35 @@ class Entries extends EntryItem
 {
     private $lastEntry;
     private $entries;
-    
+
     public function __construct($text)
     {
         $this->entries = [];
         $this->lastEntry = new Entry($text);
         $this->entries[] = $this->lastEntry;
     }
-    
+
     public function parse($text)
-    {        
+    {
         $this->lastEntry->parse($text);
     }
-    
+
     public function passOn($indent, $text)
     {
         $this->lastEntry->handleLine($indent, $text);
     }
-    
+
     public function addEntry($entry)
     {
         $this->entries[] = $entry;
         $this->lastEntry = $entry;
     }
-    
+
     public function getEntries()
     {
         return $this->entries;
     }
-    
+
     public function visitNode($nodeVisitor)
     {
         $nodeVisitor->visitEntries($this);

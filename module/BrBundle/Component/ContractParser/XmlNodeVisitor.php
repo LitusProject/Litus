@@ -18,40 +18,36 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class XmlNodeVisitor
 {
     private $string = '';
-    
+
     public function visitEntry($entry)
     {
         $this->string .= '<entry>';
-        foreach($entry->getNodes() as $node)
-        {
+        foreach ($entry->getNodes() as $node)
             $node->visitNode($this);
-        }
+
         $this->string .= '</entry>';
     }
     public function visitEntries($entries)
     {
         $this->string .= '<entries>';
-        foreach($entries->getEntries() as $entry)
-        {
+        foreach ($entries->getEntries() as $entry)
             $entry->visitNode($this);
-        }
+
         $this->string .= '</entries>';
     }
     public function visitText($text)
     {
         $this->string .= $text->getText();
     }
-    
+
     public function getXml()
     {
         return $this->string;

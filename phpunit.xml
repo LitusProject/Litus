@@ -19,6 +19,6 @@
 
 <phpunit bootstrap="init_autoloader.php">
     <testsuite name="BR Tests">
-        <directory>./module/BrBundle/test</directory>
+        <directory>./module/BrBundle/Test</directory>
     </testsuite>
 </phpunit>

@@ -309,7 +309,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $i = 0;
         foreach ($entry->getLanguages() as $language) {
-
             $formData['lang_name' . $i] = $language->getName();
             $formData['lang_oral' . $i] = $language->getOralSkillCode();
             $formData['lang_written' . $i] = $language->getWrittenSkillCode();

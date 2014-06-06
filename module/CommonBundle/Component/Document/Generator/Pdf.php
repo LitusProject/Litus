@@ -138,7 +138,7 @@ abstract class Pdf
             ->getConfigValue('fop_command');
 
         $command = escapeshellcmd($fopCommand . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath);
-        
+
         $result = exec(
             $command, $output, $resultValue
         );

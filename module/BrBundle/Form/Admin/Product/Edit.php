@@ -32,7 +32,6 @@ use BrBundle\Entity\Product,
  */
 class Edit extends Add
 {
-
     /**
      * @var \BrBundle\Entity\Contract\Product
      */

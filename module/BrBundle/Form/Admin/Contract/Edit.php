@@ -35,7 +35,6 @@ use BrBundle\Entity\Contract,
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
         parent::__construct($options);

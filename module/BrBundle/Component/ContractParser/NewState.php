@@ -18,10 +18,8 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
@@ -31,21 +29,22 @@ class NewState extends EntryState
     {
         parent::__construct($entry);
     }
-   
+
     public function addEntry($text)
     {
         $entries = new Entries($text);
-    
+
         $this->getEntry()->addNodeToList($entries);
-    
+
         return new LastEntriesState($entries, $this->getEntry());
     }
-    
+
     public function addText($text)
     {
         $t = new Text($text);
-    
+
         $this->getEntry()->addNodeToList($t);
+
         return new LastTextState($t, $this->getEntry());
     }
 }

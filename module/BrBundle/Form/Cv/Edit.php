@@ -31,7 +31,6 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-
     /**
      * The entity manager.
      */
@@ -57,5 +56,4 @@ class Edit extends Add
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }
-
 }
