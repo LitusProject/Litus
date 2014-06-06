@@ -74,10 +74,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $xml = new Generator($tmpFile);
 
-        // Generate the xml
         $data = Util::getGrouped($this->_entityManager, $this->_year);
 
-        // Add the groups
         $groups = array();
 
         foreach ($data as $studyData)
@@ -157,14 +155,12 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $result = array();
 
-        // The address
         $result[] = new Object(
             'address',
             $this->_getAddressArray($cv),
             null
         );
 
-        // Studies
         $result[] = new Object(
             'section',
             array(
@@ -210,7 +206,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        // Erasmus
         if (
             (null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation())
             || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod())
@@ -241,7 +236,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
 
-        // Languages
         $result[] = new Object(
             'section',
             array(
@@ -272,7 +266,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        // Capabilities
         $result[] = new Object(
             'section',
             array(
@@ -304,7 +297,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        // Thesis
         $result[] = new Object(
             'section',
             array(
@@ -319,7 +311,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        // Career
         $result[] = new Object(
             'section',
             array(
@@ -373,7 +364,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        // Personal
         $result[] = new Object(
             'section',
             array(

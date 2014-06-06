@@ -32,7 +32,7 @@ class EntriesOnlyEntry extends Entry
 
     public function addNodeToList($node)
     {
-        if($node instanceof Text)
+        if ($node instanceof Text)
             throw new IllegalFormatException('There is no text allowed without a parent-entry at the place');
 
         parent::addNodeToList($node);
@@ -40,12 +40,10 @@ class EntriesOnlyEntry extends Entry
 
     public function getEntries()
     {
-        if(count($this->getNodes()) == 0)
-
+        if (count($this->getNodes()) == 0)
             return null;
 
-        if(count($this->getNodes()) == 1)
-
+        if (count($this->getNodes()) == 1)
             return $this->getNodes()[0];
         else
             throw new \Exception("There should be only one or zero entries.");

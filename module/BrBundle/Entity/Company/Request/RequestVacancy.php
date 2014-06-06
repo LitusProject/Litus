@@ -41,6 +41,29 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     private $id;
 
     /**
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="text")
+     */
+    private $requestType;
+
+    /**
+     * @var \BrBundle\Entity\Company\Job
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
+     * @ORM\JoinColumn(name="job", referencedColumnName="id")
+     */
+    private $job;
+
+    /**
+     * @var \BrBundle\Entity\Company\Job
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
+     * @ORM\JoinColumn(name="edit_job", referencedColumnName="id", nullable=true)
+     */
+    private $editJob;
+
+    /**
      * @static
      * @var array All the possible requests allowed
      */
@@ -50,42 +73,21 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         'delete' => 'delete',
     );
 
-    /**
-     * @var string The type of the request
-     *
-     * @ORM\Column(type="text")
-     */
-    private $requestType;
-
-    /**
-     * @var BrBundle\Entity\Company\Job
-     *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
-     * @ORM\JoinColumn(name="job", referencedColumnName="id")
-     */
-    private $job;
-
-    /**
-     * @var BrBundle\Entity\Company\Job
-     *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
-     * @ORM\JoinColumn(name="edit_job", referencedColumnName="id", nullable=true)
-     */
-    private $editJob;
-
     public function __construct(Job $job, $requestType, $contact, Job $editJob = null)
     {
         parent::__construct($contact);
         $this->job = $job;
         $this->_setRequestType($requestType);
-        if($editJob != null)
+
+        if (null !== $editJob)
             $this->editJob = $editJob;
     }
 
     private function _setRequestType($type)
     {
-        if(! in_array($type, self::$possibleRequests))
+        if (!in_array($type, self::$possibleRequests))
             throw new Exception("The requested type does not exist for the vacancy requests");
+
         $this->requestType = $type;
     }
 

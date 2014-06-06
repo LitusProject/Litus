@@ -109,10 +109,10 @@ class Invoice
 
     public function getInvoiceNumber()
     {
-        return $this->creationTime->format('Y').str_pad($this->order->getContract()->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
+        return $this->creationTime->format('Y') . str_pad($this->order->getContract()->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
     }
 
-    public function setVATContext($text = "")
+    public function setVATContext($text = '')
     {
         $this->VATcontext = $text;
 
@@ -155,7 +155,7 @@ class Invoice
      */
     public function isPayed()
     {
-        if ($this->paidTime == null)
+        if (null === $this->paidTime)
             return false;
         return true;
     }
@@ -169,6 +169,7 @@ class Invoice
     {
         if ($this->isPayed())
             throw new \InvalidArgumentException('This invoice has already been paid');
+
         $this->paidTime = new DateTime();
 
         return $this;
@@ -249,7 +250,7 @@ class Invoice
      */
     public function isPaid()
     {
-        return NULL !== $this->paidTime;
+        return null !== $this->paidTime;
     }
 
     /**

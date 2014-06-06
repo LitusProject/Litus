@@ -118,21 +118,19 @@ A single entry is a single bullet on the contract. Formatting options are indica
             ->findAllActive();
 
         $eventsArray = array(
-        );
-        $eventsArray[] =
             array(
                 'label' => '',
                 'value' => '',
-            );
+            )
+        );
         foreach ($events as $event) {
-            $eventsArray[] =
-                array(
-                    'label' => $event->getTitle(),
-                    'value' => $event->getId(),
-                    'attributes' => array(
-                        'data-date' => $event->getStartDate()->format('d/m/Y')
-                    ),
-                );
+            $eventsArray[] = array(
+                'label' => $event->getTitle(),
+                'value' => $event->getId(),
+                'attributes' => array(
+                    'data-date' => $event->getStartDate()->format('d/m/Y')
+                ),
+            );
         }
 
         return $eventsArray;

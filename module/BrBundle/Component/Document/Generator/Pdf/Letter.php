@@ -24,23 +24,15 @@ use BrBundle\Entity\Contract as ContractEntity,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
     Doctrine\ORM\EntityManager;
 
-use \Litus\Util\Xml\XmlObject;
-use \Litus\Util\Xml\XmlGenerator;
-
-use \Litus\Entity\Br\Contract;
-
-use \Zend\Registry;
-
 class Letter extends DocumentGenerator
 {
     /**
-     * @var \Litus\Entity\Br\Contractt
+     * @var \BrBundle\Entity\Contract
      */
     private $_contract;
 
-    public function __construct(EntityManager $entityManager, Contract $contract)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract)
     {
-
         parent::__construct(
             $entityManager->getRepository('CommonBUndle\Entity\General\Config')
                 ->getConfigValue('br.pdf_generator_path') . '/contract/letter.xsl',
@@ -48,22 +40,16 @@ class Letter extends DocumentGenerator
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $contract->getId() . '/letter.pdf'
         );
-        parent::__construct(
-            Registry::get('litus.resourceDirectory') . '/pdf_generators/letter.xsl',
-            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/letter.pdf'
-        );
+
         $this->_contract = $contract;
     }
 
     protected function _generateXml(TmpFile $file)
     {
-        /** @var $xml \Litus\Util\Xml\XmlGenerator */
         $xml = new XmlGenerator($file);
 
-        /** @var $configs \Litus\Repository\General\Config */
         $configs = $this->_getConfigRepository();
 
-        // Get the content
         $ourUnionName = $configs->getConfigValue('br.letter.union_name');
         $ourUnionAddress = self::_formatAddress($configs->getConfigValue('br.letter.union_address'));
         $ourUnionLogo = $configs->getConfigValue('br.letter.logo');
@@ -72,7 +58,6 @@ class Letter extends DocumentGenerator
         $content = $configs->getConfigValue('br.letter.content');
         $footer = $configs->getConfigValue('br.letter.footer');
 
-        /** @var $company \Litus\Entity\Users\People\Company */
         $company = $this->_contract->getCompany();
         $companyAddress = self::_formatAddress($company->getAddress());
         $companyName = $company->getName();
@@ -82,14 +67,10 @@ class Letter extends DocumentGenerator
 
         $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
 
-        // Generate the xml
-
         $xml->append(new XmlObject('letter', null,
                  array(
-                     // children of <letter>
                      new XmlObject('our_union', null,
                         array(
-                            // children of <our_union>
                             new XmlObject('name', null, $ourUnionName),
                             new XmlObject('contact_person', null, $ourContactPerson),
                             new XmlObject('address', null, $ourUnionAddress),
@@ -100,7 +81,6 @@ class Letter extends DocumentGenerator
 
                      new XmlObject('company', null,
                          array(
-                             // children of <company>
                              new XmlObject('name', null, $companyName),
                              new XmlObject('contact_person', null,
                                 array(

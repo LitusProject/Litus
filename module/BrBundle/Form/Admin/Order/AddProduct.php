@@ -38,7 +38,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class AddProduct extends \CommonBundle\Component\Form\Admin\Form
 {
-
     /**
      * The maximum number allowed to enter in the corporate order form.
      */
