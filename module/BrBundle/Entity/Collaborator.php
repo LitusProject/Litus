@@ -63,7 +63,7 @@ class Collaborator
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param int $number
+     * @param int                              $number
      */
     public function __construct(Person $person, $number)
     {

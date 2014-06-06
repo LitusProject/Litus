@@ -124,8 +124,8 @@ class Order
 
     /**
      * @param \BrBundle\Entity\User\Person\Corporate $contact
-     * @param \BrBundle\Entity\Collaborator $creationPerson
-     * @param boolean $taxFree
+     * @param \BrBundle\Entity\Collaborator          $creationPerson
+     * @param boolean                                $taxFree
      */
     public function __construct(CorporatePerson $contact, Collaborator $creationPerson, $taxFree)
     {
