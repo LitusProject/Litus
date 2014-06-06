@@ -365,7 +365,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product\Order',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => true,
+            )
         );
 
         return new ViewModel(

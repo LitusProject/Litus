@@ -190,7 +190,10 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => true,
+            )
         );
 
         return new ViewModel(
