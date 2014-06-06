@@ -30,7 +30,8 @@ use BrBundle\Entity\Company\Job,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "vacanyRequest"="BrBundle\Entity\Company\Request\RequestVacancy"
+ *      "vacanyRequest"="BrBundle\Entity\Company\Request\RequestVacancy",
+ *      "internshipRequest"="BrBundle\Entity\Company\Request\RequestInternship"
  * })
  */
 abstract class Request
