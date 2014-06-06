@@ -49,7 +49,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function approveAction()
     {
-        $request = $this->_getRequest();
+        if (!($request = $this->_getRequest()))
+            return new ViewModel();
+
         $request->approveRequest();
         $request->handled();
 
@@ -76,7 +78,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function rejectAction()
     {
-        $request = $this->_getRequest();
+        if (!($request = $this->_getRequest()))
+            return new ViewModel();
+
         $request->rejectRequest();
         $request->handled();
 

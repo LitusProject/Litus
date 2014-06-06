@@ -33,12 +33,10 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (null === $this->getParam('field')) {
-            $paginator = $this->paginator()->createFromEntity(
-                'BrBundle\Entity\Collaborator',
-                $this->getParam('page')
-            );
-        }
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Collaborator',
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
@@ -57,7 +55,6 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person')
                     ->findOneById($formData['person_id']);
@@ -96,7 +93,8 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        $collaborator = $this->_getCollaborator();
+        if (!($collaborator = $this->_getCollaborator()))
+            return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $collaborator);
 
@@ -105,10 +103,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $collaborator->setNumber($formData['number']);
-
-                $this->getEntityManager()->persist($collaborator);
 
                 $this->getEntityManager()->flush();
 
@@ -145,7 +140,6 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         $collaborator->retire();
 
-        $this->getEntityManager()->persist($collaborator);
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
@@ -173,7 +167,6 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         $collaborator->rehire();
 
-        $this->getEntityManager()->persist($collaborator);
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(

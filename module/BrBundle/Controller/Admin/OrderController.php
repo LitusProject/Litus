@@ -72,10 +72,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
 
-                if ($formData['tax'] == true) {
-                    $tax = true;
-                } else
-                    $tax = false;
+                $tax = ($formData['tax'] == true);
 
                 $collaborator = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Collaborator')
@@ -100,7 +97,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
-                if(! $formData['discount_context'] == "")
+                if(!($formData['discount_context'] == ''))
                     $contract->setDiscountContext($formData['discount_context']);
 
                 $this->getEntityManager()->persist($order);
@@ -131,8 +128,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
-        if($order->getContract()->isSigned() == true)
 
+        if ($order->getContract()->isSigned() == true)
             return new ViewModel();
 
         $entries = $this->_getOrder(false)->getEntries();
@@ -140,9 +137,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $oldContract = $order->getContract();
 
         $currentProducts = array();
-        foreach ($entries as $entry) {
+        foreach ($entries as $entry)
             array_push($currentProducts, $entry->getProduct());
-        }
+
         $form = new AddProductForm($currentProducts, $this->getEntityManager(), $this->getCurrentAcademicYear());
 
         if ($this->getRequest()->isPost()) {
@@ -231,8 +228,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
-        if($order->getContract()->isSigned() == true)
 
+        if ($order->getContract()->isSigned() == true)
             return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
@@ -252,10 +249,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
 
-                if ($formData['tax'] == true) {
-                    $tax = true;
-                } else
-                    $tax = false;
+                $tax = ($formData['tax'] == true);
 
                 $updatedOrder = new Order(
                     $contact,
@@ -329,6 +323,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!($order = $this->_getOrder()))
             return new ViewModel();
+
         foreach ($order->getContract()->getEntries() as $contractEntry) {
             $this->getEntityManager()->remove($contractEntry);
             $this->getEntityManager()->flush();

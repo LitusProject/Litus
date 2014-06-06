@@ -36,7 +36,6 @@ use BrBundle\Entity\Invoice,
  */
 class InvoiceController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function viewAction()
     {
         if (!($invoice = $this->_getInvoice()))
@@ -51,12 +50,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manageAction()
     {
-        if (null === $this->getParam('field')) {
-            $paginator = $this->paginator()->createFromEntity(
-                'BrBundle\Entity\Invoice',
-                $this->getParam('page')
-            );
-        }
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Invoice',
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
@@ -97,7 +94,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                     }
                 }
 
-                $this->getEntityManager()->persist($invoice);
                 $invoice->setVersion($newVersionNb);
 
                 $this->getEntityManager()->flush();
@@ -186,9 +182,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Invoice')
             ->findOneById($this->getParam('id'));
 
-        if ('true' == $this->getParam('payed')) {
+        if ('true' == $this->getParam('payed'))
             $invoice->setPayed();
-        }
 
         $this->getEntityManager()->flush();
 
@@ -201,7 +196,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-   private function _getInvoice($allowPaid = true)
+    private function _getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

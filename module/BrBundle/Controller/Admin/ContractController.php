@@ -37,15 +37,12 @@ use BrBundle\Entity\Contract,
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function manageAction()
     {
-        if (null === $this->getParam('field')) {
-            $paginator = $this->paginator()->createFromEntity(
-                'BrBundle\Entity\Contract',
-                $this->getParam('page')
-            );
-        }
+        $paginator = $this->paginator()->createFromEntity(
+            'BrBundle\Entity\Contract',
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
@@ -102,7 +99,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 foreach ($contract->getEntries() as $entry) {
                     if ($entry->getVersion() == $contractVersion) {
                         $newVersionNb = $entry->getVersion() + 1;
-                        $newContractEntry = new ContractEntry($contract,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
+                        $newContractEntry = new ContractEntry($contract, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
 
                         $this->getEntityManager()->persist($newContractEntry);
 
@@ -151,7 +148,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if ('true' == $this->getParam('signed')) {
-
             $invoice = new Invoice($contract->getOrder());
 
             foreach ($contract->getEntries() as $entry) {
@@ -160,9 +156,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb());
+                $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->findNextInvoiceNb()
+            );
 
             $this->getEntityManager()->persist($invoice);
         }
@@ -197,9 +194,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $contract->setSigned();
 
         $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb());
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findNextInvoiceNb()
+        );
 
         $this->getEntityManager()->flush();
 
@@ -264,10 +262,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('BrBundle\Entity\Contract')
             ->findOneById($postData['contractId']);
 
-        // Don't allow reordering signed contract
-        if ($contract->isSigned()) {
+        if ($contract->isSigned())
             return new ViewModel();
-        }
 
         $contractComposition = array();
         foreach ($sections['contractComposition'] as $position => $id) {
