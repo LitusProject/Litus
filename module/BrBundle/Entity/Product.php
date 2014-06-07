@@ -140,7 +140,7 @@ class Product
     public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
     {
         $this->_entityManager = $entityManager;
-        
+
         $this->setName($name);
         $this->setDescription($description);
         $this->setInvoiceDescription($invoiceDescription);
@@ -254,7 +254,7 @@ class Product
     }
 
     /**
-     * @param  string                      $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @param  string                    $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
      * @return \BrBundle\Entity\Product
      */
@@ -403,6 +403,7 @@ class Product
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 }

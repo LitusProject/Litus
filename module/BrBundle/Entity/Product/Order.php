@@ -272,7 +272,7 @@ class Order
     }
 
     /**
-     * @return double        cost of this order
+     * @return double cost of this order
      */
     public function getTotalCost()
     {
@@ -296,6 +296,7 @@ class Order
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->_entityManager = $entityManager;
+
         return $this;
     }
 }
