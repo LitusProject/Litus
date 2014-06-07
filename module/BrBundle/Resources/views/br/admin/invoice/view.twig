@@ -53,15 +53,13 @@
         </table>
         {% endif %}
 
-
         {% if not invoice.isPaid() %}
             <div class="unpaid">
                 <i><b>Warning: </b> when an invoice is paid, the invoice can no longer be edited!</i><br/>
                 <input type="submit" id="pay" name="pay" class="invoice_pay" value="Mark as Paid"/>
             </div>
         {% endif %}
-        <form action="{{ url('br_admin_invoice', {"action" : "download", "id" : invoice.getId()})}}"><input type="submit" class="invoice" value="Download"/></form>
-
+        <a href="{{ url('br_admin_invoice', {"action" : "download", "id" : invoice.getId()})}}" class="icon invoice">Download</a>
     </div>
 
     {% if not invoice.isPaid() %}
@@ -89,40 +87,36 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        {% if not invoice.isPaid() %}
+            $(document).ready(function() {
+                $('#pay').click(openModal);
+            });
 
-    {% if not invoice.isPaid() %}
+            function openModal(e) {
+                var $this = $(this);
 
-    $(document).ready(function() {
-        $('#pay').click(openModal);
-    });
+                e.preventDefault();
+                var payInvoice = $('#payInvoice');
+                payInvoice.find('.pay').unbind('click').click(function () {
+                    $.post('{{ url('br_admin_invoice', {"action" : "pay", "id" : invoice.getId()})}}date/' + $('#paydate').val(), function(data) {
+                        if (data && 'success' == data.status) {
+                            $('.flashmessage').addClass('hide');
+                            $('.invoice_paid_success').removeClass('hide');
+                            $('.unpaid').remove();
+                            payInvoice.modal('hide');
+                        } else {
+                            errorPay();
+                        }
+                    }, 'json').error(errorPay);
+                });
+                payInvoice.modal();
+            }
 
-    function openModal(e) {
-        var $this = $(this);
-
-        e.preventDefault();
-        var payInvoice = $('#payInvoice');
-        payInvoice.find('.pay').unbind('click').click(function () {
-            $.post('{{ url('br_admin_invoice', {"action" : "pay", "id" : invoice.getId()})}}date/' + $('#paydate').val(), function(data) {
-                if (data && 'success' == data.status) {
-                    $('.flashmessage').addClass('hide');
-                    $('.invoice_paid_success').removeClass('hide');
-                    $('.unpaid').remove();
-                    payInvoice.modal('hide');
-                } else {
-                    errorPay();
-                }
-            }, 'json').error(errorPay);
-        });
-        payInvoice.modal();
-    }
-
-    function errorPay() {
-        $('.flashmessage').addClass('hide');
-        $('.invoice_paid_error').removeClass('hide');
-        $('#payInvoice').modal('hide');
-    }
-
-    {% endif %}
-
+            function errorPay() {
+                $('.flashmessage').addClass('hide');
+                $('.invoice_paid_error').removeClass('hide');
+                $('#payInvoice').modal('hide');
+            }
+        {% endif %}
     </script>
 {% endblock %}

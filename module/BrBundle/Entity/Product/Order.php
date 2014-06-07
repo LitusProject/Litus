@@ -123,6 +123,11 @@ class Order
     private static $MAX_TOTAL_COST = 50000;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param \BrBundle\Entity\User\Person\Corporate $contact
      * @param \BrBundle\Entity\Collaborator          $creationPerson
      * @param boolean                                $taxFree
@@ -135,57 +140,6 @@ class Order
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
         $this->setTaxFree($taxFree);
-    }
-
-    /**
-     * @param  EntityManager $entityManager
-     * @return double        cost of this order
-     */
-    public function getTotalCost(EntityManager $entityManager)
-    {
-        $cost = 0;
-        if ($this->taxFree) {
-            foreach ($this->orderEntries as $orderEntry)
-                $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
-        } else {
-            foreach ($this->orderEntries as $orderEntry)
-                $cost = $cost + ( ($orderEntry->getProduct()->getPrice()*(1 + $orderEntry->getProduct()->getVatPercentage($entityManager)/100)) * $orderEntry->getQuantity()) ;
-        }
-
-        return ($cost / 100) - $this->getContract()->getDiscount();
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isTaxFree()
-    {
-        return $this->taxFree;
-    }
-
-    /**
-     * @param boolean $taxfree
-     */
-    public function setTaxFree($taxFree)
-    {
-        $this->taxFree = $taxFree;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isOld()
-    {
-        return $this->old;
-    }
-
-    /**
-     * @note    This order gets set to old.
-     *          This means the boolean $old is set to true.
-     */
-    public function setOld()
-    {
-        $this->old = true;
     }
 
     /**
@@ -282,5 +236,66 @@ class Order
         }
 
         return rtrim($result, ' ,');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isOld()
+    {
+        return $this->old;
+    }
+
+    /**
+     * @note    This order gets set to old.
+     *          This means the boolean $old is set to true.
+     */
+    public function setOld()
+    {
+        $this->old = true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isTaxFree()
+    {
+        return $this->taxFree;
+    }
+
+    /**
+     * @param boolean $taxfree
+     */
+    public function setTaxFree($taxFree)
+    {
+        $this->taxFree = $taxFree;
+    }
+
+    /**
+     * @return double        cost of this order
+     */
+    public function getTotalCost()
+    {
+        $cost = 0;
+        if ($this->taxFree) {
+            foreach ($this->orderEntries as $orderEntry)
+                $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+        } else {
+            foreach ($this->orderEntries as $orderEntry) {
+                $orderEntry->getProduct()->setEntityManager($this->_entityManager);
+                $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity()) ;
+            }
+        }
+
+        return ($cost / 100) - $this->getContract()->getDiscount();
+    }
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
     }
 }

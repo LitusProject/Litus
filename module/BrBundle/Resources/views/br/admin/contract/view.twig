@@ -20,7 +20,7 @@
 
     <div id="controller_action">
 
-        <h1><b>Contract details</b></h1>
+        <h1>Contract details</h1>
         {% if not contract.isSigned() %}
         <i>Drag and drop your sections in the desired order. All changes will be saved <b>automatically</b>!</i>
 
@@ -45,11 +45,11 @@
         <br/>
         <br/>
         {% if not contract.isSigned() %}
-            <i><b>Warning: </b> when a contract is signed, the contract and its order can no longer be edited!</i><br/>
-            <form action="{{ url('br_admin_contract', {"action" : "sign", "id" : contract.getId()})}}"><input type="submit" class="contract_edit" value="Sign"/></form>
+            <p><i><b>Warning: </b> when a contract is signed, the contract and its order can no longer be edited!</i></p>
+            <p>&nbsp;</p>
+            <a href="{{ url('br_admin_contract', {"action" : "sign", "id" : contract.getId()})}}" class="icon contract_edit">Sign</a>
         {% endif %}
-        <form action="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId()})}}"><input type="submit" class="contract" value="Download"/></form>
-
+        <a href="{{ url('br_admin_contract', {"action" : "download", "id" : contract.getId()})}}" class="icon contract">Download</a>
     </div>
 {% endblock %}
 

@@ -57,30 +57,42 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function personviewAction()
     {
-        $person = $this->_getAuthor();
+        if (!($person = $this->_getAuthor()))
+            return new ViewModel();
 
-        $contracts = $this->getEntityManager()
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findContractsByAuthorID($person);
+                ->findAllNewOrSignedByPersonQuery($person),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
-                'contracts' => $contracts,
+                'author' => $person,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
 
     public function companyviewAction()
     {
-        $company = $this->_getCompany();
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
 
-        $contracts = $this->getEntityManager()
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findContractsByCompanyID($company);
+                ->findAllNewOrSignedByCompanyQuery($company),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
-                'contracts' => $contracts,
+                'company' => $company,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -101,12 +113,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $result = array();
 
             $company = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findCompanyByID($id);
+                ->getRepository('BrBundle\Entity\Company')
+                ->findOneById($id);
 
             $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findContractsByCompanyID($company);
+                ->findAllNewOrSignedByCompany($company);
 
             $companyNmbr = $companyNmbr + 1;
 
@@ -150,17 +162,19 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthors();
+
         $collection = array();
         foreach ($ids as $id) {
             $result = array();
 
             $person = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAuthorByID($id);
+                ->getRepository('BrBundle\Entity\Collaborator')
+                ->findOneById($id);
 
             $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findContractsByAuthorID($person);
+                ->findAllNewOrSignedByPersonQuery($person);
+
             $contracted = 0;
             $signed = 0;
             $paid = 0;
@@ -215,8 +229,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         $person = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findAuthorByID($this->getParam('id'));
+            ->getRepository('BrBundle\Entity\Collaborator')
+            ->findOneById($this->getParam('id'));
 
         if (null === $person) {
             $this->flashMessenger()->addMessage(
@@ -261,12 +275,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $array = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findCompanyByID($this->getParam('id'));
-        foreach ($array as $comp) {
-            $company = $comp;
-        }
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneById($this->getParam('id'));
 
         if (null === $company) {
             $this->flashMessenger()->addMessage(

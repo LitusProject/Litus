@@ -124,11 +124,12 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $product->setName($formData['name'])
+                $product->setEntityManager($this->getEntityManager())
+                    ->setName($formData['name'])
                     ->setDescription($formData['description'])
                     ->setContractTExt($formData['contract_text'])
                     ->setPrice($formData['price'])
-                    ->setVatType($this->getEntityManager(), $formData['vat_type'])
+                    ->setVatType($formData['vat_type'])
                     ->setInvoiceDescription($formData['invoice_description']);
 
                 if ('' != $formData['event']) {

@@ -41,14 +41,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product\Order',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => false,
+            )
         );
+
+        foreach($paginator as $order)
+            $order->setEntityManager($this->getEntityManager());
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -218,6 +223,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'order' => $order,
                 'entries' => $entries,
                 'addProductForm' => $form,
             )

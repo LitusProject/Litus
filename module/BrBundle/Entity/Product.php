@@ -123,6 +123,11 @@ class Product
     private $invoiceDescription;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param string                                    $name         The name of this section
      * @param string                                    $description  The description on the invoice of this section
      * @param string                                    $content      The content of this section
@@ -134,13 +139,15 @@ class Product
      */
     public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
     {
+        $this->_entityManager = $entityManager;
+        
         $this->setName($name);
         $this->setDescription($description);
         $this->setInvoiceDescription($invoiceDescription);
         $this->setContractText($contractText);
         $this->setAuthor($author);
         $this->setPrice($price);
-        $this->setVatType($entityManager, $vatType);
+        $this->setVatType($vatType);
         $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
         $this->old = false;
@@ -247,14 +254,13 @@ class Product
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param  string                      $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
      * @return \BrBundle\Entity\Product
      */
-    public function setVatType(EntityManager $entityManager, $vatType)
+    public function setVatType($vatType)
     {
-        $types = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+        $types = $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
         if (!isset($types[$vatType]))
@@ -276,12 +282,11 @@ class Product
     /**
      * Returns the VAT percentage for this product.
      *
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return int
      */
-    public function getVatPercentage(EntityManager $entityManager)
+    public function getVatPercentage()
     {
-        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+        $types =  $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
 
@@ -392,4 +397,12 @@ class Product
         return $this;
     }
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+        return $this;
+    }
 }

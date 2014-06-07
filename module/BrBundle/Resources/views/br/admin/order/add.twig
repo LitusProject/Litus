@@ -19,12 +19,9 @@
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
         $(document).ready(function() {
-
             $('#company').change(function(){
-
                 var company = $('#company').val();
 
                 if (company == '') {
@@ -46,15 +43,10 @@
                     }
                 }, 'json').error(errorContacts);
             });
-
         });
-
-        function errorContacts()
-        {
+        function errorContacts() {
             $('.flashmessage').addClass('hide');
             $('.contacts_error').removeClass('hide');
         }
-
     </script>
-
 {% endblock %}

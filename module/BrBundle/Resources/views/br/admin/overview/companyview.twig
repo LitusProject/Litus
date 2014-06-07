@@ -6,58 +6,49 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
+        <h1>Contracts of {{ company.getName() }}</h1>
 
-        <div id="normal_page">
+        <table class="full_width manage">
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th width="90px">Contract Nb</th>
+                <th width="70px">Signed</th>
+                <th width="70px">Actions</th>
+            </tr>
 
-            <table class="full_width manage">
-                <tr>
-                    <th>Company</th>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th width="90px">Contract Nb</th>
-                    <th width="70px">Signed</th>
-                    <th width="70px">Actions</th>
+            {% for contract in paginator %}
+                <tr class="item item-{{ contract.getId() }}">
+                    <td>{{ contract.getTitle() }}</td>
+                    <td>{{ contract.getDate().format('j/m/Y') }}</td>
+                    <td>{{ contract.getContractNb() }}</td>
+                    <td>{% if contract.isSigned() %} Yes {% else %} No {% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'download') %}
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="contract" value="Download">Download</a>
+                        {% endif %}
+                        {#
+                         //TODO Create icon for this.
+                        #}
+                        {% if hasAccess('br_admin_contract', 'history') %}
+                            <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="contract" value="History">History</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'delete') and contract.isSigned() == false %}
+                            <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
+                        {% endif %}
+                    </td>
                 </tr>
-
-                {% for contract in contracts %}
-                    {% if contract.getOrder().isOld() == false or contract.isSigned() == true  %}
-                        <tr class="item item-{{ contract.getId() }}">
-                            <td>{{ contract.getCompany().getName() }}</td>
-                            <td>{{ contract.getTitle() }}</td>
-                            <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                            <td>{{ contract.getContractNb() }}</td>
-                            <td>{% if contract.isSigned() %} Yes
-                                {% else %} No
-                                {% endif %}</td>
-                            <td class="actions">
-                                {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
-                                    <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'view') %}
-                                    <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
-                                    <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'download') %}
-                                    <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="contract" value="Download">Download</a>
-                                {% endif %}
-                                {#
-                                 //TODO Create icon for this.
-                                #}
-                                {% if hasAccess('br_admin_contract', 'history') %}
-                                    <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="contract" value="History">History</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'delete') and contract.isSigned() == false %}
-                                    <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-
-        </div>
+            {% endfor %}
+        </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>

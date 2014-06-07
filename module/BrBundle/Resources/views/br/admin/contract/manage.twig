@@ -19,65 +19,58 @@
     </div>
 
     <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th width="90px">Contract Nb</th>
+                <th width="70px">Signed</th>
+                <th width="70px">Actions</th>
+            </tr>
 
-        <div id="normal_page">
+            {% for contract in paginator %}
+                <tr class="item item-{{ contract.getId() }}">
+                    <td>{{ contract.getCompany().getName() }}</td>
+                    <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ contract.getTitle() }}</td>
+                    <td>{{ contract.getDate().format('j/m/Y') }}</td>
+                    <td>{{ contract.getContractNb() }}</td>
 
-            <table class="full_width manage">
-                <tr>
-                    <th>Company</th>
-                    <th>Author</th>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th width="90px">Contract Nb</th>
-                    <th width="70px">Signed</th>
-                    <th width="70px">Actions</th>
-                </tr>
-
-                {% for contract in paginator %}
-                    {% if contract.getOrder().isOld() == false or contract.isSigned() == true  %}
-                        <tr class="item item-{{ contract.getId() }}">
-                            <td>{{ contract.getCompany().getName() }}</td>
-                            <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
-                            <td>{{ contract.getTitle() }}</td>
-                            <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                            <td>{{ contract.getContractNb() }}</td>
-
-                            {% if contract.isSigned() %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" disabled id="{{ contract.getId() }}" checked="checked"/>
-                                </td>
-                            {% else %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" id="{{ contract.getId() }}"/>
-                                </td>
-                            {% endif %}
-
-                            <td class="actions">
-                                {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
-                                    <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'view') %}
-                                    <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
-                                    <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_invoice', 'view') and contract.isSigned() == true %}
-                                    <a href="{{ url('br_admin_invoice', {"action": "view", "id": contract.getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'download') %}
-                                    <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="contract" value="Download">Download</a>
-                                {% endif %}
-                                {% if hasAccess('br_admin_contract', 'delete') and contract.isSigned() == false %}
-                                    <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
-                                {% endif %}
-                            </td>
-                        </tr>
+                    {% if contract.isSigned() %}
+                        <td style="text-align: center;">
+                            <input type="checkbox" disabled id="{{ contract.getId() }}" checked="checked"/>
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <input type="checkbox" id="{{ contract.getId() }}"/>
+                        </td>
                     {% endif %}
-                {% endfor %}
-            </table>
 
-        </div>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'view') and contract.isSigned() == true %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": contract.getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'download') %}
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="contract" value="Download">Download</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'delete') and contract.isSigned() == false %}
+                            <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
@@ -87,11 +80,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete Shift
+                    /Delete Contract
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete this person from the shift with the following name: <b class="name"></b>?
+                        You are about to delete the following contract: <b class="name"></b>?
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
