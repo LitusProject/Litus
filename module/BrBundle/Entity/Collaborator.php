@@ -41,9 +41,7 @@ class Collaborator
     /**
      * @var \BrBundle\Entity\Collaborator The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="\CommonBundle\Entity\User\Person"
-     * )
+     * @ORM\OneToOne(targetEntity="\CommonBundle\Entity\User\Person")
      */
     private $person;
 

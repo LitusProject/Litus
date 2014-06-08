@@ -34,7 +34,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 /**
  * Add a order.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -64,9 +65,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private $_contacts;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear
-     * @param mixed                       $opts          The validator's options
+     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $currentYear
+     * @param mixed                                     $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
     {
@@ -106,7 +107,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('tax');
         $field->setLabel('Tax Free')
-            ->setAttribute('options', array(false => 'No', true => 'Yes'));
+            ->setAttribute('options', array(false => 'No', true => 'Yes'))
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
@@ -165,10 +167,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findByAcademicYear($this->_currentYear);
 
         foreach ($products as $product) {
-            if (! $product->isOld()) {
+            if (!$product->isOld()) {
                 $field = new Text('product-' . $product->getId());
                 $field->setLabel($product->getName())
-                    ->setAttribute('class', 'input-very-mini')
                     ->setAttribute('placeholder', '0');
                 $this->add($field);
 
@@ -188,7 +189,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'contact' => $order->getContact()->getId(),
             'discount' => $order->getContract()->getDiscount()
         );
-
 
         $products = $this->_entityManager
             ->getRepository('BrBundle\Entity\Product')
@@ -276,6 +276,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'digits')
                     )
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'tax',
+                    'required' => true,
                 )
             )
         );

@@ -30,30 +30,25 @@ use BrBundle\Entity\Contract,
 /**
  * The form used to edit an existing contract
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends Add
 {
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Contract   $contract      The contract to edit
+     * @param mixed                       $opts          The validator's options
+     */
     public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
-        parent::__construct($options);
+        parent::__construct($entityManager, $options);
 
-        $this->_createFromContract($contract,$entityManager);
+        $this->populateFromContract($contract);
 
-        $field = new Submit('Save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'contract_edit');
-        $this->add($field);
-    }
-
-    private function _createFromContract(Contract $contract,$em)
-    {
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setValue($contract->getTitle())
-            ->setRequired(true);
-        $this->add($field);
+        $this->get('company')->setAttribute('disabled', 'disabled');
+        $this->get('discount')->setAttribute('disabled', 'disabled');
+        $this->remove('sections');
 
         $field = new Text('invoice_nb');
         $field->setLabel('Invoice number')
@@ -61,14 +56,19 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($contract->getInvoiceNb());
         $this->add($field);
 
-        foreach ($contract->getEntries($em) as $entry) {
+        foreach ($contract->getEntries() as $entry) {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
                 ->setValue($entry->getContractText())
                 ->setRequired(false);
             $this->add($field);
-
         }
+
+        $this->remove('submit');
+        $field = new Submit('submit');
+        $field->setValue('Save')
+            ->setAttribute('class', 'contract_edit');
+        $this->add($field);
     }
 
     public function getInputFilter()
@@ -76,28 +76,27 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        $inputFilter->remove('company_name');
+        $inputFilter->remove('company');
+        $inputFilter->remove('discount');
+        $inputFilter->remove('sections');
+
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'title',
+                    'name'     => 'invoice_nb',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
                     ),
                 )
             )
         );
 
         return $inputFilter;
-    }
-
-    private function _getActiveSections(Contract $contract)
-    {
-        $return = array();
-        foreach ($contract->getComposition() as $contractComposition)
-            $return[] = $contractComposition->getSection()->getId();
-
-        return $return;
     }
 }

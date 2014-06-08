@@ -30,7 +30,8 @@ use BrBundle\Entity\Contract\Section,
 /**
  * Add Contract
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -79,6 +80,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
+    private function populateFromContract(Contract $contract)
+    {
+        $formData = array(
+            'title' => $title,
+        );
+
+        $this->setData($formData);
+    }
+
     private function _getCompanies()
     {
         $companies = $this->_entityManager
@@ -103,5 +113,67 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $sectionsArray[$section->getId()] = $section->getName();
 
         return $sectionsArray;
+    }
+
+    public function getInputFilter()
+    {
+        $inputFilter = new InputFilter();
+        $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'company',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'discount',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                        array(
+                            'name' => 'between',
+                            'options' => array(
+                                'min' => 0,
+                                'max' => 100,
+                            )
+                        )
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'title',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'sections',
+                    'required' => true,
+                )
+            )
+        );
+
+        return $inputFilter;
     }
 }

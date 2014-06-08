@@ -26,9 +26,10 @@ use BrBundle\Entity\Collaborator,
     Zend\Form\Element\Submit;
 
 /**
- * Edit an order.
+ * Edit an collaborator.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
@@ -37,6 +38,11 @@ class Edit extends Add
      */
     private $_collaborator;
 
+    /**
+     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Product\Collaborator $collaborator  The collaborator to edit
+     * @param mixed                                 $opts          The validator's options
+     */
     public function __construct(EntityManager $entityManager, Collaborator $collaborator, $options = null)
     {
         parent::__construct($entityManager, $options);

@@ -31,7 +31,6 @@
 
                 $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + company, function (data) {
                     if (data) {
-                        // $('#contacts').attr('options', data);
                         var optionsAsString = "";
                         $('#contact').empty();
                         $(data).each(function(k, v){
@@ -42,7 +41,7 @@
                         errorContacts();
                     }
                 }, 'json').error(errorContacts);
-            });
+            }).change();
         });
         function errorContacts() {
             $('.flashmessage').addClass('hide');

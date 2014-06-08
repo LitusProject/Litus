@@ -32,7 +32,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 /**
  * Add a product.
  *
- * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -93,7 +94,6 @@ A single entry is a single bullet on the contract. Formatting options are indica
 
         $field = new Select('event');
         $field->setLabel('Event')
-            ->setAttribute('disable', array(2292))
             ->setValueOptions($this->_createEventsArray());
         $this->add($field);
 
@@ -101,8 +101,7 @@ A single entry is a single bullet on the contract. Formatting options are indica
         $field->setLabel('Delivery Date')
             ->setRequired(true)
             ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('class', $field->getAttribute('class') . ' input-medium start');
+            ->setAttribute('data-datepicker', true);
         $this->add($field);
 
         $field = new Submit('submit');
@@ -192,18 +191,6 @@ A single entry is a single bullet on the contract. Formatting options are indica
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'description',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    )
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
                     'name'     => 'price',
                     'required' => true,
                     'filters'  => array(
@@ -212,6 +199,18 @@ A single entry is a single bullet on the contract. Formatting options are indica
                     'validators' => array(
                         new PriceValidator(),
                     ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'vat_type',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    )
                 )
             )
         );
@@ -243,8 +242,17 @@ A single entry is a single bullet on the contract. Formatting options are indica
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'event',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'delivery_date',
-                    'required' => false,
+                    'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
