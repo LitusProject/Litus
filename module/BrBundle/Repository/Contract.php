@@ -164,7 +164,7 @@ class Contract extends EntityRepository
                     $query->expr()->eq('c.company', ':company'),
                     $query->expr()->orX(
                         $query->expr()->eq('o.old', 'false'),
-                        $query->expr()->eq('c.signed', 'true'),
+                        $query->expr()->eq('c.signed', 'true')
                     )
                 )
             )
