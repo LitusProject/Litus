@@ -94,12 +94,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $contract->setTitle($formData['title']);
 
-                $contractVersion = $contract->getVersion();
-
                 $newVersionNb = 0;
 
                 foreach ($contract->getEntries() as $entry) {
-                    if ($entry->getVersion() == $contractVersion) {
+                    if ($entry->getVersion() == $contract->getVersion()) {
                         $newVersionNb = $entry->getVersion() + 1;
                         $newContractEntry = new ContractEntry($contract, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
 
@@ -145,9 +143,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($this->getParam('id'));
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
         if ('true' == $this->getParam('signed')) {
             $invoice = new Invoice($contract->getOrder());
@@ -257,25 +254,54 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $postData = $this->getRequest()->getPost();
-        parse_str($postData['sections'], $sections);
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            parse_str($postData['sections'], $sections);
 
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($postData['contractId']);
+            $contract = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findOneById($postData['contractId']);
 
-        if ($contract->isSigned())
+            if ($contract->isSigned())
+                return new ViewModel();
+
+            $contractComposition = array();
+            foreach ($sections['contractComposition'] as $position => $id) {
+                $contractEntry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                    ->findOneById($id);
+
+                $contractEntry->setPosition($position);
+            }
+
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'success',
+                    ),
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                    ),
+                )
+            );
+        }
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($contract = $this->_getContract(false)))
             return new ViewModel();
 
-        $contractComposition = array();
-        foreach ($sections['contractComposition'] as $position => $id) {
-            $contractEntry = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
-                ->findOneById($id);
-
-            $contractEntry->setPosition($position);
-        }
-
+        // TODO: remove
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -287,7 +313,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-   private function _getContract($allowSigned = true)
+    private function _getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(

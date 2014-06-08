@@ -77,14 +77,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $invoiceVersion = $invoice->getVersion();
-
                 $newVersionNb = 0;
 
                 $invoice->setVATContext($formData['VATContext']);
 
                 foreach ($invoice->getEntries() as $entry) {
-                    if ($entry->getVersion() == $invoiceVersion) {
+                    if ($entry->getVersion() == $invoice->getVersion()) {
                         $newVersionNb = $entry->getVersion() + 1;
                         $newInvoiceEntry = new InvoiceEntry($invoice,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
 
@@ -178,9 +176,8 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $invoice = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Invoice')
-            ->findOneById($this->getParam('id'));
+        if (!($invoice = $this->_getInvoice()))
+            return new ViewModel();
 
         if ('true' == $this->getParam('payed'))
             $invoice->setPayed();

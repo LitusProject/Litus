@@ -18,6 +18,19 @@
         </div>
     </div>
 
+    <div class="flashmessage success_message full_width contract_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width contract_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a contract.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
@@ -75,7 +88,7 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal fade" id="removeShift"tabindex="-1">
+    <div class="modal fade" id="removeContract" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,8 +117,37 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
             $('.item input[type=checkbox]').click(changeSigned);
         });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeContract = $('#removeContract');
+            removeContract.find('.name').html($(this).data('name'));
+            var id = $this.data('id');
+            removeContract.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_contract', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.contract_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeContract.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeContract.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.contract_removed_error').removeClass('hide');
+            $('#removeContract').modal('hide');
+        }
 
         function changeSigned(e) {
             $.get('{{ url('br_admin_contract', {"action": "signed"}) }}' +  $(this).attr('id') + '/'+ $(this).is(':checked'), function (data) {

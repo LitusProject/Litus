@@ -82,8 +82,7 @@ class Contract
     /**
      * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contract\ContractEntry",mappedBy="contract")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"all"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $contractEntries;

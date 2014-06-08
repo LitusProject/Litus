@@ -29,9 +29,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function personAction()
     {
-        $overview = $this->_getPersonOverview();
-        $array = $overview['array'];
-        $totals = $overview['totals'];
+        list($array, $totals) = $this->_getPersonOverview();
 
         return new ViewModel(
             array(
@@ -43,9 +41,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyAction()
     {
-        $overview = $this->_getCompanyOverview();
-        $array = $overview['array'];
-        $totals = $overview['totals'];
+        list($array, $totals) = $this->_getCompanyOverview();
 
         return new ViewModel(
             array(
@@ -110,8 +106,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         $collection = array();
         foreach ($ids as $id) {
-            $result = array();
-
             $company = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company')
                 ->findOneById($id);
@@ -139,13 +133,13 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 }
             }
 
-            $result['company'] = $company;
-            $result['amount'] = sizeof($contracts);
-            $result['contract'] = $contracted;
-            $result['signed'] = $signed;
-            $result['paid'] = $paid;
-
-            array_push($collection, $result);
+            $collection[] = array(
+                'company' => $company,
+                'amount' => sizeof($contracts),
+                'contract' => $contracted,
+                'signed' => $signed,
+                'paid' => $paid,
+            );
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
 
@@ -165,8 +159,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         $collection = array();
         foreach ($ids as $id) {
-            $result = array();
-
             $person = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Collaborator')
                 ->findOneById($id);
@@ -193,15 +185,21 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 }
             }
 
-            $result['person'] = $person;
-            $result['amount'] = sizeof($contracts);
-            $result['contract'] = $contracted;
-            $result['signed'] = $signed;
-            $result['paid'] = $paid;
-
-            array_push($collection, $result);
+            $collection[] = array(
+                'person' => $person,
+                'amount' => sizeof($contracts),
+                'contract' => $contracted,
+                'signed' => $signed,
+                'paid' => $paid,
+            );
         }
-        $totals = array('amount' => $contractNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
+
+        $totals = array(
+            'amount' => $contractNmbr,
+            'contract' => $totalContracted,
+            'paid' => $totalPaid,
+            'signed' => $totalSigned
+        );
 
         return array('array' => $collection,'totals' => $totals);
 
