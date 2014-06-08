@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{{ translate('Vacancies') }}</h1>
-    {% do form.prepare() %}
+    {#% do form.prepare() %}
     {{ form().openTag(form)|raw }}
         <div class="form-group">
             <div class="input-group">
@@ -30,5 +30,7 @@
                     <button class="btn btn-default" type="submit">{{ translate('Submit') }}</button>
             </div>
         </div>
-    {{ form().closeTag()|raw }}
+    {{ form().closeTag()|raw }}#}
+    {% import 'site/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
 {% endblock %}
