@@ -33,22 +33,29 @@ use BrBundle\Entity\Contract,
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Contract   $contract      The contract to edit
-     * @param mixed                       $opts          The validator's options
-     */
+
     public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
-        parent::__construct($entityManager, $options);
+        parent::__construct($options);
 
-        $this->populateFromContract($contract);
+        $this->_createFromContract($contract,$entityManager);
 
-        $this->get('company')->setAttribute('disabled', 'disabled');
-        $this->get('discount')->setAttribute('disabled', 'disabled');
-        $this->remove('sections');
+        $field = new Submit('Save');
+        $field->setValue('Save')
+            ->setAttribute('class', 'contract_edit');
+        $this->add($field);
+    }
+
+    private function _createFromContract(Contract $contract,$em)
+    {
+        $field = new Text('title');
+        $field->setLabel('Title')
+            ->setValue($contract->getTitle())
+            ->setRequired(true);
+        $this->add($field);
 
         $field = new Text('invoice_nb');
         $field->setLabel('Invoice number')
@@ -56,19 +63,15 @@ class Edit extends Add
             ->setValue($contract->getInvoiceNb());
         $this->add($field);
 
-        foreach ($contract->getEntries() as $entry) {
+        foreach ($contract->getEntries($em) as $entry)
+        {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
                 ->setValue($entry->getContractText())
                 ->setRequired(false);
             $this->add($field);
-        }
 
-        $this->remove('submit');
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'contract_edit');
-        $this->add($field);
+        }
     }
 
     public function getInputFilter()
@@ -100,3 +103,5 @@ class Edit extends Add
         return $inputFilter;
     }
 }
+
+
