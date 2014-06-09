@@ -37,6 +37,9 @@ return array(
             'common_robots' => array(
                 'index'
             ),
+            'common_praesidium' => array(
+                'overview'
+            ),
         ),
     ),
     'student' => array(
@@ -45,7 +48,10 @@ return array(
         ),
         'actions' => array(
             'common_account' => array(
-                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
+            ),
+            'common_session' => array(
+                'manage', 'expire'
             ),
         ),
     ),

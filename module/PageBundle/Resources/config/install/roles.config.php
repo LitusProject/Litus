@@ -22,7 +22,7 @@ return array(
         'parents' => array(),
         'actions' => array(
             'page_admin_page' => array(
-                'add', 'delete', 'edit', 'manage', 'upload', 'uploadProgress'
+                'add', 'delete', 'edit', 'manage', 'upload'
             ),
         )
     ),

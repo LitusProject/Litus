@@ -49,7 +49,7 @@ EOT
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findAll();
 
-        foreach($currentActions as $action) {
+        foreach ($currentActions as $action) {
             $parent = $action->getResource()->getParent()->getName();
             $resource = $action->getResource()->getName();
             $actionName = $action->getName();
@@ -72,7 +72,7 @@ EOT
             ->getRepository('CommonBundle\Entity\Acl\Resource')
             ->findAll();
 
-        foreach($currentResources as $resource) {
+        foreach ($currentResources as $resource) {
             if ($resource->getParent()) {
                 if (isset($allActions[$resource->getParent()->getName()][$resource->getName()]))
                     continue;

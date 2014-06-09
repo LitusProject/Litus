@@ -60,6 +60,7 @@ class Page
      * @var BrBundle\Entity\Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 

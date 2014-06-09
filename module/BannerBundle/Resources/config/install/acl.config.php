@@ -22,7 +22,7 @@ return array(
             'view'
         ),
         'banner_admin_banner' => array(
-            'add', 'delete', 'edit', 'manage', 'progress', 'upload'
+            'add', 'delete', 'edit', 'manage', 'upload'
         ),
     ),
 );
