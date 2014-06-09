@@ -21,7 +21,7 @@ return array(
         'parent_roles' => array(),
         'actions' => array(
             'news' => array(
-                'overview', 'view'
+                'feed', 'overview', 'view'
             ),
         ),
     ),

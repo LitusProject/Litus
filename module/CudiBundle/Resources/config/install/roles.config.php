@@ -17,6 +17,17 @@
  */
 
 return array(
+    'guest' => array(
+        'system' => true,
+        'actions' => array(
+            'cudi_prof_auth' => array(
+                'login', 'logout', 'shibboleth',
+            ),
+            'cudi_opening_hour' => array(
+                'week'
+            ),
+        )
+    ),
     'supplier' => array(
         'system' => true,
         'parents' => array(
@@ -46,8 +57,11 @@ return array(
             'cudi_prof_article_comment' => array(
                 'delete', 'manage'
             ),
+            'cudi_prof_subject_comment' => array(
+                'delete', 'manage'
+            ),
             'cudi_prof_file' => array(
-                'delete', 'download', 'manage', 'progress', 'upload'
+                'delete', 'download', 'manage', 'upload'
             ),
             'cudi_prof_index' => array(
                 'index'
