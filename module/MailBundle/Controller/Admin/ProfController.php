@@ -120,9 +120,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $parser = new Markdown_Parser();
                     $part = new Part($parser->transform($body));
 
-                    $part->type = Mime::TYPE_TEXT;
-                    if ($formData['html'])
-                        $part->type = Mime::TYPE_HTML;
+                    $part->type = Mime::TYPE_HTML;
 
                     $part->charset = 'utf-8';
                     $message = new MimeMessage();
