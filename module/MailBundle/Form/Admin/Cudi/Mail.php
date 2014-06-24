@@ -36,7 +36,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @param null|string|int $name Optional name for the element
      */
-    public function __construct($subject, $message, $name = null)
+    public function __construct($subject, $message, $semester, $name = null)
     {
         parent::__construct($name);
 
@@ -49,6 +49,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Select('semester');
         $field->setLabel('Semester')
+            ->setValue($semester)
             ->setAttribute('options', array(1 => 'First Semester', 2 => 'Second Semester'))
             ->setRequired();
         $this->add($field);
