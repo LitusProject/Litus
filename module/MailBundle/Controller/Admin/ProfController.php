@@ -142,6 +142,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                                 ->getConfigValue('system_administrator_mail'),
                             'System Administrator'
                         );
+                        $mail->addTo(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.mail'),
+                            'Cudi'
+                        );
                     } else {
                         $mail->addTo(
                             $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
