@@ -59,6 +59,18 @@
             );
         }
 
+        opts.searchString.after(
+            indicator = $('<span>').css({
+                'display': 'inline-block',
+                'vertical-align': 'middle',
+                'position': 'relative',
+                'height': opts.searchString.height(),
+                'width': '1em',
+                'margin-left': '-1.5em',
+                'marign-right': '.5em'
+            })
+        );
+
         opts.searchString.data('timeout', null);
         $.each([opts.searchField, opts.searchString], function (i, v) {
             v.bind('change click keyup', function () {
@@ -72,17 +84,30 @@
                     } else if (opts.searchString.val().length < opts.minLength) {
                         return;
                     }
+
+                    indicator.html('');
+                    indicator.spin({lines: 9, length: 3, width: 2, radius: 2});
+
                     $.ajax({
                         url: opts.url + opts.searchField.val() + '/' + opts.searchString.val(),
                         method: 'get',
                         dataType: 'json',
                         success: function (e) {
+                            indicator.spin(false);
                             if (opts.searchDiv) {
                                 opts.searchDiv.find('.moreResults').toggle(e.length >= 1 && opts.searchPage != '');
                                 if (e.length >= 1 && opts.searchPage != '')
                                     opts.searchDiv.find('.moreResults a').attr('href', opts.searchPage + opts.searchField.val() + '/' + opts.searchString.val());
                             }
                             opts.display(e);
+                        },
+                        error: function () {
+                            indicator.html(
+                                $('<span>').html('!').css({
+                                    'color': '#f00',
+                                    'font-weight': 'bold'
+                                })
+                            );
                         }
                     });
                 }, 200));

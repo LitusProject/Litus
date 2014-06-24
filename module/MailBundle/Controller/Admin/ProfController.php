@@ -53,7 +53,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $mailSubject = $mailData['subject'];
         $message = $mailData['message'];
 
-        $form = new MailForm($mailSubject, $message);
+        $form = new MailForm($mailSubject, $message, $semester);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -61,6 +61,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
+                $semester = $formData['semester'];
 
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

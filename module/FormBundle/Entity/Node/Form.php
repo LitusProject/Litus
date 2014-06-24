@@ -43,15 +43,6 @@ use CommonBundle\Entity\General\Language,
 abstract class Form extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The ID of this form
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var int The maximum number of entries of this form.
      *
      * @ORM\Column(name="max", type="integer")
