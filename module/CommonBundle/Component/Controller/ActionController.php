@@ -246,7 +246,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $authenticationHandler = $this->getAuthenticationHandler();
         if (null !== $authenticationHandler) {
             if (
-                $this->hasAccess($this->getParam('controller'), $this->getParam('action'))
+                $this->hasAccess()->toResourceAction($this->getParam('controller'), $this->getParam('action'))
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (

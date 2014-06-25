@@ -139,7 +139,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $study);
 
-        if ($this->getRequest()->isPost() && $this->hasAccess()->resourceAction('syllabus_admin_study', 'add')) {
+        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'add')) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
