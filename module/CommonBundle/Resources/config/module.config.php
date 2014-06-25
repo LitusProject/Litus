@@ -30,12 +30,6 @@ return Config::create(
     array(
         'service_manager' => array(
             'factories' => array(
-                'translator' => function ($serviceManager) {
-                    $config = $serviceManager->get('Config');
-
-                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
-                },
-
                 'authentication' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Authentication(
                         $serviceManager->get('authentication_credentialadapter'),
@@ -56,7 +50,7 @@ return Config::create(
                         'CommonBundle\Entity\User\Session',
                         2678400,
                         $serviceManager->get('authentication_sessionstorage'),
-                        'Litus_Auth',
+                        getenv('ORGANIZATION') . '_Litus_Auth',
                         'Session',
                         $serviceManager->get('authentication_action')
                     );
@@ -69,11 +63,11 @@ return Config::create(
                 },
 
                 'authentication_sessionstorage' => function ($serviceManager) {
-                    return new \Zend\Authentication\Storage\Session('Litus_Auth');
+                    return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
                 },
 
                 'common_sessionstorage' => function ($serviceManager) {
-                    return new Zend\Session\Container('Litus_Common');
+                    return new \Zend\Session\Container(getenv('ORGANIZATION') . '_Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
@@ -91,6 +85,8 @@ return Config::create(
                 'authentication_service' => 'authentication_doctrineservice',
                 'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
                 'authentication_action' => 'authentication_doctrineaction',
+                
+                'translator' => 'MvcTranslator',
             ),
         ),
         'translator' => array(
@@ -151,7 +147,7 @@ return Config::create(
             ),
         ),
         'authentication_sessionstorage' => array(
-            'namespace' => 'Litus_Auth',
+            'namespace' => getenv('ORGANIZATION') . '_Litus_Auth',
             'member'    => 'storage',
         ),
     )

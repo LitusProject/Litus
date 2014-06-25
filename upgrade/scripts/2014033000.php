@@ -16,13 +16,5 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ApiBundle\Component\Controller\Request\Exception;
-
-/**
- * Thrown when someone tries to access the API without using an API key.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
- */
-class InvalidKeyException extends \RuntimeException
-{
-}
+pg_query($connection, 'ALTER TABLE gallery.albums ADD watermark BOOLEAN');
+pg_query($connection, 'UPDATE gallery.albums SET watermark = TRUE');

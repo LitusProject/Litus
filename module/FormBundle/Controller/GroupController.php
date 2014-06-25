@@ -19,6 +19,7 @@
 namespace FormBundle\Controller;
 
 use DateTime,
+    FormBundle\Entity\Node\GuestInfo,
     Zend\View\Model\ViewModel;
 
 /**
@@ -75,10 +76,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif (isset($cookie['LITUS_form'])) {
+            } elseif ($this->_isCookieSet()) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($cookie['LITUS_form']);
+                    ->findOneBySessionId($this->_getCookie());
 
                 $guestInfo->renew();
 
@@ -124,5 +125,27 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $group;
+    }
+
+    /**
+     * @return boolean
+     */
+    private function _isCookieSet()
+    {
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies->offsetExists(GuestInfo::$cookieNamespace);
+    }
+
+    /**
+     * @return string
+     */
+    private function _getCookie()
+    {
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies[GuestInfo::$cookieNamespace];
     }
 }

@@ -20,7 +20,9 @@ namespace CommonBundle\Component\Controller\ActionController;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Language,
-    Zend\Mvc\MvcEvent;
+    CommonBundle\Component\Util\NamedPriorityQueue,
+    Zend\Mvc\MvcEvent,
+    Zend\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.
@@ -40,46 +42,22 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $result = parent::onDispatch($e);
 
-        $language = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
-        if (null === $language) {
-            $language = new Language(
-                'en', 'English'
-            );
-        }
-
-        $result->language = $language;
+        $result->language = $this->getLanguage();
         $result->now = array(
             'iso8601' => date('c', time()),
             'display' => date('l, F j Y, H:i', time())
         );
 
-        if ($this->hasAccess()->resourceAction('cudi_admin_stock_period', 'new')) {
+        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
             $period = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
 
-            if (null === $period) {
-                $this->addPersistentFlashMessage(
-                    $result,
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
-                    )
-                );
-            } elseif ($period->getStartDate()->format('Y') < date('Y') || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()) {
-                $this->addPersistentFlashMessage(
-                    $result,
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please create a new stock period! To do so, please click <a href="' . $this->url()->fromRoute('cudi_admin_stock_period', array('action' => 'new')) . '">here</a>.'
-                    )
-                );
-            }
+            $result->createNewStockPeriod = (
+                null === $period
+                || $period->getStartDate()->format('Y') < date('Y')
+                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()
+            );
         }
 
         $result->servedBy = null;
@@ -100,6 +78,24 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function initLocalization()
     {
+        $language = $this->getLanguage();
+
+        $this->getTranslator()->setCache($this->getCache())
+            ->setLocale($language->getAbbrev());
+
+        AbstractValidator::setDefaultTranslator($this->getTranslator());
+    }
+
+    /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->_language)
+            return $this->_language;
+
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
@@ -108,17 +104,14 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $language = new Language(
                 'en', 'English'
             );
+
             $this->getEntityManager()->persist($language);
             $this->getEntityManager()->flush();
         }
 
-        $this->getTranslator()->setCache($this->getCache())
-            ->setLocale($language->getAbbrev());
+        $this->_language = $language;
 
-        $this->getMvcTranslator()->setCache($this->getCache())
-            ->setLocale($language->getAbbrev());
-
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+        return $language;
     }
 
     /**
@@ -154,9 +147,15 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $settings = array('title' => $settings);
         if (!array_key_exists('action', $settings))
             $settings['action'] = 'manage';
+        $settings['controller'] = $controller;
 
-        if ($this->hasAccess()->resourceAction($controller, $settings['action'])) {
-            $menu[$controller] = $settings;
+        if (array_key_exists('priority', $settings))
+            $priority = array($settings['priority'], $settings['title']);
+        else
+            $priority = $settings['title'];
+
+        if ($this->hasAccess()->toResourceAction($controller, $settings['action'])) {
+            $menu->insert($settings, $priority);
 
             return true;
         }
@@ -171,22 +170,17 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentController = $this->getParam('controller');
 
-        $titleNatCmp = function (array $a, array $b) {
-            return strnatcmp($a['title'], $b['title']);
-        };
-
         $general = array();
 
         foreach ($config['general'] as $name => $submenu) {
-            $newSubmenu = array();
+            $newSubmenu = new NamedPriorityQueue();
 
             foreach ($submenu as $controller => $settings) {
                 $this->_addToMenu($controller, $settings, $newSubmenu);
             }
 
             if (count($newSubmenu)) {
-                uasort($newSubmenu, $titleNatCmp);
-                $general[$name] = $newSubmenu;
+                $general[$name] = $newSubmenu->toArray();
             }
         }
 
@@ -200,7 +194,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
 
             $active = false;
-            $newSubmenuItems = array();
+            $newSubmenuItems = new NamedPriorityQueue();
 
             foreach ($submenu['items'] as $controller => $settings) {
                 $this->_addToMenu($controller, $settings, $newSubmenuItems);
@@ -219,11 +213,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $newSubmenu['active'] = $active;
+            $newSubmenu['items']  = $newSubmenuItems->toArray();
 
-            uasort($newSubmenuItems, $titleNatCmp);
-            $newSubmenu['items']  = $newSubmenuItems;
-
-            if (count($newSubmenu))
+            if (count($newSubmenu['items']))
                 $submenus[$name] = $newSubmenu;
         }
 

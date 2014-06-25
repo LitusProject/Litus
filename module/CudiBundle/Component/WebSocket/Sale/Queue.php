@@ -537,6 +537,8 @@ class Queue
         }
 
         foreach ($articles as $article) {
+            $article['article']->setStockValue($article['article']->getStockValue() + $article['number']);
+
             while ($article['number'] > 0) {
                 $booking = $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -555,13 +557,12 @@ class Queue
                     );
                     $this->_entityManager->persist($remainder);
                     $booking->setNumber($booking->getNumber() - $article['number']);
+                    $article['number'] = 0;
                 } else {
                     $booking->setStatus('assigned', $this->_entityManager);
                     $article['number'] -= $booking->getNumber();
                 }
             }
-
-            $saleItem->getArticle()->setStockValue($saleItem->getArticle()->getStockValue() + $saleItem->getNumber());
         }
 
         $this->_entityManager->flush();

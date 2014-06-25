@@ -34,7 +34,7 @@ class Csv
 
     /**
      * @param string[] $headers The array containing the headers
-     * @param arrays   $results The array containing the form results
+     * @param array    $results The array containing the form results
      */
     public function __construct(array $headers, array $results)
     {

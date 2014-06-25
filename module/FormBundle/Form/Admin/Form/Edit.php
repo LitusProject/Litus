@@ -79,16 +79,17 @@ class Edit extends Add
     private function _populateFromForm(Form $form)
     {
         $data = array(
-            'start_date'       => $form->getStartDate()->format('d/m/Y H:i'),
-            'end_date'         => $form->getEndDate()->format('d/m/Y H:i'),
-            'active'           => $form->isActive(),
-            'max'              => $form->getMax(),
-            'multiple'         => $form->isMultiple(),
-            'editable_by_user' => $form->isEditableByUser(),
-            'non_members'      => $form->isNonMember(),
-            'mail'             => $form->hasMail(),
-            'mail_from'        => $form->hasMail() ? $form->getMail()->getFrom() : '',
-            'mail_bcc'         => $form->hasMail() ? $form->getMail()->getBcc() : '',
+            'start_date'            => $form->getStartDate()->format('d/m/Y H:i'),
+            'end_date'              => $form->getEndDate()->format('d/m/Y H:i'),
+            'active'                => $form->isActive(),
+            'max'                   => $form->getMax(),
+            'multiple'              => $form->isMultiple(),
+            'editable_by_user'      => $form->isEditableByUser(),
+            'send_guest_login_mail' => $form->sendGuestLoginMail(),
+            'non_members'           => $form->isNonMember(),
+            'mail'                  => $form->hasMail(),
+            'mail_from'             => $form->hasMail() ? $form->getMail()->getFrom() : '',
+            'mail_bcc'              => $form->hasMail() ? $form->getMail()->getBcc() : '',
         );
 
         foreach ($this->getLanguages() as $language) {

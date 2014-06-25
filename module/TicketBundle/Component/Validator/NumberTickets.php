@@ -95,7 +95,8 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
                 $number += $context['number_non_member'];
             }
         } else {
-            foreach ($this->_event->getOptions() as $option) {
+            $options = $this->_event->getOptions();
+            foreach ($options as $option) {
                 $number += $context['option_' . $option->getId() . '_number_member'];
                 if (!$this->_event->isOnlyMembers()) {
                     $number += $context['option_' . $option->getId() . '_number_non_member'];

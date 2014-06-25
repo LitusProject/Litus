@@ -33,7 +33,7 @@ use CommonBundle\Entity\General\Language,
 class Event extends \CommonBundle\Entity\Node
 {
     /**
-     * @var array The translations of this event
+     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this event
      *
      * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Node\Translation", mappedBy="event", cascade={"persist", "remove"})
      */

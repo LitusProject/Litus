@@ -25,7 +25,7 @@ return array(
             'delete', 'manage'
         ),
         'cudi_admin_article_file' => array(
-            'delete', 'download', 'edit', 'front', 'manage', 'progress', 'upload'
+            'delete', 'download', 'edit', 'front', 'manage', 'upload'
         ),
         'cudi_admin_article_subject' => array(
             'delete', 'manage'
@@ -103,7 +103,7 @@ return array(
             'login', 'logout', 'shibboleth',
         ),
         'cudi_prof_article' => array(
-            'add', 'addFromSubject', 'edit', 'manage', 'typeahead'
+            'add', 'addFromSubject', 'delete', 'edit', 'manage', 'typeahead'
         ),
         'cudi_prof_article_mapping' => array(
             'activate', 'add', 'delete'
@@ -115,7 +115,7 @@ return array(
             'delete', 'manage'
         ),
         'cudi_prof_file' => array(
-            'delete', 'download', 'manage', 'progress', 'upload'
+            'delete', 'download', 'manage', 'upload'
         ),
         'cudi_prof_index' => array(
             'index'

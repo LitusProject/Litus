@@ -52,7 +52,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -68,7 +68,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']));
+                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']), $formData['watermark']);
                 $this->getEntityManager()->persist($album);
 
                 $languages = $this->getEntityManager()
@@ -125,7 +125,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']));
+                $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']))
+                    ->setWatermark($formData['watermark']);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -318,14 +319,16 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
             $image->scaleImage(640, 480, true);
             $thumb = clone $image;
-            $watermark = new Imagick();
-            $watermark->readImage(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('gallery.watermark_path')
-            );
-            $watermark->scaleImage(57, 48);
-            $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            if ($album->hasWatermark()) {
+                $watermark = new Imagick();
+                $watermark->readImage(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('gallery.watermark_path')
+                );
+                $watermark->scaleImage(57, 48);
+                $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, 0, $image->getImageHeight() - 50);
+            }
             $image->writeImage($filePath . $filename);
 
             $thumb->cropThumbnailImage(150, 150);
@@ -343,6 +346,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 )
             );
         }
+
+        $this->getResponse()->setStatusCode(500);
 
         return new ViewModel(
             array(

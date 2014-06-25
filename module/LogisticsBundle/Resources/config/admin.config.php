@@ -21,10 +21,10 @@ return array(
         'Logistics' => array(
             'subtitle' => array('Drivers', 'Lease', 'Reservations'),
             'items'    => array(
-                'logistics_admin_driver'            => 'Drivers',
-                'logistics_admin_lease'             => 'Lease',
-                'logistics_admin_piano_reservation' => 'Piano Reservations',
-                'logistics_admin_van_reservation'   => 'Van Reservations',
+                'logistics_admin_driver'            => array('title' => 'Drivers'),
+                'logistics_admin_lease'             => array('title' => 'Lease'),
+                'logistics_admin_piano_reservation' => array('title' => 'Piano Reservations'),
+                'logistics_admin_van_reservation'   => array('title' => 'Van Reservations'),
             ),
         ),
     ),

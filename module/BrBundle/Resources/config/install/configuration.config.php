@@ -45,22 +45,24 @@ return array(
                     'subject' => 'VTK Corporate Account',
                     'content' => 'Dear {{ name }},
 
-A corporate account for you was created on VTK with username {{ username }}.
+A corporate account was created for you with username {{ username }}.
 Click here to activate it: http://litus/account/activate/code/{{ code }}
 You can use this account to view the CV Book at http://litus/corporate
 
-With best regards,
-The VTK Corporate Team'
+Kind regards,
+
+The VTK Corporate Relations Team'
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Bedrijven Account',
+                    'subject' => 'VTK Bedrijfsaccount',
                     'content' => 'Beste {{ name }},
 
-Een bedrijven account was voor u aangemaakt op VTK met gebruikersnaam{{ username }}.
+Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
 Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
+
 Het VTK Bedrijvenrelaties Team'
                 ),
             )

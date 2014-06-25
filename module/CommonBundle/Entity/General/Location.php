@@ -48,7 +48,7 @@ class Location
     private $name;
 
     /**
-     * @var string The address associated with the location
+     * @var \CommonBundle\Entity\General\Address The address associated with the location
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
@@ -70,7 +70,7 @@ class Location
     private $longitude;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var boolean Whether or not the location is active
      *
      * @ORM\Column(type="boolean")
      */

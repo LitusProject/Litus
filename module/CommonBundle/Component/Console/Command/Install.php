@@ -166,6 +166,9 @@ EOT
                     $entry = new Config($item['key'], $item['value']);
                     $entry->setDescription($item['description']);
 
+                    if (isset($item['published']))
+                        $entry->setPublished($item['published']);
+
                     $this->getEntityManager()->persist($entry);
                 } else {
                     $entry->setDescription($item['description']);
@@ -173,6 +176,9 @@ EOT
             } catch (\Exception $e) {
                 $entry = new Config($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
+
+                if (isset($item['published']))
+                    $entry->setPublished($item['published']);
 
                 $this->getEntityManager()->persist($entry);
             }

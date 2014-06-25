@@ -18,7 +18,11 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    Doctrine\ORM\EntityManager,
+    SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Organization\MetaData;
 
@@ -55,6 +59,11 @@ class Edit extends Add
         $this->remove('person_id');
         $this->remove('person');
 
+        $field = new Checkbox('cancel');
+        $field->setLabel('Cancelled')
+            ->setValue($registration->isCancelled());
+        $this->add($field);
+
         $this->get('payed')->setValue($registration->hasPayed());
         if ($metaData) {
             $this->get('irreeel')->setValue($metaData->receiveIrReeelAtCudi());
@@ -69,9 +78,22 @@ class Edit extends Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
+        $factory = new InputFactory();
 
         $inputFilter->remove('person_id');
         $inputFilter->remove('person');
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'cancel',
+                    'required' => false,
+                    'validators' => array(
+                        new CancelRegistrationValidator(),
+                    ),
+                )
+            )
+        );
 
         return $inputFilter;
     }

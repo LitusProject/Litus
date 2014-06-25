@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Group,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
@@ -177,7 +178,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 if (!$result) {
                     return new ViewModel(
@@ -395,7 +396,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -510,7 +511,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 return new ViewModel(
                     array(
@@ -625,7 +626,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport());
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
 
                 if (!$result) {
                     return new ViewModel(
@@ -668,6 +669,31 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'progressBarInfo' => $progressBarInfo,
             )
         );
+    }
+
+    public function loginAction()
+    {
+        if (!($form = $this->_getForm()) || null === $this->getParam('key') || $this->getAuthentication()->isAuthenticated())
+            return $this->notFoundAction();
+
+        $guestInfo = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\GuestInfo')
+            ->findOneByFormAndSessionId($form, $this->getParam('key'));
+
+        if (null !== $guestInfo)
+            $guestInfo->renew();
+        else
+            return $this->notFoundAction();
+
+        $this->redirect()->toRoute(
+            'form_view',
+            array(
+                'action'   => 'index',
+                'id'       => $form->getId(),
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function downloadFileAction()
@@ -732,7 +758,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneById($this->getParam('id'));
 
-        if (null === $entry || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft())) {
+        if (null === $entry || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft() && $this->getParam('action') != 'view')) {
             return;
         }
 
@@ -901,7 +927,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
-        return $cookies->offsetExists('LITUS_form');
+        return $cookies->offsetExists(GuestInfo::$cookieNamespace);
     }
 
     /**
@@ -912,6 +938,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
-        return $cookies['LITUS_form'];
+        return $cookies[GuestInfo::$cookieNamespace];
     }
 }

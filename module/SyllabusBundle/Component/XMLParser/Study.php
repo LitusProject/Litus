@@ -90,9 +90,9 @@ class Study
         To add one xml without destroying database:
             add here
                 $urls = array(your_xml);
-            add return at start of removeMappings function
+            add return at start of _cleanUpAcademicYear function
 
-            search for duplicate subject-prof mappings:
+            search for duplicate subject-prof mappings and remove them:
                 SELECT *
                 FROM syllabus.subjects_profs_map AS first
                 JOIN syllabus.subjects_profs_map AS second ON first.prof_id = second.prof_id AND first.subject_id = second.subject_id AND first.id != second.id AND first.academic_year = second.academic_year
@@ -110,28 +110,10 @@ class Study
 
             $xml = simplexml_load_file($url);
 
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear(
-                new DateTime($xml->properties->academiejaar->startjaar . '-12-25 0:0')
-            );
-            $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByUniversityStart($startAcademicYear);
-
-            if (null === $academicYear) {
-                $organizationStart = str_replace(
-                    '{{ year }}',
-                    $startAcademicYear->format('Y'),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('start_organization_year')
-                );
-                $organizationStart = new DateTime($organizationStart);
-                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-                $entityManager->persist($academicYear);
-            }
-            $this->_academicYear = $academicYear;
+            $this->_academicYear = $this->_getAcademicYear($xml->properties->academiejaar->startjaar);
 
             if ($counter <= 1) {
-                $this->_removeMappings();
+                $this->_cleanUpAcademicYear($this->_academicYear);
                 $this->_callback('cleanup', '');
             }
 
@@ -139,11 +121,11 @@ class Study
             $this->_profs = array();
 
             $this->_createSubjects(
-                $xml->data->opleiding->cg,
-                $this->_createStudies($xml->data->opleiding)
+                $xml->data->programma->modulegroep,
+                $this->_createStudies($xml->data->programma)
             );
 
-            $this->_callback('saving_data', (string) $xml->data->sc->titel);
+            $this->_callback('saving_data', (string) $xml->data->titel);
 
             $this->getEntityManager()->flush();
 
@@ -164,7 +146,7 @@ class Study
         $this->_callback('create_studies', (string) $data->titel);
         $studies = array();
 
-        $language = trim((string) $data->doceertaal);
+        $language = trim((string) $data->doceertaal->code);
         $mainTitle = html_entity_decode(ucfirst(trim((string) $data->titel)));
 
         foreach ($data->fases->children() as $phase) {
@@ -175,7 +157,7 @@ class Study
 
             $mainStudy = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Study')
-                ->findOneByKulId($data->attributes()->objid);
+                ->findOneByKulId($data->attributes()->id);
             if (null == $mainStudy) {
                 $mainStudy = new StudyEntity($mainTitle, $data->attributes()->objid, $phaseNumber, $language);
                 $this->getEntityManager()->persist($mainStudy);
@@ -183,52 +165,46 @@ class Study
                 $mainStudy->setTitle($mainTitle);
             }
 
-            if ($phase->tcs->children()->count() > 0) {
-                foreach ($phase->tcs->children() as $studyData) {
+            if ($phase->toegestane_combinaties->children()->count() > 0) {
+                foreach ($phase->toegestane_combinaties->children() as $studyData) {
                     $title = html_entity_decode(preg_replace('/\([a-zA-Z0-9\s]*\)/', '', $studyData->titel));
                     $titles = explode('+', $title);
 
                     if (count($titles) == 2) {
-                        if (isset($subStudies[(string) $studyData->afstudeerrichting->attributes()->objid])) {
-                            $subStudy = $subStudies[(string) $studyData->afstudeerrichting->attributes()->objid];
+                        if (isset($subStudies[(string) $studyData->afstudeerrichting->attributes()->id])) {
+                            $subStudy = $subStudies[(string) $studyData->afstudeerrichting->attributes()->id];
                         } else {
                             $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[0])));
 
                             $subStudy = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\Study')
-                                ->findOneByKulId($studyData->afstudeerrichting->attributes()->objid);
+                                ->findOneByKulId($studyData->afstudeerrichting->attributes()->id);
                             if (null == $subStudy) {
-                                $subStudy = new StudyEntity($subTitle, $studyData->afstudeerrichting->attributes()->objid, $phaseNumber, $language, $mainStudy);
+                                $subStudy = new StudyEntity($subTitle, $studyData->afstudeerrichting->attributes()->id, $phaseNumber, $language, $mainStudy);
                                 $this->getEntityManager()->persist($subStudy);
                             } else {
                                 $subStudy->setTitle($subTitle);
                             }
-                            $subStudies[(string) $studyData->afstudeerrichting->attributes()->objid] = $subStudy;
+                            $subStudies[(string) $studyData->afstudeerrichting->attributes()->id] = $subStudy;
                         }
 
-                        $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $titles[1])));
-                        $study = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneByKulId($studyData->attributes()->objid);
-                        if (null == $study) {
-                            $study = new StudyEntity($subTitle, $studyData->attributes()->objid, $phaseNumber, $language, $subStudy);
-                            $this->getEntityManager()->persist($study);
-                        } else {
-                            $study->setTitle($subTitle);
-                        }
+                        $title = $titles[1];
                     } else {
-                        $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
-                        $study = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneByKulId($studyData->attributes()->objid);
-                        if (null == $study) {
-                            $study = new StudyEntity($subTitle, $studyData->attributes()->objid, $phaseNumber, $language, $mainStudy);
-                            $this->getEntityManager()->persist($study);
-                        } else {
-                            $study->setTitle($subTitle);
-                        }
+                        $subStudy = $mainStudy;
                     }
-                    $studies[$phaseNumber][(int) $studyData->attributes()->objid] = $study;
+
+                    $subTitle = ucfirst(trim(str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title)));
+                    $study = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Study')
+                        ->findOneByKulId($studyData->attributes()->id);
+                    if (null == $study) {
+                        $study = new StudyEntity($subTitle, $studyData->attributes()->id, $phaseNumber, $language, $subStudy);
+                        $this->getEntityManager()->persist($study);
+                    } else {
+                        $study->setTitle($subTitle);
+                    }
+
+                    $studies[$phaseNumber][(int) $studyData->attributes()->id] = $study;
                     $map = new AcademicYearMap($study, $this->_academicYear);
                     $this->getEntityManager()->persist($map);
                 }
@@ -245,20 +221,20 @@ class Study
     private function _createSubjects($data, $studies)
     {
         $this->_callback('create_subjects');
-        if (null === $data->cg)
+        if (!isset($data->modulegroep))
             return;
 
-        foreach ($data->cg as $subjects) {
-            if ($subjects->tonen == 'N')
+        foreach ($data->modulegroep as $subjects) {
+            if ($subjects->tonen_in_programmagids != 'True')
                 continue;
 
-            if ($subjects->tc_cgs->children()->count() > 0) {
+            if ($subjects->toegestane_combinaties->children()->count() > 0) {
                 $activeStudies = array();
                 foreach ($studies as $phaseNumber => $phase) {
                     if (is_array($phase)) {
                         $activeStudies[$phaseNumber] = array();
                         foreach ($phase as $studyId => $study) {
-                            foreach ($subjects->tc_cgs->children() as $objId) {
+                            foreach ($subjects->toegestane_combinaties->children() as $objId) {
                                 if ($studyId == (string) $objId) {
                                     $activeStudies[$phaseNumber][$studyId] = $study;
                                     break;
@@ -273,9 +249,9 @@ class Study
                 $activeStudies = $studies;
             }
 
-            if ($subjects->opos->children()->count() > 0) {
-                foreach ($subjects->opos->opo as $subjectData) {
-                    $code = trim((string) $subjectData->attributes()->short);
+            if ($subjects->opleidingsonderdelen->children()->count() > 0) {
+                foreach ($subjects->opleidingsonderdelen->opleidingsonderdeel as $subjectData) {
+                    $code = trim((string) $subjectData->attributes()->code);
                     $this->_callback('create_subjects', (string) $subjectData->titel);
 
                     $subject = $this->getEntityManager()
@@ -286,7 +262,7 @@ class Study
                         if (isset($this->_subjects[$code])) {
                             $subject = $this->_subjects[$code];
                         } else {
-                            $subject = new SubjectEntity($code, html_entity_decode(trim((string) $subjectData->titel)), (int) $subjectData->periode, (int) $subjectData->pts);
+                            $subject = new SubjectEntity($code, html_entity_decode(trim((string) $subjectData->titel)), (int) $subjectData->aanbodperiode, (int) $subjectData->pts);
                             $this->getEntityManager()->persist($subject);
                         }
                     } else {
@@ -298,10 +274,11 @@ class Study
 
                     $this->_subjects[$code] = $subject;
 
-                    $mandatory = $subjectData->attributes()->verplicht == 'J' ? true : false;
+                    $mandatory = $subjectData->attributes()->verplicht == 'True' ? true : false;
 
                     foreach ($subjectData->fases->children() as $phase) {
                         $phaseNumber = (int) $phase;
+
                         if (is_array($activeStudies[$phaseNumber])) {
                             foreach ($activeStudies[$phaseNumber] as $activeStudy) {
                                 $map = new StudySubjectMap($activeStudy, $subject, $mandatory, $this->_academicYear);
@@ -315,9 +292,8 @@ class Study
                 }
             }
 
-            if ($subjects->cg->count() > 0) {
+            if ($subjects->modulegroep->count() > 0)
                 $this->_createSubjects($subjects, $activeStudies);
-            }
         }
     }
 
@@ -351,30 +327,11 @@ class Study
                         $identification
                     );
 
-                    $prof->activate($this->getEntityManager(), $this->_mailTransport);
+                    $prof->activate($this->getEntityManager(), $this->_mailTransport, true);
 
-                    $headers = get_headers($info['photo']);
-                    if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
-                        file_put_contents('/tmp/' . $identification, file_get_contents($info['photo']));
-                        $finfo = new \finfo;
-                        $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);
-                        $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
-
-                        if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
-                            $filePath = 'public' . $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path');
-
-                            $fileName = '';
-                            do {
-                                $fileName = '/' . sha1(uniqid());
-                            } while (file_exists($filePath . $fileName));
-
-                            file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
-                            unlink('/tmp/' . $identification);
-                            $prof->setPhotoPath($fileName);
-                        }
-                    }
+                    $image = $this->_getProfImage($identification, $info['photo']);
+                    if ($image)
+                        $prof->setPhotoPath($image);
 
                     $this->getEntityManager()->persist($prof);
                     $this->_profs[$identification] = $prof;
@@ -406,25 +363,25 @@ class Study
         }
     }
 
-    private function _removeMappings()
+    private function _cleanUpAcademicYear(AcademicYearEntity $academicYear)
     {
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-            ->findByAcademicYear($this->_academicYear);
+            ->findByAcademicYear($academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findByAcademicYear($this->_academicYear);
+            ->findByAcademicYear($academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findByAcademicYear($this->_academicYear);
+            ->findByAcademicYear($academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
@@ -460,6 +417,33 @@ class Study
         );
     }
 
+    private function _getProfImage($identification, $url)
+    {
+        $headers = get_headers($url);
+        if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
+            file_put_contents('/tmp/' . $identification, file_get_contents($url));
+            $finfo = new \finfo;
+            $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);
+            $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
+
+            if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
+                $filePath = 'public' . $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
+
+                $fileName = '';
+                do {
+                    $fileName = '/' . sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
+                unlink('/tmp/' . $identification);
+
+                return $fileName;
+            }
+        }
+    }
+
     /**
      * @param string $type
      */
@@ -484,17 +468,17 @@ class Study
 
         $root = simplexml_load_file($url);
 
-        $diplomas = array();
+        $studies = array();
 
         foreach ($root->data->children() as $organization) {
             foreach ($organization->children() as $department) {
-                if (in_array($department->attributes()->objid, $departments)) {
-                    foreach ($department->classificaties->children() as $classification) {
+                if (in_array($department->attributes()->id, $departments)) {
+                    foreach ($department->kwalificatie->children() as $classification) {
                         foreach ($classification->graad as $grade) {
-                            foreach ($grade->diplomas->children() as $diploma) {
-                                $diplomas[] = array(
-                                    'id' => (string) $diploma->attributes()->objid,
-                                    'language' => $diploma->originele_titel->attributes()->taal,
+                            foreach ($grade->opleidingen->children() as $study) {
+                                $studies[] = array(
+                                    'id' => (string) $study->attributes()->id,
+                                    'language' => $study->taal,
                                 );
                             }
                         }
@@ -513,30 +497,30 @@ class Study
 
         $urls = array();
 
-        foreach ($diplomas as $diploma) {
+        foreach ($studies as $study) {
             $url = str_replace(
                 array(
                     '{{ language }}',
                     '{{ id }}'
                 ),
                 array(
-                    $diploma['language'],
-                    $diploma['id']
+                    $study['language'],
+                    $study['id']
                 ),
                 $departmentUrl
             );
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
             $xml = simplexml_load_file($url);
 
-            foreach ($xml->data->diploma->opleidingen->children() as $study) {
+            foreach ($xml->data->opleiding->programmas->children() as $study) {
                 $urls[] = str_replace(
                     array(
                         '{{ language }}',
                         '{{ id }}'
                     ),
                     array(
-                        strtolower((string) $study->originele_taal),
-                        (string) $study->attributes()->objid,
+                        strtolower((string) $study->taal->code),
+                        (string) $study->attributes()->id,
                     ),
                     $studyUrl
                 );
@@ -544,5 +528,29 @@ class Study
         }
 
         return $urls;
+    }
+
+    private function _getAcademicYear($start)
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear(
+            new DateTime($start . '-12-25 0:0')
+        );
+        $academicYear = $this->_entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        if (null === $academicYear) {
+            $organizationStart = str_replace(
+                '{{ year }}',
+                $startAcademicYear->format('Y'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_organization_year')
+            );
+            $organizationStart = new DateTime($organizationStart);
+            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
+            $this->_entityManager->persist($academicYear);
+        }
+
+        return $academicYear;
     }
 }

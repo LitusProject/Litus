@@ -31,6 +31,7 @@ class Server
 
     private $_users;
     private $_sockets;
+    private $_master;
 
     private $_authenticated;
 
@@ -71,14 +72,14 @@ class Server
                 mkdir(dirname($fileName));
         }
 
-        $this->master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+        $this->_master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
 
         if ($isFile)
             chmod($fileName, 0777);
 
-        $this->_sockets[] = $this->master;
+        $this->_sockets[] = $this->_master;
 
-        if ($this->master == false)
+        if ($this->_master == false)
             throw new Exception('Socket could not be created: ' . $err);
     }
 
@@ -98,8 +99,8 @@ class Server
             stream_select($changed, $write, $except, null);
 
             foreach ($changed as $socket) {
-                if ($socket == $this->master) {
-                    $this->_addUserSocket(stream_socket_accept($this->master));
+                if ($socket == $this->_master) {
+                    $this->_addUserSocket(stream_socket_accept($this->_master));
                 } else {
                     $buffer = fread($socket, 2048);
 

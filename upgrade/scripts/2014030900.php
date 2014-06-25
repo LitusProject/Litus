@@ -17,9 +17,28 @@
  */
 
 $modules = array(
-    'api', 'banner', 'br', 'calendar', 'common', 'cudi', 'door', 'form',
-    'gallery', 'logistics', 'mail', 'news', 'notification', 'on', 'page',
-    'publication', 'quiz', 'secretary', 'shift', 'sport', 'syllabus', 'ticket',
+    'api',
+    'banner',
+    'br',
+    'calendar',
+    'common',
+    'cudi',
+    'door',
+    'form',
+    'gallery',
+    'logistics',
+    'mail',
+    'news',
+    'notification',
+    'on',
+    'page',
+    'publication',
+    'quiz',
+    'secretary',
+    'shift',
+    'sport',
+    'syllabus',
+    'ticket',
     'wiki',
 );
 

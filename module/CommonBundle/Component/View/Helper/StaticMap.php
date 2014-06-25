@@ -35,6 +35,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     private $_entityManager = null;
 
     /**
+     * @param  EntityManager                   $entityManager The EntityManager instance
      * @return self
      */
     public function setEntityManager(EntityManager $entityManager)

@@ -1,0 +1,102 @@
+{{ doctype() }}
+
+<html lang="en">
+<head>
+    {% do headLink({'rel': 'shortcut icon', 'href': '/img/favicon.ico'}) %}
+
+    {{ headMeta() }}
+    {{ headTitle(translate('Vlaamse Technische Kring'), 'PREPEND') }}
+
+    {{ headLink() }}
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body class="oauth">
+    <header>
+        <div class="container">
+            <a class="site-link" href="{{ url('common_index') }}">
+                <img class="site-logo" src="/_site/img/logo.png" />
+                <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
+            </a>
+        </div>
+    </header>
+
+    <div id="page">
+        <div id="content" class="container">
+            {% include 'site/partials/flashMessenger.twig' %}
+
+            {% if error is not null %}
+                <div class="flashmessage alert alert-danger fade in">
+                    {% autoescape false %}{{ translate(error.message) }}{% endautoescape %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <h1 class="page-header">{{ translate('Login') }}</h1>
+
+                        <div class="well" style="text-align: center;">
+                            <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
+                        </div>
+
+                        <div class="well">
+                            <div class="login-container">
+                                {% do form.prepare() %}
+                                {% autoescape false %}
+                                    {{ form().openTag(form) }}
+                                        {% for element in form.getElements() %}
+                                            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'hidden' %}
+                                                {{ formElement(element) }}
+                                            {% elseif element.getAttribute('type') == 'checkbox' %}
+                                                <div class="remember_me">
+                                                    <label>
+                                                        {{ formElement(element) }}
+                                                        {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                                                    </label>
+                                                </div>
+                                            {% else %}
+                                                <div class="form-group {% if element.getMessages()|length > 0 %}error{% endif %}">
+                                                    <label>{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                                                    <div>{{ formElement(element) }}</div>
+                                                    {% if element.getMessages()|length > 0 %}
+                                                        <div class="help-block">
+                                                            {{ formElementErrors(element) }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {{ form().closeTag() }}
+                                {% endautoescape %}
+                                <br style="clear: both" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <div class="dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h3>
+                    </div>
+
+                    <div class="col-md-2 icons">
+                        <a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
+                        <a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

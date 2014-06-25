@@ -132,7 +132,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
                 $location->setName($formData['name'])
                     ->setAddress(
-                        $this->getEntityManager(),
                         new Address(
                             $formData['address_street'],
                             $formData['address_number'],

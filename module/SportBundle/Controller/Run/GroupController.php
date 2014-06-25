@@ -78,7 +78,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
                 if ($createGroup) {
                     $newGroup = new Group(
-                        $this->_getAcademicYear(),
+                        $this->getCurrentAcademicYear(),
                         $formData['group_name'],
                         array(
                             $formData['happy_hour_one'],
@@ -175,34 +175,5 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         }
 
         return new ViewModel();
-    }
-
-    private function _getAcademicYear()
-    {
-        $date = null;
-        if (null !== $this->getParam('academicyear'))
-            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
-
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'sport_run_index',
-                array(
-                    'action' => 'index'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
     }
 }

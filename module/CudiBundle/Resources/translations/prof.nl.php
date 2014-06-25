@@ -89,6 +89,7 @@ return array(
 
     'Your Recent Activity' => 'Je Recente Activiteiten',
     'added an article on <b>%date%</b>' => 'voegde een artikel toe op <b>%date%</b>',
+    'removed an article on <b>%date%</b>' => 'verwijderde een artikel op <b>%date%</b>',
     'edited an article on <b>%date%</b>' => 'bewerkte een artikel op <b>%date%</b>',
     'Status' => 'Status',
     'Confirmed' => 'Bevestigd',
@@ -125,6 +126,9 @@ return array(
     'Are you sure you want to activate the following docent' => 'Ben je zeker dat je volgend artikel wil activeren',
     'Will the content of the article be the same af previous year?' => 'Zal de inhoud van het artikel hetzelfde zijn als voorgaande jaar?',
     'There aren\'t articles you can add. Please create them first by clicking <i>Articles</a> in the menu.' => 'Er zijn geen artikels die je kan toevoegen. Gelieve ze eerst aan te maken door in het menu op <i>Artikels</i> te klikken.',
+
+    'An error occurred while removing the article.' => 'Er is een fout opgetreden tijdens het verwijderen van het artikel.',
+    'The article was succesfully removed.' => 'Het artikel is succesvol verwijderd.',
 
     'Textbook from Other Publisher' => 'Handboek van Andere Uitgever',
     'Published by {{ unionShortName }}' => 'Gedrukt bij {{ unionShortName }}',

@@ -4,10 +4,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/PhpCodeStyle"
         }
     ],
     "require": {
@@ -30,7 +26,7 @@
         "litus/php-cs": "dev-master"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "": "module/"
         }
     }

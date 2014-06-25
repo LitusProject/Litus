@@ -58,6 +58,13 @@ class Config
     private $description;
 
     /**
+     * @var boolean Whether this entry is published
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $published;
+
+    /**
      * @param  string                   $key   The entry's key
      * @param  string                   $value The entry's value
      * @throws InvalidArgumentException Key must be a string
@@ -69,6 +76,7 @@ class Config
 
         $this->key = $key;
         $this->setValue($value);
+        $this->published = false;
     }
 
     /**
@@ -121,5 +129,24 @@ class Config
             throw new InvalidArgumentException('Description must be a string or null');
 
         $this->description = $description;
+    }
+
+    /**
+     * @param  boolean                            $published
+     * @return \CommonBundle\Entity\Public\Config
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPublished()
+    {
+        return $this->published;
     }
 }

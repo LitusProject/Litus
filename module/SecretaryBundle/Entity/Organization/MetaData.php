@@ -228,8 +228,9 @@ class MetaData
     }
 
     /**
-     * @param  boolean $tshirtSize
-     * @return self
+     * @param string $tshirtSize
+     *
+     * @return \SecretaryBundle\Entity\Organization\MetaData
      */
     public function setTshirtSize($tshirtSize)
     {

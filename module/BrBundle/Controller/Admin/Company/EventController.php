@@ -266,19 +266,21 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
+        $form = new PosterForm();
+
         if ($this->getRequest()->isPost()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->addValidator(new SizeValidator(array('max' => '10MB')));
-            $upload->addValidator(new ImageValidator());
+            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
 
                 $image = new Imagick($upload->getFileName());
+                unlink($upload->getFileName());
 
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
                     $fileName = '/' . $event->getEvent()->getPoster();
@@ -288,6 +290,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
+
                 $image->writeImage($filePath . $fileName);
                 $event->getEvent()->setPoster($fileName);
 

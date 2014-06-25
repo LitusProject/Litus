@@ -21,8 +21,8 @@ return array(
         'Corporate Relations' => array(
             'subtitle' => array('Companies', 'Contracts'),
             'items'    => array(
-                'br_admin_company'  => 'Companies',
-                'br_admin_cv_entry' => 'CVs',
+                'br_admin_company'  => array('title' => 'Companies'),
+                'br_admin_cv_entry' => array('title' => 'CVs'),
             ),
         ),
     ),

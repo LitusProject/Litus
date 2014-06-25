@@ -42,9 +42,9 @@ EOT
 
     protected function executeCommand()
     {
-        $em = $this->getEntityManager();
         $interval = new DateInterval(
-            $em->getRepository('CommonBundle\Entity\General\Config')
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.expiration_warning_interval')
         );
 
@@ -57,7 +57,8 @@ EOT
         $this->writeln('Looking for bookings expiring between <comment>'
             . $start->format('d M Y') . '</comment> and <comment>' . $end->format('d M Y') . '</comment>...');
 
-        $bookings = $em->getRepository('CudiBundle\Entity\Sale\Booking')
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllExpiringBetween($start, $end);
 
         $persons = array();
@@ -80,7 +81,7 @@ EOT
                 if ($count % 3 === 0)
                     $this->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
 
-                Booking::sendExpireWarningMail($em, $mailTransport, $person['bookings'], $person['person']);
+                Booking::sendExpireWarningMail($this->getEntityManager(), $this->getMailTransport(), $person['bookings'], $person['person']);
             }
 
             $this->writeln("\r" . 'Done.                                        ');

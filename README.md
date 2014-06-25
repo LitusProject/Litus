@@ -1,4 +1,4 @@
-Litus
+Litus [![Build Status](https://travis-ci.org/LitusProject/Litus.svg?branch=master)](https://travis-ci.org/LitusProject/Litus) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LitusProject/Litus/badges/quality-score.png?s=0d13a9ff23150e59e7b76e017699c17fd92fa91a)](https://scrutinizer-ci.com/g/LitusProject/Litus/)
 =====
 
 <p align="center">
@@ -33,4 +33,4 @@ Wrote a nice new feature? Solved a bug? Just shoot us a pull request and we'll r
 We expect code to have passed through [`php-cs-fixer`](https://github.com/fabpot/PHP-CS-Fixer) before being committed. You can easily achieve this by using a pre-commit git hook as described [here](https://github.com/LitusProject/PhpCodeStyle/tree/master/Resources/git-hooks).
 
 ## Authors
-Built by [@nielsavonds](https://github.com/nielsavonds), [@koencertyn](https://github.com/koencertyn), [@bgotink](https://github.com/bgotink), [@DarioI](https://github.com/DarioI), [@pmaene](https://github.com/pmaene), [@krmarien](https://github.com/krmarien), [@vierbergenlars](https://github.com/vierbergenlars) and [@dwendelen](https://github.com/dwendelen) with all the love in the world. If you have any questions, don't hesitate to contact us.
+Built by [@nielsavonds](https://github.com/nielsavonds), [@koencertyn](https://github.com/koencertyn), [@bgotink](https://github.com/bgotink), [@DarioI](https://github.com/DarioI), [@Pmaene](https://github.com/Pmaene), [@krmarien](https://github.com/krmarien), [@vierbergenlars](https://github.com/vierbergenlars) and [@dwendelen](https://github.com/dwendelen) with all the love in the world. If you have any questions, don't hesitate to contact us.

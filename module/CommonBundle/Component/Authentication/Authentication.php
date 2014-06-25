@@ -95,7 +95,7 @@ class Authentication
     }
 
     /**
-     * Returns true if the provided user has been authenticated.
+     * Returns true if the user has been authenticated.
      *
      * @return bool
      */

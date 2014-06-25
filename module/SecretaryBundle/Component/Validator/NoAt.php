@@ -20,6 +20,8 @@ namespace SecretaryBundle\Component\Validator;
 
 class NoAt extends \Zend\Validator\AbstractValidator
 {
+    const NOT_VALID = 'notValid';
+
     /**
      * Error messages
      *
@@ -28,17 +30,6 @@ class NoAt extends \Zend\Validator\AbstractValidator
     protected $messageTemplates = array(
         self::NOT_VALID => 'This field should not contain an @',
     );
-
-    /**
-     * Create a new Unique Article Barcode validator.
-     *
-     * @param mixed $opts The validator's options
-     */
-    public function __construct($opts = null)
-    {
-        parent::__construct($opts);
-    }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the

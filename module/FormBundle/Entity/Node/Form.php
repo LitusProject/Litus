@@ -43,15 +43,6 @@ use CommonBundle\Entity\General\Language,
 abstract class Form extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The ID of this form
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var int The maximum number of entries of this form.
      *
      * @ORM\Column(name="max", type="integer")
@@ -78,6 +69,13 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @ORM\Column(name="editable_by_user", type="boolean")
      */
     private $editableByUser;
+
+    /**
+     * @var boolean Send a mail to guests after submitting form to login later and edit/view their submission
+     *
+     * @ORM\Column(name="send_guest_login_mail", type="boolean")
+     */
+    private $sendGuestLoginMail;
 
     /**
      * @var ArrayCollection The form's fields
@@ -132,13 +130,14 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param Person   $person
      * @param DateTime $startDate
      * @param DateTime $endDate
-     * @param boolean  $active
-     * @param boolean  $max
-     * @param boolean  $multiple
-     * @param boolean  $nonMember
-     * @param boolean  $editableByUser
+     * @param boolean                          $active
+     * @param boolean                          $max
+     * @param boolean                          $multiple
+     * @param boolean                          $nonMember
+     * @param boolean                          $editableByUser
+     * @param boolean                          $sendGuestLoginMail
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail)
     {
         parent::__construct($person);
 
@@ -146,6 +145,7 @@ abstract class Form extends \CommonBundle\Entity\Node
         $this->multiple = $multiple;
         $this->nonMember = $nonMember;
         $this->editableByUser = $editableByUser;
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -234,8 +234,27 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @param boolean $sendGuestLoginMail
+     * @return \FormBundle\Entity\Node\Form
+     */
+    public function setSendGuestLoginMail($sendGuestLoginMail)
+    {
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function sendGuestLoginMail()
+    {
+        return $this->sendGuestLoginMail;
+    }
+
+    /**
      * @param  Field $field The field to add to this form.
-     * @return self
+     * @return \FormBundle\Entity\Node\Form
      */
     public function addField(Field $field)
     {
@@ -496,9 +515,10 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param  Entry    $entry
      * @param  Language $language
+     * @param  string                                $url
      * @return string
      */
-    public function getCompletedMailBody(Entry $entry, Language $language)
+    public function getCompletedMailBody(Entry $entry, Language $language, $url)
     {
         $body = $this->getMail()->getContent($language);
         $body = str_replace('%id%', $entry->getId(), $body);
@@ -506,6 +526,13 @@ abstract class Form extends \CommonBundle\Entity\Node
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
 
         $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+
+        if ($this->sendGuestLoginMail() && $entry->isGuestEntry()) {
+            $body = str_replace('#guest_login_text#', '', $body);
+            $body = str_replace('%guest_login%', $url, $body);
+        } else {
+            $body = preg_replace('/#guest_login_text#.*#guest_login_text#\%guest_login\%/', '', $body);
+        }
 
         return $body;
     }

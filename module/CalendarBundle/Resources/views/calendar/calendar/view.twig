@@ -26,10 +26,13 @@
 
     <h3>{{ event.getTitle(language) }}</h3>
 
-    <div class="item date-left">
-        <h4 class="date left">{{ dateLocalized(event.getStartDate(), 'd MMM') }}</h4>
+    <div class="item">
+        <div class="date">
+            <div class="month">{{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }}</div>
+            <div class="day">{{ dateLocalized(event.getStartDate(), 'd') }}</div>
+        </div>
 
-        <div class="calendarItem">
+        <div class="dayItem">
             <p>
                 <span class="glyphicon glyphicon-time time"></span>
                 {% if event.getEndDate() %}
@@ -55,17 +58,17 @@
                         </a>
                     </div>
                     <div class="col-sm-9">
-                        <blockquote>
+                        <div style="margin-left: 5px;">
                             {% autoescape false %}
                                 {{ hideEmail(markdown(event.getContent(language))) }}
                             {% endautoescape %}
-                        </blockquote>
+                        </div>
                     </div>
                 </div>
             {% else %}
-                <blockquote>
+                <div style="margin-left: 5px;">
                     {{ hideEmail(markdown(event.getContent(language))) }}
-                </blockquote>
+                </div>
             {% endif %}
         </div>
     </div>

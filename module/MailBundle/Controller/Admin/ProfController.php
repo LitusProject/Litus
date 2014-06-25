@@ -50,7 +50,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $mailSubject = $mailData['subject'];
         $message = $mailData['message'];
 
-        $form = new MailForm($mailSubject, $message);
+        $form = new MailForm($mailSubject, $message, $semester);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -58,6 +58,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
+                $semester = $formData['semester'];
 
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -114,11 +115,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $body = str_replace('{{ subjects }}', $text, $formData['message']);
 
                     $parser = new Markdown_Parser();
-                    $part = new Part($parser->transform($body));
+                    $body = nl2br($parser->transform($body));
+                    $body = preg_replace('/<([a-z\/]+)><br \/>\n<br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
+                    $body = preg_replace('/<([a-z\/]+)><br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
+                    $part = new Part($body);
 
-                    $part->type = Mime::TYPE_TEXT;
-                    if ($formData['html'])
-                        $part->type = Mime::TYPE_HTML;
+                    $part->type = Mime::TYPE_HTML;
 
                     $part->charset = 'utf-8';
                     $message = new MimeMessage();
@@ -137,6 +139,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_administrator_mail'),
                             'System Administrator'
+                        );
+                        $mail->addTo(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.mail'),
+                            'Cudi'
                         );
                     } else {
                         $mail->addTo(

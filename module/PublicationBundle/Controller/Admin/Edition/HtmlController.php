@@ -148,6 +148,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             if (true === $zip->open($zipFileName)) {
                 $zip->extractTo($filePath . $fileName);
                 $zip->close();
+                unlink($zipFileName);
             } else {
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

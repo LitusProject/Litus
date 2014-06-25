@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Entity\Acl\Role,
+use CommonBundle\Component\Acl\RoleAware,
+    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Language,
@@ -48,10 +50,10 @@ use CommonBundle\Entity\Acl\Role,
  *      "supplier"="CudiBundle\Entity\User\Person\Supplier"
  * })
  */
-abstract class Person
+abstract class Person implements RoleAware
 {
     /**
-     * @var string The persons unique identifier
+     * @var integer The persons unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,7 +77,7 @@ abstract class Person
     private $credential;
 
     /**
-     * @var ArrayCollection;
+     * @var ArrayCollection The person's roles
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
@@ -130,7 +132,7 @@ abstract class Person
     private $sex;
 
     /**
-     * @var bool Whether or not this user can login
+     * @var boolean Whether or not this user can login
      *
      * @ORM\Column(name="can_login", type="boolean")
      */
@@ -505,8 +507,10 @@ abstract class Person
      */
     public function setFailedLogins($failedLogins)
     {
-        if($failedLogins > 32767) // Limit of Postgres smallint datatype
+         // Limit of Postgres smallint datatype
+        if ($failedLogins > 32767)
             $failedLogins = 32767;
+
         $this->failedLogins = $failedLogins;
 
         return $this;
@@ -625,13 +629,15 @@ abstract class Person
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      * @param boolean            $onlyShibboleth Activate only login by Shibboleth
+     * @param string                                  $messageConfig  The config key for the mail
+     * @param integer                                 $time           The expiration time of the activation code
      *
      * @return self
      */
     public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 604800)
     {
         if ($onlyShibboleth) {
-            $this->canlogin = true;
+            $this->canLogin = true;
         } else {
             do {
                 $code = md5(uniqid(rand(), true));

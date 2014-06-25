@@ -60,19 +60,24 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
             ->setAttribute('disabled', 'disabled');
         $this->add($field);
 
-        $this->setData(
-            array(
-                'first_name' => $person->getFirstName(),
-                'last_name' => $person->getLastName(),
-                'email' => $person->getEmail(),
-                'telephone' => $person->getPhonenumber(),
-                'sex' => $person->getSex(),
-                'roles' => $this->_createRolesPopulationArray($person->getRoles(false)),
-                'system_roles' => $this->_createSystemRolesPopulationArray($person->getFlattenedRoles()),
-                'unit_roles' => $this->_createRolesPopulationArray($person->getUnitRoles()),
-                'code' => $person->getCode() ? $person->getCode()->getCode() : '',
-            )
+        $this->_populateFromPerson($person);
+    }
+
+    private function _populateFromPerson(Person $person)
+    {
+        $data = array(
+            'first_name' => $person->getFirstName(),
+            'last_name' => $person->getLastName(),
+            'email' => $person->getEmail(),
+            'telephone' => $person->getPhonenumber(),
+            'sex' => $person->getSex(),
+            'roles' => $this->_createRolesPopulationArray($person->getRoles(false)),
+            'system_roles' => $this->_createSystemRolesPopulationArray($person->getFlattenedRoles()),
+            'unit_roles' => $this->_createRolesPopulationArray($person->getUnitRoles()),
+            'code' => $person->getCode() ? $person->getCode()->getCode() : '',
         );
+
+        $this->setData($data);
     }
 
     /**

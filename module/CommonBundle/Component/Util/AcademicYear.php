@@ -52,7 +52,7 @@ class AcademicYear
         if ($date === null)
             $date = new DateTime('now');
 
-        $startOfAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
         if ($date > $startOfAcademicYear) {
             $startYear = $startOfAcademicYear->format('Y');
@@ -78,7 +78,7 @@ class AcademicYear
         if ($date === null)
             $date = new DateTime('now');
 
-        $startOfAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
         if ($date > $startOfAcademicYear) {
             $startYear = $startOfAcademicYear->format('y');

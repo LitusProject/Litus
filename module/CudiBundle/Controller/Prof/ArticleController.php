@@ -416,8 +416,26 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    public function deleteAction()
+    {
+        if (!($article = $this->_getArticle()))
+            return new ViewModel();
+
+        $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'delete');
+        $this->getEntityManager()->persist($action);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function typeaheadAction()
     {
+        $this->initAjax();
+
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findAllByProf($this->getAuthentication()->getPersonObject());

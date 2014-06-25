@@ -51,4 +51,8 @@
             </dd>
         {% endfor %}
     </dl>
+
+    <div style="clear: both;text-align: center;">
+        <a href="{{ url('form_view', {'action': 'index', 'id': specification.getId()}) }}" class="btn btn-default">{{ translate('Back') }}</a>
+    </div>
 {% endblock %}

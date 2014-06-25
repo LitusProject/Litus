@@ -33,7 +33,7 @@ class Module
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('production' == getenv('APPLICATION_ENV'))
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
 
         $injectTemplateListener = new InjectTemplateListener();
