@@ -183,7 +183,7 @@ class Key implements RoleAware
     /**
      * Add the specified roles to the user.
      *
-     * @param  array                            $roles An array containing the roles that should be added
+     * @param  array                 $roles An array containing the roles that should be added
      * @return \ApiBundle\Entity\Key
      */
     public function setRoles(array $roles)
@@ -209,7 +209,7 @@ class Key implements RoleAware
     /**
      * Removes the given role.
      *
-     * @param  \CommonBundle\Entity\Acl\Role    $role The role that should be removed
+     * @param  \CommonBundle\Entity\Acl\Role $role The role that should be removed
      * @return \ApiBundle\Entity\Key
      */
     public function removeRole(Role $role)

@@ -33,7 +33,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class Queue
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
 
