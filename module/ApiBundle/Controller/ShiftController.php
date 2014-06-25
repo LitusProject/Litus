@@ -34,7 +34,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || null === $this->_getPerson())
             return $this->error(401, 'The access token is not valid');
 
         $shifts = $this->getEntityManager()
@@ -90,7 +90,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || null === $this->_getPerson())
             return $this->error(401, 'The access token is not valid');
 
         if (null === $this->_getShift())
@@ -123,7 +123,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || null === $this->_getPerson())
             return $this->error(401, 'The access token is not valid');
 
         if (null === $this->_getShift())
@@ -200,7 +200,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || null === $this->_getPerson())
             return $this->error(401, 'The access token is not valid');
 
         if (null === $this->_getShift())

@@ -30,16 +30,6 @@ use CommonBundle\Entity\User\Person,
  */
 class Banner extends \CommonBundle\Entity\Node
 {
-
-    /**
-     * @var The banner's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
     /**
      * @var string The name of the banner
      *
