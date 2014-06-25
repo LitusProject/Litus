@@ -118,7 +118,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $body = str_replace('{{ subjects }}', $text, $formData['message']);
 
                     $parser = new Markdown_Parser();
-                    $part = new Part($parser->transform($body));
+                    $body = nl2br($parser->transform($body));
+                    $body = preg_replace('/<([a-z\/]+)><br \/>\n<br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
+                    $body = preg_replace('/<([a-z\/]+)><br \/>\n<([a-z]+)>/is', '<$1><$2>', $body);
+                    $part = new Part($body);
 
                     $part->type = Mime::TYPE_HTML;
 
