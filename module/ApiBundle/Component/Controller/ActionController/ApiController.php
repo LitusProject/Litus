@@ -158,7 +158,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
             if (null !== $fallbackLanguage)
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            // Problem setting default language
+        }
     }
 
     /**

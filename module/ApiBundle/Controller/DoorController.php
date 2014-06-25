@@ -78,7 +78,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         if (!($academic = $this->_getAcademic()))
             return $this->error(500, 'The person does not exist');
 
-        $log = new Log();
+        $log = new Log($academic);
 
         $this->getDocumentManager()->persist($log);
         $this->getDocumentManager()->flush();
