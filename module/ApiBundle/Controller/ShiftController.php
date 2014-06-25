@@ -18,11 +18,8 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShiftBundle\Entity\Shift\Responsible,
+use ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**

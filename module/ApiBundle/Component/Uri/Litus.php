@@ -32,7 +32,7 @@ class Litus extends \Zend\Uri\Uri
      *
      * @see    Uri::setUserInfo()
      * @param  string $userInfo
-     * @return File
+     * @return \ApiBundle\Component\Uri\Litus
      */
     public function setUserInfo($userInfo)
     {
@@ -44,7 +44,7 @@ class Litus extends \Zend\Uri\Uri
      *
      * @see    Uri::setFragment()
      * @param  string $fragment
-     * @return File
+     * @return \ApiBundle\Component\Uri\Litus
      */
     public function setFragment($fragment)
     {

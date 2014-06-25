@@ -20,7 +20,6 @@ namespace ApiBundle\Form\Admin\Key;
 
 use ApiBundle\Entity\Key,
     Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Text,
     Zend\Form\Element\Submit;
 
 /**

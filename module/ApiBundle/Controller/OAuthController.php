@@ -26,7 +26,6 @@ use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
