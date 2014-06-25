@@ -52,7 +52,7 @@ use CommonBundle\Component\Acl\RoleAware,
 abstract class Person implements RoleAware
 {
     /**
-     * @var string The persons unique identifier
+     * @var integer The persons unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -36,11 +36,6 @@ use CommonBundle\Component\Acl\Acl,
 class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements DoctrineAware
 {
     /**
-     * @var \CommonBundle\Entity\User\Person The authenticated person object
-     */
-    private $_authenticatedPersonObject = null;
-
-    /**
      * @var \CommonBundle\Component\Acl\Driver\HasAccess The access driver
      */
     private $_hasAccessDriver = null;
@@ -217,8 +212,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _initLocalization()
     {
-        $language = $this->getLanguage();
-
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 

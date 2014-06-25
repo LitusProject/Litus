@@ -63,7 +63,7 @@ class Key implements RoleAware
     private $code;
 
     /**
-     * @var string Whether the host should be checked
+     * @var boolean Whether the host should be checked
      *
      * @ORM\Column(name="check_host", type="boolean")
      */
