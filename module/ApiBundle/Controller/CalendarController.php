@@ -18,10 +18,7 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    Imagick,
+use Imagick,
     Zend\View\Model\ViewModel;
 
 /**

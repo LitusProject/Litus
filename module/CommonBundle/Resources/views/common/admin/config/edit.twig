@@ -26,6 +26,16 @@
             var div = $('<div>')
             textfield.after(div);
             if($.isPlainObject(object)) {
+                var plainButton = $('<button>', {'class': 'edit'}).html('Plain').css('float', 'right');
+                textfield.before(plainButton);
+
+                plainButton.click(function (e) {
+                    e.preventDefault();
+
+                    textfield.toggle();
+                    div.toggle();
+                });
+
                 textfield.hide();
                 displayObject(object, div);
             }

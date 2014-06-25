@@ -6,13 +6,6 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        <div class="flashmessage warning_message full_width">
-            <div class="title">Warning</div>
-            <div class="content">
-                The following mail will be sent to all the professors who have a course in the <b>{% if 1 == semester %} first {% else %} second {% endif %}</b> semester.
-            </div>
-        </div>
-
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>

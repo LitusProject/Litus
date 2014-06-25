@@ -40,7 +40,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     private $_host = 'localhost';
 
     /**
-     * @var integer The port used by the server
+     * @var boolean The port used by the server
      */
     private $_secure = true;
 

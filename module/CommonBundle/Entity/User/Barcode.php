@@ -48,7 +48,7 @@ class Barcode
     private $person;
 
     /**
-     * @var string The barcode
+     * @var integer The barcode
      *
      * @ORM\Column(type="bigint")
      */

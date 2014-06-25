@@ -31,7 +31,7 @@ class Exists extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \CudiBundle\Entity\Article
+     * @var \CudiBundle\Entity\Sale\Article
      */
     private $_article;
 
@@ -52,7 +52,9 @@ class Exists extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Discount validator.
      *
-     * @param mixed $opts The validator's options
+     * @param \CudiBundle\Entity\Sale\Article $article
+     * @param \Doctrine\ORM\EntityManager     $entityManager
+     * @param mixed                           $opts          The validator's options
      */
     public function __construct(Article $article, EntityManager $entityManager, $opts = null)
     {

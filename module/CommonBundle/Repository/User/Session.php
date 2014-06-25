@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person as PersonEntity,
     DateTime,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
@@ -47,7 +47,7 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllActiveByPersonQuery(Person $person)
+    public function findAllActiveByPersonQuery(PersonEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')

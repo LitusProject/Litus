@@ -107,7 +107,7 @@ class TmpFile
     {
         if ($this->_isOpen()) {
             $fileHandle = $this->fileHandle;
-            $this->_fileHandle = null;
+            $this->fileHandle = null;
 
             fclose($fileHandle);
             if (file_exists($this->_filename))

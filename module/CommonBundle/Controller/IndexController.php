@@ -67,6 +67,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $resultPage = (array) json_decode($fileContents);
 
         $nbOfficialLaps = null;
+        $returnArray = null;
         if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')

@@ -36,28 +36,8 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         $date = null;
         if (null !== $this->getParam('academicyear'))
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
+        return AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
     }
 
     /**
