@@ -154,7 +154,7 @@ class Key implements RoleAware
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getCheckHost()
     {

@@ -19,7 +19,6 @@
 namespace SportBundle\Controller\Run;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
     SportBundle\Entity\Group,
     SportBundle\Entity\Runner,
     SportBundle\Form\Group\Add as AddForm,

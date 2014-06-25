@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\NamedPriorityQueue,
     Zend\Mvc\MvcEvent,
     Zend\Validator\AbstractValidator;

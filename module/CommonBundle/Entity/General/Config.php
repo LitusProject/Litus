@@ -133,7 +133,7 @@ class Config
 
     /**
      * @param  boolean                            $published
-     * @return \CommonBundle\Entity\Public\Config
+     * @return Config
      */
     public function setPublished($published)
     {

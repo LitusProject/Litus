@@ -18,7 +18,8 @@
 
 namespace CalendarBundle\Controller;
 
-use DateInterval,
+use CalendarBundle\Entity\Node\Event,
+    DateInterval,
     DateTime,
     IntlDateFormatter,
     Zend\Http\Headers,
@@ -267,7 +268,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return CalendarBundle\Entity\Node\Event|null
+     * @return Event|null
      */
     public function _getEvent()
     {
@@ -285,7 +286,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return CalendarBundle\Entity\Node\Event|null
+     * @return Event|null
      */
     private function _getEventByPoster()
     {

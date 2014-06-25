@@ -104,6 +104,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param Analytics $analytics
+     * @return array
+     */
     private function _getVisitsGraph(Analytics $analytics)
     {
         if (null !== $this->getCache()) {
@@ -124,6 +128,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->_getVisitsGraphData($analytics);
     }
 
+    /**
+     * @param Analytics $analytics
+     * @return array
+     */
     private function _getVisitsGraphData(Analytics $analytics)
     {
         $now = new DateTime();
@@ -145,6 +153,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $visitsGraphData;
     }
 
+    /**
+     * @return array
+     */
     private function _getRegistrationsGraph()
     {
         if (null !== $this->getCache()) {
@@ -165,6 +176,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->_getRegistrationsGraphData();
     }
 
+    /**
+     * @return array
+     */
     private function _getRegistrationsGraphData()
     {
         $now = new DateTime();

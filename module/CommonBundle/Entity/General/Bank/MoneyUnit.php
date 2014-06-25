@@ -61,7 +61,7 @@ class MoneyUnit
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getUnit()
     {

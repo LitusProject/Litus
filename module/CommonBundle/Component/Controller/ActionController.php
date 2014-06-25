@@ -482,7 +482,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * Redirects after a successful authentication.
      * If this returns null, no redirection will take place.
      *
-     * @return void
+     * @return \Zend\Http\Response
      */
     protected function redirectAfterAuthentication()
     {

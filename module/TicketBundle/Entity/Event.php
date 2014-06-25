@@ -99,14 +99,14 @@ class Event
     private $limitPerPerson;
 
     /**
-     * @var integer Flag whether only members can book tickets
+     * @var bool Flag whether only members can book tickets
      *
      * @ORM\Column(name="only_members", type="boolean")
      */
     private $onlyMembers;
 
     /**
-     * @var integer Flag whether users can remove there ticket
+     * @var bool Flag whether users can remove there ticket
      *
      * @ORM\Column(name="allow_remove", type="boolean")
      */

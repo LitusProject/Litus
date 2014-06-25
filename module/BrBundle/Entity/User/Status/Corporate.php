@@ -108,7 +108,7 @@ class Corporate
      *
      * @static
      * @param  \BrBundle\Entity\User\Person\Corporate $person the user to check
-     * @return bool
+     * @return boolean
      */
     public static function isValidPerson(CorporatePerson $person)
     {
@@ -125,7 +125,7 @@ class Corporate
 
     /**
      * @param  string                                      $status string the status to set
-     * @return \CommonBundle\Entity\User\UniversityStatus
+     * @return Corporate
      */
     public function setStatus($status)
     {

@@ -55,7 +55,7 @@ class Restriction
     private $type;
 
     /**
-     * @var string The value of the restriction
+     * @var string|null The value of the restriction
      *
      * @ORM\Column(type="string", nullable=true)
      */

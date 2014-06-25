@@ -158,6 +158,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return string
+     */
     private function _getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()

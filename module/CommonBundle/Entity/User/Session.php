@@ -83,7 +83,7 @@ class Session
     private $active;
 
     /**
-     * @var string The type of this session
+     * @var bool The type of this session
      *
      * @ORM\Column(type="boolean")
      */

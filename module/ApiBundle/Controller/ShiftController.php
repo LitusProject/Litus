@@ -18,8 +18,10 @@
 
 namespace ApiBundle\Controller;
 
-use ShiftBundle\Entity\Shift\Responsible,
+use CommonBundle\Entity\User\Person,
+    ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
+    ShiftBundle\Entity\Shift,
     Zend\View\Model\ViewModel;
 
 /**
@@ -226,6 +228,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         );
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getAccessToken())
@@ -234,6 +239,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         return $this->getAccessToken()->getPerson($this->getEntityManager());
     }
 
+    /**
+     * @return Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))

@@ -40,7 +40,7 @@ class Event
     private $id;
 
     /**
-     * @var string The event
+     * @var \CalendarBundle\Entity\Node\Event The event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="event", referencedColumnName="id")

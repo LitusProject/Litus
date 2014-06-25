@@ -32,7 +32,7 @@ use CommonBundle\Entity\User\Person,
 class Driver
 {
     /**
-     * @var ArrayCollection The person this driver represents
+     * @var Person The person this driver represents
      *
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})

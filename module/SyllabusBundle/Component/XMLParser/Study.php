@@ -141,6 +141,10 @@ class Study
         return $this->_entityManager;
     }
 
+    /**
+     * @param array $data
+     * @return array
+     */
     private function _createStudies($data)
     {
         $this->_callback('create_studies', (string) $data->titel);
@@ -218,6 +222,10 @@ class Study
         return $studies;
     }
 
+    /**
+     * @param array $data
+     * @param array $studies
+     */
     private function _createSubjects($data, $studies)
     {
         $this->_callback('create_subjects');
@@ -297,6 +305,10 @@ class Study
         }
     }
 
+    /**
+     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param array $profs
+     */
     private function _createProf(SubjectEntity $subject, $profs)
     {
         $maps = array();
@@ -363,6 +375,9 @@ class Study
         }
     }
 
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     */
     private function _cleanUpAcademicYear(AcademicYearEntity $academicYear)
     {
         $mapping = $this->getEntityManager()
@@ -391,6 +406,7 @@ class Study
 
     /**
      * @param string $identification
+     * @return array
      */
     private function _getInfoProf($identification)
     {
@@ -417,6 +433,11 @@ class Study
         );
     }
 
+    /**
+     * @param string $identification
+     * @param string $url
+     * @return string|null
+     */
     private function _getProfImage($identification, $url)
     {
         $headers = get_headers($url);
@@ -446,12 +467,16 @@ class Study
 
     /**
      * @param string $type
+     * @param string|null $extra
      */
     private function _callback($type, $extra = null)
     {
         call_user_func($this->_callback, $type, $extra);
     }
 
+    /**
+     * @return array
+     */
     private function _getUrls()
     {
         $url = $this->_entityManager
@@ -530,6 +555,10 @@ class Study
         return $urls;
     }
 
+    /**
+     * @param int $start
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     private function _getAcademicYear($start)
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(

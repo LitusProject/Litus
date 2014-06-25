@@ -384,6 +384,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return Unit|null
+     */
     private function _getUnit()
     {
         if (null === $this->getParam('id')) {
@@ -431,6 +434,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $unit;
     }
 
+    /**
+     * @return UnitMap|null
+     */
     private function _getMember()
     {
         if (null === $this->getParam('id')) {
@@ -478,6 +484,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $member;
     }
 
+    /**
+     * @param Role      $role
+     * @param Unit|null $parent
+     */
     private function _findRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent)
@@ -489,6 +499,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $this->_findRoleWithParent($role, $parent->getParent());
     }
 
+    /**
+     * @param Role      $role
+     * @param Unit|null $parent
+     */
     private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent)

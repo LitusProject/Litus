@@ -32,6 +32,14 @@ use CommonBundle\Entity\User\Person,
  */
 class Ticket
 {
+    /**
+     * @param Event $event
+     * @param Person|null $person
+     * @param GuestInfo|null $guestInfo
+     * @param array $numbers
+     * @param bool $payed
+     * @param EntityManager $entityManager
+     */
     public static function book(Event $event, Person $person = null, GuestInfo $guestInfo = null, $numbers, $payed, EntityManager $entityManager)
     {
         if ($event->areTicketsGenerated()) {
@@ -130,6 +138,15 @@ class Ticket
         }
     }
 
+    /**
+     * @param Event $event
+     * @param Person|null $person
+     * @param GuestInfo|null $guestInfo
+     * @param bool $member
+     * @param bool $payed
+     * @param Option|null $option
+     * @param EntityManager $entityManager
+     */
     private static function _createTicket(Event $event, Person $person = null, GuestInfo $guestInfo = null, $member, $payed, Option $option = null, EntityManager $entityManager)
     {
         $ticket = new TicketEntity(

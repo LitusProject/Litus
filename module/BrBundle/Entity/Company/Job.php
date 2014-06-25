@@ -107,7 +107,7 @@ class Job
     private $type;
 
     /**
-     * @var string The last time this job was updated.
+     * @var DateTime The last time this job was updated.
      *
      * @ORM\Column(type="date")
      */

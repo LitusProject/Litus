@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
@@ -674,6 +675,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getUser()
     {
         if (null === $this->getParam('code')) {
@@ -715,6 +719,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $user;
     }
 
+    /**
+     * @return null
+     */
     private function _doRedirect()
     {
         if (null === $this->getParam('return')) {

@@ -18,7 +18,8 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -61,6 +62,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getPerson()
     {
         if (null !== $this->getAccessToken())

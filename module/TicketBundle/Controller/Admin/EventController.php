@@ -283,6 +283,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {

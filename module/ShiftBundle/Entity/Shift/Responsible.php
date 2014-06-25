@@ -42,7 +42,7 @@ class Responsible
     private $id;
 
     /**
-     * @var string The unit's name
+     * @var DateTime The unit's name
      *
      * @ORM\Column(name="signup_time", type="datetime")
      */

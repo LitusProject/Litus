@@ -27,6 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Academic\Add as AddForm,
     CommonBundle\Form\Admin\Academic\Edit as EditForm,
     DateTime,
+    Doctrine\ORM\Query,
     Zend\View\Model\ViewModel;
 
 /**
@@ -481,8 +482,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     *
-     * @return \Doctrine\ORM\Query
+     * @return Query|null
      */
     private function _search()
     {
@@ -502,6 +502,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
+    /**
+     * @return Academic|null
+     */
     private function _getAcademic()
     {
         if (null === $this->getParam('id')) {

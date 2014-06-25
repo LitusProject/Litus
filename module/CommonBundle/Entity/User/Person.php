@@ -19,7 +19,6 @@
 namespace CommonBundle\Entity\User;
 
 use CommonBundle\Component\Acl\RoleAware,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -125,7 +124,7 @@ abstract class Person implements RoleAware
     private $phoneNumber;
 
     /**
-     * @var string The persons sex ('m' or 'f')
+     * @var string|null The persons sex ('m' or 'f')
      *
      * @ORM\Column(type="string", length=1, nullable=true)
      */
@@ -197,7 +196,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -439,7 +438,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getSex()
     {

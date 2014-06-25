@@ -221,7 +221,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return Location
+     * @return Location|null
      */
     private function _getLocation()
     {

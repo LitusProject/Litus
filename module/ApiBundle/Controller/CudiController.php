@@ -19,6 +19,7 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Entity\User\Person,
+    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\QueueItem,
     Zend\View\Model\ViewModel;
@@ -358,6 +359,10 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    /**
+     * @param Person $authenticatedPerson
+     * @return array
+     */
     private function _getArticlesAndSubjects(Person $authenticatedPerson)
     {
         $enableBookings = $this->getEntityManager()
@@ -466,6 +471,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
         return array($articles, $subjects);
     }
 
+    /**
+     * @return Booking|null
+     */
     private function _getBooking()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -476,6 +484,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($this->getRequest()->getPost('id'));
     }
 
+    /**
+     * @return Article|null
+     */
     private function _getArticle()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -486,6 +497,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($this->getRequest()->getPost('id'));
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getAccessToken())

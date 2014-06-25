@@ -109,7 +109,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Config
+     * @return Config|null
      */
     private function _getEntry()
     {

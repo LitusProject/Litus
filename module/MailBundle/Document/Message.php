@@ -41,7 +41,7 @@ class Message
     private $id;
 
     /**
-     * @var string The time of creation of this message
+     * @var DateTime The time of creation of this message
      *
      * @ODM\Field(name="creation_time", type="date")
      */

@@ -55,7 +55,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $universityIdentification;
 
     /**
-     * @var DateTime The user's birthday
+     * @var DateTime|null The user's birthday
      *
      * @ORM\Column(type="datetime", nullable=true)
      */

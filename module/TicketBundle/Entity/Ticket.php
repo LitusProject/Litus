@@ -53,7 +53,7 @@ class Ticket
     private $id;
 
     /**
-     * @var string The event of the ticket
+     * @var Event The event of the ticket
      *
      * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")

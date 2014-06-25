@@ -127,7 +127,7 @@ class Lease
     private $returnedTo;
 
     /**
-     * @var int The pawn the person got back for returning the item in cents
+     * @var int|null The pawn the person got back for returning the item in cents
      *
      * @ORM\Column(name="returned_pawn", type="bigint", nullable=true)
      */
@@ -351,7 +351,7 @@ class Lease
     }
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getReturnedPawn()
     {

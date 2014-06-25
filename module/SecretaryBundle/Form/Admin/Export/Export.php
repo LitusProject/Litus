@@ -19,7 +19,6 @@
 namespace SecretaryBundle\Form\Admin\Export;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 

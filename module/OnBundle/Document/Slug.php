@@ -62,7 +62,7 @@ class Slug
     private $url;
 
     /**
-     * @var string How many times this slug was hit
+     * @var int How many times this slug was hit
      *
      * @ODM\Field(type="increment")
      */

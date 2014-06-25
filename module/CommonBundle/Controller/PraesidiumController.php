@@ -19,7 +19,8 @@
 namespace CommonBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
     Zend\View\Model\ViewModel;
 
 /**
@@ -82,29 +83,15 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
         );
     }
 
+    /**
+     * @return AcademicYear
+     */
     private function _getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear'))
-            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
+            $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
 
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'common_praesidium'
-            );
-
-            return;
-        }
-
-        return $academicYear;
+        return AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
     }
 }

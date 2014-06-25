@@ -28,8 +28,6 @@ use BrBundle\Entity\Company\Event,
     DateTime,
     Imagick,
     Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
