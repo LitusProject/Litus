@@ -128,47 +128,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Initializes the authentication.
-     *
-     * @return void
-     */
-    protected function initAuthentication()
-    {
-        $authenticationHandler = $this->getAuthenticationHandler();
-        if (null !== $authenticationHandler) {
-            if (
-                $this->hasAccess()->toResourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
-            ) {
-                if ($this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] == $this->getParam('controller')
-                            && $authenticationHandler['action'] == $this->getParam('action')
-                    ) {
-                        return $this->redirectAfterAuthentication();
-                    }
-                }
-            } else {
-                if (!$this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] != $this->getParam('controller')
-                            && $authenticationHandler['action'] != $this->getParam('action')
-                    ) {
-                        return $this->redirect()->toRoute(
-                            $authenticationHandler['auth_route']
-                        );
-                    }
-                } else {
-                    throw new Exception\HasNoAccessException(
-                        'You do not have sufficient permissions to access this resource'
-                    );
-                }
-            }
-        }
-    }
-
-    /**
      * Initializes our custom controller plugins.
      *
      * @return void
@@ -287,9 +246,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $authenticationHandler = $this->getAuthenticationHandler();
         if (null !== $authenticationHandler) {
             if (
-                $this->hasAccess()->resourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
+                $this->hasAccess($this->getParam('controller'), $this->getParam('action'))
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (
