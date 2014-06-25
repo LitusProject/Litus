@@ -22,7 +22,7 @@ sudo ln -s $(which node) /usr/local/bin/node
 
 # install npm
 # I know, right?
-wget -q -O- http://npmjs.org/install.sh | sudo sh
+curl -L http://npmjs.org/install.sh | sudo sh
 
 # install lessc
 sudo npm install -g less
