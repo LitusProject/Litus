@@ -599,7 +599,7 @@ class Article
 
     /**
      * @param  AcademicYear $academicYear
-     * @param  string                                    $discount
+     * @param  string       $discount
      * @param  Organization $organization
      * @return integer
      */

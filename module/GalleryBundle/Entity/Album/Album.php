@@ -95,7 +95,7 @@ class Album
     /**
      * @param Person   $person
      * @param DateTime $date
-     * @param boolean                          $watermark
+     * @param boolean  $watermark
      */
     public function __construct(Person $person, DateTime $date, $watermark = true)
     {

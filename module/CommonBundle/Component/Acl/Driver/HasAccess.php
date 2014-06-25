@@ -46,8 +46,8 @@ class HasAccess
     private $_authenticated = false;
 
     /**
-     * @param Acl            $acl            The ACL object
-     * @param boolean                               $authenticated Whether the person is authenticated
+     * @param Acl       $acl           The ACL object
+     * @param boolean   $authenticated Whether the person is authenticated
      * @param RoleAware $entity        The authenticated entity
      */
     public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)

@@ -629,8 +629,8 @@ abstract class Person implements RoleAware
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      * @param boolean            $onlyShibboleth Activate only login by Shibboleth
-     * @param string                                  $messageConfig  The config key for the mail
-     * @param integer                                 $time           The expiration time of the activation code
+     * @param string             $messageConfig  The config key for the mail
+     * @param integer            $time           The expiration time of the activation code
      *
      * @return self
      */

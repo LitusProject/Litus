@@ -85,7 +85,7 @@ return Config::create(
                 'authentication_service' => 'authentication_doctrineservice',
                 'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
                 'authentication_action' => 'authentication_doctrineaction',
-                
+
                 'translator' => 'MvcTranslator',
             ),
         ),

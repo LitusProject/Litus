@@ -130,12 +130,12 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param Person   $person
      * @param DateTime $startDate
      * @param DateTime $endDate
-     * @param boolean                          $active
-     * @param boolean                          $max
-     * @param boolean                          $multiple
-     * @param boolean                          $nonMember
-     * @param boolean                          $editableByUser
-     * @param boolean                          $sendGuestLoginMail
+     * @param boolean  $active
+     * @param boolean  $max
+     * @param boolean  $multiple
+     * @param boolean  $nonMember
+     * @param boolean  $editableByUser
+     * @param boolean  $sendGuestLoginMail
      */
     public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail)
     {
@@ -234,7 +234,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $sendGuestLoginMail
+     * @param  boolean                      $sendGuestLoginMail
      * @return \FormBundle\Entity\Node\Form
      */
     public function setSendGuestLoginMail($sendGuestLoginMail)
@@ -253,7 +253,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Field $field The field to add to this form.
+     * @param  Field                        $field The field to add to this form.
      * @return \FormBundle\Entity\Node\Form
      */
     public function addField(Field $field)
@@ -515,7 +515,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param  Entry    $entry
      * @param  Language $language
-     * @param  string                                $url
+     * @param  string   $url
      * @return string
      */
     public function getCompletedMailBody(Entry $entry, Language $language, $url)
