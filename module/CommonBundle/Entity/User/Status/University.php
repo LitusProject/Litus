@@ -133,7 +133,7 @@ class University
 
     /**
      * @param $status string the status to set
-     * @return \CommonBundle\Entity\User\UniversityStatus;
+     * @return \CommonBundle\Entity\User\UniversityStatus
      */
     public function setStatus($status)
     {

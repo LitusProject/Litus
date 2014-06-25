@@ -38,12 +38,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
-     * @var \CudiBundle\Component\Websocket\Sale2\Queue
+     * @var \CudiBundle\Component\Websocket\Sale\Queue
      */
     private $_queue;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param \Doctrine\ORM\EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {

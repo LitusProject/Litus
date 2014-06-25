@@ -21,9 +21,6 @@ namespace ApiBundle\Controller;
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\QueueItem,
-    DateInterval,
-    DateTime,
-    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**

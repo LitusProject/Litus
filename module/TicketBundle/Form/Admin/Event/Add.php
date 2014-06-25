@@ -60,6 +60,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
         $field = new Select('event');
         $field->setLabel('Event')
+            ->setRequired()
             ->setAttribute('options', $this->_createEventsArray());
         $this->add($field);
 
@@ -208,6 +209,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             array(
                 'name'     => 'event',
                 'required' => true,
+                'filter' => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     new ActivityValidator($this->_entityManager),
                 ),

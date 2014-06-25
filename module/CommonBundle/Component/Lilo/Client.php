@@ -47,7 +47,8 @@ class Client
     /**
      * Constructs a new Lilo client.
      *
-     * @param \CommonBundle\Compnent\Lilo\Connection $connection The connection to the Lilo server
+     * @param \CommonBundle\Compnent\Lilo\Connection                $connection     The connection to the Lilo server
+     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
      */
     public function __construct(Connection $connection, Authentication $authentication = null)
     {

@@ -38,7 +38,7 @@ class Analytics
     private $_tokenAuth = '';
 
     /**
-     * @var string The ID of the site that should be queried
+     * @var integer The ID of the site that should be queried
      */
     private $_idSite = 0;
 

@@ -41,7 +41,7 @@ abstract class Pdf
     protected $_xslPath;
 
     /**
-     * @var \CommonBundle\Component\Util\TmpFile A tempory file which holds the generated XML structure
+     * @var \CommonBundle\Component\Util\File\TmpFile A tempory file which holds the generated XML structure
      */
     protected $_xmlFile;
 

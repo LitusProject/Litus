@@ -38,7 +38,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class QueueItem
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Session The sale session
+     * @var integer The id of the sale session
      */
     private $_id;
 
@@ -58,8 +58,8 @@ class QueueItem
     private $_articles;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
-     * @param integer                    $id            The id of the queue item
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param integer                     $id            The id of the queue item
      */
     public function __construct(EntityManager $entityManager, User $user, $id)
     {
@@ -435,7 +435,7 @@ class QueueItem
                     $barcodes[] = $barcode->getBarcode();
 
                 $result = array(
-                    'id' => $booking->getId(),
+                    'id' => 0,
                     'articleId' => $article->getId(),
                     'price' => $article->getSellPrice(),
                     'title' => $article->getMainArticle()->getTitle(),
@@ -444,7 +444,7 @@ class QueueItem
                     'author' => $article->getMainArticle()->getAuthors(),
                     'number' => 1,
                     'status' => 'assigned',
-                    'sellable' => $booking->getArticle()->isSellable(),
+                    'sellable' => $article->isSellable(),
                     'collected' => $number,
                     'discounts' => array(),
                 );

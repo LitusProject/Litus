@@ -75,6 +75,9 @@ class Date extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+        if (!is_numeric($context['event']))
+            return false;
+
         $activity = $this->_entityManager
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($context['event']);

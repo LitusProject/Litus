@@ -18,10 +18,13 @@
         <h1>{{ event.getActivity().getTitle(language) }}</h1>
     </div>
 
-    <div class="item date-left">
-        <h4 class="date left">{{ dateLocalized(event.getActivity().getStartDate(), 'd MMM') }}</h4>
+    <div class="item">
+        <div class="date">
+            <div class="month">{{ dateLocalized(event.getActivity().getStartDate(), 'LLL')|capitalize }}</div>
+            <div class="day">{{ dateLocalized(event.getActivity().getStartDate(), 'd') }}</div>
+        </div>
 
-        <div class="calendarItem">
+        <div class="dayItem">
             <p>
                 <span class="glyphicon glyphicon-time time"></span>
                 {% if event.getActivity().getEndDate() %}
