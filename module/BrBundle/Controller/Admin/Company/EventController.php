@@ -27,7 +27,7 @@ use BrBundle\Entity\Company\Event,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
-    Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileTransfer,
     Zend\View\Model\ViewModel;
 
 /**
@@ -283,7 +283,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
                     $fileName = '/' . $event->getEvent()->getPoster();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));

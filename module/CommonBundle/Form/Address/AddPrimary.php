@@ -147,7 +147,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         return array($optionsCity, $optionsStreet);
     }
 
-    public function getInputs()
+    public function getFormInputs()
     {
         $factory = new InputFactory();
         $inputs = array();

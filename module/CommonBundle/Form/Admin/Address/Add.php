@@ -107,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
         return $options;
     }
 
-    public function getInputs()
+    public function getFormInputs()
     {
         $factory = new InputFactory();
         $inputs = array();

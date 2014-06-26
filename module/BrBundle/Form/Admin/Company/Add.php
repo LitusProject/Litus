@@ -52,7 +52,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $years = $this->_getYears();
-        $archiveYears = $this->_getArchiveYears();
 
         $field = new Text('company_name');
         $field->setLabel('Company Name')
@@ -167,7 +166,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->get('address')
-            ->getInputs();
+            ->getFormInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

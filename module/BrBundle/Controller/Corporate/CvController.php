@@ -244,8 +244,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 $filters['grade']['max'] = 100;
         }
 
-        $type = $this->getParam('type');
-
         $filtered = $this->_doFilter($this->_getList($academicYear), $filters);
         $result = array();
         foreach ($filtered as $entry) {
@@ -322,14 +320,14 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
+            'Content-Disposition' => 'inline; filename="cv-' . $year['full_year'] . '.pdf"',
             'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($filePath . $archiveYear['file']),
+            'Content-Length' => filesize($filePath . $year['file']),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($filePath . $archiveYear['file'], 'r');
-        $data = fread($handle, filesize($filePath . $archiveYear['file']));
+        $handle = fopen($filePath . $year['file'], 'r');
+        $data = fread($handle, filesize($filePath . $year['file']));
         fclose($handle);
 
         return new ViewModel(

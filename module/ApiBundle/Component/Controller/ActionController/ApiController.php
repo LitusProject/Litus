@@ -175,8 +175,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
         $headers = $this->getResponse()->getHeaders();
 
-        if ($headers->get('Content-Type') instanceof HeaderInterface)
-            $headers->removeHeader($headers->get('Content-Type'));
+        $contentType = $headers->get('Content-Type');
+        if ($contentType instanceof HeaderInterface)
+            $headers->removeHeader($contentType);
 
         $headers->addHeaders(
             array_merge(

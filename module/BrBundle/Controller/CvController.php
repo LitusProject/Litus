@@ -182,30 +182,39 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $messages = array();
         $languageError = null;
 
-        if ($person === null) {
-            $messages = array('Please login to edit your CV.');
-        } else {
-            if (!($person instanceof Academic)) {
-                $messages = array('You must be a student to edit your CV.');
-            } else {
+        if (null === $person) {
+            return new ViewModel(
+                array(
+                    'messages' => array('Please login to edit your CV.'),
+                )
+            );
+        }
 
-                $temp = $this->_getBadAccountMessage($person);
-                if ($temp !== null && !empty($temp))
-                    $messages = $temp;
+        if (!($person instanceof Academic)) {
+            return new ViewModel(
+                array(
+                    'messages' => array('You must be a student to edit your CV.'),
+                )
+            );
+        }
 
-                $entry = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Entry')
-                    ->findOneByAcademic($person);
-                if (!$entry) {
-                    $messages = array('');
-                    $this->redirect()->toRoute(
-                        'br_cv_index',
-                        array(
-                            'action' => 'cv',
-                        )
-                    );
-                }
-            }
+        $temp = $this->_getBadAccountMessage($person);
+        if ($temp !== null && !empty($temp))
+            $messages = $temp;
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademic($person);
+
+        if (!$entry) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
         }
 
         $open = $this->getEntityManager()
@@ -213,13 +222,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getConfigValue('br.cv_book_open');
 
         if (!$open) {
-            $messages = array('The CV Book is currently not accepting entries.');
-        }
-
-        if (!empty($messages)) {
             return new ViewModel(
                 array(
-                    'messages' => $messages,
+                    'messages' => array('The CV Book is currently not accepting entries.'),
                 )
             );
         }
@@ -227,13 +232,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $form = new EditForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $address = new Address(
                     $person->getSecondaryAddress()->getStreet(),
                     $person->getSecondaryAddress()->getNumber(),
@@ -243,8 +246,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     $person->getSecondaryAddress()->getCountryCode()
                 );
 
-                $entry
-                    ->setFirstName($person->getFirstName())
+                $entry->setFirstName($person->getFirstName())
                     ->setLastName($person->getLastName())
                     ->setBirthday($person->getBirthDay())
                     ->setSex($person->getSex())
@@ -307,9 +309,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
                 return new ViewModel();
             } else {
-                if (!$form->isValidLanguages($formData)) {
+                if (!$form->isValidLanguages($formData))
                     $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
         } else {
             $form->populateFromEntry($entry);

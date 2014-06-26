@@ -27,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
     Zend\Http\Headers,
-    Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileTransfer,
     Zend\View\Model\ViewModel;
 
 /**

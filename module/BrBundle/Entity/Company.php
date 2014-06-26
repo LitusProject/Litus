@@ -106,7 +106,7 @@ class Company
     private $active;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The years of which this company has access to the CV Book.
+     * @var ArrayCollection The years of which this company has access to the CV Book.
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(name="br.companies_cvbooks",

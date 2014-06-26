@@ -18,7 +18,8 @@
 
 namespace BrBundle\Entity\Company;
 
-use CommonBundle\Entity\General\AcademicYear,
+use BrBundle\Entity\Company,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -71,11 +72,11 @@ class Page
     private $years;
 
     /**
-     * @param string $company     The company
-     * @param string $summary     The page's summary
-     * @param string $description The page's description
+     * @param Company $company     The company
+     * @param string  $summary     The page's summary
+     * @param string  $description The page's description
      */
-    public function __construct($company, $summary, $description)
+    public function __construct(Company $company, $summary, $description)
     {
         $this->setSummary($summary);
         $this->setDescription($description);

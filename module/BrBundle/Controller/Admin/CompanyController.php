@@ -26,7 +26,6 @@ use BrBundle\Entity\Company,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     Imagick,
-    Zend\File\Transfer\Transfer as FileTransfer,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 
@@ -269,9 +268,10 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getPost();
 
-            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
-                    $_POST['type'] !== 'file') {
+            if (!(in_array($fileData['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $formData['type'] == 'image') &&
+                    $formData['type'] !== 'file') {
                 return new ViewModel();
             }
 
@@ -281,7 +281,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
             $upload = new FileUpload();
 
-            $fileName = '';
             do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
@@ -323,7 +322,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $upload = new FileTransfer();
+            $upload = new FileUpload();
             $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
 
             if ($form->isValid() && $upload->isValid()) {
@@ -338,7 +337,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
                     $fileName = '/' . $company->getLogo();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));

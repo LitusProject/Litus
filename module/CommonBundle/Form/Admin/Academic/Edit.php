@@ -200,14 +200,14 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         if ($this->has('secondary_address')) {
             $inputs = $this->get('secondary_address')
-                ->getInputs();
+                ->getFormInputs();
             foreach($inputs as $input)
                 $inputFilter->add($input);
         }
 
         if ($this->has('primary_address')) {
             $inputs =$this->get('primary_address')
-                    ->getInputs();
+                ->getFormInputs();
             foreach($inputs as $input)
                 $inputFilter->add($input);
         }

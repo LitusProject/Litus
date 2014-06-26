@@ -217,7 +217,7 @@ class Job
      */
     public function getTypeName()
     {
-        return Job::$possibleTypes[$this->type];
+        return self::$possibleTypes[$this->type];
     }
 
     /**
@@ -323,7 +323,7 @@ class Job
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->getDescription());
 
-        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...', true);
+        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...');
     }
 
     /**

@@ -269,7 +269,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person\Corporate
      */
     private function _getUser()
     {

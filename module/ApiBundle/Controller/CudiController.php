@@ -121,7 +121,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     $new = new Booking(
                         $this->getEntityManager(),
                         $person,
-                        $articlem
+                        $article,
                         'booked',
                         $booking->getNumber() - $available
                     );

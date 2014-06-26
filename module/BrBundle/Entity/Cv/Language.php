@@ -28,7 +28,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Language
 {
-
     /**
      * @var array The possible written skills.
      */
@@ -48,7 +47,7 @@ class Language
     );
 
     /**
-     * @var string The language entry's ID
+     * @var int The language entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -86,9 +85,10 @@ class Language
     private $oral;
 
     /**
-     * @param integer $name
-     * @param integer $written
-     * @param integer $oral
+     * @param Entry  $entry
+     * @param string $name
+     * @param string $written
+     * @param string $oral
      */
     public function __construct(Entry $entry, $name, $written, $oral)
     {
@@ -99,7 +99,7 @@ class Language
     }
 
     /**
-     * @return string id.
+     * @return int id.
      */
     public function getId()
     {

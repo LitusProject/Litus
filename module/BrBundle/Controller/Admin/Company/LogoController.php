@@ -22,7 +22,7 @@ use BrBundle\Entity\Company\Logo,
     BrBundle\Form\Admin\Company\Logo\Add as AddForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
-    Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileTransfer,
     Zend\View\Model\ViewModel;
 
 /**

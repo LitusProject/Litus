@@ -67,7 +67,7 @@ class Contract
     private $company;
 
     /**
-     * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
+     * @var ArrayCollection The sections this contract contains
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Contract\Composition",
