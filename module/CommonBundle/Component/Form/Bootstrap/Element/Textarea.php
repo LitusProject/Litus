@@ -35,7 +35,7 @@ class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Comp
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct($name, $options = null)
+    public function __construct($name, $options = array())
     {
         parent::__construct($name, $options);
         $this->setAttribute('id', $name);

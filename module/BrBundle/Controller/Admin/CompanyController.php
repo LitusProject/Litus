@@ -326,8 +326,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
 
             if ($form->isValid() && $upload->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $upload->receive();
 
                 $image = new Imagick($upload->getFileName());

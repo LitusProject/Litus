@@ -93,6 +93,14 @@ class Translation
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return Event
      */
     public function getEvent()

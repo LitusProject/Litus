@@ -166,7 +166,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->get('address')
-            ->getFormInputs();
+            ->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

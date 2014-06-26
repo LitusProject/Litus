@@ -83,7 +83,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
         $result = null;
         $server = $this->_server;
 
-        if ('' == $this->getIdentity()) {
+        if ('' == $this->getIdentity() && null !== $adapter) {
             $adapterResult = $adapter->authenticate();
 
             if ($adapterResult->isValid()) {

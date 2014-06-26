@@ -147,7 +147,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
         return array($optionsCity, $optionsStreet);
     }
 
-    public function getFormInputs()
+    public function getInputs()
     {
         $factory = new InputFactory();
         $inputs = array();

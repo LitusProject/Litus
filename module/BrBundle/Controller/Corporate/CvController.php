@@ -291,6 +291,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             ->getConfigValue('br.file_path') . '/cv/';
 
         $archiveYearKey = '';
+        $archiveYear = null;
         foreach ($archive as $key => $year) {
             if ($year['full_year'] == $this->getParam('academicyear')) {
                 $archiveYear = $year;
@@ -299,7 +300,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears())) {
+        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears()) || null === $archiveYear) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -320,14 +321,14 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'inline; filename="cv-' . $year['full_year'] . '.pdf"',
+            'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
             'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($filePath . $year['file']),
+            'Content-Length' => filesize($filePath . $archiveYear['file']),
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $handle = fopen($filePath . $year['file'], 'r');
-        $data = fread($handle, filesize($filePath . $year['file']));
+        $handle = fopen($filePath . $archiveYear['file'], 'r');
+        $data = fread($handle, filesize($filePath . $archiveYear['file']));
         fclose($handle);
 
         return new ViewModel(

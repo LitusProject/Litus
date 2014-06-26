@@ -43,7 +43,6 @@ class TmpFile
      */
     public function __construct($tmpDirectory = '/tmp')
     {
-        $filename = '';
         do {
             $filename = '/.' . uniqid();
         } while (file_exists($tmpDirectory . $filename));

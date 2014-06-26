@@ -292,11 +292,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $company = $this->getEntityManager()
+        $corporate = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($this->getParam('id'));
 
-        if (null === $company) {
+        if (null === $corporate) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -315,6 +315,6 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        return $company;
+        return $corporate;
     }
 }

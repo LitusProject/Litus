@@ -223,8 +223,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $headers = $this->getResponse()->getHeaders();
 
-        if ($headers->has('Content-Type'))
-            $headers->removeHeader('Content-Type');
+        $contentType = $headers->get('Content-Type');
+        if ($contentType instanceof HeaderInterface)
+            $headers->removeHeader($contentType);
 
         $headers->addHeaders(
             array_merge(

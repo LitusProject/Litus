@@ -103,7 +103,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
         return $options;
     }
 
-    public function getFormInputs()
+    public function getInputs()
     {
         $factory = new InputFactory();
         $inputs = array();

@@ -35,14 +35,6 @@ class NotZero extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param mixed $opts The validator's options
-     */
-    public function __construct($opts = null)
-    {
-        parent::__construct($opts);
-    }
-
-    /**
      * Returns true if the value is not zero.
      *
      * @param  string  $value   The value of the field that will be validated

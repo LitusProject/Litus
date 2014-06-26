@@ -32,7 +32,7 @@ use CommonBundle\Component\Authentication\Action\Doctrine,
 class Authentication
 {
     /**
-     * @var Doctrine The authentication adapter
+     * @var AdapterInterface The authentication adapter
      */
     private $_adapter = null;
 

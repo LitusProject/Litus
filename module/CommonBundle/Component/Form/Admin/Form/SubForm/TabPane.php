@@ -41,7 +41,7 @@ class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable                  $data
+     * @param  array|\Traversable                  $data
      * @return TabPane
      * @throws Exception\InvalidArgumentException
      */
@@ -60,7 +60,7 @@ class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable                  $messages
+     * @param  array|\Traversable                  $messages
      * @return TabPane
      * @throws Exception\InvalidArgumentException
      */

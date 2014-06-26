@@ -154,7 +154,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $formData = $form->getFormData($formData);
 
                 $event->setStartDate(self::_loadDate($formData['start_date']))
-                    ->setEndDate(self::_loadDate($formDate['end_date']));
+                    ->setEndDate(self::_loadDate($formData['end_date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -280,15 +280,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $image = new Imagick($upload->getFileName());
                 unlink($upload->getFileName());
 
-                $fileName = '';
-                do {
-                    $fileName = '/' . sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
-
                 if ($event->getPoster() != '' || $event->getPoster() !== null) {
                     $fileName = '/' . $event->getPoster();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));

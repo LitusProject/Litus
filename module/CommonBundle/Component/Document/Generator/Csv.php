@@ -28,13 +28,13 @@ class Csv
     private $_headers;
 
     /**
-     * @var arrays The array containing the results
+     * @var array The array containing the results
      */
     private $_results;
 
     /**
-     * @param string[] $headers The array containing the headers
-     * @param array    $results The array containing the form results
+     * @param array $headers The array containing the headers
+     * @param array $results The array containing the form results
      */
     public function __construct(array $headers, array $results)
     {

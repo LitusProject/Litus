@@ -28,12 +28,12 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var The maximum length
+     * @var int The maximum length
      */
     private $_maxLength;
 
     /**
-     * @var The number of characters counted for a newline
+     * @var int The number of characters counted for a newline
      */
     private $_newlineLength;
 
@@ -45,9 +45,9 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param $maxLength The maximum length of the value
-     * @param integer $newlineLength A newline is interpreted as this number of characters.
-     * @param mixed   $opts          The validator's options
+     * @param int   $maxLength The maximum length of the value
+     * @param int   $newlineLength A newline is interpreted as this number of characters.
+     * @param mixed $opts          The validator's options
      */
     public function __construct($maxLength, $newlineLength, $opts = null)
     {

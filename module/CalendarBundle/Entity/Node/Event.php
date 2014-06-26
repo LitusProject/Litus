@@ -150,6 +150,7 @@ class Event extends \CommonBundle\Entity\Node
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
+        $fallbackTranslation = null;
         foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;

@@ -33,7 +33,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Translator (optional)
      *
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 

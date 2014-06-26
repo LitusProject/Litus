@@ -295,12 +295,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->get('secondary_address')
-            ->getFormInputs();
+            ->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 
         $inputs =$this->get('primary_address')
-            ->getFormInputs();
+            ->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

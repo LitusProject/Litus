@@ -49,11 +49,11 @@ EOT
 
         $config = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->find($this->getArgument('key'));
+            ->find($key);
 
         if ('get' == $action) {
             if (null === $config) {
-                fwrite(STDERR, 'Configuration key "' . $this->getArgument('key') . '" doesn\'t exist' . PHP_EOL);
+                fwrite(STDERR, 'Configuration key "' . $key . '" doesn\'t exist' . PHP_EOL);
 
                 return 1;
             } else {

@@ -146,7 +146,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
             }
 
-            $fullTime = '';
             if (null !== $event->getEndDate()) {
                 if ($event->getEndDate()->format('d/M/Y') == $event->getStartDate()->format('d/M/Y')) {
                     $fullTime = $hourFormatter->format($event->getStartDate()) . ' - ' . $hourFormatter->format($event->getEndDate());

@@ -260,7 +260,6 @@ class Config
     public static function create(array $settings, array $override = array())
     {
         $directory = $settings['directory'];
-        $namespace = $settings['namespace'];
 
         $routerConfig = self::_load($directory, 'router.config.php');
 

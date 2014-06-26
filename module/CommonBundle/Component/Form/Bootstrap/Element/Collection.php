@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use Zend\Form\FormInterface;
+use Zend\Form\ElementPrepareAwareInterface,
+    Zend\Form\Fieldset,
+    Zend\Form\FormInterface;
 
 /**
  * Collection form element

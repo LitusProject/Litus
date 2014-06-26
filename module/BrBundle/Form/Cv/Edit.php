@@ -31,17 +31,6 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-
-    /**
-     * The entity manager.
-     */
-    private $_entityManager;
-
-    /**
-     * The academic this form is for.
-     */
-    private $_academic;
-
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int             $name          Optional name for the element

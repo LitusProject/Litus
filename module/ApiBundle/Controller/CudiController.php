@@ -262,7 +262,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllAssignedByPerson($person);
 
-                $result['canSignIn'] = $session->canSignIn($this->getEntityManager(), $persons);
+                $result['canSignIn'] = $session->canSignIn($this->getEntityManager(), $person);
                 $result['hasBookings'] = !empty($bookings);
             }
         } else {
