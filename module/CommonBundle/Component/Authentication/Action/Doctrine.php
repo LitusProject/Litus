@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Entity\User\Code,
+use CommonBundle\Component\Authentication\Result,
+    CommonBundle\Entity\User\Code,
     Doctrine\ORM\EntityManager,
-    Zend\Authentication\Result,
     Zend\Mail\Transport\TransportInterface,
     Zend\Mail\Message;
 

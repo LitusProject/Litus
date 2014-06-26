@@ -79,14 +79,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
-                $event = new Event(
-                    $this->getAuthentication()->getPersonObject(),
-                    self::_loadDate($formData['start_date']),
-                    self::_loadDate($formData['end_date'])
-                );
+                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, $endDate);
                 $this->getEntityManager()->persist($event);
 
                 $languages = $this->getEntityManager()
@@ -153,8 +152,10 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $event->setStartDate(self::_loadDate($formData['start_date']))
-                    ->setEndDate(self::_loadDate($formData['end_date']));
+                if ($startDate = self::_loadDate($formData['start_date']))
+                    $event->setStartDate($startDate);
+                if ($endDate = self::_loadDate($formData['end_date']))
+                    $event->setEndDate($endDate);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
