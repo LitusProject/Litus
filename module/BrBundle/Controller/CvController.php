@@ -36,7 +36,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $messages = array();
         $languageError = null;
 
         if (null === $person) {

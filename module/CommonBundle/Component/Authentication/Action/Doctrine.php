@@ -20,6 +20,7 @@ namespace CommonBundle\Component\Authentication\Action;
 
 use CommonBundle\Entity\User\Code,
     Doctrine\ORM\EntityManager,
+    Zend\Authentication\Result,
     Zend\Mail\Transport\TransportInterface,
     Zend\Mail\Message;
 
@@ -53,10 +54,10 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization has failed.
      *
-     * @param $result
+     * @param Result $result
      * @return void
      */
-    public function failedAction($result)
+    public function failedAction(Result $result)
     {
         if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential())
             return;
@@ -115,7 +116,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization was successful.
      *
-     * @param $result
+     * @param Result $result
      * @return void
      */
     public function succeededAction($result)

@@ -101,7 +101,7 @@ class Page
     }
 
     /**
-     * @return string
+     * @return Company
      */
     public function getCompany()
     {

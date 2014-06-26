@@ -95,7 +95,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Returns translator used in helper
      *
-     * @return Translator|null
+     * @return null|TranslatorInterface
      */
     public function getTranslator()
     {

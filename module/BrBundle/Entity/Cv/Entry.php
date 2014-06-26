@@ -270,7 +270,7 @@ class Entry
      * @param \CommonBundle\Entity\General\AcademicYear $year               The current academic year.
      * @param string                                    $firstName
      * @param string                                    $lastName
-     * @param DateTime                                  $birthday
+     * @param DateTime|null                             $birthday
      * @param string                                    $sex
      * @param string                                    $phoneNumber
      * @param string                                    $email
@@ -297,7 +297,7 @@ class Entry
      * @param string                                    $hobbies
      * @param string                                    $about
      */
-    public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, DateTime $birthday,
+    public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, DateTime $birthday = null,
         $sex, $phoneNumber, $email, Address $address, $priorStudy, $priorGrade, Study $study, $grade, $bachelorStart,
         $bachelorEnd, $masterStart, $masterEnd, $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $languageExtra,
         $computerSkills, $experiences, $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld,

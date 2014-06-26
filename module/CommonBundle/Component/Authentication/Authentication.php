@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Action\Doctrine,
-    Zend\Authentication\Adapter\AdapterInterface,
+use Zend\Authentication\Adapter\AdapterInterface,
     CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
 
 /**

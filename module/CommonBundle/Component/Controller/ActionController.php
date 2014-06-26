@@ -24,6 +24,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     Locale,
+    Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
     Zend\View\Model\ViewModel;

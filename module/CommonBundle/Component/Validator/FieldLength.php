@@ -45,7 +45,7 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param int   $maxLength The maximum length of the value
+     * @param int   $maxLength     The maximum length of the value
      * @param int   $newlineLength A newline is interpreted as this number of characters.
      * @param mixed $opts          The validator's options
      */
