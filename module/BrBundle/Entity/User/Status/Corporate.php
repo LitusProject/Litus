@@ -124,7 +124,7 @@ class Corporate
     }
 
     /**
-     * @param  string                                      $status string the status to set
+     * @param  string    $status string the status to set
      * @return Corporate
      */
     public function setStatus($status)

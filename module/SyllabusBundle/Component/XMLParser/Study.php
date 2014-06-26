@@ -142,7 +142,7 @@ class Study
     }
 
     /**
-     * @param array $data
+     * @param  array $data
      * @return array
      */
     private function _createStudies($data)
@@ -307,7 +307,7 @@ class Study
 
     /**
      * @param \SyllabusBundle\Entity\Subject $subject
-     * @param array $profs
+     * @param array                          $profs
      */
     private function _createProf(SubjectEntity $subject, $profs)
     {
@@ -405,7 +405,7 @@ class Study
     }
 
     /**
-     * @param string $identification
+     * @param  string $identification
      * @return array
      */
     private function _getInfoProf($identification)
@@ -436,8 +436,8 @@ class Study
     }
 
     /**
-     * @param string $identification
-     * @param string $url
+     * @param  string      $identification
+     * @param  string      $url
      * @return string|null
      */
     private function _getProfImage($identification, $url)
@@ -468,7 +468,7 @@ class Study
     }
 
     /**
-     * @param string $type
+     * @param string      $type
      * @param string|null $extra
      */
     private function _callback($type, $extra = null)
@@ -558,7 +558,7 @@ class Study
     }
 
     /**
-     * @param int $start
+     * @param  int                                       $start
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     private function _getAcademicYear($start)

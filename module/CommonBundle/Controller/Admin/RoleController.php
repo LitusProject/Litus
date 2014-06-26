@@ -404,8 +404,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param Action $action
-     * @param array $parents
+     * @param  Action  $action
+     * @param  array   $parents
      * @return boolean
      */
     private function _findActionWithParents(Action $action, array $parents)

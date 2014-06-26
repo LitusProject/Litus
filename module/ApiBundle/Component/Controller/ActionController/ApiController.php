@@ -22,6 +22,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
     CommonBundle\Component\Util\AcademicYear,
+    Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Uri\UriFactory,
     Zend\Validator\AbstractValidator,
@@ -174,7 +175,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
         $headers = $this->getResponse()->getHeaders();
 
-        if ($headers->has('Content-Type'))
+        if ($headers->get('Content-Type') instanceof HeaderInterface)
             $headers->removeHeader($headers->get('Content-Type'));
 
         $headers->addHeaders(
@@ -442,6 +443,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     public function getSessionStorage()
     {
         return $this->getServiceLocator()->get('common_sessionstorage');
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        return $this->getServiceLocator()->get('mail_transport');
     }
 
     /**

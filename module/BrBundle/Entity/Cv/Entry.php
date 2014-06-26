@@ -348,7 +348,7 @@ class Entry
     /**
      * Changes the firstName of this cv entry to the given value.
      *
-     * @param string $firstName The new value
+     * @param  string $firstName The new value
      * @return Entry
      */
     public function setFirstName($firstName)
@@ -371,7 +371,7 @@ class Entry
     /**
      * Changes the lastName of this cv entry to the given value.
      *
-     * @param string $lastName The new value
+     * @param  string $lastName The new value
      * @return Entry
      */
     public function setLastName($lastName)
@@ -394,7 +394,7 @@ class Entry
     /**
      * Changes the birthday of this cv entry to the given value.
      *
-     * @param DateTime $birthday The new value
+     * @param  DateTime $birthday The new value
      * @return Entry
      */
     public function setBirthday($birthday)
@@ -417,7 +417,7 @@ class Entry
     /**
      * Changes the sex of this cv entry to the given value.
      *
-     * @param string $sex The new value
+     * @param  string $sex The new value
      * @return Entry
      */
     public function setSex($sex)
@@ -440,7 +440,7 @@ class Entry
     /**
      * Changes the phoneNumber of this cv entry to the given value.
      *
-     * @param string $phoneNumber The new value
+     * @param  string $phoneNumber The new value
      * @return Entry
      */
     public function setPhoneNumber($phoneNumber)
@@ -463,7 +463,7 @@ class Entry
     /**
      * Changes the email of this cv entry to the given value.
      *
-     * @param string $email The new value
+     * @param  string $email The new value
      * @return Entry
      */
     public function setEmail($email)
@@ -486,7 +486,7 @@ class Entry
     /**
      * Changes the address of this cv entry to the given value.
      *
-     * @param Address $address The new value
+     * @param  Address $address The new value
      * @return Entry
      */
     public function setAddress($address)
@@ -509,7 +509,7 @@ class Entry
     /**
      * Changes the priorStudy of this cv entry to the given value.
      *
-     * @param string $priorStudy The new value
+     * @param  string $priorStudy The new value
      * @return Entry
      */
     public function setPriorStudy($priorStudy)
@@ -532,7 +532,7 @@ class Entry
     /**
      * Changes the priorGrade of this cv entry to the given value.
      *
-     * @param integer $priorGrade The new value
+     * @param  integer $priorGrade The new value
      * @return Entry
      */
     public function setPriorGrade($priorGrade)
@@ -555,7 +555,7 @@ class Entry
     /**
      * Changes the study of this cv entry to the given value.
      *
-     * @param Study $study The new value
+     * @param  Study $study The new value
      * @return Entry
      */
     public function setStudy(Study $study)
@@ -578,7 +578,7 @@ class Entry
     /**
      * Changes the grade of this cv entry to the given value.
      *
-     * @param integer $grade The new value
+     * @param  integer $grade The new value
      * @return Entry
      */
     public function setGrade($grade)
@@ -601,7 +601,7 @@ class Entry
     /**
      * Changes the bachelorStart of this cv entry to the given value.
      *
-     * @param integer $bachelorStart The new value
+     * @param  integer $bachelorStart The new value
      * @return Entry
      */
     public function setBachelorStart($bachelorStart)
@@ -624,7 +624,7 @@ class Entry
     /**
      * Changes the bachelorEnd of this cv entry to the given value.
      *
-     * @param integer $bachelorEnd The new value
+     * @param  integer $bachelorEnd The new value
      * @return Entry
      */
     public function setBachelorEnd($bachelorEnd)
@@ -647,7 +647,7 @@ class Entry
     /**
      * Changes the masterStart of this cv entry to the given value.
      *
-     * @param integer $masterStart The new value
+     * @param  integer $masterStart The new value
      * @return Entry
      */
     public function setMasterStart($masterStart)
@@ -670,7 +670,7 @@ class Entry
     /**
      * Changes the masterEnd of this cv entry to the given value.
      *
-     * @param integer $masterEnd The new value
+     * @param  integer $masterEnd The new value
      * @return Entry
      */
     public function setMasterEnd($masterEnd)
@@ -693,7 +693,7 @@ class Entry
     /**
      * Changes the additionalDiplomas of this cv entry to the given value.
      *
-     * @param string $additionalDiplomas The new value
+     * @param  string $additionalDiplomas The new value
      * @return Entry
      */
     public function setAdditionalDiplomas($additionalDiplomas)
@@ -716,7 +716,7 @@ class Entry
     /**
      * Changes the erasmusPeriod of this cv entry to the given value.
      *
-     * @param string $erasmusPeriod The new value
+     * @param  string $erasmusPeriod The new value
      * @return Entry
      */
     public function setErasmusPeriod($erasmusPeriod)
@@ -739,7 +739,7 @@ class Entry
     /**
      * Changes the erasmusLocation of this cv entry to the given value.
      *
-     * @param string $erasmusLocation The new value
+     * @param  string $erasmusLocation The new value
      * @return Entry
      */
     public function setErasmusLocation($erasmusLocation)
@@ -772,7 +772,7 @@ class Entry
     /**
      * Changes the languageExtra of this cv entry to the given value.
      *
-     * @param string $languageExtra The new value
+     * @param  string $languageExtra The new value
      * @return Entry
      */
     public function setLanguageExtra($languageExtra)
@@ -795,7 +795,7 @@ class Entry
     /**
      * Changes the computerSkills of this cv entry to the given value.
      *
-     * @param string $computerSkills The new value
+     * @param  string $computerSkills The new value
      * @return Entry
      */
     public function setComputerSkills($computerSkills)
@@ -818,7 +818,7 @@ class Entry
     /**
      * Changes the experiences of this cv entry to the given value.
      *
-     * @param string $experiences The new value
+     * @param  string $experiences The new value
      * @return Entry
      */
     public function setExperiences($experiences)
@@ -841,7 +841,7 @@ class Entry
     /**
      * Changes the thesisSummary of this cv entry to the given value.
      *
-     * @param string $thesisSummary The new value
+     * @param  string $thesisSummary The new value
      * @return Entry
      */
     public function setThesisSummary($thesisSummary)
@@ -864,7 +864,7 @@ class Entry
     /**
      * Changes the futureInterest of this cv entry to the given value.
      *
-     * @param string $futureInterest The new value
+     * @param  string $futureInterest The new value
      * @return Entry
      */
     public function setFutureInterest($futureInterest)
@@ -887,7 +887,7 @@ class Entry
     /**
      * Changes the mobilityEurope of this cv entry to the given value.
      *
-     * @param string $mobilityEurope The new value
+     * @param  string $mobilityEurope The new value
      * @return Entry
      */
     public function setMobilityEurope($mobilityEurope)
@@ -910,7 +910,7 @@ class Entry
     /**
      * Changes the mobilityWorld of this cv entry to the given value.
      *
-     * @param string $mobilityWorld The new value
+     * @param  string $mobilityWorld The new value
      * @return Entry
      */
     public function setMobilityWorld($mobilityWorld)
@@ -933,7 +933,7 @@ class Entry
     /**
      * Changes the careerExpectations of this cv entry to the given value.
      *
-     * @param string $careerExpectations The new value
+     * @param  string $careerExpectations The new value
      * @return Entry
      */
     public function setCareerExpectations($careerExpectations)
@@ -956,7 +956,7 @@ class Entry
     /**
      * Changes the hobbies of this cv entry to the given value.
      *
-     * @param string $hobbies The new value
+     * @param  string $hobbies The new value
      * @return Entry
      */
     public function setHobbies($hobbies)
@@ -979,7 +979,7 @@ class Entry
     /**
      * Changes the about of this cv entry to the given value.
      *
-     * @param string $about The new value
+     * @param  string $about The new value
      * @return Entry
      */
     public function setAbout($about)
@@ -1012,7 +1012,7 @@ class Entry
     /**
      * Changes the academic of this cv entry to the given value.
      *
-     * @param Academic $academic The new value
+     * @param  Academic $academic The new value
      * @return Entry
      */
     public function setAcademic($academic)
@@ -1035,7 +1035,7 @@ class Entry
     /**
      * Changes the year of this cv entry to the given value.
      *
-     * @param AcademicYear $year The new value
+     * @param  AcademicYear $year The new value
      * @return Entry
      */
     public function setYear($year)

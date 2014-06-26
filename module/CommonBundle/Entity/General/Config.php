@@ -132,7 +132,7 @@ class Config
     }
 
     /**
-     * @param  boolean                            $published
+     * @param  boolean $published
      * @return Config
      */
     public function setPublished($published)

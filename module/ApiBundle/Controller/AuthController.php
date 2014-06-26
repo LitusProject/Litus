@@ -47,11 +47,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($person->getId());
 
         if (null !== $academic) {
-            $result['university_status'] = (null !== $person->getUniversityStatus($this->getCurrentAcademicYear()))
-                ? $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
+            $result['university_status'] = (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear()))
+                ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
                 : '';
-            $result['organization_status'] = (null !== $person->getOrganizationStatus($this->getCurrentAcademicYear(true)))
-                ? $person->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
+            $result['organization_status'] = (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)))
+                ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
                 : '';
         }
 

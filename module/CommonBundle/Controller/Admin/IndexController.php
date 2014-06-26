@@ -105,7 +105,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param Analytics $analytics
+     * @param  Analytics $analytics
      * @return array
      */
     private function _getVisitsGraph(Analytics $analytics)
@@ -129,7 +129,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param Analytics $analytics
+     * @param  Analytics $analytics
      * @return array
      */
     private function _getVisitsGraphData(Analytics $analytics)

@@ -34,10 +34,10 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param string $subject
-     * @param string $message
-     * @param integer $semester
-     * @param null|string|int $name Optional name for the element
+     * @param string          $subject
+     * @param string          $message
+     * @param integer         $semester
+     * @param null|string|int $name     Optional name for the element
      */
     public function __construct($subject, $message, $semester, $name = null)
     {

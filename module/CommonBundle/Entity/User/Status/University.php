@@ -133,7 +133,7 @@ class University
     }
 
     /**
-     * @param  string                                     $status string the status to set
+     * @param  string     $status string the status to set
      * @return University
      */
     public function setStatus($status)
