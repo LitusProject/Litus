@@ -35,7 +35,7 @@ use DateTime,
 class Entry
 {
     /**
-     * @var string The entry's ID
+     * @var int The entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -268,8 +268,8 @@ class Entry
     /**
      * @param \CommonBundle\Entity\User\Person\Academic $academic           The academic
      * @param \CommonBundle\Entity\General\AcademicYear $year               The current academic year.
-     * @param string                                    $firtname
-     * @param string                                    $lastname
+     * @param string                                    $firstName
+     * @param string                                    $lastName
      * @param DateTime                                  $birthday
      * @param string                                    $sex
      * @param string                                    $phoneNumber

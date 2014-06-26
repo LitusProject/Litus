@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     Zend\View\Model\ViewModel;
 

@@ -410,27 +410,29 @@ class Study
      */
     private function _getInfoProf($identification)
     {
+        $returnArray = array(
+            'email' => null,
+            'phone' => null,
+            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
+        );
+
         $client = new HttpClient();
         $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
             ->send();
 
         preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
         if (count($matches) > 1)
-            $email = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
+            $returnArray['email'] = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
         else
-            $email = null;
+            $returnArray['email'] = null;
 
         preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
         if (count($matches) > 1)
-            $phone = trim(str_replace(' ', '', $matches[1]));
+            $returnArray['phone'] = trim(str_replace(' ', '', $matches[1]));
         else
-            $phone = null;
+            $returnArray['phone'] = null;
 
-        return array(
-            'email' => $email,
-            'phone' => $phone,
-            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
-        );
+        return $returnArray;
     }
 
     /**
