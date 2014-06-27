@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Result;
-
 /**
  * Interface specifying an action that should be taken after authentication.
  *

@@ -269,7 +269,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $fileData = $this->getRequest()->getPost();
 
             $upload = new FileUpload();
 
