@@ -20,7 +20,7 @@ namespace CommonBundle\Component\Lilo\Data;
 
 use CommonBundle\Component\Authentication\Authentication,
     Exception as GenericException,
-    Zend\Http\Request;
+    Zend\Http\PhpEnvironment\Request;
 
 /**
  * This class converts an exception to the right format for the
@@ -109,8 +109,8 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatUrl()
     {
-        return '' != $request->getServer()->get('HTTP_HOST')
-            ? (($request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $request->getServer()->get('HTTP_HOST') . $request->getServer()->get('REQUEST_URI')
+        return '' != $this->_request->getServer()->get('HTTP_HOST')
+            ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
             : '';
     }
 }

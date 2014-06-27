@@ -22,7 +22,7 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
     Exception,
-    Zend\Http\Request,
+    Zend\Http\PhpEnvironment\Request,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
 

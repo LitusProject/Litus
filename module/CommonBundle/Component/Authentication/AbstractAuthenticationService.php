@@ -54,9 +54,9 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_action;
 
     /**
-     * @var \Zend\Stdlib\ParametersInterface The '_SERVER' variables
+     * @var Request The request
      */
-    protected $_server;
+    protected $_request;
 
     /**
      * @var \Zend\Http\Header\Cookie The received cookies
@@ -104,7 +104,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     public function setRequest(Request $request)
     {
         $this->_cookies = Cookie::fromString($request->getHeader('Cookie'));
-        $this->_server = $request->getServer();
+        $this->_request = $request;
 
         return $this;
     }
@@ -165,7 +165,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setExpires(0)
                 ->setMaxAge(0)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
+                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
         );
     }
 
@@ -186,7 +186,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setExpires(time() + $this->_duration)
                 ->setMaxAge($this->_duration)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->_server['SERVER_NAME']))
+                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
         );
     }
 

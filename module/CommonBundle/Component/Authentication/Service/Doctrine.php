@@ -81,7 +81,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
-        $server = $this->_server;
+        $server = $this->_request->getServer();
 
         if ('' == $this->getIdentity() && null !== $adapter) {
             $adapterResult = $adapter->authenticate();
@@ -90,8 +90,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
                     $adapterResult->getPersonObject(),
-                    $server['HTTP_USER_AGENT'],
-                    isset($server['HTTP_X_FORWARDED_FOR']) ? $server['HTTP_X_FORWARDED_FOR'] : $server['REMOTE_ADDR'],
+                    $server->get('HTTP_USER_AGENT'),
+                    $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR')),
                     $shibboleth,
                     $this->_duration
                 );
@@ -123,8 +123,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
             if (null !== $session) {
                 $sessionValidation = $session->validate(
                     $this->_entityManager,
-                    $server['HTTP_USER_AGENT'],
-                    isset($server['HTTP_X_FORWARDED_FOR']) ? $server['HTTP_X_FORWARDED_FOR'] : $server['REMOTE_ADDR']
+                    $server->get('HTTP_USER_AGENT'),
+                    $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR'))
                 );
 
                 if (true !== $sessionValidation) {
