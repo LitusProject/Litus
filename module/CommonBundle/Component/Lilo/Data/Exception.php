@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Lilo\Data;
 
 use CommonBundle\Component\Authentication\Authentication,
-    Exception as GenericException;
+    Exception as GenericException,
+    Zend\Http\Request;
 
 /**
  * This class converts an exception to the right format for the
@@ -35,13 +36,20 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     private $_data = array();
 
     /**
+     * @var Request The request to the page
+     */
+    private $_request;
+
+    /**
      * Construct a new Exception object.
      *
      * @param \Exception     $exception      The exception that should be formatted
      * @param Authentication $authentication The authentication instance
+     * @param Request        $request        The request to the page
      */
-    public function __construct(GenericException $exception, Authentication $authentication)
+    public function __construct(GenericException $exception, Authentication $authentication, Request $request)
     {
+        $this->_request = $request;
         $this->_data = array(
             'class' => get_class($exception),
             'message' => $exception->getMessage(),
@@ -54,7 +62,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
                     ? $authentication->getSessionObject()->getId()
                     : '',
                 'url' => $this->_formatUrl(),
-                'userAgent' => $_SERVER['HTTP_USER_AGENT'],
+                'userAgent' => $request->getServer()->get('HTTP_USER_AGENT'),
             ),
         );
     }
@@ -101,8 +109,8 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatUrl()
     {
-        return '' != $_SERVER['HTTP_HOST']
-            ? ((isset($_SERVER['HTTPS']) && 'off' != $_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']
+        return '' != $request->getServer()->get('HTTP_HOST')
+            ? (($request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $request->getServer()->get('HTTP_HOST') . $request->getServer()->get('REQUEST_URI')
             : '';
     }
 }

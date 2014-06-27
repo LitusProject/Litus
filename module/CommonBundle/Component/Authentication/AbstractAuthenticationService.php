@@ -20,7 +20,6 @@ namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
-    Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Storage\StorageInterface,
     Zend\Http\PhpEnvironment\Request,
     Zend\Http\PhpEnvironment\Response,
@@ -55,7 +54,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_action;
 
     /**
-     * @var \Zend\Stdlib\Params The '_SERVER' variables
+     * @var \Zend\Stdlib\ParametersInterface The '_SERVER' variables
      */
     protected $_server;
 
@@ -104,7 +103,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setRequest(Request $request)
     {
-        $this->_cookies = $request->getHeader('Cookie');
+        $this->_cookies = Cookie::fromString($request->getHeader('Cookie'));
         $this->_server = $request->getServer();
 
         return $this;

@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use Zend\Authentication\Adapter\AdapterInterface,
+use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
 
 /**
@@ -31,7 +31,7 @@ use Zend\Authentication\Adapter\AdapterInterface,
 class Authentication
 {
     /**
-     * @var AdapterInterface The authentication adapter
+     * @var DoctrineAdapter The authentication adapter
      */
     private $_adapter = null;
 
@@ -48,10 +48,10 @@ class Authentication
     /**
      * Construct a new Authentication object.
      *
-     * @param AdapterInterface      $adapter The authentication adapter that should be used
+     * @param DoctrineAdapter       $adapter The authentication adapter that should be used
      * @param AuthenticationService $service The service that should be used
      */
-    public function __construct(AdapterInterface $adapter, AuthenticationService $service)
+    public function __construct(DoctrineAdapter $adapter, AuthenticationService $service)
     {
         $this->_adapter = $adapter;
         $this->_service = $service;

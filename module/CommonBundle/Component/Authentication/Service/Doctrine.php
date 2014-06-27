@@ -22,7 +22,6 @@ use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
     Doctrine\ORM\EntityManager,
-    Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Storage\StorageInterface;
 
 /**

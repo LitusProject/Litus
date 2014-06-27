@@ -22,6 +22,7 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
     Exception,
+    Zend\Http\Request,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
 
@@ -34,25 +35,32 @@ use CommonBundle\Component\Authentication\Authentication,
 class Client
 {
     /**
-     * @var Authentication $_authentication The authentication instance
+     * @var Authentication The authentication instance
      */
     private $_authentication;
 
     /**
-     * @var Connection $_connection The connection to the Lilo server
+     * @var Connection The connection to the Lilo server
      */
     private $_connection;
+
+    /**
+     * @var Request The request to the page
+     */
+    private $_request;
 
     /**
      * Constructs a new Lilo client.
      *
      * @param Connection          $connection     The connection to the Lilo server
      * @param Authentication|null $authentication The authentication instance
+     * @param Request             $request        The request to the page
      */
-    public function __construct(Connection $connection, Authentication $authentication = null)
+    public function __construct(Connection $connection, Authentication $authentication = null, Request $request)
     {
         $this->_authentication = $authentication;
         $this->_connection = $connection;
+        $this->_request = $request;
     }
 
     /**
@@ -78,7 +86,7 @@ class Client
     public function sendException(Exception $exception)
     {
         $this->_connection->send(
-            new ExceptionData($exception, $this->_authentication)
+            new ExceptionData($exception, $this->_authentication, $this->_request)
         );
     }
 
