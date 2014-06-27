@@ -140,10 +140,14 @@ class Job
      * @param string                   $benefits    The job's benefits
      * @param string                   $profile     The job's profile
      * @param string                   $contact     The job's required contact information
+     * @param string                   $city        The job's city
      * @param \BrBundle\Entity\Company $company     The job's company
      * @param string                   $type        The job's type (entry of $possibleTypes)
+     * @param DateTime                 $startDate   The job's start date
+     * @param DateTime                 $endDate     The job's end date
+     * @param string                   $sector      The job's sector
      */
-    public function __construct($name, $description, $benefits, $profile, $contact, $city, Company $company, $type, $startDate, $endDate, $sector)
+    public function __construct($name, $description, $benefits, $profile, $contact, $city, Company $company, $type, DateTime $startDate, DateTime $endDate, $sector)
     {
         $this->setName($name);
         $this->setDescription($description);

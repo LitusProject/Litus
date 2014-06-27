@@ -27,6 +27,7 @@ use BrBundle\Entity\Company,
     CommonBundle\Entity\General\Address,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -270,38 +271,38 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $fileData = $this->getRequest()->getPost();
 
-            if (!(in_array($fileData['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $formData['type'] == 'image') &&
-                    $formData['type'] !== 'file') {
-                return new ViewModel();
-            }
-
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/';
-
             $upload = new FileUpload();
 
-            do {
-                $fileName = sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ('image' == $formData['type'])
+                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            if ($upload->isValid()) {
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/';
 
-            $url = $this->url()->fromRoute(
-                'br_career_file',
-                array(
-                    'name' => $fileName,
-                )
-            );
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
 
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'name' => $url,
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
+                $url = $this->url()->fromRoute(
+                    'br_career_file',
+                    array(
+                        'name' => $fileName,
                     )
-                )
-            );
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'name' => $url,
+                        )
+                    )
+                );
+            }
         }
 
         return new ViewModel();
@@ -323,13 +324,15 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             $upload = new FileUpload();
-            $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
+            $inputFilter = $form->getInputFilter()->get('logo');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($form->isValid() && $upload->isValid()) {
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
+                $image = new Imagick($upload->getFileName('logo'));
+                unlink($upload->getFileName('logo'));
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {

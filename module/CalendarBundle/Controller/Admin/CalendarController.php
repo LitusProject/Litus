@@ -80,12 +80,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
 
-            if ($form->isValid() && $startDate && $endDate) {
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, $endDate);
+                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
                 $this->getEntityManager()->persist($event);
 
                 $languages = $this->getEntityManager()
@@ -150,13 +149,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
 
-            if ($form->isValid() && $startDate && $endDate) {
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
                 $event->setStartDate($startDate)
-                    ->setEndDate($endDate);
+                    ->setEndDate(self::_loadDate($formData['end_date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -274,13 +272,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
+            $inputFilter = $form->getInputFilter()->get('poster');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
+                $image = new Imagick($upload->getFileName('poster'));
+                unlink($upload->getFileName('poster'));
 
                 if ($event->getPoster() != '' || $event->getPoster() !== null) {
                     $fileName = '/' . $event->getPoster();

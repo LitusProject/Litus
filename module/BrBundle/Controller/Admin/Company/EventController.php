@@ -69,15 +69,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $commonEvent = new CommonEvent(
-                    $this->getAuthentication()->getPersonObject(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    (DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false)
-                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
-                );
+                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
 
                 $this->getEntityManager()->persist($commonEvent);
 
@@ -150,12 +147,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
                 $event->getEvent()
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                    ->setStartDate($startDate)
+                    ->setEndDate(self::_loadDate($formData['end_date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -272,13 +271,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
+            $inputFilter = $form->getInputFilter()->get('poster');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
+                $image = new Imagick($upload->getFileName('poster'));
+                unlink($upload->getFileName('poster'));
 
                 if ($event->getEvent()->getPoster() != '' || $event->getEvent()->getPoster() !== null) {
                     $fileName = '/' . $event->getEvent()->getPoster();
@@ -433,5 +434,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

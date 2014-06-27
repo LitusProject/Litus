@@ -119,7 +119,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      * @param  Result $result
      * @return void
      */
-    public function succeededAction($result)
+    public function succeededAction(Result $result)
     {
         $result->getPersonObject()
             ->setFailedLogins(0);

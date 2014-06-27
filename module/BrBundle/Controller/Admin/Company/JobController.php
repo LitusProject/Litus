@@ -68,7 +68,10 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $job = new Job(
@@ -80,8 +83,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     $formData['city'],
                     $company,
                     $formData['type'],
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate,
+                    $endDate,
                     $formData['sector']
                 );
 
@@ -127,7 +130,10 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $job->setName($formData['job_name'])
@@ -136,8 +142,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     ->setProfile($formData['profile'])
                     ->setContact($formData['contact'])
                     ->setCity($formData['city'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setSector($formData['sector']);
 
                 $this->getEntityManager()->flush();
@@ -285,5 +291,14 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $job;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
