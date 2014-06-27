@@ -54,7 +54,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization has failed.
      *
-     * @param Result $result
+     * @param  Result $result
      * @return void
      */
     public function failedAction(Result $result)
@@ -116,7 +116,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization was successful.
      *
-     * @param Result $result
+     * @param  Result $result
      * @return void
      */
     public function succeededAction($result)

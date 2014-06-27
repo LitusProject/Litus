@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Result;
-
 /**
  * Interface specifying an action that should be taken after authentication.
  *
@@ -31,7 +29,7 @@ interface Action
     /**
      * The authorization has failed.
      *
-     * @param Result $result
+     * @param  CommonBundle\Component\Authentication\Result $result
      * @return void
      */
     public function failedAction($result);
@@ -39,7 +37,7 @@ interface Action
     /**
      * The authorization was successful.
      *
-     * @param Result $result
+     * @param  CommonBundle\Component\Authentication\Result $result
      * @return void
      */
     public function succeededAction($result);

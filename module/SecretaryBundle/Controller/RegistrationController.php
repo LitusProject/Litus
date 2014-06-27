@@ -85,7 +85,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
@@ -275,7 +275,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
 
                     $this->getEntityManager()->remove($code);
@@ -801,7 +801,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'CommonBundle\Entity\User\Person\Academic',
                 'universityIdentification'
             ),
-            $this->getServiceLocator()->get('authentication_doctrineservice')
+            $this->getAuthenticationService()
         );
 
         $code = $this->getEntityManager()

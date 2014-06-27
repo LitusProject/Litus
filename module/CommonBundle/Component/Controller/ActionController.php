@@ -331,6 +331,17 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * We want an easy method to retrieve the Authentication Service
+     * from the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->getServiceLocator()->get('authentication_doctrineservice');
+    }
+
+    /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
      *

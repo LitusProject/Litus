@@ -24,6 +24,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -101,14 +102,19 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         $form = new AddForm($this->getEntityManager());
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+
+        $startDate = self::_loadDate($formData['start_date']);
+        $endDate = self::_loadDate($formData['end_date']);
 
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid() && $upload->isValid()) {
+            if ($form->isValid() && $upload->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $filePath = $this->getEntityManager()
@@ -126,8 +132,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     $this->getAuthentication()->getPersonObject(),
                     $formData['name'],
                     $fileName,
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate,
+                    $endDate,
                     $formData['active'],
                     $formData['url']
                 );
@@ -185,10 +191,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            if ($form->isValid() && $startDate && $endDate) {
                 $banner->setName($formData['name'])
-                    ->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    ->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setActive($formData['active'])
                     ->setUrl($formData['url']);
 
@@ -326,5 +332,14 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         return $banner;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

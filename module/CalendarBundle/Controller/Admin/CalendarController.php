@@ -149,13 +149,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
-                if ($startDate = self::_loadDate($formData['start_date']))
-                    $event->setStartDate($startDate);
-                if ($endDate = self::_loadDate($formData['end_date']))
-                    $event->setEndDate($endDate);
+                $event->setStartDate($startDate)
+                    ->setEndDate($endDate);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')

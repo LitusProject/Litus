@@ -117,7 +117,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()

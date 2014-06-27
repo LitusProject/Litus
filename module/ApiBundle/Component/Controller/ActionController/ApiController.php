@@ -293,6 +293,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * We want an easy method to retrieve the Authentication Service
+     * from the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->getServiceLocator()->get('authentication_doctrineservice');
+    }
+
+    /**
      * We want an easy method to retrieve the Cache from
      * the DI container.
      *

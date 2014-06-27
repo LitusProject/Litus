@@ -148,7 +148,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
