@@ -27,6 +27,7 @@ use BrBundle\Entity\Company,
     CommonBundle\Entity\General\Address,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 

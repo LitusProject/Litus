@@ -19,6 +19,7 @@
 namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
     Doctrine\ORM\EntityManager,
     Zend\Authentication\Adapter\AdapterInterface,
@@ -72,13 +73,13 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Authenticates against the supplied adapter
      *
-     * @param AdapterInterface $adapter    The supplied adapter
-     * @param boolean          $rememberMe Remember this authentication session
-     * @param boolean          $shibboleth Whether or not this is sessions initiated by Shibboleth
+     * @param \CommonBundle\Component\Authentication\Adapter\Doctrine|null $adapter
+     * @param boolean                                                      $rememberMe Remember this authentication session
+     * @param boolean                                                      $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
      * @return Result
      */
-    public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
+    public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
         $server = $this->_server;

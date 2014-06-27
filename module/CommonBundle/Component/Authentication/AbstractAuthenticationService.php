@@ -19,6 +19,7 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action,
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Storage\StorageInterface,
     Zend\Http\PhpEnvironment\Request,
@@ -193,12 +194,12 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     // The following methods exist because we need to update their signatures.
 
     /**
-     * @param  AdapterInterface|null $adapter
-     * @param  boolean               $rememberMe
-     * @param  boolean               $shibboleth
+     * @param  \CommonBundle\Component\Authentication\Adapter\Doctrine|null $adapter
+     * @param  boolean                                                      $rememberMe
+     * @param  boolean                                                      $shibboleth
      * @return Result
      */
-    public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
+    public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         return parent::authenticate($adapter);
     }

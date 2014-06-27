@@ -28,6 +28,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**

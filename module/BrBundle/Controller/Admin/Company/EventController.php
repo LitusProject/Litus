@@ -28,6 +28,7 @@ use BrBundle\Entity\Company\Event,
     DateTime,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,7 +75,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
+                $event = new CommonEvent($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
 
                 $this->getEntityManager()->persist($commonEvent);
 

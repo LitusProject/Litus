@@ -23,6 +23,7 @@ use BrBundle\Entity\Company\Logo,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**

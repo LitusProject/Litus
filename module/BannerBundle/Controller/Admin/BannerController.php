@@ -106,13 +106,13 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         if ($inputFilter instanceof InputInterface)
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
-        $startDate = self::_loadDate($formData['start_date']);
-        $endDate = self::_loadDate($formData['end_date']);
-
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
+
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
 
             if ($form->isValid() && $upload->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
@@ -190,6 +190,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $form = new EditForm($this->getEntityManager(), $banner);
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
+
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
 
             if ($form->isValid() && $startDate && $endDate) {
                 $banner->setName($formData['name'])
