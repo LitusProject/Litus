@@ -70,7 +70,7 @@ class Code
      */
     public function getId()
     {
-        return $id;
+        return $this->id;
     }
 
     /**

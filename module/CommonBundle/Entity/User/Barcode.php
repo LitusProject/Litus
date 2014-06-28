@@ -86,7 +86,7 @@ class Barcode
      */
     public function getId()
     {
-        return $id;
+        return $this->id;
     }
 
     /**

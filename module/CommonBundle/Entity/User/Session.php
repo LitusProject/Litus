@@ -90,11 +90,11 @@ class Session
     private $shibboleth;
 
     /**
-     * @param integer $expirationTime
-     * @param Person  $person
-     * @param string  $userAgent
-     * @param string  $ip
-     * @param bool    $shibboleth
+     * @param integer      $expirationTime
+     * @param Person       $person
+     * @param string       $userAgent
+     * @param string       $ip
+     * @param bool         $shibboleth
      * @param DateTime|int $expirationTime
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)

@@ -111,11 +111,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initAjax()
     {
-        $headers = $this->getRequest()->getHeaders();
-        if (
-            null === $headers->get('X_REQUESTED_WITH')
-            || 'XMLHttpRequest' != $headers->get('X_REQUESTED_WITH')->getFieldValue()
-        ) {
+        $requestWith = $this->getRequest()->getHeader('X_REQUESTED_WITH');
+        if (null === $requestWith || 'XMLHttpRequest' != $requestWith->getFieldValue()) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );

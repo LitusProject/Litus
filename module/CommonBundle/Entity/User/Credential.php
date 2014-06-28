@@ -92,7 +92,7 @@ class Credential
      */
     public function getId()
     {
-        return $id;
+        return $this->id;
     }
 
     /**
