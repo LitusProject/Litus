@@ -20,6 +20,7 @@ namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
+    CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
@@ -112,8 +113,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         $headers = $this->getRequest()->getHeaders();
         if (
-            !isset($headers['X_REQUESTED_WITH'])
-            || 'XMLHttpRequest' != $headers['X_REQUESTED_WITH']->getFieldValue()
+            null === $headers->get('X_REQUESTED_WITH')
+            || 'XMLHttpRequest' != $headers->get('X_REQUESTED_WITH')->getFieldValue()
         ) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
@@ -152,6 +153,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * Initializes the fallback language and make it the default Locale.
      *
      * @return void
+     * @throws RuntimeException
      */
     private function _initFallbackLanguage()
     {
@@ -176,7 +178,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch (\Exception $e) {
-            // ignore exceptions
+            throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
 

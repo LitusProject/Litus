@@ -62,11 +62,11 @@ return Config::create(
                     );
                 },
 
-                'authentication_sessionstorage' => function ($serviceManager) {
+                'authentication_sessionstorage' => function () {
                     return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
                 },
 
-                'common_sessionstorage' => function ($serviceManager) {
+                'common_sessionstorage' => function () {
                     return new \Zend\Session\Container(getenv('ORGANIZATION') . '_Litus_Common');
                 },
 

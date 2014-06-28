@@ -143,6 +143,16 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Parse received binary
+     *
+     * @param User   $user
+     * @param string $data
+     */
+    protected function gotBin(User $user, $data)
+    {
+    }
+
+    /**
      * Do action when user closed his socket
      *
      * @param User    $user
@@ -154,6 +164,15 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->_queue->unlockByUser($user);
         parent::onClose($user, $statusCode, $reason);
         $this->sendQueueToAll();
+    }
+
+    /**
+     * Do action when a new user has connected to this socket
+     *
+     * @param User $user
+     */
+    protected function onConnect(User $user)
+    {
     }
 
     /**

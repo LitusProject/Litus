@@ -103,7 +103,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setRequest(Request $request)
     {
-        $this->_cookies = Cookie::fromString($request->getHeader('Cookie'));
+        $this->_cookies = $request->getCookie();
         $this->_request = $request;
 
         return $this;

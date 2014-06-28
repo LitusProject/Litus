@@ -83,10 +83,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
-
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,

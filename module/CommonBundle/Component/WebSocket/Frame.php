@@ -128,16 +128,12 @@ class Frame
             $unpacked = unpack('n', $data);
             $paylen = $unpacked[1];
         } elseif ($paylen == 127) {
-            $data = substr($frame, 0, 8);
-            $frame = substr($frame, 8);
-
             return;
         }
 
         if ($paylen >= self::MAX_PAYLOAD_LEN)
             return;
 
-        $mask = false;
         $data = '';
 
         if ($isMasked) {
@@ -146,7 +142,6 @@ class Frame
 
             if ($paylen) {
                 $data = substr($frame, 0, $paylen);
-                $frame = substr($frame, $paylen);
 
                 for ($i = 0, $j = 0, $l = strlen($data); $i < $l; $i++) {
                     $data[$i] = chr(ord($data[$i]) ^ ord($mask[$j]));
@@ -158,7 +153,6 @@ class Frame
             }
         } elseif ($paylen) {
             $data = substr($frame, 0, $paylen);
-            $frame = substr($frame, $paylen);
         }
 
         $this->_isFin = $isFin;

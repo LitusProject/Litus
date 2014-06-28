@@ -69,7 +69,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if (false !== $fileContents)
             $resultPage = (array) json_decode($fileContents);
 
-        $nbOfficialLaps = null;
         $returnArray = null;
         if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
@@ -91,8 +90,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     $firstData = $resultPage['teams'][0];
                     $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
                 }
-
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
 
                 $returnArray = array(
                     'nbLaps' => $teamData[2],

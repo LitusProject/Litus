@@ -66,6 +66,14 @@ class Code
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $id;
+    }
+
+    /**
      * @return DateTime
      */
     public function getExpirationTime()

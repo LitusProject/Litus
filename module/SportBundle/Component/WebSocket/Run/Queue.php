@@ -140,6 +140,16 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Parse received binary
+     *
+     * @param User   $user
+     * @param string $data
+     */
+    protected function gotBin(User $user, $data)
+    {
+    }
+
+    /**
      * Parse action text
      *
      * @param User   $user

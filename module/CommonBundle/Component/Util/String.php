@@ -37,6 +37,7 @@ class String
     {
         $i = 0;
         $tags = array();
+        $m = array();
         preg_match_all('/<[^>]+>([^<]*)/', $string, $m, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
         foreach ($m as $o) {
             if($o[0][1] - $i >= $length)

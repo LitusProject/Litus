@@ -39,9 +39,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
-            $academics = $this->_search();
-
+        if (null !== $this->getParam('field') && ($academics = $this->_search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -267,9 +265,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                         );
                     }
                 } else {
-                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $status = $academic->getUniversityStatus($this->getCurrentAcademicYear());
-
+                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
                         $academic->removeUniversityStatus($status);
                         $this->getEntityManager()->remove($status);
                     }

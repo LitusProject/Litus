@@ -21,6 +21,7 @@ namespace CommonBundle\Form\Admin\Person;
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -71,9 +72,9 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
             'email' => $person->getEmail(),
             'telephone' => $person->getPhonenumber(),
             'sex' => $person->getSex(),
-            'roles' => $this->_createRolesPopulationArray($person->getRoles(false)),
+            'roles' => $this->_createRolesPopulationArray($person->getRoles()),
             'system_roles' => $this->_createSystemRolesPopulationArray($person->getFlattenedRoles()),
-            'unit_roles' => $this->_createRolesPopulationArray($person->getUnitRoles()),
+            'unit_roles' => $person instanceof Academic ? $this->_createRolesPopulationArray($person->getUnitRoles()) : null,
             'code' => $person->getCode() ? $person->getCode()->getCode() : '',
         );
 

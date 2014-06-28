@@ -20,6 +20,7 @@ namespace CommonBundle\Form\Admin\Person;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Component\Validator\Username as UsernameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

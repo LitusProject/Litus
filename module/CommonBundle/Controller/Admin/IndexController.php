@@ -190,6 +190,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'dataset' => array()
         );
 
+        $data = array();
+
         for ($i = 0; $i < 7; $i++) {
             $today = new DateTime('midnight');
             $labelDate = $today->sub(new DateInterval('P' . $i . 'D'));

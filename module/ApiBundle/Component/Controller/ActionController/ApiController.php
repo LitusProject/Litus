@@ -21,6 +21,7 @@ namespace ApiBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
+    CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\Util\AcademicYear,
     Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
@@ -144,6 +145,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * accessible troughout the application.
      *
      * @return void
+     * @throws RuntimeException
      */
     private function _initFallbackLanguage()
     {
@@ -159,7 +161,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             if (null !== $fallbackLanguage)
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
         } catch (\Exception $e) {
-            // Problem setting default language
+            throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
 

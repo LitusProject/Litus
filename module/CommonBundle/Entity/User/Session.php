@@ -94,7 +94,8 @@ class Session
      * @param Person  $person
      * @param string  $userAgent
      * @param string  $ip
-     * @param string  $shibboleth
+     * @param bool    $shibboleth
+     * @param DateTime|int $expirationTime
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -102,12 +103,13 @@ class Session
 
         $this->startTime = new DateTime();
 
-        if (is_int($expirationTime)) {
+        if ($expirationTime instanceof DateTime) {
+            $this->expirationTime = $expirationTime;
+        } else {
+            $expirationTime = is_int($expirationTime) ? $expirationTime : 3600;
             $this->expirationTime = new DateTime(
                 'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
             );
-        } else {
-            $this->expirationTime = $expirationTime;
         }
 
         $this->person = $person;

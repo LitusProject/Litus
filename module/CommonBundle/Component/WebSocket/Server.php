@@ -25,7 +25,7 @@ use Exception;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Server
+abstract class Server
 {
     private $_file;
 
@@ -226,7 +226,8 @@ class Server
         } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
-            $this->handleDataFrame($user, $user->getBuffer());
+            if (null !== $user->getBuffer())
+                $this->handleDataFrame($user, $user->getBuffer());
 
             $user->clearBuffer();
         }
@@ -246,7 +247,7 @@ class Server
             if ($len !== 0 && $len === 1)
                 return;
 
-            $statusCode = false;
+            $statusCode = '';
             $reason = false;
 
             if ($len >= 2) {
@@ -344,9 +345,7 @@ class Server
      * @param User   $user
      * @param string $data
      */
-    protected function gotText(User $user, $data)
-    {
-    }
+    abstract protected function gotText(User $user, $data);
 
     /**
      * Parse received binary
@@ -354,9 +353,7 @@ class Server
      * @param User   $user
      * @param string $data
      */
-    protected function gotBin(User $user, $data)
-    {
-    }
+    abstract protected function gotBin(User $user, $data);
 
     /**
      * Do action when user closed his socket
@@ -375,7 +372,5 @@ class Server
      *
      * @param User $user
      */
-    protected function onConnect(User $user)
-    {
-    }
+    abstract protected function onConnect(User $user);
 }

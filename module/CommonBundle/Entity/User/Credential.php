@@ -88,6 +88,14 @@ class Credential
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $id;
+    }
+
+    /**
      * Hashes a credential.
      *
      * @param  string $credential The credential to hash

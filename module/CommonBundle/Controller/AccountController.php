@@ -36,6 +36,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -582,7 +583,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $form = new ProfileForm();
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('profile')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('profile');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -595,12 +598,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
             if ($form->isValid()) {
                 if ($upload->isValid()) {
-                    if ($upload->isUploaded()) {
-                        $upload->receive();
+                    $upload->receive();
 
-                        $image = new Imagick($upload->getFileName());
-                        unlink($upload->getFileName());
-                    }
+                    $image = new Imagick($upload->getFileName('profile'));
+                    unlink($upload->getFileName('profile'));
                 } else {
                     $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
@@ -609,12 +610,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $image->cropThumbnailImage(320, 240);
                 } else {
                     $ratio = $image->getImageWidth()/320;
-                    $x = $formData['x']*$ratio;
-                    $y = $formData['y']*$ratio;
-                    $x2 = $formData['x2']*$ratio;
-                    $y2 = $formData['y2']*$ratio;
-                    $w = $formData['w']*$ratio;
-                    $h = $formData['h']*$ratio;
+                    $x = $formData['x'] * $ratio;
+                    $y = $formData['y'] * $ratio;
+                    $w = $formData['w'] * $ratio;
+                    $h = $formData['h'] * $ratio;
 
                     $image->cropImage($w, $h, $x, $y);
                     $image->cropThumbnailImage(320, 240);
@@ -623,7 +622,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                     $fileName = $academic->getPhotoPath();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = sha1(uniqid());
                     } while (file_exists($filePath . '/' . $fileName));

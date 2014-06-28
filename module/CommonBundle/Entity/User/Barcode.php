@@ -73,12 +73,20 @@ class Barcode
         $this->time = new DateTime();
 
         if (strlen($barcode) == 13)
-            $barcode = floor($barcode / 10);
+            $barcode = (int) floor($barcode / 10);
 
         if (strlen($barcode) != 12)
             throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
 
         $this->barcode = $barcode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $id;
     }
 
     /**

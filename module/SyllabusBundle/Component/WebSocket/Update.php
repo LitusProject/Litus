@@ -134,6 +134,25 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Parse received binary
+     *
+     * @param User   $user
+     * @param string $data
+     */
+    protected function gotBin(User $user, $data)
+    {
+    }
+
+    /**
+     * Do action when a new user has connected to this socket
+     *
+     * @param User $user
+     */
+    protected function onConnect(User $user)
+    {
+    }
+
+    /**
      * @param string      $type
      * @param null|string $extra
      */

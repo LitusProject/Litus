@@ -93,10 +93,6 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->_updateCache();
 
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
-
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
                         FlashMessage::SUCCESS,

@@ -75,7 +75,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $event = new CommonEvent($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
+                $commonEvent = new CommonEvent($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
 
                 $this->getEntityManager()->persist($commonEvent);
 
