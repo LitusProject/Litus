@@ -23,3 +23,13 @@
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sale_to').change(function () {
+                $('#price').closest('.row').toggle($(this).val() == 'other');
+            }).change();
+        });
+    </script>
+{% endblock %}

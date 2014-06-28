@@ -47,15 +47,6 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $saleItem = new \CudiBundle\Entity\Sale\SaleItem(
-                        $article,
-                        $formData['number'],
-                        0,
-                        null,
-                        null,
-                        $this->getEntityManager()
-                    );
-
                 if ('prof' == $formData['sale_to']) {
                     $saleItem = new ProfItem(
                         $article,
@@ -67,6 +58,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
                     $saleItem = new ExternalItem(
                         $article,
                         $formData['number'],
+                        $formData['price'],
                         $formData['name'],
                         $this->getEntityManager()
                     );

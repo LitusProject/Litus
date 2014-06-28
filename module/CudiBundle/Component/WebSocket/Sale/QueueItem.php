@@ -260,7 +260,9 @@ class QueueItem
                         $this->_entityManager->persist($registration);
                     }
                     $registration->setPayed();
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    // Suppress all errors
+                }
             }
         }
 
@@ -309,7 +311,9 @@ class QueueItem
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
                     $registration->setPayed();
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    // Suppress all errors
+                }
             }
         }
 

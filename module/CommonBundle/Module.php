@@ -22,6 +22,7 @@ use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
     Zend\Mvc\MvcEvent,
     Zend\Console\Request as ConsoleRequest,
     Zend\ServiceManager\ServiceLocatorInterface,
+    Zend\ServiceManager\ServiceManager,
     Symfony\Component\Console\Application as ConsoleApplication;
 
 class Module
@@ -66,9 +67,11 @@ class Module
 
         // Use the $serviceLocator here because it injects dependencies of the instantiated classes.
         // Added bonus: allows commands to be overriden!
-        foreach ($config as $name => $invokable) {
-            $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
-            $commands[$name] = $serviceLocator->get('litus.console.' . $name);
+        if ($serviceLocator instanceof ServiceManager) {
+            foreach ($config as $name => $invokable) {
+                $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
+                $commands[$name] = $serviceLocator->get('litus.console.' . $name);
+            }
         }
 
         $application->addCommands(array_values($commands));

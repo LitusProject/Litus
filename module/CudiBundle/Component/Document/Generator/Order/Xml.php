@@ -93,7 +93,8 @@ class Xml
     {
         $xml = new Generator($tmpFile);
 
-        if (!($item->getArticle()->getMainArticle() instanceof InternalArticle))
+        $mainArticle = $item->getArticle()->getMainArticle();
+        if (!($mainArticle instanceof InternalArticle))
             return;
 
         $num = 1;
@@ -110,7 +111,7 @@ class Xml
 
         $mappings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findAllByArticle($item->getArticle()->getMainArticle());
+            ->findAllByArticle($mainArticle);
         foreach ($mappings as $mapping) {
             $attachments[] = new Object(
                 'Attachment',
@@ -122,7 +123,7 @@ class Xml
             );
         }
 
-        switch ($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
+        switch ($mainArticle->getBinding()->getCode()) {
             case 'glued':
                 $binding = 'Ingelijmd';
                 break;
@@ -144,7 +145,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        $item->getArticle()->getMainArticle()->getTitle()
+                        $mainArticle->getTitle()
                     )
                 )
             ),
@@ -196,7 +197,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        $item->getArticle()->getMainArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
+                        $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
                     )
                 )
             ),
@@ -209,7 +210,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) $item->getArticle()->getMainArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
+                        (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
                     )
                 )
             ),
