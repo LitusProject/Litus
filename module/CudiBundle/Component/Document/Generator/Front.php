@@ -65,7 +65,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     public function generate()
     {
         $mainArticle = $this->_article->getMainArticle();
-        if ($mainArticle instanceof InternalArticle)
+        if (!($mainArticle instanceof InternalArticle))
             return;
 
         $cachePath = $this->getEntityManager()
@@ -103,7 +103,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     protected function generateXml(TmpFile $tmpFile)
     {
         $mainArticle = $this->_article->getMainArticle();
-        if ($mainArticle instanceof InternalArticle)
+        if (!($mainArticle instanceof InternalArticle))
             return;
 
         $configuration = $this->getConfigRepository();

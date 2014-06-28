@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
+use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
 class Printer

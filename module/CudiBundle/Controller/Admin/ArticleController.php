@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\History,
