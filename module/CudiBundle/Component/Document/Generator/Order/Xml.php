@@ -22,6 +22,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
+    CudiBundle\Entity\Sale\Article\Internal as InternalArticle,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Order\Item,
     Doctrine\ORM\EntityManager,
@@ -90,13 +91,12 @@ class Xml
 
     private function _generateXml(Item $item, TmpFile $tmpFile)
     {
-        $configs = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config');
-
         $xml = new Generator($tmpFile);
 
-        $num = 1;
+        if (!($item->getArticle() instanceof InternalArticle))
+            return;
 
+        $num = 1;
         $attachments = array(
             new Object(
                 'Attachment',

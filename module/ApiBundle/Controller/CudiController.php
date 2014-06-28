@@ -360,7 +360,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     }
 
     /**
-     * @param  Person $authenticatedPerson
+     * @param  Person $authenticatedPerson The authenticated person
      * @return array
      */
     private function _getArticlesAndSubjects(Person $authenticatedPerson)

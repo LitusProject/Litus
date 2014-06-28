@@ -22,7 +22,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\Article\Internal as Article,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -34,13 +34,13 @@ use CommonBundle\Component\Util\AcademicYear,
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var Article
+     * @var \CudiBundle\Entity\Sale\Article\Internal
      */
     private $_article;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param Article       $article       The article
+     * @param \CudiBundle\Entity\Sale\Article\Internal       $article       The article
      * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
@@ -100,7 +100,6 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $configuration = $this->getConfigRepository();
 
-        $now = new DateTime();
         $organization_short_name = $configuration->getConfigValue('organization_short_name');
         $organization_name = $configuration->getConfigValue('organization_name');
         $organization_logo = $configuration->getConfigValue('organization_logo');

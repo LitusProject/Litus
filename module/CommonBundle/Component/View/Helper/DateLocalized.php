@@ -20,8 +20,10 @@ namespace CommonBundle\Component\View\Helper;
 
 use DateTime,
     IntlDateFormatter,
+    Zend\I18n\Translator\Translator,
     Zend\I18n\Translator\TranslatorInterface,
-    Zend\I18n\Translator\TranslatorAwareInterface;
+    Zend\I18n\Translator\TranslatorAwareInterface,
+    Zend\Mvc\I18n\Translator\Translator as MvcTranslator;
 
 /**
  * A view helper that allows us to easily translate the date.
@@ -59,7 +61,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        if (null === $date || null === $this->getTranslator())
+        if (null === $date || null === $this->getTranslator() || $this->getTranslator() instanceof Translator || $this->getTranslator() instanceof MvcTranslator)
             return '';
 
         $formatter = new IntlDateFormatter(

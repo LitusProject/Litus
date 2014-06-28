@@ -226,8 +226,8 @@ abstract class Server
         } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
-            if (null !== $user->getBuffer())
-                $this->handleDataFrame($user, $user->getBuffer());
+            if ($buffer = $user->getBuffer())
+                $this->handleDataFrame($user, $buffer);
 
             $user->clearBuffer();
         }
@@ -247,8 +247,8 @@ abstract class Server
             if ($len !== 0 && $len === 1)
                 return;
 
-            $statusCode = '';
-            $reason = false;
+            $statusCode = false;
+            $reason = '';
 
             if ($len >= 2) {
                 $unpacked = unpack('n', substr($frame->getData(), 0, 2));
