@@ -19,7 +19,6 @@
 namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     DateTime,
     Doctrine\ORM\EntityManager;

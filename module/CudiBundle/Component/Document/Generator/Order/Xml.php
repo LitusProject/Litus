@@ -22,7 +22,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Sale\Article\Internal as InternalArticle,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Order\Item,
     Doctrine\ORM\EntityManager,
@@ -93,7 +93,7 @@ class Xml
     {
         $xml = new Generator($tmpFile);
 
-        if (!($item->getArticle() instanceof InternalArticle))
+        if (!($item->getArticle()->getMainArticle() instanceof InternalArticle))
             return;
 
         $num = 1;

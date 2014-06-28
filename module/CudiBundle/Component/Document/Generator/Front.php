@@ -22,8 +22,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CudiBundle\Entity\Sale\Article\Internal as Article,
-    DateTime,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
+    CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -34,13 +34,13 @@ use CommonBundle\Component\Util\AcademicYear,
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article\Internal
+     * @var Article
      */
     private $_article;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article\Internal       $article       The article
+     * @param Article       $article       The article
      * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
@@ -64,6 +64,9 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     public function generate()
     {
+        if ($this->_article->getMainArticle() instanceof InternalArticle)
+            return;
+
         $cachePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.front_page_cache_dir');
@@ -98,6 +101,9 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
+        if ($this->_article->getMainArticle() instanceof InternalArticle)
+            return;
+            
         $configuration = $this->getConfigRepository();
 
         $organization_short_name = $configuration->getConfigValue('organization_short_name');
