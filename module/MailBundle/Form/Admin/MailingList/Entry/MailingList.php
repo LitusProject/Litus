@@ -18,8 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MailingList extends \CommonBundle\Component\Form\Admin\Form
+class MailingList extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

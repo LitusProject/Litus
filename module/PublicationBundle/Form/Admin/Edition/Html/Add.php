@@ -18,10 +18,10 @@
 
 namespace PublicationBundle\Form\Admin\Edition\Html;
 
-use CommonBundle\Component\Form\Admin\Element\File,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\File,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

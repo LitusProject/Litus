@@ -18,7 +18,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Barcode extends \CommonBundle\Component\Form\Admin\Form
+class Barcode extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

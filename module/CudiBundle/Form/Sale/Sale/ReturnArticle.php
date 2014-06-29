@@ -19,9 +19,9 @@
 namespace CudiBundle\Form\Sale\Sale;
 
 use CommonBundle\Component\Validator\Username as UsernameValidator,
-    CommonBundle\Component\Form\Bootstrap\Element\Reset,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Exists as BarcodeValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Hidden,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Validator\Username as UsernameValidator,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
+class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager

@@ -18,8 +18,8 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     Ticketbundle\Entity\Event,

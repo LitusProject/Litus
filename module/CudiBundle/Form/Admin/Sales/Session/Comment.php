@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CudiBundle\Entity\Sale\Session,
     Zend\Form\Element\Submit;
 
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Comment extends \CommonBundle\Component\Form\Admin\Form
+class Comment extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \CudiBundle\Entity\Sale\Session $session

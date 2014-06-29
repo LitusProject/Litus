@@ -18,7 +18,7 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Export extends \CommonBundle\Component\Form\Admin\Form
+class Export extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

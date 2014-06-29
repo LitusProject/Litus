@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Booking;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Niels Avonds<niels.avonds@litus.cc>
  */
-class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
+class Booking extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
 
     /**

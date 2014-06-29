@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Role;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Entity\Acl\Role,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;

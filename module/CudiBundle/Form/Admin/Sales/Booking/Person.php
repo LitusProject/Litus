@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Person extends \CommonBundle\Component\Form\Admin\Form
+class Person extends \CommonBundle\Component\OldForm\Admin\Form
 {
     public function __construct($options = null)
     {

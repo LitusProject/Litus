@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Member extends \CommonBundle\Component\Form\Admin\Form
+class Member extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

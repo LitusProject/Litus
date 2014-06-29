@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CudiBundle\Entity\Stock\Order\Item,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \CudiBundle\Entity\Stock\Order\Item $item

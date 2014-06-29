@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,

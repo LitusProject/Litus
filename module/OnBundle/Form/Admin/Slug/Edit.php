@@ -18,7 +18,7 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     OnBundle\Component\Validator\Name as NameValidator,
     OnBundle\Document\Slug,

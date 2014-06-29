@@ -18,8 +18,8 @@
 
 namespace SecretaryBundle\Form\Admin\Export;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Export extends \CommonBundle\Component\Form\Admin\Form
+class Export extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance

@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance

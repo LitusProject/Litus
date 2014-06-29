@@ -18,9 +18,9 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Admin extends \CommonBundle\Component\Form\Admin\Form
+class Admin extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

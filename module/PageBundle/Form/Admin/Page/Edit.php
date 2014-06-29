@@ -18,7 +18,7 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Node\Page,

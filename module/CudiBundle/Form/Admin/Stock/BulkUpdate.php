@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
+class BulkUpdate extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var array Contains the input fields added for article quantities.

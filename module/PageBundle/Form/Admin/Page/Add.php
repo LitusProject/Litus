@@ -18,12 +18,12 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Category,
@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 /**
  * Add Page
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

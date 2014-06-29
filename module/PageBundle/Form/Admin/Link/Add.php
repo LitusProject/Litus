@@ -18,11 +18,11 @@
 
 namespace PageBundle\Form\Admin\Link;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     PageBundle\Entity\Category,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

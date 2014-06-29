@@ -18,7 +18,7 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     OnBundle\Component\Validator\Name as NameValidator,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance

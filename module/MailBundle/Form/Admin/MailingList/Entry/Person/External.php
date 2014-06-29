@@ -18,8 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     MailBundle\Component\Validator\MailingList as NameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class External extends \CommonBundle\Component\Form\Admin\Form
+class External extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

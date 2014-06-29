@@ -18,9 +18,9 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
+class AddLease extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

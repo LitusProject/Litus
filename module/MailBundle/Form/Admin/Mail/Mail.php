@@ -18,8 +18,8 @@
 
 namespace MailBundle\Form\Admin\Mail;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Form\Admin\Form
+class Mail extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

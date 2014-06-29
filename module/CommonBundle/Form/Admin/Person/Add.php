@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Password,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Password,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Component\Validator\Username as UsernameValidator,
     Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Password,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class Add extends \CommonBundle\Component\Form\Admin\Form
+abstract class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

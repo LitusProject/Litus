@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     Doctrine\ORM\EntityManager,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

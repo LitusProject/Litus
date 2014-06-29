@@ -18,11 +18,11 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Component\Validator\Name as NameValidator,
     GalleryBundle\Entity\Album\Album,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 /**
  * Add an album.
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

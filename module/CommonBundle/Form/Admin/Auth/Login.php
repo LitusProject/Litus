@@ -18,16 +18,16 @@
 
 namespace CommonBundle\Form\Admin\Auth;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Password,
-    CommonBundle\Component\Form\Admin\Element\Text;
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Password,
+    CommonBundle\Component\OldForm\Admin\Element\Text;
 
 /**
  * Login
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Login extends \CommonBundle\Component\Form\Admin\Form
+class Login extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param mixed $opts The form's options

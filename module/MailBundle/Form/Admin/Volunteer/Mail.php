@@ -18,11 +18,11 @@
 
 namespace MailBundle\Form\Admin\Volunteer;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mail extends \CommonBundle\Component\Form\Admin\Form
+class Mail extends \CommonBundle\Component\OldForm\Admin\Form
 {
 
     /**

@@ -19,8 +19,8 @@
 namespace SecretaryBundle\Form\Registration;
 
 use Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,

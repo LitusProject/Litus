@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Entity\General\Organization\Unit,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Text,

@@ -18,7 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
     Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * Add a new round
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

@@ -18,10 +18,10 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     MailBundle\Component\Validator\MailingList as NameValidator,
     Doctrine\ORM\EntityManager,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Academic extends \CommonBundle\Component\Form\Admin\Form
+class Academic extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instanc

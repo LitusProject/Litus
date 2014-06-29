@@ -18,7 +18,7 @@
 
 namespace DoorBundle\Form\Admin\Rule;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     DoorBundle\Document\Rule,
     Zend\InputFilter\Factory as InputFactory,

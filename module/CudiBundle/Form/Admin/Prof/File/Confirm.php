@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Prof\File;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CudiBundle\Entity\File\Mapping as FileMapping,
     Zend\Form\Element\Submit;
 
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Confirm extends \CommonBundle\Component\Form\Admin\Form
+class Confirm extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \CudiBundle\Entity\File\Mapping $mapping

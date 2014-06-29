@@ -18,7 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Quiz,
     Zend\Form\Element\Submit;

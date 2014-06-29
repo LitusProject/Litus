@@ -18,10 +18,10 @@
 
 namespace FormBundle\Form\Manage\SpecifiedForm;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Form,
     Doctrine\ORM\EntityManager,

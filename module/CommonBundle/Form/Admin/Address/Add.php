@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Address;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     CommonBundle\Entity\General\Address,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Element\Collection
+class Add extends \CommonBundle\Component\OldForm\Admin\Element\Collection
 {
     /**
      * @var string The form's prefix

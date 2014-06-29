@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\Language,
     DateInterval,
@@ -37,7 +37,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

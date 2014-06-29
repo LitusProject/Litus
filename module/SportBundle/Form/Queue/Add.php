@@ -18,10 +18,10 @@
 
 namespace SportBundle\Form\Queue;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

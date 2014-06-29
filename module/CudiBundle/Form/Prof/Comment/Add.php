@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Comment;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Textarea,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

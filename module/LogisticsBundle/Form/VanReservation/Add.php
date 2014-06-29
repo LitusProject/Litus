@@ -18,10 +18,10 @@
 
 namespace LogisticsBundle\Form\VanReservation;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
@@ -37,7 +37,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

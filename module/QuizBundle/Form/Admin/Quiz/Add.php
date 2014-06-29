@@ -18,19 +18,19 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Quiz,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
  * Add a new quiz
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

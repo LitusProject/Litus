@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Form\Admin\Prof\Article;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
     CudiBundle\Entity\Article,
@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
- class Confirm extends \CommonBundle\Component\Form\Admin\Form
+ class Confirm extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

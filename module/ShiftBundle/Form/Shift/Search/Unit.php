@@ -18,8 +18,8 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
+class Unit extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Config;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CommonBundle\Entity\General\Config,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing

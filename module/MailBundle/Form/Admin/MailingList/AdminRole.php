@@ -18,8 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class AdminRole extends \CommonBundle\Component\Form\Admin\Form
+class AdminRole extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

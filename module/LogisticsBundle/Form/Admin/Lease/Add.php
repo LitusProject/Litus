@@ -17,8 +17,8 @@
  */
 namespace LogisticsBundle\Form\Admin\Lease;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     LogisticsBundle\Entity\Lease\Item,
     Zend\InputFilter\InputFilter,
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * Add a new lease
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

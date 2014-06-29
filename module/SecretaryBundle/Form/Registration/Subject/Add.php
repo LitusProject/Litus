@@ -18,8 +18,8 @@
 
 namespace SecretaryBundle\Form\Registration\Subject;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Hidden;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

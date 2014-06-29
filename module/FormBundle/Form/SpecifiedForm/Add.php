@@ -18,11 +18,11 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
+    CommonBundle\Component\OldForm\Bootstrap\Element\File,
     CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -44,7 +44,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \FormBundle\Entity\Node\Form

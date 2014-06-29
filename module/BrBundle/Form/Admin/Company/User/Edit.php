@@ -18,7 +18,7 @@
 
 namespace BrBundle\Form\Admin\Company\User;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;

@@ -18,8 +18,8 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Book extends \CommonBundle\Component\Form\Bootstrap\Form
+class Book extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager

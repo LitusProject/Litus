@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Form\Admin\Mail;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Send extends \CommonBundle\Component\Form\Admin\Form
+class Send extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param string          $email

@@ -18,10 +18,10 @@
 
 namespace CommonBundle\Form\Auth;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Password,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Password,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Login extends \CommonBundle\Component\Form\Bootstrap\Form
+class Login extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param string          $action

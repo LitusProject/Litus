@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Account;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Password,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Password,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Password,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
+class Activate extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

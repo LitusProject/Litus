@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Address;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     Doctrine\ORM\EntityManager,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddPrimary extends \CommonBundle\Component\Form\Admin\Element\Collection
+class AddPrimary extends \CommonBundle\Component\OldForm\Admin\Element\Collection
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

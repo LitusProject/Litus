@@ -18,9 +18,9 @@
 
 namespace BrBundle\Form\Admin\Section;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     BrBundle\Entity\Contract\Section,
     BrBundle\Component\Validator\SectionName as SectionNameValidator,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

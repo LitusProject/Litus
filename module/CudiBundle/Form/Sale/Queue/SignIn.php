@@ -18,16 +18,16 @@
 
 namespace CudiBundle\Form\Sale\Queue;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Reset,
-    CommonBundle\Component\Form\Bootstrap\Element\Button,
-    CommonBundle\Component\Form\Bootstrap\Element\Text;
+use CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Button,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text;
 
 /**
  * Sign in to queue
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
+class SignIn extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

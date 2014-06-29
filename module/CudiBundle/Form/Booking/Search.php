@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Booking;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Search extends \CommonBundle\Component\Form\Bootstrap\Form
+class Search extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

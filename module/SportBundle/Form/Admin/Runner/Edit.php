@@ -18,8 +18,8 @@
 
 namespace SportBundle\Form\Admin\Runner;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

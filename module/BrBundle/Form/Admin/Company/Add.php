@@ -20,11 +20,11 @@ namespace BrBundle\Form\Admin\Company;
 
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
@@ -37,7 +37,7 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

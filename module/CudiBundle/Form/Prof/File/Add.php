@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Prof\File;
 
-use CommonBundle\Component\Form\Bootstrap\Element\File,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\File,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\File,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     public function __construct($options = null)
     {

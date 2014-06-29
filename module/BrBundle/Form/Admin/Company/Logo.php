@@ -18,7 +18,7 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-use CommonBundle\Component\Form\Admin\Element\File,
+use CommonBundle\Component\OldForm\Admin\Element\File,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\Admin\Element\File,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Logo extends \CommonBundle\Component\Form\Admin\Form
+class Logo extends \CommonBundle\Component\OldForm\Admin\Form
 {
     const FILESIZE = '2MB';
 

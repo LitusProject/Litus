@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
     SecretaryBundle\Entity\Registration,

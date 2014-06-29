@@ -18,9 +18,9 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

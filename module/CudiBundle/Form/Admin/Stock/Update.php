@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CudiBundle\Entity\Sale\Article,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Update extends \CommonBundle\Component\Form\Admin\Form
+class Update extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param \CudiBundle\Entity\Sale\Article $article

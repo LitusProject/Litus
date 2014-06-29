@@ -18,7 +18,7 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
     PublicationBundle\Entity\Publication,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

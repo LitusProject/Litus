@@ -18,7 +18,7 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Mapping extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

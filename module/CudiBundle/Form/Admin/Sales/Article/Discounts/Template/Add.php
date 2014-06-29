@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
@@ -34,7 +34,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Dario  Incalza <dario.incalza@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager

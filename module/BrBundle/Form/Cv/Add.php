@@ -21,13 +21,13 @@ namespace BrBundle\Form\Cv;
 use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
     CommonBundle\Component\Validator\FieldLength as LengthValidator,
-    CommonBundle\Component\Form\Bootstrap\Element\Button,
-    CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Button,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Decimal as DecimalValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Language,
@@ -41,7 +41,7 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * The entity manager.

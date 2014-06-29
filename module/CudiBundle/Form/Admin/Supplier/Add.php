@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

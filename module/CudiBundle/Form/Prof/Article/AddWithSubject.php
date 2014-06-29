@@ -20,7 +20,7 @@ namespace CudiBundle\Form\Prof\Article;
 
 use SyllabusBundle\Entity\Subject,
     Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit;
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit;
 
 /**
  * Add With Subject

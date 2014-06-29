@@ -18,7 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * Add a new team
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

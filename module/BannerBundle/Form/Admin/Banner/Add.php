@@ -18,9 +18,9 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\File,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     BannerBundle\Entity\Node\Banner,
@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
 
     const BANNER_WIDTH = 940;

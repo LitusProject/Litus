@@ -18,9 +18,9 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     LogisticsBundle\Component\Validator\Driver as DriverValidator,
     LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
@@ -33,7 +33,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

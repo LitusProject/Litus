@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
-use CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,

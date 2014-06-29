@@ -18,8 +18,8 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     DateTime,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Date extends \CommonBundle\Component\Form\Bootstrap\Form
+class Date extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

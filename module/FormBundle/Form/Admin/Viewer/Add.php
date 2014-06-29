@@ -18,9 +18,9 @@
 
 namespace FormBundle\Form\Admin\Viewer;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     FormBundle\Component\Validator\Person as PersonValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager

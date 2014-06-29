@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Form\Account;
 
-use CommonBundle\Component\Form\Bootstrap\Element\File,
-    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\File,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\File,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
+class Profile extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

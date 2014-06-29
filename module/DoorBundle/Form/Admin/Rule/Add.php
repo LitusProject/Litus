@@ -18,8 +18,8 @@
 
 namespace DoorBundle\Form\Admin\Rule;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
     Doctrine\ODM\MongoDB\DocumentManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -30,7 +30,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance
