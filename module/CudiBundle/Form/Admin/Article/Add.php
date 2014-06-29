@@ -26,6 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
     CudiBundle\Entity\Article,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
     Zend\InputFilter\InputFilter,
@@ -238,7 +239,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'internal' => $article->isInternal()
         );
 
-        if ($article->isInternal()) {
+        if ($article instanceof InternalArticle) {
             $data['nb_black_and_white'] = $article->getNbBlackAndWhite();
             $data['nb_colored'] = $article->getNbColored();
             $data['binding'] = $article->getBinding()->getId();

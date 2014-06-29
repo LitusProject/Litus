@@ -42,8 +42,8 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('number');
         $field->setLabel('Number')
             ->setAttribute('autocomplete', 'off')
-            ->setValue($item->getNumber())
-            ->setRequired();
+            ->setRequired()
+            ->setValue($item->getNumber());
         $this->add($field);
 
         $field = new Submit('edit');

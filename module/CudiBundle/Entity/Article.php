@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Entity;
 
-use DateTime,
+use CudiBundle\Entity\Sale\Article as SaleArticle,
+    DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException;
@@ -282,7 +283,7 @@ abstract class Article
     }
 
     /**
-     * @param string $yearPublished
+     * @param int $yearPublished
      *
      * @return self
      */
@@ -395,7 +396,9 @@ abstract class Article
     {
         $this->isHistory = $isHistory;
 
-        if ($saleArticle = $this->getSaleArticle() && $isHistory == true)
+        $saleArticle = $this->getSaleArticle();
+
+        if ($saleArticle instanceof SaleArticle && $isHistory == true)
             $saleArticle->setIsHistory(true);
 
         return $this;

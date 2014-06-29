@@ -329,7 +329,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     }
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')
@@ -370,7 +370,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         ->setIsDownloadable($formData['downloadable'])
                         ->setType($formData['type']);
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal) {
                         $article->setBinding(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Article\Option\Binding')

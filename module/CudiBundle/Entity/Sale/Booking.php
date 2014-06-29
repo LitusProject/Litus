@@ -278,7 +278,7 @@ class Booking
      */
     public function getCancelationDate()
     {
-        return $this->cancelationdate;
+        return $this->cancelationDate;
     }
 
     /**

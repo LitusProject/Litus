@@ -200,7 +200,7 @@ class Order
     /**
      * @return self
      */
-    public function order()
+    public function setOrdered()
     {
         $this->dateOrdered = new DateTime();
 
@@ -210,7 +210,7 @@ class Order
     /**
      * @return self
      */
-    public function cancel()
+    public function setCanceled()
     {
         $this->dateOrdered = null;
 

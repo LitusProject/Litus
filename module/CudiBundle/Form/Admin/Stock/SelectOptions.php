@@ -41,15 +41,15 @@ class SelectOptions extends \CommonBundle\Component\Form\Admin\Form
         $field = new Radio('articles');
         $field->setLabel('Articles')
             ->setAttribute('options', array('all' => 'All', 'internal' => 'Internal', 'external' => 'External'))
-            ->setValue('all')
-            ->setRequired();
+            ->setRequired()
+            ->setValue('all');
         $this->add($field);
 
         $field = new Radio('order');
         $field->setLabel('Order')
             ->setAttribute('options', array('barcode' => 'Barcode', 'title' => 'Title'))
-            ->setValue('barcode')
-            ->setRequired();
+            ->setRequired()
+            ->setValue('barcode');
         $this->add($field);
 
         $field = new Checkbox('in_stock');

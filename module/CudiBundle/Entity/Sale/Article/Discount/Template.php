@@ -99,7 +99,7 @@ class Template
     public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, Organization $organization = null)
     {
         $this->name = $name;
-        $this->value = str_replace(',', '.', $value) * 100;
+        $this->value = (int) (str_replace(',', '.', $value) * 100);
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
@@ -143,7 +143,7 @@ class Template
     }
 
     /**
-     * @param  string $value
+     * @param  int $value
      * @return self
      */
     public function setValue($value)

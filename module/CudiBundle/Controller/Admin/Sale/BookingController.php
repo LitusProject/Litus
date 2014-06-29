@@ -316,8 +316,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
             $this->getEntityManager()->persist($new);
             $booking->setNumber($this->getParam('number'));
-        } else {
-            $number = $booking->getNumber();
         }
 
         if ($available < $booking->getNumber()) {

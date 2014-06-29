@@ -20,7 +20,6 @@ namespace CudiBundle\Form\Admin\Article;
 
 use CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -68,7 +67,6 @@ class Duplicate extends \CudiBundle\Form\Admin\Article\Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
 
         $inputFilter->remove('type');
 

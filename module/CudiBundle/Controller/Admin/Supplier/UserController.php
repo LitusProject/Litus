@@ -242,7 +242,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person|null
+     * @return \CudiBundle\Entity\User\Person\Supplier|null
      */
     private function _getUser()
     {

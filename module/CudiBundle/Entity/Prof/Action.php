@@ -248,7 +248,7 @@ class Action
      */
     public function getConfirmDate()
     {
-        return $this->completeDate;
+        return $this->confirmDate;
     }
 
     /**

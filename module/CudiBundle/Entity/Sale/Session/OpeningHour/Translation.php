@@ -74,6 +74,14 @@ class Translation
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return OpeningHour
      */
     public function getOpeningHour()

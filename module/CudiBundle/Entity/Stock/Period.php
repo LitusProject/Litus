@@ -234,6 +234,6 @@ class Period
     {
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->getNbQueueOrder($this, $article);
+            ->getNbQueueOrder($article);
     }
 }

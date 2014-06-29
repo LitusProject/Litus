@@ -42,8 +42,8 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
         $field = new Textarea('comment');
         $field->setLabel('Comment')
             ->setAttribute('style', 'height: 50px')
-            ->setValue($order->getComment())
-            ->setRequired();
+            ->setRequired()
+            ->setValue($order->getComment());
         $this->add($field);
 
         $field = new Submit('save');

@@ -52,8 +52,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('id', 'articleSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
-            ->setValue($barcodePrefix)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($barcodePrefix);
         $this->add($field);
 
         $field = new Text('number');

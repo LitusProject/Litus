@@ -341,7 +341,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($order = $this->_getOrder()))
             return new ViewModel();
 
-        $order->order();
+        $order->setOrdered();
 
         $this->getEntityManager()->flush();
 
@@ -422,7 +422,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($order = $this->_getOrder()))
             return new ViewModel();
 
-        $order->cancel();
+        $order->setCanceled();
 
         $this->getEntityManager()->flush();
 

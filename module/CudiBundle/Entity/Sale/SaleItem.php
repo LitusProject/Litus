@@ -129,7 +129,7 @@ class SaleItem
         $this->price = $price * 100;
         $this->timestamp = new DateTime();
         $this->discountType = $discountType;
-        $this->purchasePrice = $article->getPurchasePrice() * $number;
+        $this->purchasePrice = (int) ($article->getPurchasePrice() * $number);
     }
 
     /**
@@ -183,8 +183,8 @@ class SaleItem
      */
     public function setNumber($number)
     {
-        $this->purchasePrice = round($this->purchasePrice * $number / $this->number);
-        $this->price = round($this->price * $number / $this->number);
+        $this->purchasePrice = (int) round($this->purchasePrice * $number / $this->number);
+        $this->price = (int) round($this->price * $number / $this->number);
         $this->number = $number;
 
         return $this;

@@ -211,7 +211,7 @@ class Period extends EntityRepository
 
         $articles = array();
         foreach ($resultSet as $barcode) {
-            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($barcode->getArticle()) <= 0)
+            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($barcode->getArticle()) - $period->getNbDelivered($barcode->getArticle()) <= 0)
                 continue;
             $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
         }
@@ -419,7 +419,7 @@ class Period extends EntityRepository
         return 0;
     }
 
-    public function getNbQueueOrder(PeriodEntity $period, Article $article)
+    public function getNbQueueOrder(Article $article)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('SUM(i.number)')

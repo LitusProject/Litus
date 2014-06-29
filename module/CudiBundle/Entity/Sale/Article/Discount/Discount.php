@@ -205,7 +205,7 @@ class Discount
             throw new \InvalidArgumentException('The rounding type is not valid.');
 
         $this->template = null;
-        $this->value = str_replace(',', '.', $value) * 100;
+        $this->value = (int) (str_replace(',', '.', $value) * 100);
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
