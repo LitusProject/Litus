@@ -61,7 +61,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        if (null === $date || null === $this->getTranslator() || $this->getTranslator() instanceof Translator || $this->getTranslator() instanceof MvcTranslator)
+        if (null === $date || null === $this->getTranslator() || !($this->getTranslator() instanceof Translator || $this->getTranslator() instanceof MvcTranslator))
             return '';
 
         $formatter = new IntlDateFormatter(

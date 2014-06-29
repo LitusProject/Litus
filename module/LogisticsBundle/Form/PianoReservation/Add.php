@@ -122,7 +122,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         $weeks = array();
-
         while ($now < $maxDate) {
             $listStart = array();
             $listEnd = array();
