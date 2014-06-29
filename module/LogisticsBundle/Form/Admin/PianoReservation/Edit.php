@@ -67,7 +67,7 @@ class Edit extends Add
         $this->setData(
             array(
                 'player_id' => $reservation->getPlayer()->getId(),
-                'player' => $person->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
+                'player' => $person->getFullName() . ($person instanceof Academic ? ' - ' . $person->getUniversityIdentification() : ''),
                 'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
                 'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
                 'additional_info' => $reservation->getAdditionalInfo(),

@@ -18,8 +18,10 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
@@ -175,29 +177,30 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     case 'timeslot':
                         $startDate = self::_loadDate($formData['timeslot_start_date']);
                         $endDate = self::_loadDate($formData['timeslot_end_date']);
-                        if ($startDate && $endDate) {
-                            $field = new TimeSlotField(
-                                $formSpecification,
-                                0,
-                                $formData['required'],
-                                $visibilityDecissionField,
-                                isset($visibilityDecissionField) ? $formData['visible_value'] : null,
-                                $startDate,
-                                $endDate
+                        if (!isset($startDate) && !isset($endDate))
+                            throw new RuntimeException('Invalid date');
+
+                        $field = new TimeSlotField(
+                            $formSpecification,
+                            0,
+                            $formData['required'],
+                            $visibilityDecissionField,
+                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                            $startDate,
+                            $endDate
+                        );
+
+                        foreach ($languages as $language) {
+                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
+                                continue;
+                            $translation = new TimeSlotTranslationField(
+                                $field,
+                                $language,
+                                $formData['timeslot_location_' . $language->getAbbrev()],
+                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
                             );
 
-                            foreach ($languages as $language) {
-                                if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
-                                    continue;
-                                $translation = new TimeSlotTranslationField(
-                                    $field,
-                                    $language,
-                                    $formData['timeslot_location_' . $language->getAbbrev()],
-                                    $formData['timeslot_extra_info_' . $language->getAbbrev()]
-                                );
-
-                                $this->getEntityManager()->persist($translation);
-                            }
+                            $this->getEntityManager()->persist($translation);
                         }
                         break;
                     default:

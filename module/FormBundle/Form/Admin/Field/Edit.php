@@ -19,10 +19,6 @@
 namespace FormBundle\Form\Admin\Field;
 
 use Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 

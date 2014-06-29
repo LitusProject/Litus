@@ -45,7 +45,7 @@ class Doodle
                 $formData['first_name'],
                 $formData['last_name'],
                 $formData['email'],
-                $this->getRequest()
+                $request
             );
             $entityManager->persist($guestInfo);
         }

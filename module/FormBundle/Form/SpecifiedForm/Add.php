@@ -143,7 +143,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromEntry(Entry $entry)
     {
-        $formData = $this->data;
+        $formData = $this->data == null ? array() : $this->data;
 
         if ($entry->isGuestEntry()) {
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
@@ -172,11 +172,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromGuestInfo(GuestInfo $guestInfo)
     {
-        $data = array(
-            'first_name' => $guestInfo->getFirstName(),
-            'last_name' => $guestInfo->getLastName(),
-            'email' => $guestInfo->getEmail(),
-        );
+        $data = $this->data == null ? array() : $this->data;
+
+        $data['first_name'] = $guestInfo->getFirstName();
+        $data['last_name'] = $guestInfo->getLastName();
+        $data['email'] = $guestInfo->getEmail();
 
         $this->setData($data);
     }

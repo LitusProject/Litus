@@ -20,6 +20,7 @@ namespace LogisticsBundle\Form\Admin\VanReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
@@ -71,9 +72,11 @@ class Edit extends Add
             'driver' => $reservation->getDriver() === null ? -1 : $reservation->getDriver()->getPerson()->getId(),
         );
 
-        if (null !== $reservation->getPassenger()) {
-            $data['passenger_id'] = $reservation->getPassenger()->getId();
-            $data['passenger'] = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
+        $person = $reservation->getPassenger();
+
+        if (null !== $person
+            $data['passenger_id'] = $person->getId();
+            $data['passenger'] = $person->getFullName() . ($person instanceof Academic ? ' - ' . $person->getUniversityIdentification() : '');
         }
 
         $this->setData($data);

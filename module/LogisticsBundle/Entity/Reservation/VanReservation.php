@@ -77,7 +77,7 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @return Person
+     * @return Driver
      */
     public function getDriver()
     {

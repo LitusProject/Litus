@@ -59,8 +59,8 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-        ->setRequired();
-            ->setValue($message)
+            ->setRequired()
+            ->setValue($message);
         $this->add($field);
 
         $field = new Checkbox('test_it');

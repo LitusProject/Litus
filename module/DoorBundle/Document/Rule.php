@@ -176,8 +176,19 @@ class Rule
     }
 
     /**
-     * @param  EntityManager $entityManager
+     * @param  Academic $academic
      * @return self
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->academic = $academic->getId();
+
+        return $this
+    }
+
+    /**
+     * @param  EntityManager $entityManager
+     * @return Academic
      */
     public function getAcademic(EntityManager $entityManager)
     {

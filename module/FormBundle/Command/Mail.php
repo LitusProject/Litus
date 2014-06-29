@@ -78,7 +78,7 @@ EOT
     {
         $form = $timeSlot->getForm();
 
-        if (!($form instanceof Form))
+        if ($form instanceof Form)
             return;
 
         $english = $this->getEntityManager()

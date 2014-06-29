@@ -64,8 +64,10 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                $startDate = self::_loadDate($formData['start_date_' . $weekIndex]);
-                $endDate = self::_loadDate($formData['end_date_' . $weekIndex]);
+                if (isset($weekIndex) {
+                    $startDate = self::_loadDate($formData['start_date_' . $weekIndex]);
+                    $endDate = self::_loadDate($formData['end_date_' . $weekIndex]);
+                }
 
                 if (isset($weekIndex) && $startDate && $endDate) {
                     $piano = $this->getEntityManager()

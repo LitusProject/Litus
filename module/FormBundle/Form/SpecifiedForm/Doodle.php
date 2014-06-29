@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle,
+    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -73,7 +73,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($name);
 
-        if (!($form instanceof Doodle))
+        if (!($form instanceof DoodleEntity))
             return;
 
         // Create guest fields
@@ -160,7 +160,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromEntry(Entry $entry)
     {
-        $formData = $this->data;
+        $formData = $this->data == null ? array() : $this->data;
 
         if ($entry->isGuestEntry()) {
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
@@ -177,11 +177,11 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function populateFromGuestInfo(GuestInfo $guestInfo)
     {
-        $data = array(
-            'first_name' => $guestInfo->getFirstName(),
-            'last_name' => $guestInfo->getLastName(),
-            'email' => $guestInfo->getEmail(),
-        );
+        $data = $this->data == null ? array() : $this->data;
+
+        $data['first_name'] = $guestInfo->getFirstName();
+        $data['last_name'] = $guestInfo->getLastName();
+        $data['email'] = $guestInfo->getEmail();
 
         $this->setData($data);
     }

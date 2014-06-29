@@ -54,7 +54,7 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     private $_entityManager;
 
     /**
-     * @var Person
+     * @var \CommonBundle\Entity\User\Person
      */
     private $_person;
 

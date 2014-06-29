@@ -61,7 +61,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $startDate = self::_loadDate($formData['start_date']);
             $endDate = self::_loadDate($formData['end_date']);
 
-            if ($form->isValid() && $startDat && $endDate) {
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -132,7 +132,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
                     ? $repository->findOneByUsername($formData['person'])
                     : $repository->findOneById($formData['person_id']);
 
-                $rule->setPerson($person)
+                $rule->setAcademic($person)
                     ->setStartDate($startDate)
                     ->setEndDate($endDate)
                     ->setStartTime(str_replace(':', '', $formData['start_time']))

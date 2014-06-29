@@ -50,7 +50,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                 if ($formData['is_guest']) {
                     $person = null;
-                    $guestInfo = new GuestInfo($formData['guest_first_name'], $formData['guest_last_name'], $formData['guest_email'], $this->getRequest());
+                    $guestInfo = new GuestInfo($formData['guest_first_name'], $formData['guest_last_name'], $formData['guest_email']);
                     $this->getEntityManager()->persist($guestInfo);
                 } else {
                     $person = $this->getEntityManager()
