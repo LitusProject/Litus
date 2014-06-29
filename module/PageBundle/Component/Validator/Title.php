@@ -72,7 +72,6 @@ class Title extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $realParent = null;
         $parentName = null;
         if (isset($context['parent_' . $context['category']]) && '' != $context['parent_' . $context['category']]) {
             $realParent = $this->_entityManager

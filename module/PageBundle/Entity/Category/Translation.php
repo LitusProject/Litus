@@ -75,6 +75,14 @@ class Translation
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return Category
      */
     public function getCategory()

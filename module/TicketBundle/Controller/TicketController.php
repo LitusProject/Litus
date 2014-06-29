@@ -96,7 +96,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'event' => $event,
                 'tickets' => $tickets,
                 'form' => $form,
-                'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager(), $this->getAuthentication()->getPersonObject()),
+                'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
                 'isPraesidium' => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
             )
         );

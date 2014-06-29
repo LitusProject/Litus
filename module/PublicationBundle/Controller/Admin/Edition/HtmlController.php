@@ -106,7 +106,6 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('publication.public_pdf_directory');
 
-            $fileName = '';
             do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));

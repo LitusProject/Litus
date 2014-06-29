@@ -70,6 +70,14 @@ class Mail
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @param  string $from
      * @return self
      */

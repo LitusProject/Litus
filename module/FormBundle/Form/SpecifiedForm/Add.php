@@ -209,8 +209,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         )
                     )
                 );
-            } elseif ($fieldSpecification instanceof DropdownField) {
-            } elseif ($fieldSpecification instanceof CheckboxField) {
             } elseif ($fieldSpecification instanceof FileField) {
                 $inputFilter->add(
                     $factory->createInput(

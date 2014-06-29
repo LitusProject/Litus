@@ -98,7 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        if ($form instanceOf Doodle) {
+        if ($form instanceof Doodle) {
             $field->setAttribute('options', array('timeslot' => 'Time Slot'));
         } else {
             $field->setAttribute('options', Field::$POSSIBLE_TYPES);

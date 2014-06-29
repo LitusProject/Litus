@@ -216,7 +216,6 @@ class Lap
 
         $seconds = $this->_convertDateIntervalToSeconds($this->getLapTime());
 
-        $points = 0;
         foreach ($pointsCriteria as $i => $pointsCriterium) {
             if (isset($pointsCriteria[$i+1])) {
                 if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit'])

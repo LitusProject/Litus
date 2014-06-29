@@ -55,21 +55,6 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
     }
 
-    private function _createUnitsArray()
-    {
-        $units = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActive();
-
-        $unitsArray = array(
-            '' => ''
-        );
-        foreach ($units as $unit)
-            $unitsArray[$unit->getId()] = $unit->getName();
-
-        return $unitsArray;
-    }
-
     public function getInputFilter()
     {
         $inputFilter = new InputFilter();

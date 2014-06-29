@@ -94,7 +94,6 @@ class Form
                     $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
                     if ($upload->isValid('field-' . $field->getId())) {
                         if (null === $fieldEntry || $fieldEntry->getValue() == '') {
-                            $fileName = '';
                             do {
                                 $fileName = sha1(uniqid());
                             } while (file_exists($filePath . '/' . $fileName));

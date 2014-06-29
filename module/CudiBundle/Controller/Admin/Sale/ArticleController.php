@@ -181,7 +181,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $saleArticle);
 
-        $mainArticle = $saleArticle->geMainArticle();
+        $mainArticle = $saleArticle->getMainArticle();
 
         $precalculatedSellPrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculateSellPrice($this->getEntityManager()) : 0;
         $precalculatedPurchasePrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculatePurchasePrice($this->getEntityManager()) : 0;
@@ -213,10 +213,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     $cachePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
-                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage()))
-                        unlink($cachePath . '/' . $article->getFrontPage());
+                    if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage()))
+                        unlink($cachePath . '/' . $mainArticle->getFrontPage());
 
-                    $article->setFrontPage();
+                    $mainArticle->setFrontPage();
                 }
 
                 if (isset($formData['bookable']) && $formData['bookable'] && !$history->getPrecursor()->isBookable())

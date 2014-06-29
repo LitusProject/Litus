@@ -48,9 +48,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->_getNews()))
             return $this->notFoundAction();
-        }
 
         return new ViewModel(
             array(
@@ -69,7 +68,6 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
         $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
-        $description = '';
         $descriptions = unserialize($config->getConfigValue('news.rss_description'));
         if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
             $description = $descriptions[$this->getLanguage()->getAbbrev()];

@@ -87,7 +87,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
                 $organization = null;
             else
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
@@ -232,7 +232,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
                 $organization = null;
             else
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
@@ -443,7 +443,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
                 $organization = null;
             else
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
@@ -585,7 +585,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceOf ProfItem || $soldItem instanceOf ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
                 $organization = null;
             else
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());

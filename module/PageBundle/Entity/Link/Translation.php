@@ -84,6 +84,14 @@ class Translation
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return Link
      */
     public function getLink()

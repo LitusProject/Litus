@@ -59,7 +59,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         foreach ($group->getForms() as $form) {
             $person = $this->getAuthentication()->getPersonObject();
-            $cookie = $this->getRequest()->getHeader('Cookie');
 
             if (null !== $person) {
                 $entries[$form->getForm()->getId()] = array(

@@ -141,9 +141,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                         $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
                         $this->getEntityManager()->persist($translation);
                     }
-
-                    if ($language->getAbbrev() == 'en')
-                        $title = $formData['title_' . $language->getAbbrev()];
                 }
 
                 $this->getEntityManager()->flush();

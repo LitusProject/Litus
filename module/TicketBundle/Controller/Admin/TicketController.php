@@ -69,14 +69,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $file = new CsvFile();
 
-        $language = $this->getLanguage();
         $file->appendContent(array('ID', 'Name', 'Status', 'Option', 'Number', 'Book Date', 'Sold Date', 'Member'));
 
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllActiveByEvent($event);
 
-        $results = array();
         foreach ($tickets as $ticket) {
             $file->appendContent(
                 array(

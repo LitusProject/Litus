@@ -52,10 +52,6 @@ EOT
             $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');
         }
 
-        $english = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
         $start = new DateTime();
         $start->setTime(0, 0);
         $start->add(new DateInterval('P1D'));

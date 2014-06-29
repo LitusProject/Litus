@@ -21,7 +21,6 @@ namespace SyllabusBundle\Form\Admin\Subject\Study;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -54,7 +53,6 @@ class Edit extends Add
     public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
 
         $inputFilter->remove('study_id');
         $inputFilter->remove('study');

@@ -357,7 +357,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canSignOut($this->getEntityManager(), $person))) {
+        if (!($shift->canSignOut($this->getEntityManager()))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')

@@ -143,7 +143,7 @@ class Template
     }
 
     /**
-     * @param  int $value
+     * @param  int  $value
      * @return self
      */
     public function setValue($value)

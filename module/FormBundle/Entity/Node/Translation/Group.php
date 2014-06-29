@@ -84,6 +84,14 @@ class Group
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return GroupEntity
      */
     public function getGroup()

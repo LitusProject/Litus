@@ -127,7 +127,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         if ($command->command == 'update' && 'done' == $this->_status) {
             $this->_entityManager->clear();
             $this->_status = 'updating';
-            new StudyParser($this->_entityManager, $this->_mailTransport, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));
+            new StudyParser($this->_entityManager, $this->_mailTransport, array($this, 'callback'));
             $this->callback('done');
             $this->_status = 'done';
         }

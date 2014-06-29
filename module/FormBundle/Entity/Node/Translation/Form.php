@@ -102,6 +102,14 @@ class Form
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return FormEntity
      */
     public function getForm()

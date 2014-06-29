@@ -74,6 +74,14 @@ class Translation
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return Notification
      */
     public function getNotification()

@@ -83,6 +83,14 @@ class Translation
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return Page
      */
     public function getPage()

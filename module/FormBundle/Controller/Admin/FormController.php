@@ -271,7 +271,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $formSpecification->setMultiple($formData['multiple']);
 
-                if ($formSpecification instanceOf Doodle) {
+                if ($formSpecification instanceof Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
 
                     if ($formData['reminder_mail']) {

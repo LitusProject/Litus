@@ -62,11 +62,11 @@ class Group extends \CommonBundle\Entity\Node
     protected $_entityManager;
 
     /**
-     * @param Person $person
+     * @var int
      */
-    public function __construct(Person $person)
+    public function getId()
     {
-        parent::__construct($person);
+        return $this->id;
     }
 
     /**

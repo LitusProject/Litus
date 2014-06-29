@@ -37,8 +37,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Publication')
                 ->findAllActiveQuery(),
-            $this->getParam('page'),
-            array()
+            $this->getParam('page')
         );
 
         return new ViewModel(

@@ -183,24 +183,6 @@ class Doodle extends BaseForm
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 
-        $formatterDate = new IntlDateFormatter(
-            $language->getAbbrev(),
-            IntlDateFormatter::NONE,
-            IntlDateFormatter::NONE,
-            date_default_timezone_get(),
-            IntlDateFormatter::GREGORIAN,
-            'd MMMM Y'
-        );
-
-        $formatterHour = new IntlDateFormatter(
-            $language->getAbbrev(),
-            IntlDateFormatter::NONE,
-            IntlDateFormatter::NONE,
-            date_default_timezone_get(),
-            IntlDateFormatter::GREGORIAN,
-            'H:mm'
-        );
-
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
             $result .= $fieldEntry->getField()->getLabel($language);

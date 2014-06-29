@@ -380,7 +380,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if (false !== $fileContents)
             $resultPage = (array) json_decode($fileContents);
 
-        $nbOfficialLaps = null;
         if (null !== $resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

@@ -32,18 +32,6 @@ use CommonBundle\Entity\General\Language,
 class Checkbox extends Field
 {
     /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param bool        $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-    }
-
-    /**
      * @param  Language $language
      * @param  boolean  $value
      * @return string

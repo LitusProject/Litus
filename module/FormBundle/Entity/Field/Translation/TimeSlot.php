@@ -84,6 +84,14 @@ class TimeSlot
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return TimeSlotField
      */
     public function getTimeSlot()

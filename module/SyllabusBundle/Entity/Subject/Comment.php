@@ -22,7 +22,6 @@ use CommonBundle\Entity\User\Person,
     SyllabusBundle\Entity\Subject,
     DateTime,
     InvalidArgumentException,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     Doctrine\Common\Collections\ArrayCollection;
 
@@ -103,13 +102,12 @@ class Comment
 
     /**
      * @throws InvalidArgumentException
-     * @param  EntityManager            $entityManager
      * @param  Person                   $person        The person that created the comment
      * @param  Subject                  $subject       The subject of the comment
      * @param  string                   $text          The content of the comment
      * @param  string                   $type          The type of the comment
      */
-    public function __construct(EntityManager $entityManager, Person $person, Subject $subject, $text, $type)
+    public function __construct(Person $person, Subject $subject, $text, $type)
     {
         $this->person = $person;
         $this->text = $text;

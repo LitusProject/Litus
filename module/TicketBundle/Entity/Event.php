@@ -498,10 +498,9 @@ class Event
      * Check whether or not the given person can sign out from this shift.
      *
      * @param  EntityManager $entityManager The EntityManager instance
-     * @param  Person        $person        The person that should be checked
      * @return boolean
      */
-    public function canRemoveReservation(EntityManager $entityManager, Person $person)
+    public function canRemoveReservation(EntityManager $entityManager)
     {
         if (!$this->allowRemove())
             return false;

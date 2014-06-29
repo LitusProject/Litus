@@ -39,18 +39,6 @@ abstract class OptionSelector extends Field
     private $optionTranslations;
 
     /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param boolean     $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-    }
-
-    /**
      * @param  Language|null $language
      * @param  boolean       $allowFallback
      * @return string

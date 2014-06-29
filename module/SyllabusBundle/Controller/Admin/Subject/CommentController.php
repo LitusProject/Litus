@@ -79,7 +79,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $comment = new Comment(
-                    $this->getEntityManager(),
                     $this->getAuthentication()->getPersonObject(),
                     $subject,
                     $formData['text'],
@@ -136,8 +135,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $markAsReadForm->setData($formData);
 
                 if ($markAsReadForm->isValid()) {
-                    $formData = $markAsReadForm->getFormData($formData);
-
                     if ($comment->isRead())
                         $comment->setReadBy(null);
                     else
@@ -170,7 +167,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData = $form->getFormData($formData);
 
                     $reply = new Reply(
-                        $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
                         $comment,
                         $formData['text']

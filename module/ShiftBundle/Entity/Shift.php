@@ -619,10 +619,9 @@ class Shift
      * Check whether or not the given person can sign out from this shift.
      *
      * @param  EntityManager $entityManager The EntityManager instance
-     * @param  Person        $person        The person that should be checked
      * @return boolean
      */
-    public function canSignOut(EntityManager $entityManager, Person $person)
+    public function canSignOut(EntityManager $entityManager)
     {
         $now = new DateTime();
 

@@ -58,7 +58,7 @@ class Edit extends Add
         }
 
         $this->remove('type');
-        if ($form instanceOf Doodle) {
+        if ($form instanceof Doodle) {
             $this->remove('max');
         } else {
             $this->remove('names_visible_for_others');
@@ -105,7 +105,7 @@ class Edit extends Add
             }
         }
 
-        if ($form instanceOf Doodle) {
+        if ($form instanceof Doodle) {
             $data['names_visible_for_others'] = $form->getNamesVisibleForOthers();
             $data['reminder_mail'] = $form->hasReminderMail();
 

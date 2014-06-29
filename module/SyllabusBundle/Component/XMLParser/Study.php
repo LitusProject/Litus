@@ -72,10 +72,9 @@ class Study
     /**
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
-     * @param string             $xmlPath
      * @param array              $callback
      */
-    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -364,9 +363,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->_academicYear);
             if (null == $map) {
-                if (isset($maps[$prof->getUniversityIdentification()])) {
-                    $map = $maps[$prof->getUniversityIdentification()];
-                } else {
+                if (!isset($maps[$prof->getUniversityIdentification()])) {
                     $map = new SubjectProfMap($subject, $prof, $this->_academicYear);
                     $this->getEntityManager()->persist($map);
                     $maps[$prof->getUniversityIdentification()] = $map;
@@ -454,7 +451,6 @@ class Study
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path');
 
-                $fileName = '';
                 do {
                     $fileName = '/' . sha1(uniqid());
                 } while (file_exists($filePath . $fileName));

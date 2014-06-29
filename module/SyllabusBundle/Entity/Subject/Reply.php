@@ -20,7 +20,6 @@ namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,12 +68,11 @@ class Reply
     private $comment;
 
     /**
-     * @param EntityManager $entityManager
      * @param Person        $person        The person that created the reply
      * @param Comment       $comment       The comment of the reply
      * @param string        $text          The content of the reply
      */
-    public function __construct(EntityManager $entityManager, Person $person, Comment $comment, $text)
+    public function __construct(Person $person, Comment $comment, $text)
     {
         $this->person = $person;
         $this->text = $text;

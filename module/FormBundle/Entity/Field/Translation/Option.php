@@ -75,6 +75,14 @@ class Option
     }
 
     /**
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @return OptionSelector
      */
     public function getField()

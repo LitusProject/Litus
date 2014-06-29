@@ -419,10 +419,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
         $notValid = false;
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
 

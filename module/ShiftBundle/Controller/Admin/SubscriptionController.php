@@ -77,7 +77,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                         return new ViewModel();
                     }
 
-                    $volunteer = new Volunteer($person, $this->getCurrentAcademicYear());
+                    $volunteer = new Volunteer($person);
                     $shift->addVolunteer($this->getEntityManager(), $volunteer);
                     $this->getEntityManager()->persist($volunteer);
                     $this->getEntityManager()->flush();

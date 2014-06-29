@@ -238,7 +238,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $group = $this->_getGroup($entry->getForm());
         $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
@@ -259,25 +259,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
-            }
-        }
-
-        $person = $this->getAuthentication()->getPersonObject();
-        $guestInfo = null;
-
-        if (null !== $person) {
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif ($this->_isCookieSet()) {
-            $guestInfo = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($this->_getCookie());
-
-            if ($guestInfo) {
-                $draftVersion = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Node\Entry')
-                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
             }
         }
 
@@ -443,8 +424,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $notValid = false;
-
         $now = new DateTime();
         if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
@@ -466,9 +445,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $group = $this->_getGroup($formSpecification);
-        $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
@@ -479,10 +457,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
             }
         }
-
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
 
         $formEntry = null;
         if (null !== $person) {
@@ -518,8 +492,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'result' => (object) array('status' => 'success'),
                     )
                 );
-
-                return new ViewModel();
             } else {
                 $errors = $form->getMessages();
                 $formErrors = array();
@@ -573,7 +545,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $group = $this->_getGroup($entry->getForm());
         $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
@@ -792,9 +764,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($form);
 
-        if (null !== $mapping) {
+        if (null !== $mapping)
             return $mapping->getGroup();
-        }
     }
 
     private function _progressBarInfo(Group $group, Form $form)
