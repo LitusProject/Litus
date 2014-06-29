@@ -18,9 +18,7 @@
 
 namespace FormBundle\Entity\Field;
 
-use Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An abstract class that stores a number of options.

@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks whether a user exists with the given name or id and whether
  * no driver is created for this user yet.

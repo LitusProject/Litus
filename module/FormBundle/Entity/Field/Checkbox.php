@@ -20,8 +20,7 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.

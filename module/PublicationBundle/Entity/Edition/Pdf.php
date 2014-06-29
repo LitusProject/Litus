@@ -18,10 +18,7 @@
 
 namespace PublicationBundle\Entity\Edition;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    PublicationBundle\Entity\Publication;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a publication

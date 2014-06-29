@@ -22,7 +22,6 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
-    IntlDateFormatter,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
