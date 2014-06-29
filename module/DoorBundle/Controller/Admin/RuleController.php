@@ -259,6 +259,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             'dataset' => array()
         );
 
+        $data = array();
         for ($i = 0; $i < 7; $i++) {
             $today = new DateTime('midnight');
             $labelDate = $today->sub(new DateInterval('P' . $i . 'D'));

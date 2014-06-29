@@ -555,6 +555,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 ->findAllByForm($form);
 
             $maxSlots = 0;
+            $results = array();
             foreach ($entries as $entry) {
                 $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
                 if ($viewerMap->isMail())

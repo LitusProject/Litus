@@ -785,7 +785,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
