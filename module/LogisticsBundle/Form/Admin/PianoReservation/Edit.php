@@ -19,6 +19,7 @@
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Entity\User\Person\Academic,
     LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
@@ -43,7 +44,7 @@ class Edit extends Add
      * @param PianoReservation $reservation
      * @param null|string|int  $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager,PianoReservation $reservation, $name = null)
+    public function __construct(EntityManager $entityManager, PianoReservation $reservation, $name = null)
     {
         parent::__construct($entityManager, $name);
 
@@ -61,10 +62,12 @@ class Edit extends Add
 
     private function _populateFromReservation(PianoReservation $reservation)
     {
+        $person = $reservation->getPlayer();
+
         $this->setData(
             array(
                 'player_id' => $reservation->getPlayer()->getId(),
-                'player' => $reservation->getPlayer()->getFullName() . ' - ' . $reservation->getPlayer()->getUniversityIdentification(),
+                'player' => $person->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
                 'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
                 'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
                 'additional_info' => $reservation->getAdditionalInfo(),

@@ -19,6 +19,7 @@
 namespace GalleryBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Translation,
     GalleryBundle\Entity\Album\Photo,
@@ -26,7 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     GalleryBundle\Form\Admin\Album\Edit as EditForm,
     Imagick,
     ImagickPixel,
-    Zend\File\Transfer\Transfer as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
     Zend\View\Model\ViewModel;
@@ -65,10 +66,12 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $date = self::_loadDate($formData['date']);
+
+            if ($form->isValid() && $date) {
                 $formData = $form->getFormData($formData);
 
-                $album = new Album($this->getAuthentication()->getPersonObject(), \DateTime::createFromFormat('d#m#Y', $formData['date']), $formData['watermark']);
+                $album = new Album($this->getAuthentication()->getPersonObject(), $date, $formData['watermark']);
                 $this->getEntityManager()->persist($album);
 
                 $languages = $this->getEntityManager()
@@ -122,10 +125,12 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $date = self::_loadDate($formData['date']);
+
+            if ($form->isValid() && $date) {
                 $formData = $form->getFormData($formData);
 
-                $album->setDate(\DateTime::createFromFormat('d#m#Y', $formData['date']))
+                $album->setDate($date)
                     ->setWatermark($formData['watermark']);
 
                 $languages = $this->getEntityManager()
@@ -268,7 +273,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             mkdir($filePath . 'thumbs/');
         }
 
-        $upload = new FileTransfer();
+        $upload = new FileUpload();
         $upload->addValidator(new SizeValidator(array('max' => '5MB')));
         $upload->addValidator(new ImageValidator(array('mimeType' => 'image/jpeg')));
 
@@ -489,5 +494,14 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $album;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }
 }

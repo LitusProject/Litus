@@ -64,14 +64,17 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                if (isset($weekIndex)) {
+                $startDate = self::_loadDate($formData['start_date_' . $weekIndex]);
+                $endDate = self::_loadDate($formData['end_date_' . $weekIndex]);
+
+                if (isset($weekIndex) && $startDate && $endDate) {
                     $piano = $this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                         ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
 
                     $reservation = new PianoReservation(
-                        DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date_' . $weekIndex]),
-                        DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date_' . $weekIndex]),
+                        $startDate,
+                        $endDate,
                         $piano,
                         '',
                         $this->getAuthentication()->getPersonObject(),
@@ -79,7 +82,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     );
 
                     $startWeek = new DateTime();
-                    $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex)
+                    $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex, 1)
                         ->setTime(0, 0);
                     $endWeek = clone $startWeek;
                     $endWeek->add(new DateInterval('P7D'));
@@ -117,7 +120,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     }
 
                     if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 
@@ -192,5 +196,14 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 'reservations' => $reservations,
             )
         );
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
     }
 }

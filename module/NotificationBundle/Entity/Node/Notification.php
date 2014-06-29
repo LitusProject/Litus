@@ -158,7 +158,7 @@ class Notification extends \CommonBundle\Entity\Node
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;

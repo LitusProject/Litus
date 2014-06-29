@@ -36,7 +36,7 @@ class NamedList extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
-     * @var MailinglistEntity The list exluded from this check
+     * @var \MailBundle\Entity\MailingList\Named The list exluded from this check
      */
     private $_list;
 
@@ -48,9 +48,9 @@ class NamedList extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param MailinglistEntity The list exluded from this check
-     * @param mixed         $opts          The validator's options
+     * @param EntityManager                        $entityManager The EntityManager instance
+     * @param \MailBundle\Entity\MailingList\Named $list          The list exluded from this check
+     * @param mixed                                $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, MailingListEntity $list = null, $opts = null)
     {

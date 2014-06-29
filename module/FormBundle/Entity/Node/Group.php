@@ -33,15 +33,6 @@ use CommonBundle\Entity\General\Language,
 class Group extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The ID of this tanslation
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var array The translations of this form
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Group", mappedBy="group", cascade={"remove"})
@@ -60,14 +51,6 @@ class Group extends \CommonBundle\Entity\Node
      * @var EntityManager
      */
     protected $_entityManager;
-
-    /**
-     * @var int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * @param  DateTime $startDate

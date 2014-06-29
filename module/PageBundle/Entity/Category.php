@@ -104,8 +104,6 @@ class Category
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-        $fallbackTranslation = null;
-
         foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
@@ -114,7 +112,7 @@ class Category
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;

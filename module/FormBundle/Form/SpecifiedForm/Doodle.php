@@ -26,6 +26,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -71,6 +72,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
     {
         parent::__construct($name);
+
+        if (!($form instanceof Doodle))
+            return;
 
         // Create guest fields
         if (null === $person) {
@@ -125,7 +129,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if (null !== $entry)
-            $this->_populateFromEntry($entry);
+            $this->populateFromEntry($entry);
 
         $this->_disableOccupiedSlots($this->_occupiedSlots);
     }
@@ -154,9 +158,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         return $this->_occupiedSlots;
     }
 
-    private function _populateFromEntry(Entry $entry)
+    public function populateFromEntry(Entry $entry)
     {
-        $formData = array();
+        $formData = $this->data;
 
         if ($entry->isGuestEntry()) {
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
@@ -169,6 +173,17 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->setData($formData);
+    }
+
+    public function populateFromGuestInfo(GuestInfo $guestInfo)
+    {
+        $data = array(
+            'first_name' => $guestInfo->getFirstName(),
+            'last_name' => $guestInfo->getLastName(),
+            'email' => $guestInfo->getEmail(),
+        );
+
+        $this->setData($data);
     }
 
     private function _disableOccupiedSlots(array $occupiedSlots)

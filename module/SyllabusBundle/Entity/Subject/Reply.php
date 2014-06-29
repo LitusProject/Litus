@@ -68,9 +68,9 @@ class Reply
     private $comment;
 
     /**
-     * @param Person        $person        The person that created the reply
-     * @param Comment       $comment       The comment of the reply
-     * @param string        $text          The content of the reply
+     * @param Person  $person  The person that created the reply
+     * @param Comment $comment The comment of the reply
+     * @param string  $text    The content of the reply
      */
     public function __construct(Person $person, Comment $comment, $text)
     {

@@ -61,7 +61,7 @@ class Item
     /**
      * @param string $name           The name of the item (preferrably unique)
      * @param int    $barcode        The barcode of the item
-     * @param type   $additionalInfo Extra information to show when leasing the item
+     * @param string $additionalInfo Extra information to show when leasing the item
      */
     public function __construct($name, $barcode, $additionalInfo = '')
     {

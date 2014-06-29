@@ -157,7 +157,7 @@ class Lease
         $this->leasedDate = $leasedDate;
         $this->leasedBy = $leasedBy;
         $this->leasedTo = $leasedTo;
-        $this->leasedPawn = $leasedPawn * 100;
+        $this->leasedPawn = (int) ($leasedPawn * 100);
         $this->leasedComment = $leasedComment;
 
         $this->returned = false;
@@ -345,7 +345,7 @@ class Lease
      */
     public function setReturnedPawn($returnedPawn)
     {
-        $this->returnedPawn = $returnedPawn*100;
+        $this->returnedPawn = (int) ($returnedPawn * 100);
 
         return $this;
     }

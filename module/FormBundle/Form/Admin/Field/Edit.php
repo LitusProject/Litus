@@ -35,13 +35,9 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var Field
-     */
-    private $_field;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @param Field           $fieldSpecification The field
+     * @param EntityManager   $entityManager      The EntityManager instance
+     * @param null|string|int $name               Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
@@ -50,7 +46,7 @@ class Edit extends Add
         $this->_field = $fieldSpecification;
 
         $this->get('type')->setAttribute('disabled', 'disabled');
-        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
+        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->getVisibilityOptions());
 
         $this->remove('submit');
         $this->remove('submit_repeat');
@@ -61,52 +57,6 @@ class Edit extends Add
         $this->add($field);
 
         $this->populateFromField($fieldSpecification);
-    }
-
-    private function _getVisibilityOptions()
-    {
-        $options = array(0 => 'Always');
-        foreach ($this->_form->getFields() as $field) {
-            if ($field->getId() == $this->_field->getId())
-                continue;
-
-            if ($field instanceof StringField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'string',
-                    )
-                );
-            } elseif ($field instanceof DropdownField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'dropdown',
-                        'data-values' => $field->getOptions(),
-                    )
-                );
-            } elseif ($field instanceof CheckboxField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'checkbox',
-                    )
-                );
-            } elseif ($field instanceof FileField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'file',
-                    )
-                );
-            }
-        }
-
-        return $options;
     }
 
     protected function _isTimeSlot()

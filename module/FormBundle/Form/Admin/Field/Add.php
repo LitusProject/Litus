@@ -60,6 +60,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $_form;
 
     /**
+     * @var Field
+     */
+    protected $_field;
+
+    /**
      * @param Form            $form
      * @param EntityManager   $entityManager
      * @param Field|null      $lastField
@@ -220,7 +225,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('visible_if');
         $field->setLabel('Visible If')
             ->setRequired()
-            ->setAttribute('options', $this->_getVisibilityOptions());
+            ->setAttribute('options', $this->getVisibilityOptions());
         $visibility->add($field);
 
         $field = new Select('visible_value');
@@ -303,10 +308,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->setData($data);
     }
 
-    private function _getVisibilityOptions()
+    protected function getVisibilityOptions()
     {
         $options = array(0 => 'Always');
         foreach ($this->_form->getFields() as $field) {
+            if (null !== $this->_field && $field->getId() == $this->_field->getId())
+                continue;
+
             if ($field instanceof StringField) {
                 $options[] = array(
                     'label' => $field->getLabel(),

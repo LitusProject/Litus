@@ -241,7 +241,6 @@ abstract class Field
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
-
         foreach ($this->translations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;

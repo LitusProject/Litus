@@ -83,10 +83,10 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                         ->setFrom($mailAddress, $mailName)
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName())
                         ->setSubject($formData['subject']);
-                }
 
-                if ('development' != getenv('APPLICATION_ENV'))
-                    $this->getMailTransport()->send($mail);
+                    if ('development' != getenv('APPLICATION_ENV'))
+                        $this->getMailTransport()->send($mail);
+                }
 
                 return new ViewModel(
                     array(

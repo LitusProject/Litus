@@ -102,10 +102,10 @@ class Comment
 
     /**
      * @throws InvalidArgumentException
-     * @param  Person                   $person        The person that created the comment
-     * @param  Subject                  $subject       The subject of the comment
-     * @param  string                   $text          The content of the comment
-     * @param  string                   $type          The type of the comment
+     * @param  Person                   $person  The person that created the comment
+     * @param  Subject                  $subject The subject of the comment
+     * @param  string                   $text    The content of the comment
+     * @param  string                   $type    The type of the comment
      */
     public function __construct(Person $person, Subject $subject, $text, $type)
     {

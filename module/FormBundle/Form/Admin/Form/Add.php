@@ -212,8 +212,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'form doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $mailTabContent->add($pane);
@@ -270,8 +270,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $reminderMailTabContent->add($pane);

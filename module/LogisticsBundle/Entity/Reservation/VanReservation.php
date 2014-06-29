@@ -36,7 +36,7 @@ class VanReservation extends Reservation
     const VAN_RESOURCE_NAME = 'Van';
 
     /**
-     * @var The driver of the van for this reservation.
+     * @var Driver The driver of the van for this reservation.
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Driver")
      * @ORM\JoinColumn(name="driver_id", referencedColumnName="person", nullable=true)
@@ -44,7 +44,7 @@ class VanReservation extends Reservation
     private $driver;
 
     /**
-     * @var The passenger of the van for this reservation.
+     * @var Person The passenger of the van for this reservation.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="passenger", referencedColumnName="id", nullable=true)
@@ -85,10 +85,10 @@ class VanReservation extends Reservation
     }
 
     /**
-     * @param  Driver $driver
+     * @param  Driver|null $driver
      * @return self
      */
-    public function setDriver(Driver $driver)
+    public function setDriver(Driver $driver = null)
     {
         $this->driver = $driver;
 

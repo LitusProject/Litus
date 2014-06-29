@@ -44,6 +44,7 @@ class File extends Field
      * @param bool        $required
      * @param Field|null  $visibityDecisionField
      * @param string|null $visibilityValue
+     * @param int         $maxSize
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $maxSize)
     {
@@ -67,7 +68,7 @@ class File extends Field
      */
     public function setMaxSize($maxSize)
     {
-        if (!is_numeric($maxSize))
+        if (!is_int($maxSize))
             $maxSize = 4;
         $this->maxSize = $maxSize;
 

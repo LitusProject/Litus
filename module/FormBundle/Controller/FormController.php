@@ -127,7 +127,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'specification' => $formSpecification,
                 )
             );
-        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && null === $draftVersion) {
+        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && !isset($draftVersion)) {
             return new ViewModel(
                 array(
                     'message'       => 'You can\'t fill this form more than once.',
@@ -178,7 +178,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -377,7 +377,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -485,7 +485,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 return new ViewModel(
                     array(
@@ -589,7 +589,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
-        $form->hasDraft(null !== $draftVersion && $draftVersion != $entry);
+        $form->hasDraft(isset($draftVersion) && $draftVersion != $entry);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -598,7 +598,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -653,7 +653,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByFormAndSessionId($form, $this->getParam('key'));
 
         if (null !== $guestInfo)
-            $guestInfo->renew();
+            $guestInfo->renew($this->getRequest());
         else
             return $this->notFoundAction();
 
@@ -819,7 +819,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($this->_getCookie());
 
-                $guestInfo->renew();
+                $guestInfo->renew($this->getRequest());
             }
 
             foreach ($group->getForms() as $groupForm) {

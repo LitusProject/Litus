@@ -177,7 +177,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -270,7 +270,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -344,7 +344,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -428,7 +428,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(

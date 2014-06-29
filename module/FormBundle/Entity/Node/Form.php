@@ -131,7 +131,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param DateTime $startDate
      * @param DateTime $endDate
      * @param boolean  $active
-     * @param boolean  $max
+     * @param int      $max
      * @param boolean  $multiple
      * @param boolean  $nonMember
      * @param boolean  $editableByUser

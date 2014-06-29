@@ -74,7 +74,6 @@ abstract class OptionSelector extends Field
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
-
         foreach ($this->optionTranslations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;

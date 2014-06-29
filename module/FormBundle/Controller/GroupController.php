@@ -80,7 +80,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
                     ->findOneBySessionId($this->_getCookie());
 
-                $guestInfo->renew();
+                $guestInfo->renew($this->getRequest());
 
                 $entries[$form->getForm()->getId()] = array(
                     'entry' => current(

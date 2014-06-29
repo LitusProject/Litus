@@ -173,27 +173,31 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                         break;
                     case 'timeslot':
-                        $field = new TimeSlotField(
-                            $formSpecification,
-                            0,
-                            $formData['required'],
-                            $visibilityDecissionField,
-                            isset($visibilityDecissionField) ? $formData['visible_value'] : null,
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
-                        );
-
-                        foreach ($languages as $language) {
-                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
-                                continue;
-                            $translation = new TimeSlotTranslationField(
-                                $field,
-                                $language,
-                                $formData['timeslot_location_' . $language->getAbbrev()],
-                                $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                        $startDate = self::_loadDate($formData['timeslot_start_date']);
+                        $endDate = self::_loadDate($formData['timeslot_end_date']);
+                        if ($startDate && $endDate) {
+                            $field = new TimeSlotField(
+                                $formSpecification,
+                                0,
+                                $formData['required'],
+                                $visibilityDecissionField,
+                                isset($visibilityDecissionField) ? $formData['visible_value'] : null,
+                                $startDate,
+                                $endDate
                             );
 
-                            $this->getEntityManager()->persist($translation);
+                            foreach ($languages as $language) {
+                                if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
+                                    continue;
+                                $translation = new TimeSlotTranslationField(
+                                    $field,
+                                    $language,
+                                    $formData['timeslot_location_' . $language->getAbbrev()],
+                                    $formData['timeslot_extra_info_' . $language->getAbbrev()]
+                                );
+
+                                $this->getEntityManager()->persist($translation);
+                            }
                         }
                         break;
                     default:
@@ -328,8 +332,13 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                 } elseif ($field instanceof FileField) {
                     $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
                 } elseif ($field instanceof TimeSlotField) {
-                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
+                    $startDate = self::_loadDate($formData['timeslot_start_date']);
+                    $endDate = self::_loadDate($formData['timeslot_end_date']);
+
+                    if ($startDate && $endDate) {
+                        $field->setStartDate($startDate)
+                            ->setEndDate($endDate);
+                    }
 
                     foreach ($languages as $language) {
                         $translation = $field->getTimeSlotTranslation($language, false);
@@ -576,5 +585,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $field;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

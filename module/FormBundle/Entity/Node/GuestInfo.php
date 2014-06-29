@@ -19,7 +19,8 @@
 namespace FormBundle\Entity\Node;
 
 use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Zend\Http\PhpEnvironment\Request;
 
 /**
  * This entity stores the node item.
@@ -73,8 +74,9 @@ class GuestInfo
      * @param string        $firstName
      * @param string        $lastName
      * @param string        $email
+     * @param Request       $request
      */
-    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email)
+    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email, Request $request)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -89,7 +91,7 @@ class GuestInfo
 
         $this->sessionId = $sessionId;
 
-        $this->renew();
+        $this->renew($request);
     }
 
     /**
@@ -177,16 +179,17 @@ class GuestInfo
     }
 
     /**
+     * @param  Request                           $request
      * @return \FormBundle\Entity\Node\GuestInfo
      */
-    public function renew()
+    public function renew(Request $request)
     {
         setcookie(
             self::$cookieNamespace,
             $this->sessionId,
             time() + (60*60*24*25),
             '/',
-            str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
+            str_replace(array('www.', ','), '', $request->getServer('SERVER_NAME'))
         );
 
         return $this;

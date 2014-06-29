@@ -28,6 +28,8 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\PhpEnvironment\Request,
+    Zend\InputFilter\InputInterface,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface as MailTransport,
     Zend\Mvc\Controller\Plugin\Url;
@@ -39,14 +41,15 @@ use CommonBundle\Entity\General\Language,
  */
 class Form
 {
-    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null, Request $request)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
                 $entityManager,
                 $formData['first_name'],
                 $formData['last_name'],
-                $formData['email']
+                $formData['email'],
+                $this->getRequest()
             );
             $entityManager->persist($guestInfo);
         }
@@ -91,7 +94,10 @@ class Form
                     }
                 } elseif (!isset($formData['field-' . $field->getId()])) {
                     $upload = new FileUpload();
-                    $upload->setValidators($form->getInputFilter()->get('field-' . $field->getId())->getValidatorChain()->getValidators());
+                    $inputFilter = $form->getInputFilter()->get('field-' . $field->getId());
+                    if ($inputFilter instanceof InputInterface)
+                        $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+
                     if ($upload->isValid('field-' . $field->getId())) {
                         if (null === $fieldEntry || $fieldEntry->getValue() == '') {
                             do {
@@ -141,8 +147,8 @@ class Form
         $entityManager->flush();
 
         if (!isset($formData['save_as_draft'])) {
-            if ($formSpecification->hasMail() && isset($mailTransport)) {
-                $urlString = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $url->fromRoute(
+            if ($formSpecification->hasMail() && isset($mailTransport) && isset($url)) {
+                $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $url->fromRoute(
                     'form_view',
                     array(
                         'action' => 'login',

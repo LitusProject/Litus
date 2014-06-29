@@ -117,8 +117,10 @@ class TimeSlot extends Field
      */
     public function getLabel(Language $language = null, $allowFallback = true)
     {
+        $locale = isset($language) ? $language->getAbbrev() : \Locale::getDefault();
+
         $formatterDate = new IntlDateFormatter(
-            $language->getAbbrev(),
+            $locale,
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
@@ -127,7 +129,7 @@ class TimeSlot extends Field
         );
 
         $formatterHour = new IntlDateFormatter(
-            $language->getAbbrev(),
+            $locale,
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),

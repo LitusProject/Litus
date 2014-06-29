@@ -60,7 +60,7 @@ class ReservableResource
      */
     public function getName()
     {
-        return $name;
+        return $this->name;
     }
 
     /**

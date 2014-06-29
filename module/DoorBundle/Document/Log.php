@@ -41,7 +41,7 @@ class Log
     private $id;
 
     /**
-     * @var string The timestamp of entry
+     * @var DateTime The timestamp of entry
      *
      * @ODM\Field(type="date")
      */
@@ -72,7 +72,7 @@ class Log
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getTimestamp()
     {

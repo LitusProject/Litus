@@ -46,21 +46,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
-            ->setValue($subject)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($subject);
         $this->add($field);
 
         $field = new Select('semester');
         $field->setLabel('Semester')
-            ->setValue($semester)
-            ->setAttribute('options', array(1 => 'First Semester', 2 => 'Second Semester'))
-            ->setRequired();
+        ->setAttribute('options', array(1 => 'First Semester', 2 => 'Second Semester'))
+            ->setRequired()
+            ->setValue($semester);
         $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
+        ->setRequired();
             ->setValue($message)
-            ->setRequired();
         $this->add($field);
 
         $field = new Checkbox('test_it');
