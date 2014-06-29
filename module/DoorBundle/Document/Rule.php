@@ -183,7 +183,7 @@ class Rule
     {
         $this->academic = $academic->getId();
 
-        return $this
+        return $this;
     }
 
     /**

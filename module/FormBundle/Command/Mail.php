@@ -21,7 +21,7 @@ namespace FormBundle\Command;
 use DateTime,
     DateInterval,
     FormBundle\Entity\Field\TimeSlot,
-    FormBundle\Entity\Node\Form\Form,
+    FormBundle\Entity\Node\Form\Doodle,
     Zend\Mail\Message;
 
 /**
@@ -78,7 +78,7 @@ EOT
     {
         $form = $timeSlot->getForm();
 
-        if ($form instanceof Form)
+        if (!($form instanceof Doodle))
             return;
 
         $english = $this->getEntityManager()

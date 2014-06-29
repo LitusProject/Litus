@@ -74,7 +74,7 @@ class Edit extends Add
 
         $person = $reservation->getPassenger();
 
-        if (null !== $person
+        if (null !== $person) {
             $data['passenger_id'] = $person->getId();
             $data['passenger'] = $person->getFullName() . ($person instanceof Academic ? ' - ' . $person->getUniversityIdentification() : '');
         }
