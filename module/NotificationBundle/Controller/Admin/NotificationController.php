@@ -60,7 +60,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate('d#m#Y H#i', $formData['end_date']);
+            $endDate = self::_loadDate($formData['end_date']);
 
             if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
@@ -127,8 +127,8 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate('d#m#Y H#i', $formData['start_date']);
-            $endDate = self::_loadDate('d#m#Y H#i', $formData['end_date']);
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
 
             if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);

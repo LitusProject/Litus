@@ -65,7 +65,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                             ->findOneByName($name);
                     } while (isset($found));
                 } else {
-                    $name = strtolower($formData['name']));
+                    $name = strtolower($formData['name']);
                 }
 
                 $slug = new Slug(
