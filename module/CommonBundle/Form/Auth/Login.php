@@ -18,81 +18,49 @@
 
 namespace CommonBundle\Form\Auth;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Password,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Authentication login form.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Login extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param string          $action
-     * @param null|string|int $name   Optional name for the element
-     */
-    public function __construct($action = '', $name = null)
+    public function init()
     {
-        parent::__construct($name, false);
-
-        $this->setAttribute('action', $action);
+        parent::init();
 
         $this->setAttribute('id', 'login');
 
-        $field = new Text('username');
-        $field->setLabel('Username')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Password('password');
-        $field->setLabel('Password')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('remember_me');
-        $field->setLabel('Remember Me');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Login')
-            ->setAttribute('class', 'btn btn-default pull-right');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'username',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'username',
+            'label'      => 'Username',
+            'required'   => true,
+            'options'    => array(
+                'filters' => array(
+                    array('name' => 'StringTrim'),
                 )
-            )
-        );
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'password',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'password',
+            'name'       => 'password',
+            'label'      => 'Password',
+            'required'   => true,
+            'options'    => array(
+                'filters' => array(
+                    array('name' => 'StringTrim'),
                 )
-            )
-        );
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'remember_me',
+            'label'      => 'Remember Me',
+        ));
+
+        $this->addSubmit('Login', 'btn btn-default pull-right');
     }
 }
