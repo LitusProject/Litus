@@ -84,6 +84,7 @@ return Config::create(
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
+                'translator' => 'MvcTranslator',
             ),
         ),
         'translator' => array(
