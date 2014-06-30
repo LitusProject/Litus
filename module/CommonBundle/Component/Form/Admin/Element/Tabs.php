@@ -36,15 +36,11 @@ class Tabs extends \Zend\Form\Element
         'class' => '',
     );
 
-    /**
-     * @param  null|int|string                    $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name = null, $options = array())
+    public function setName($name)
     {
-        parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+
+        return parent::setName($name);
     }
 
     /**

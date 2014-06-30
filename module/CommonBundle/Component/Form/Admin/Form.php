@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Form\Admin;
 
-use CommonBundle\Component\Form\Admin\Element\Csrf,
-    Zend\InputFilter\InputFilterAwareInterface;
+use CommonBundle\Component\Form\Admin\Element\Csrf;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -27,7 +26,7 @@ use CommonBundle\Component\Form\Admin\Element\Csrf,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
+abstract class Form extends \CommonBundle\Component\Form\Form
 {
     /**
      * @param null|string|int $name Optional name for the element
@@ -36,9 +35,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         parent::__construct($name);
 
-        $this->setAttribute('method', 'post')
-            ->setAttribute('class', 'form')
-            ->setAttribute('novalidate', true);
+        $this->setAttribute('class', 'form');
 
         $this->add(
             new Csrf('csrf')
@@ -46,71 +43,14 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * Set data to validate and/or populate elements
+     * Get the current academic year.
      *
-     * Typically, also passes data on to the composed input filter.
+     * Defaults to $organization is true, contrary to the superclass.
      *
-     * @param  array|\ArrayAccess|\Traversable    $data
-     * @return Form|FormInterface
-     * @throws Exception\InvalidArgumentException
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
-    public function setData($data)
+    public function getCurrentAcademicYear($organization = true)
     {
-        parent::setData($data);
-
-        $this->setInputFilter($this->getInputFilter());
-    }
-
-    /**
-     * Set a hash of element names/messages to use when validation fails
-     *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setMessages($messages)
-    {
-        parent::setMessages($messages);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->setMessages($messages);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Recursively populate values of attached elements and fieldsets
-     *
-     * @param  array|Traversable                  $data
-     * @return void
-     * @throws Exception\InvalidArgumentException
-     */
-    public function populateValues($data)
-    {
-        parent::populateValues($data);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->populateValues($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Return the form validated data, combined with post data
-     *
-     * @return object
-     */
-    public function getFormData($formData)
-    {
-        foreach ($this->getData() as $key => $value) {
-            if (null !== $value)
-                $formData->{$key} = $value;
-        }
-
-        return $formData;
+        return parent::getCurrentAcademicYear($organization);
     }
 }

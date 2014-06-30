@@ -18,22 +18,19 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Submit form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Submit extends \Zend\Form\Element\Submit
+class Submit extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @param  null|int|string                    $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = null)
+    use ElementTrait;
+
+    public function init()
     {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-        $this->setAttribute('class', 'btn btn-primary');
+        $this->addClass('btn btn-primary');
     }
 }

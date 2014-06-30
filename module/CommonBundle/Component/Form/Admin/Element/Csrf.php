@@ -26,14 +26,10 @@ namespace CommonBundle\Component\Form\Admin\Element;
  */
 class Csrf extends \Zend\Form\Element\Csrf
 {
-    /**
-     * @param  null|int|string                    $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    public function setName($name)
     {
-        parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+
+        return parent::setName($name);
     }
 }

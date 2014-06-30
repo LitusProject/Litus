@@ -16,35 +16,34 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
-
-use CommonBundle\Component\Form\ElementTrait;
+namespace CommonBundle\Component\Form;
 
 /**
- * Reset form element
+ * Extending Zend's form element component, so that our forms look the way we want
+ * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
+interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilter\InputProviderInterface
 {
-    use ElementTrait;
-
     /**
-     * Seed attributes
+     * Specifies whether this element is a required field.
      *
-     * @var array
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param  boolean $flag
+     * @return self
      */
-    protected $attributes = array(
-        'type' => 'reset',
-    );
+    public function setRequired($flag = true);
 
     /**
-     * @param  null|int|string                    $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
+     * @return boolean
      */
-    public function init()
-    {
-        $this->addClass('btn btn-default');
-    }
+    public function isRequired();
+
+    /**
+     * @param  string $class The class(es) to add
+     * @return self
+     */
+    public function addClass($class);
 }

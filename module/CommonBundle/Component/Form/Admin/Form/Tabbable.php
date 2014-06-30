@@ -18,19 +18,182 @@
 
 namespace CommonBundle\Component\Form\Admin\Form;
 
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language,
+    Locale,
+    RuntimeException,
+    Zend\InputFilter\InputFilter;
+
 /**
  * Extending Zend's form component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Tabbable extends \CommonBundle\Component\Form\Admin\Form
+abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var string The prefix of the tab elements
      */
-    public function __construct($name)
+    private $prefix = '';
+
+    public function init()
     {
-        parent::__construct($name = null);
+        $languages = $this->getLanguages();
+        $prefix = $this->getPrefix();
+
+        if (count($languages) === 0)
+            throw new RuntimeException('No languages found!');
+
+        if (count($languages) === 1) {
+            $this->initBeforeTabs();
+
+            $this->addTab($this, $languages[0], true);
+        } else {
+            $defaultLanguage = Locale::getDefault();
+
+            $this->add(array(
+                'type' => 'tabs',
+                'name' => $prefix . 'languages',
+            ));
+
+            $tabs = $this->get($prefix . 'languages');
+            $tabContent = $this->createTabContent();
+
+            $this->initBeforeTabs();
+
+            foreach ($languages as $language) {
+                $abbrev = $language->getAbbrev();
+
+                $pane = $this->createTabPane($prefix . 'tab_' . $abbrev);
+
+                $this->addTab($pane, $language, $abbrev == $defaultLanguage);
+
+                $tabs->addTab(array($language->getName() => '#' . $prefix . 'tab_' . $abbrev));
+                $tabContent->add($pane);
+            }
+
+            $this->add($tabContent);
+        }
+
+        $this->initAfterTabs();
     }
+
+    /**
+     * @return SubForm\TabContent
+     */
+    private function createTabContent()
+    {
+        $tabContent = new SubForm\TabContent($this->getPrefix() . 'tab_content');
+        $this->initElement($tabContent);
+
+        return $tabContent;
+    }
+
+    /**
+     * @param  string          $name
+     * @return SubForm\TabPane
+     */
+    private function createTabPane($name)
+    {
+        $tabPane = new SubForm\TabPane($name);
+        $this->initElement($tabPane);
+
+        return $tabPane;
+    }
+
+    /**
+     * @param FieldsetInterface $element The fieldset to configure
+     */
+    private function initElement(FieldsetInterface $element)
+    {
+        $element->init();
+        $this->getFormFactory()->configureFieldset($element, array());
+    }
+
+    /**
+     * @param  string $prefix
+     * @return self
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    public function getPrefix()
+    {
+        if (null === $this->prefix || '' == $this->prefix)
+            return '';
+        return $this->prefix . '_';
+    }
+
+    /**
+     * Take all actions that init() should perform before adding the tabbed fields.
+     */
+    protected function initBeforeTabs()
+    {
+        // NOP
+    }
+
+    /**
+     * Take all actions that init() should perform after adding the tabbed fields.
+     */
+    protected function initAfterTabs()
+    {
+        // NOP
+    }
+
+    /**
+     * @param FieldsetInterface $container The tab
+     * @param Language          $language  The language of the tab
+     * @param boolean           $isDefault Whether the language is the default langauge
+     */
+    abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
+
+    protected function getLanguages()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+    }
+
+    public function getInputFilter()
+    {
+        $filter = new InputFilter();
+        $defaultLanguage = Locale::getDefault();
+
+        foreach ($this->getLanguages() as $language) {
+            $this->getInputFilterForTab($filter, $language, $language->getAbbrev() == $defaultLanguage);
+        }
+
+        $this->getInputFilterForRest($filter);
+
+        return $filter;
+    }
+
+    /**
+     * Adds the inputfilters for the elements of one tab.
+     *
+     * @param InputFilter $filter    The filter to add to
+     * @param Language    $language  The langauge of the tab
+     * @param boolean     $isDefault Whether $language is the default langauge
+     */
+    protected function getInputFilterForTab(InputFilter $filter, Language $language, $isDefault)
+    {
+        // NOP
+    }
+
+    /**
+     * Adds all inputfilters for non-tab elements of this form.
+     *
+     * @param InputFilter $filter The filter to add to
+     */
+    protected function getInputFilterForRest(InputFilter $filter)
+    {
+        // NOP
+    }
+
 }

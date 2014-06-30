@@ -137,7 +137,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getCurrentAcademicYear($organization = true)
+    public function getCurrentAcademicYear($organization = true)
     {
         return parent::getCurrentAcademicYear($organization);
     }
@@ -226,5 +226,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'general'  => $general,
             'submenus' => $submenus,
         );
+    }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.admin');
     }
 }

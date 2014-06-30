@@ -16,26 +16,27 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
-
-use CommonBundle\Component\Form\ElementTrait;
+namespace CommonBundle\Component\Filter;
 
 /**
- * Password form element
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
+class StripCarriageReturn extends \Zend\Filter\AbstractFilter
 {
-    use ElementTrait;
-
-    public function init()
+    /**
+     * Defined by Zend\Filter\FilterInterface
+     *
+     * Returns $value without carriage return control characters
+     *
+     * @param  string|array $value
+     * @return string|array
+     */
+    public function filter($value)
     {
-        $this->addClass('form-control');
-        $this->setLabelAttributes(
-            array(
-                'class' => 'col-sm-2 control-label',
-            )
-        );
+        if (!is_scalar($value) && !is_array($value)) {
+            return $value;
+        }
+
+        return str_replace("\r", '', $value);
     }
 }

@@ -23,27 +23,13 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabContent extends \CommonBundle\Component\Form\Admin\Fieldset
+class TabContent extends \CommonBundle\Component\Form\Fieldset
 {
-    /**
-     * Constructor
-     *
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
-
-        $this->setAttribute('class', 'tab_content');
+        $this->addClass('tab_content');
     }
 
-    /**
-     * Recursively populate values of attached elements and fieldsets
-     *
-     * @param  array|Traversable                  $data
-     * @return void
-     * @throws Exception\InvalidArgumentException
-     */
     public function populateValues($data)
     {
         parent::populateValues($data);
@@ -51,25 +37,6 @@ class TabContent extends \CommonBundle\Component\Form\Admin\Fieldset
         $fieldsets = $this->getFieldsets();
         foreach ($fieldsets as $fieldset) {
             $fieldset->populateValues($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set a hash of element names/messages to use when validation fails
-     *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setMessages($messages)
-    {
-        parent::setMessages($messages);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->setMessages($messages);
         }
 
         return $this;

@@ -18,12 +18,14 @@
 
 namespace CommonBundle\Component\Console;
 
-use Zend\ServiceManager\ServiceLocatorAwareTrait,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output;
+    Symfony\Component\Console\Output\OutputInterface as Output,
+    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
 
-abstract class Command extends \Symfony\Component\Console\Command\Command implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+abstract class Command extends \Symfony\Component\Console\Command\Command implements \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {
+    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
 
     /**
@@ -137,63 +139,6 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected function hasArgument($name)
     {
         return $this->input->hasArgument($name);
-    }
-
-    /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\Adapter\Apc
-     */
-    protected function getCache()
-    {
-        if ($this->getServiceLocator()->has('cache'))
-            return $this->getServiceLocator()->get('cache');
-
-        return null;
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    protected function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    protected function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
     }
 
     /**

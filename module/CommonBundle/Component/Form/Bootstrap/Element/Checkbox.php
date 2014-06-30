@@ -18,50 +18,14 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Checkbox form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\Admin\Element
+class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @var boolean
-     */
-    private $_required = false;
-
-    /**
-     * @param  null|int|string                    $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
-    {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-    }
-
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return void
-     */
-    public function setRequired($flag = true)
-    {
-        $this->setAttribute('required', $flag);
-        $this->_required = $flag;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRequired()
-    {
-        return $this->_required;
-    }
+    use ElementTrait;
 }

@@ -16,28 +16,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap;
+namespace CommonBundle\Component\Hydrator\Exception;
 
-/**
- * Extending Zend's form element component, so that our forms look the way we want
- * them to.
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-interface Element
+class InvalidObjectException extends \InvalidArgumentException
 {
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return void
-     */
-    public function setRequired($flag = true);
-
-    /**
-     * @return boolean
-     */
-    public function isRequired();
 }

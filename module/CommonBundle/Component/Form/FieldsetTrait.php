@@ -16,26 +16,24 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\Form\ElementTrait;
+use Zend\InputFilter\InputProviderInterface,
+    Zend\InputFilter\InputFilterProviderInterface;
 
-/**
- * Password form element
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
+trait FieldsetTrait
 {
-    use ElementTrait;
-
-    public function init()
+    public function getInputFilterSpecification()
     {
-        $this->addClass('form-control');
-        $this->setLabelAttributes(
-            array(
-                'class' => 'col-sm-2 control-label',
-            )
-        );
+        $spec = array();
+
+        foreach ($this->byName as $name => $elementOrFieldset) {
+            if ($elementOrFieldset instanceof InputProviderInterface)
+                $spec[$name] = $elementOrFieldset->getInputSpecification();
+            elseif ($elementOrFieldset instanceof InputFilterProviderInterface)
+                $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
+        }
+
+        return $spec;
     }
 }

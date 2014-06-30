@@ -66,4 +66,19 @@ class String
 
         return substr($string, 0, $length = min(strlen($string), $length)) . (strlen($string) > $length ? $suffix : '');
     }
+
+    /**
+     * Changes an 'underscored' string to CamelCase.
+     *   e.g.: 'a_bcd-ef' becomes 'ABcdEf'
+     *
+     * @static
+     * @param  string $text
+     * @return string
+     */
+    public static function underscoredToCamelCase($text)
+    {
+        $text = str_replace(array('-', '_'), ' ', $text);
+
+        return str_replace(' ', '', ucwords($text));
+    }
 }

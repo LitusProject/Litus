@@ -16,26 +16,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
-
-use CommonBundle\Component\Form\ElementTrait;
+namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Password form element
+ * A date picker element
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
+class DateTime extends Text
 {
-    use ElementTrait;
-
     public function init()
     {
-        $this->addClass('form-control');
-        $this->setLabelAttributes(
-            array(
-                'class' => 'col-sm-2 control-label',
-            )
-        );
+        parent::init();
+
+        $this->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
     }
 }

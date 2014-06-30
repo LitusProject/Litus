@@ -16,23 +16,41 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form;
 
-use Zend\Form\FormInterface;
+use Zend\Form\ElementPrepareAwareInterface,
+    Zend\Form\FormInterface as OriginalFormInterface;
 
-/**
- * Collection form element
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Collection extends \Zend\Form\Element\Collection
+class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {
-    /**
-     * @return boolean
-     */
-    public function isCollection()
+    use ElementTrait;
+    use FieldsetTrait;
+
+    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+
+    public function showAs()
     {
-        return true;
+        return 'fieldset';
+    }
+
+    /**
+     * Set a hash of element names/messages to use when validation fails
+     *
+     * @param  array|\Traversable                         $messages
+     * @return Element|ElementInterface|FieldsetInterface
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setMessages($messages)
+    {
+        parent::setMessages($messages);
+
+        $fieldsets = $this->getFieldsets();
+        foreach ($fieldsets as $fieldset) {
+            $fieldset->setMessages($messages);
+        }
+
+        return $this;
     }
 
     /**
@@ -42,7 +60,7 @@ class Collection extends \Zend\Form\Element\Collection
      * @param  Form       $form
      * @return mixed|void
      */
-    public function prepareElement(FormInterface $form)
+    public function prepareElement(OriginalFormInterface $form)
     {
         foreach ($this->byName as $elementOrFieldset) {
             // Recursively prepare elements
@@ -50,6 +68,9 @@ class Collection extends \Zend\Form\Element\Collection
                 $elementOrFieldset->prepareElement($form);
             }
         }
+
+        if ($this->shouldCreateTemplate())
+            parent::prepareElement($form);
     }
 
     /**
@@ -70,17 +91,28 @@ class Collection extends \Zend\Form\Element\Collection
         }
 
         foreach ($data as $key => $value) {
-            if (!$this->has($key))
+            if (!$this->has($key) && !is_numeric($key))
                 unset($data[$key]);
         }
-        foreach ($this->byName as $name => $element) {
-            if (!isset($data[$name])) {
-                if ($this->get($name) instanceOf Fieldset)
-                    $data[$name] = array();
-                else
-                    $data[$name] = '';
+
+        if ($this->shouldCreateTemplate()) {
+            foreach ($data as $value) {
+                foreach ($this->byName as $name => $element) {
+                    if (!isset($data[$name]))
+                        $data[$name] = '';
+                }
+            }
+        } else {
+            foreach ($this->byName as $name => $element) {
+                if (!isset($data[$name])) {
+                    if ($this->get($name) instanceOf Fieldset)
+                        $data[$name] = array();
+                    else
+                        $data[$name] = '';
+                }
             }
         }
+
         parent::populateValues($data);
     }
 }

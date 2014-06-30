@@ -16,26 +16,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
-
-use CommonBundle\Component\Form\ElementTrait;
+namespace CommonBundle\Component\Form;
 
 /**
- * Password form element
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
+interface FieldsetInterface extends \Zend\Form\FieldsetInterface, ElementInterface
 {
-    use ElementTrait;
-
-    public function init()
-    {
-        $this->addClass('form-control');
-        $this->setLabelAttributes(
-            array(
-                'class' => 'col-sm-2 control-label',
-            )
-        );
-    }
+    /**
+     * @return string Returns 'fieldset', 'div' or 'none'
+     */
+    public function showAs();
 }

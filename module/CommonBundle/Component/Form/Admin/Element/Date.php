@@ -16,28 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Admin;
+namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * Extending Zend's form element component, so that our forms look the way we want
- * them to.
+ * A date picker element
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-interface Element
+class Date extends Text
 {
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return void
-     */
-    public function setRequired($flag = true);
+    public function init()
+    {
+        parent::init();
 
-    /**
-     * @return boolean
-     */
-    public function isRequired();
+        $this->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setAttribute('data-datepicker', true);
+    }
 }
