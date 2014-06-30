@@ -41,7 +41,7 @@ class StudyEnrollment
     private $id;
 
     /**
-     * @var Person\Academic The person of the enrollment
+     * @var Academic The person of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")

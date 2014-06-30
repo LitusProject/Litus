@@ -196,7 +196,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
                     ->setPhoneNumber($formData['phone_number'])
                     ->setSex($formData['sex'])
-                    ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    ->setBirthday(self::_loadDate($formData['birthday']))
                     ->setPersonalEmail($formData['personal_email'])
                     ->setUniversityEmail($universityEmail);
 
@@ -731,5 +731,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
     }
 }

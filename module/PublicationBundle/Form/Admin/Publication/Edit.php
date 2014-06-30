@@ -34,7 +34,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
     /**
      * @var Publication
      */
-    private $_id;
+    private $_publication;
 
     /**
      * @param EntityManager   $entityManager The EntityManager instance
@@ -45,7 +45,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
     {
         parent::__construct($entityManager, $name);
 
-        $this->_id = $publication->getId();
+        $this->_publication = $publication;
 
         $this->remove('submit');
 
@@ -82,7 +82,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_id)
+                        new TitleValidator($this->_entityManager, $this->_publication->getId())
                     ),
                 )
             )

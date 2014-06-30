@@ -65,7 +65,7 @@ class Html extends \Zend\Validator\AbstractValidator
      * @param integer       $id            The ID that should be ignored when checking for duplicate titles.
      * @param mixed         $opts          The validator's options.
      */
-    public function __construct(EntityManager $entityManager, Publication $publication, Academicyear $academicYear, $id = null, $opts = array())
+    public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $id = null, $opts = array())
     {
         parent::__construct($opts);
 

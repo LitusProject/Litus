@@ -62,6 +62,9 @@ class Publication
         $this->deleted = false;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;

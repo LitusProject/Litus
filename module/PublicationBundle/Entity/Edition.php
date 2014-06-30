@@ -102,6 +102,9 @@ abstract class Edition
         $this->fileName = $fileName;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;

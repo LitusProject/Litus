@@ -109,7 +109,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $form = new AddForm();
 

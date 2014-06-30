@@ -57,6 +57,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_enableOtherOrganization = false;
 
     /**
+     * @var \CommonBundle\Form\Address\AddPrimary
+     */
+    private $_primaryAddressForm;
+
+    /**
+     * @var \CommonBundle\Form\Address\Add
+     */
+    private $_secondaryAddressForm;
+
+    /**
      * @param CacheStorage    $cache                   The cache instance
      * @param EntityManager   $entityManager           The EntityManager instance
      * @param string          $identification          The university identification
@@ -81,14 +91,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('first_name');
         $field->setLabel('First Name')
-            ->setValue(isset($extraInfo['first_name']) ? $extraInfo['first_name'] : '')
-            ->setRequired();
+            ->setRequired()
+            ->setValue(isset($extraInfo['first_name']) ? $extraInfo['first_name'] : '');
         $personal->add($field);
 
         $field = new Text('last_name');
         $field->setLabel('Last Name')
-            ->setValue(isset($extraInfo['last_name']) ? $extraInfo['last_name'] : '')
-            ->setRequired();
+            ->setRequired()
+            ->setValue(isset($extraInfo['last_name']) ? $extraInfo['last_name'] : '');
         $personal->add($field);
 
         $field = new Text('birthday');
@@ -119,13 +129,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue($identification);
         $personal->add($field);
 
-        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
-        $field->setLabel('Primary Address&mdash;Student Room or Home');
-        $this->add($field);
+        $this->_primaryAddressForm = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
+        $this->_primaryAddressForm->setLabel('Primary Address&mdash;Student Room or Home');
+        $this->add($this->_primaryAddressForm);
 
-        $field = new AddressForm('secondary_address', 'secondary_address', false);
-        $field->setLabel('Secondary Address&mdash;Home');
-        $this->add($field);
+        $this->_secondaryAddressForm = new AddressForm('secondary_address', 'secondary_address', false);
+        $this->_secondaryAddressForm->setLabel('Secondary Address&mdash;Home');
+        $this->add($this->_secondaryAddressForm);
 
         $internet = new Collection('internet');
         $internet->setLabel('Internet');
@@ -138,8 +148,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $field = new Text('university_email');
         $field->setLabel('University E-mail')
-            ->setValue($universityEmail)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($universityEmail);
         $internet->add($field);
 
         $field = new Text('personal_email');
@@ -294,13 +304,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $inputFilter = new InputFilter();
 
-        $inputs = $this->get('secondary_address')
-            ->getInputs();
+        $inputs = $this->_secondaryAddressForm->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 
-        $inputs =$this->get('primary_address')
-            ->getInputs();
+        $inputs =$this->_primaryAddressForm->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

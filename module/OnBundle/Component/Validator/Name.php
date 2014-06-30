@@ -36,7 +36,7 @@ class Name extends \Zend\Validator\AbstractValidator
     protected $_documentManager = null;
 
     /**
-     * @var int The slug to ignore
+     * @var Slug The slug to ignore
      */
     private $_slug;
 

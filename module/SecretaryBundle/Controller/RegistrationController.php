@@ -200,7 +200,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     $this->getEntityManager()->persist($academic);
 
-                    $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    $academic->setBirthday(self::_loadDate($formData['birthday']))
                         ->addUniversityStatus(
                             new UniversityStatus(
                                 $academic,
@@ -818,5 +818,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $this->getParam('identification'), '', true
             );
         }
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
     }
 }

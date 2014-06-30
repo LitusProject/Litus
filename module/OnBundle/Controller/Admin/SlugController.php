@@ -64,11 +64,13 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                             ->getRepository('OnBundle\Document\Slug')
                             ->findOneByName($name);
                     } while (isset($found));
+                } else {
+                    $name = strtolower($formData['name']));
                 }
 
                 $slug = new Slug(
                     $this->getAuthentication()->getPersonObject(),
-                    ('' == $formData['name'] ? $name : strtolower($formData['name'])),
+                    $name,
                     $formData['url']
                 );
                 $this->getDocumentManager()->persist($slug);
@@ -172,7 +174,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         for ($i = 0; $i < 8; $i++)
             $name[$i] = $characters[rand(0, strlen($characters) - 1)];
 
-        return implode($name);
+        return implode('', $name);
     }
 
     /**

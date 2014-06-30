@@ -37,8 +37,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $submenu = $this->_buildSubmenu($page);
-        if (empty($submenu) && null !== $page->getParent())
-            $submenu = $this->_buildSubmenu($page->getParent());
+        $parent = $page->getParent()
+        if (empty($submenu) && null !== $parent)
+            $submenu = $this->_buildSubmenu($parent);
 
         return new ViewModel(
             array(

@@ -36,14 +36,14 @@ use CommonBundle\Component\Util\Url,
 class Page extends \CommonBundle\Entity\Node
 {
     /**
-     * @var Datetime The time at which this version was created
+     * @var DateTime The time at which this version was created
      *
      * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
-     * @var Datetime The time at which this version was rendered obsolete
+     * @var DateTime The time at which this version was rendered obsolete
      *
      * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */

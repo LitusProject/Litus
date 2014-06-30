@@ -59,15 +59,15 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-            $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate('d#m#Y H#i', $formData['end_date']);
 
-            if ($form->isValid()) {
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
                 $notification = new Notification(
                     $this->getAuthentication()->getPersonObject(),
-                    $startDate ? $startDate : null,
-                    $endDate ? $endDate : null,
+                    $startDate,
+                    $endDate,
                     $formData['active']
                 );
                 $this->getEntityManager()->persist($notification);
@@ -127,22 +127,15 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate('d#m#Y H#i', $formData['start_date']);
+            $endDate = self::_loadDate('d#m#Y H#i', $formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
-                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-                if ($endDate)
-                    $notification->setEndDate($endDate);
-                else
-                    $notification->setEndDate(null);
-
-                if ($startDate)
-                    $notification->setStartDate($startDate);
-                else
-                    $notification->setStartDate(null);
-
-                $notification->setActive($formData['active']);
+                $notification->setEndDate($endDate)
+                    ->setStartDate($startDate)
+                    ->setActive($formData['active']);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -259,5 +252,14 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $notification;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

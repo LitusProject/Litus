@@ -67,8 +67,6 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             if ($form->isValid() && isset($weekIndex) && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
                 $piano = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                     ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);

@@ -75,7 +75,7 @@ class Slug
      */
     public function __construct(Person $person, $name, $url)
     {
-        $this->person = $person->getId();
+        $this->creationPerson = $person->getId();
 
         $this->name = $name;
         $this->url = $url;

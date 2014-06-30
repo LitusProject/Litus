@@ -30,6 +30,11 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Export extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+    
+    /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param null|string|int             $name          Optional name for the element
      */

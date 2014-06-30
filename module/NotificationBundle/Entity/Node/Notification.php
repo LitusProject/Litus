@@ -178,19 +178,4 @@ class Notification extends \CommonBundle\Entity\Node
 
         return '';
     }
-
-    /**
-     * @param  Language|null $language
-     * @param  boolean       $allowFallback
-     * @return string
-     */
-    public function getSummary($length = 200, Language $language = null, $allowFallback = true)
-    {
-        $translation = $this->getTranslation($language, $allowFallback);
-
-        if (null !== $translation)
-            return $translation->getSummary($length);
-
-        return '';
-    }
 }
