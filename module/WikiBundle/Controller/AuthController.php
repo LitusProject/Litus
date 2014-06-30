@@ -21,7 +21,6 @@ namespace WikiBundle\Controller;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    WikiBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,7 +33,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm('common_auth_login');
 
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->isExternallyAuthenticated()) {

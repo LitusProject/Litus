@@ -18,37 +18,45 @@
 
 namespace CommonBundle\Form\Admin\Auth;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Password,
-    CommonBundle\Component\OldForm\Admin\Element\Text;
-
 /**
  * Login
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Login extends \CommonBundle\Component\OldForm\Admin\Form
+class Login extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param mixed $opts The form's options
-     */
-    public function __construct($opts = null)
+    public function init()
     {
-        parent::__construct($opts);
+        parent::init();
 
         $this->setAttribute('id', 'login');
 
-        $field = new Text('username');
-        $field->setAttribute('placeholder', 'username')
-            ->setAttribute('autofocus', 'autofocus');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'username',
+            'attributes' => array(
+                'placeholder' => 'username',
+                'autofocus'   => true,
+                'id'          => 'username',
+            ),
+        ));
 
-        $field = new Password('password');
-        $field->setAttribute('placeholder', 'password');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'password',
+            'name'       => 'Password',
+            'attributes' => array(
+                'placeholder' => 'password',
+                'id'          => 'password',
+            ),
+        ));
 
-        $field = new Checkbox('remember_me');
-        $field->setLabel('Remember Me');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'remember_me',
+            'label'      => 'Remember Me',
+            'attributes' => array(
+                'id' => 'remember_me',
+            )
+        ));
     }
 }

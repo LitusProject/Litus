@@ -22,7 +22,6 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Admin\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -80,7 +79,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'isAuthenticated' => $isAuthenticated,
-                'form' => new LoginForm(),
+                'form' => $this->getForm('common_auth_login'),
                 'shibbolethUrl' => $this->_getShibbolethUrl()
             )
         );

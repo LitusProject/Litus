@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Supplier;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,7 +30,7 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
 {
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm('common_auth_login');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
