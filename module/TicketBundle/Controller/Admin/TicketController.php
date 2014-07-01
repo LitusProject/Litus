@@ -42,7 +42,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (null !== $this->getParam('field'))
             $tickets = $this->_search($event);
 
-        if (!isset($mappings)) {
+        if (!isset($tickets)) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllActiveByEvent($event);

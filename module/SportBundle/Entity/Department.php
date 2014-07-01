@@ -56,7 +56,7 @@ class Department
     private $members;
 
     /**
-     * @var array The happy hours of this department
+     * @var string The happy hours of this department
      *
      * @ORM\Column(name="happy_hours", type="string")
      */

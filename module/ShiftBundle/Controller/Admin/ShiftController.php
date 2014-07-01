@@ -79,7 +79,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -97,8 +100,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
-                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
                 $interval = $startDate->diff($endDate);
 
@@ -187,12 +188,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 if ($shift->canEditDates()) {
-                    $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                    $shift->setStartDate($startDate)
+                        ->setEndDate($endDate);
                 }
 
                 $repository = $this->getEntityManager()
@@ -502,5 +506,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

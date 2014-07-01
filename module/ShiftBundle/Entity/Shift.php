@@ -519,10 +519,10 @@ class Shift
     }
 
     /**
-     * @param  Event $event
+     * @param  Event|null $event
      * @return self
      */
-    public function setEvent(Event $event)
+    public function setEvent(Event $event = null)
     {
         $this->event = $event;
 

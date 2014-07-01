@@ -85,7 +85,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findOneById($formData['event']),
                     $formData['bookable_praesidium'],
                     $formData['bookable'],
-                    strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null,
+                    self::_loadDate($formData['bookings_close_date']),
                     $formData['active'],
                     $formData['generate_tickets'],
                     $formData['number_of_tickets'],
@@ -198,12 +198,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $enableOptions = isset($formData['enable_options']) && $formData['enable_options'] || sizeof($event->getOptions()) > 0;
 
-                $event->setActivity($this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Node\Event')
-                        ->findOneById($formData['event']))
+                $commonEvent = $this->getEntityManager()
+                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->findOneById($formData['event']);
+
+                $event->setActivity($commonEvent)
                     ->setBookablePraesidium($formData['bookable_praesidium'])
                     ->setBookable($formData['bookable'])
-                    ->setBookingsCloseDate(strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null)
+                    ->setBookingsCloseDate(self::_loadDate($formData['bookings_close_date']))
                     ->setActive($formData['active'])
                     ->setTicketsGenerated($formData['generate_tickets'])
                     ->setNumberOfTickets($formData['number_of_tickets'])
@@ -331,5 +333,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

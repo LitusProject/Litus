@@ -109,10 +109,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
+                $allowed = false;
                 if ($authSession) {
                     $acl = new Acl($this->_entityManager);
 
-                    $allowed = false;
                     foreach ($authSession->getPerson()->getRoles() as $role) {
                         if (
                             $role->isAllowed(

@@ -296,7 +296,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getConfigValue('shift.mail_name');
 
                     if (!($language = $volunteer->getPerson()->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 

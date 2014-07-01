@@ -58,7 +58,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
 
     public function getInputFilterSpecification()
     {
-        $required = isset($_POST['options'][$this->getName()]['option']) && strlen($_POST['options'][$this->getName()]['option']) > 0 ? true : false;
+        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0 ? true : false;
 
         return array(
             array(

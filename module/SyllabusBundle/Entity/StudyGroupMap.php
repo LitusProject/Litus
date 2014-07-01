@@ -45,7 +45,7 @@ class StudyGroupMap
     private $study;
 
     /**
-     * @var Subject The group of the mapping
+     * @var Group The group of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -86,14 +86,6 @@ class StudyGroupMap
     public function getStudy()
     {
         return $this->study;
-    }
-
-    /**
-     * @return Subject
-     */
-    public function getSubject()
-    {
-        return $this->subject;
     }
 
     /**

@@ -19,6 +19,7 @@
 namespace ShiftBundle\Form\Admin\Shift;
 
 use CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
     Shiftbundle\Entity\Shift,
     Zend\Form\Element\Submit;
@@ -56,11 +57,13 @@ class Edit extends Add
 
     private function _populateFromShift(Shift $shift)
     {
+        $academic = $shift->getManager();
+
         $data = array(
             'manager_id' => $shift->getManager()->getId(),
             'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
-            'manager' => $shift->getManager()->getFullName() . ' - ' . $shift->getManager()->getUniversityIdentification() ,
+            'manager' => $academic->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
             'nb_responsibles' => $shift->getNbResponsibles(),
             'nb_volunteers' => $shift->getNbVolunteers(),
             'unit' => $shift->getUnit()->getId(),

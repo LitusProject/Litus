@@ -49,7 +49,7 @@ class Token
     private $hash;
 
     /**
-     * @var string The person associated with this token
+     * @var int The person associated with this token
      *
      * @ODM\Field(type="int")
      */

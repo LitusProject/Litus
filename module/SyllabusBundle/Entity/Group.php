@@ -73,6 +73,11 @@ class Group
     private $excludedMembers;
 
     /**
+     * @var EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
      * @param string  $name
      * @param boolean $cvBook
      * @param string  $extraMembers
@@ -183,7 +188,7 @@ class Group
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager  $entityManager
+     * @param  EntityManager  $entityManager
      * @return \SyllabusBundle\Entity\Group
      */
     public function setEntityManager(EntityManager $entityManager)
@@ -194,7 +199,7 @@ class Group
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNbStudents(AcademicYear $academicYear)

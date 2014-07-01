@@ -141,7 +141,7 @@ class Study
     }
 
     /**
-     * @param  array $data
+     * @param  SimpleXMLElement $data
      * @return array
      */
     private function _createStudies($data)
