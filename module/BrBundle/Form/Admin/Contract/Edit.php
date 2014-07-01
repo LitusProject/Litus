@@ -41,7 +41,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::__construct($options);
 
-        $this->_createFromContract($contract,$entityManager);
+        $this->_createFromContract($contract);
 
         $field = new Submit('Save');
         $field->setValue('Save')
@@ -49,12 +49,12 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _createFromContract(Contract $contract,$em)
+    private function _createFromContract(Contract $contract)
     {
         $field = new Text('title');
         $field->setLabel('Title')
             ->setValue($contract->getTitle())
-            ->setRequired(true);
+            ->setRequired();
         $this->add($field);
 
         $field = new Text('invoice_nb');
@@ -63,7 +63,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ->setValue($contract->getInvoiceNb());
         $this->add($field);
 
-        foreach ($contract->getEntries($em) as $entry)
+        foreach ($contract->getEntries() as $entry)
         {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
@@ -79,9 +79,17 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        $inputFilter->remove('company');
-        $inputFilter->remove('discount');
-        $inputFilter->remove('sections');
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'title',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
 
         $inputFilter->add(
             $factory->createInput(
@@ -103,5 +111,3 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         return $inputFilter;
     }
 }
-
-

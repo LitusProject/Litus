@@ -49,7 +49,7 @@ class Invoice
      * @var \BrBundle\Entity\Product\Order The order for which this invoice is meant
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
      */
     private $order;
 

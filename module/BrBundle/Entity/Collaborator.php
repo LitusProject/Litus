@@ -42,6 +42,7 @@ class Collaborator
      * @var \BrBundle\Entity\Collaborator The contract accompanying this order
      *
      * @ORM\OneToOne(targetEntity="\CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 

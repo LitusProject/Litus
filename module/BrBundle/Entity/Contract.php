@@ -50,9 +50,8 @@ class Contract
     /**
      * @var \BrBundle\Entity\Product\Order The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Product\Order"
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Product\Order")
+     * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
      */
     private $order;
 
