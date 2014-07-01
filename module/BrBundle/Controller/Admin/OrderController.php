@@ -183,8 +183,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $counter = 0;
 
                 foreach ($entries as $entry) {
-                    $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
                     $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
+                    $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
                     $order->setEntry($orderEntry);
                     $contract->setEntry($contractEntry);
                     $counter++;
@@ -195,26 +195,24 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $newProduct = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findProductById($formData['product']);
-
                 $orderEntry = new OrderEntry($updatedOrder, $newProduct[0], $formData['amount']);
                 $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                 $order->setEntry($orderEntry);
                 $contract->setEntry($contractEntry);
-
-                $history = new ContractHistory($contract);
-                $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->persist($orderEntry);
                 $this->getEntityManager()->persist($contractEntry);
                 $this->getEntityManager()->persist($updatedOrder);
                 $this->getEntityManager()->persist($contract);
 
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
+
                 $order->setOld();
 
                 $this->getEntityManager()->persist($order);
 
                 $this->getEntityManager()->flush();
-
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(

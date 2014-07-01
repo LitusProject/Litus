@@ -45,7 +45,7 @@ class OrderEntry
      * @var \BrBundle\Entity\Product\Order The order to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
-     * @ORM\JoinColumn(name="order", referencedColumnName="id")
+     * @ORM\JoinColumn(name="productorder", referencedColumnName="id")
      */
     private $order;
 
