@@ -62,8 +62,7 @@ class ContractHistory
     private $version;
 
     /**
-     * @param \CudiBundle\Entity\Article      $article   The new version of the article
-     * @param \CudiBundle\Entity\Article|null $precursor The old version of the article
+     * @param \BrBundle\Entity\Contract $contract
      */
     public function __construct(Contract $contract)
     {
