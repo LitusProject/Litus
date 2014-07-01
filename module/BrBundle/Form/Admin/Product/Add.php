@@ -243,7 +243,7 @@ A single entry is a single bullet on the contract. Formatting options are indica
             $factory->createInput(
                 array(
                     'name'     => 'event',
-                    'required' => true,
+                    'required' => false,
                 )
             )
         );

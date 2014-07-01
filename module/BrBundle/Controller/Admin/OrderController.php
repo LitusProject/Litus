@@ -21,6 +21,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
@@ -199,6 +200,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                 $order->setEntry($orderEntry);
                 $contract->setEntry($contractEntry);
+
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->persist($orderEntry);
                 $this->getEntityManager()->persist($contractEntry);

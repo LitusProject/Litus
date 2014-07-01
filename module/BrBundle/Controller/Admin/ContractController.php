@@ -20,6 +20,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
@@ -71,9 +72,17 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         if (!($contract = $this->_getContract()))
             return new ViewModel();
 
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractHistory')
+                ->findAllContractVersions($contract),
+            $this->getParam('page')
+        );
+
         return new ViewModel(
             array(
-                'contract' => $contract,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -108,6 +117,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 $contract->setVersion($newVersionNb);
+
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->flush();
 
