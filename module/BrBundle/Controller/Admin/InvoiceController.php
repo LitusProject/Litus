@@ -20,6 +20,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
+    BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Form\Admin\Invoice\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -63,6 +64,26 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function historyAction()
+    {
+        if (!($invoice = $this->_getInvoice()))
+            return new ViewModel();
+
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Invoice\InvoiceHistory')
+                ->findAllInvoiceVersions($invoice),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($invoice = $this->_getInvoice(false)))
@@ -93,6 +114,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 }
 
                 $invoice->setVersion($newVersionNb);
+
+                $history = new InvoiceHistory($invoice);
+                $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->flush();
 

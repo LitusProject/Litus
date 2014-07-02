@@ -50,6 +50,9 @@
                             <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'view') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "history", "id": invoice.getId()}) }}" class="history">History</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'view') %}
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'download') %}

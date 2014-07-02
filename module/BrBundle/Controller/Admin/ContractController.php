@@ -23,6 +23,7 @@ use BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
+    BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -171,6 +172,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('BrBundle\Entity\Contract')
                     ->findNextInvoiceNb()
             );
+
+            $history = new InvoiceHistory($invoice);
+            $this->getEntityManager()->persist($history);
 
             $this->getEntityManager()->persist($invoice);
         }
