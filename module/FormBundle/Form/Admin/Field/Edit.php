@@ -37,7 +37,7 @@ class Edit extends Add
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
-        parent::__construct($fieldSpecification->getForm(), $entityManager, $name);
+        parent::__construct($fieldSpecification->getForm(), $entityManager, null, $name);
 
         $this->_field = $fieldSpecification;
 

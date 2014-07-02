@@ -148,7 +148,7 @@ class Form
 
         if (!isset($formData['save_as_draft'])) {
             if ($formSpecification->hasMail() && isset($mailTransport) && isset($url)) {
-                $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $url->fromRoute(
+                $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
                     'form_view',
                     array(
                         'action' => 'login',

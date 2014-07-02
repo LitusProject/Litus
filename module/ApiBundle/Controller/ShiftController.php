@@ -208,7 +208,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!($shift = $this->_getShift()))
             return $this->error(500, 'The shift was not found');
 
-        if (!($shift->canSignout($this->getEntityManager(), $person)))
+        if (!($shift->canSignout($this->getEntityManager())))
             return $this->error(500, 'This person cannot be signed out');
 
         $remove = $shift->removePerson($person);

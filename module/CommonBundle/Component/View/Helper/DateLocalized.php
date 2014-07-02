@@ -61,11 +61,12 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        if (null === $date || null === $this->getTranslator() || !($this->getTranslator() instanceof Translator || $this->getTranslator() instanceof MvcTranslator))
+        $translator = $this->getTranslator();
+        if (null === $date || null === $translator || !($translator instanceof Translator || $translator instanceof MvcTranslator))
             return '';
 
         $formatter = new IntlDateFormatter(
-            $this->getTranslator()->getLocale(),
+            $translator->getLocale(),
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),

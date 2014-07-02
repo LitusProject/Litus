@@ -329,7 +329,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     }
 
-                    if ($article instanceof Internal) {
+                    if ($article instanceof Internal && $duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')

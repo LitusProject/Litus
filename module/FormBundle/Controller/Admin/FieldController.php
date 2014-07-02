@@ -177,8 +177,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     case 'timeslot':
                         $startDate = self::_loadDate($formData['timeslot_start_date']);
                         $endDate = self::_loadDate($formData['timeslot_end_date']);
-                        if (!isset($startDate) && !isset($endDate))
-                            throw new RuntimeException('Invalid date');
+                        if (!$startDate && !$endDate)
+                            throw new RuntimeException('Invalid date given');
 
                         $field = new TimeSlotField(
                             $formSpecification,
