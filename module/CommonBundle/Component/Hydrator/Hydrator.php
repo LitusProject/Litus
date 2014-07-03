@@ -33,6 +33,12 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 
+    /**
+     * Flattens an array( of arrays)+? of strings into an array of strings
+     *
+     * @param  string[]|string[][]|array|null $array
+     * @return string[]
+     */
     private static function flatten(array $array = null)
     {
         if (empty($array)) {
@@ -128,12 +134,12 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * Hydrates the given $object with the given $data. Only the data values
      * of which the key is given in $keys are hydrated.
      *
-     * @param  array           $data   The data to hydrate
-     * @param  object          $object The object to hydrate
-     * @param  string|string[] $keys   The names of the data values to hydrate
+     * @param  array                          $data   The data to hydrate
+     * @param  object                         $object The object to hydrate
+     * @param  string[]|string[][]|array|null $keys   The names of the data values to hydrate
      * @return object
      */
-    protected function stdHydrate(array $data, $object, ...$keys)
+    protected function stdHydrate(array $data, $object, array $keys = null)
     {
         $keys = self::flatten($keys);
 
@@ -148,11 +154,11 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     /**
      * Extracts data with the given $keys from the given $object.
      *
-     * @param  object|null     $object The object to hydrate
-     * @param  string|string[] $keys   The names of the data values to hydrate
+     * @param  object|null                    $object The object to hydrate
+     * @param  string[]|string[][]|array|null $keys   The names of the data values to hydrate
      * @return array
      */
-    protected function stdExtract($object = null, ...$keys)
+    protected function stdExtract($object = null, array $keys = null)
     {
         if (null === $object)
             return array();

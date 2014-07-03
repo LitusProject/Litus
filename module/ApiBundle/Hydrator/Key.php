@@ -70,7 +70,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys, 'code');
+        $data = $this->stdExtract($object, array(self::$std_keys, 'code'));
 
         $roles = array();
         foreach ($object->getRoles() as $role) {
