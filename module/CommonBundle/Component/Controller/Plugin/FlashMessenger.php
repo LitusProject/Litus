@@ -28,12 +28,25 @@ use CommonBundle\Component\FlashMessenger\FlashMessage;
 class FlashMessenger extends \Zend\Mvc\Controller\Plugin\FlashMessenger
 {
     /**
+     * @param  string $type
+     * @param  string $title
+     * @param  string $message
+     * @return self
+     */
+    private function addMessageHelper($type, $title, $message)
+    {
+        return $this->addMessage(
+            new FlashMessage($type, $title, $message)
+        );
+    }
+
+    /**
      * Add a message.
      *
      * Accepts strings to provide compatibility with frameworks that use this.
      *
-     * @param  FlashMessage $message
-     * @return self         Provides a fluent interface
+     * @param  FlashMessage|string $message
+     * @return self                Provides a fluent interface
      */
     public function addMessage($message)
     {
@@ -56,9 +69,49 @@ class FlashMessenger extends \Zend\Mvc\Controller\Plugin\FlashMessenger
                     $title = 'Notice';
             }
 
-            $message = new FlashMessage($type, $title, $message);
+            return $this->addMessageHelper($type, $title, $message);
         }
 
         return parent::addMessage($message);
+    }
+
+    /**
+     * @param  string $title
+     * @param  string $message
+     * @return self
+     */
+    public function error($title, $message)
+    {
+        return $this->addMessageHelper(FlashMessage::ERROR, $title, $message);
+    }
+
+    /**
+     * @param  string $title
+     * @param  string $message
+     * @return self
+     */
+    public function warn($title, $message)
+    {
+        return $this->addMessageHelper(FlashMessage::WARNING, $title, $message);
+    }
+
+    /**
+     * @param  string $title
+     * @param  string $message
+     * @return self
+     */
+    public function success($title, $message)
+    {
+        return $this->addMessageHelper(FlashMessage::SUCCESS, $title, $message);
+    }
+
+    /**
+     * @param  string $title
+     * @param  string $message
+     * @return self
+     */
+    public function notice($title, $message)
+    {
+        return $this->addMessageHelper(FlashMessage::NOTICE, $title, $message);
     }
 }
