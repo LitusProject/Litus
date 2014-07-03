@@ -21,10 +21,9 @@ namespace ApiBundle\Hydrator;
 use ApiBundle\Entity\Key as KeyEntity;
 
 /**
- * This entity stores an API key.
+ * This hydrator hydrates/extracts API keys.
  *
- * @ORM\Entity(repositoryClass="ApiBundle\Repository\Key")
- * @ORM\Table(name="api.keys")
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
 class Key extends \CommonBundle\Component\Hydrator\Hydrator
 {
