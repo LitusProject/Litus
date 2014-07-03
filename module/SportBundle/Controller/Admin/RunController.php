@@ -18,8 +18,7 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
@@ -186,9 +185,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
+                $this->flashMessenger()->success(
                         'Succes',
                         'The runner was successfully updated!'
                     )
@@ -241,12 +238,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     public function _getRunner()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the runner!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the runner!'
             );
 
             $this->redirect()->toRoute(
@@ -264,12 +258,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneById($this->getParam('id'));
 
         if (null === $runner) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No runner with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No runner with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -298,12 +289,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneByUniversityStart($start);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

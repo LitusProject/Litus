@@ -18,8 +18,7 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     NotificationBundle\Entity\Node\Notification,
     NotificationBundle\Entity\Node\Translation,
     NotificationBundle\Form\Admin\Notification\Add as AddForm,
@@ -90,12 +89,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The notification was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The notification was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -161,12 +157,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The notification was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The notification was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -210,12 +203,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     private function _getNotification()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the notification!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the notification!'
             );
 
             $this->redirect()->toRoute(
@@ -233,12 +223,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('id'));
 
         if (null === $notification) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No notification with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No notification with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

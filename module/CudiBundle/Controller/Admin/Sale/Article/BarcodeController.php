@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Article\Barcode,
+use CudiBundle\Entity\Sale\Article\Barcode,
     CudiBundle\Form\Admin\Sales\Article\Barcodes\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -48,12 +47,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The barcode was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The barcode was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -107,12 +103,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -130,12 +123,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -154,12 +144,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getBarcode()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the barcode!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the barcode!'
             );
 
             $this->redirect()->toRoute(
@@ -177,12 +164,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $barcode) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No barcode with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No barcode with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

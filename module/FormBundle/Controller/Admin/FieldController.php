@@ -19,7 +19,6 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
@@ -47,12 +46,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -81,12 +77,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -225,12 +218,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The field was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The field was successfully created!'
                 );
 
                 if (isset($formData['submit_repeat'])) {
@@ -270,12 +260,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -388,12 +375,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The field was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The field was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -425,12 +409,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -499,12 +480,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -522,12 +500,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -546,12 +521,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getField()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the field!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the field!'
             );
 
             $this->redirect()->toRoute(
@@ -569,12 +541,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $field) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No field with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No field with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

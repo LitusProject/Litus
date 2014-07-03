@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
     CudiBundle\Entity\Stock\Period,
@@ -176,12 +175,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 $order->setComment($formData['comment']);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order item was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The order item was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -233,12 +229,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order item was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The order item was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -284,12 +277,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The order item was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The order item was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -345,12 +335,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The order is successfully placed!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The order is successfully placed!'
         );
 
         $this->redirect()->toRoute(
@@ -426,12 +413,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The order was successfully canceled!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The order was successfully canceled!'
         );
 
         $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
@@ -456,12 +440,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -479,12 +460,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -503,12 +481,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     private function _getOrder()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the order!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the order!'
             );
 
             $this->redirect()->toRoute(
@@ -526,12 +501,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $order) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No order with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No order with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -553,12 +525,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     private function _getOrderItem()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the order item!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the order item!'
             );
 
             $this->redirect()->toRoute(
@@ -576,12 +545,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $item) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No order item with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No order item with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

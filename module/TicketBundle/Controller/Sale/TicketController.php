@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController
@@ -120,12 +119,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     private function _getTicket()
     {
         if (null === $this->getParam('ticket')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the ticket!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the ticket!'
             );
 
             $this->redirect()->toRoute(
@@ -140,12 +136,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             ->findOneById($this->getParam('ticket'));
 
         if (null === $ticket) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ticket with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ticket with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
     CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
@@ -640,12 +639,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the session!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the session!'
             );
 
             $this->redirect()->toRoute(
@@ -663,12 +659,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $session) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No session with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No session with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -689,12 +682,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -712,12 +702,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -738,12 +725,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -761,12 +745,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

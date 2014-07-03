@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -52,12 +51,9 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneActive();
 
         if (null === $period) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'There is no active stock period!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'There is no active stock period!'
             );
 
             $this->redirect()->toRoute(

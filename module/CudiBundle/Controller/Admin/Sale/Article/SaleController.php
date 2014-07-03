@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
+use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
     CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
     CudiBundle\Form\Admin\Sales\Article\Sales\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -81,12 +80,9 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully sold!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully sold!'
                 );
 
                 $this->redirect()->toRoute(
@@ -115,12 +111,9 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -138,12 +131,9 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

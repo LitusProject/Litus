@@ -21,7 +21,6 @@ namespace CommonBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     Locale,
@@ -164,12 +163,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 );
 
             if (null === $fallbackLanguage) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'The specified fallback language does not exist'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'The specified fallback language does not exist'
                 );
             } else {
                 Locale::setDefault($fallbackLanguage->getAbbrev());

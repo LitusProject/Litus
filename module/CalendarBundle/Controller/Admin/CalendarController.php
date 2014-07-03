@@ -18,8 +18,7 @@
 
 namespace CalendarBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CalendarBundle\Entity\Node\Event,
+use CalendarBundle\Entity\Node\Event,
     CalendarBundle\Entity\Node\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
     CalendarBundle\Form\Admin\Event\Edit as EditForm,
@@ -112,12 +111,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -189,12 +185,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -296,12 +289,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The event\'s poster has successfully been updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The event\'s poster has successfully been updated!'
                 );
 
                 return new ViewModel(
@@ -370,12 +360,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -393,12 +380,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -420,12 +404,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     private function _getEventByPoster()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -443,12 +424,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneByPoster($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

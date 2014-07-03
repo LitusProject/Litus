@@ -18,8 +18,7 @@
 
 namespace PublicationBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PublicationBundle\Entity\Publication,
+use PublicationBundle\Entity\Publication,
     PublicationBundle\Form\Admin\Publication\Add as AddForm,
     PublicationBundle\Form\Admin\Publication\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -63,12 +62,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 $this->getEntityManager()->persist($publication);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The publication was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The publication was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -105,12 +101,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 $publication->setTitle($formData['title']);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The publication was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The publication was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -154,12 +147,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the publication!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the publication!'
             );
 
             $this->redirect()->toRoute(
@@ -177,12 +167,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             ->findOneActiveById($this->getParam('id'));
 
         if (null === $publication) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No publication with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No publication with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

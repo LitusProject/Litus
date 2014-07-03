@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\Alias\Academic as Alias,
+use MailBundle\Entity\Alias\Academic as Alias,
     MailBundle\Form\Admin\Alias\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -71,12 +70,9 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
                 $this->getEntityManager()->persist($alias);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The alias was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The alias was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -158,12 +154,9 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     private function _getAlias()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the alias!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the alias!'
             );
 
             $this->redirect()->toRoute(
@@ -181,12 +174,9 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             ->findOneById($this->getParam('id'));
 
         if (null === $alias) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No alias with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No alias with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

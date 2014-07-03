@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Mail\Translation as MailTranslation,
     FormBundle\Entity\Node\Form\Doodle,
@@ -183,12 +182,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The form was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The form was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -222,12 +218,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByForm($formSpecification);
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -377,12 +370,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The form was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The form was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -414,12 +404,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to delete this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to delete this form!'
             );
 
             $this->redirect()->toRoute(
@@ -481,12 +468,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -504,12 +488,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

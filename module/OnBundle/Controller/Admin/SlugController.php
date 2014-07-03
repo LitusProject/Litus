@@ -18,8 +18,7 @@
 
 namespace OnBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    OnBundle\Document\Slug,
+use OnBundle\Document\Slug,
     OnBundle\Form\Admin\Slug\Add as AddForm,
     OnBundle\Form\Admin\Slug\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -77,12 +76,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getDocumentManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The slug was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The slug was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -122,12 +118,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getDocumentManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The slug was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The slug was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -183,12 +176,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     private function _getSlug()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the slug!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the slug!'
             );
 
             $this->redirect()->toRoute(
@@ -206,12 +196,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $slug) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No slug with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No slug with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

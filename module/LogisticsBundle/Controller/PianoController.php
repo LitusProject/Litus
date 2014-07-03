@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateInterval,
+use DateInterval,
     DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
@@ -169,12 +168,9 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The reservation was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The reservation was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
@@ -154,12 +153,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 $zip->close();
                 unlink($zipFileName);
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'Something went wrong while extracting the archive!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'Something went wrong while extracting the archive!'
                 );
 
                 return new ViewModel(
@@ -177,12 +173,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->getEntityManager()->persist($edition);
             $this->getEntityManager()->flush();
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'Success',
-                    'The publication was succesfully created!'
-                )
+            $this->flashMessenger()->success(
+                'Success',
+                'The publication was succesfully created!'
             );
 
             return new ViewModel(
@@ -251,12 +244,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _getEdition()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the edition!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the edition!'
             );
 
             $this->redirect()->toRoute(
@@ -274,12 +264,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No edition with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No edition with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -298,12 +285,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the publication!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the publication!'
             );
 
             $this->redirect()->toRoute(
@@ -321,12 +305,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             ->findOneActiveById($this->getParam('id'));
 
         if (null === $publication) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No publication with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No publication with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

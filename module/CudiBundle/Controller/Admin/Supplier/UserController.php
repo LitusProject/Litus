@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Supplier;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
+use CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
     CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -96,12 +95,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The supplier user was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The supplier user was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -146,12 +142,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The supplier user was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The supplier user was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -197,12 +190,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -220,12 +210,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -247,12 +234,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     private function _getUser()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -270,12 +254,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

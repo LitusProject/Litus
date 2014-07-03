@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Admin\Config\Edit as EditForm,
+use CommonBundle\Form\Admin\Config\Edit as EditForm,
     CommonBundle\Entity\General\Config,
     Zend\View\Model\ViewModel;
 
@@ -82,11 +81,8 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The configuration entry was successfully updated!'
-                    )
+                    'Succes',
+                    'The configuration entry was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(

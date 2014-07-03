@@ -18,8 +18,7 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     BannerBundle\Entity\Node\Banner,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
@@ -141,12 +140,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The banner was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The banner was successfully added!'
                 );
 
                 return new ViewModel(
@@ -218,12 +214,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The banner was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The banner was successfully edited!'
                 );
 
                 return new ViewModel(
@@ -290,12 +283,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         if (null === $this->getParam('id')) {
             if ($redirect) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'No ID was given to identify the banner!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No ID was given to identify the banner!'
                 );
 
                 $this->redirect()->toRoute(
@@ -315,12 +305,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
         if (null === $banner) {
             if ($redirect) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'No banner with the given ID was found!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No banner with the given ID was found!'
                 );
 
                 $this->redirect()->toRoute(

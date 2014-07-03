@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    SyllabusBundle\Entity\Subject\Comment,
+use SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     CudiBundle\Form\Prof\Comment\Add as AddCommentForm,
     CudiBundle\Form\Prof\Comment\Reply as AddReplyForm,
@@ -68,12 +67,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $this->getEntityManager()->persist($reply);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The reply was successfully created!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The reply was successfully created!'
                     );
 
                     $this->redirect()->toRoute(
@@ -103,12 +99,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $this->getEntityManager()->persist($comment);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The comment was successfully created!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The comment was successfully created!'
                     );
 
                     $this->redirect()->toRoute(
@@ -169,12 +162,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             return;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -197,12 +187,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             );
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -222,12 +209,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the comment!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the comment!'
             );
 
             $this->redirect()->toRoute(
@@ -246,12 +230,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->findOneById($this->getParam('id'));
 
         if (null === $comment || null === $this->_getSubject($comment->getSubject()->getId())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No comment with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No comment with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

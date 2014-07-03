@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Form\Manage\Mail\Send as MailForm,
+use FormBundle\Form\Manage\Mail\Send as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -38,12 +37,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -129,12 +125,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -152,12 +145,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Barcode,
+use CommonBundle\Entity\User\Barcode,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
@@ -141,12 +140,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The academic was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The academic was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -331,12 +327,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The academic was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The academic was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -371,12 +364,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The academic was successfully activated!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The academic was successfully activated!'
         );
 
         $this->redirect()->toRoute(
@@ -504,12 +494,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function _getAcademic()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the academic!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the academic!'
             );
 
             $this->redirect()->toRoute(
@@ -527,12 +514,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $academic) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateTime,
     TicketBundle\Component\Document\Generator\Event as EventGenerator,
@@ -187,12 +186,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -210,12 +206,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -234,12 +227,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     private function _getTicket()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the ticket!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the ticket!'
             );
 
             $this->redirect()->toRoute(
@@ -257,12 +247,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $ticket) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ticket with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ticket with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
     CudiBundle\Entity\File\File,
     CudiBundle\Form\Admin\Article\File\Add as AddForm,
@@ -184,12 +183,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The file was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The file was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -286,12 +282,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -309,12 +302,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -333,12 +323,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -356,12 +343,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -383,12 +367,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     private function _getFileMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the file!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the file!'
             );
 
             $this->redirect()->toRoute(
@@ -406,12 +387,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $file) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No file with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No file with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

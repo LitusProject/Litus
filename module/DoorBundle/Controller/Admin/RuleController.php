@@ -18,8 +18,7 @@
 
 namespace DoorBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateInterval,
+use DateInterval,
     DateTime,
     DoorBundle\Document\Rule,
     DoorBundle\Form\Admin\Rule\Add as AddForm,
@@ -82,12 +81,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getDocumentManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The rule was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The rule was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -140,12 +136,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getDocumentManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The rule was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The rule was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -190,12 +183,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     private function _getRule()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the rule!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the rule!'
             );
 
             $this->redirect()->toRoute(
@@ -213,12 +203,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $rule) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No door with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No door with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

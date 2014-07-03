@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    TicketBundle\Component\Ticket\Ticket as TicketBook,
+use TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\Ticket,
     TicketBundle\Form\Ticket\Book as BookForm,
@@ -71,12 +70,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Error',
-                        'The tickets were succesfully booked'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The tickets were succesfully booked'
                 );
 
                 $this->redirect()->toRoute(

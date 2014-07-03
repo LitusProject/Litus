@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\PassKit\Pass\Membership,
+use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
@@ -49,12 +48,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function indexAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -118,12 +114,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function editAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -378,12 +371,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'Your data was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'Your data was succesfully updated!'
                 );
 
                 $this->_doRedirect();
@@ -405,12 +395,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function studiesAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -429,12 +416,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function saveStudiesAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -456,12 +440,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function subjectsAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -481,12 +462,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function saveSubjectsAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -528,12 +506,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your account was succesfully activated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'Your account was succesfully activated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -679,12 +654,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     private function _getUser()
     {
         if (null === $this->getParam('code')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No code was given to identify the user!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No code was given to identify the user!'
             );
 
             $this->redirect()->toRoute(
@@ -699,12 +671,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findOnePersonByCode($this->getParam('code'));
 
         if (null === $user) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given code is not valid!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given code is not valid!'
             );
 
             $this->redirect()->toRoute(

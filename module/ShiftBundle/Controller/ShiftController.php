@@ -18,8 +18,7 @@
 
 namespace ShiftBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
@@ -48,12 +47,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $dateSearchForm = new DateSearchForm($this->getEntityManager());
 
         if (!$this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::WARNING,
-                    'Warning',
-                    'Please login to view the shifts!'
-                )
+            $this->flashMessenger()->warn(
+                'Warning',
+                'Please login to view the shifts!'
             );
 
             $this->redirect()->toRoute(
@@ -103,12 +99,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $resultString = $this->getTranslator()->translate('Shifts for %event%');
                     $resultString = str_replace('%event%', $event->getTitle(), $resultString);
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }
@@ -130,12 +123,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $resultString = $this->getTranslator()->translate('Shifts for %unit%');
                     $resultString = str_replace('%unit%', $unit->getName(), $resultString);
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }
@@ -148,12 +138,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
                     if (!$start_date) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Error',
-                                'The given search query was invalid; please enter a date in the format dd/mm/yyyy!'
-                            )
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'The given search query was invalid; please enter a date in the format dd/mm/yyyy!'
                         );
                     } else {
                         $start_date->setTime(0, 0, 0);
@@ -169,12 +156,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
                     }
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }

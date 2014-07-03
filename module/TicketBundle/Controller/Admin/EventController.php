@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket,
@@ -116,12 +115,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -240,12 +236,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -291,12 +284,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -314,12 +304,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
