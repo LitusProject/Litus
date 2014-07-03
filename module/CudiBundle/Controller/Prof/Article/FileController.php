@@ -297,12 +297,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->findOneById($this->getParam('id'));
 
         if (null === $file) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No file with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No file with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
