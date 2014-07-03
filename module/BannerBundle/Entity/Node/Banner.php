@@ -84,18 +84,10 @@ class Banner extends \CommonBundle\Entity\Node
 
     /**
      * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $category
      */
-    public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
-
-        $this->name = $name;
-        $this->image = $image;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->active = $active;
-        $this->url = $url;
     }
 
     /**
