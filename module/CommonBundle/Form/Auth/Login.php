@@ -37,9 +37,11 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Username',
             'required'   => true,
             'options'    => array(
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                )
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
             ),
         ));
 
@@ -49,9 +51,11 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Password',
             'required'   => true,
             'options'    => array(
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                )
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
             ),
         ));
 
