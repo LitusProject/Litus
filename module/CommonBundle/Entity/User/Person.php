@@ -52,7 +52,7 @@ use CommonBundle\Component\Acl\RoleAware,
 abstract class Person implements RoleAware
 {
     /**
-     * @var string The persons unique identifier
+     * @var integer The persons unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -131,7 +131,7 @@ abstract class Person implements RoleAware
     private $sex;
 
     /**
-     * @var bool Whether or not this user can login
+     * @var boolean Whether or not this user can login
      *
      * @ORM\Column(name="can_login", type="boolean")
      */
@@ -636,7 +636,7 @@ abstract class Person implements RoleAware
     public function activate(EntityManager $entityManager, TransportInterface $mailTransport, $onlyShibboleth = true, $messageConfig = 'common.account_activated_mail', $time = 604800)
     {
         if ($onlyShibboleth) {
-            $this->canlogin = true;
+            $this->canLogin = true;
         } else {
             do {
                 $code = md5(uniqid(rand(), true));

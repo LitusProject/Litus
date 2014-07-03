@@ -183,14 +183,6 @@ class Session
     }
 
     /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * @return boolean
      */
     public function isShibboleth()

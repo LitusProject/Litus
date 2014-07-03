@@ -49,7 +49,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-
+    
     private function _getBookings()
     {
         $bookings = null;

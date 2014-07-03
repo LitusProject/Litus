@@ -37,7 +37,7 @@ class Authorization
     const DEFAULT_EXPIRATION_TIME = 300;
 
     /**
-     * @var integer The ID of this authorization code
+     * @var string The ID of this authorization code
      *
      * @ODM\Id
      */
@@ -65,14 +65,14 @@ class Authorization
     private $key;
 
     /**
-     * @var integer The expiration time of the code
+     * @var \DateTime The expiration time of the code
      *
      * @ODM\Field(name="expiration_time", type="date")
      */
     private $expirationTime;
 
     /**
-     * @var integer The exchange time of the code
+     * @var \DateTime The exchange time of the code
      *
      * @ODM\Field(name="exchange_time", type="date")
      */

@@ -55,7 +55,7 @@ class Street
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection The city
+     * @var \CommonBundle\Entity\General\Address\City The city
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Address\City", inversedBy="streets")
      * @ORM\JoinColumn(name="city", referencedColumnName="id")

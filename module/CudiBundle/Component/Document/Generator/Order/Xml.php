@@ -35,13 +35,13 @@ class Xml
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var \CudiBundle\Entity\Stock\Order\Order
      */
     private $_order;
 
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order $order         The order
+     * @param \Doctrine\ORM\EntityManager          $entityManager The EntityManager instance
+     * @param \CudiBundle\Entity\Stock\Order\Order $order         The order
      */
     public function __construct(EntityManager $entityManager, Order $order)
     {
@@ -52,7 +52,7 @@ class Xml
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param \CommonBundle\Component\Util\File\TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {

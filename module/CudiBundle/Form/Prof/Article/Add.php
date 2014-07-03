@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setLabel('Internal Article');
         $article->add($field);
 
-        $internal = new Collection('internal');
+        $internal = new Collection('internal_form');
         $internal->setLabel('Internal Article')
             ->setAttribute('id', 'internal_form');
         $this->add($internal);

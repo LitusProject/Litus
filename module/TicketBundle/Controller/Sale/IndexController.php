@@ -20,6 +20,7 @@ namespace TicketBundle\Controller\Sale;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person,
+    TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\GuestInfo,
     TicketBundle\Entity\Option,
@@ -60,101 +61,24 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     $guestInfo = null;
                 }
 
-                if ($event->areTicketsGenerated()) {
-                    $tickets = $this->getEntityManager()
-                        ->getRepository('TicketBundle\Entity\Ticket')
-                        ->findAllEmptyByEvent($event);
+                $numbers = array(
+                    'member' => isset($formData['number_member']) ? $formData['number_member'] : 0,
+                    'non_member' => isset($formData['number_non_member']) ? $formData['number_non_member'] : 0,
+                );
 
-                    if (count($event->getOptions()) == 0) {
-                        $number = $formData['number_member'];
-                        for ($i = 0 ; $i < count($tickets) ; $i++) {
-                            if (0 == $number)
-                                break;
-
-                            $number--;
-                            $tickets[$i]->setPerson($person)
-                                ->setGuestInfo($guestInfo)
-                                ->setMember(true)
-                                ->setStatus($formData['payed'] ? 'sold' : 'booked');
-                        }
-
-                        if (!$event->isOnlyMembers()) {
-                            $number = $formData['number_non_member'];
-                            for (; $i < count($tickets) ; $i++) {
-                                if (0 == $number)
-                                    break;
-
-                                $number--;
-                                $tickets[$i]->setPerson($person)
-                                    ->setGuestInfo($guestInfo)
-                                    ->setMember(false)
-                                    ->setStatus($formData['payed'] ? 'sold' : 'booked');
-                            }
-                        }
-                    } else {
-                        foreach ($event->getOptions() as $option) {
-                            $number = $formData['option_' . $option->getId() . '_number_member'];
-                            for ($i = 0; $i < count($tickets) ; $i++) {
-                                if (0 == $number)
-                                    break;
-
-                                $number--;
-                                $tickets[$i]->setPerson($person)
-                                    ->setGuestInfo($guestInfo)
-                                    ->setMember(true)
-                                    ->setOption($option)
-                                    ->setStatus($formData['payed'] ? 'sold' : 'booked');
-                            }
-
-                            if (!$event->isOnlyMembers()) {
-                                $number = $formData['option_' . $option->getId() . '_number_non_member'];
-                                for (; $i < count($tickets) ; $i++) {
-                                    if (0 == $number)
-                                        break;
-
-                                    $number--;
-                                    $tickets[$i]->setPerson($person)
-                                        ->setGuestInfo($guestInfo)
-                                        ->setMember(false)
-                                        ->setOption($option)
-                                        ->setStatus($formData['payed'] ? 'sold' : 'booked');
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (count($event->getOptions()) == 0) {
-                        for ($i = 0 ; $i < $formData['number_member'] ; $i++) {
-                            $this->getEntityManager()->persist(
-                                $this->_createTicket($event, $person, $guestInfo, true, $formData['payed'])
-                            );
-                        }
-
-                        if (!$event->isOnlyMembers()) {
-                            for ($i = 0 ; $i < $formData['number_non_member'] ; $i++) {
-                                $this->getEntityManager()->persist(
-                                    $this->_createTicket($event, $person, $guestInfo, false, $formData['payed'])
-                                );
-                            }
-                        }
-                    } else {
-                        foreach ($event->getOptions() as $option) {
-                            for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_member'] ; $i++) {
-                                $this->getEntityManager()->persist(
-                                    $this->_createTicket($event, $person, $guestInfo, true, $formData['payed'], $option)
-                                );
-                            }
-
-                            if (!$event->isOnlyMembers()) {
-                                for ($i = 0 ; $i < $formData['option_' . $option->getId() . '_number_non_member'] ; $i++) {
-                                    $this->getEntityManager()->persist(
-                                        $this->_createTicket($event, $person, $guestInfo, false, $formData['payed'], $option)
-                                    );
-                                }
-                            }
-                        }
-                    }
+                foreach ($event->getOptions() as $option) {
+                    $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
+                    $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
                 }
+
+                TicketBook::book(
+                    $event,
+                    $person,
+                    $guestInfo,
+                    $numbers,
+                    $formData['payed'],
+                    $this->getEntityManager()
+                );
 
                 $this->getEntityManager()->flush();
 
@@ -244,23 +168,5 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
         }
 
         return new ViewModel();
-    }
-
-    private function _createTicket(Event $event, Person $person = null, GuestInfo $guestInfo = null, $member, $payed, Option $option = null)
-    {
-        $ticket = new Ticket(
-            $event,
-            'empty',
-            $person,
-            $guestInfo,
-            null,
-            null,
-            $event->generateTicketNumber($this->getEntityManager())
-        );
-        $ticket->setMember($member)
-            ->setStatus($payed ? 'sold' : 'booked')
-            ->setOption($option);
-
-        return $ticket;
     }
 }

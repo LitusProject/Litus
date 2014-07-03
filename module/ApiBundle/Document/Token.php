@@ -19,7 +19,6 @@
 namespace ApiBundle\Document;
 
 use ApiBundle\Document\Code\Authorization as AuthorizationCode,
-    ApiBundle\Entity\Key,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
@@ -36,7 +35,7 @@ abstract class Token
     const DEFAULT_EXPIRATION_TIME = 604800;
 
     /**
-     * @var integer The ID of this authorization code
+     * @var string The ID of this authorization code
      *
      * @ODM\Id
      */
@@ -69,7 +68,7 @@ abstract class Token
     private $authorizationCode;
 
     /**
-     * @var integer The expiration time of the code
+     * @var \DateTime The expiration time of the code
      *
      * @ODM\Field(name="expiration_time", type="date")
      */
