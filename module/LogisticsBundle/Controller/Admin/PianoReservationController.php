@@ -320,7 +320,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
-            $this->flashMessenger()->erorr(
+            $this->flashMessenger()->error(
                 'Error',
                 'No article with the given ID was found!'
             );
