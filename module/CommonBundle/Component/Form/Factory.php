@@ -39,11 +39,19 @@ class Factory extends \Zend\Form\Factory
     }
 
     /**
+     * Creates a form and sets data.
+     *
+     * $data can be:
+     * - null: no data will be injected
+     * - array: all values in the array will be injected in the form using
+     *          set<Key>, with <Key> the array key of the value.
+     * - object: the object will be bound to the object
+     *
      * @param  array|\Traversable          $type
-     * @param  array|null                  $data
+     * @param  array|object|null           $data
      * @return \Zend\Form\ElementInterface
      */
-    public function create($spec, array $data = null)
+    public function create($spec, $data = null)
     {
         if (isset($spec['instance']))
             return $spec['instance'];
@@ -52,9 +60,17 @@ class Factory extends \Zend\Form\Factory
                 && isset($spec['options']['data']))
             $data = $spec['options']['data'];
 
-        $this->getFormElementManager()->setData($data);
+        if ($data === null || is_array($data)) {
+            $this->getFormElementManager()->setData($data);
 
-        return parent::create($spec);
+            return parent::create($spec);
+        } else {
+            // object, not null
+            $form = parent::create($spec);
+            $form->bind($data);
+
+            return $form;
+        }
     }
 
     public function configureElement(OriginalElementInterface $element, $spec)

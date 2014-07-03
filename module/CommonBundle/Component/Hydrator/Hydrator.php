@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use RuntimeException,
+use RecursiveArrayIterator,
+    RecursiveIteratorIterator,
+    RuntimeException,
     Zend\Stdlib\Hydrator\Filter\FilterComposite;
 
 /**
@@ -30,6 +32,18 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 {
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+
+    private static function flatten(array $array = null)
+    {
+        if (empty($array)) {
+            return array();
+        }
+
+        return iterator_to_array(
+            new RecursiveIteratorIterator(new RecursiveArrayIterator($array)),
+            false
+        );
+    }
 
     /**
      * @var string|null The entity class this hydrator extracts/hydrates
@@ -114,17 +128,16 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * Hydrates the given $object with the given $data. Only the data values
      * of which the key is given in $keys are hydrated.
      *
-     * @param  array    $data   The data to hydrate
-     * @param  object   $object The object to hydrate
-     * @param  string[] $keys   The names of the data values to hydrate
+     * @param  array           $data   The data to hydrate
+     * @param  object          $object The object to hydrate
+     * @param  string|string[] $keys   The names of the data values to hydrate
      * @return object
      */
-    protected function stdHydrate(array $data = null, $object = null, array $keys = null)
+    protected function stdHydrate(array $data, $object, ...$keys)
     {
-        if (null === $object || null === $data)
-            return $object;
+        $keys = self::flatten($keys);
 
-        if (null === $keys)
+        if (empty($keys))
             return $this->getHydrator('classmethods')
                 ->hydrate($data, $object);
 
@@ -135,17 +148,19 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     /**
      * Extracts data with the given $keys from the given $object.
      *
-     * @param  object   $object The object to hydrate
-     * @param  string[] $keys   The names of the data values to hydrate
+     * @param  object|null     $object The object to hydrate
+     * @param  string|string[] $keys   The names of the data values to hydrate
      * @return array
      */
-    protected function stdExtract($object = null, array $keys = null)
+    protected function stdExtract($object = null, ...$keys)
     {
         if (null === $object)
             return array();
 
+        $keys = self::flatten($keys);
+
         $hydrator = $this->getHydrator('classmethods');
-        if (null !== $keys) {
+        if (empty($keys)) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
                 $method = explode('::', $property)[1];
 

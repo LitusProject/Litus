@@ -460,10 +460,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
     /**
      * @param  string                   $name
-     * @param  array|null               $data
+     * @param  array|object|null        $data
      * @return \Zend\Form\FormInterface
      */
-    public function getForm($name, array $data = null)
+    public function getForm($name, $data = null)
     {
         $form = $this->getFormFactory()->create(array('type' => $name), $data);
 
