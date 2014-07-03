@@ -43,7 +43,7 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'       => 'password',
-            'name'       => 'Password',
+            'name'       => 'password',
             'attributes' => array(
                 'placeholder' => 'password',
                 'id'          => 'password',
