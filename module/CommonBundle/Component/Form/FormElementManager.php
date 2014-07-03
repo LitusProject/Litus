@@ -63,11 +63,18 @@ class FormElementManager extends \Zend\Form\FormElementManager
      */
     public function __construct(ConfigInterface $config, $isAdmin, ServiceLocatorInterface $mainServiceLocator)
     {
+        // before parent constructor, because we want this to be the bottom of the
+        // stack before parent::__construct is called as that will add $element->init()
+        // as the final initializer in the stack.
+        $this->addInitializer(array($this, 'injectServiceLocator'), false);
+
         parent::__construct($config);
 
         $this->isAdmin = (bool) $isAdmin;
         $this->mainServiceLocator = $mainServiceLocator;
         $this->hydrator = new ClassMethodHydrator();
+
+        $this->addInitializer(array($this, 'hydrateElement'));
     }
 
     /**
@@ -78,8 +85,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
     public function injectFactory($element)
     {
         if ($element instanceof FormFactoryAwareInterface) {
-            $factory = new Factory($this);
-            $element->setFormFactory($factory);
+            $element->setFormFactory(new Factory($this));
 
             if ($this->serviceLocator instanceof ServiceLocatorInterface
                 && $this->serviceLocator->has('InputFilterManager')
@@ -90,19 +96,28 @@ class FormElementManager extends \Zend\Form\FormElementManager
         }
     }
 
-    public function validatePlugin($plugin)
+    /**
+     * Inject the main Service Locator into the form element
+     *
+     * @param object $element
+     */
+    public function injectServiceLocator($element)
     {
-        // inject main service locator instance
-        // we need to do this manually because this FormElementManager is the
-        // defualt ServiceLocator that gets injected, which is of course wrong
-        if ($plugin instanceof ServiceLocatorAwareInterface)
-            $plugin->setServiceLocator($this->mainServiceLocator);
+        if ($element instanceof ServiceLocatorAwareInterface) {
+            $element->setServiceLocator($this->mainServiceLocator);
+        }
+    }
 
+    /**
+     * Hydrate the element with the given data, if any.
+     *
+     * @param object $element
+     */
+    public function hydrateElement($element)
+    {
         if (null !== $this->data)
-            $this->hydrator->hydrate($this->data, $plugin);
+            $this->hydrator->hydrate($this->data, $element);
         $this->data = null;
-
-        return parent::validatePlugin($plugin);
     }
 
     /**
