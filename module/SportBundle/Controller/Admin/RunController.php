@@ -186,9 +186,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                        'Succes',
-                        'The runner was successfully updated!'
-                    )
+                    'Succes',
+                    'The runner was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
