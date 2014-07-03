@@ -187,6 +187,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('SecretaryBundle\Entity\Registration')
             ->findAllSince($today->sub(new DateInterval('P6D')));
 
+        $data = array();
         foreach ($registrations as $registration)
             $data[$registration->getTimestamp()->format('d/m/Y')]++;
 

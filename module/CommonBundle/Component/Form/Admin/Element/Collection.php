@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\Fieldset,
+use Zend\Form\ElementPrepareAwareInterface,
+    Zend\Form\Fieldset,
     Zend\Form\FormInterface;
 
 /**

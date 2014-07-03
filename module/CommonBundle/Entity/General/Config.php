@@ -57,7 +57,7 @@ class Config
     private $description;
 
     /**
-     * @var string Whether this entry is published
+     * @var boolean Whether this entry is published
      *
      * @ORM\Column(type="boolean")
      */

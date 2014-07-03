@@ -26,6 +26,11 @@ namespace CommonBundle\Component\Form\Admin\Element;
 class Radio extends \Zend\Form\Element\Radio
 {
     /**
+     * @var boolean
+     */
+    private $_required = false;
+
+    /**
      * @param  null|int|string                    $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException

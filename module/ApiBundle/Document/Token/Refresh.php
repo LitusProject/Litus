@@ -45,7 +45,7 @@ class Refresh extends \ApiBundle\Document\Token
     private $key;
 
     /**
-     * @var integer The exchange time of the code
+     * @var \DateTime The exchange time of the code
      *
      * @ODM\Field(name="exchange_time", type="date")
      */
@@ -83,7 +83,7 @@ class Refresh extends \ApiBundle\Document\Token
     }
 
     /**
-     * @return \ApiBundle\Document\Code\Authorization
+     * @return \ApiBundle\Document\Token\Refresh
      */
     public function exchange()
     {

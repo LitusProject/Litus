@@ -308,15 +308,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initLocalization()
     {
-        $language = $this->getLanguage();
-
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
-            $this->getAuthentication()->getPersonObject()->setLanguage($language);
+            $this->getAuthentication()->getPersonObject()->setLanguage($this->getLanguage());
             $this->getEntityManager()->flush();
         }
     }

@@ -46,7 +46,7 @@ class Amount
     private $cashRegister;
 
     /**
-     * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
+     * @var \CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
      * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
