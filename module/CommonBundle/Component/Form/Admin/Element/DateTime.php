@@ -33,4 +33,24 @@ class DateTime extends Text
             ->setAttribute('data-datepicker', true)
             ->setAttribute('data-timepicker', true);
     }
+
+    public function getInputSpecification()
+    {
+        return array_merge_recursive(
+            array(
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'd/m/Y H:i',
+                        ),
+                    ),
+                ),
+            ),
+            parent::getInputSpecification()
+        );
+    }
 }

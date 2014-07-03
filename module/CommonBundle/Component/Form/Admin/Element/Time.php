@@ -32,4 +32,24 @@ class Time extends Text
         $this->setAttribute('placeholder', 'hh:mm')
             ->setAttribute('data-timepicker', true);
     }
+
+    public function getInputSpecification()
+    {
+        return array_merge_recursive(
+            array(
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'H:i',
+                        ),
+                    ),
+                ),
+            ),
+            parent::getInputSpecification()
+        );
+    }
 }

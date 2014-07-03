@@ -32,4 +32,24 @@ class Date extends Text
         $this->setAttribute('placeholder', 'dd/mm/yyyy')
             ->setAttribute('data-datepicker', true);
     }
+
+    public function getInputSpecification()
+    {
+        return array_merge_recursive(
+            array(
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'date',
+                        'options' => array(
+                            'format' => 'd/m/Y',
+                        ),
+                    ),
+                ),
+            ),
+            parent::getInputSpecification()
+        );
+    }
 }
