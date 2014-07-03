@@ -20,8 +20,6 @@ namespace ApiBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     ApiBundle\Entity\Key,
-    ApiBundle\Form\Admin\Key\Add as AddForm,
-    ApiBundle\Form\Admin\Key\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -54,43 +52,16 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('api_key_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-                do {
-                    $code = md5(uniqid(rand(), true));
-                    $found = $this->getEntityManager()
-                        ->getRepository('ApiBundle\Entity\Key')
-                        ->findOneByCode($code);
-                } while (isset($found));
+                $key = $form->hydrateObject();
 
-                $roles = array();
-                $roles[] = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student');
-
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $key = new Key(
-                    $formData['host'],
-                    $code,
-                    $formData['check_host'],
-                    $roles
-                );
                 $this->getEntityManager()->persist($key);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(
@@ -124,33 +95,12 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         if (!($key = $this->_getKey()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $key);
+        $form = $this->getForm('api_key_edit', $key);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $roles = array();
-                $roles[] = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student');
-
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $key->setHost($formData['host'])
-                    ->setCheckHost($formData['check_host'])
-                    ->setRoles($roles);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

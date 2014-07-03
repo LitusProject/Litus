@@ -18,10 +18,6 @@
 
 namespace ApiBundle\Form\Admin\Key;
 
-use ApiBundle\Entity\Key,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Key
  *
@@ -29,51 +25,11 @@ use ApiBundle\Entity\Key,
  */
 class Edit extends Add
 {
-    /**
-     * @param \ApiBundle\Entity\Key $key  The key we're going to modify
-     * @param null|string|int       $name Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Key $key, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'key_edit');
-        $this->add($field);
-
-        $this->_populateFromKey($key);
-    }
-
-    private function _populateFromKey(Key $key)
-    {
-        $data = array(
-            'host'       => $key->getHost(),
-            'check_host' => $key->getCheckHost(),
-            'roles'      => $this->_createRolesPopulationArray($key->getRoles()),
-        );
-
-        $this->setData($data);
-    }
-
-    /**
-     * Returns an array that is in the right format to populate the roles field.
-     *
-     * @param  array $roles The key's roles
-     * @return array
-     */
-    private function _createRolesPopulationArray(array $roles)
-    {
-        $rolesArray = array();
-        foreach ($roles as $role) {
-            if ($role->getSystem())
-                continue;
-
-            $rolesArray[] = $role->getName();
-        }
-
-        return $rolesArray;
+        $this->addSubmit('Save', 'key_edit');
     }
 }
