@@ -22,7 +22,7 @@ return array(
             'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload'
         ),
         'br_admin_company_event' => array(
-            'add', 'delete', 'edit', 'editPoster', 'manage', 'progress', 'upload'
+            'add', 'delete', 'edit', 'editPoster', 'manage', 'upload'
         ),
         'br_admin_company_job' => array(
             'add', 'delete', 'edit', 'manage'

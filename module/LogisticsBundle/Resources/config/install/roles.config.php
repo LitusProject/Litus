@@ -28,6 +28,9 @@ return array(
             'logistics_auth' => array(
                 'login', 'logout', 'shibboleth',
             ),
+            'logistics_piano' => array(
+                'index'
+            ),
         ),
     ),
 );

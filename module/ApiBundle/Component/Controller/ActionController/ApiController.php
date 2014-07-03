@@ -21,13 +21,8 @@ namespace ApiBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Zend\Http\Headers,
     Zend\Mvc\MvcEvent,
     Zend\Uri\UriFactory,
     Zend\Validator\AbstractValidator,
@@ -40,11 +35,6 @@ use CommonBundle\Component\Acl\Acl,
  */
 class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements DoctrineAware
 {
-    /**
-     * @var \CommonBundle\Entity\User\Person The authenticated person object
-     */
-    private $_authenticatedPersonObject = null;
-
     /**
      * @var \CommonBundle\Component\Acl\Driver\HasAccess The access driver
      */
@@ -222,8 +212,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _initLocalization()
     {
-        $language = $this->getLanguage();
-
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 

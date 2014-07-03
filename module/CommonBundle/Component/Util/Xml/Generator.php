@@ -29,7 +29,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Generator
 {
     /**
-     * @var \CommonBundle\Component\Util\TmpFile The file where the data will be saved to
+     * @var \CommonBundle\Component\Util\File\TmpFile The file where the data will be saved to
      */
     private $_data = null;
 

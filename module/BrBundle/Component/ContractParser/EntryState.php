@@ -18,34 +18,32 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 abstract class EntryState
 {
     private $entry;
-    
+
     public function __construct($entry)
     {
         $this->entry = $entry;
     }
-    
+
     protected function getEntry()
     {
         return $this->entry;
     }
-    
+
     public function passOn($indent, $text)
     {
         throw new IllegalFormatException("Check your indents.");
     }
-    
-    public abstract function addEntry($text);
-    
-    public abstract function addText($text);
-    
+
+    abstract public function addEntry($text);
+
+    abstract public function addText($text);
+
 }

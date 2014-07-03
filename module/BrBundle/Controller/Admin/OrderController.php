@@ -21,6 +21,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
@@ -41,14 +42,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product\Order',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => false,
+            )
         );
+
+        foreach($paginator as $order)
+            $order->setEntityManager($this->getEntityManager());
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -72,10 +78,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
 
-                if ($formData['tax'] == true) {
-                    $tax = true;
-                } else
-                    $tax = false;
+                $tax = ($formData['tax'] == true);
 
                 $collaborator = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Collaborator')
@@ -83,12 +86,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $order = new Order(
                     $contact,
-                    $collaborator[0],
+                    $collaborator,
                     $tax
                 );
 
                 $contract = new Contract($order,
-                    $collaborator[0],
+                    $collaborator,
                     $company,
                     $formData['discount'],
                     $formData['title']
@@ -100,7 +103,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
-                if(! $formData['discount_context'] == "")
+                if(!($formData['discount_context'] == ''))
                     $contract->setDiscountContext($formData['discount_context']);
 
                 $this->getEntityManager()->persist($order);
@@ -131,18 +134,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
-        if($order->getContract()->isSigned() == true)
 
+        if ($order->getContract()->isSigned() == true)
             return new ViewModel();
 
-        $entries = $this->_getOrder(false)->getEntries();
+        $entries = $order->getEntries();
 
         $oldContract = $order->getContract();
 
         $currentProducts = array();
-        foreach ($entries as $entry) {
+        foreach ($entries as $entry)
             array_push($currentProducts, $entry->getProduct());
-        }
+
         $form = new AddProductForm($currentProducts, $this->getEntityManager(), $this->getCurrentAcademicYear());
 
         if ($this->getRequest()->isPost()) {
@@ -158,12 +161,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $updatedOrder = new Order(
                     $order->getContact(),
-                    $collaborator[0],
+                    $collaborator,
                     $order->isTaxFree()
                 );
 
                 $contract = new Contract($updatedOrder,
-                    $collaborator[0],
+                    $collaborator,
                     $oldContract->getCompany(),
                     $oldContract->getDiscount(),
                     $oldContract->getTitle()
@@ -180,8 +183,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $counter = 0;
 
                 foreach ($entries as $entry) {
-                    $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
                     $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
+                    $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
                     $order->setEntry($orderEntry);
                     $contract->setEntry($contractEntry);
                     $counter++;
@@ -192,7 +195,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $newProduct = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findProductById($formData['product']);
-
                 $orderEntry = new OrderEntry($updatedOrder, $newProduct[0], $formData['amount']);
                 $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                 $order->setEntry($orderEntry);
@@ -203,12 +205,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($updatedOrder);
                 $this->getEntityManager()->persist($contract);
 
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
+
                 $order->setOld();
 
                 $this->getEntityManager()->persist($order);
 
                 $this->getEntityManager()->flush();
-
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
@@ -221,6 +225,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'order' => $order,
                 'entries' => $entries,
                 'addProductForm' => $form,
             )
@@ -231,8 +236,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         if (!($order = $this->_getOrder(false)))
             return new ViewModel();
-        if($order->getContract()->isSigned() == true)
 
+        if ($order->getContract()->isSigned() == true)
             return new ViewModel();
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
@@ -252,19 +257,16 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('BrBundle\Entity\User\Person\Corporate')
                     ->findOneById($formData['contact']);
 
-                if ($formData['tax'] == true) {
-                    $tax = true;
-                } else
-                    $tax = false;
+                $tax = ($formData['tax'] == true);
 
                 $updatedOrder = new Order(
                     $contact,
-                    $collaborator[0],
+                    $collaborator,
                     $tax
                 );
 
                 $updatedContract = new Contract($updatedOrder,
-                    $collaborator[0],
+                    $collaborator,
                     $order->getCompany(),
                     $formData['discount'],
                     $formData['title']
@@ -329,18 +331,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!($order = $this->_getOrder()))
             return new ViewModel();
-        foreach ($order->getContract()->getEntries() as $contractEntry) {
-            $this->getEntityManager()->remove($contractEntry);
-            $this->getEntityManager()->flush();
-        }
 
-        $this->getEntityManager()->remove($order->getContract());
-        $this->getEntityManager()->flush();
-
-        foreach ($order as $orderEntry) {
-            $this->getEntityManager()->remove($orderEntry);
-            $this->getEntityManager()->flush();
-        }
         $this->getEntityManager()->remove($order);
         $this->getEntityManager()->flush();
 
@@ -355,10 +346,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        // if (!($order = $this->_getOrder(false)))
-        //     return new ViewModel();
-        // if($order->getContract()->isSigned() == true)
-        //     return new ViewModel();
+        if (!($entry = $this->_getEntry(false)))
+             return new ViewModel();
+
+        $this->getEntityManager()->remove($entry);
+        $this->getEntityManager()->flush();
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -366,11 +359,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function historyAction()
+    public function oldAction()
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product\Order',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => true,
+            )
         );
 
         return new ViewModel(
@@ -444,5 +440,70 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $order;
+    }
+
+    private function _getEntry($allowSigned = true)
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No ID was given to identify the order entry!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Product\OrderEntry')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $entry) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'No order entry with the given ID was found!'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+        if ($entry->getOrder()->getContract()->isSigned() && !$allowSigned) {
+            $this->flashMessenger()->addMessage(
+                new FlashMessage(
+                    FlashMessage::ERROR,
+                    'Error',
+                    'The given order\'s contract has been signed! Signed orders cannot be modified.'
+                )
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $entry;
     }
 }

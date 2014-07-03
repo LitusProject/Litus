@@ -28,16 +28,21 @@ use BrBundle\Entity\Product,
 /**
  * Edit a product.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
-
     /**
      * @var \BrBundle\Entity\Contract\Product
      */
     private $_product;
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Product    $product       The product to edit
+     * @param mixed                       $opts          The validator's options
+     */
     public function __construct(EntityManager $entityManager, Product $product, $options = null)
     {
         parent::__construct($entityManager, $options);

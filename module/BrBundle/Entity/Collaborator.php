@@ -29,7 +29,6 @@ use CommonBundle\Entity\User\Person,
  */
 class Collaborator
 {
-
     /**
      * @var string The company's ID
      *
@@ -42,14 +41,13 @@ class Collaborator
     /**
      * @var \BrBundle\Entity\Collaborator The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="\CommonBundle\Entity\User\Person"
-     * )
+     * @ORM\OneToOne(targetEntity="\CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
 
     /**
-     * @var Integer that resembles the personal number of the person.
+     * @var int Integer that resembles the personal number of the person.
      *
      * @ORM\Column(type="integer")
      */
@@ -63,6 +61,8 @@ class Collaborator
     private $active;
 
     /**
+     * @param \CommonBundle\Entity\User\Person $person
+     * @param int                              $number
      */
     public function __construct(Person $person, $number)
     {

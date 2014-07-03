@@ -32,40 +32,38 @@
             </tr>
 
             {% for order in paginator %}
-                {% if order.isOld() == false %}
-                    <tr class="item item-{{ order.getId() }}">
-                        <td>{{ order.getCompany().getName() }}</td>
-                        <td>{{ order.getDescription() }}</td>
-                        <td>{% if order.isTaxFree() %} Yes {% else %} No {% endif %} </td>
-                        <td> &euro; {{ order.getTotalCost(entityManager) }}</td>
-                        <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
-                        <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
-                        <td class="actions">
-                            {% if hasAccess('br_admin_order', 'product') and not order.getContract().isSigned() %}
-                                <a href="{{ url('br_admin_order', {"action": "product", "id": order.getId()}) }}" class="product">Products</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_order', 'edit') and not order.getContract().isSigned() %}
-                                <a href="{{ url('br_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_order', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getCompany().getName() }} ({{ order.getDescription() }})">Delete</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_contract', 'view') %}
-                                <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_invoice', 'view') and order.getInvoice() %}
-                                <a href="{{ url('br_admin_invoice', {"action": "view", "id": order.getInvoice().getId()}) }}" class="invoice">Invoice</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
+                <tr class="item item-{{ order.getId() }}">
+                    <td>{{ order.getCompany().getName() }}</td>
+                    <td>{{ order.getDescription() }}</td>
+                    <td>{% if order.isTaxFree() %} Yes {% else %} No {% endif %} </td>
+                    <td> &euro; {{ order.getTotalCost()|number_format(2) }}</td>
+                    <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
+                    <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_order', 'product') and not order.getContract().isSigned() %}
+                            <a href="{{ url('br_admin_order', {"action": "product", "id": order.getId()}) }}" class="product">Products</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_order', 'edit') and not order.getContract().isSigned() %}
+                            <a href="{{ url('br_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_order', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getCompany().getName() }} ({{ order.getDescription() }})">Delete</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'view') and order.getInvoice() %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": order.getInvoice().getId()}) }}" class="invoice">Invoice</a>
+                        {% endif %}
+                    </td>
+                </tr>
             {% endfor %}
         </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal fade" id="removeOrder"tabindex="-1">
+    <div class="modal fade" id="removeOrder" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

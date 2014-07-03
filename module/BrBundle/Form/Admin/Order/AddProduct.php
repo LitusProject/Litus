@@ -32,44 +32,25 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Zend\Form\Element\Submit;
 
 /**
- * Add a order.
+ * Add a product.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class AddProduct extends \CommonBundle\Component\Form\Admin\Form
 {
-
-    /**
-     * The maximum number allowed to enter in the corporate order form.
-     */
-    const MAX_ORDER_NUMBER = 10;
-
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
+     * @param array                                     $currentProducts List of current products
+     * @param \Doctrine\ORM\EntityManager               $entityManager   The EntityManager instance
+     * @param \CommonBundle\Entity\General\AcademicYear $currentYear
+     * @param mixed                                     $opts            The validator's options
      */
-    protected $_currentYear = null;
-
-    /**
-     * @var array Contains the input fields added for product quantities.
-     */
-    private $_inputs = array();
-
-    /**
-     * @var The contacts field
-     */
-    private $_contacts;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear
-     * @param mixed                       $opts          The validator's options
-     */
-    public function __construct(Array $currentProducts, EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
+    public function __construct($currentProducts, EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
     {
         parent::__construct($opts);
 
@@ -82,7 +63,8 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
 
         $field = new Text('amount');
-        $field->setLabel('Amount');
+        $field->setLabel('Amount')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
@@ -111,6 +93,32 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'product',
+                    'required' => true,
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'amount',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
 
         return $inputFilter;
     }

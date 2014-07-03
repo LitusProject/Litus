@@ -19,7 +19,7 @@
 return array(
     'pagebundle' => array(
         'page_admin_page' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'upload', 'uploadProgress'
+            'add', 'delete', 'edit', 'manage', 'search', 'upload'
         ),
         'page_admin_category' => array(
             'add', 'delete', 'edit', 'manage'

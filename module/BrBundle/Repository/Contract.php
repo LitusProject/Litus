@@ -18,8 +18,8 @@
 
 namespace BrBundle\Repository;
 
-use BrBundle\Entity\Company as Comp,
-    BrBundle\Entity\Collaborator as Coll,
+use BrBundle\Entity\Company as CompanyEntity,
+    BrBundle\Entity\Collaborator as CollaboratorEntity,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
@@ -30,20 +30,6 @@ use BrBundle\Entity\Company as Comp,
  */
 class Contract extends EntityRepository
 {
-    public function findAllContractIds()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('c.id')
-            ->from('BrBundle\Entity\Contract', 'c')
-            ->getQuery();
-
-        $return = array();
-        foreach ($resultSet as $result)
-            $return[] = $result['id'];
-
-        return $return;
-    }
-
     public function findCurrentVersionNb($id)
     {
         $query = $this->_em->createQueryBuilder();
@@ -82,15 +68,20 @@ class Contract extends EntityRepository
         return ++$highestContractNb;
     }
 
-    public function findContractsByAuthorIDQuery(Coll $person)
+    public function findAllNewOrSignedByPersonQuery(CollaboratorEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
-                $query->expr()->eq('c.author', ':person'),
-                $query->expr()->eq('o.old', 'FALSE')
+                $query->expr()->andX(
+                    $query->expr()->eq('c.author', ':person'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('o.old', 'false'),
+                        $query->expr()->eq('c.signed', true)
+                    )
+                )
             )
             ->setParameter('person', $person)
             ->getQuery();
@@ -98,24 +89,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function findAuthorByIDQuery($id)
+    public function getContractAmountByPerson(CollaboratorEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('p')
-            ->from('BrBundle\Entity\Collaborator', 'p')
-            ->where(
-                $query->expr()->eq('p.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery();
-
-        return $result;
-    }
-
-    public function getContractAmountByPerson(Coll $person)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $result = $query->select('count(c)')
+        $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
                 $query->expr()->eq('c.author', ':person')
@@ -127,10 +104,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractedRevenueByPerson(Coll $person)
+    public function getContractedRevenueByPerson(CollaboratorEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -143,16 +120,16 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getPaidRevenueByPerson(Coll $person)
+    public function getPaidRevenueByPerson(CollaboratorEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.author', ':person'),
-                    $query->expr()->eq('c.signed', 'TRUE')
+                    $query->expr()->eq('c.signed', 'true')
                 )
             )
             ->setParameter('person', $person)
@@ -165,50 +142,43 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function findContractAuthorsQuery()
+    public function findContractAuthors()
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('distinct(c.author)')
+        $result = $query->select('DISTINCT(c.author)')
             ->from('BrBundle\Entity\Contract', 'c')
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
         return $result;
     }
 
-    public function findContractsByCompanyIDQuery(Comp $company)
+    public function findAllNewOrSignedByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
-                $query->expr()->eq('c.company', ':company'),
-                $query->expr()->eq('o.old', 'FALSE')
+                $query->expr()->andX(
+                    $query->expr()->eq('c.company', ':company'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('o.old', 'false'),
+                        $query->expr()->eq('c.signed', 'true')
+                    )
+                )
             )
             ->setParameter('company', $company)
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
 
         return $result;
     }
 
-    public function findCompanyByIDQuery($id)
+    public function getContractAmountByCompany(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('c')
-            ->from('BrBundle\Entity\Company', 'c')
-            ->where(
-                $query->expr()->eq('c.id', ':id')
-            )
-            ->setParameter('id', $id)
-            ->getQuery();
-
-        return $result;
-    }
-
-    public function getContractAmountByCompany(Comp $company)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $result = $query->select('count(c)')
+        $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
                 $query->expr()->eq('c.company', ':company')
@@ -220,10 +190,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getContractedRevenueByCompany(Comp $company)
+    public function getContractedRevenueByCompany(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -236,10 +206,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
-    public function getPaidRevenueByCompany(Comp $company)
+    public function getPaidRevenueByCompany(CompanyEntity $company)
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('sum(o.totalCost)')
+        $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
@@ -261,8 +231,25 @@ class Contract extends EntityRepository
     public function findContractCompanyQuery()
     {
         $query = $this->_em->createQueryBuilder();
-        $result = $query->select('distinct(c.company)')
+        $result = $query->select('DISTINCT(c.company)')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery();
+
+        return $result;
+    }
+
+    public function findAllNewOrSignedQuery()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerJoin('c.order', 'o')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'true')
+                )
+            )
             ->getQuery();
 
         return $result;

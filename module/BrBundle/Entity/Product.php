@@ -32,7 +32,6 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Product
 {
-
     /**
      * @var int A generated ID
      *
@@ -124,6 +123,11 @@ class Product
     private $invoiceDescription;
 
     /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $_entityManager;
+
+    /**
      * @param string                                    $name         The name of this section
      * @param string                                    $description  The description on the invoice of this section
      * @param string                                    $content      The content of this section
@@ -135,13 +139,15 @@ class Product
      */
     public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
     {
+        $this->_entityManager = $entityManager;
+
         $this->setName($name);
         $this->setDescription($description);
         $this->setInvoiceDescription($invoiceDescription);
         $this->setContractText($contractText);
         $this->setAuthor($author);
         $this->setPrice($price);
-        $this->setVatType($entityManager, $vatType);
+        $this->setVatType($vatType);
         $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
         $this->old = false;
@@ -187,7 +193,7 @@ class Product
      */
     public function setName($name)
     {
-        if ((null === $name) || !is_string($name))
+        if (null === $name || !is_string($name))
             throw new \InvalidArgumentException('Invalid name');
 
         $this->name = $name;
@@ -231,7 +237,7 @@ class Product
      */
     public function setContractText($contractText)
     {
-        if ((null === $contractText) || !is_string($contractText))
+        if (null === $contractText || !is_string($contractText))
             throw new \InvalidArgumentException('Invalid contract text');
 
         $this->contractText = $contractText;
@@ -248,19 +254,17 @@ class Product
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param  string                      $vatType       The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @param  string                    $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
      * @throws \InvalidArgumentException
      * @return \BrBundle\Entity\Product
      */
-    public function setVatType(EntityManager $entityManager, $vatType)
+    public function setVatType($vatType)
     {
-        $types = $entityManager->getRepository('CommonBundle\Entity\General\Config')
+        $types = $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
-        if (!isset($types[$vatType])) {
+        if (!isset($types[$vatType]))
             throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
-        }
 
         $this->vatType = $vatType;
 
@@ -278,12 +282,11 @@ class Product
     /**
      * Returns the VAT percentage for this product.
      *
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @return int
      */
-    public function getVatPercentage(EntityManager $entityManager)
+    public function getVatPercentage()
     {
-        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+        $types =  $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
 
@@ -296,12 +299,8 @@ class Product
      */
     public function setPrice($price)
     {
-        if (
-            (null === $price)
-            || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)
-        ) {
+        if (null === $price || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price))
             throw new \InvalidArgumentException('Invalid price');
-        }
 
         $this->price = $price * 100;
 
@@ -330,7 +329,7 @@ class Product
      */
     public function setDescription($description)
     {
-        if ((null === $description) || !is_string($description) || '' == $description)
+        if (null === $description || !is_string($description) || '' == $description)
             throw new \InvalidArgumentException('Invalid description');
 
         $this->description = $description;
@@ -352,7 +351,7 @@ class Product
      */
     public function setInvoiceDescription($description)
     {
-        if ((null === $description) || !is_string($description))
+        if (null === $description || !is_string($description))
             throw new \InvalidArgumentException('Invalid description');
 
         $this->invoiceDescription = $description;
@@ -398,4 +397,13 @@ class Product
         return $this;
     }
 
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->_entityManager = $entityManager;
+
+        return $this;
+    }
 }

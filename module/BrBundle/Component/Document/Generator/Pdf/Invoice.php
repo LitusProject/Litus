@@ -67,8 +67,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $totalExclusive = 0;
         $totalVat = 0;
 
-        // Get the content
-
         $invoiceDate = $this->_invoice->getCreationTime()->format('j/m/Y');
         $dueDate = $this->_invoice->getExpirationTime($this->getEntityManager())->format('j/m/Y');
         $clientVat = $this->_invoice->getOrder()->getCompany()->getVatNumber();
@@ -81,10 +79,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        if($this->_invoice->getVATContext() == "")
+        if('' == $this->_invoice->getVATContext())
             $vatTypeExplanation = "";
         else
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();
+
         $subEntries = $configs->getConfigValue('br.invoice_below_entries');
         $footer = $configs->getConfigValue('br.invoice_footer');
 
@@ -100,12 +99,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $product = $entry->getOrderEntry()->getProduct();
             $price = $product->getPrice() / 100;
 
-            if (($price > 0) ||
-                    (($entry->getInvoiceDescription() !== null) && ($entry->getInvoiceDescription() != ''))) {
+            if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
                 $entries[] = new XmlObject('entry', null,
                     array(
                         new XmlObject('description', null,
-                            (($entry->getInvoiceDescription() === null) || ($entry->getInvoiceDescription() == ''))
+                            (null === $entry->getInvoiceDescription() || '' == $entry->getInvoiceDescription())
                                     ? $product->getName()
                                     : $entry->getInvoiceDescription()
                         ),
@@ -126,13 +124,12 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $count++;
         }
 
-        // Append two more empty lines
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
         $discount = $this->_invoice->getOrder()->getContract()->getDiscount();
-        if ($discount != 0) {
-            if($this->_invoice->getOrder()->getContract()->getDiscountContext() == "")
+        if (0 != $discount) {
+            if('' == $this->_invoice->getOrder()->getContract()->getDiscountContext())
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null,"Korting"),//TODO need translation later
@@ -156,10 +153,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $xml->append(new XmlObject('invoice', null,
             array(
-                // children of <invoice>
                 new XmlObject('title', null,
                     array(
-                        // children of <title>
                         new XmlObject('invoice_number', null, $invoiceNb),
                         new XmlObject('invoice_date', null, $invoiceDate),
                         new XmlObject('expiration_date', null, $dueDate),
@@ -170,7 +165,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlObject('our_union', null,
                     array(
-                        // children of <our_union>
                         new XmlObject('name', null, $unionName),
                         new XmlObject(
                             'address',
@@ -215,7 +209,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlObject('company', array('contact_person' => $companyContactPerson),
                     array(
-                        // children of <company>
                         new XmlObject('name', null, $companyName),
                         new XmlObject(
                             'address',
@@ -260,7 +253,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlObject('total', null,
                     array(
-                        // children of <total>
                         new XmlObject('vat_type_explanation', null, $vatTypeExplanation),
                         new XmlObject('price_excl', null, XmlObject::fromString('<euro/>' . number_format($totalExclusive, 2))),
                         new XmlObject('price_vat', null, XmlObject::fromString('<euro/>' . number_format($totalVat, 2))),

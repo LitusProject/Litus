@@ -193,12 +193,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 if (count($formData['cvbook']) > 0) {
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
+
                     foreach ($formData['cvbook'] as $yearId) {
-                        if (strpos($yearId, 'archive-') === 0) {
+                        if (strpos($yearId, 'archive-') === 0)
                             $archiveYears[] = substr($yearId, strlen('archive-'));
-                        } else {
+                        else
                             $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
-                        }
                     }
                 }
 
@@ -210,9 +210,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $yearIds = $formData['years'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach ($yearIds as $yearId) {
+
+                    foreach ($yearIds as $yearId)
                         $years[] = $repository->findOneById($yearId);
-                    }
                 }
 
                 $company->getPage()

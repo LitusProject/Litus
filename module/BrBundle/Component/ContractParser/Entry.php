@@ -18,10 +18,8 @@
 
 namespace BrBundle\Component\ContractParser;
 
-use CommonBundle\Component\Util\Xml\Object as XmlObject;
-
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
@@ -29,95 +27,84 @@ class Entry implements Node
 {
     private $indent;
     private $state;
-    
+
     private $nodes;
-    
+
     public function __construct($text)
     {
         $this->indent = -1;
         $this->state = new NewState($this);
         $this->parse($text);
     }
-    
+
     public function setIndent($indent)
     {
         $this->indent = $indent;
     }
-    
+
     public function getNodes()
     {
         return $this->nodes;
     }
-    
+
     public function parse($text)
     {
         $indent = $this->nbSpacesLeadingLine($text);
         $rest = substr($text, $indent);
-        
-        if(strlen($rest) == 0)
+
+        if (strlen($rest) == 0)
             return;
-        
+
         $this->handleLine($indent, $rest);
     }
-    
+
     public function handleLine($indent, $text)
     {
-        if($this->indent == -1)
+        if ($this->indent == -1)
             $this->indent = $indent;
-        elseif($indent < $this->indent)
+        elseif ($indent < $this->indent)
             throw new IllegalFormatException('Illegal Indent');
-        
-        if($indent == $this->indent)
-        {
-            if($text[0] == '*')
-            {
+
+        if ($indent == $this->indent) {
+            if ($text[0] == '*')
                 $this->parseEntry($text);
-            }
             else
-            {
                 $this->parseText($text);
-            }
-        }
-        else
-        {
+        } else {
             $this->state->passOn($indent-$this->indent, $text);
-        } 
+        }
     }
-    
+
     protected function parseEntry($textWithSymbol)
     {
         $textWithSymbol[0] = ' ';
         $textWithoutSymbol = $textWithSymbol;
         $this->state = $this->state->addEntry($textWithoutSymbol);
     }
-    
+
     protected function parseText($text)
     {
         $this->state = $this->state->addText($text);
     }
-    
+
     protected function nbSpacesLeadingLine($line)
     {
-        $i = 0;
         $l = strlen($line);
-        while($i < $l)
-        {
-            if($line[$i] != ' ')
+        for ($i = 0 ; $i < $l ; $i++) {
+            if ($line[$i] != ' ')
                 break;
-    
-            $i++;
         }
-    
+
         return $i;
     }
-    
+
     public function visitNode($nodeVisitor)
     {
         $nodeVisitor->visitEntry($this);
     }
-    
+
     /**
-     * 
+     *
      * @param Node $node
      */
     public function addNodeToList($node)

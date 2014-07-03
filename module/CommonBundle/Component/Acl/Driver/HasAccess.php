@@ -36,7 +36,7 @@ class HasAccess
     private $_acl = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication The authentication object
+     * @var \CommonBundle\Component\Acl\RoleAware The authentication object
      */
     private $_entity = null;
 

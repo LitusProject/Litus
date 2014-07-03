@@ -112,7 +112,7 @@ class Corporate
      */
     public static function isValidPerson(CorporatePerson $person)
     {
-        return ($person !== null) && $person->canHaveCorporateStatus();
+        return (null !== $person) && $person->canHaveCorporateStatus();
     }
 
     /**

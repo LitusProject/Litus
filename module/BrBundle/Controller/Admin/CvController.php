@@ -101,7 +101,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $results = array();
         foreach ($entries as $entry) {
-
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();
             if ($address->getMailbox())

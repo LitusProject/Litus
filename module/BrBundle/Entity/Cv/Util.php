@@ -49,7 +49,6 @@ class Util
             }
         }
 
-        // Add all studies that are not in a CV book group
         $cvStudies = $entityManager
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllUngroupedStudies();

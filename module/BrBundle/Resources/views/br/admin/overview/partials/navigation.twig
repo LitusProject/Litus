@@ -3,11 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('br_admin_overview', 'manage') %}
-                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "person"}) }}">Persons</a></li>
+            {% if hasAccess('br_admin_overview', 'person') %}
+                <li><a {% if 'person' == getParam('action') %} class="active" {% endif %}href="{{ url('br_admin_overview', {"action": "person"}) }}">Persons</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_overview', 'manage') %}
-                <li><a {class="active" href="{{ url('br_admin_overview', {"action": "company"}) }}">Companies</a></li>
+            {% if hasAccess('br_admin_overview', 'company') %}
+                <li><a {% if 'company' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_overview', {"action": "company"}) }}">Companies</a></li>
             {% endif %}
         </ul>
     </nav>

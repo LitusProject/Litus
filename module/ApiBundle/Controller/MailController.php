@@ -21,7 +21,6 @@ namespace ApiBundle\Controller;
 use CommonBundle\Component\Util\File\TmpFile,
     MailBundle\Component\Archive\Generator\MailingList\Zip,
     MailBundle\Component\Archive\Generator\MailingList\Tar,
-    MailBundle\Entity\Users\People\Academic,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 

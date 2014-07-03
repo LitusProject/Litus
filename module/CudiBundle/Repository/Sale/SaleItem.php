@@ -381,7 +381,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price * i.number)')
+            $resultSet = $query->select('SUM(i.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -401,7 +401,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price * i.number)')
+            $resultSet = $query->select('SUM(i.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -431,7 +431,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
+            $resultSet = $query->select('SUM(i.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.article', 'a')
@@ -451,7 +451,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.purchasePrice * i.number)')
+            $resultSet = $query->select('SUM(i.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.article', 'a')
                 ->innerJoin('i.session', 's')
@@ -481,7 +481,7 @@ class SaleItem extends EntityRepository
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price * i.number)')
+            $resultSet = $query->select('SUM(i.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.queueItem', 'q')
                 ->innerJoin('i.session', 's')
@@ -500,7 +500,7 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         } else {
             $query = $this->getEntityManager()->createQueryBuilder();
-            $resultSet = $query->select('SUM(i.price * i.number)')
+            $resultSet = $query->select('SUM(i.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
                 ->innerJoin('i.session', 's')
                 ->where(

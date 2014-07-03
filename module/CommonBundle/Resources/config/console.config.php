@@ -24,6 +24,7 @@ return array(
     'common.config'           => 'CommonBundle\Command\Config',
     'common.test-config'      => 'CommonBundle\Command\TestConfig',
     'common.destroy-account'  => 'CommonBundle\Command\DestroyAccount',
+    'common.acl-cleanup'      => 'CommonBundle\Command\AclCleanup',
 
     'assetic.build'           => 'CommonBundle\Command\Assetic\Build',
     'assetic.setup'           => 'CommonBundle\Command\Assetic\Setup',

@@ -160,15 +160,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     if ($event->areTicketsGenerated()) {
                         if ($formData['number_of_tickets'] >= $event->getNumberOfTickets()) {
                             for ($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
-                                do {
-                                    $number = rand();
-                                    $ticket = $this->getEntityManager()
-                                        ->getRepository('TicketBundle\Entity\Ticket')
-                                        ->findOneByEventAndNumber($event, $number);
-                                } while ($ticket !== null);
-
-                                $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
-                                $this->getEntityManager()->persist($ticket);
+                                $this->getEntityManager()->persist(
+                                    new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
+                                );
                                 $this->getEntityManager()->flush();
                             }
                         } else {
@@ -187,15 +181,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         }
                     } else {
                         for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                            do {
-                                $number = rand();
-                                $ticket = $this->getEntityManager()
-                                    ->getRepository('TicketBundle\Entity\Ticket')
-                                    ->findOneByEventAndNumber($event, $number);
-                            } while ($ticket !== null);
-
-                            $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
-                            $this->getEntityManager()->persist($ticket);
+                            $this->getEntityManager()->persist(
+                                new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
+                            );
                             $this->getEntityManager()->flush();
                         }
                     }

@@ -43,29 +43,29 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Invoice    $invoice       The invoice to edit
      * @param null|string|int             $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Invoice $invoice,$options = null)
+    public function __construct(EntityManager $entityManager, Invoice $invoice, $options = null)
     {
         parent::__construct($options);
 
-        $this->_createFromInvoice($invoice,$entityManager);
+        $this->_createFromInvoice($invoice);
 
-        $field = new Submit('Save');
+        $field = new Submit('submit');
         $field->setValue('Save')
             ->setAttribute('class', 'invoice_edit');
         $this->add($field);
     }
 
-    private function _createFromInvoice(Invoice $invoice,$em)
+    private function _createFromInvoice(Invoice $invoice)
     {
-        foreach ($invoice->getEntries($em) as $entry) {
+        foreach ($invoice->getEntries() as $entry) {
             $field = new Textarea('entry_' . $entry->getId());
             $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
                 ->setValue($entry->getInvoiceText())
                 ->setRequired(false);
             $this->add($field);
-
         }
 
         $field = new Textarea('VATContext');

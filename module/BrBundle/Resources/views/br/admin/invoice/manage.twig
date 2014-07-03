@@ -19,58 +19,52 @@
     </div>
 
     <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Order Description</th>
+                <th>Creation Time</th>
+                <th>Invoice Number</th>
+                <th width="70px">Paid</th>
+                <th width="70px">Actions</th>
+            </tr>
 
-        <div id="normal_page">
+            {% for invoice in paginator %}
+                <tr class="item item-{{ invoice.getId() }}">
+                    <td>{{ invoice.getOrder().getCompany().getName()}}</td>
+                    <td>{{ invoice.getOrder().getDescription() }}</td>
+                    <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
+                    <td>{{ invoice.getInvoiceNumber() }}</td>
+                    {% if invoice.isPayed() %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>
+                            </td>
+                    {% else %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" id="{{ invoice.getId() }}"/>
+                            </td>
+                    {% endif %}
 
-            <table class="full_width manage">
-                <tr>
-                    <th>Company</th>
-                    <th>Order Description</th>
-                    <th>Creation Time</th>
-                    <th>Invoice Number</th>
-                    <th width="70px">Paid</th>
-                    <th width="70px">Actions</th>
-                </tr>
-
-                {% for invoice in paginator %}
-                    <tr class="item item-{{ invoice.getId() }}">
-                        <td>{{ invoice.getOrder().getCompany().getName()}}</td>
-                        <td>{{ invoice.getOrder().getDescription() }}</td>
-                        <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
-                        <td>{{ invoice.getInvoiceNumber() }}</td>
-                        {% if invoice.isPayed() %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>
-                                </td>
-                        {% else %}
-                                <td style="text-align: center;">
-                                    <input type="checkbox" id="{{ invoice.getId() }}"/>
-                                </td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_invoice', 'edit') and invoice.isPayed() == false %}
+                            <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
-
-                        <td class="actions">
-                            {% if invoice.isPayed() == false %}
-                                {% if hasAccess('br_admin_invoice', 'edit') %}
-                                    <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
-                                {% endif %}
-                            {% endif %}
-                            {% if hasAccess('br_admin_invoice', 'view') %}
-                                <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_invoice', 'download') %}
-                                <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
-                            {% endif %}
-                            {% if invoice.isPayed() == false %}
-                                {% if hasAccess('br_admin_invoice', 'delete') %}
-                                    <a href="#" class="delete" data-id="{{ invoice.getId() }}" data-name="{{ invoice.getTitle() }}">Delete</a>
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-
-        </div>
+                        {% if hasAccess('br_admin_invoice', 'view') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "history", "id": invoice.getId()}) }}" class="history">History</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'view') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'download') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'delete') and invoice.isPayed() == false %}
+                            <a href="#" class="delete" data-id="{{ invoice.getId() }}" data-name="{{ invoice.getTitle() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>

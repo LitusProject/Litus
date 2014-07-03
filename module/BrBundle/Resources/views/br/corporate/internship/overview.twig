@@ -6,6 +6,7 @@
         <div class="col-md-12">
             <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
                 {% for internship in paginator %}
+                    {% if not internship.canShow() == false %}
                     <tr>
                         <td width="120">
                             <a href="{{ url('br_corporate_internship', {'action': 'view', 'id': internship.getId() }) }}">
@@ -24,7 +25,20 @@
                             <br/>
                             {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
+                        <td width="90">
+                            <br>
+                            <div class="col-md-2">
+                                <table>
+                                    <tr>
+                                        <td><a class="btn btn-default" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">View</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">Edit</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">Delete</a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
                     </tr>
+                    {% endif %}
                 {% else %}
                     <div class="flashmessage alert alert-warning fade in">
                         <a class="close" data-dismiss="alert">&times;</a>

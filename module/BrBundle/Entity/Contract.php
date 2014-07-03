@@ -50,9 +50,8 @@ class Contract
     /**
      * @var \BrBundle\Entity\Product\Order The contract accompanying this order
      *
-     * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Product\Order"
-     * )
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Product\Order")
+     * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
      */
     private $order;
 
@@ -82,8 +81,7 @@ class Contract
     /**
      * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contract\ContractEntry",mappedBy="contract")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"all"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $contractEntries;
@@ -261,7 +259,7 @@ class Contract
      */
     public function setAuthor(Collaborator $author)
     {
-        if ($author === null)
+        if (null === $author)
             throw new \InvalidArgumentException('Author cannot be null');
 
         $this->author = $author;
@@ -284,7 +282,7 @@ class Contract
      */
     public function setCompany(Company $company)
     {
-        if ($company === null)
+        if (null === $company)
             throw new \InvalidArgumentException('Company cannot be null');
 
         $this->company = $company;
@@ -330,7 +328,7 @@ class Contract
      */
     public function setTitle($title)
     {
-        if (($title === null) || !is_string($title))
+        if (null === $title || !is_string($title))
             throw new \InvalidArgumentException('Invalid title');
 
         $this->title = $title;
@@ -390,7 +388,7 @@ class Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
-        if (($invoiceNb === null) || !is_numeric($invoiceNb))
+        if (null === $invoiceNb || !is_numeric($invoiceNb))
             throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
 
         $this->invoiceNb = $invoiceNb;
@@ -407,7 +405,7 @@ class Contract
      **/
     public function getContractNb()
     {
-        return '22'.$this->getAuthor()->getNumber().str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
+        return '22' . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -416,7 +414,7 @@ class Contract
      */
     public function setContractNb($contractNb)
     {
-        if(($contractNb === null) || !is_numeric($contractNb))
+        if(null === $contractNb || !is_numeric($contractNb))
             throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
 
         $this->contractNb = $contractNb;

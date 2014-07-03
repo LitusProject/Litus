@@ -31,7 +31,6 @@ use BrBundle\Entity\Contract,
  */
 class ContractEntry
 {
-
     /**
      * @var int A generated ID
      *
@@ -45,7 +44,7 @@ class ContractEntry
      * @var \BrBundle\Entity\Contract The contract to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contract")
-     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contract", referencedColumnName="id")
      */
     private $contract;
 
@@ -109,6 +108,7 @@ class ContractEntry
     {
         if($versionNmbr < 0)
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+
         $this->version = $versionNmbr;
     }
 

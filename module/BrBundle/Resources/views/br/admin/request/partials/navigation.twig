@@ -1,10 +1,10 @@
 <header id="controller_header">
-    <div class="title"><span class="requests">Requests</span></div>
+    <div class="title"><span class="request">Requests</span></div>
 
     <nav id="controller_nav">
         <ul>
             {% if hasAccess('br_admin_product', 'manage') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_request', {"action": "manage"}) }}">Manage</a></li>
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_request', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

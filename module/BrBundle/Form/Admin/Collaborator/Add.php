@@ -31,9 +31,10 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     Zend\Form\Element\Submit;
 
 /**
- * Add a product.
+ * Add a collaborator.
  *
- * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -71,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Submit('submit');
         $field->setValue('Add')
-            ->setAttribute('class', 'product_add');
+            ->setAttribute('class', 'collaborator_add');
         $this->add($field);
     }
 
@@ -79,6 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $formData = array(
             'person_name'  => $collaborator->getPerson()->getFullName(),
+            'person_id' => $collaborator->getPerson()->getId(),
             'number' => $collaborator->getNumber()
         );
 
@@ -90,7 +92,52 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        //TODO
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'person_id',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'person_name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'number',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                )
+            )
+        );
+
         return $inputFilter;
     }
 }

@@ -28,7 +28,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Collaborator extends EntityRepository
 {
-    public function findCollaboratorByPersonIdQuery($id)
+    public function findCollaboratorByPersonId($id)
     {
         $query = $this->_em->createQueryBuilder();
         $collaborator = $query->select('c')
@@ -38,7 +38,8 @@ class Collaborator extends EntityRepository
                 $query->expr()->eq('p.id', ':id')
             )
             ->setParameter('id', $id)
-            ->getQuery();
+            ->getQuery()
+            ->getSingleResult();
 
         return $collaborator;
     }

@@ -31,7 +31,6 @@ use BrBundle\Entity\Invoice,
  */
 class InvoiceEntry
 {
-
     /**
      * @var int A generated ID
      *
@@ -45,7 +44,7 @@ class InvoiceEntry
      * @var \BrBundle\Entity\Invoice The invoice to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Invoice")
-     * @ORM\JoinColumn(name="invoice_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="invoice", referencedColumnName="id")
      */
     private $invoice;
 
@@ -107,6 +106,7 @@ class InvoiceEntry
     {
         if($versionNmbr < 0)
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+
         $this->version = $versionNmbr;
     }
 

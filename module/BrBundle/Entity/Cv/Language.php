@@ -28,7 +28,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Language
 {
-
     /**
      * @var array The possible written skills.
      */
@@ -176,6 +175,7 @@ class Language
     {
         if (!self::isValidOralSkill($skill))
             throw new \InvalidArgumentException('The skill is not valid.');
+
         $this->oral = $skill;
 
         return $this;

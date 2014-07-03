@@ -19,19 +19,19 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- * 
+ *
  *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class IllegalFormatException extends \Exception
 {
     private $lineNb;
-    
+
     public function setLineNumber($lineNumber)
     {
         $this->lineNb = $lineNumber;
     }
-    
+
     public function getLineNumber()
     {
         return $this->lineNb;

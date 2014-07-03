@@ -19,12 +19,9 @@
 {% endblock %}
 
 {% block content_script %}
-
     <script type="text/javascript">
         $(document).ready(function() {
-
             $('#company').change(function(){
-
                 var company = $('#company').val();
 
                 if (company == '') {
@@ -34,7 +31,6 @@
 
                 $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + company, function (data) {
                     if (data) {
-                        // $('#contacts').attr('options', data);
                         var optionsAsString = "";
                         $('#contact').empty();
                         $(data).each(function(k, v){
@@ -45,16 +41,11 @@
                         errorContacts();
                     }
                 }, 'json').error(errorContacts);
-            });
-
+            }).change();
         });
-
-        function errorContacts()
-        {
+        function errorContacts() {
             $('.flashmessage').addClass('hide');
             $('.contacts_error').removeClass('hide');
         }
-
     </script>
-
 {% endblock %}

@@ -52,7 +52,7 @@ class AcademicYear
         if ($date === null)
             $date = new DateTime('now');
 
-        $startOfAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
         if ($date > $startOfAcademicYear) {
             $startYear = $startOfAcademicYear->format('Y');
@@ -78,7 +78,7 @@ class AcademicYear
         if ($date === null)
             $date = new DateTime('now');
 
-        $startOfAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
         if ($date > $startOfAcademicYear) {
             $startYear = $startOfAcademicYear->format('y');
@@ -218,7 +218,7 @@ class AcademicYear
                     ->getConfigValue('start_academic_year_offset')
             )
         );
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startAcademicYear = self::getStartOfAcademicYear($date);
         $startAcademicYear->setTime(0, 0);
 
         $academicYear = $entityManager
@@ -249,7 +249,7 @@ class AcademicYear
     public static function getOrganizationYear(EntityManager $entityManager, DateTime $date = null)
     {
         $date = $date ? $date : new DateTime();
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear($date);
+        $startAcademicYear = self::getStartOfAcademicYear($date);
         $startAcademicYear->setTime(0, 0);
 
         $start = new DateTime(
@@ -264,7 +264,7 @@ class AcademicYear
 
         if ($date > $start) {
             $startAcademicYear->add(new DateInterval('P1Y2M'));
-            $startAcademicYear = AcademicYear::getStartOfAcademicYear($startAcademicYear);
+            $startAcademicYear = self::getStartOfAcademicYear($startAcademicYear);
         }
 
         $academicYear = $entityManager

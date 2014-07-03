@@ -20,8 +20,10 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
+    BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -37,15 +39,14 @@ use BrBundle\Entity\Contract,
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-
     public function manageAction()
     {
-        if (null === $this->getParam('field')) {
-            $paginator = $this->paginator()->createFromEntity(
-                'BrBundle\Entity\Contract',
-                $this->getParam('page')
-            );
-        }
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAllNewOrSignedQuery(),
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
@@ -72,9 +73,17 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         if (!($contract = $this->_getContract()))
             return new ViewModel();
 
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractHistory')
+                ->findAllContractVersions($contract),
+            $this->getParam('page')
+        );
+
         return new ViewModel(
             array(
-                'contract' => $contract,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -95,14 +104,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $contract->setTitle($formData['title']);
 
-                $contractVersion = $contract->getVersion();
-
                 $newVersionNb = 0;
 
                 foreach ($contract->getEntries() as $entry) {
-                    if ($entry->getVersion() == $contractVersion) {
+                    if ($entry->getVersion() == $contract->getVersion()) {
                         $newVersionNb = $entry->getVersion() + 1;
-                        $newContractEntry = new ContractEntry($contract,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
+                        $newContractEntry = new ContractEntry($contract, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
 
                         $this->getEntityManager()->persist($newContractEntry);
 
@@ -111,6 +118,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 $contract->setVersion($newVersionNb);
+
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
 
                 $this->getEntityManager()->flush();
 
@@ -146,12 +156,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($this->getParam('id'));
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
         if ('true' == $this->getParam('signed')) {
-
             $invoice = new Invoice($contract->getOrder());
 
             foreach ($contract->getEntries() as $entry) {
@@ -160,9 +168,13 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb());
+                $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->findNextInvoiceNb()
+            );
+
+            $history = new InvoiceHistory($invoice);
+            $this->getEntityManager()->persist($history);
 
             $this->getEntityManager()->persist($invoice);
         }
@@ -197,9 +209,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $contract->setSigned();
 
         $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb());
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findNextInvoiceNb()
+        );
 
         $this->getEntityManager()->flush();
 
@@ -257,27 +270,54 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $postData = $this->getRequest()->getPost();
-        parse_str($postData['sections'], $sections);
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            parse_str($postData['sections'], $sections);
 
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($postData['contractId']);
+            $contract = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findOneById($postData['contractId']);
 
-        // Don't allow reordering signed contract
-        if ($contract->isSigned()) {
+            if ($contract->isSigned())
+                return new ViewModel();
+
+            $contractComposition = array();
+            foreach ($sections['contractComposition'] as $position => $id) {
+                $contractEntry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                    ->findOneById($id);
+
+                $contractEntry->setPosition($position);
+            }
+
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'success',
+                    ),
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                    ),
+                )
+            );
+        }
+    }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($contract = $this->_getContract(false)))
             return new ViewModel();
-        }
 
-        $contractComposition = array();
-        foreach ($sections['contractComposition'] as $position => $id) {
-            $contractEntry = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
-                ->findOneById($id);
-
-            $contractEntry->setPosition($position);
-        }
-
+        // TODO: remove
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -289,7 +329,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-   private function _getContract($allowSigned = true)
+    private function _getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
