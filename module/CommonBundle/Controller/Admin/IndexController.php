@@ -204,8 +204,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllSince($today->sub(new DateInterval('P6D')));
 
         $data = array();
-        foreach ($registrations as $registration)
-            $data[$registration->getTimestamp()->format('d/m/Y')]++;
+        foreach ($registrations as $registration) {
+            if (isset($data[$registration->getTimestamp()->format('d/m/Y')]))
+                $data[$registration->getTimestamp()->format('d/m/Y')]++;
+        }
 
         foreach (array_reverse($data) as $label => $value) {
             $registationGraphData['labels'][] = $label;
