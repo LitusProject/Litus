@@ -20,7 +20,6 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
@@ -33,7 +32,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class Queue
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -43,7 +42,7 @@ class Queue
     private $_queueItems;
 
     /**
-     * @param Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -64,7 +63,7 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session The sale session
+     * @param Session $session The sale session
      *
      * @return string
      */
@@ -136,7 +135,7 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session The sale session
+     * @param Session $session The sale session
      *
      * @return string
      */
@@ -162,8 +161,8 @@ class Queue
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session                  The sale session
-     * @param string                          $universityIdentification
+     * @param Session $session                  The sale session
+     * @param string  $universityIdentification
      *
      * @return string
      */
@@ -221,7 +220,7 @@ class Queue
     }
 
     /**
-     * @param \CommonBundle\Component\WebSocket\User $user
+     * @param User $user
      */
     public function unlockByUser(User $user)
     {
@@ -242,8 +241,8 @@ class Queue
     }
 
     /**
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $id
+     * @param User    $user
+     * @param integer $id
      */
     public function startCollecting(User $user, $id, $bulk = false)
     {
@@ -312,7 +311,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  integer $id
+     * @return string
      */
     public function startSale(User $user, $id)
     {
@@ -413,7 +413,6 @@ class Queue
 
     /**
      * @param integer $id
-     * @param integer $barcode
      */
     public function addArticle($id, $articleId)
     {

@@ -46,7 +46,8 @@ class Utf8
         }
 
         $result = '';
-        for ($i = 0; $i < strlen($utf8); $i++) {
+        $len = strlen($utf8);
+        for ($i = 0; $i < $len; $i++) {
             $char = $utf8[$i];
             $ascii = ord($char);
             if ($ascii < 128) {

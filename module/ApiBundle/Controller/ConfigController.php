@@ -39,8 +39,6 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
 
         $result = array();
         foreach ($entries as $entry) {
-            $value = $entry->getValue();
-
             try {
                 $now = new DateTime();
 
@@ -51,7 +49,9 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
             } catch (\Exception $e) {
                 try {
                     $value = unserialize($entry->getValue());
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    $value = $entry->getValue();
+                }
             }
 
             $result[$entry->getKey()] = $value;

@@ -20,8 +20,7 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Field;
 
 /**
  * An abstract class that stores a number of options.
@@ -39,20 +38,8 @@ abstract class OptionSelector extends Field
     private $optionTranslations;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param boolean                     $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-    }
-
-    /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getOptions(Language $language = null, $allowFallback = true)
@@ -66,8 +53,8 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return array
      */
     public function getOptionsArray(Language $language = null, $allowFallback = true)
@@ -81,13 +68,12 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language       $language
+     * @param  Language|null                               $language
      * @param  boolean                                     $allowFallback
      * @return \FormBundle\Entity\Field\Translation\Option
      */
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
-
         foreach ($this->optionTranslations as $translation) {
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
@@ -103,8 +89,8 @@ abstract class OptionSelector extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
+     * @param  Language $language
+     * @param  boolean  $value
      * @return string
      */
     public function getValueString(Language $language, $value)

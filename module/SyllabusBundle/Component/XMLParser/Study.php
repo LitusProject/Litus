@@ -20,19 +20,16 @@ namespace SyllabusBundle\Component\XMLParser;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     Doctrine\ORM\EntityManager,
-    SimpleXMLElement,
     SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,
     SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
-    Zend\Dom\Query as DomQuery,
     Zend\Mail\Transport\TransportInterface;
 
 /**
@@ -43,12 +40,12 @@ use CommonBundle\Component\Util\AcademicYear,
 class Study
 {
     /**
-     * @var Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface
+     * @var TransportInterface
      */
     private $_mailTransport;
 
@@ -63,7 +60,7 @@ class Study
     private $_callback;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYearEntity
      */
     private $_academicYear;
 
@@ -73,12 +70,11 @@ class Study
     private $_subjects;
 
     /**
-     * @param \Doctrine\ORM\EntityManager             $entityManager
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param string                                  $xmlPath
-     * @param array                                   $callback
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param array              $callback
      */
-    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $xmlPath, $callback)
+    public function __construct(EntityManager $entityManager, TransportInterface $mailTransport, $callback)
     {
         $this->_entityManager = $entityManager;
         $this->_mailTransport = $mailTransport;
@@ -137,13 +133,17 @@ class Study
     }
 
     /**
-     * @return Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEntityManager()
     {
         return $this->_entityManager;
     }
 
+    /**
+     * @param  SimpleXMLElement $data
+     * @return array
+     */
     private function _createStudies($data)
     {
         $this->_callback('create_studies', (string) $data->titel);
@@ -221,6 +221,10 @@ class Study
         return $studies;
     }
 
+    /**
+     * @param array $data
+     * @param array $studies
+     */
     private function _createSubjects($data, $studies)
     {
         $this->_callback('create_subjects');
@@ -300,6 +304,10 @@ class Study
         }
     }
 
+    /**
+     * @param \SyllabusBundle\Entity\Subject $subject
+     * @param array                          $profs
+     */
     private function _createProf(SubjectEntity $subject, $profs)
     {
         $maps = array();
@@ -355,9 +363,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->_academicYear);
             if (null == $map) {
-                if (isset($maps[$prof->getUniversityIdentification()])) {
-                    $map = $maps[$prof->getUniversityIdentification()];
-                } else {
+                if (!isset($maps[$prof->getUniversityIdentification()])) {
                     $map = new SubjectProfMap($subject, $prof, $this->_academicYear);
                     $this->getEntityManager()->persist($map);
                     $maps[$prof->getUniversityIdentification()] = $map;
@@ -366,6 +372,9 @@ class Study
         }
     }
 
+    /**
+     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     */
     private function _cleanUpAcademicYear(AcademicYearEntity $academicYear)
     {
         $mapping = $this->getEntityManager()
@@ -392,31 +401,42 @@ class Study
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @param  string $identification
+     * @return array
+     */
     private function _getInfoProf($identification)
     {
+        $returnArray = array(
+            'email' => null,
+            'phone' => null,
+            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
+        );
+
         $client = new HttpClient();
         $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
             ->send();
 
         preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
         if (count($matches) > 1)
-            $email = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
+            $returnArray['email'] = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
         else
-            $email = null;
+            $returnArray['email'] = null;
 
         preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
         if (count($matches) > 1)
-            $phone = trim(str_replace(' ', '', $matches[1]));
+            $returnArray['phone'] = trim(str_replace(' ', '', $matches[1]));
         else
-            $phone = null;
+            $returnArray['phone'] = null;
 
-        return array(
-            'email' => $email,
-            'phone' => $phone,
-            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
-        );
+        return $returnArray;
     }
 
+    /**
+     * @param  string      $identification
+     * @param  string      $url
+     * @return string|null
+     */
     private function _getProfImage($identification, $url)
     {
         $headers = get_headers($url);
@@ -431,7 +451,6 @@ class Study
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path');
 
-                $fileName = '';
                 do {
                     $fileName = '/' . sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
@@ -444,11 +463,18 @@ class Study
         }
     }
 
+    /**
+     * @param string      $type
+     * @param string|null $extra
+     */
     private function _callback($type, $extra = null)
     {
         call_user_func($this->_callback, $type, $extra);
     }
 
+    /**
+     * @return array
+     */
     private function _getUrls()
     {
         $url = $this->_entityManager
@@ -527,6 +553,10 @@ class Study
         return $urls;
     }
 
+    /**
+     * @param  int                                       $start
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     private function _getAcademicYear($start)
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear(

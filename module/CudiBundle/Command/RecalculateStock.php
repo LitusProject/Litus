@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Command;
 
-use CudiBundle\Entity\Stock\Period as StockPeriod,
-    CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Stock\Period as StockPeriod;
 
 /**
  * Updates catalog

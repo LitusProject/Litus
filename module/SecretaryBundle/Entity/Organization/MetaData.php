@@ -20,7 +20,6 @@ namespace SecretaryBundle\Entity\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +40,7 @@ class MetaData
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person of the metadata
+     * @var Academic The person of the metadata
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -49,7 +48,7 @@ class MetaData
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the metadata
+     * @var AcademicYear The academic year of the metadata
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -100,12 +99,12 @@ class MetaData
     );
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param boolean                                   $becomeMember
-     * @param boolean                                   $irreeelAtCudi
-     * @param boolean                                   $bakskeByMail
-     * @param string                                    $tshirtSize
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param boolean      $becomeMember
+     * @param boolean      $irreeelAtCudi
+     * @param boolean      $bakskeByMail
+     * @param string       $tshirtSize
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
     {
@@ -121,6 +120,7 @@ class MetaData
     }
 
     /**
+     * @param  string  $size
      * @return boolean
      */
     public static function isValidTshirtSize($size)
@@ -137,7 +137,7 @@ class MetaData
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -145,7 +145,7 @@ class MetaData
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -161,9 +161,8 @@ class MetaData
     }
 
     /**
-     * @param boolean $becomeMember
-     *
-     * @return \SecretaryBundle\Entity\Organization\MetaData
+     * @param  boolean $becomeMember
+     * @return self
      */
     public function setBecomeMember($becomeMember)
     {
@@ -181,9 +180,8 @@ class MetaData
     }
 
     /**
-     * @param boolean $irreeelAtCudi
-     *
-     * @return \SecretaryBundle\Entity\Organization\MetaData
+     * @param  boolean $irreeelAtCudi
+     * @return self
      */
     public function setReceiveIrReeelAtCudi($irreeelAtCudi)
     {
@@ -201,9 +199,8 @@ class MetaData
     }
 
     /**
-     * @param boolean $bakskeByMail
-     *
-     * @return \SecretaryBundle\Entity\Organization\MetaData
+     * @param  boolean $bakskeByMail
+     * @return self
      */
     public function setBakskeByMail($bakskeByMail)
     {

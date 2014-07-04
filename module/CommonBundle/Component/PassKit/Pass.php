@@ -20,7 +20,6 @@ namespace CommonBundle\Component\PassKit;
 
 use CommonBundle\Component\Util\File\TmpFile,
     DirectoryIterator,
-    Doctrine\ORM\EntityManager,
     ZipArchive;
 
 /**
@@ -31,7 +30,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 abstract class Pass
 {
     /**
-     * @var \CommonBundle\Component\Util\File\TmpFile The temporary file for the pass
+     * @var TmpFile The temporary file for the pass
      */
     private $_pass = null;
 
@@ -41,12 +40,12 @@ abstract class Pass
     private $_imageDirectory = '';
 
     /**
-     * @var \CommonBundle\Component\Util\File\TmpFile The temporary file for the manifest
+     * @var TmpFile The temporary file for the manifest
      */
     private $_manifest = null;
 
     /**
-     * @var \CommonBundle\Component\Util\File\TmpFile The temporary file for the signature
+     * @var TmpFile The temporary file for the signature
      */
     private $_signature = null;
 
@@ -61,8 +60,8 @@ abstract class Pass
     private $_languages = array();
 
     /**
-     * @param \CommonBundle\Component\Util\File\TmpFile $pass           The temporary file for the pass
-     * @param string                                    $imageDirectory The location of the image directory
+     * @param TmpFile $pass           The temporary file for the pass
+     * @param string  $imageDirectory The location of the image directory
      */
     public function __construct(TmpFile $pass, $imageDirectory)
     {

@@ -47,11 +47,15 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findApi($maxAge);
 
+        $summaryLength = $this->getRequest()->getPost('summary_length');
+        if (!is_numeric($summaryLength) || $summaryLength <= 0)
+            $summaryLength = 200;
+
         $result = array();
         foreach ($items as $item) {
             $parser = new Markdown_Parser();
             $summary = preg_replace('/\s+/', ' ', strip_tags($parser->transform($item->getContent($this->getLanguage()))));
-            $summary = substr($summary, 0, isset($_POST['summary_length']) && is_numeric($_POST['summary_length']) ? $_POST['summary_length'] : 200);
+            $summary = substr($summary, 0, $summaryLength);
 
             $result[] = array(
                 'id' => $item->getId(),

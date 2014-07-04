@@ -32,8 +32,8 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
 class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Stock\Order\Order $order
-     * @param null|string|int                      $name  Optional name for the element
+     * @param Order           $order
+     * @param null|string|int $name  Optional name for the element
      */
     public function __construct(Order $order, $name = null)
     {
@@ -42,8 +42,8 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
         $field = new Textarea('comment');
         $field->setLabel('Comment')
             ->setAttribute('style', 'height: 50px')
-            ->setValue($order->getComment())
-            ->setRequired();
+            ->setRequired()
+            ->setValue($order->getComment());
         $this->add($field);
 
         $field = new Submit('save');

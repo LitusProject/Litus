@@ -24,7 +24,6 @@ use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -81,21 +80,15 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
                     return new ViewModel();
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given username and password did not match. Please try again.'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given username and password did not match. Please try again.'
                     );
                 }
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'The given username and password did not match. Please try again.'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'The given username and password did not match. Please try again.'
                 );
             }
         }
@@ -117,7 +110,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
@@ -158,12 +151,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Something went wrong while logging you in. Please try again later.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Something went wrong while logging you in. Please try again later.'
         );
 
         $this->redirect()->toRoute(
@@ -340,7 +330,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '%3Fsource=api';
 

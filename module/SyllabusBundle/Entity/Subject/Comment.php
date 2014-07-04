@@ -21,8 +21,9 @@ namespace SyllabusBundle\Entity\Subject;
 use CommonBundle\Entity\User\Person,
     SyllabusBundle\Entity\Subject,
     DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    InvalidArgumentException,
+    Doctrine\ORM\Mapping as ORM,
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")
@@ -40,7 +41,7 @@ class Comment
     private $id;
 
     /**
-     * @var \DateTime The time the comment was created
+     * @var DateTime The time the comment was created
      *
      * @ORM\Column(type="datetime")
      */
@@ -54,7 +55,7 @@ class Comment
     private $text;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person that created the comment
+     * @var Person The person that created the comment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -62,7 +63,7 @@ class Comment
     private $person;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject of the comment
+     * @var Subject The subject of the comment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
      * @ORM\JoinColumn(name="subject", referencedColumnName="id")
@@ -77,7 +78,7 @@ class Comment
     private $type;
 
     /**
-     * @var boolean Flag whether this comment was read
+     * @var Person|null Flags whether this comment was read
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="read_by", referencedColumnName="id")
@@ -85,7 +86,7 @@ class Comment
     private $readBy;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\Reply", mappedBy="comment")
      * @ORM\OrderBy({"date" = "ASC"})
@@ -100,15 +101,13 @@ class Comment
     );
 
     /**
-     * @throws \InvalidArgumentException
-     *
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \CommonBundle\Entity\User\Person $person        The person that created the comment
-     * @param \SyllabusBundle\Entity\Subject   $subject       The subject of the comment
-     * @param string                           $text          The content of the comment
-     * @param string                           $type          The type of the comment
+     * @throws InvalidArgumentException
+     * @param  Person                   $person  The person that created the comment
+     * @param  Subject                  $subject The subject of the comment
+     * @param  string                   $text    The content of the comment
+     * @param  string                   $type    The type of the comment
      */
-    public function __construct(EntityManager $entityManager, Person $person, Subject $subject, $text, $type)
+    public function __construct(Person $person, Subject $subject, $text, $type)
     {
         $this->person = $person;
         $this->text = $text;
@@ -116,11 +115,14 @@ class Comment
         $this->subject = $subject;
 
         if (!self::isValidCommentType($type))
-            throw new \InvalidArgumentException('The comment type is not valid.');
+            throw new InvalidArgumentException('The comment type is not valid.');
         $this->type = $type;
+
+        $this->replies = new ArrayCollection();
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidCommentType($type)
@@ -137,7 +139,7 @@ class Comment
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -161,7 +163,7 @@ class Comment
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -169,7 +171,7 @@ class Comment
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return Subject
      */
     public function getSubject()
     {
@@ -193,8 +195,8 @@ class Comment
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person|null  $readBy
-     * @return \SyllabusBundle\Entity\Subject\Comment
+     * @param  Person|null $readBy
+     * @return Comment
      */
     public function setReadBy(Person $readBy = null)
     {
@@ -204,7 +206,7 @@ class Comment
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person|null
      */
     public function getReadBy()
     {
@@ -212,7 +214,7 @@ class Comment
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return ArrayCollection
      */
     public function getReplies()
     {

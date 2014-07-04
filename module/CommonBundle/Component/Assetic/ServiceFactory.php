@@ -29,7 +29,7 @@ class ServiceFactory extends \AsseticBundle\ServiceFactory
         $asseticService = parent::createService($serviceLocator);
         $filterManager = $asseticService->getFilterManager();
 
-        $configuration = $serviceLocator->get('Config');
+        $configuration = (array) $serviceLocator->get('Config');
         $configuration = array_key_exists('assetic_filters', $configuration)
             ? $configuration['assetic_filters']
             : array();

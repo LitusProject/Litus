@@ -93,11 +93,12 @@ class User
     /**
      * Write data to the user
      *
-     * @param mixed $data
+     * @param string $data
      */
     public function write($data)
     {
-        for ($written = 0 ; $written < strlen($data) ; $written += $fwrite) {
+        $len = strlen($data);
+        for ($written = 0; $written < $len; $written += $fwrite) {
             $fwrite = fwrite($this->_socket, substr($data, $written));
             if ($fwrite === false || $fwrite === 0) {
                 return $written;
@@ -110,7 +111,7 @@ class User
     /**
      * Create the buffer for fragmented frames
      *
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param Frame $frame
      */
     public function createBuffer(Frame $frame)
     {
@@ -120,9 +121,9 @@ class User
     /**
      * Append data to the buffer for fragmented frames
      *
-     * @param \CommonBundle\Component\WebSocket\Frame $frame
+     * @param Frame $frame
      */
-    public function appendBuffer($frame)
+    public function appendBuffer(Frame $frame)
     {
         $this->_buffer->appendData($frame->getData());
     }
@@ -138,7 +139,7 @@ class User
     /**
      * Return the complete message of the user
      *
-     * @return mixed
+     * @return Frame|null
      */
     public function getBuffer()
     {
@@ -149,7 +150,7 @@ class User
      * @param string $key
      * @param mixed  $value
      *
-     * @return \CommonBundle\Component\WebSocket\User
+     * @return self
      */
     public function setExtraData($key, $value)
     {
@@ -161,7 +162,7 @@ class User
     /**
      * @param string $key
      *
-     * @return mixed
+     * @return string
      */
     public function getExtraData($key)
     {
@@ -171,7 +172,7 @@ class User
     /**
      * @param string $key
      *
-     * @return \CommonBundle\Component\WebSocket\User
+     * @return self
      */
     public function removeExtraData($key)
     {

@@ -34,7 +34,8 @@ class Log extends \CommonBundle\Component\Lilo\Data
     /**
      * Construct a new Exception object.
      *
-     * @param \Exception $exception The exception that should be formatted
+     * @param string $message
+     * @param string $tags
      */
     public function __construct($message, $tags)
     {

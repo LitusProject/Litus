@@ -18,12 +18,12 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
     Zend\View\Model\ViewModel,
@@ -92,9 +92,13 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
-        if ($form->isValid() && $upload->isValid()) {
+        $date = self::_loadDate($formData['date']);
+
+        if ($form->isValid() && $upload->isValid() && $date) {
             $formData = $form->getFormData($formData);
 
             $publicFilePath = $this->getEntityManager()
@@ -106,7 +110,6 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('publication.public_pdf_directory');
 
-            $fileName = '';
             do {
                 $fileName = sha1(uniqid());
             } while (file_exists($filePath . $fileName));
@@ -115,12 +118,15 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('PublicationBundle\Entity\Edition\Pdf')
                 ->findOneById($formData['pdf_version']);
 
+            $host = (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https' : 'http')
+                . '://'
+                . $this->getRequest()->getServer('HTTP_HOST');
             $html = preg_replace(
                 '/{{[ ]*pdfVersion[ ]*}}/',
-                ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePathPdf . $pdfVersion->getFileName(),
+                $host . $publicFilePathPdf . $pdfVersion->getFileName(),
                 preg_replace(
                     '/{{[ ]*imageUrl[ ]*}}/',
-                    ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $publicFilePath . $fileName,
+                    $host . $publicFilePath . $fileName,
                     $formData['html']
                 )
             );
@@ -130,14 +136,14 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 $this->getCurrentAcademicYear(),
                 $formData['title'],
                 $html,
-                DateTime::createFromFormat('d/m/Y', $formData['date']),
+                $date,
                 $fileName
             );
 
             if (!file_exists($filePath . $fileName))
                 mkdir($filePath . $fileName, 0775, true);
 
-            $zipFileName = $upload->getFileName();
+            $zipFileName = $upload->getFileName('file');
             $upload->receive();
 
             $zip = new ZipArchive;
@@ -147,12 +153,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 $zip->close();
                 unlink($zipFileName);
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'Something went wrong while extracting the archive!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'Something went wrong while extracting the archive!'
                 );
 
                 return new ViewModel(
@@ -170,12 +173,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->getEntityManager()->persist($edition);
             $this->getEntityManager()->flush();
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'Success',
-                    'The publication was succesfully created!'
-                )
+            $this->flashMessenger()->success(
+                'Success',
+                'The publication was succesfully created!'
             );
 
             return new ViewModel(
@@ -244,12 +244,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _getEdition()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the edition!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the edition!'
             );
 
             $this->redirect()->toRoute(
@@ -267,12 +264,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No edition with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No edition with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -291,12 +285,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the publication!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the publication!'
             );
 
             $this->redirect()->toRoute(
@@ -314,12 +305,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             ->findOneActiveById($this->getParam('id'));
 
         if (null === $publication) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No publication with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No publication with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -335,6 +323,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         return $publication;
     }
 
+    /**
+     * @param string $dir
+     */
     private function _rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
@@ -344,5 +335,14 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 unlink($file);
             }
         rmdir($dir);
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }
 }

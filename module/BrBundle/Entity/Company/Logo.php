@@ -115,6 +115,7 @@ class Logo
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidLogoType($type)
@@ -123,7 +124,7 @@ class Logo
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getId()
     {

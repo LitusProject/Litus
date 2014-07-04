@@ -18,10 +18,11 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CudiBundle\Entity\Sale\Article as SaleArticle,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")
@@ -73,7 +74,7 @@ abstract class Article
     private $yearPublished;
 
     /**
-     * @var \DateTime The time the article was created
+     * @var DateTime The time the article was created
      *
      * @ORM\Column(type="datetime")
      */
@@ -143,7 +144,7 @@ abstract class Article
     private $type;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
@@ -161,7 +162,7 @@ abstract class Article
     );
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @param string      $title              The title of the article
      * @param string      $authors            The authors of the article
@@ -192,6 +193,7 @@ abstract class Article
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidArticleType($type)
@@ -216,16 +218,16 @@ abstract class Article
     }
 
     /**
-     * @param string $title
-     *
-     * @return \CudiBundle\Entity\Article
+     * @param  string                   $title
+     * @throws InvalidArgumentException
+     * @return self
      */
     public function setTitle($title)
     {
         $title = trim($title);
 
         if (strlen($title) == 0)
-            throw new \InvalidArgumentException('The article title is not valid.');
+            throw new InvalidArgumentException('The article title is not valid.');
 
         $this->title = $title;
 
@@ -243,7 +245,7 @@ abstract class Article
     /**
      * @param string $authors
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setAuthors($authors)
     {
@@ -263,7 +265,7 @@ abstract class Article
     /**
      * @param string $publishers
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setPublishers($publishers)
     {
@@ -281,9 +283,9 @@ abstract class Article
     }
 
     /**
-     * @param string $yearPublished
+     * @param int $yearPublished
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setYearPublished($yearPublished)
     {
@@ -295,7 +297,7 @@ abstract class Article
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -303,9 +305,9 @@ abstract class Article
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -325,7 +327,7 @@ abstract class Article
     /**
      * @param integer $versionNumber
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setVersionNumber($versionNumber)
     {
@@ -345,7 +347,7 @@ abstract class Article
     /**
      * @param integer $isbn
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setISBN($isbn)
     {
@@ -368,7 +370,7 @@ abstract class Article
     /**
      * @param string $url
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setURL($url)
     {
@@ -388,13 +390,15 @@ abstract class Article
     /**
      * @param boolean $isHistory
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setIsHistory($isHistory)
     {
         $this->isHistory = $isHistory;
 
-        if ($saleArticle = $this->getSaleArticle() && $isHistory == true)
+        $saleArticle = $this->getSaleArticle();
+
+        if ($saleArticle instanceof SaleArticle && $isHistory == true)
             $saleArticle->setIsHistory(true);
 
         return $this;
@@ -411,7 +415,7 @@ abstract class Article
     /**
      * @param boolean $isProf
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setIsProf($isProf)
     {
@@ -423,7 +427,7 @@ abstract class Article
     /**
      * @param boolean $isDraft
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setIsDraft($isDraft)
     {
@@ -454,7 +458,7 @@ abstract class Article
     /**
      * @param boolean $downloadable
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setIsDownloadable($downloadable)
     {
@@ -474,7 +478,7 @@ abstract class Article
     /**
      * @param boolean $sameAsPreviousYear
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setIsSameAsPreviousYear($sameAsPreviousYear)
     {
@@ -494,7 +498,7 @@ abstract class Article
     /**
      * @param string $type
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setType($type)
     {
@@ -506,7 +510,7 @@ abstract class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return \CudiBundle\Entity\Sale\Article|null
      */
     public function getSaleArticle()
     {
@@ -519,9 +523,9 @@ abstract class Article
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -531,7 +535,7 @@ abstract class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     abstract public function duplicate();
 

@@ -405,7 +405,7 @@
             </button>
         {% endif %}
     {% else %}
-        {% if shift.canSignOut(entityManager, authenticatedPerson) %}
+        {% if shift.canSignOut(entityManager) %}
             <button class="btn btn-default btn-xs signOut" data-id="{{ shift.getId() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Sign Out') }}
             </button>

@@ -18,11 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
+use DateTime,
     MailBundle\Form\Admin\Cudi\Mail as MailForm,
     Markdown_Parser,
     Zend\Mail\Message,
@@ -162,12 +158,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         break;
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The mail was successfully sent!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The mail was successfully sent!'
                 );
 
                 $this->redirect()->toRoute(

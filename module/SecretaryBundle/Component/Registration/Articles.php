@@ -30,11 +30,11 @@ use CommonBundle\Entity\General\AcademicYear,
 class Articles
 {
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\Organization $organization
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param array                                     $options
+     * @param EntityManager $entityManager
+     * @param Academic      $academic
+     * @param Organization  $organization
+     * @param AcademicYear  $academicYear
+     * @param array         $options
      */
     public static function book(EntityManager $entityManager, Academic $academic, Organization $organization, AcademicYear $academicYear, $options = array())
     {

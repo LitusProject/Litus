@@ -19,8 +19,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\RoleAware,
-    CommonBundle\Component\Authentication\Authentication;
+    CommonBundle\Component\Acl\RoleAware;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -31,12 +30,12 @@ use CommonBundle\Component\Acl\Acl,
 class HasAccess
 {
     /**
-     * @var \CommonBundle\Component\Acl\Acl The ACL object
+     * @var Acl The ACL object
      */
     private $_acl = null;
 
     /**
-     * @var \CommonBundle\Component\Acl\RoleAware The authentication object
+     * @var RoleAware The authentication entity
      */
     private $_entity = null;
 
@@ -46,9 +45,9 @@ class HasAccess
     private $_authenticated = false;
 
     /**
-     * @param \CommonBundle\Component\Acl\Acl       $acl           The ACL object
-     * @param boolean                               $authenticated Whether the person is authenticated
-     * @param \CommonBundle\Component\Acl\RoleAware $entity        The authenticated entity
+     * @param Acl       $acl           The ACL object
+     * @param boolean   $authenticated Whether the person is authenticated
+     * @param RoleAware $entity        The authenticated entity
      */
     public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)
     {
@@ -58,9 +57,9 @@ class HasAccess
     }
 
     /**
-     * @param  string $resource The resource that should be verified
-     * @param  string $action   The module that should be verified
-     * @return bool
+     * @param  string       $resource The resource that should be verified
+     * @param  string       $action   The module that should be verified
+     * @return boolean|null
      */
     public function __invoke($resource, $action)
     {

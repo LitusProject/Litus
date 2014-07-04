@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks whether a user exists with the given name or id and whether
  * no driver is created for this user yet.
@@ -37,17 +35,6 @@ class Driver extends \CommonBundle\Component\Validator\Academic
         self::NO_SUCH_USER => 'The user doesn\'t exist',
         self::DRIVER_EXISTS => 'A driver already exists for that user',
     );
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options. An additional option 'byId' can be set
-     *                                                   to indicate whether a user id or user name is validated. By default
-     *                                                   this is false, indicating search by user name.
-     */
-    public function __construct(EntityManager $entityManager, $opts = null)
-    {
-        parent::__construct($entityManager, $opts);
-    }
 
     /**
      * Returns true if a person exists for this value, but no driver exists for that person.

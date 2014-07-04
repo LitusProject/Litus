@@ -22,7 +22,8 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Article,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Comment\Comment")
@@ -40,7 +41,7 @@ class Comment
     private $id;
 
     /**
-     * @var \DateTime The time the comment was created
+     * @var DateTime The time the comment was created
      *
      * @ORM\Column(type="datetime")
      */
@@ -54,7 +55,7 @@ class Comment
     private $text;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person that created the comment
+     * @var Person The person that created the comment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -78,13 +79,13 @@ class Comment
     );
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \CommonBundle\Entity\User\Person $person        The person that created the comment
-     * @param \CudiBundle\Entity\Article       $article       The article of the comment
-     * @param string                           $text          The content of the comment
-     * @param string                           $type          The type of the comment
+     * @param EntityManager $entityManager
+     * @param Person        $person        The person that created the comment
+     * @param Article       $article       The article of the comment
+     * @param string        $text          The content of the comment
+     * @param string        $type          The type of the comment
      */
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $text, $type)
     {
@@ -95,11 +96,12 @@ class Comment
         $entityManager->persist(new Mapping($article, $this));
 
         if (!self::isValidCommentType($type))
-            throw new \InvalidArgumentException('The comment type is not valid.');
+            throw new InvalidArgumentException('The comment type is not valid.');
         $this->type = $type;
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidCommentType($type)
@@ -116,7 +118,7 @@ class Comment
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -140,7 +142,7 @@ class Comment
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

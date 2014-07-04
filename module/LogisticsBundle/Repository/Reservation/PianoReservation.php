@@ -177,11 +177,11 @@ class PianoReservation extends EntityRepository
      * Finds all resources conflicting with the given start and end date for the given resource. Additionally, one id can be ignored to avoid conflicts with
      * the resource itself.
      *
-     * @param  \DateTime                                              $startDate
-     * @param  \DateTime                                              $endDate
-     * @param  \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param  int                                                    $ignoreId
-     * @return array
+     * @param  DateTime                 $startDate
+     * @param  DateTime                 $endDate
+     * @param  ReservableResourceEntity $resource
+     * @param  int                      $ignoreId
+     * @return \Doctrine\ORM\Query
      */
     public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId)
     {

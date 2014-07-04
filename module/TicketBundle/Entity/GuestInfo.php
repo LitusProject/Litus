@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the guest info item.

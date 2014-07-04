@@ -18,8 +18,7 @@
 
 namespace PageBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Node\Page,
+use PageBundle\Entity\Node\Page,
     PageBundle\Entity\Node\Translation,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
@@ -132,12 +131,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The page was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The page was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -261,12 +257,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The page was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The page was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -312,40 +305,41 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
-                    $_POST['type'] !== 'file') {
-                return new ViewModel();
-            }
-
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('page.file_path') . '/';
-
             $upload = new FileUpload();
 
-            $fileName = '';
-            do {
-                $fileName = sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ('image' == $formData['type'])
+                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            if ($upload->isValid()) {
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('page.file_path') . '/';
 
-            $url = $this->url()->fromRoute(
-                'page_file',
-                array(
-                    'name' => $fileName,
-                )
-            );
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
 
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'name' => $url,
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
+                $url = $this->url()->fromRoute(
+                    'page_file',
+                    array(
+                        'name' => $fileName,
                     )
-                )
-            );
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'name' => $url,
+                        )
+                    )
+                );
+            }
         }
+
+        return new ViewModel();
     }
 
     public function searchAction()
@@ -396,12 +390,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     private function _getPage()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the page!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the page!'
             );
 
             $this->redirect()->toRoute(
@@ -419,12 +410,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $page) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No page with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No page with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -438,12 +426,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this page!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this page!'
             );
 
             $this->redirect()->toRoute(

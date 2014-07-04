@@ -29,7 +29,7 @@ return array(
     'Runner Two' => 'Loper Twee',
     'Runner Three' => 'Loper Drie',
     'Runner Four' => 'Loper Vier',
-    'Runner Five' => 'Runner Vijf',
+    'Runner Five' => 'Loper Vijf',
 
     'Group Name' => 'Groepsnaam',
     'First Happy Hour' => 'Eerste Happy Hour',

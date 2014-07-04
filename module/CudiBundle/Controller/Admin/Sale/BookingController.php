@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Component\Mail\Booking as BookingMail,
+use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
@@ -30,7 +29,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateTime,
     DateInterval,
-    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -177,12 +175,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The booking was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The booking was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -266,12 +261,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The booking was successfully removed!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The booking was successfully removed!'
         );
 
         $this->redirect()->toRoute(
@@ -294,15 +286,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
         if ($available <= 0) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The booking could not be assigned! Not enough articles in stock.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The booking could not be assigned! Not enough articles in stock.'
             );
 
-            $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+            $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
             return new ViewModel();
         }
@@ -317,8 +306,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             );
             $this->getEntityManager()->persist($new);
             $booking->setNumber($this->getParam('number'));
-        } else {
-            $number = $booking->getNumber();
         }
 
         if ($available < $booking->getNumber()) {
@@ -339,15 +326,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The booking was successfully assigned!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The booking was successfully assigned!'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -373,15 +357,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The booking was successfully unassigned!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The booking was successfully unassigned!'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -394,15 +375,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $booking->setStatus('expired', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The booking was successfully expired!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The booking was successfully expired!'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -422,15 +400,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The booking was successfully extended!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The booking was successfully extended!'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -488,15 +463,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                '<b>' . $number . '</b> items of this booking were successfully returned!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            '<b>' . $number . '</b> items of this booking were successfully returned!'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -516,15 +488,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         else
             $message = 'There are <b>' . $number . '</b> bookings removed!';
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                $message
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            $message
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -542,15 +511,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         else
             $message = 'There are <b>' . $number . '</b> bookings assigned!';
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                $message
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            $message
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -570,15 +536,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         else
             $message = 'There are <b>' . $number . '</b> bookings expired!';
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                $message
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            $message
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -604,15 +567,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         else
             $message = 'There are <b>' . $number . '</b> bookings extended!';
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                $message
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            $message
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -764,6 +724,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param string $type
+     */
     private function _search(Period $activePeriod, $type)
     {
         switch ($this->getParam('field')) {
@@ -782,6 +745,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return Period
+     */
     private function _getPeriod()
     {
         if (null === $this->getParam('period')) {
@@ -793,12 +759,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('period'));
 
         if (null === $period) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No period with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No period with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -817,12 +780,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getBooking()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the booking!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the booking!'
             );
 
             $this->redirect()->toRoute(
@@ -840,12 +800,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $booking) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No booking with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No booking with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -872,12 +829,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No person with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No person with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -904,12 +858,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -928,12 +879,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getLog()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the log!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the log!'
             );
 
             $this->redirect()->toRoute(
@@ -951,12 +899,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $log) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No log with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No log with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

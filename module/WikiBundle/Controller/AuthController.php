@@ -18,8 +18,7 @@
 
 namespace WikiBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     WikiBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
@@ -43,12 +42,9 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 return new ViewModel();
             }
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::NOTICE,
-                    'Notice',
-                    'You have to login again to go the wiki.'
-                )
+            $this->flashMessenger()->notice(
+                'Notice',
+                'You have to login again to go the wiki.'
             );
 
             $form->setUsername(
@@ -74,22 +70,16 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                         throw new \Exception('Impossible state: logged in but not externally visible');
                     }
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'You have been successfully logged in!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'You have been successfully logged in!'
                     );
 
                     $this->redirectAfterAuthentication();
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'You could not be logged in!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'You could not be logged in!'
                     );
 
                     $this->redirect()->toRoute(
@@ -148,7 +138,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()

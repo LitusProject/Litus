@@ -18,14 +18,13 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\File\Add as AddForm,
-    Doctrine\ORM\EntityManager,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -116,7 +115,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -125,9 +126,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
 
-            $originalName = $upload->getFileName(null, false);
+            $originalName = $upload->getFileName('file', false);
 
-            $fileName = '';
             do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
@@ -233,12 +233,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -257,12 +254,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -282,12 +276,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     private function _getFileMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the file!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the file!'
             );
 
             $this->redirect()->toRoute(
@@ -306,12 +297,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->findOneById($this->getParam('id'));
 
         if (null === $file) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No file with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No file with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Admin\Config\Edit as EditForm,
+use CommonBundle\Form\Admin\Config\Edit as EditForm,
     CommonBundle\Entity\General\Config,
     Zend\View\Model\ViewModel;
 
@@ -81,12 +80,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The configuration entry was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The configuration entry was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -108,15 +104,15 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Config|null
+     */
     private function _getEntry()
     {
         if (null === $this->getParam('key')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No key was given to identify the configuration entry!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No key was given to identify the configuration entry!'
             );
 
             $this->redirect()->toRoute(
@@ -134,12 +130,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneByKey($this->getParam('key'));
 
         if (null === $role) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No configuraiton entry with the given key was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No configuration entry with the given key was found!'
             );
 
             $this->redirect()->toRoute(

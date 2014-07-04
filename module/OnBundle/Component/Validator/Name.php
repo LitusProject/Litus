@@ -18,7 +18,8 @@
 
 namespace OnBundle\Component\Validator;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentManager,
+    OnBundle\Document\Slug;
 
 /**
  * Checks whether a slug name already exists.
@@ -30,12 +31,12 @@ class Name extends \Zend\Validator\AbstractValidator
     const TITLE_EXISTS = 'nameExists';
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance
+     * @var DocumentManager The DocumentManager instance
      */
     protected $_documentManager = null;
 
     /**
-     * @var int The slug to ignore
+     * @var Slug The slug to ignore
      */
     private $_slug;
 
@@ -47,11 +48,11 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param \OnBundle\Document\Slug               $slug            The slug that should be ignored when checking for duplicate names
-     * @param mixed                                 $opts            The validator's options.
+     * @param DocumentManager $documentManager The DocumentManager instance
+     * @param Slug|null       $slug            The slug that should be ignored when checking for duplicate names
+     * @param mixed           $opts            The validator's options.
      */
-    public function __construct(DocumentManager $documentManager, $slug = null, $opts = array())
+    public function __construct(DocumentManager $documentManager, Slug $slug = null, $opts = array())
     {
         parent::__construct($opts);
 

@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Form\Admin\Study\Add as AddForm,
     SyllabusBundle\Form\Admin\Study\Edit as EditForm,
@@ -93,12 +92,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The study was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The study was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -139,7 +135,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $study);
 
-        if ($this->getRequest()->isPost() && $this->hasAccess()->resourceAction('syllabus_admin_study', 'add')) {
+        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'add')) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
@@ -158,12 +154,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The study was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The study was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -332,12 +325,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -355,12 +345,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -379,12 +366,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getStudy()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the study!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the study!'
             );
 
             $this->redirect()->toRoute(
@@ -402,12 +386,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $study) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No study with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No study with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -431,12 +412,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

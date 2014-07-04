@@ -44,7 +44,7 @@ class AcademicYearMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person
+     * @var Academic The person
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="organizationMap")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -52,7 +52,7 @@ class AcademicYearMap
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year
+     * @var AcademicYear The academic year
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -60,7 +60,7 @@ class AcademicYearMap
     private $academicYear;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization The organization
+     * @var Organization The organization
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
      * @ORM\JoinColumn(name="organization", referencedColumnName="id")
@@ -68,9 +68,9 @@ class AcademicYearMap
     private $organization;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $person       The person
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
-     * @param \CommonBundle\Entity\General\Organization $organization The organization
+     * @param Academic     $academic     The person
+     * @param AcademicYear $academicYear The academic year
+     * @param Organization $organization The organization
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
@@ -88,7 +88,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -96,7 +96,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -104,7 +104,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization
+     * @return Organization
      */
     public function getOrganization()
     {
@@ -112,8 +112,8 @@ class AcademicYearMap
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Organization                     $organization
-     * @return \CommonBundle\Entity\User\Person\Organization\AcademicYearMap
+     * @param  Organization $organization
+     * @return self
      */
     public function setOrganization(Organization $organization)
     {

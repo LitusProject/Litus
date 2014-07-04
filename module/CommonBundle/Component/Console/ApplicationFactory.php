@@ -26,7 +26,7 @@ class ApplicationFactory extends \DoctrineModule\Service\CliFactory
 {
     /**
      * {@inheritDoc}
-     * @return \Symfony\Component\Console\Application
+     * @return Application
      */
     public function createService(ServiceLocatorInterface $sl)
     {

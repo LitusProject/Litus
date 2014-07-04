@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Session\Restriction,
+use CudiBundle\Entity\Sale\Session\Restriction,
     CudiBundle\Form\Admin\Sales\Session\Restriction\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -57,12 +56,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The restriction was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The restriction was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -106,12 +102,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the session!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the session!'
             );
 
             $this->redirect()->toRoute(
@@ -129,12 +122,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $session) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No session with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No session with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -153,12 +143,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the restriction!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the restriction!'
             );
 
             $this->redirect()->toRoute(
@@ -176,12 +163,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $restriction) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No restriction with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No restriction with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

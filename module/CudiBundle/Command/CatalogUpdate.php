@@ -51,8 +51,8 @@ EOT
 
         $this->_findAllBookable($subjects, $date, $academicYear);
         $this->_findAllUnbookable($subjects, $date, $academicYear);
-        $this->_findAllAdded($subjects, $date, $academicYear);
-        $this->_findAllRemoved($subjects, $date, $academicYear);
+        $this->_findAllAdded($subjects, $date);
+        $this->_findAllRemoved($subjects, $date);
 
         $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
 
@@ -124,7 +124,7 @@ EOT
         }
     }
 
-    private function _findAllAdded(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function _findAllAdded(array $subjects, DateTime $date)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
@@ -149,7 +149,7 @@ EOT
         }
     }
 
-    private function _findAllRemoved(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function _findAllRemoved(array $subjects, DateTime $date)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
             ->findAllAfter($date);

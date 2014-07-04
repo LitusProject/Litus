@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
+use CudiBundle\Form\Sale\Queue\SignIn as SignInForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -58,7 +56,8 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findBy(array(), array('name' => 'ASC'));
 
-        for ($i = 0 ; $i < sizeof($payDesks) ; $i++) {
+        $nbPayDesks = sizeof($payDesks);
+        for ($i = 0; $i < $nbPayDesks; $i++) {
             if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0)
                 unset($payDesks[$i]);
         }

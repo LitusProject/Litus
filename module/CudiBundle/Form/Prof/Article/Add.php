@@ -21,6 +21,7 @@ namespace CudiBundle\Form\Prof\Article;
 use CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
     CudiBundle\Entity\Article,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
@@ -39,13 +40,13 @@ use CommonBundle\Component\Validator\Uri as UriValidator,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -185,7 +186,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'internal' => $article->isInternal()
         );
 
-        if ($article->isInternal()) {
+        if ($article instanceof InternalArticle) {
             $data['binding'] = $article->getBinding()->getId();
             $data['rectoverso'] = $article->isRectoVerso();
             $data['perforated'] = $article->isPerforated();

@@ -69,7 +69,6 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         if (!file_exists($filePath . $poster))
             return $this->error(500, 'The poster file does not exist');
 
-        $posterData = null;
         if (!file_exists($filePath . $poster . '_thumb')) {
             $image = new Imagick($filePath . $poster);
             $image->scaleImage(1136, 1136, true);
@@ -92,6 +91,9 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return string|null
+     */
     private function _getPoster()
     {
         if (null !== $this->getRequest()->getPost('poster'))

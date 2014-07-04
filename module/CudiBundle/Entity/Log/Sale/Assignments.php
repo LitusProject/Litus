@@ -28,8 +28,8 @@ use CommonBundle\Entity\User\Person,
 class Assignments extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param array                            $assignments
+     * @param Person $person
+     * @param array  $assignments
      */
     public function __construct(Person $person, $assignments)
     {

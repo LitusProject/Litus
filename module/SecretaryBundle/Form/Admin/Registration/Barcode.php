@@ -34,19 +34,19 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Barcode extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person we're going to assign a barcode
+     * @var Person The person we're going to assign a barcode
      */
     protected $_person = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person        The person we're going to assign a barcode
-     * @param null|string|int                  $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Person          $person        The person we're going to assign a barcode
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $person, $name = null)
     {
@@ -59,8 +59,8 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
             ->setAttribute('autofocus', true)
-            ->setValue($person->getBarcode() ? $person->getBarcode()->getBarcode() : '')
-            ->setRequired();
+            ->setRequired()
+            ->setValue($person->getBarcode() ? $person->getBarcode()->getBarcode() : '');
         $this->add($field);
 
         $field = new Submit('submit');

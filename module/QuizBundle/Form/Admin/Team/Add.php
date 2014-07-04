@@ -35,18 +35,18 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz the team will belong to
+     * @var Quiz The quiz the team will belong to
      */
     protected $_quiz = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Quiz     $quiz
+     * @param EntityManager $entityManager
+     * @param Quiz          $quiz
      * @var null|string|int $name Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * Populates the form with values from the entity
      *
-     * @param \QuizBundle\Entity\Team $team
+     * @param Team $team
      */
     public function populateFromTeam(Team $team)
     {

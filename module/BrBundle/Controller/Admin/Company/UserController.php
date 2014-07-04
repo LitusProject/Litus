@@ -22,7 +22,6 @@ use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     BrBundle\Form\Admin\Company\User\Add as AddForm,
     BrBundle\Form\Admin\Company\User\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Credential,
     Zend\View\Model\ViewModel;
 
 /**
@@ -219,6 +218,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return \BrBundle\Entity\Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -266,6 +268,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         return $company;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person\Corporate
+     */
     private function _getUser()
     {
         if (null === $this->getParam('id')) {
@@ -287,11 +292,11 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $company = $this->getEntityManager()
+        $corporate = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($this->getParam('id'));
 
-        if (null === $company) {
+        if (null === $corporate) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
@@ -310,6 +315,6 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        return $company;
+        return $corporate;
     }
 }
