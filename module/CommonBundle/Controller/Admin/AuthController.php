@@ -114,7 +114,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
@@ -158,6 +158,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return string
+     */
     private function _getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
@@ -173,12 +176,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '?source=admin';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $server = $this->getRequest()->getServer();
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

@@ -28,8 +28,8 @@ use CommonBundle\Entity\User\Person,
 class Cancellations extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param array                            $cancellations
+     * @param Person $person
+     * @param array  $cancellations
      */
     public function __construct(Person $person, $cancellations)
     {

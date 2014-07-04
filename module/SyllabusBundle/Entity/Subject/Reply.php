@@ -20,7 +20,6 @@ namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +38,7 @@ class Reply
     private $id;
 
     /**
-     * @var \DateTime The time the reply was created
+     * @var DateTime The time the reply was created
      *
      * @ORM\Column(type="datetime")
      */
@@ -53,7 +52,7 @@ class Reply
     private $text;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person that created the reply
+     * @var Person The person that created the reply
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -61,7 +60,7 @@ class Reply
     private $person;
 
     /**
-     * @var \SyllabusBundle\Entity\Comment The comment of the reply
+     * @var Comment The comment of the reply
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject\Comment", inversedBy="replies")
      * @ORM\JoinColumn(name="comment", referencedColumnName="id")
@@ -69,14 +68,11 @@ class Reply
     private $comment;
 
     /**
-     * @throws \InvalidArgumentException
-     *
-     * @param \Doctrine\ORM\EntityManager            $entityManager
-     * @param \CommonBundle\Entity\User\Person       $person        The person that created the reply
-     * @param \SyllabusBundle\Entity\Subject\Comment $comment       The comment of the reply
-     * @param string                                 $text          The content of the reply
+     * @param Person  $person  The person that created the reply
+     * @param Comment $comment The comment of the reply
+     * @param string  $text    The content of the reply
      */
-    public function __construct(EntityManager $entityManager, Person $person, Comment $comment, $text)
+    public function __construct(Person $person, Comment $comment, $text)
     {
         $this->person = $person;
         $this->text = $text;
@@ -93,7 +89,7 @@ class Reply
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -117,7 +113,7 @@ class Reply
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -125,7 +121,7 @@ class Reply
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject\Comment
+     * @return Comment
      */
     public function getComment()
     {
@@ -145,6 +141,6 @@ class Reply
      */
     public function getType()
     {
-        return $this->type;
+        return $this->comment->getType();
     }
 }

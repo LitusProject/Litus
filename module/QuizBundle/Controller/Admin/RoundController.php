@@ -279,7 +279,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Round
+     * @return null|Round
      */
     private function _getRound()
     {

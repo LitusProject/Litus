@@ -19,11 +19,7 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Form\Auth\Login as LoginForm,
-    DateInterval,
-    DateTime,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -36,7 +32,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                                                          $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -85,6 +81,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      * Create the full Shibboleth URL.
      *
      * @return string
+     * @throws ShibbolethUrlException
      */
     private function _getShibbolethUrl()
     {
@@ -101,12 +98,15 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '?source=prof';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $server = $this->getRequest()->getServer();
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

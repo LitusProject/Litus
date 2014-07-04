@@ -30,8 +30,8 @@ use CommonBundle\Entity\User\Person,
 class Unbookable extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \CudiBundle\Entity\Sale\Article  $article
+     * @param Person  $person
+     * @param Article $article
      */
     public function __construct(Person $person, Article $article)
     {
@@ -39,7 +39,8 @@ class Unbookable extends \CudiBundle\Entity\Log
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @param  EntityManager $entityManager
+     * @return Article
      */
     public function getArticle(EntityManager $entityManager)
     {

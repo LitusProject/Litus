@@ -159,6 +159,9 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Supplier
+     */
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {

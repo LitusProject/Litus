@@ -205,6 +205,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         return $subject;
     }
 
+    /**
+     * @return StudySubjectMap
+     */
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {

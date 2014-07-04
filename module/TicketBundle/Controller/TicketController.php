@@ -19,8 +19,9 @@
 namespace TicketBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Person,
     TicketBundle\Component\Ticket\Ticket as TicketBook,
+    TicketBundle\Entity\Event,
+    TicketBundle\Entity\Ticket,
     TicketBundle\Form\Ticket\Book as BookForm,
     Zend\View\Model\ViewModel;
 
@@ -95,7 +96,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'event' => $event,
                 'tickets' => $tickets,
                 'form' => $form,
-                'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager(), $this->getAuthentication()->getPersonObject()),
+                'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
                 'isPraesidium' => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
             )
         );
@@ -122,6 +123,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id'))
@@ -137,6 +141,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         return $event;
     }
 
+    /**
+     * @return Ticket|null
+     */
     private function _getTicket()
     {
         if (null === $this->getParam('id'))

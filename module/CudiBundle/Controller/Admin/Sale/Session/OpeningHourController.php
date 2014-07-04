@@ -23,6 +23,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,12 +75,15 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start']);
+            $endDate = self::_loadDate($formData['end']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $openingHour = new OpeningHour(
-                    \DateTime::createFromFormat('d#m#Y H#i', $formData['start']),
-                    \DateTime::createFromFormat('d#m#Y H#i', $formData['end']),
+                    $startDate,
+                    $endDate,
                     $this->getAuthentication()->getPersonObject()
                 );
                 $this->getEntityManager()->persist($openingHour);
@@ -139,11 +143,14 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start']);
+            $endDate = self::_loadDate($formData['end']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
-                $openingHour->setStart(\DateTime::createFromFormat('d#m#Y H#i', $formData['start']))
-                    ->setEnd(\DateTime::createFromFormat('d#m#Y H#i', $formData['end']));
+                $openingHour->setStart($startDate)
+                    ->setEnd($endDate);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -257,5 +264,14 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $openingHour;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

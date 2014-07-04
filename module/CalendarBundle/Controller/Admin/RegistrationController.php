@@ -18,8 +18,7 @@
 
 namespace CalendarBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\Http\Headers,
+use Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**

@@ -106,7 +106,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()

@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Supplier;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController

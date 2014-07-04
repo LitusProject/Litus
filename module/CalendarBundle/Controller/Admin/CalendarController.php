@@ -27,9 +27,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
     Zend\Http\Headers,
-    Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
+    Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -81,15 +80,12 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $event = new Event(
-                    $this->getAuthentication()->getPersonObject(),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) === false
-                        ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date'])
-                );
+                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
                 $this->getEntityManager()->persist($event);
 
                 $languages = $this->getEntityManager()
@@ -153,11 +149,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+
+            if ($form->isValid() && $startDate) {
                 $formData = $form->getFormData($formData);
 
-                $event->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']) == false ? null : DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                $event->setStartDate($startDate)
+                    ->setEndDate(self::_loadDate($formData['end_date']));
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -275,23 +273,19 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 ->getConfigValue('calendar.poster_path');
 
             $upload = new FileTransfer();
-            $upload->setValidators($form->getInputFilter()->get('poster')->getValidatorChain()->getValidators());
+            $inputFilter = $form->getInputFilter()->get('poster');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
-
-                $fileName = '';
-                do {
-                    $fileName = '/' . sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
+                $image = new Imagick($upload->getFileName('poster'));
+                unlink($upload->getFileName('poster'));
 
                 if ($event->getPoster() != '' || $event->getPoster() !== null) {
                     $fileName = '/' . $event->getPoster();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
@@ -370,6 +364,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
@@ -417,6 +414,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return $event;
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEventByPoster()
     {
         if (null === $this->getParam('id')) {
@@ -462,5 +462,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

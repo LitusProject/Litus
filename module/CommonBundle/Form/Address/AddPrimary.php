@@ -23,7 +23,6 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     Doctrine\ORM\EntityManager,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
@@ -34,12 +33,12 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
 class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \Zend\Cache\Storage\StorageInterface The cache instance
+     * @var CacheStorage The cache instance
      */
     protected $_cache = null;
 
@@ -54,11 +53,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private $_required;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface $cache         The cache instance
-     * @param \Doctrine\ORM\EntityManager          $entityManager The EntityManager instance
-     * @param string                               $prefix
-     * @param null|string|int                      $name          Optional name for the element
-     * @param boolean                              $required      Whether or not the address is required
+     * @param CacheStorage  $cache         The cache instance
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $prefix
+     * @param string        $name          Optional name for the element
+     * @param boolean       $required      Whether or not the address is required
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)
     {

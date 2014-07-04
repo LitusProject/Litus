@@ -22,7 +22,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
-    DateTime,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
     Zend\View\Model\ViewModel;
 

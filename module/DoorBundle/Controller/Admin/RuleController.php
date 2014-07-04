@@ -58,7 +58,10 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -67,9 +70,6 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
                 $academic = ('' == $formData['academic_id'])
                     ? $repository->findOneByUsername($formData['academic'])
                     : $repository->findOneById($formData['academic_id']);
-
-                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
                 $rule = new Rule(
                     $startDate,
@@ -119,16 +119,22 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
+
+                $repository = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person');
 
                 $person = ('' == $formData['person_id'])
                     ? $repository->findOneByUsername($formData['person'])
                     : $repository->findOneById($formData['person_id']);
 
-                $slug->setPerson($person)
-                    ->setStartDate(new DateTime($formData['start_date']))
-                    ->setEndDate(new DateTime($formData['end_date']))
+                $rule->setAcademic($person)
+                    ->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setStartTime(str_replace(':', '', $formData['start_time']))
                     ->setEndTime(str_replace(':', '', $formData['end_time']));
 
@@ -178,6 +184,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return Rule
+     */
     private function _getRule()
     {
         if (null === $this->getParam('id')) {
@@ -256,6 +265,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             'dataset' => array()
         );
 
+        $data = array();
         for ($i = 0; $i < 7; $i++) {
             $today = new DateTime('midnight');
             $labelDate = $today->sub(new DateInterval('P' . $i . 'D'));
@@ -276,5 +286,14 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $logGraphData;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

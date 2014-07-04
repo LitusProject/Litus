@@ -19,7 +19,6 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
@@ -297,7 +296,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getConfigValue('shift.mail_name');
 
                     if (!($language = $volunteer->getPerson()->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 
@@ -358,7 +358,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canSignOut($this->getEntityManager(), $person))) {
+        if (!($shift->canSignOut($this->getEntityManager()))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')
@@ -458,6 +458,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -470,6 +473,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getRequest()->getPost('person'))

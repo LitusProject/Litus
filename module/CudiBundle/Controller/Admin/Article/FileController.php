@@ -26,6 +26,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CudiBundle\Form\Admin\Article\File\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -86,7 +87,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -95,9 +98,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
 
-            $originalName = $upload->getFileName(null, false);
+            $originalName = $upload->getFileName('file', false);
 
-            $fileName = '';
             do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
@@ -375,6 +377,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\File\Mapping
+     */
     private function _getFileMapping()
     {
         if (null === $this->getParam('id')) {

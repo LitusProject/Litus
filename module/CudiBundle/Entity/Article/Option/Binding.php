@@ -51,6 +51,7 @@ class Binding
 
     /**
      * @param string $name
+     * @param string $code
      */
     public function __construct($code, $name)
     {

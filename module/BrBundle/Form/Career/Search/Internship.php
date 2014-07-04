@@ -20,7 +20,6 @@ namespace BrBundle\Form\Career\Search;
 
 use BrBundle\Entity\Company,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 

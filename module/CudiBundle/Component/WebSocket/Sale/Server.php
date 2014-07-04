@@ -19,9 +19,7 @@
 namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -33,17 +31,17 @@ use CommonBundle\Component\Acl\Acl,
 class Server extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CudiBundle\Component\Websocket\Sale\Queue
+     * @var Queue
      */
     private $_queue;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -60,8 +58,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {
@@ -106,10 +104,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                         ->getRepository('CommonBundle\Entity\User\Session')
                         ->findOneById($command->authSession);
 
+                    $allowed = false;
                     if ($authSession) {
                         $acl = new Acl($this->_entityManager);
 
-                        $allowed = false;
                         foreach ($authSession->getPerson()->getRoles() as $role) {
                             if (
                                 $role->isAllowed(
@@ -144,11 +142,21 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Parse received binary
+     *
+     * @param User   $user
+     * @param string $data
+     */
+    protected function gotBin(User $user, $data)
+    {
+    }
+
+    /**
      * Do action when user closed his socket
      *
-     * @param \CommonBundle\Component\WebSocket\User $user
-     * @param integer                                $statusCode
-     * @param string                                 $reason
+     * @param User    $user
+     * @param integer $statusCode
+     * @param string  $reason
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -158,9 +166,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
+     * Do action when a new user has connected to this socket
+     *
+     * @param User $user
+     */
+    protected function onConnect(User $user)
+    {
+    }
+
+    /**
      * Send queue to one user
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
+     * @param User $user
      */
     private function sendQueue(User $user)
     {
@@ -219,24 +236,22 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param mixed                                        $command
+     * @param User  $user
+     * @param mixed $command
      */
     private function _gotAction(User $user, $command)
     {
         if (null == $user->getExtraData('session'))
             return;
 
-        $session = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($user->getExtraData('session'));
-
         switch ($command->action) {
             case 'signIn':
-                $this->sendQueueToAll($this->_signIn($user, $command->universityIdentification));
+                $id = $this->_signIn($user, $command->universityIdentification);
+                $this->sendQueueItemToAll($id);
                 break;
             case 'addToQueue':
-                $this->sendQueueItemToAll($this->_addToQueue($user, $command->universityIdentification));
+                $id = $this->_addToQueue($user, $command->universityIdentification);
+                $this->sendQueueItemToAll($id);
                 break;
             case 'startCollecting':
                 $this->_startCollecting($user, $command->id);
@@ -247,11 +262,11 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelCollecting':
-                $this->_cancelCollecting($user, $command->id);
+                $this->_cancelCollecting($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'stopCollecting':
-                $this->_stopCollecting($user, $command->id, isset($command->articles) ? $command->articles : null);
+                $this->_stopCollecting($command->id, isset($command->articles) ? $command->articles : null);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'startSale':
@@ -259,7 +274,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelSale':
-                $this->_cancelSale($user, $command->id);
+                $this->_cancelSale($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'concludeSale':
@@ -285,14 +300,6 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->sendQueueItemToAll($command->id);
                 break;
         }
-    }
-
-    /**
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    private function _getCurrentAcademicYear()
-    {
-        return AcademicYear::getUniversityYear($this->_entityManager);
     }
 
     private function _signIn(User $user, $universityIdentification)
@@ -366,12 +373,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         );
     }
 
-    private function _stopCollecting(User $user, $id, $articles = null)
+    private function _stopCollecting($id, $articles = null)
     {
         $this->_queue->stopCollecting($id, $articles);
     }
 
-    private function _cancelCollecting(User $user, $id)
+    private function _cancelCollecting($id)
     {
         $this->_queue->cancelCollecting($id);
     }
@@ -381,7 +388,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->sendText($user, $this->_queue->startSale($user, $id));
     }
 
-    private function _cancelSale(User $user, $id)
+    private function _cancelSale($id)
     {
         $this->_queue->cancelSale($id);
     }

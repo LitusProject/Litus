@@ -19,8 +19,6 @@
 namespace NewsBundle\Controller;
 
 use CommonBundle\Component\Util\Xml\Object as XmlObject,
-    DateTime,
-    IntlDateFormatter,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -50,9 +48,8 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->_getNews()))
             return $this->notFoundAction();
-        }
 
         return new ViewModel(
             array(
@@ -71,14 +68,13 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
         $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
-        $description = '';
         $descriptions = unserialize($config->getConfigValue('news.rss_description'));
         if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
             $description = $descriptions[$this->getLanguage()->getAbbrev()];
         else
             $description = $descriptions[\Locale::getDefault()];
 
-        $serverName = 'http://' . str_replace(',', '', $_SERVER['SERVER_NAME']);
+        $serverName = 'http://' . str_replace(',', '', $this->getRequest()->getServer('SERVER_NAME'));
 
         $data = array(
             new XmlObject(

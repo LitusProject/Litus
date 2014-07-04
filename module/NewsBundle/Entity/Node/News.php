@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\Language,
 class News extends \CommonBundle\Entity\Node
 {
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this news item
+     * @var ArrayCollection The translations of this news item
      *
      * @ORM\OneToMany(targetEntity="NewsBundle\Entity\Node\Translation", mappedBy="news", cascade={"persist", "remove"})
      */
@@ -48,15 +48,15 @@ class News extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @var \DateTime The date this newsitem will disappear
+     * @var DateTime The date this newsitem will disappear
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
     private $endDate;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime                        $endDate
+     * @param Person   $person
+     * @param DateTime $endDate
      */
     public function __construct(Person $person, DateTime $endDate = null)
     {
@@ -68,7 +68,7 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -76,8 +76,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \DateTime                    $endDate
-     * @return \NewsBundle\Entity\Node\News
+     * @param  DateTime $endDate
+     * @return self
      */
     public function setEndDate(DateTime $endDate = null)
     {
@@ -87,8 +87,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \NewsBundle\Entity\Node\Translation $translation
-     * @return \NewsBundle\Entity\Node\News
+     * @param  Translation $translation
+     * @return self
      */
     public function addTranslation(Translation $translation)
     {
@@ -98,9 +98,9 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
-     * @return \NewsBundle\Entity\Node\Translation
+     * @param  Language|null    $language
+     * @param  boolean          $allowFallback
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -112,15 +112,15 @@ class News extends \CommonBundle\Entity\Node
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -134,8 +134,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -149,8 +149,8 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getSummary($length = 200, Language $language = null, $allowFallback = true)
@@ -172,7 +172,7 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \NewsBundle\Entity\Node\News
+     * @return self
      */
     public function updateName()
     {

@@ -18,8 +18,9 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article as Article,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Sale\Article,
+    Doctrine\ORM\Mapping as ORM,
+    CommonBundle\Entity\General\Organization;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Template")
@@ -79,7 +80,7 @@ class Template
     private $applyOnce;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization The organization for the discount
+     * @var Organization|null The organization for the discount
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
      * @ORM\JoinColumn(name="organization", referencedColumnName="id")
@@ -87,18 +88,18 @@ class Template
     private $organization;
 
     /**
-     * @param string                                         $name         The name of the discount
-     * @param integer                                        $value        The value of the discount
-     * @param string                                         $method       The method of the discount
-     * @param string                                         $type         The type of the discount
-     * @param string                                         $rounding     The type of the rounding
-     * @param boolean                                        $applyOnce    Apply the discount only once
-     * @param \CommonBundle\Entity\General\Organization|null $organization The organization for the discount
+     * @param string            $name         The name of the discount
+     * @param integer           $value        The value of the discount
+     * @param string            $method       The method of the discount
+     * @param string            $type         The type of the discount
+     * @param string            $rounding     The type of the rounding
+     * @param boolean           $applyOnce    Apply the discount only once
+     * @param Organization|null $organization The organization for the discount
      */
-    public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, $organization = null)
+    public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, Organization $organization = null)
     {
         $this->name = $name;
-        $this->value = str_replace(',', '.', $value) * 100;
+        $this->value = (int) (str_replace(',', '.', $value) * 100);
         $this->method = $method;
         $this->type = $type;
         $this->rounding = $rounding;
@@ -123,7 +124,8 @@ class Template
     }
 
     /**
-     * @param name
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -141,7 +143,8 @@ class Template
     }
 
     /**
-     * @param value
+     * @param  int  $value
+     * @return self
      */
     public function setValue($value)
     {
@@ -159,7 +162,8 @@ class Template
     }
 
     /**
-     * @param method
+     * @param  string $method
+     * @return self
      */
     public function setMethod($method)
     {
@@ -177,7 +181,8 @@ class Template
     }
 
     /**
-     * @param type
+     * @param  string $type
+     * @return self
      */
     public function setType($type)
     {
@@ -187,7 +192,7 @@ class Template
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization
+     * @return Organization|null
      */
     public function getOrganization()
     {
@@ -195,9 +200,10 @@ class Template
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Organization
+     * @param  Organization $organization
+     * @return self
      */
-    public function setOrganization($organization)
+    public function setOrganization(Organization $organization)
     {
         $this->organization = $organization;
 
@@ -221,7 +227,8 @@ class Template
     }
 
     /**
-     * @param rounding
+     * @param  string $rounding
+     * @return self
      */
     public function setRounding($rounding)
     {
@@ -239,7 +246,8 @@ class Template
     }
 
     /**
-     * @param apply_once
+     * @param  boolean $applyOnce
+     * @return self
      */
     public function setApplyOnce($applyOnce)
     {

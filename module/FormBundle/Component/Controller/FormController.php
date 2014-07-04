@@ -20,7 +20,6 @@ namespace FormBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
 
@@ -34,9 +33,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent             $e The MVC event
      * @return array
-     * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
+     * @throws HasNoAccessException The user does not have permissions to access this resource
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -74,6 +73,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      * Create the full Shibboleth URL.
      *
      * @return string
+     * @throws ShibbolethUrlException
      */
     private function _getShibbolethUrl()
     {
@@ -90,12 +90,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '?source=form';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $server = $this->getRequest()->getServer();
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

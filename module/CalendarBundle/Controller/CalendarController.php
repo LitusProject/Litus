@@ -18,7 +18,8 @@
 
 namespace CalendarBundle\Controller;
 
-use DateInterval,
+use CalendarBundle\Entity\Node\Event,
+    DateInterval,
     DateTime,
     IntlDateFormatter,
     Zend\Http\Headers,
@@ -145,7 +146,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
             }
 
-            $fullTime = '';
             if (null !== $event->getEndDate()) {
                 if ($event->getEndDate()->format('d/M/Y') == $event->getStartDate()->format('d/M/Y')) {
                     $fullTime = $hourFormatter->format($event->getStartDate()) . ' - ' . $hourFormatter->format($event->getEndDate());
@@ -245,7 +245,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
             $result .= 'TRANSP:OPAQUE' . PHP_EOL;
             $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
-            $result .= 'URL:' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $this->url()->fromRoute(
+            $result .= 'URL:' . (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute(
                     'calendar',
                     array(
                         'action' => 'view',
@@ -266,6 +266,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return Event|null
+     */
     public function _getEvent()
     {
         if (null === $this->getParam('name'))
@@ -281,6 +284,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return $event;
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEventByPoster()
     {
         if (null === $this->getParam('name'))

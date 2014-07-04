@@ -132,7 +132,7 @@ class Composition
      * Sets the position to the given value.
      *
      * @throws \InvalidArgumentException
-     * @param $position int
+     * @param  integer                               $position int
      * @return \BrBundle\Entity\Contract\Composition
      */
     public function setPosition($position)

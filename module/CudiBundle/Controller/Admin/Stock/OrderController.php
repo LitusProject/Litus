@@ -341,7 +341,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($order = $this->_getOrder()))
             return new ViewModel();
 
-        $order->order();
+        $order->setOrdered();
 
         $this->getEntityManager()->flush();
 
@@ -422,7 +422,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         if (!($order = $this->_getOrder()))
             return new ViewModel();
 
-        $order->cancel();
+        $order->setCanceled();
 
         $this->getEntityManager()->flush();
 
@@ -434,7 +434,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             )
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -547,6 +547,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return $order;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Stock\Order\Item|null
+     */
     private function _getOrderItem()
     {
         if (null === $this->getParam('id')) {

@@ -75,7 +75,7 @@ class Resource
     /**
      * Retrieves this resource's children.
      *
-     * @param  \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @param  EntityManager $entityManager The EntityManager instance
      * @return array
      */
     public function getChildren(EntityManager $entityManager)
@@ -88,7 +88,7 @@ class Resource
     /**
      * Retrieves this resource's actions.
      *
-     * @param  \Doctrine\EntityManager $entityManager The EntityManager instance
+     * @param  EntityManager $entityManager The EntityManager instance
      * @return array
      */
     public function getActions(EntityManager $entityManager)

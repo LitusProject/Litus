@@ -33,13 +33,13 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager The DocumentManager instance
+     * @var DocumentManager The DocumentManager instance
      */
     protected $_documentManager = null;
 
     /**
-     * @param \Doctrine\ODM\MongoDB\DocumentManager $documentManager The DocumentManager instance
-     * @param null|string|int                       $name            Optional name for the element
+     * @param DocumentManager $documentManager The DocumentManager instance
+     * @param null|string|int $name            Optional name for the element
      */
     public function __construct(DocumentManager $documentManager, $name = null)
     {

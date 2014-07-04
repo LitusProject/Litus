@@ -22,7 +22,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -445,6 +444,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         }
     }
 
+    /**
+     * @return Session
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {

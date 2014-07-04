@@ -31,7 +31,6 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -43,16 +42,26 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
     /**
-     * @var \CommonBundle\Entity\User\Person The person we're going to modify
+     * @var Academic The person we're going to modify
      */
     private $_person = null;
 
     /**
-     * @param \Zend\Cache\Storage\StorageInterface      $cache         The cache instance
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear  The academic year
-     * @param \CommonBundle\Entity\User\Person\Academic $person        The person we're going to modify
-     * @param null|string|int                           $name          Optional name for the element
+     * @var \CommonBundle\Form\Admin\Address\AddPrimary
+     */
+    private $_primaryAddressForm;
+
+    /**
+     * @var \CommonBundle\Form\Admin\Address\Add
+     */
+    private $_secondaryAddressForm;
+
+    /**
+     * @param CacheStorage    $cache         The cache instance
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param AcademicYear    $academicYear  The academic year
+     * @param Academic        $person        The person we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(CacheStorage $cache, EntityManager $entityManager, AcademicYear $academicYear, Academic $person, $name = null)
     {
@@ -66,13 +75,13 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
             ->setAttribute('data-help', 'The birthday of the user.');
         $this->add($field);
 
-        $field = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
-        $field->setLabel('Primary Address&mdash;Student Room or Home');
-        $this->add($field);
+        $this->_primaryAddressForm = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
+        $this->_primaryAddressForm->setLabel('Primary Address&mdash;Student Room or Home');
+        $this->add($this->_primaryAddressForm);
 
-        $field = new AddressForm('secondary_address', 'secondary_address', false);
-        $field->setLabel('Secondary Address&mdash;Home');
-        $this->add($field);
+        $this->_secondaryAddressForm = new AddressForm('secondary_address', 'secondary_address', false);
+        $this->_secondaryAddressForm->setLabel('Secondary Address&mdash;Home');
+        $this->add($this->_secondaryAddressForm);
 
         $collection = new Collection('organization');
         $collection->setLabel('Organization');
@@ -200,15 +209,13 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $inputFilter = parent::getInputFilter();
 
         if ($this->has('secondary_address')) {
-            $inputs = $this->get('secondary_address')
-                ->getInputs();
+            $inputs = $this->_secondaryAddressForm->getInputs();
             foreach($inputs as $input)
                 $inputFilter->add($input);
         }
 
         if ($this->has('primary_address')) {
-            $inputs =$this->get('primary_address')
-                    ->getInputs();
+            $inputs =$this->_primaryAddressForm->getInputs();
             foreach($inputs as $input)
                 $inputFilter->add($input);
         }

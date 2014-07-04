@@ -23,8 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\GuestInfo,
-    TicketBundle\Entity\Option,
-    TicketBundle\Entity\Ticket,
     TicketBundle\Form\Sale\Ticket\Add as AddForm,
     Zend\View\Model\ViewModel;
 

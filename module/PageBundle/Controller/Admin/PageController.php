@@ -312,40 +312,41 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
-                    $_POST['type'] !== 'file') {
-                return new ViewModel();
-            }
-
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('page.file_path') . '/';
-
             $upload = new FileUpload();
 
-            $fileName = '';
-            do {
-                $fileName = sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ('image' == $formData['type'])
+                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            if ($upload->isValid()) {
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('page.file_path') . '/';
 
-            $url = $this->url()->fromRoute(
-                'page_file',
-                array(
-                    'name' => $fileName,
-                )
-            );
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
 
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'name' => $url,
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
+                $url = $this->url()->fromRoute(
+                    'page_file',
+                    array(
+                        'name' => $fileName,
                     )
-                )
-            );
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'name' => $url,
+                        )
+                    )
+                );
+            }
         }
+
+        return new ViewModel();
     }
 
     public function searchAction()

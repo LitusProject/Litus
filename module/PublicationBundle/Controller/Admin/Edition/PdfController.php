@@ -24,9 +24,8 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     PublicationBundle\Entity\Edition\Pdf as PdfEdition,
     PublicationBundle\Form\Admin\Edition\Pdf\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\Extension as ExtensionValidator,
     Zend\Http\Headers,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,16 +91,19 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $form->setData($formData);
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
-        if ($form->isValid() && $upload->isValid()) {
+        $date = self::_loadDate($formData['date']);
+
+        if ($form->isValid() && $upload->isValid() && $date) {
             $formData = $form->getFormData($formData);
 
             $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('publication.public_pdf_directory');
 
-            $fileName = '';
             do {
                 $fileName = sha1(uniqid()) . '.pdf';
             } while (file_exists($filePath . $fileName));
@@ -110,7 +112,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 $publication,
                 $this->getCurrentAcademicYear(),
                 $formData['title'],
-                DateTime::createFromFormat('d/m/Y', $formData['date']),
+                $date,
                 $fileName
             );
 
@@ -219,6 +221,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return resource
+     */
     private function _getEdition()
     {
         if (null === $this->getParam('id')) {
@@ -310,5 +315,14 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $publication;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }
 }

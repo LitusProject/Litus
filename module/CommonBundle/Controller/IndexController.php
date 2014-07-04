@@ -51,6 +51,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return array
+     */
     private function _getSportResults()
     {
         $showInfo = $this->getEntityManager()
@@ -66,7 +69,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         if (false !== $fileContents)
             $resultPage = (array) json_decode($fileContents);
 
-        $nbOfficialLaps = null;
         $returnArray = null;
         if (null !== $resultPage) {
             $teamId = $this->getEntityManager()
@@ -89,8 +91,6 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
                 }
 
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
-
                 $returnArray = array(
                     'nbLaps' => $teamData[2],
                     'position' => round($teamData[3] * 100),
@@ -106,6 +106,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $returnArray;
     }
 
+    /**
+     * @return array
+     */
     private function _getBookings()
     {
         $bookings = null;
@@ -126,6 +129,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $bookings;
     }
 
+    /**
+     * @return array
+     */
     private function _getNewsItems()
     {
         $maxAge = new DateTime();
@@ -142,6 +148,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findNbSite(5, $maxAge);
     }
 
+    /**
+     * @return array
+     */
     private function _getCalendarItems()
     {
         $events = $this->getEntityManager()
@@ -163,6 +172,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $calendarItems;
     }
 
+    /**
+     * @return array
+     */
     private function _getCudiInfo()
     {
         $cudi = array();
@@ -189,6 +201,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $cudi;
     }
 
+    /**
+     * @return array
+     */
     private function _getPiwikInfo()
     {
         $enablePiwik = $this->getEntityManager()
@@ -211,6 +226,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return array
+     */
     private function _getMyShifts()
     {
         if (!$this->getAuthentication()->getPersonObject())

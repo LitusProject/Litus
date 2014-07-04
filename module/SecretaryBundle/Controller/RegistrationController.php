@@ -44,7 +44,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                                                          $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -85,7 +85,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
@@ -200,7 +200,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     $this->getEntityManager()->persist($academic);
 
-                    $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    $academic->setBirthday(self::_loadDate($formData['birthday']))
                         ->addUniversityStatus(
                             new UniversityStatus(
                                 $academic,
@@ -275,7 +275,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
 
                     $this->getEntityManager()->remove($code);
@@ -785,7 +785,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
@@ -801,7 +803,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'CommonBundle\Entity\User\Person\Academic',
                 'universityIdentification'
             ),
-            $this->getServiceLocator()->get('authentication_doctrineservice')
+            $this->getAuthenticationService()
         );
 
         $code = $this->getEntityManager()
@@ -816,5 +818,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $this->getParam('identification'), '', true
             );
         }
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
     }
 }

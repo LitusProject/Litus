@@ -80,7 +80,6 @@ class Publication extends EntityRepository
     public function findAllActiveWithEditionQuery()
     {
         $query = $this->_em->createQueryBuilder();
-        $internal = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Publication', 'p')
             ->where(

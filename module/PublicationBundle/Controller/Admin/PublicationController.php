@@ -37,11 +37,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Publication')
                 ->findAllActiveQuery(),
-            $this->getParam('page'),
-            array(),
-            array(
-                'title' => 'ASC'
-            )
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -152,6 +148,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    /**
+     * @return Publication
+     */
     private function _getPublication()
     {
         if (null === $this->getParam('id')) {

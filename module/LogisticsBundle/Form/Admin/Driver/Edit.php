@@ -18,12 +18,8 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    LogisticsBundle\Entity\Driver,
+use LogisticsBundle\Entity\Driver,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -34,14 +30,14 @@ use CommonBundle\Entity\General\AcademicYear,
 class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
 {
     /**
-     * @var \LogisticsBundle\Entity\Driver
+     * @var Driver
      */
     private $_driver;
 
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \LogisticsBundle\Entity\Driver $driver
-     * @param null|string|int                $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Driver          $driver
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Driver $driver, $name = null)
     {

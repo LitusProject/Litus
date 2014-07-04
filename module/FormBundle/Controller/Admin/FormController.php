@@ -88,7 +88,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -103,8 +106,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if ($formData['type'] == 'doodle') {
                     $form = new Doodle(
                         $this->getAuthentication()->getPersonObject(),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $startDate,
+                        $endDate,
                         $formData['active'],
                         $formData['multiple'],
                         $formData['non_members'],
@@ -131,8 +134,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 } else {
                     $form = new Form(
                         $this->getAuthentication()->getPersonObject(),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $startDate,
+                        $endDate,
                         $formData['active'],
                         $max,
                         $formData['multiple'],
@@ -243,7 +246,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -260,8 +266,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     else
                         $max = $formData['max'];
 
-                    $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    $formSpecification->setStartDate($startDate)
+                        ->setEndDate($endDate)
                         ->setActive($formData['active'])
                         ->setMax($max)
                         ->setEditableByUser($formData['editable_by_user'])
@@ -271,7 +277,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $formSpecification->setMultiple($formData['multiple']);
 
-                if ($formSpecification instanceOf Doodle) {
+                if ($formSpecification instanceof Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
 
                     if ($formData['reminder_mail']) {
@@ -517,5 +523,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $form;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

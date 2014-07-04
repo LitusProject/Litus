@@ -19,9 +19,6 @@
 namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
     DateTime,
     MailBundle\Form\Admin\Cudi\Mail as MailForm,
     Markdown_Parser,

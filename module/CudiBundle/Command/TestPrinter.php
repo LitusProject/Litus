@@ -99,6 +99,9 @@ EOT
         }
     }
 
+    /**
+     * @param integer $ticket
+     */
     private function _send($printer, $ticket)
     {
         $ticket = (object) array(

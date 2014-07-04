@@ -18,10 +18,7 @@
 
 namespace PageBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Node\Page,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * LinkController

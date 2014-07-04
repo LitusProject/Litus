@@ -25,13 +25,10 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
-    CudiBundle\Entity\Sale\Booking,
-    DateInterval,
-    DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    Zend\Mvc\MvcEvent,
+    SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,7 +37,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
 class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
     private $_academicYear;
 
@@ -115,7 +112,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    protected function _subjectAction(Academic $academic, AcademicYear $academicYear, $form)
+    /**
+     * @param Academic       $academic
+     * @param AcademicYear   $academicYear
+     * @param AddSubjectForm $form
+     */
+    protected function _subjectAction(Academic $academic, AcademicYear $academicYear, AddSubjectForm $form)
     {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -234,6 +236,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+     * @param  string $email
+     * @return string
+     */
     protected function _parseUniversityEmail($email)
     {
         $studentDomain = $this->getEntityManager()
@@ -268,6 +274,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $termsAndConditions[$this->getLanguage()->getAbbrev()];
     }
 
+    /**
+     * @param  object|array $formData
+     * @return Address
+     */
     protected function _getPrimaryAddress($formData)
     {
         if ($formData['primary_address_address_city'] != 'other') {
@@ -314,7 +324,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     /**
      * Get the current academic year.
      *
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     protected function getCurrentAcademicYear($organization = false)
     {

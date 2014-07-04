@@ -22,10 +22,7 @@ use BrBundle\Entity\Contract\Section,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    Zend\Validator\Float as FloatValidator;
+    Zend\Form\Element\Submit;
 
 /**
  * Add Contract
@@ -41,7 +38,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $options = null)
     {

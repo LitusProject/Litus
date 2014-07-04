@@ -79,7 +79,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $formData = $form->getFormData($formData);
 
                 $comment = new Comment(
-                    $this->getEntityManager(),
                     $this->getAuthentication()->getPersonObject(),
                     $subject,
                     $formData['text'],
@@ -136,8 +135,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $markAsReadForm->setData($formData);
 
                 if ($markAsReadForm->isValid()) {
-                    $formData = $markAsReadForm->getFormData($formData);
-
                     if ($comment->isRead())
                         $comment->setReadBy(null);
                     else
@@ -170,7 +167,6 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     $formData = $form->getFormData($formData);
 
                     $reply = new Reply(
-                        $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
                         $comment,
                         $formData['text']
@@ -227,6 +223,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject|null
+     */
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -276,6 +275,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $subject;
     }
 
+    /**
+     * @return Comment|null
+     */
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
@@ -323,6 +325,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         return $comment;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function _getAcademicYear()
     {
         $date = null;

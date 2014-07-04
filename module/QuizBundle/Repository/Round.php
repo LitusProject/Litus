@@ -31,7 +31,7 @@ class Round extends EntityRepository
 {
     /**
      * Gets all rounds belonging to a quiz
-     * @param QuizBundle\Entity\Quiz $quiz The quiz the rounds must belong to
+     * @param QuizEntity $quiz The quiz the rounds must belong to
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {
@@ -51,8 +51,8 @@ class Round extends EntityRepository
 
     /**
      * Gets the order for the next round in the quiz
-     * @param  \QuizBundle\Entity\Quiz $quiz
-     * @return int
+     * @param  QuizEntity $quiz
+     * @return integer
      */
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {

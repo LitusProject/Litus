@@ -18,8 +18,10 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
+    FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
@@ -173,14 +175,19 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                         break;
                     case 'timeslot':
+                        $startDate = self::_loadDate($formData['timeslot_start_date']);
+                        $endDate = self::_loadDate($formData['timeslot_end_date']);
+                        if (!$startDate && !$endDate)
+                            throw new RuntimeException('Invalid date given');
+
                         $field = new TimeSlotField(
                             $formSpecification,
                             0,
                             $formData['required'],
                             $visibilityDecissionField,
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null,
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
+                            $startDate,
+                            $endDate
                         );
 
                         foreach ($languages as $language) {
@@ -328,8 +335,13 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                 } elseif ($field instanceof FileField) {
                     $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
                 } elseif ($field instanceof TimeSlotField) {
-                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
+                    $startDate = self::_loadDate($formData['timeslot_start_date']);
+                    $endDate = self::_loadDate($formData['timeslot_end_date']);
+
+                    if ($startDate && $endDate) {
+                        $field->setStartDate($startDate)
+                            ->setEndDate($endDate);
+                    }
 
                     foreach ($languages as $language) {
                         $translation = $field->getTimeSlotTranslation($language, false);
@@ -576,5 +588,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $field;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

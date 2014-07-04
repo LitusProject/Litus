@@ -34,7 +34,7 @@ require_once 'Archive/Tar.php';
 class Tar
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -44,8 +44,8 @@ class Tar
     private $_lists;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
-     * @param arrays                      $lists         The array containing the mailinglists
+     * @param EntityManager $entityManager The entityManager
+     * @param arrays        $lists         The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
@@ -56,7 +56,7 @@ class Tar
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {

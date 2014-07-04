@@ -37,11 +37,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
                 ->findAllActiveQuery(),
-            $this->getParam('page'),
-            array(),
-            array(
-                'host' => 'ASC'
-            )
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -199,6 +195,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return Key|null
+     */
     private function _getKey()
     {
         if (null === $this->getParam('id')) {

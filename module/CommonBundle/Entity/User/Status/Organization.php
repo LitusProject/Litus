@@ -20,7 +20,8 @@ namespace CommonBundle\Entity\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * Specifying the different types of memberships the organization has.
@@ -52,7 +53,7 @@ class Organization
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person this union status describes
+     * @var Person The person this union status describes
      *
      * @ORM\ManyToOne(
      *         targetEntity="CommonBundle\Entity\User\Person", inversedBy="organizationStatuses"
@@ -69,7 +70,7 @@ class Organization
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the status
+     * @var AcademicYear The year of the status
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -77,15 +78,15 @@ class Organization
     private $academicYear;
 
     /**
-     * @param  \CommonBundle\Entity\User\Person          $person       The person this union status describes
-     * @param  string                                    $status       The actual status value
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
-     * @throws \InvalidArgumentException
+     * @param  Person                   $person       The person this union status describes
+     * @param  string                   $status       The actual status value
+     * @param  AcademicYear             $academicYear The year of the status
+     * @throws InvalidArgumentException
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
     {
         if(!self::isValidPerson($person, $academicYear))
-            throw new \InvalidArgumentException('Invalid person');
+            throw new InvalidArgumentException('Invalid person');
 
         $this->person = $person;
 
@@ -94,7 +95,7 @@ class Organization
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -102,7 +103,7 @@ class Organization
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -113,7 +114,7 @@ class Organization
      * Returns whether the given person can have a UnionStatus.
      *
      * @static
-     * @param  \CommonBundle\Entity\User\Person $person The person to check
+     * @param  Person $person The person to check
      * @return bool
      */
     public static function isValidPerson(Person $person, AcademicYear $academicYear)
@@ -130,8 +131,8 @@ class Organization
     }
 
     /**
-     * @param $status
-     * @return \CommonBundle\Entity\User\UnionStatus
+     * @param  string $status
+     * @return self
      */
     public function setStatus($status)
     {
@@ -144,7 +145,7 @@ class Organization
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string A status
+     * @param  string $status string A status
      * @return bool
      */
     public static function isValidStatus($status)
@@ -153,7 +154,7 @@ class Organization
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

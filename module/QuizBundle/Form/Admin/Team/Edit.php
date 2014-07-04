@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
     QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Team,
@@ -33,14 +32,14 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Edit extends Add
 {
     /**
-     * @var \QuizBundle\Entity\Team $team
+     * @var Team $team
      */
     private $_team;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Team     $team          The quiz team to populate the form with
-     * @param null|string|int             $name          Optional name for the form
+     * @param EntityManager   $entityManager
+     * @param Team            $team          The quiz team to populate the form with
+     * @param null|string|int $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Team $team, $name = null)
     {

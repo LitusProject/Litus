@@ -24,7 +24,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\Acl\Resource,
+    CommonBundle\Entity\User\Person,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,10 +92,6 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 $this->_updateCache();
-
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -288,6 +284,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return Role|null
+     */
     private function _getRole()
     {
         if (null === $this->getParam('name')) {
@@ -335,6 +334,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return $role;
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getMember()
     {
         if (null === $this->getParam('id')) {
@@ -382,6 +384,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return $member;
     }
 
+    /**
+     * @return null
+     */
     private function _updateCache()
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
@@ -394,6 +399,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @param  Action  $action
+     * @param  array   $parents
+     * @return boolean
+     */
     private function _findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {

@@ -60,7 +60,6 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $comment->setReadBy(null);
 
                     $reply = new Reply(
-                        $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
                         $comment,
                         $formData['reply']
@@ -95,7 +94,6 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $formData = $commentForm->getFormData($formData);
 
                     $comment = new Comment(
-                        $this->getEntityManager(),
                         $this->getAuthentication()->getPersonObject(),
                         $subject,
                         $formData['text'],
@@ -160,6 +158,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject|null
+     */
     private function _getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;

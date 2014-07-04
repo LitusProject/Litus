@@ -329,7 +329,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     }
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal && $duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')
@@ -370,7 +370,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         ->setIsDownloadable($formData['downloadable'])
                         ->setType($formData['type']);
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal) {
                         $article->setBinding(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Article\Option\Binding')
@@ -455,6 +455,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    /**
+     * @return Article|null
+     */
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
@@ -506,6 +509,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject|null
+     */
     private function _getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear()))

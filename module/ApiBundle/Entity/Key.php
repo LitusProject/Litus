@@ -42,7 +42,7 @@ class Key implements RoleAware
     private $id;
 
     /**
-     * @var \DateTime The expiration time of this code
+     * @var DateTime The expire time of this code
      *
      * @ORM\Column(name="expiration_time", type="datetime", nullable=true)
      */
@@ -101,7 +101,7 @@ class Key implements RoleAware
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -109,7 +109,7 @@ class Key implements RoleAware
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {
@@ -125,8 +125,8 @@ class Key implements RoleAware
     }
 
     /**
-     * @param  string                $host
-     * @return \ApiBundle\Entity\Key
+     * @param  string $host
+     * @return self
      */
     public function setHost($host)
     {
@@ -154,7 +154,7 @@ class Key implements RoleAware
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getCheckHost()
     {

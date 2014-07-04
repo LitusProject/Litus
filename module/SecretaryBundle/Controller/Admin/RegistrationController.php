@@ -23,8 +23,6 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Barcode,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    DateInterval,
-    DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -327,6 +325,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $formData['bakske'],
                         $formData['tshirt_size']
                     );
+                    $this->getEntityManager()->persist($metaData);
                 } else {
                     $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
                         ->setBakskeByMail($formData['bakske'])

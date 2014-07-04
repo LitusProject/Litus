@@ -24,8 +24,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Form,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Specifield Form Doodle
@@ -35,10 +34,10 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
 {
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \FormBundle\Entity\Node\Form          $form
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
     {

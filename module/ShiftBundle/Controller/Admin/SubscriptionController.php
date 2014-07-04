@@ -19,7 +19,6 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
     ShiftBundle\Entity\Shift,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
@@ -78,7 +77,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                         return new ViewModel();
                     }
 
-                    $volunteer = new Volunteer($person, $this->getCurrentAcademicYear());
+                    $volunteer = new Volunteer($person);
                     $shift->addVolunteer($this->getEntityManager(), $volunteer);
                     $this->getEntityManager()->persist($volunteer);
                     $this->getEntityManager()->flush();
@@ -249,6 +248,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return $subscription;
     }
 
+    /**
+     * @return Shift
+     */
     private function _getShift()
     {
         if (null === $this->getParam('id')) {

@@ -27,6 +27,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Academic\Add as AddForm,
     CommonBundle\Form\Admin\Academic\Edit as EditForm,
     DateTime,
+    Doctrine\ORM\Query,
     Zend\View\Model\ViewModel;
 
 /**
@@ -38,9 +39,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
-            $academics = $this->_search();
-
+        if (null !== $this->getParam('field') && ($academics = $this->_search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -266,9 +265,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                         );
                     }
                 } else {
-                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $status = $academic->getUniversityStatus($this->getCurrentAcademicYear());
-
+                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
                         $academic->removeUniversityStatus($status);
                         $this->getEntityManager()->remove($status);
                     }
@@ -481,8 +478,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     *
-     * @return \Doctrine\ORM\Query
+     * @return Query|null
      */
     private function _search()
     {
@@ -502,6 +498,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
+    /**
+     * @return Academic|null
+     */
     private function _getAcademic()
     {
         if (null === $this->getParam('id')) {

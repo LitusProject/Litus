@@ -25,14 +25,11 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
-    FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
     FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel,
     ZipArchive;
@@ -180,7 +177,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -273,7 +270,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -347,7 +344,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -422,10 +419,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
         $notValid = false;
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
 
@@ -435,7 +428,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
                 $this->flashMessenger()->addMessage(
                     new FlashMessage(
@@ -562,6 +555,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 ->findAllByForm($form);
 
             $maxSlots = 0;
+            $results = array();
             foreach ($entries as $entry) {
                 $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
                 if ($viewerMap->isMail())

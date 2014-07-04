@@ -54,135 +54,137 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+            $startDate = null;
+            $endDate = null;
+            foreach ($form->getWeeks() as $key => $week) {
+                if (isset($formData['submit_' . $key])) {
+                    $weekIndex = $key;
 
-                foreach ($form->getWeeks() as $key => $week) {
-                    if (isset($formData['submit_' . $key])) {
-                        $weekIndex = $key;
-                        break;
-                    }
+                    $startDate = self::_loadDate($formData['start_date_' . $weekIndex]);
+                    $endDate = self::_loadDate($formData['end_date_' . $weekIndex]);
+                    break;
+                }
+            }
+
+            if ($form->isValid() && isset($weekIndex) && $startDate && $endDate) {
+                $piano = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
+                    ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
+
+                $reservation = new PianoReservation(
+                    $startDate,
+                    $endDate,
+                    $piano,
+                    '',
+                    $this->getAuthentication()->getPersonObject(),
+                    $this->getAuthentication()->getPersonObject()
+                );
+
+                $startWeek = new DateTime();
+                $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex, 1)
+                    ->setTime(0, 0);
+                $endWeek = clone $startWeek;
+                $endWeek->add(new DateInterval('P7D'));
+
+                $otherReservations = $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                    ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
+
+                $deadline = new DateTime();
+                $deadline->add(
+                    new DateInterval(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('logistics.piano_auto_confirm_deadline')
+                    )
+                );
+
+                $autoConfirm = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.piano_auto_confirm_immediatly');
+
+                if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
+                    $mailData = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('logistics.piano_new_reservation_confirmed')
+                    );
+                    $reservation->setConfirmed();
+                } else {
+                    $mailData = unserialize(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('logistics.piano_new_reservation')
+                    );
                 }
 
-                if (isset($weekIndex)) {
-                    $piano = $this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                        ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
+                if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
+                    $language = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Language')
+                        ->findOneByAbbrev('en');
+                }
 
-                    $reservation = new PianoReservation(
-                        DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date_' . $weekIndex]),
-                        DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date_' . $weekIndex]),
-                        $piano,
-                        '',
-                        $this->getAuthentication()->getPersonObject(),
-                        $this->getAuthentication()->getPersonObject()
-                    );
+                $message = $mailData[$language->getAbbrev()]['content'];
+                $subject = $mailData[$language->getAbbrev()]['subject'];
 
-                    $startWeek = new DateTime();
-                    $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex)
-                        ->setTime(0, 0);
-                    $endWeek = clone $startWeek;
-                    $endWeek->add(new DateInterval('P7D'));
+                $formatterDate = new IntlDateFormatter(
+                    $language->getAbbrev(),
+                    IntlDateFormatter::NONE,
+                    IntlDateFormatter::NONE,
+                    date_default_timezone_get(),
+                    IntlDateFormatter::GREGORIAN,
+                    'EEE d/MM/Y HH:mm'
+                );
 
-                    $otherReservations = $this->getEntityManager()
-                        ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-                        ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
-
-                    $deadline = new DateTime();
-                    $deadline->add(
-                        new DateInterval(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('logistics.piano_auto_confirm_deadline')
-                        )
-                    );
-
-                    $autoConfirm = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('logistics.piano_auto_confirm_immediatly');
-
-                    if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
-                        $mailData = unserialize(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('logistics.piano_new_reservation_confirmed')
-                        );
-                        $reservation->setConfirmed();
-                    } else {
-                        $mailData = unserialize(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('logistics.piano_new_reservation')
-                        );
-                    }
-
-                    if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
-                            ->findOneByAbbrev('en');
-                    }
-
-                    $message = $mailData[$language->getAbbrev()]['content'];
-                    $subject = $mailData[$language->getAbbrev()]['subject'];
-
-                    $formatterDate = new IntlDateFormatter(
-                        $language->getAbbrev(),
-                        IntlDateFormatter::NONE,
-                        IntlDateFormatter::NONE,
-                        date_default_timezone_get(),
-                        IntlDateFormatter::GREGORIAN,
-                        'EEE d/MM/Y HH:mm'
-                    );
-
-                    $mail = new Message();
-                    $mail->setBody(
-                            str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
-                                str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
-                                    str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
-                                )
+                $mail = new Message();
+                $mail->setBody(
+                        str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
+                            str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                                str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                             )
                         )
-                        ->setFrom(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('system_mail_address')
-                        )
-                        ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
-                        ->addTo(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('logistics.piano_mail_to')
-                        )
-                        ->addBcc(
-                            $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('system_administrator_mail'),
-                            'System Administrator'
-                        )
-                        ->setSubject($subject);
+                    )
+                    ->setFrom(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('system_mail_address')
+                    )
+                    ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
+                    ->addTo(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('logistics.piano_mail_to')
+                    )
+                    ->addBcc(
+                        $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('system_administrator_mail'),
+                        'System Administrator'
+                    )
+                    ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
+                if ('development' != getenv('APPLICATION_ENV'))
+                    $this->getMailTransport()->send($mail);
 
-                    $this->getEntityManager()->persist($reservation);
-                    $this->getEntityManager()->flush();
+                $this->getEntityManager()->persist($reservation);
+                $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The reservation was succesfully created!'
-                        )
-                    );
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The reservation was succesfully created!'
+                    )
+                );
 
-                    $this->redirect()->toRoute(
-                        'logistics_piano',
-                        array(
-                            'action' => 'index',
-                        )
-                    );
+                $this->redirect()->toRoute(
+                    'logistics_piano',
+                    array(
+                        'action' => 'index',
+                    )
+                );
 
-                    return new ViewModel();
-                }
+                return new ViewModel();
             }
         }
 
@@ -192,5 +194,14 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 'reservations' => $reservations,
             )
         );
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
     }
 }

@@ -37,7 +37,7 @@ class History
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The newest version of the two
+     * @var Article The newest version of the two
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -45,7 +45,7 @@ class History
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The oldest version of the two
+     * @var Article The oldest version of the two
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article", cascade={"persist"})
      * @ORM\JoinColumn(name="precursor", referencedColumnName="id")
@@ -53,8 +53,8 @@ class History
     private $precursor;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article   The new version of the article
-     * @param \CudiBundle\Entity\Sale\Article $precursor The old version of the article
+     * @param Article $article   The new version of the article
+     * @param Article $precursor The old version of the article
      */
     public function __construct(Article $article, Article $precursor = null)
     {
@@ -83,7 +83,7 @@ class History
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -91,7 +91,7 @@ class History
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getPrecursor()
     {

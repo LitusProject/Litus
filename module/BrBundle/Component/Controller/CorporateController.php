@@ -19,7 +19,6 @@
 namespace BrBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;

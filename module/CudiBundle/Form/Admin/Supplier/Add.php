@@ -36,6 +36,11 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
+     * @var \CommonBundle\Form\Admin\Address\Add
+     */
+    private $_addressForm;
+
+    /**
      * @param null|string|int $name Optional name for the element
      */
     public function __construct($name = null)
@@ -56,9 +61,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Contact');
         $this->add($field);
 
-        $field = new AddressForm('address', 'address');
-        $field->setLabel('Address');
-        $this->add($field);
+        $this->_addressForm = new AddressForm('address', 'address');
+        $this->_addressForm->setLabel('Address');
+        $this->add($this->_addressForm);
 
         $field = new Text('vat_number');
         $field->setLabel('VAT Number');
@@ -99,8 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $inputFilter = new InputFilter();
 
-        $inputs = $this->get('address')
-            ->getInputs();
+        $inputs = $this->_addressForm->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

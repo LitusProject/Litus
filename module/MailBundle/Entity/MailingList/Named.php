@@ -18,8 +18,7 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a named list.
@@ -39,7 +38,7 @@ class Named extends \MailBundle\Entity\MailingList
     /**
      * Creates a new list with the given name
      *
-     * @param $name The name for this list
+     * @param string $name The name for this list
      */
     public function __construct($name)
     {
@@ -56,8 +55,8 @@ class Named extends \MailBundle\Entity\MailingList
     }
 
     /**
-     * @param  string                         $name The name
-     * @return \MailBundle\Entity\MailingList
+     * @param  string $name The name
+     * @return self
      */
     public function setName($name)
     {

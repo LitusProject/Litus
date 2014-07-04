@@ -21,12 +21,9 @@ namespace SecretaryBundle\Controller\Admin;
 use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
-    DateTime,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
     SecretaryBundle\Form\Admin\Promotion\Add as AddForm,
-    Zend\Mail\Message,
-    Zend\Validator\EmailAddress as EmailAddressValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -42,7 +39,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         if (null !== $this->getParam('field')) {
             $paginator = $this->paginator()->createFromArray(
@@ -76,7 +74,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $promotions = $this->_search($academicYear);
 
@@ -110,7 +109,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $form = new AddForm();
 
@@ -236,8 +236,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        exit;
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->_getAcademicYear()))
+            return new ViewModel();
 
         $promotions = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Promotion')

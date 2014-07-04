@@ -41,7 +41,7 @@ class Runner
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The academic linked to this runner
+     * @var Academic The academic linked to this runner
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -70,7 +70,7 @@ class Runner
     private $lastName;
 
     /**
-     * @var \SportBundle\Entity\Group The runner's group
+     * @var Group The runner's group
      *
      * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Group", inversedBy="members")
      * @ORM\JoinColumn(name="group_of_friends", referencedColumnName="id")
@@ -78,7 +78,7 @@ class Runner
     private $group;
 
     /**
-     * @var \SportBundle\Entity\Department The runner's department
+     * @var Department The runner's department
      *
      * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
      * @ORM\JoinColumn(name="department", referencedColumnName="id")
@@ -86,16 +86,16 @@ class Runner
     private $department;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param string                                    $firstName
-     * @param string                                    $lastName
-     * @param \SportBundle\Entity\Group                 $group
-     * @param \SportBundle\Entity\Department            $department
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
+     * @param string     $firstName
+     * @param string     $lastName
+     * @param Group      $group
+     * @param Department $department
+     * @param Academic   $academic
      */
     public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
     {
@@ -115,7 +115,7 @@ class Runner
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -123,8 +123,8 @@ class Runner
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person\Academic $academic
-     * @return \SportBundle\Entity\Runner
+     * @param  Academic $academic
+     * @return self
      */
     public function setAcademic(Academic $academic)
     {
@@ -142,8 +142,8 @@ class Runner
     }
 
     /**
-     * @param  string                     $firstName
-     * @return \SportBundle\Entity\Runner
+     * @param  string $firstName
+     * @return self
      */
     public function setFirstName($firstName)
     {
@@ -161,8 +161,8 @@ class Runner
     }
 
     /**
-     * @param  string                     $lastName
-     * @return \SportBundle\Entity\Runner
+     * @param  string $lastName
+     * @return self
      */
     public function setLastName($lastName)
     {
@@ -172,8 +172,8 @@ class Runner
     }
 
     /**
-     * @param  string                     $runnerIdentification
-     * @return \SportBundle\Entity\Runner
+     * @param  string $runnerIdentification
+     * @return self
      */
     public function setRunnerIdentification($runnerIdentification)
     {
@@ -183,7 +183,7 @@ class Runner
     }
 
     /**
-     * @return \SportBundle\Entity\Group
+     * @return Group
      */
     public function getGroup()
     {
@@ -191,8 +191,8 @@ class Runner
     }
 
     /**
-     * @param  \SportBundle\Entity\Group  $group
-     * @return \SportBundle\Entity\Runner
+     * @param  Group $group
+     * @return self
      */
     public function setGroup(Group $group)
     {
@@ -202,7 +202,7 @@ class Runner
     }
 
     /**
-     * @return \SportBundle\Entity\Department
+     * @return Department
      */
     public function getDepartment()
     {
@@ -210,8 +210,8 @@ class Runner
     }
 
     /**
-     * @param  \SportBundle\Entity\Department $department
-     * @return \SportBundle\Entity\Runner
+     * @param  Department $department
+     * @return self
      */
     public function setDepartment(Department $department)
     {
@@ -221,8 +221,8 @@ class Runner
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \SportBundle\Entity\Group
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -242,7 +242,7 @@ class Runner
     /**
      * Returns the user's laps.
      *
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  AcademicYear $academicYear The academic year
      * @return array
      */
     public function getLaps(AcademicYear $academicYear)
@@ -263,7 +263,7 @@ class Runner
     /**
      * Returns the current point total of the runner.
      *
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)
