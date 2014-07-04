@@ -35,23 +35,20 @@ use BrBundle\Entity\Cv\Util,
 class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $_entityManager;
-
-    /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
     private $_year;
 
     /**
-     * @var \Zend\I18n\Translator
+     * @var Translator
      */
     private $_translator;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $year          The academic year for which to generate the book.
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param AcademicYear  $year          The academic year for which to generate the book.
+     * @param TmpFile       $file          The file to write to
+     * @param Translator    $translator    The translator
      */
     public function __construct(EntityManager $entityManager, AcademicYear $year, TmpFile $file, Translator $translator)
     {
@@ -65,7 +62,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_entityManager = $entityManager;
         $this->_year = $year;
         $this->_translator = $translator;
     }
@@ -75,7 +71,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         // Generate the xml
-        $data = Util::getGrouped($this->_entityManager, $this->_year);
+        $data = Util::getGrouped($this->getEntityManager(), $this->_year);
 
         // Add the groups
         $groups = array();
@@ -83,11 +79,11 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($data as $studyData)
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
 
-        $organization_logo = $this->_entityManager
+        $organization_logo = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_logo');
 
-        $foreword = $this->_entityManager
+        $foreword = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_foreword');
 

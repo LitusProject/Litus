@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Stock\Delivery,
+use CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -131,12 +130,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                     $this->getEntityManager()->flush();
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The delivery was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The delivery was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -275,12 +271,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     private function _getDelivery()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the delivery!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the delivery!'
             );
 
             $this->redirect()->toRoute(
@@ -298,12 +291,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $delivery) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No delivery with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No delivery with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -322,12 +312,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -345,12 +332,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

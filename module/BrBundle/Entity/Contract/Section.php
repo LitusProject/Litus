@@ -143,7 +143,7 @@ class Section
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return Person
      */
     public function getAuthor()
     {
@@ -151,7 +151,7 @@ class Section
     }
 
     /**
-     * @param  \Litus\Entity\Users\Person        $author The author of this section
+     * @param  Person                            $author The author of this section
      * @return \BrBundle\Entity\Contract\Section
      */
     public function setAuthor(Person $author)

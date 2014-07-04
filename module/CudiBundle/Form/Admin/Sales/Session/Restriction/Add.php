@@ -37,19 +37,19 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session
+     * @var Session
      */
     private $_session;
 
     /**
-     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Session $session
-     * @param null|string|int                 $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Session         $session
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Session $session, $name = null)
     {

@@ -21,8 +21,9 @@ namespace ApiBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
+    CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person,
+    Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Uri\UriFactory,
     Zend\Validator\AbstractValidator,
@@ -32,6 +33,12 @@ use CommonBundle\Component\Acl\Acl,
  * We extend the CommonBundle controller.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
+ * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
+ * @method \CommonBundle\Component\Controller\Plugin\Paginator paginator()
+ * @method \CommonBundle\Component\Controller\Plugin\Url url()
+ * @method \Zend\Http\PhpEnvironment\Response getResponse()
+ * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
 class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements DoctrineAware
 {
@@ -138,6 +145,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * accessible troughout the application.
      *
      * @return void
+     * @throws RuntimeException
      */
     private function _initFallbackLanguage()
     {
@@ -152,7 +160,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
             if (null !== $fallbackLanguage)
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            throw new RuntimeException('Unable to initialize fallback language.');
+        }
     }
 
     /**
@@ -167,8 +177,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
         $headers = $this->getResponse()->getHeaders();
 
-        if ($headers->has('Content-Type'))
-            $headers->removeHeader($headers->get('Content-Type'));
+        $contentType = $headers->get('Content-Type');
+        if ($contentType instanceof HeaderInterface)
+            $headers->removeHeader($contentType);
 
         $headers->addHeaders(
             array_merge(
@@ -281,6 +292,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     public function getAuthentication()
     {
         return $this->getServiceLocator()->get('authentication');
+    }
+
+    /**
+     * We want an easy method to retrieve the Authentication Service
+     * from the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->getServiceLocator()->get('authentication_doctrineservice');
     }
 
     /**
@@ -438,6 +460,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        return $this->getServiceLocator()->get('mail_transport');
+    }
+
+    /**
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
@@ -473,7 +506,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             return false;
 
         $validateKey = $key->validate(
-            isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+            $this->getRequest()->getServer('HTTP_X_FORWARDED_FOR', $this->getRequest()->getServer('REMOTE_ADDR'))
         );
 
         if (!$validateKey)

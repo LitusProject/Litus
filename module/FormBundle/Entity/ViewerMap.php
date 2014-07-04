@@ -19,7 +19,6 @@
 namespace FormBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;
 
@@ -41,7 +40,7 @@ class ViewerMap
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Node\Form The form of the mapping
+     * @var Form The form of the mapping
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
@@ -49,7 +48,7 @@ class ViewerMap
     private $form;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person of the mapping
+     * @var Person The person of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -71,10 +70,10 @@ class ViewerMap
     private $mail;
 
     /**
-     * @param \FormBundle\Entity\Node\Form     $form
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param boolean                          $edit
-     * @param boolean                          $mail
+     * @param Form    $form
+     * @param Person  $person
+     * @param boolean $edit
+     * @param boolean $mail
      */
     public function __construct(Form $form, Person $person, $edit, $mail)
     {
@@ -93,7 +92,7 @@ class ViewerMap
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form
+     * @return Form
      */
     public function getForm()
     {
@@ -101,7 +100,7 @@ class ViewerMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {

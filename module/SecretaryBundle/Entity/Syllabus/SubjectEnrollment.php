@@ -20,7 +20,6 @@ namespace SecretaryBundle\Entity\Syllabus;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     SyllabusBundle\Entity\Subject;
 
@@ -42,7 +41,7 @@ class SubjectEnrollment
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person of the enrollment
+     * @var Academic The person of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -50,7 +49,7 @@ class SubjectEnrollment
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the enrollment
+     * @var AcademicYear The academic year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -58,7 +57,7 @@ class SubjectEnrollment
     private $academicYear;
 
     /**
-     * @var \DateTime The subject of the enrollment
+     * @var Subject The subject of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
      * @ORM\JoinColumn(name="subject", referencedColumnName="id")
@@ -66,9 +65,9 @@ class SubjectEnrollment
     private $subject;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \SyllabusBundle\Entity\Subject            $subject
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param Subject      $subject
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Subject $subject)
     {
@@ -86,7 +85,7 @@ class SubjectEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -94,7 +93,7 @@ class SubjectEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -102,7 +101,7 @@ class SubjectEnrollment
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return Subject
      */
     public function getSubject()
     {

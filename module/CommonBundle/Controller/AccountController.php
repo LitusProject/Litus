@@ -18,13 +18,11 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\PassKit\Pass\Membership,
+use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
@@ -37,8 +35,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
     Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,12 +48,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function indexAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -120,12 +114,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function editAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -198,7 +189,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
                     ->setPhoneNumber($formData['phone_number'])
                     ->setSex($formData['sex'])
-                    ->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    ->setBirthday(self::_loadDate($formData['birthday']))
                     ->setPersonalEmail($formData['personal_email'])
                     ->setUniversityEmail($universityEmail);
 
@@ -349,12 +340,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'Your data was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'Your data was succesfully updated!'
                 );
 
                 $this->_doRedirect();
@@ -376,12 +364,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function studiesAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -400,12 +385,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function saveStudiesAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -427,12 +409,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function subjectsAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -452,12 +431,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function saveSubjectsAction()
     {
         if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login first!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -499,12 +475,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your account was succesfully activated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'Your account was succesfully activated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -554,7 +527,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $form = new ProfileForm();
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('profile')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('profile');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -567,12 +542,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
             if ($form->isValid()) {
                 if ($upload->isValid()) {
-                    if ($upload->isUploaded()) {
-                        $upload->receive();
+                    $upload->receive();
 
-                        $image = new Imagick($upload->getFileName());
-                        unlink($upload->getFileName());
-                    }
+                    $image = new Imagick($upload->getFileName('profile'));
+                    unlink($upload->getFileName('profile'));
                 } else {
                     $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
@@ -581,12 +554,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $image->cropThumbnailImage(320, 240);
                 } else {
                     $ratio = $image->getImageWidth()/320;
-                    $x = $formData['x']*$ratio;
-                    $y = $formData['y']*$ratio;
-                    $x2 = $formData['x2']*$ratio;
-                    $y2 = $formData['y2']*$ratio;
-                    $w = $formData['w']*$ratio;
-                    $h = $formData['h']*$ratio;
+                    $x = $formData['x'] * $ratio;
+                    $y = $formData['y'] * $ratio;
+                    $w = $formData['w'] * $ratio;
+                    $h = $formData['h'] * $ratio;
 
                     $image->cropImage($w, $h, $x, $y);
                     $image->cropThumbnailImage(320, 240);
@@ -595,7 +566,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 if ($academic->getPhotoPath() != '' || $academic->getPhotoPath() !== null) {
                     $fileName = $academic->getPhotoPath();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = sha1(uniqid());
                     } while (file_exists($filePath . '/' . $fileName));
@@ -647,15 +617,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getUser()
     {
         if (null === $this->getParam('code')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No code was given to identify the user!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No code was given to identify the user!'
             );
 
             $this->redirect()->toRoute(
@@ -670,12 +640,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findOnePersonByCode($this->getParam('code'));
 
         if (null === $user) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given code is not valid!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given code is not valid!'
             );
 
             $this->redirect()->toRoute(
@@ -688,6 +655,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $user;
     }
 
+    /**
+     * @return null
+     */
     private function _doRedirect()
     {
         if (null === $this->getParam('return')) {
@@ -699,5 +669,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
     }
 }

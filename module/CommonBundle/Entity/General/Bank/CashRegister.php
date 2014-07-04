@@ -58,7 +58,7 @@ class CashRegister
     private $bankDeviceAmounts;
 
     /**
-     * @return integer
+     * @return string
      */
     public function getId()
     {

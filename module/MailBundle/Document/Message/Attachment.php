@@ -59,8 +59,6 @@ class Attachment
     private $data;
 
     /**
-     * @param string $message
-     * @param array  $attachments
      */
     public function __construct($filename, $contentType, $data)
     {
@@ -70,7 +68,7 @@ class Attachment
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {

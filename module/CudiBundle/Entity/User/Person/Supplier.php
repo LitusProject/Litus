@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Entity\User\Person;
 
-use CommonBundle\Entity\User\Credential,
-    CudiBundle\Entity\Supplier as SupplierEntity,
+use CudiBundle\Entity\Supplier as SupplierEntity,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,7 +30,7 @@ use CommonBundle\Entity\User\Credential,
 class Supplier extends \CommonBundle\Entity\User\Person
 {
     /**
-     * @var \CudiBundle\Entity\Supplier The supplier associated with this person
+     * @var SupplierEntity The supplier associated with this person
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
@@ -39,14 +38,14 @@ class Supplier extends \CommonBundle\Entity\User\Person
     private $supplier;
 
     /**
-     * @param string                      $username    The user's username
-     * @param array                       $roles       The user's roles
-     * @param string                      $firstName   The user's first name
-     * @param string                      $lastName    The user's last name
-     * @param string                      $email       The user's e-mail address
-     * @param string                      $phoneNumber The user's phone number
-     * @param string                      $sex         The users sex
-     * @param \CudiBundle\Entity\Supplier $supplier    The supplier
+     * @param string         $username    The user's username
+     * @param array          $roles       The user's roles
+     * @param string         $firstName   The user's first name
+     * @param string         $lastName    The user's last name
+     * @param string         $email       The user's e-mail address
+     * @param string|null    $phoneNumber The user's phone number
+     * @param string|null    $sex         The users sex
+     * @param SupplierEntity $supplier    The supplier
      */
     public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
     {
@@ -56,7 +55,7 @@ class Supplier extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @return \CudiBundle\Entity\Supplier
+     * @return SupplierEntity
      */
     public function getSupplier()
     {
@@ -64,11 +63,11 @@ class Supplier extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param \CudiBundle\Entity\Supplier $supplier
+     * @param SupplierEntity $supplier
      *
      * @return \CudiBundle\Entity\User\Person\Supplier
      */
-    public function setSupplier($supplier)
+    public function setSupplier(SupplierEntity $supplier)
     {
         $this->supplier = $supplier;
 

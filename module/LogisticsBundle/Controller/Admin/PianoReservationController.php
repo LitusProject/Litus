@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Form\Admin\PianoReservation\Add as AddForm,
@@ -71,7 +70,10 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -85,8 +87,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
 
                 $reservation = new PianoReservation(
-                    DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']),
+                    $startDate,
+                    $endDate,
                     $piano,
                     $formData['additional_info'],
                     $this->getAuthentication()->getPersonObject(),
@@ -103,7 +105,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     );
 
                     if (!($language = $player->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 
@@ -153,12 +156,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The reservation was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The reservation was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -190,7 +190,10 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -199,8 +202,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                 $player = ('' == $formData['player_id'])
                     ? $repository->findOneByUsername($formData['player']) : $repository->findOneById($formData['player_id']);
 
-                $reservation->setStartDate(DateTime::createFromFormat('D d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('D d#m#Y H#i', $formData['end_date']))
+                $reservation->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setAdditionalInfo($formData['additional_info'])
                     ->setPlayer($player)
                     ->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
@@ -213,7 +216,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     );
 
                     if (!($language = $player->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 
@@ -253,12 +257,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The reservation was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The reservation was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -299,12 +300,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the reservation!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the reservation!'
             );
 
             $this->redirect()->toRoute(
@@ -322,12 +320,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -341,5 +336,14 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
         }
 
         return $reservation;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
     }
 }

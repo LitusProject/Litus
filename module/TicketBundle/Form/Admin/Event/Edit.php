@@ -21,8 +21,6 @@ namespace TicketBundle\Form\Admin\Event;
 use Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -33,14 +31,14 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var Event
      */
     private $_event;
 
     /**
-     * @param \TicketBundle\Entity\Event  $event
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param Event           $event
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(Event $event, EntityManager $entityManager, $name = null)
     {

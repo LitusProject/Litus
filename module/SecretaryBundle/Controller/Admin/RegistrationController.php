@@ -18,13 +18,10 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Barcode,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    DateInterval,
-    DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -110,12 +107,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The barcode was successfully set!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The barcode was successfully set!'
                 );
 
                 $this->redirect()->toRoute(
@@ -175,12 +169,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->findOneById($formData['organization']);
 
                 if (null !== $registration) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::WARNING,
-                            'WARNING',
-                            'There was already a registration for this academic!'
-                        )
+                    $this->flashMessenger()->warn(
+                        'WARNING',
+                        'There was already a registration for this academic!'
                     );
 
                     $this->redirect()->toRoute(
@@ -230,12 +221,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The registration was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The registration was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -326,12 +314,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The registration was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The registration was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -475,12 +460,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneByUniversityStart($start);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
@@ -499,12 +481,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     private function _getRegistration()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the registration!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the registration!'
             );
 
             $this->redirect()->toRoute(
@@ -522,12 +501,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('id'));
 
         if (null === $registration) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No registration with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No registration with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -20,7 +20,6 @@ namespace CommonBundle\Repository\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**

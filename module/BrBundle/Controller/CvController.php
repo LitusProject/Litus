@@ -24,7 +24,6 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Form\Cv\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -37,46 +36,56 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $messages = array();
         $languageError = null;
 
-        if ($person === null) {
-            $messages = array('Please login to add your CV.');
-        } else {
-            if (!($person instanceof Academic)) {
-                $messages = array('You must be a student to add your CV.');
-            } else {
+        if (null === $person) {
+            return new ViewModel(
+                array(
+                    'messages' => array('Please login to edit your CV.'),
+                )
+            );
+        }
 
-                $temp = $this->_getBadAccountMessage($person);
-                if ($temp !== null && !empty($temp))
-                    $messages = $temp;
+        if (!($person instanceof Academic)) {
+            return new ViewModel(
+                array(
+                    'messages' => array('You must be a student to edit your CV.'),
+                )
+            );
+        }
 
-                $entry = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Entry')
-                    ->findOneByAcademic($person);
-                if ($entry) {
-                    $messages = array('');
-                    $this->redirect()->toRoute(
-                        'br_cv_index',
-                        array(
-                            'action' => 'edit',
-                        )
-                    );
-                }
+        $messages = $this->_getBadAccountMessage($person);
+            if ($messages !== null && !empty($messages)) {
+                return new ViewModel(
+                    array(
+                        'messages' => $messages,
+                    )
+                );
             }
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademic($person);
+
+        if (!$entry) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
         }
 
         $open = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cv_book_open');
 
-        if (!$open)
-            $messages = array('The CV Book is currently not accepting entries.');
-
-        if (!empty($messages)) {
+        if (!$open) {
             return new ViewModel(
                 array(
-                    'messages' => $messages,
+                    'messages' => array('The CV Book is currently not accepting entries.'),
                 )
             );
         }
@@ -84,13 +93,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $address = new Address(
                     $person->getSecondaryAddress()->getStreet(),
                     $person->getSecondaryAddress()->getNumber(),
@@ -180,44 +187,26 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function editAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $messages = array();
         $languageError = null;
 
-        if ($person === null) {
-            $messages = array('Please login to edit your CV.');
-        } else {
-            if (!($person instanceof Academic)) {
-                $messages = array('You must be a student to edit your CV.');
-            } else {
-
-                $temp = $this->_getBadAccountMessage($person);
-                if ($temp !== null && !empty($temp))
-                    $messages = $temp;
-
-                $entry = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Entry')
-                    ->findOneByAcademic($person);
-                if (!$entry) {
-                    $messages = array('');
-                    $this->redirect()->toRoute(
-                        'br_cv_index',
-                        array(
-                            'action' => 'cv',
-                        )
-                    );
-                }
-            }
+        if (null === $person) {
+            return new ViewModel(
+                array(
+                    'messages' => array('Please login to edit your CV.'),
+                )
+            );
         }
 
-        $open = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.cv_book_open');
-
-        if (!$open) {
-            $messages = array('The CV Book is currently not accepting entries.');
+        if (!($person instanceof Academic)) {
+            return new ViewModel(
+                array(
+                    'messages' => array('You must be a student to edit your CV.'),
+                )
+            );
         }
 
-        if (!empty($messages)) {
+        $messages = $this->_getBadAccountMessage($person);
+        if ($messages !== null && !empty($messages)) {
             return new ViewModel(
                 array(
                     'messages' => $messages,
@@ -225,16 +214,41 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademic($person);
+
+        if (!$entry) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $open = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_open');
+
+        if (!$open) {
+            return new ViewModel(
+                array(
+                    'messages' => array('The CV Book is currently not accepting entries.'),
+                )
+            );
+        }
+
         $form = new EditForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $address = new Address(
                     $person->getSecondaryAddress()->getStreet(),
                     $person->getSecondaryAddress()->getNumber(),
@@ -244,8 +258,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     $person->getSecondaryAddress()->getCountryCode()
                 );
 
-                $entry
-                    ->setFirstName($person->getFirstName())
+                $entry->setFirstName($person->getFirstName())
                     ->setLastName($person->getLastName())
                     ->setBirthday($person->getBirthDay())
                     ->setSex($person->getSex())
@@ -308,9 +321,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
                 return new ViewModel();
             } else {
-                if (!$form->isValidLanguages($formData)) {
+                if (!$form->isValidLanguages($formData))
                     $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
         } else {
             $form->populateFromEntry($entry);

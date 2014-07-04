@@ -28,7 +28,7 @@ abstract class Connection
     /**
      * Sends the given data object to the server.
      *
-     * @param  \CommonBundle\Component\Lilo\Data $data The data object that should be sent
+     * @param  Data $data The data object that should be sent
      * @return void
      */
     abstract public function send(Data $data);

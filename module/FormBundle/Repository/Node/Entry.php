@@ -20,7 +20,6 @@ namespace FormBundle\Repository\Node;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\User\Person,
-    DateTime,
     FormBundle\Entity\Node\Form as FormEntity,
     FormBundle\Entity\Node\Group as GroupEntity,
     FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;

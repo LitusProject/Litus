@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Entity\User\Code,
+use CommonBundle\Component\Authentication\Result,
+    CommonBundle\Entity\User\Code,
     Doctrine\ORM\EntityManager,
     Zend\Mail\Transport\TransportInterface,
     Zend\Mail\Message;
@@ -31,18 +32,18 @@ use CommonBundle\Entity\User\Code,
 class Doctrine implements \CommonBundle\Component\Authentication\Action
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface The mail transport interface
+     * @var TransportInterface The mail transport interface
      */
     private $_mailTransport;
 
     /**
-     * @param \Doctrine\ORM\EntityManager             $entityManager The EntityManager instance
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport The mail transport interface
+     * @param EntityManager      $entityManager The EntityManager instance
+     * @param TransportInterface $mailTransport The mail transport interface
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
@@ -53,10 +54,10 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization has failed.
      *
-     * @param $result
+     * @param  Result $result
      * @return void
      */
-    public function failedAction($result)
+    public function failedAction(Result $result)
     {
         if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential())
             return;
@@ -115,10 +116,10 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * The authorization was successful.
      *
-     * @param $result
+     * @param  Result $result
      * @return void
      */
-    public function succeededAction($result)
+    public function succeededAction(Result $result)
     {
         $result->getPersonObject()
             ->setFailedLogins(0);

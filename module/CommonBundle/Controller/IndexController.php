@@ -49,7 +49,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-    
+
+    /**
+     * @return array
+     */
     private function _getBookings()
     {
         $bookings = null;
@@ -70,6 +73,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $bookings;
     }
 
+    /**
+     * @return array
+     */
     private function _getNewsItems()
     {
         $maxAge = new DateTime();
@@ -86,6 +92,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findNbSite(5, $maxAge);
     }
 
+    /**
+     * @return array
+     */
     private function _getCalendarItems()
     {
         $events = $this->getEntityManager()
@@ -107,6 +116,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $calendarItems;
     }
 
+    /**
+     * @return array
+     */
     private function _getCudiInfo()
     {
         $cudi = array();
@@ -133,6 +145,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $cudi;
     }
 
+    /**
+     * @return array
+     */
     private function _getPiwikInfo()
     {
         $enablePiwik = $this->getEntityManager()
@@ -155,6 +170,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return array
+     */
     private function _getMyShifts()
     {
         if (!$this->getAuthentication()->getPersonObject())

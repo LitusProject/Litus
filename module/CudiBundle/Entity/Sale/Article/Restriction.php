@@ -20,7 +20,7 @@ namespace CudiBundle\Entity\Sale\Article;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article as Article,
+    CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -40,7 +40,7 @@ class Restriction
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the restriction
+     * @var Article The article of the restriction
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article", inversedBy="barcodes")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -55,7 +55,7 @@ class Restriction
     private $type;
 
     /**
-     * @var string The value of the restriction
+     * @var string|null The value of the restriction
      *
      * @ORM\Column(type="string", nullable=true)
      */
@@ -78,9 +78,9 @@ class Restriction
     );
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article The article of the restriction
-     * @param string      $type  The type of the restriction
-     * @param string|null $value The value of the restriction
+     * @param Article     $article The article of the restriction
+     * @param string      $type    The type of the restriction
+     * @param string|null $value   The value of the restriction
      */
     public function __construct(Article $article, $type, $value = null)
     {
@@ -93,6 +93,7 @@ class Restriction
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidRestrictionType($type)
@@ -109,7 +110,7 @@ class Restriction
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article\Barcode
+     * @return
      */
     public function getArticle()
     {
@@ -141,8 +142,8 @@ class Restriction
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param Person        $person
+     * @param EntityManager $entityManager
      *
      * @return boolean
      */

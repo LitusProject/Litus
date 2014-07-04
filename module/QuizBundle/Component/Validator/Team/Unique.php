@@ -32,17 +32,17 @@ class Unique extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz where the team belongs to
+     * @var Quiz The quiz where the team belongs to
      */
     private $_quiz = null;
 
     /**
-     * @var \QuizBundle\Entity\Team The team excluded
+     * @var Team The team excluded
      */
     private $_team = null;
 
@@ -57,10 +57,10 @@ class Unique extends \Zend\Validator\AbstractValidator
 
     /**
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \QuizBundle\Entity\Quiz     $quiz          The quiz where the team belongs to
-     * @param \QuizBundle\Entity\Team     $team          The team excluded
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Quiz          $quiz          The quiz where the team belongs to
+     * @param Team          $team          The team excluded
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, Team $team = null, $opts = null)
     {

@@ -50,19 +50,25 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager = null;
 
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
     /**
-     * @param \FormBundle\Entity\Node\Form $form
-     * @param \Doctrine\ORM\EntityManager  $entityManager
-     * @param null|string|int              $name          Optional name for the element
+     * @var Field
+     */
+    protected $_field;
+
+    /**
+     * @param Form            $form
+     * @param EntityManager   $entityManager
+     * @param Field|null      $lastField
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(Form $form, EntityManager $entityManager, Field $lastField = null ,$name = null)
     {
@@ -97,7 +103,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        if ($form instanceOf Doodle) {
+        if ($form instanceof Doodle) {
             $field->setAttribute('options', array('timeslot' => 'Time Slot'));
         } else {
             $field->setAttribute('options', Field::$POSSIBLE_TYPES);
@@ -219,7 +225,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('visible_if');
         $field->setLabel('Visible If')
             ->setRequired()
-            ->setAttribute('options', $this->_getVisibilityOptions());
+            ->setAttribute('options', $this->getVisibilityOptions());
         $visibility->add($field);
 
         $field = new Select('visible_value');
@@ -302,10 +308,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->setData($data);
     }
 
-    private function _getVisibilityOptions()
+    protected function getVisibilityOptions()
     {
         $options = array(0 => 'Always');
         foreach ($this->_form->getFields() as $field) {
+            if (null !== $this->_field && $field->getId() == $this->_field->getId())
+                continue;
+
             if ($field instanceof StringField) {
                 $options[] = array(
                     'label' => $field->getLabel(),

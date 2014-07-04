@@ -23,8 +23,6 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
     CommonBundle\Entity\General\Config,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
     RuntimeException;
 
 /**

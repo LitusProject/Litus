@@ -30,13 +30,13 @@ use CommonBundle\Entity\General\Location,
 class StaticMap extends \Zend\View\Helper\AbstractHelper
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param  \Doctrine\ORM\EntityManager                   $entityManager The EntityManager instance
-     * @return \CommonBundle\Component\View\Helper\StaticMap
+     * @param  EntityManager $entityManager The EntityManager instance
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -46,10 +46,10 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Location $location The location that should be verified
-     * @param  string                                $size     The image's size
-     * @param  string                                $color    The hex value for the color of the marker on the image
-     * @return bool
+     * @param  Location $location The location that should be verified
+     * @param  string   $size     The image's size
+     * @param  string   $color    The hex value for the color of the marker on the image
+     * @return string
      */
     public function __invoke(Location $location, $size, $color)
     {

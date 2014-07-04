@@ -35,7 +35,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -45,8 +45,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_allMembers = array();
 
     /**
-     * @param array           $allMembers
-     * @param null|string|int $name       Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param string[]        $allMembers
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
     {
@@ -84,6 +85,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add($field);
     }
 
+    /**
+     * @param integer $startTime
+     */
     private function _generateHappyHours($startTime)
     {
         $optionsArray = array();
@@ -104,42 +108,30 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $groups = $this->_entityManager
             ->getRepository('SportBundle\Entity\Group')
-            ->findAll();
+            ->findLast();
 
-        $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
-
-        if (0 == count($returnArray)) {
-            $returnArray = $optionsArray;
-            if (0 != count($groups))
-                $returnArray = $this->_cleanHappyHoursArray($optionsArray, $groups);
-        }
-
-        return $returnArray;
+        return $this->_cleanHappyHoursArray($optionsArray, $groups);
     }
 
-    private function _cleanHappyHoursArray($optionsArray, &$groups)
+    private function _cleanHappyHoursArray(array $optionsArray, array $groups)
     {
         $returnArray = $optionsArray;
-        for ($i = 0; $i < (count($groups) % 6); $i++) {
-            $happyHours = $groups[$i]->getHappyHours();
+        foreach ($groups as $group) {
+            $happyHours = $group->getHappyHours();
 
             if (isset($returnArray[$happyHours[0]]))
                 unset($returnArray[$happyHours[0]]);
 
             if (isset($returnArray[$happyHours[1]]))
                 unset($returnArray[$happyHours[1]]);
-
-            unset($groups[$i]);
         }
-
-        $newGroups = array();
-        foreach($groups as $groupNb => $group)
-            $newGroups[$groupNb - 6] = $group;
-        $groups = $newGroups;
 
         return $returnArray;
     }
 
+    /**
+     * @param string $memberNb
+     */
     private function _generateMemberForm($memberNb, $required = false)
     {
         $user = new Collection('user_' . $memberNb);

@@ -83,6 +83,9 @@ EOT
         }
     }
 
+    /**
+     * @param string $str
+     */
     protected function writeln($str, $raw = false)
     {
         if (null !== $this->_lilo) {
@@ -96,9 +99,11 @@ EOT
     {
         $this->_lilo->sendLog(
             $str,
-            array(
-                'MailBundle',
-                'parser.php'
+            serialize(
+                array(
+                    'MailBundle',
+                    'parser.php'
+                )
             )
         );
     }
@@ -116,6 +121,9 @@ EOT
         return $message;
     }
 
+    /**
+     * @param string $message
+     */
     private function _parseMessage($message)
     {
         $parser = new MessageParser($message);

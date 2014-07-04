@@ -19,11 +19,10 @@
 namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action,
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    CommonBundle\Entity\User\Session,
     Doctrine\ORM\EntityManager,
-    Zend\Authentication\Adapter\AdapterInterface,
-    Zend\Authentication\Storage\StorageInterface as StorageInterface;
+    Zend\Authentication\Storage\StorageInterface;
 
 /**
  * An authentication service that uses a Doctrine result.
@@ -35,7 +34,7 @@ use CommonBundle\Component\Authentication\Action,
 class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthenticationService
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -45,14 +44,14 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     private $_entityName = '';
 
     /**
-     * @param  \Doctrine\ORM\EntityManager                                                       $entityManager The EntityManager instance
-     * @param  string                                                                            $entityName    The name of the entity that holds the sessions
-     * @param  int                                                                               $expire        The expiration time for the persistent storage
-     * @param  \Zend\Authentication\Storage\StorageInterface                                     $storage       The persistent storage handler
-     * @param  string                                                                            $namespace     The namespace the storage handlers will use
-     * @param  string                                                                            $cookieSuffix  The cookie suffix that is used to store the session cookie
-     * @param  \CommonBundle\Component\Authentication\Action                                     $action        The action that should be taken after authentication
-     * @throws \CommonBundle\Component\Authentication\Service\Exception\InvalidArgumentException The entity name cannot have a leading backslash
+     * @param  EntityManager                      $entityManager The EntityManager instance
+     * @param  string                             $entityName    The name of the entity that holds the sessions
+     * @param  int                                $expire        The expiration time for the persistent storage
+     * @param  StorageInterface                   $storage       The persistent storage handler
+     * @param  string                             $namespace     The namespace the storage handlers will use
+     * @param  string                             $cookieSuffix  The cookie suffix that is used to store the session cookie
+     * @param  Action                             $action        The action that should be taken after authentication
+     * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
         EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
@@ -73,25 +72,26 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Authenticates against the supplied adapter
      *
-     * @param \Zend\Authentication\Adapter\AdapterInterface $adapter    The supplied adapter
-     * @param boolean                                       $rememberMe Remember this authentication session
-     * @param boolean                                       $shibboleth Whether or not this is sessions initiated by Shibboleth
+     * @param \CommonBundle\Component\Authentication\Adapter\Doctrine|null $adapter
+     * @param boolean                                                      $rememberMe Remember this authentication session
+     * @param boolean                                                      $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
-     * @return \Zend\Authentication\Result
+     * @return Result
      */
-    public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
+    public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
+        $server = $this->_request->getServer();
 
-        if ('' == $this->getIdentity()) {
+        if ('' == $this->getIdentity() && null !== $adapter) {
             $adapterResult = $adapter->authenticate();
 
             if ($adapterResult->isValid()) {
                 $sessionEntity = $this->_entityName;
                 $newSession = new $sessionEntity(
                     $adapterResult->getPersonObject(),
-                    $_SERVER['HTTP_USER_AGENT'],
-                    isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'],
+                    $server->get('HTTP_USER_AGENT'),
+                    $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR')),
                     $shibboleth,
                     $this->_duration
                 );
@@ -123,8 +123,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
             if (null !== $session) {
                 $sessionValidation = $session->validate(
                     $this->_entityManager,
-                    $_SERVER['HTTP_USER_AGENT'],
-                    isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']
+                    $server->get('HTTP_USER_AGENT'),
+                    $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR'))
                 );
 
                 if (true !== $sessionValidation) {
@@ -171,7 +171,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Clears the persistent storage and deactivates the associated session.
      *
-     * @return void
+     * @return \CommonBundle\Entity\User\Session|null
      */
     public function clearIdentity()
     {

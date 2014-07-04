@@ -35,13 +35,13 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

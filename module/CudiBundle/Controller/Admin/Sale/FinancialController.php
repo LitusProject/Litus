@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Financial as FinancialGenerator,
     CudiBundle\Form\Admin\Sales\Financial\Period as PeriodForm,
     DateTime,

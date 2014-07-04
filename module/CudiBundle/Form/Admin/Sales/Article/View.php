@@ -28,9 +28,9 @@ use CudiBundle\Entity\Sale\Article,
 class View extends \CudiBundle\Form\Admin\Sales\Article\Edit
 {
     /**
-     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param null|string|int                 $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Article         $article
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {

@@ -18,8 +18,7 @@
 
 namespace SportBundle\Controller\Run;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    SportBundle\Form\Queue\Add as AddForm,
+use SportBundle\Form\Queue\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**

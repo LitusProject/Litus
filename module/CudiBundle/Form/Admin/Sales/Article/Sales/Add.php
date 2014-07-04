@@ -20,6 +20,7 @@ namespace CudiBundle\Form\Admin\Sales\Article\Sales;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\Price as PriceValidator,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
@@ -46,6 +47,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $field = new Text('number');
         $field->setLabel('Number')
+            ->setAttribute('style', 'width: 75px')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new Text('price');
+        $field->setLabel('Price')
             ->setAttribute('style', 'width: 75px')
             ->setRequired();
         $this->add($field);
@@ -94,6 +101,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'min' => 0,
                             ),
                         ),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'price',
+                    'required' => !isset($this->data['sale_to']) || $this->data['sale_to'] == 'other',
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
                     ),
                 )
             )

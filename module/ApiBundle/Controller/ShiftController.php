@@ -18,8 +18,10 @@
 
 namespace ApiBundle\Controller;
 
-use ShiftBundle\Entity\Shift\Responsible,
+use CommonBundle\Entity\User\Person,
+    ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
+    ShiftBundle\Entity\Shift,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,7 +36,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
             return $this->error(401, 'The access token is not valid');
 
         $shifts = $this->getEntityManager()
@@ -43,15 +45,15 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
 
         $signedUp = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByPerson($this->_getPerson());
+            ->findAllActiveByPerson($person);
 
         $result = array();
         foreach ($shifts as $shift) {
             $result[] = array(
                 'id'                    => $shift->getId(),
 
-                'canHaveAsResponsible'  => $shift->canHaveAsResponsible($this->getEntityManager(), $this->_getPerson()),
-                'canHaveAsVolunteer'    => $shift->canHaveAsVolunteer($this->getEntityManager(), $this->_getPerson()),
+                'canHaveAsResponsible'  => $shift->canHaveAsResponsible($this->getEntityManager(), $person),
+                'canHaveAsVolunteer'    => $shift->canHaveAsVolunteer($this->getEntityManager(), $person),
                 'description'           => $shift->getDescription(),
                 'currentNbResponsibles' => count($shift->getResponsibles()),
                 'currentNbVolunteers'   => count($shift->getVolunteers()),
@@ -90,19 +92,19 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
             return $this->error(401, 'The access token is not valid');
 
-        if (null === $this->_getShift())
+        if (!($shift = $this->_getShift()))
             return $this->error(500, 'The shift was not found');
 
-        if (!($this->_getShift()->canHaveAsResponsible($this->getEntityManager(), $this->_getPerson())))
+        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person)))
             return $this->error(500, 'This person cannot be a responsible');
 
-        $this->_getShift()->addResponsible(
+        $shift->addResponsible(
             $this->getEntityManager(),
             new Responsible(
-                $this->_getPerson(),
+                $person,
                 $this->getCurrentAcademicYear()
             )
         );
@@ -123,19 +125,19 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
             return $this->error(401, 'The access token is not valid');
 
-        if (null === $this->_getShift())
+        if (!($shift = $this->_getShift()))
             return $this->error(500, 'The shift was not found');
 
-        if (!($this->_getShift()->canHaveAsVolunteer($this->getEntityManager(), $this->_getPerson())))
+        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person)))
             return $this->error(500, 'This person cannot be a volunteer');
 
-        if ($this->_getShift()->countVolunteers() >= $this->_getShift()->getNbVolunteers()) {
-            foreach (array_reverse($this->_getShift()->getVolunteers()) as $volunteer) {
+        if ($shift->countVolunteers() >= $shift->getNbVolunteers()) {
+            foreach (array_reverse($shift->getVolunteers()) as $volunteer) {
                 if ($volunteer->getPerson()->isPraesidium($this->getCurrentAcademicYear())) {
-                    $this->_getShift()->removeVolunteer($volunteer);
+                    $shift->removeVolunteer($volunteer);
 
                     $mailAddress = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
@@ -160,7 +162,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                     $message = $mailData[$language->getAbbrev()]['content'];
                     $subject = $mailData[$language->getAbbrev()]['subject'];
 
-                    $shiftString = $this->_getShift()->getName() . ' from ' . $this->_getShift()->getStartDate()->format('d/m/Y h:i') . ' to ' . $this->_getShift()->getEndDate()->format('d/m/Y h:i');
+                    $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
                     $mail = new Message();
                     $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
@@ -177,10 +179,10 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             }
         }
 
-        $this->_getShift()->addVolunteer(
+        $shift->addVolunteer(
             $this->getEntityManager(),
             new Volunteer(
-                $this->_getPerson()
+                $person
             )
         );
 
@@ -200,16 +202,16 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         if (!$this->getRequest()->isPost())
             return $this->error(405, 'This endpoint can only be accessed through POST');
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
             return $this->error(401, 'The access token is not valid');
 
-        if (null === $this->_getShift())
+        if (!($shift = $this->_getShift()))
             return $this->error(500, 'The shift was not found');
 
-        if (!($this->_getShift()->canSignout($this->getEntityManager(), $this->_getPerson())))
+        if (!($shift->canSignout($this->getEntityManager())))
             return $this->error(500, 'This person cannot be signed out');
 
-        $remove = $this->_getShift()->removePerson($this->_getPerson());
+        $remove = $shift->removePerson($person);
         if (null !== $remove)
             $this->getEntityManager()->remove($remove);
 
@@ -226,6 +228,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         );
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getAccessToken())
@@ -234,6 +239,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         return $this->getAccessToken()->getPerson($this->getEntityManager());
     }
 
+    /**
+     * @return Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))

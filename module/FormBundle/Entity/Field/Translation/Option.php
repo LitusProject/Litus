@@ -40,7 +40,7 @@ class Option
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Field The field of this translation
+     * @var OptionSelector The field of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\OptionSelector", inversedBy="optionTranslations")
      * @ORM\JoinColumn(name="field", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Option
     private $field;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -63,9 +63,9 @@ class Option
     private $options;
 
     /**
-     * @param \FormBundle\Entity\Field\OptionSelector field
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $options
+     * @param OptionSelector field
+     * @param Language $language
+     * @param string   $options
      */
     public function __construct(OptionSelector $field, Language $language, $options)
     {
@@ -75,7 +75,15 @@ class Option
     }
 
     /**
-     * @return \FormBundle\Entity\Field
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return OptionSelector
      */
     public function getField()
     {
@@ -83,7 +91,7 @@ class Option
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -93,7 +101,7 @@ class Option
     /**
      * @param string $options
      *
-     * @return \FormBundle\Entity\Field\Translation\Option
+     * @return self
      */
     public function setOptions($options)
     {

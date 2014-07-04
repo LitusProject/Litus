@@ -22,9 +22,8 @@ use BrBundle\Entity\Company\Logo,
     BrBundle\Form\Admin\Company\Logo\Add as AddForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
-    Zend\File\Transfer\Transfer as FileTransfer,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\IsImage as ImageValidator,
+    Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -73,7 +72,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             $upload = new FileTransfer();
-            $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
+            $inputFilter = $form->getInputFilter()->get('logo');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
@@ -84,8 +85,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
+                $image = new Imagick($upload->getFileName('logo'));
+                unlink($upload->getFileName('logo'));
                 $image->setImageFormat('png');
                 $image->scaleImage(1000, 100, true);
 

@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use Zend\Form\FormInterface;
+use Zend\Form\ElementPrepareAwareInterface,
+    Zend\Form\Fieldset,
+    Zend\Form\FormInterface;
 
 /**
  * Collection form element
@@ -39,7 +41,7 @@ class Collection extends \Zend\Form\Element\Collection
      * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
      * name clashes if the same fieldset is used multiple times
      *
-     * @param  Form       $form
+     * @param  FormInterface $form
      * @return mixed|void
      */
     public function prepareElement(FormInterface $form)
@@ -75,7 +77,7 @@ class Collection extends \Zend\Form\Element\Collection
         }
         foreach ($this->byName as $name => $element) {
             if (!isset($data[$name])) {
-                if ($this->get($name) instanceOf Fieldset)
+                if ($this->get($name) instanceof Fieldset)
                     $data[$name] = array();
                 else
                     $data[$name] = '';

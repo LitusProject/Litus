@@ -49,14 +49,14 @@ class Token
     private $hash;
 
     /**
-     * @var string The person associated with this token
+     * @var int The person associated with this token
      *
      * @ODM\Field(type="int")
      */
     private $person;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
@@ -65,7 +65,7 @@ class Token
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -81,7 +81,7 @@ class Token
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson(EntityManager $entityManager)
     {

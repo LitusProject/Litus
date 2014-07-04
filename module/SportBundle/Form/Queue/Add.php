@@ -35,12 +35,13 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param null|string|int $name Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

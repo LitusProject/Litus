@@ -21,7 +21,6 @@ namespace BrBundle\Form\Admin\Section;
 use BrBundle\Entity\Contract\Section,
     BrBundle\Component\Validator\SectionName as SectionNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

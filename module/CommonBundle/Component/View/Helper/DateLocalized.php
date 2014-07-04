@@ -20,9 +20,10 @@ namespace CommonBundle\Component\View\Helper;
 
 use DateTime,
     IntlDateFormatter,
-    Locale,
+    Zend\I18n\Translator\Translator,
     Zend\I18n\Translator\TranslatorInterface,
-    Zend\I18n\Translator\TranslatorAwareInterface;
+    Zend\I18n\Translator\TranslatorAwareInterface,
+    Zend\Mvc\I18n\Translator as MvcTranslator;
 
 /**
  * A view helper that allows us to easily translate the date.
@@ -34,7 +35,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Translator (optional)
      *
-     * @var Translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
@@ -53,17 +54,19 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     protected $translatorEnabled = true;
 
     /**
-     * @param \DateTime $date
-     * @param string    $format
+     * @param DateTime $date
+     * @param string   $format
      *
-     * @return Zend\Date\Date
+     * @return string
      */
     public function __invoke(DateTime $date = null, $format = '')
     {
-        if (null == $date)
+        $translator = $this->getTranslator();
+        if (null === $date || null === $translator || !($translator instanceof Translator || $translator instanceof MvcTranslator))
             return '';
+
         $formatter = new IntlDateFormatter(
-            $this->getTranslator()->getLocale(),
+            $translator->getLocale(),
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
@@ -77,11 +80,11 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Sets translator to use in helper
      *
-     * @param  Translator $translator [optional] translator.
-     *                                Default is null, which sets no translator.
-     * @param  string     $textDomain [optional] text domain
-     *                                Default is null, which skips setTranslatorTextDomain
-     * @return HeadTitle
+     * @param  TranslatorInterface $translator [optional] translator.
+     *                                         Default is null, which sets no translator.
+     * @param  string              $textDomain [optional] text domain
+     *                                         Default is null, which skips setTranslatorTextDomain
+     * @return DateLocalized
      */
     public function setTranslator(TranslatorInterface $translator = null, $textDomain = null)
     {
@@ -96,7 +99,7 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Returns translator used in helper
      *
-     * @return Translator|null
+     * @return null|TranslatorInterface
      */
     public function getTranslator()
     {
@@ -120,9 +123,9 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Sets whether translator is enabled and should be used
      *
-     * @param  bool      $enabled [optional] whether translator should be used.
-     *                            Default is true.
-     * @return HeadTitle
+     * @param  bool          $enabled [optional] whether translator should be used.
+     *                                Default is true.
+     * @return DateLocalized
      */
     public function setTranslatorEnabled($enabled = true)
     {
@@ -144,8 +147,8 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Set translation text domain
      *
-     * @param  string    $textDomain
-     * @return HeadTitle
+     * @param  string        $textDomain
+     * @return DateLocalized
      */
     public function setTranslatorTextDomain($textDomain = 'default')
     {

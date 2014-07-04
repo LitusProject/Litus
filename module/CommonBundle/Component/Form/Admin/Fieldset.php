@@ -33,8 +33,8 @@ abstract class Fieldset extends \Zend\Form\Fieldset
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
+     * @param  array|\Traversable                 $messages
+     * @return Fieldset
      * @throws Exception\InvalidArgumentException
      */
     public function setMessages($messages)
@@ -52,8 +52,8 @@ abstract class Fieldset extends \Zend\Form\Fieldset
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable                  $data
-     * @return void
+     * @param  array|\Traversable                 $data
+     * @return Fieldset
      * @throws Exception\InvalidArgumentException
      */
     public function populateValues($data)

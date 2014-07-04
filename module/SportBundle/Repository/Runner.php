@@ -18,8 +18,7 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Runner

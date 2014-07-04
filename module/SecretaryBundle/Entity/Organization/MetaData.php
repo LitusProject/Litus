@@ -20,7 +20,6 @@ namespace SecretaryBundle\Entity\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +40,7 @@ class MetaData
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person of the metadata
+     * @var Academic The person of the metadata
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -49,7 +48,7 @@ class MetaData
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year of the metadata
+     * @var AcademicYear The academic year of the metadata
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -84,7 +83,7 @@ class MetaData
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -92,7 +91,7 @@ class MetaData
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -108,9 +107,8 @@ class MetaData
     }
 
     /**
-     * @param boolean $becomeMember
-     *
-     * @return \SecretaryBundle\Entity\Organization\MetaData
+     * @param  boolean $becomeMember
+     * @return self
      */
     public function setBecomeMember($becomeMember)
     {
