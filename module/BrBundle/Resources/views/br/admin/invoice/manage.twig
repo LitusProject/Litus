@@ -49,7 +49,7 @@
                         {% if hasAccess('br_admin_invoice', 'edit') and invoice.isPayed() == false %}
                             <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'view') %}
+                        {% if hasAccess('br_admin_invoice', 'history') %}
                             <a href="{{ url('br_admin_invoice', {"action": "history", "id": invoice.getId()}) }}" class="history">History</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'view') %}
