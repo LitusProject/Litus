@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Form\Admin\Prof\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -66,12 +65,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->flush();
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The docent was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The docent was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -141,12 +137,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     private function _getSubject()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -164,12 +157,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $study) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -188,12 +178,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -211,12 +198,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -240,12 +224,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

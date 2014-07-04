@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
@@ -93,12 +92,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The subject was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The subject was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -149,12 +145,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The subject was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The subject was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -274,12 +267,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     private function _getSubject()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -297,12 +287,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $study) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -326,12 +313,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

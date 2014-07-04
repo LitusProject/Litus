@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Form\Admin\Message\Edit as EditForm,
+use MailBundle\Form\Admin\Message\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -67,12 +66,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
                 $this->getDocumentManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The message was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The message was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -117,12 +113,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     private function _getMessage()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the message!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the message!'
             );
 
             $this->redirect()->toRoute(
@@ -140,12 +133,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             ->findOneById($this->getParam('id'));
 
         if (null === $message) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No message with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No message with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

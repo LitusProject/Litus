@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
@@ -131,12 +130,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                         ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
                     if ($promotion) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::WARNING,
-                                'WARNING',
-                                'The academic is already in this promotion list!'
-                            )
+                        $this->flashMessenger()->warn(
+                            'WARNING',
+                            'The academic is already in this promotion list!'
                         );
 
                         $this->redirect()->toRoute(
@@ -157,12 +153,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                         ->findOneByEmailAndAcademicYear($formData['external_email'], $academicYear);
 
                     if ($promotion) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::WARNING,
-                                'WARNING',
-                                'The email is already in this promotion list!'
-                            )
+                        $this->flashMessenger()->warn(
+                            'WARNING',
+                            'The email is already in this promotion list!'
                         );
 
                         $this->redirect()->toRoute(
@@ -188,12 +181,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The promotion was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The promotion was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -269,12 +259,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The promotion list is successfully updated!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The promotion list is successfully updated!'
         );
 
         $this->redirect()->toRoute(
@@ -310,12 +297,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
@@ -334,12 +318,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     private function _getPromotion()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the promotion!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the promotion!'
             );
 
             $this->redirect()->toRoute(
@@ -357,12 +338,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $promotion) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No promotion with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No promotion with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

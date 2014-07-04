@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
@@ -379,12 +378,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getOrder()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the order!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the order!'
             );
 
             $this->redirect()->toRoute(
@@ -402,12 +398,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $orders) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No order with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No order with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -426,12 +419,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -449,12 +439,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

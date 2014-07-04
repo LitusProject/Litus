@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -58,12 +57,9 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndGroup($person, $group);
 
         if (!$viewerMap) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the given form group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to the given form group!'
             );
 
             $this->redirect()->toRoute(
@@ -92,12 +88,9 @@ class GroupController extends \FormBundle\Component\Controller\FormController
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the group!'
             );
 
             $this->redirect()->toRoute(
@@ -115,12 +108,9 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             ->findOneById($this->getParam('id'));
 
         if (null === $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No group with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No group with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

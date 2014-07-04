@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     SyllabusBundle\Form\Admin\Subject\Comment\Add as AddCommentForm,
@@ -88,12 +87,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The comment was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The comment was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -142,12 +138,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The comment status was successfully updated!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The comment status was successfully updated!'
                     );
 
                     $this->redirect()->toRoute(
@@ -175,12 +168,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     $this->getEntityManager()->persist($reply);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The reply was successfully created!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The reply was successfully created!'
                     );
 
                     $this->redirect()->toRoute(
@@ -231,12 +221,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -254,12 +241,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($id);
 
         if (null === $subject) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -281,12 +265,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getComment()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the comment!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the comment!'
             );
 
             $this->redirect()->toRoute(
@@ -304,12 +285,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $comment) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No comment with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No comment with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -336,12 +314,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

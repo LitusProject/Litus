@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Component\Mail\Booking as BookingMail,
+use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Form\Admin\SpecialActions\Irreeel\Assign as IrreeelForm,
     Zend\View\Model\ViewModel;
@@ -94,12 +93,9 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                 if (!$formData['test']) {
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' assigned!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' assigned!'
                     );
 
                     $this->redirect()->toRoute(
@@ -117,12 +113,9 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                 } else {
                     $this->getEntityManager()->clear();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' would be assigned!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' would be assigned!'
                     );
 
                     $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Node\Form,
@@ -100,12 +99,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -191,20 +187,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if (!isset($formData['save_as_draft'])) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been recorded.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been recorded.'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been saved.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been saved.'
                     );
                 }
 
@@ -242,12 +232,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -321,12 +308,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -379,12 +363,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
                 DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your entry has been recorded.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'Your entry has been recorded.'
                 );
 
                 $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification);
@@ -549,12 +530,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -610,20 +588,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if (!isset($formData['save_as_draft'])) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been updated.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been updated.'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been saved.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been saved.'
                     );
                 }
 

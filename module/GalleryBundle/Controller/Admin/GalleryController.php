@@ -18,8 +18,7 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Translation,
     GalleryBundle\Entity\Album\Photo,
@@ -87,12 +86,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The album was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The album was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -150,12 +146,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The album was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The album was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -368,12 +361,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The photo was successfully censored!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The photo was successfully censored!'
         );
 
         $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
@@ -389,12 +379,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The photo was successfully uncensored!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The photo was successfully uncensored!'
         );
 
         $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
@@ -405,12 +392,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function _getAlbum()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the album!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the album!'
             );
 
             $this->redirect()->toRoute(
@@ -428,12 +412,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $album) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No album with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No album with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -452,12 +433,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     public function _getPhoto()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the photo!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the photo!'
             );
 
             $this->redirect()->toRoute(
@@ -475,12 +453,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $album) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No photo with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No photo with the given id was found!'
             );
 
             $this->redirect()->toRoute(

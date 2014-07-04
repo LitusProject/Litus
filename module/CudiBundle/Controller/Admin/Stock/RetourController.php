@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Stock\Retour,
+use CudiBundle\Entity\Stock\Retour,
     CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm,
     Zend\View\Model\ViewModel;
 
@@ -109,12 +108,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
                 $this->getEntityManager()->persist($item);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The retour was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The retour was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -173,12 +169,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     private function _getRetour()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the retour!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the retour!'
             );
 
             $this->redirect()->toRoute(
@@ -196,12 +189,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $retour) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No retour with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No retour with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -220,12 +210,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -243,12 +230,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

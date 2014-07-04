@@ -19,7 +19,6 @@
 namespace LogisticsBundle\Controller;
 
 use LogisticsBundle\Component\Controller\LogisticsController,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Entity\Lease\Item,
     LogisticsBundle\Entity\Lease\Lease,
     LogisticsBundle\Form\Lease\AddLease as AddLeaseForm,
@@ -182,12 +181,9 @@ class LeaseController extends LogisticsController
                     $this->getEntityManager()->persist($lease);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The lease was successfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The lease was successfully added!'
                     );
 
                     $this->redirect()->toRoute(
@@ -235,12 +231,9 @@ class LeaseController extends LogisticsController
 
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The return was successfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The return was successfully added!'
                     );
 
                     $this->redirect()->toRoute(
@@ -260,12 +253,9 @@ class LeaseController extends LogisticsController
     private function _getLease()
     {
         if ($this->getParam('id') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the lease!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the lease!'
             );
 
             $this->redirect()->toRoute('logistics_lease');
@@ -278,12 +268,9 @@ class LeaseController extends LogisticsController
             ->find($this->getParam('id'));
 
         if ($lease === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No lease with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No lease with the given id was found!'
             );
 
             $this->redirect()->toRoute('logistics_lease');
@@ -297,12 +284,9 @@ class LeaseController extends LogisticsController
     private function _getItem($barcode = null)
     {
         if ($this->getParam('id') === null && $barcode === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id or barcode was given to identify the item!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id or barcode was given to identify the item!'
             );
 
             $this->redirect()->toRoute('logistics_lease');
@@ -321,12 +305,9 @@ class LeaseController extends LogisticsController
         }
 
         if ($item === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No item with the given id or barcode was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No item with the given id or barcode was found!'
             );
 
             $this->redirect()->toRoute('logistics_lease');

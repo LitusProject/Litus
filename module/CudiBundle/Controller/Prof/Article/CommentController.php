@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     CudiBundle\Entity\Comment\Comment,
     CudiBundle\Form\Prof\Comment\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -60,12 +59,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 $this->getEntityManager()->persist($comment);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The comment was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The comment was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -121,12 +117,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -145,12 +138,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -170,12 +160,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     private function _getCommentMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the comment!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the comment!'
             );
 
             $this->redirect()->toRoute(
@@ -194,12 +181,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No comment with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No comment with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

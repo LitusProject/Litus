@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     SyllabusBundle\Form\Admin\Academic\Study\Add as StudyForm,
@@ -176,12 +175,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The study was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The study was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -244,12 +240,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The subject was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The subject was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -332,12 +325,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function _getAcademic()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the academic!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the academic!'
             );
 
             $this->redirect()->toRoute(
@@ -355,12 +345,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $academic) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -379,12 +366,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function _getStudyEnrollment()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the study!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the study!'
             );
 
             $this->redirect()->toRoute(
@@ -402,12 +386,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $study) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No study with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No study with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -426,12 +407,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function _getSubjectEnrollment()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -449,12 +427,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $subject) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No study with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No study with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -478,12 +453,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

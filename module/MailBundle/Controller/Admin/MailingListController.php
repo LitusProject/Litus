@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
+use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
     MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
     MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
     MailBundle\Entity\MailingList\Named as NamedList,
@@ -116,12 +115,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The list was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The list was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -186,12 +182,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                         );
 
                     if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Success',
-                                'This external address already has been subscribed to this list!'
-                            )
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'This external address already has been subscribed to this list!'
                         );
                     } else {
                         $entry = new ExternalEntry(
@@ -216,12 +209,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                         );
 
                     if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Success',
-                                'This list already has been subscribed to this list!'
-                            )
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'This list already has been subscribed to this list!'
                         );
                     } else {
                         $entry = new MailingListEntry($list, $entry);
@@ -247,12 +237,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                         );
 
                     if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Success',
-                                'This member already has been subscribed to this list!'
-                            )
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'This member already has been subscribed to this list!'
                         );
                     } else {
                         $entry = new AcademicEntry($list, $academic);
@@ -263,12 +250,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     $this->getEntityManager()->persist($entry);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The entry was succesfully created!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The entry was succesfully created!'
                     );
                 }
 
@@ -339,12 +323,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     );
 
                 if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'This member already has admin rights on this list!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This member already has admin rights on this list!'
                     );
                 } else {
                     $admin = new ListAdmin($list, $academic, $formData['edit_admin']);
@@ -352,12 +333,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     $this->getEntityManager()->persist($admin);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The admin was succesfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The admin was succesfully added!'
                     );
                 }
 
@@ -389,12 +367,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     );
 
                 if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'This role already has admin rights on this list!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This role already has admin rights on this list!'
                     );
                 } else {
                     $adminRole = new ListAdminRole($list, $role, $formData['edit_admin']);
@@ -402,12 +377,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     $this->getEntityManager()->persist($adminRole);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The admin role was succesfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The admin role was succesfully added!'
                     );
                 }
 
@@ -496,12 +468,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'All entries were removed from the list.'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'All entries were removed from the list.'
         );
 
         $this->redirect()->toRoute(
@@ -598,12 +567,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function _getList()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the list!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the list!'
             );
 
             $this->redirect()->toRoute(
@@ -621,12 +587,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->findOneById($this->getParam('id'));
 
         if (null === $list) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No list with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No list with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -645,12 +608,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function _getEntry()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the entry!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the entry!'
             );
 
             $this->redirect()->toRoute(
@@ -668,12 +628,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No entry with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No entry with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -692,12 +649,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function _getAdmin()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the admin!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the admin!'
             );
 
             $this->redirect()->toRoute(
@@ -715,12 +669,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->findOneById($this->getParam('id'));
 
         if (null === $admin) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No admin with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No admin with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -739,12 +690,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function _getAdminRole()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the admin role!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the admin role!'
             );
 
             $this->redirect()->toRoute(
@@ -762,12 +710,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->findOneById($this->getParam('id'));
 
         if (null === $adminRole) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No admin role with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No admin role with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -790,12 +735,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $person = $this->getAuthentication()->getPersonObject();
         if (!$list->canBeEditedBy($person, $adminEdit)) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to manage the admins for the given list!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to manage the admins for the given list!'
             );
 
             $this->redirect()->toRoute(

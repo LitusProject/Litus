@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
@@ -138,12 +137,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The subject was succesfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The subject was succesfully added!'
                 );
 
                 $this->redirect()->toRoute(

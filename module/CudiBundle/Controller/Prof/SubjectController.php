@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
     DateInterval,
     SyllabusBundle\Entity\StudentEnrollment,
@@ -107,12 +106,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The student enrollment was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The student enrollment was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -205,12 +201,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             return;
 
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -233,12 +226,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             );
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

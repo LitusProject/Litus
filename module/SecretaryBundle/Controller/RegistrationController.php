@@ -21,7 +21,6 @@ namespace SecretaryBundle\Controller;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
@@ -70,12 +69,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
             if (null !== $academic && null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'WARNING',
-                        'You have already registered for this academic year.'
-                    )
+                $this->flashMessenger()->warn(
+                    'WARNING',
+                    'You have already registered for this academic year.'
                 );
 
                 if ($this->_isValidCode()) {
@@ -285,12 +281,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification'), '', true
                     );
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You are succesfully registered!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You are succesfully registered!'
                     );
 
                     $this->redirect()->toRoute(
@@ -597,12 +590,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'Your registration was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'Your registration was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(

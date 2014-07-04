@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Form\Admin\PianoReservation\Add as AddForm,
@@ -157,12 +156,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The reservation was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The reservation was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -261,12 +257,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The reservation was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The reservation was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -307,12 +300,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the reservation!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the reservation!'
             );
 
             $this->redirect()->toRoute(
@@ -330,12 +320,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
+use CudiBundle\Entity\Sale\Article\Discount\Discount,
     CudiBundle\Form\Admin\Sales\Article\Discounts\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -75,12 +74,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The discount was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The discount was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -135,12 +131,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -158,12 +151,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -182,12 +172,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     private function _getDiscount()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the discount!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the discount!'
             );
 
             $this->redirect()->toRoute(
@@ -205,12 +192,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $discount) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No discount with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No discount with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

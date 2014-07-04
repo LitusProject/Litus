@@ -21,7 +21,6 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -143,12 +142,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Something went wrong while logging you in. Please try again later.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Something went wrong while logging you in. Please try again later.'
         );
 
         $this->redirect()->toRoute(
