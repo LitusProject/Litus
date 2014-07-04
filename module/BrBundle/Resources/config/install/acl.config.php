@@ -51,6 +51,9 @@ return array(
         'br_admin_overview' => array(
             'person', 'company'
         ),
+        'br_admin_product' => array(
+            'add', 'delete', 'manage', 'edit', 'old'
+        ),
         'br_career_index' => array(
             'index'
         ),
@@ -66,11 +69,9 @@ return array(
         'br_career_internship' => array(
             'view', 'overview'
         ),
-
         'br_cv_index' => array(
             'cv', 'edit', 'complete',
         ),
-
         'br_corporate_auth' => array(
             'login', 'logout',
         ),
