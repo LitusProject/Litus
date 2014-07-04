@@ -158,8 +158,8 @@ class Group
     }
 
     /**
-     * @param  string                       $extraMembers
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $extraMembers
+     * @return self
      */
     public function setExtraMembers($extraMembers)
     {
@@ -177,8 +177,8 @@ class Group
     }
 
     /**
-     * @param  string                       $excludedMembers
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $excludedMembers
+     * @return self
      */
     public function setExcludedMembers($excludedMembers)
     {
@@ -188,8 +188,8 @@ class Group
     }
 
     /**
-     * @param  EntityManager  $entityManager
-     * @return \SyllabusBundle\Entity\Group
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
