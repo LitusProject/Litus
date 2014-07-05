@@ -21,6 +21,8 @@ namespace CommonBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\Exception\RuntimeException,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     Locale,

@@ -18,10 +18,6 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use Doctrine\ORM\EntityManager,
-    BannerBundle\Entity\Node\Banner,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Banner
  *
@@ -30,36 +26,11 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Banner          $banner        The banner we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Banner $banner, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'banner_edit');
-        $this->add($field);
-
-        $this->_populateFromBanner($banner);
-    }
-
-    private function _populateFromBanner(Banner $banner)
-    {
-        $data = array(
-            'name'       => $banner->getName(),
-            'image'      => $banner->getImage(),
-            'start_date' => $banner->getStartDate()->format('d/m/Y H:i'),
-            'end_date'   => $banner->getEndDate()->format('d/m/Y H:i'),
-            'active'     => $banner->isActive(),
-            'url'        => $banner->getUrl(),
-        );
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'banner_edit');
     }
 }

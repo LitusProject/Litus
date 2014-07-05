@@ -28,4 +28,11 @@ use CommonBundle\Component\Form\ElementTrait;
 class Select extends \Zend\Form\Element\Select implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
+
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
 }

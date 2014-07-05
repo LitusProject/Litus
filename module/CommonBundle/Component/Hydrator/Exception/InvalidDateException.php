@@ -16,23 +16,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Admin\Element;
+namespace CommonBundle\Component\Hydrator\Exception;
 
-use CommonBundle\Component\Form\ElementTrait;
-
-/**
- * Text form element
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Text extends \Zend\Form\Element\Text implements \CommonBundle\Component\Form\ElementInterface
+class InvalidDateException extends \InvalidArgumentException
 {
-    use ElementTrait;
-
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
 }

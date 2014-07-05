@@ -28,4 +28,11 @@ use CommonBundle\Component\Form\ElementTrait;
 class Hidden extends \Zend\Form\Element\Hidden implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
+
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
 }
