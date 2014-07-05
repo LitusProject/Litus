@@ -73,7 +73,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('calendar_event_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -139,7 +139,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $event);
+        $form = $this->getForm('calendar_event_edit', $event);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

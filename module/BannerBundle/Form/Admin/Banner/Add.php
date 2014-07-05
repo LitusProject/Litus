@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'end_date',
             'label'      => 'End Date',
             'required'   => true,
-            'attributes'  => array(
+            'attributes' => array(
                 'data-help'       => 'The end date for showing this banner, overrulled by "active".',
             ),
             'options'    => array(

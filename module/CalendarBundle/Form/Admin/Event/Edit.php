@@ -18,57 +18,23 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use Doctrine\ORM\EntityManager,
-    CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Node\Event,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CalendarBundle\Component\Validator\Name as EventNameValidator,
+    CalendarBundle\Entity\Node\Event;
 
 /**
  * Edit an event.
  */
 class Edit extends Add
 {
-    /**
-     * @var Event
-     */
-    protected $_event;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Event $event, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_event = $event;
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'calendar_edit');
-        $this->add($field);
-
-        $this->_populateFromEvent($event);
+        $this->remove('submit');
+        $this->addSubmit('Save', 'calendar_edit');
     }
 
-    private function _populateFromEvent(Event $event)
-    {
-        $data = array(
-            'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
-        );
-        if ($event->getEndDate())
-            $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
-
-        foreach ($this->getLanguages() as $language) {
-            $data['location_' . $language->getAbbrev()] = $event->getLocation($language, false);
-            $data['title_' . $language->getAbbrev()] = $event->getTitle($language, false);
-            $data['content_' . $language->getAbbrev()] = $event->getContent($language, false);
-        }
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
+    /*public function getInputFilter()
     {
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
@@ -92,5 +58,5 @@ class Edit extends Add
         }
 
         return $inputFilter;
-    }
+    }*/
 }
