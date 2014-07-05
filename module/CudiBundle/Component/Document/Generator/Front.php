@@ -22,9 +22,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Sale\Article,
-    DateInterval,
-    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -35,14 +34,14 @@ use CommonBundle\Component\Util\AcademicYear,
 class Front extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var Article
      */
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article           $article       The article
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Article       $article       The article
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Article $article, TmpFile $file)
     {
@@ -65,6 +64,10 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     public function generate()
     {
+        $mainArticle = $this->_article->getMainArticle();
+        if (!($mainArticle instanceof InternalArticle))
+            return;
+
         $cachePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.front_page_cache_dir');
@@ -72,8 +75,8 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         if (!file_exists($cachePath))
             mkdir($cachePath);
 
-        if (null !== $this->_article->getMainArticle()->getFrontPage() && file_exists($cachePath . '/' . $this->_article->getMainArticle()->getFrontPage())) {
-            copy($cachePath . '/' . $this->_article->getMainArticle()->getFrontPage(), $this->_pdfPath);
+        if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
+            copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->_pdfPath);
             clearstatcache();
         } else {
             $this->generateXml(
@@ -86,7 +89,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                 $fileName = sha1(uniqid());
             } while (file_exists($cachePath . '/' . $fileName));
 
-            $this->_article->getMainArticle()->setFrontPage($fileName);
+            $mainArticle->setFrontPage($fileName);
             $this->getEntityManager()->flush();
             copy($this->_pdfPath, $cachePath . '/' . $fileName);
         }
@@ -95,13 +98,16 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for the fop.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {
+        $mainArticle = $this->_article->getMainArticle();
+        if (!($mainArticle instanceof InternalArticle))
+            return;
+
         $configuration = $this->getConfigRepository();
 
-        $now = new DateTime();
         $organization_short_name = $configuration->getConfigValue('organization_short_name');
         $organization_name = $configuration->getConfigValue('organization_name');
         $organization_logo = $configuration->getConfigValue('organization_logo');
@@ -119,7 +125,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $subjects = array();
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleAndAcademicYear($this->_article->getMainArticle(), $academicYear);
+            ->findAllByArticleAndAcademicYear($mainArticle, $academicYear);
         foreach ($mappings as $mapping) {
             $subjects[] = new Object(
                 'subject',
@@ -164,7 +170,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'article',
                 array(
-                    'binding' => $this->_article->getMainArticle()->getBinding()->getCode(),
+                    'binding' => $mainArticle->getBinding()->getCode(),
                 ),
                 array(
                     new Object(
@@ -234,12 +240,12 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'title',
                         null,
-                        $this->_article->getMainArticle()->getTitle()
+                        $mainArticle->getTitle()
                     ),
                     new Object(
                         'authors',
                         null,
-                        $this->_article->getMainArticle()->getAuthors()
+                        $mainArticle->getAuthors()
                     ),
                     new Object(
                         'subjects',

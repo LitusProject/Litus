@@ -34,8 +34,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
 class Edit extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @param \CommonBundle\Entity\Public\Config $entry The configuration entry we are editing
-     * @param mixed                              $opts  The form's options
+     * @param Config $entry The configuration entry we are editing
+     * @param mixed  $opts  The form's options
      */
     public function __construct(Config $entry, $opts = null)
     {

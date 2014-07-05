@@ -19,11 +19,6 @@
 namespace FormBundle\Form\Admin\Field;
 
 use Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field,
     Zend\Form\Element\Submit;
 
@@ -36,23 +31,18 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \FormBundle\Entity\Field
-     */
-    private $_field;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Field    $field         The field we're going to modify
-     * @param null|string|int             $name          Optional name for the element
+     * @param Field           $fieldSpecification The field
+     * @param EntityManager   $entityManager      The EntityManager instance
+     * @param null|string|int $name               Optional name for the element
      */
     public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
     {
-        parent::__construct($fieldSpecification->getForm(), $entityManager, $name);
+        parent::__construct($fieldSpecification->getForm(), $entityManager, null, $name);
 
         $this->_field = $fieldSpecification;
 
         $this->get('type')->setAttribute('disabled', 'disabled');
-        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->_getVisibilityOptions());
+        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->getVisibilityOptions());
 
         $this->remove('submit');
         $this->remove('submit_repeat');
@@ -63,52 +53,6 @@ class Edit extends Add
         $this->add($field);
 
         $this->populateFromField($fieldSpecification);
-    }
-
-    private function _getVisibilityOptions()
-    {
-        $options = array(0 => 'Always');
-        foreach ($this->_form->getFields() as $field) {
-            if ($field->getId() == $this->_field->getId())
-                continue;
-
-            if ($field instanceof StringField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'string',
-                    )
-                );
-            } elseif ($field instanceof DropdownField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'dropdown',
-                        'data-values' => $field->getOptions(),
-                    )
-                );
-            } elseif ($field instanceof CheckboxField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'checkbox',
-                    )
-                );
-            } elseif ($field instanceof FileField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'file',
-                    )
-                );
-            }
-        }
-
-        return $options;
     }
 
     protected function _isTimeSlot()

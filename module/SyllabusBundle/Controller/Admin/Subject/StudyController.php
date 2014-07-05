@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Form\Admin\Subject\Study\Add as AddForm,
     SyllabusBundle\Form\Admin\Subject\Study\Edit as EditForm,
@@ -58,12 +57,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The study mapping was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The study mapping was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -109,12 +105,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The study mapping was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The study mapping was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -161,12 +154,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     private function _getSubject()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -184,12 +174,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $subject) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -205,15 +192,15 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         return $subject;
     }
 
+    /**
+     * @return StudySubjectMap
+     */
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -231,12 +218,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -260,12 +244,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

@@ -37,7 +37,7 @@ class Item
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the item
+     * @var Article The article of the item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -45,7 +45,7 @@ class Item
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Order\Order The order of the item
+     * @var Order The order of the item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Stock\Order\Order", inversedBy="items")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
@@ -60,9 +60,9 @@ class Item
     private $number;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article      $article The article of the item
-     * @param \CudiBundle\Entity\Stock\Order\Order $order   The order of the item
-     * @param integer                              $number  The number of items ordered
+     * @param Article $article The article of the item
+     * @param Order   $order   The order of the item
+     * @param integer $number  The number of items ordered
      */
     public function __construct(Article $article, Order $order, $number)
     {
@@ -80,7 +80,7 @@ class Item
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Order\Order
+     * @return Order
      */
     public function getOrder()
     {
@@ -88,7 +88,7 @@ class Item
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -106,7 +106,7 @@ class Item
     /**
      * @param integer $number
      *
-     * @return \CudiBundle\Entity\Stock\Order\Item
+     * @return self
      */
     public function setNumber($number)
     {

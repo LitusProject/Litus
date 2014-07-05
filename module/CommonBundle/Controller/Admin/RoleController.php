@@ -19,12 +19,11 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Role\Add as AddForm,
     CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\Acl\Resource,
+    CommonBundle\Entity\User\Person,
     Zend\View\Model\ViewModel;
 
 /**
@@ -93,16 +92,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->_updateCache();
 
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The role was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The role was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -180,12 +172,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->_updateCache();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The role was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The role was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -270,12 +259,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $this->_updateCache();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The tree was successfully pruned!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The tree was successfully pruned!'
         );
 
         $this->redirect()->toRoute(
@@ -288,15 +274,15 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return Role|null
+     */
     private function _getRole()
     {
         if (null === $this->getParam('name')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No name was given to identify the role!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No name was given to identify the role!'
             );
 
             $this->redirect()->toRoute(
@@ -314,12 +300,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByName($this->getParam('name'));
 
         if (null === $role) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No role with the given name was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No role with the given name was found!'
             );
 
             $this->redirect()->toRoute(
@@ -335,15 +318,15 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return $role;
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getMember()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the member!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the member!'
             );
 
             $this->redirect()->toRoute(
@@ -361,12 +344,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $member) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No member with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No member with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -382,6 +362,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return $member;
     }
 
+    /**
+     * @return null
+     */
     private function _updateCache()
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
@@ -394,6 +377,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @param  Action  $action
+     * @param  array   $parents
+     * @return boolean
+     */
     private function _findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {

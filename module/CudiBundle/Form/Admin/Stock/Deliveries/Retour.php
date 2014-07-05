@@ -21,7 +21,6 @@ namespace CudiBundle\Form\Admin\Stock\Deliveries;
 use CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
@@ -34,9 +33,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Textarea,
 class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $barcodePrefix
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param string          $barcodePrefix
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {

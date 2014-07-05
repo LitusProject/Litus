@@ -19,11 +19,10 @@
 namespace CudiBundle\Entity\Sale;
 
 use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\PayDesk,
-    CudiBundle\Entity\Sale\Session,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\QueueItem")
@@ -41,7 +40,7 @@ class QueueItem
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person of the queue item
+     * @var Person The person of the queue item
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -49,7 +48,7 @@ class QueueItem
     private $person;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session The session of the queue item
+     * @var Session The session of the queue item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
@@ -57,7 +56,7 @@ class QueueItem
     private $session;
 
     /**
-     * @var \CudiBundle\Entity\Sale\PayDesk The pay desk of the queue item
+     * @var PayDesk The pay desk of the queue item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\PayDesk")
      * @ORM\JoinColumn(name="pay_desk", referencedColumnName="id")
@@ -79,14 +78,14 @@ class QueueItem
     private $status;
 
     /**
-     * @var \DateTime The time the queue item was created
+     * @var DateTime The time the queue item was created
      *
      * @ORM\Column(type="datetime", name="sign_in_time")
      */
     private $signInTime;
 
     /**
-     * @var \DateTime The time there were articles sold to the queue item
+     * @var DateTime The time there were articles sold to the queue item
      *
      * @ORM\Column(type="datetime", name="sold_time", nullable=true)
      */
@@ -107,14 +106,14 @@ class QueueItem
     private $payMethod;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The sold items
+     * @var ArrayCollection The sold items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\SaleItem", mappedBy="queueItem")
      */
     private $saleItems;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The return items
+     * @var ArrayCollection The return items
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\ReturnItem", mappedBy="queueItem")
      */
@@ -148,9 +147,9 @@ class QueueItem
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \CudiBundle\Entity\Sale\Session  $session
+     * @param EntityManager $entityManager
+     * @param Person        $person
+     * @param Session       $session
      */
     public function __construct(EntityManager $entityManager, Person $person, Session $session)
     {
@@ -165,6 +164,7 @@ class QueueItem
     }
 
     /**
+     * @param  string  $status
      * @return boolean
      */
     public static function isValidQueueStatus($status)
@@ -173,6 +173,7 @@ class QueueItem
     }
 
     /**
+     * @param  string  $payMethod
      * @return boolean
      */
     public static function isValidPayMethod($payMethod)
@@ -189,7 +190,7 @@ class QueueItem
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -197,7 +198,7 @@ class QueueItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Session
      */
     public function getSession()
     {
@@ -205,9 +206,9 @@ class QueueItem
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\PayDesk $payDesk
+     * @param PayDesk $payDesk
      *
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @return self
      */
     public function setPayDesk(PayDesk $payDesk)
     {
@@ -217,7 +218,7 @@ class QueueItem
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\PayDesk
+     * @return PayDesk
      */
     public function getPayDesk()
     {
@@ -249,14 +250,14 @@ class QueueItem
     }
 
     /**
-     * @param string $status
-     *
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @param  string                   $status
+     * @throws InvalidArgumentException
+     * @return self
      */
     public function setStatus($status)
     {
         if (!self::isValidQueueStatus($status))
-            throw new \InvalidArgumentException('The queue status is not valid.');
+            throw new InvalidArgumentException('The queue status is not valid.');
 
         $this->status = $status;
 
@@ -276,7 +277,7 @@ class QueueItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSignInTime()
     {
@@ -284,7 +285,7 @@ class QueueItem
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSoldTime()
     {
@@ -294,7 +295,7 @@ class QueueItem
     /**
      * @param string $comment
      *
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @return self
      */
     public function setComment($comment)
     {
@@ -312,14 +313,14 @@ class QueueItem
     }
 
     /**
-     * @param string $payMethod
-     *
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @param  string                   $payMethod
+     * @throws InvalidArgumentException
+     * @return self
      */
     public function setPayMethod($payMethod)
     {
         if (!self::isValidPayMethod($payMethod) && $payMethod !== null)
-            throw new \InvalidArgumentException('The pay method is not valid.');
+            throw new InvalidArgumentException('The pay method is not valid.');
 
         $this->payMethod = $payMethod;
 
@@ -337,7 +338,7 @@ class QueueItem
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getSaleItems()
     {
@@ -345,7 +346,7 @@ class QueueItem
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getReturnItems()
     {
@@ -355,7 +356,7 @@ class QueueItem
     /**
      * @param boolean $collectPrinted
      *
-     * @return \CudiBundle\Entity\Sale\QueueItem
+     * @return self
      */
     public function setCollectPrinted($collectPrinted = true)
     {

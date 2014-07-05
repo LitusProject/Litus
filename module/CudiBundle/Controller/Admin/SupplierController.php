@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\Address,
+use CommonBundle\Entity\General\Address,
     CudiBundle\Entity\Supplier,
     CudiBundle\Form\Admin\Supplier\Add as AddForm,
     CudiBundle\Form\Admin\Supplier\Edit as EditForm,
@@ -78,12 +77,9 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The supplier was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The supplier was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -133,12 +129,9 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The supplier was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The supplier was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -159,15 +152,15 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Supplier
+     */
     private function _getSupplier()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the supplier!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the supplier!'
             );
 
             $this->redirect()->toRoute(
@@ -185,12 +178,9 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $supplier) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No supplier with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No supplier with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

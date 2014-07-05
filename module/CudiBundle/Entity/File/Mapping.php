@@ -37,7 +37,7 @@ class Mapping
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article\Internal The article of the mapping
+     * @var InternalArticle The article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article\Internal")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -45,7 +45,7 @@ class Mapping
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\File\File The file of the mapping
+     * @var File The file of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\File\File")
      * @ORM\JoinColumn(name="file", referencedColumnName="id")
@@ -74,9 +74,9 @@ class Mapping
     private $removed;
 
     /**
-     * @param \CudiBundle\Entity\Article\Internal $article   The article of the mapping
-     * @param \CudiBundle\Entity\File\File        $file      The file of the mapping
-     * @param boolean                             $printable Flag whether the file is the printable one or not
+     * @param InternalArticle $article   The article of the mapping
+     * @param File            $file      The file of the mapping
+     * @param boolean         $printable Flag whether the file is the printable one or not
      */
     public function __construct(InternalArticle $article, File $file, $printable)
     {
@@ -96,7 +96,7 @@ class Mapping
     }
 
     /**
-     * @return \CudiBundle\Entity\Article\Internal
+     * @return InternalArticle
      */
     public function getArticle()
     {
@@ -104,7 +104,7 @@ class Mapping
     }
 
     /**
-     * @return \CudiBundle\Entity\File\File
+     * @return File
      */
     public function getFile()
     {
@@ -122,7 +122,7 @@ class Mapping
     /**
      * @param boolean $printable Flag whether the file is the printable one or not
      *
-     * @return \CudiBundle\Entity\File\Mapping
+     * @return self
      */
     public function setPrintable($printable)
     {
@@ -142,7 +142,7 @@ class Mapping
     /**
      * @param boolean $isProf
      *
-     * @return \CudiBundle\Entity\File\Mapping
+     * @return self
      */
     public function setIsProf($isProf)
     {
@@ -152,7 +152,7 @@ class Mapping
     }
 
     /**
-     * @return \CudiBundle\Entity\File\Mapping
+     * @return self
      */
     public function setRemoved()
     {

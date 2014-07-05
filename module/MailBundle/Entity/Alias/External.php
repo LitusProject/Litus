@@ -18,9 +18,7 @@
 
 namespace MailBundle\Entity\Alias;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
-    MailBundle\Entity\MailingList;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an external alias.

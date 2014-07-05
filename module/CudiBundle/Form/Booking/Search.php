@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Booking;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Component\Form\Bootstrap\Element\Text;
 
 /**
  * Search articles

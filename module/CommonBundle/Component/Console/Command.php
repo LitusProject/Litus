@@ -29,12 +29,12 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     use ServiceLocatorAwareTrait;
 
     /**
-     * @var \Symfony\Component\Console\Input\InputInterface
+     * @var Input
      */
     protected $input;
 
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var Output
      */
     protected $output;
 
@@ -110,6 +110,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
+     * @param  string $name
      * @return mixed
      */
     protected function getOption($name)
@@ -118,7 +119,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     protected function hasOption($name)
     {
@@ -126,6 +127,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
+     * @param  string $name
      * @return mixed
      */
     protected function getArgument($name)
@@ -134,7 +136,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     protected function hasArgument($name)
     {

@@ -59,8 +59,7 @@ class Values extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  mixed  $token
-     * @param  string $format
+     * @param  string $startValue
      * @return void
      */
     public function __construct($startValue = null)

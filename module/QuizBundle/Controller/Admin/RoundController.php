@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    QuizBundle\Entity\Round,
+use QuizBundle\Entity\Round,
     QuizBundle\Form\Admin\Round\Add as AddForm,
     QuizBundle\Form\Admin\Round\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -77,12 +76,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The round was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The round was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -132,12 +128,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The round was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The round was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -215,12 +208,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getQuiz()
     {
         if ($this->getParam('quizid') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the quiz!'
             );
 
             $this->redirect()->toRoute(
@@ -238,12 +228,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('quizid'));
 
         if ($quiz === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No quiz with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No quiz with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -257,12 +244,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this quiz!'
             );
 
             $this->redirect()->toRoute(
@@ -279,17 +263,14 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Round
+     * @return null|Round
      */
     private function _getRound()
     {
         if ($this->getParam('id') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the round!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the round!'
             );
 
             $this->redirect()->toRoute(
@@ -308,12 +289,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if ($round === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No round with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No round with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -328,12 +306,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this quiz!'
             );
 
             $this->redirect()->toRoute(

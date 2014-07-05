@@ -33,8 +33,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Hidden,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

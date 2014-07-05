@@ -18,8 +18,7 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     DateTime,
     ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     ShiftBundle\Entity\Shift,
@@ -79,7 +78,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -97,8 +99,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneByName($editRole);
                     }
                 }
-                $startDate = DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']);
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
 
                 $interval = $startDate->diff($endDate);
 
@@ -139,12 +139,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The shift was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The shift was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -165,6 +162,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param integer $duplicate
+     */
     private function addInterval(DateTime $time, $interval, $duplicate)
     {
         for ($i = 0; $i < $duplicate; $i++)
@@ -184,12 +184,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 if ($shift->canEditDates()) {
-                    $shift->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']));
+                    $shift->setStartDate($startDate)
+                        ->setEndDate($endDate);
                 }
 
                 $repository = $this->getEntityManager()
@@ -236,12 +239,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The shift was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The shift was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -404,15 +404,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the shift!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the shift!'
             );
 
             $this->redirect()->toRoute(
@@ -430,12 +430,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $shift) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No shift with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No shift with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -454,12 +451,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -477,12 +471,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -496,5 +487,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

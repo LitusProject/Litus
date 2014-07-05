@@ -18,11 +18,8 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
+use CommonBundle\Component\Util\AcademicYear,
     DateTime,
-    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -272,12 +269,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
@@ -296,12 +290,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     private function _getPerson()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the person!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the person!'
             );
 
             $this->redirect()->toRoute(
@@ -319,12 +310,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No person with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No person with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -40,12 +40,12 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
 class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
     protected $_language = null;
 
@@ -55,9 +55,9 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
     private $_weeks;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Language        $language
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, $name = null)
     {
@@ -122,7 +122,6 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
         );
 
         $weeks = array();
-
         while ($now < $maxDate) {
             $listStart = array();
             $listEnd = array();

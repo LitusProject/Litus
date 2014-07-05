@@ -19,8 +19,7 @@
 namespace CudiBundle\Form\Prof\Article;
 
 use SyllabusBundle\Entity\Subject,
-    Doctrine\ORM\EntityManager,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Add With Subject
@@ -30,9 +29,8 @@ use SyllabusBundle\Entity\Subject,
 class AddWithSubject extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Article  $article
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
     {

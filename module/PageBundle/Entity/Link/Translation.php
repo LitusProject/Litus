@@ -40,7 +40,7 @@ class Translation
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Link The link of this translation
+     * @var Link The link of this translation
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Link", inversedBy="translations")
      * @ORM\JoinColumn(name="link", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Translation
     private $link;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -70,10 +70,10 @@ class Translation
     private $url;
 
     /**
-     * @param \PageBundle\Entity\Link               $link
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $name
-     * @param string                                $url
+     * @param Link     $link
+     * @param Language $language
+     * @param string   $name
+     * @param string   $url
      */
     public function __construct(Link $link, Language $language, $name, $url)
     {
@@ -84,7 +84,15 @@ class Translation
     }
 
     /**
-     * @return \PageBundle\Entity\Link
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Link
      */
     public function getLink()
     {
@@ -92,7 +100,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -108,9 +116,8 @@ class Translation
     }
 
     /**
-     * @param string $name
-     *
-     * @return \PageBundle\Entity\Link\Translation
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -128,9 +135,8 @@ class Translation
     }
 
     /**
-     * @param string $url
-     *
-     * @return \PageBundle\Entity\Link\Translation
+     * @param  string $url
+     * @return self
      */
     public function setUrl($url)
     {

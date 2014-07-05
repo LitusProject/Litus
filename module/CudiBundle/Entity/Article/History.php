@@ -19,9 +19,6 @@
 namespace CudiBundle\Entity\Article;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\SubjectMap as SubjectMapping,
-    CudiBundle\Entity\Comment\Mapping as CommentMapping,
-    CudiBundle\Entity\File\Mapping as FileMapping,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,7 +37,7 @@ class History
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Article The newest version of the two
+     * @var Article The newest version of the two
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -48,7 +45,7 @@ class History
     private $article;
 
     /**
-     * @var \CudiBundle\Entity\Article The oldest version of the two
+     * @var Article The oldest version of the two
      *
      * @ORM\OneToOne(targetEntity="CudiBundle\Entity\Article", cascade={"persist"})
      * @ORM\JoinColumn(name="precursor", referencedColumnName="id")
@@ -56,8 +53,8 @@ class History
     private $precursor;
 
     /**
-     * @param \CudiBundle\Entity\Article      $article   The new version of the article
-     * @param \CudiBundle\Entity\Article|null $precursor The old version of the article
+     * @param Article      $article   The new version of the article
+     * @param Article|null $precursor The old version of the article
      */
     public function __construct(Article $article, Article $precursor = null)
     {
@@ -86,7 +83,7 @@ class History
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -94,9 +91,9 @@ class History
     }
 
     /**
-     * @param \CudiBundle\Entity\Article $article
+     * @param Article $article
      *
-     * @return \CudiBundle\Entity\Article\History
+     * @return self
      */
     public function setArticle(Article $article)
     {
@@ -106,7 +103,7 @@ class History
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return Article
      */
     public function getPrecursor()
     {

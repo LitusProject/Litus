@@ -36,7 +36,7 @@ class PianoReservation extends Reservation
     const PIANO_RESOURCE_NAME = 'Piano';
 
     /**
-     * @var The driver of the van for this reservation.
+     * @var Person The driver of the van for this reservation.
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="player", referencedColumnName="id")
@@ -44,19 +44,19 @@ class PianoReservation extends Reservation
     private $player;
 
     /**
-     * @var Flag whether this reservation is confirmed
+     * @var boolean Flag whether this reservation is confirmed
      *
      * @ORM\Column(type="boolean")
      */
     private $confirmed;
 
     /**
-     * @param \DateTime                                              $startDate
-     * @param \DateTime                                              $endDate
-     * @param \LogisticsBundle\Entity\Reservation\ReservableResource $resource
-     * @param string                                                 $additionalInfo
-     * @param \CommonBundle\Entity\User\Person                       $creator
-     * @param \CommonBundle\Entity\User\Person                       $player
+     * @param DateTime           $startDate
+     * @param DateTime           $endDate
+     * @param ReservableResource $resource
+     * @param string             $additionalInfo
+     * @param Person             $creator
+     * @param Person             $player
      */
     public function __construct(DateTime $startDate, DateTime $endDate, ReservableResource $resource, $additionalInfo, Person $creator, Person $player)
     {
@@ -67,7 +67,7 @@ class PianoReservation extends Reservation
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPlayer()
     {
@@ -75,8 +75,8 @@ class PianoReservation extends Reservation
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person                     $player
-     * @return \LogisticsBundle\Entity\Reservation\PianoReservation
+     * @param  Person $player
+     * @return self
      */
     public function setPlayer(Person $player)
     {
@@ -94,8 +94,8 @@ class PianoReservation extends Reservation
     }
 
     /**
-     * @param  boolean                                              $confirmed
-     * @return \LogisticsBundle\Entity\Reservation\PianoReservation
+     * @param  boolean $confirmed
+     * @return self
      */
     public function setConfirmed($confirmed = true)
     {

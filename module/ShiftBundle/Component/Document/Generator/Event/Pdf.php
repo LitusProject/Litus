@@ -22,8 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CalendarBundle\Entity\Node\Event,
-    ShiftBundle\Entity\Shift,
-    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -35,7 +33,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CalendarBundle\Entity\Node\Event
+     * @var Event
      */
     private $_event;
 
@@ -47,10 +45,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Create a new Event PDF Generator.
      *
-     * @param \Doctrine\ORM\EntityManager               $entityManager
-     * @param \CalendarBundle\Entity\Node\Event         $event         The event
-     * @param array                                     $shifts        The shifts for this event
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager
+     * @param Event         $event         The event
+     * @param array         $shifts        The shifts for this event
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Event $event, array $shifts, TmpFile $file)
     {
@@ -71,7 +69,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for FOP.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

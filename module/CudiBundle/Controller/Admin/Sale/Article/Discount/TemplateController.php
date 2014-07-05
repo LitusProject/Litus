@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Article\Discount\Template,
+use CudiBundle\Entity\Sale\Article\Discount\Template,
     CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -82,12 +81,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The template was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The template was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -162,12 +158,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The discount template was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The discount template was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -188,15 +181,15 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Template
+     */
     private function _getTemplate()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the template!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the template!'
             );
 
             $this->redirect()->toRoute(
@@ -214,12 +207,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $template) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No template with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No template with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

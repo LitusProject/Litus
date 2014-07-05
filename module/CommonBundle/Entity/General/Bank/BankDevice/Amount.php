@@ -91,7 +91,7 @@ class Amount
     }
 
     /**
-     * @return float
+     * @return integer
      */
     public function getAmount()
     {
@@ -99,8 +99,8 @@ class Amount
     }
 
     /**
-     * @param  int                                          $amount The amount payed
-     * @return \CommonBundle\Entity\General\Bank\BankDevice
+     * @param  int    $amount The amount payed
+     * @return Amount
      */
     public function setAmount($amount)
     {

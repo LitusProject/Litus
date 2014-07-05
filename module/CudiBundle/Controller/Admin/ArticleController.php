@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article\External,
+use CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\History,
     CudiBundle\Entity\Article\SubjectMap,
@@ -43,7 +41,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         if (null !== $this->getParam('field'))
-            $articles = $this->_search($academicYear);
+            $articles = $this->_search();
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
@@ -148,12 +146,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -229,12 +224,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -311,7 +303,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_search($academicYear)
+        $articles = $this->_search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -409,12 +401,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The new version of the article was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The new version of the article was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -497,12 +486,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The article was succesfully converted!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The article was succesfully converted!'
         );
 
         $this->redirect()->toRoute(
@@ -593,12 +579,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The article was succesfully converted!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The article was succesfully converted!'
         );
 
         $this->redirect()->toRoute(
@@ -612,7 +595,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
-    private function _search(AcademicYear $academicYear)
+    private function _search()
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -634,19 +617,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'subject':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllBySubjectQuery($this->getParam('string'), $this->getCurrentAcademicYear());
+                    ->findAllBySubjectQuery($this->getParam('string'), $this->getAcademicYear());
         }
     }
 
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -664,12 +644,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

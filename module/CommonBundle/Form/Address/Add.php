@@ -22,7 +22,6 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
     CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\NotZero as NotZeroValidator,
     CommonBundle\Entity\General\Address,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
 /**
@@ -43,9 +42,9 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Element\Collection
     private $_required;
 
     /**
-     * @param string          $prefix   The form's prefix
-     * @param null|string|int $name     Optional name for the element
-     * @param boolean         $required Whether or not the address is required
+     * @param string  $prefix   The form's prefix
+     * @param string  $name     Optional name for the element
+     * @param boolean $required Whether or not the address is required
      */
     public function __construct($prefix = '', $name = null, $required = true)
     {

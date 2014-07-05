@@ -41,10 +41,9 @@ class FlashMessage
     private $_message = '';
 
     /**
-     * @param string $type      The FlashMessage's type
-     * @param string $title     The FlashMessage's title
-     * @param string $message   The FlashMessage's message
-     * @param bool   $fullWidth Whether or not the message should use the full width when displayed
+     * @param string $type    The FlashMessage's type
+     * @param string $title   The FlashMessage's title
+     * @param string $message The FlashMessage's message
      */
     public function __construct($type, $title, $message)
     {

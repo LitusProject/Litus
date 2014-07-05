@@ -18,8 +18,7 @@
 
 namespace GalleryBundle\Entity\Album;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \GalleryBundle\Entity\Album\Album The album of this translation
+     * @var Album The album of this translation
      *
      * @ORM\ManyToOne(targetEntity="GalleryBundle\Entity\Album\Album", inversedBy="translations")
      * @ORM\JoinColumn(name="album", referencedColumnName="id")
@@ -48,7 +47,7 @@ class Translation
     private $album;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -63,10 +62,9 @@ class Translation
     private $title;
 
     /**
-     * @param \GalleryBundle\Entity\Album\Album     $album
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $content
-     * @param string                                $title
+     * @param Album    $album
+     * @param Language $language
+     * @param string   $title
      */
     public function __construct(Album $album, Language $language, $title)
     {
@@ -76,7 +74,15 @@ class Translation
     }
 
     /**
-     * @return \GalleryBundle\Entity\Album\Album
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Album
      */
     public function getAlbum()
     {
@@ -84,7 +90,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -100,9 +106,8 @@ class Translation
     }
 
     /**
-     * @param string $title
-     *
-     * @return \GalleryBundle\Entity\Album\Translation
+     * @param  string $title
+     * @return self
      */
     public function setTitle($title)
     {

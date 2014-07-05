@@ -20,7 +20,6 @@ namespace PublicationBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection,
     PublicationBundle\Entity\Publication;
 
 /**
@@ -54,7 +53,7 @@ abstract class Edition
     private $title;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
@@ -62,7 +61,7 @@ abstract class Edition
     private $academicYear;
 
     /**
-     * @var \PublicationBundle\Entity\Publication The publication to which this edition belongs.
+     * @var Publication The publication to which this edition belongs.
      *
      * @ORM\ManyToOne(targetEntity="PublicationBundle\Entity\Publication")
      * @ORM\JoinColumn(name="publication", referencedColumnName="id", nullable=false)
@@ -70,7 +69,7 @@ abstract class Edition
     private $publication;
 
     /**
-     * @var \DateTime The date of this edition.
+     * @var DateTime The date of this edition.
      *
      * @ORM\Column(type="datetime")
      */
@@ -86,11 +85,11 @@ abstract class Edition
     /**
      * Creates a new edition with the given title
      *
-     * @param \PublicationBundle\Entity\Publication The publication to which this edition belongs
-     * @param \CommonBundle\Entity\General\AcademicYear
-     * @param string    $title    The title of this edition
-     * @param \DateTime $date     The date of this edition
-     * @param string    $fileName The file name of this edition
+     * @param Publication  $publication  The publication to which this edition belongs
+     * @param AcademicYear $academicYear
+     * @param string       $title        The title of this edition
+     * @param DateTime     $date         The date of this edition
+     * @param string       $fileName     The file name of this edition
      */
     public function __construct(Publication $publication, AcademicYear $academicYear, $title, DateTime $date, $fileName)
     {
@@ -103,13 +102,16 @@ abstract class Edition
         $this->fileName = $fileName;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @return \PublicationBundle\Entity\Publication The publication of this edition.
+     * @return Publication The publication of this edition.
      */
     public function getPublication()
     {
@@ -117,7 +119,7 @@ abstract class Edition
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear The publication of this edition.
+     * @return AcademicYear The publication of this edition.
      */
     public function getAcademicYear()
     {
@@ -133,7 +135,7 @@ abstract class Edition
     }
 
     /**
-     * @return \DateTime The date of this edition
+     * @return DateTime The date of this edition
      */
     public function getDate()
     {

@@ -18,11 +18,7 @@
 
 namespace SportBundle\Controller\Run;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    DateTime,
-    SportBundle\Entity\Group,
+use SportBundle\Entity\Group,
     SportBundle\Entity\Runner,
     SportBundle\Form\Group\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -128,12 +124,9 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
                         $this->getEntityManager()->flush();
 
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::SUCCESS,
-                                'Success',
-                                'The group was successfully created!'
-                            )
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The group was successfully created!'
                         );
 
                         $this->redirect()->toRoute(

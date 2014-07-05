@@ -19,7 +19,6 @@
 namespace MailBundle\Entity\MailingList;
 
 use CommonBundle\Entity\User\Person\Academic,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
 
@@ -41,7 +40,7 @@ class AdminMap
     private $id;
 
     /**
-     * @var \MailBundle\Entity\MailingList The list of the mapping
+     * @var MailingList The list of the mapping
      *
      * @ORM\ManyToOne(targetEntity="MailBundle\Entity\MailingList")
      * @ORM\JoinColumn(name="list", referencedColumnName="id")
@@ -49,7 +48,7 @@ class AdminMap
     private $list;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The academic of the mapping
+     * @var Academic The academic of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -64,9 +63,9 @@ class AdminMap
     private $editAdmin;
 
     /**
-     * @param \MailBundle\Entity\MailingList The list of the mapping
-     * @param \CommonBundle\Entity\User\Person\Academic $academic  The academic of the mapping
-     * @param boolean                                   $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
+     * @param MailingList The list of the mapping
+     * @param Academic $academic  The academic of the mapping
+     * @param boolean  $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
      */
     public function __construct(MailingList $list, Academic $academic, $editAdmin)
     {
@@ -81,7 +80,7 @@ class AdminMap
     }
 
     /**
-     * @return \MailBundle\Entity\MailingList
+     * @return MailingList
      */
     public function getList()
     {
@@ -89,7 +88,7 @@ class AdminMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {

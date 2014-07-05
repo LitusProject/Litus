@@ -18,8 +18,7 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -33,14 +32,14 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
 class Event extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Language $language      The language
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Language        $language      The language
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, $name = null)
     {

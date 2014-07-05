@@ -61,7 +61,7 @@ class Item
     /**
      * @param string $name           The name of the item (preferrably unique)
      * @param int    $barcode        The barcode of the item
-     * @param type   $additionalInfo Extra information to show when leasing the item
+     * @param string $additionalInfo Extra information to show when leasing the item
      */
     public function __construct($name, $barcode, $additionalInfo = '')
     {
@@ -87,8 +87,8 @@ class Item
     }
 
     /**
-     * @param  string                             $name
-     * @return \LogisticsBundle\Entity\Lease\Item
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -106,8 +106,8 @@ class Item
     }
 
     /**
-     * @param  string                             $additionalInfo
-     * @return \LogisticsBundle\Entity\Lease\Item
+     * @param  string $additionalInfo
+     * @return self
      */
     public function setAdditionalInfo($additionalInfo)
     {
@@ -125,8 +125,8 @@ class Item
     }
 
     /**
-     * @param  integer                            $barcode
-     * @return \LogisticsBundle\Entity\Lease\Item
+     * @param  integer $barcode
+     * @return self
      */
     public function setBarcode($barcode)
     {

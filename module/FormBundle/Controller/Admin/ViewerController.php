@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    FormBundle\Form\Admin\Viewer\Add as AddForm,
+use FormBundle\Form\Admin\Viewer\Add as AddForm,
     FormBundle\Entity\ViewerMap,
     Zend\View\Model\ViewModel;
 
@@ -36,12 +35,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -77,12 +73,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -100,12 +93,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneByForm($formSpecification);
 
         if (null !== $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'This form is in a group, you cannot edit the viewer here!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'This form is in a group, you cannot edit the viewer here!'
             );
 
             $this->redirect()->toRoute(
@@ -147,12 +137,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     );
 
                 if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Success',
-                            'This user has already been given access to this list!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This user has already been given access to this list!'
                     );
                 } else {
 
@@ -167,12 +154,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The viewer was successfully created!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The viewer was successfully created!'
                     );
                 }
 
@@ -204,12 +188,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         if (!$viewer->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -227,12 +208,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneByForm($viewer->getForm());
 
         if (null !== $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'This form is in a group, you cannot edit the viewer here!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'This form is in a group, you cannot edit the viewer here!'
             );
 
             $this->redirect()->toRoute(
@@ -259,12 +237,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -282,12 +257,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -306,12 +278,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     private function _getViewer()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the viewer!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the viewer!'
             );
 
             $this->redirect()->toRoute(
@@ -329,12 +298,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneById($this->getParam('id'));
 
         if (null === $viewer) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No viewer with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No viewer with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

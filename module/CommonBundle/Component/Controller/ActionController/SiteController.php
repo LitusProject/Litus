@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Form\Auth\Login as LoginForm,
-    PageBundle\Entity\Node\Page,
+use PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -33,7 +32,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -175,7 +174,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Build a pages submenu.
      *
-     * @param  \PageBundle\Entity\Node\Page $page The page
+     * @param  Page  $page The page
      * @return array
      */
     protected function _buildSubmenu(Page $page)
@@ -283,12 +282,15 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '%3Fsource=site';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $server = $this->getRequest()->getServer();
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\Stock as StockGenerator,
     CudiBundle\Form\Admin\Stock\Export as ExportForm,
@@ -242,12 +241,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         $this->getEntityManager()->flush();
                     }
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The stock was successfully updated!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The stock was successfully updated!'
                     );
 
                     $this->redirect()->toRoute(
@@ -271,12 +267,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The order was successfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The order was successfully added!'
                     );
 
                     $this->redirect()->toRoute(
@@ -316,12 +309,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         $this->getEntityManager()->flush();
                     }
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The delivery was successfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The delivery was successfully added!'
                     );
 
                     $this->redirect()->toRoute(
@@ -511,15 +501,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'The stock was successfully updated!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'The stock was successfully updated!'
                     );
 
-                    $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+                    $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
                 }
             }
 
@@ -571,12 +558,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the sale article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the sale article!'
             );
 
             $this->redirect()->toRoute(
@@ -594,12 +578,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $item) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No sale article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No sale article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

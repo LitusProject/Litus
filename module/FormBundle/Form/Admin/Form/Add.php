@@ -43,13 +43,13 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -212,8 +212,8 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'form doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $mailTabContent->add($pane);
@@ -270,8 +270,8 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $reminderMailTabContent->add($pane);

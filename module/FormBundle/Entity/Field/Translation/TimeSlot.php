@@ -40,7 +40,7 @@ class TimeSlot
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Field\TimeSlot The field of this translation
+     * @var TimeSlotField The field of this translation
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Field\TimeSlot", inversedBy="timeslotTranslations")
      * @ORM\JoinColumn(name="timeslot", referencedColumnName="id")
@@ -48,7 +48,7 @@ class TimeSlot
     private $timeslot;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -70,10 +70,10 @@ class TimeSlot
     private $extraInformation;
 
     /**
-     * @param \FormBundle\Entity\Field\TimeSlot timeslot
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $location
-     * @param string                                $extraInformation
+     * @param TimeSlotField timeslot
+     * @param Language $language
+     * @param string   $location
+     * @param string   $extraInformation
      */
     public function __construct(TimeSlotField $timeslot, Language $language, $location, $extraInformation)
     {
@@ -84,7 +84,15 @@ class TimeSlot
     }
 
     /**
-     * @return \FormBundle\Entity\Field\TimeSlot
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return TimeSlotField
      */
     public function getTimeSlot()
     {
@@ -92,7 +100,7 @@ class TimeSlot
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -110,7 +118,7 @@ class TimeSlot
     /**
      * @param string $location
      *
-     * @return \FormBundle\Entity\Field\Translation\TimeSlot
+     * @return self
      */
     public function setLocation($location)
     {
@@ -130,7 +138,7 @@ class TimeSlot
     /**
      * @param string $extraInformation
      *
-     * @return \FormBundle\Entity\Field\Translation\TimeSlot
+     * @return self
      */
     public function setExtraInformation($extraInformation)
     {

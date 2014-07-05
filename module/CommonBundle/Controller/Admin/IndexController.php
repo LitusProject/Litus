@@ -104,6 +104,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @param  Analytics $analytics
+     * @return array
+     */
     private function _getVisitsGraph(Analytics $analytics)
     {
         if (null !== $this->getCache()) {
@@ -124,6 +128,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->_getVisitsGraphData($analytics);
     }
 
+    /**
+     * @param  Analytics $analytics
+     * @return array
+     */
     private function _getVisitsGraphData(Analytics $analytics)
     {
         $now = new DateTime();
@@ -145,6 +153,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $visitsGraphData;
     }
 
+    /**
+     * @return array
+     */
     private function _getRegistrationsGraph()
     {
         if (null !== $this->getCache()) {
@@ -165,6 +176,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->_getRegistrationsGraphData();
     }
 
+    /**
+     * @return array
+     */
     private function _getRegistrationsGraphData()
     {
         $now = new DateTime();
@@ -175,6 +189,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'labels' => array(),
             'dataset' => array()
         );
+
+        $data = array();
 
         for ($i = 0; $i < 7; $i++) {
             $today = new DateTime('midnight');
@@ -188,8 +204,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllSince($today->sub(new DateInterval('P6D')));
 
         $data = array();
-        foreach ($registrations as $registration)
-            $data[$registration->getTimestamp()->format('d/m/Y')]++;
+        foreach ($registrations as $registration) {
+            if (isset($data[$registration->getTimestamp()->format('d/m/Y')]))
+                $data[$registration->getTimestamp()->format('d/m/Y')]++;
+        }
 
         foreach (array_reverse($data) as $label => $value) {
             $registationGraphData['labels'][] = $label;

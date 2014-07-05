@@ -26,7 +26,6 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -38,8 +37,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Form\Admin\Person\Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

@@ -32,17 +32,17 @@ class Study extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject
+     * @var Subject The subject
      */
     private $_subject;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year
+     * @var AcademicYear The academic year
      */
     private $_academicYear;
 
@@ -58,9 +58,10 @@ class Study extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject $subject
-     * @param mixed                          $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Subject       $subject
+     * @param AcademicYear  $academicYear
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Subject $subject = null, AcademicYear $academicYear, $opts = null)
     {

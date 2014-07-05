@@ -496,8 +496,8 @@ class Address
     }
 
     /**
-     * @param string $number
      *
+     * @param  string                               $country
      * @return \CommonBundle\Entity\General\Address
      */
     public function setCountry($country)
@@ -512,6 +512,7 @@ class Address
      * Checks whether the given status is valid.
      *
      * @param $status string A status
+     * @param  string $country
      * @return bool
      */
     public static function isValidCountry($country)

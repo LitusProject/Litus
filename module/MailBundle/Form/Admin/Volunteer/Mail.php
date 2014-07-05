@@ -18,12 +18,9 @@
 
 namespace MailBundle\Form\Admin\Volunteer;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
+use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -38,13 +35,13 @@ class Mail extends \CommonBundle\Component\OldForm\Admin\Form
 {
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

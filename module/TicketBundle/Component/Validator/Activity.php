@@ -31,12 +31,12 @@ class Activity extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var Event|null
      */
     private $_event;
 
@@ -52,9 +52,9 @@ class Activity extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event  $event         The event
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager
+     * @param Event|null    $event         The event
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Event $event = null, $opts = null)
     {

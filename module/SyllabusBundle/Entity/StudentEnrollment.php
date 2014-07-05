@@ -19,7 +19,6 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,7 +37,7 @@ class StudentEnrollment
     private $id;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject of the enrollment
+     * @var Subject The subject of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -46,7 +45,7 @@ class StudentEnrollment
     private $subject;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     * @var AcademicYear The year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -61,9 +60,9 @@ class StudentEnrollment
     private $number;
 
     /**
-     * @param \SyllabusBundle\Entity\Subject            $subject
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
-     * @param integer                                   $academicYear The number of students of the enrollment
+     * @param Subject      $subject
+     * @param AcademicYear $academicYear The year of the mapping
+     * @param integer      $academicYear The number of students of the enrollment
      */
     public function __construct(Subject $subject, AcademicYear $academicYear, $number)
     {
@@ -81,7 +80,7 @@ class StudentEnrollment
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return Subject
      */
     public function getSubject()
     {
@@ -89,7 +88,7 @@ class StudentEnrollment
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -97,9 +96,8 @@ class StudentEnrollment
     }
 
     /**
-     * @param integer $number
-     *
-     * @return \SyllabusBundle\Entity\StudentEnrollment
+     * @param  integer $number
+     * @return self
      */
     public function setNumber($number)
     {

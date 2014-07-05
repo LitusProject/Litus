@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Reply;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+use CommonBundle\Component\Form\Admin\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;

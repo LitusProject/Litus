@@ -18,11 +18,11 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
+use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,12 +74,15 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start']);
+            $endDate = self::_loadDate($formData['end']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $openingHour = new OpeningHour(
-                    \DateTime::createFromFormat('d#m#Y H#i', $formData['start']),
-                    \DateTime::createFromFormat('d#m#Y H#i', $formData['end']),
+                    $startDate,
+                    $endDate,
                     $this->getAuthentication()->getPersonObject()
                 );
                 $this->getEntityManager()->persist($openingHour);
@@ -102,12 +105,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The opening hour was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The opening hour was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -139,11 +139,14 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start']);
+            $endDate = self::_loadDate($formData['end']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
-                $openingHour->setStart(\DateTime::createFromFormat('d#m#Y H#i', $formData['start']))
-                    ->setEnd(\DateTime::createFromFormat('d#m#Y H#i', $formData['end']));
+                $openingHour->setStart($startDate)
+                    ->setEnd($endDate);
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -169,12 +172,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The opening hour was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The opening hour was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -215,12 +215,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     private function _getOpeningHour()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the opening hour!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the opening hour!'
             );
 
             $this->redirect()->toRoute(
@@ -238,12 +235,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $openingHour) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No opening hour with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No opening hour with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -257,5 +251,14 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $openingHour;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

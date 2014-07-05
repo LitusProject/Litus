@@ -21,13 +21,9 @@ namespace TicketBundle\Form\Admin\Event;
 use CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    Doctrine\ORM\EntityManager,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Fieldset,
-    Zend\Form\Element\Submit;
+    Zend\Form\Fieldset;
 
 /**
  * Add Option
@@ -62,7 +58,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
 
     public function getInputFilterSpecification()
     {
-        $required = isset($_POST['options'][$this->getName()]['option']) && strlen($_POST['options'][$this->getName()]['option']) > 0 ? true : false;
+        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0 ? true : false;
 
         return array(
             array(

@@ -18,9 +18,8 @@
 
 namespace FormBundle\Form\Manage\Mail;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
+use CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -32,9 +31,7 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
 class Send extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @param string          $email
-     * @param string          $personName
-     * @param null|string|int $name       Optional name for the element
+     * @param null|string|int $name Optional name for the element
      */
     public function __construct($name = null)
     {

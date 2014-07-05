@@ -18,13 +18,10 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person,
     TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\GuestInfo,
-    TicketBundle\Entity\Option,
-    TicketBundle\Entity\Ticket,
     TicketBundle\Form\Sale\Ticket\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -82,12 +79,9 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Error',
-                        'The tickets were succesfully ' . ($formData['payed'] ? 'sold' : 'booked')
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The tickets were succesfully ' . ($formData['payed'] ? 'sold' : 'booked')
                 );
 
                 $this->redirect()->toRoute(

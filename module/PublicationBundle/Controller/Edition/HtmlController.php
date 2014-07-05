@@ -18,8 +18,7 @@
 
 namespace PublicationBundle\Controller\Edition;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * HtmlController
@@ -47,12 +46,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _getEdition()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the edition!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the edition!'
             );
 
             $this->redirect()->toRoute(
@@ -70,12 +66,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $edition) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No edition with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No edition with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,

@@ -26,6 +26,7 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
     FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
     FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -40,7 +41,7 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
 class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
@@ -50,27 +51,30 @@ class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
     private $_occupiedSlots;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person;
 
     /**
-     * @param \Doctrine\ORM\EntityManager            $entityManager
-     * @param \CommonBundle\Entity\General\Language  $language
-     * @param \FormBundle\Entity\Node\Form           $form
-     * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param \FormBundle\Entity\Node\Entry|null     $entry
-     * @param boolean                                $forceEdit
-     * @param null|string|int                        $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param null|Person     $person
+     * @param Entry|null      $entry
+     * @param boolean         $forceEdit
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
     {
         parent::__construct($name);
+
+        if (!($form instanceof DoodleEntity))
+            return;
 
         // Create guest fields
         if (null === $person) {
@@ -125,7 +129,7 @@ class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
         }
 
         if (null !== $entry)
-            $this->_populateFromEntry($entry);
+            $this->populateFromEntry($entry);
 
         $this->_disableOccupiedSlots($this->_occupiedSlots);
     }
@@ -154,9 +158,9 @@ class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
         return $this->_occupiedSlots;
     }
 
-    private function _populateFromEntry(Entry $entry)
+    public function populateFromEntry(Entry $entry)
     {
-        $formData = array();
+        $formData = $this->data == null ? array() : $this->data;
 
         if ($entry->isGuestEntry()) {
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
@@ -169,6 +173,17 @@ class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
         }
 
         $this->setData($formData);
+    }
+
+    public function populateFromGuestInfo(GuestInfo $guestInfo)
+    {
+        $data = $this->data == null ? array() : $this->data;
+
+        $data['first_name'] = $guestInfo->getFirstName();
+        $data['last_name'] = $guestInfo->getLastName();
+        $data['email'] = $guestInfo->getEmail();
+
+        $this->setData($data);
     }
 
     private function _disableOccupiedSlots(array $occupiedSlots)

@@ -18,10 +18,8 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     DateInterval,
-    PageBundle\Entity\Node\Page,
     Zend\View\Model\ViewModel;
 
 /**
@@ -44,7 +42,9 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
             if (null !== $link)
                 $page = $link->getParent();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            // No page info available
+        }
 
         if (isset($page)) {
             $submenu = $this->_buildSubmenu($page);

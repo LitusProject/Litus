@@ -18,9 +18,7 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
-    ShiftBundle\Entity\Shift,
+use ShiftBundle\Entity\Shift,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
     ShiftBundle\Form\Admin\Subscription\Add as AddForm,
@@ -78,7 +76,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                         return new ViewModel();
                     }
 
-                    $volunteer = new Volunteer($person, $this->getCurrentAcademicYear());
+                    $volunteer = new Volunteer($person);
                     $shift->addVolunteer($this->getEntityManager(), $volunteer);
                     $this->getEntityManager()->persist($volunteer);
                     $this->getEntityManager()->flush();
@@ -188,12 +186,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('ShiftBundle\Entity\Shift\Responsible');
                 break;
             default:
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'The given type is not valid!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'The given type is not valid!'
                 );
 
                 $this->redirect()->toRoute(
@@ -207,12 +202,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subscription!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subscription!'
             );
 
             $this->redirect()->toRoute(
@@ -228,12 +220,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $subscription = $repository->findOneById($this->getParam('id'));
 
         if (null === $subscription) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subscription with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subscription with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -249,15 +238,15 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return $subscription;
     }
 
+    /**
+     * @return Shift
+     */
     private function _getShift()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the shift!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the shift!'
             );
 
             $this->redirect()->toRoute(
@@ -275,12 +264,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('id'));
 
         if (null === $shift) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No shift with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No shift with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -298,12 +284,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
     private function _invalidAdd(Shift $shift)
     {
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Unable to add the given person to the shift!'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Unable to add the given person to the shift!'
         );
 
         $this->redirect()->toRoute(

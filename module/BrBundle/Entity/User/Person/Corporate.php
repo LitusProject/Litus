@@ -21,7 +21,6 @@ namespace BrBundle\Entity\User\Person;
 use BrBundle\Entity\Company,
     BrBundle\Entity\User\Status\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Credential,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 

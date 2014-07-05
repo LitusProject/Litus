@@ -18,10 +18,9 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -36,19 +35,19 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
 class Mail extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
+     * @var AcademicYear The current academic year
      */
     private $_academicYear;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear  The current academic year
-     * @param null|string|int                           $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param AcademicYear    $academicYear  The current academic year
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $name = null)
     {

@@ -18,8 +18,7 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

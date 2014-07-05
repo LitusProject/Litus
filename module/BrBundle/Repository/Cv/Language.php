@@ -18,8 +18,7 @@
 
 namespace BrBundle\Repository\Cv;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Language

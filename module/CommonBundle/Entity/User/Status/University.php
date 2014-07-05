@@ -20,7 +20,8 @@ namespace CommonBundle\Entity\User\Status;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * A classification of a user based on his status at our Alma Mater.
@@ -53,7 +54,7 @@ class University
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person this university status belongs to
+     * @var Academic The person this university status belongs to
      *
      * @ORM\ManyToOne(
      *      targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="universityStatuses"
@@ -70,7 +71,7 @@ class University
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the status
+     * @var AcademicYear The year of the status
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -78,15 +79,15 @@ class University
     private $academicYear;
 
     /**
-     * @param  \CommonBundle\Entity\User\Person\Academic $person       The person that should be given the status
-     * @param  string                                    $status       The status that should be given to the person
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
-     * @throws \InvalidArgumentException
+     * @param  Academic                 $person       The person that should be given the status
+     * @param  string                   $status       The status that should be given to the person
+     * @param  AcademicYear             $academicYear The year of the status
+     * @throws InvalidArgumentException
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
     {
         if (!self::isValidPerson($person, $academicYear))
-            throw new \InvalidArgumentException('Invalid person');
+            throw new InvalidArgumentException('Invalid person');
 
         $this->person = $person;
 
@@ -95,7 +96,7 @@ class University
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -103,7 +104,7 @@ class University
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getPerson()
     {
@@ -114,8 +115,8 @@ class University
      * Returns whether the given user can have a university status.
      *
      * @static
-     * @param  \CommonBundle\Entity\User\Person\Academic $person       the user to check
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The year of the status
+     * @param  Academic     $person       the user to check
+     * @param  AcademicYear $academicYear The year of the status
      * @return bool
      */
     public static function isValidPerson(Academic $person, AcademicYear $academicYear)
@@ -132,8 +133,8 @@ class University
     }
 
     /**
-     * @param $status string the status to set
-     * @return \CommonBundle\Entity\User\UniversityStatus
+     * @param  string     $status string the status to set
+     * @return University
      */
     public function setStatus($status)
     {
@@ -146,7 +147,7 @@ class University
     /**
      * Checks whether the given status is valid.
      *
-     * @param $status string A status
+     * @param  string $status string A status
      * @return bool
      */
     public static function isValidStatus($status)
@@ -155,7 +156,7 @@ class University
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

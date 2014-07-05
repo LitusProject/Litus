@@ -33,12 +33,12 @@ use CommonBundle\Component\Acl\Acl,
 class Update extends \CommonBundle\Component\WebSocket\Server
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \Zend\Mail\Transport\TransportInterface
+     * @var TransportInterface
      */
     private $_mailTransport;
 
@@ -48,8 +48,8 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $_status = 'done';
 
     /**
-     * @param Doctrine\ORM\EntityManager              $entityManager
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
@@ -66,8 +66,8 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received text
      *
-     * @param \CommonBundle\Component\WebSockets\Sale\User $user
-     * @param string                                       $data
+     * @param User   $user
+     * @param string $data
      */
     protected function gotText(User $user, $data)
     {
@@ -98,10 +98,10 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('CommonBundle\Entity\User\Session')
                 ->findOneById($command->authSession);
 
+            $allowed = false;
             if ($authSession) {
                 $acl = new Acl($this->_entityManager);
 
-                $allowed = false;
                 foreach ($authSession->getPerson()->getRoles() as $role) {
                     if (
                         $role->isAllowed(
@@ -127,10 +127,29 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         if ($command->command == 'update' && 'done' == $this->_status) {
             $this->_entityManager->clear();
             $this->_status = 'updating';
-            new StudyParser($this->_entityManager, $this->_mailTransport, 'http://litus/admin/syllabus/update/xml', array($this, 'callback'));
+            new StudyParser($this->_entityManager, $this->_mailTransport, array($this, 'callback'));
             $this->callback('done');
             $this->_status = 'done';
         }
+    }
+
+    /**
+     * Parse received binary
+     *
+     * @param User   $user
+     * @param string $data
+     */
+    protected function gotBin(User $user, $data)
+    {
+    }
+
+    /**
+     * Do action when a new user has connected to this socket
+     *
+     * @param User $user
+     */
+    protected function onConnect(User $user)
+    {
     }
 
     /**

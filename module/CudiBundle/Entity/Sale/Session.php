@@ -42,21 +42,21 @@ class Session
     private $id;
 
     /**
-     * @var \DateTime The open date of the sale session
+     * @var DateTime The open date of the sale session
      *
      * @ORM\Column(name="open_date", type="datetime")
      */
     private $openDate;
 
     /**
-     * @var \DateTime The close date of the sale session
+     * @var DateTime The close date of the sale session
      *
      * @ORM\Column(name="close_date", type="datetime", nullable=true)
      */
     private $closeDate;
 
     /**
-     * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister open status
+     * @var CashRegister The cashregister open status
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
      * @ORM\JoinColumn(name="open_register", referencedColumnName="id")
@@ -64,7 +64,7 @@ class Session
     private $openRegister;
 
     /**
-     * @var \CommonBundle\Entity\General\Bank\CashRegister The cashregister close status
+     * @var CashRegister The cashregister close status
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister")
      * @ORM\JoinColumn(name="close_register", referencedColumnName="id")
@@ -72,7 +72,7 @@ class Session
     private $closeRegister;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person responsible for the sale session
+     * @var Person The person responsible for the sale session
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="manager", referencedColumnName="id")
@@ -87,21 +87,21 @@ class Session
     private $comment;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of this sale session
+     * @var ArrayCollection The restrictions of this sale session
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\Restriction", mappedBy="session")
      */
     private $restrictions;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\Bank\CashRegister $openRegister The cash register contents at the start of the session
-     * @param \CommonBundle\Entity\User\Person               $manager      The manager of the session
-     * @param string                                         $comment      The comment on this sale session
+     * @param CashRegister $openRegister The cash register contents at the start of the session
+     * @param Person       $manager      The manager of the session
+     * @param string       $comment      The comment on this sale session
      */
     public function __construct(CashRegister $openRegister, Person $manager, $comment = '')
     {
@@ -120,9 +120,9 @@ class Session
     }
 
     /**
-     * @param \DateTime $openDate
+     * @param DateTime $openDate
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return self
      */
     public function setOpenDate(DateTime $openDate)
     {
@@ -131,7 +131,7 @@ class Session
         return $this;
     }
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getOpenDate()
     {
@@ -147,7 +147,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Bank\CashRegister
+     * @return CashRegister
      */
     public function getOpenRegister()
     {
@@ -155,9 +155,9 @@ class Session
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Bank\CashRegister $closeRegister
+     * @param CashRegister $closeRegister
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return self
      */
     public function close(CashRegister $closeRegister)
     {
@@ -168,7 +168,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Bank\CashRegister
+     * @return CashRegister
      */
     public function getCloseRegister()
     {
@@ -176,7 +176,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getManager()
     {
@@ -186,7 +186,7 @@ class Session
     /**
      * @param string $comment
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return self
      */
     public function setComment($comment)
     {
@@ -220,7 +220,7 @@ class Session
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  Organization $organization
      * @return integer
      */
     public function getTheoreticalRevenue(Organization $organization = null)
@@ -242,7 +242,7 @@ class Session
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  Organization $organization
      * @return integer
      */
     public function getPurchasedAmount(Organization $organization = null)
@@ -253,9 +253,9 @@ class Session
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -285,8 +285,8 @@ class Session
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param EntityManager $entityManager
+     * @param Person        $person
      *
      * @return boolean
      */

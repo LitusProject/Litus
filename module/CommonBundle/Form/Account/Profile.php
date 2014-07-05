@@ -18,10 +18,8 @@
 
 namespace CommonBundle\Form\Account;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\File,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
+use CommonBundle\Component\Form\Bootstrap\Element\File,
+    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 

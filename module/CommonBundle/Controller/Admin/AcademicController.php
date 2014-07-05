@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Barcode,
+use CommonBundle\Entity\User\Barcode,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
@@ -27,6 +26,7 @@ use CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Form\Admin\Academic\Add as AddForm,
     CommonBundle\Form\Admin\Academic\Edit as EditForm,
     DateTime,
+    Doctrine\ORM\Query,
     Zend\View\Model\ViewModel;
 
 /**
@@ -38,9 +38,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
-            $academics = $this->_search();
-
+        if (null !== $this->getParam('field') && ($academics = $this->_search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -142,12 +140,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The academic was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The academic was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -266,9 +261,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                         );
                     }
                 } else {
-                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $status = $academic->getUniversityStatus($this->getCurrentAcademicYear());
-
+                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
                         $academic->removeUniversityStatus($status);
                         $this->getEntityManager()->remove($status);
                     }
@@ -334,12 +327,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The academic was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The academic was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -374,12 +364,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The academic was successfully activated!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The academic was successfully activated!'
         );
 
         $this->redirect()->toRoute(
@@ -481,8 +468,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     *
-     * @return \Doctrine\ORM\Query
+     * @return Query|null
      */
     private function _search()
     {
@@ -502,15 +488,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
+    /**
+     * @return Academic|null
+     */
     private function _getAcademic()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the academic!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the academic!'
             );
 
             $this->redirect()->toRoute(
@@ -528,12 +514,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $academic) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
