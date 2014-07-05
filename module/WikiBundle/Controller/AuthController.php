@@ -32,7 +32,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        $form = $this->getForm('common_auth_login');
+        $form = $this->getForm('wiki_auth_login');
 
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->isExternallyAuthenticated()) {
@@ -56,8 +56,6 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
@@ -184,9 +182,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
     protected function redirectAfterAuthentication()
     {
-        if (!$this->getAuthentication()->isAuthenticated()
-            || !$this->getAuthentication()->isExternallyAuthenticated())
-
+        if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->isExternallyAuthenticated())
                 return null;
 
         if (null !== $this->getParam('redirect')) {
