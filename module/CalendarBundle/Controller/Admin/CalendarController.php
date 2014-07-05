@@ -26,7 +26,7 @@ use CalendarBundle\Entity\Node\Event,
     DateTime,
     Imagick,
     Zend\Http\Headers,
-    Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
@@ -79,12 +79,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
+            if ($form->isValid()) {
+                $event = $form->hydrateObject(
+                    new Event($this->getAuthentication()->getPersonObject())
+                );
 
-            if ($form->isValid() && $startDate) {
-                $formData = $form->getFormData($formData);
-
-                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
                 $this->getEntityManager()->persist($event);
 
                 $languages = $this->getEntityManager()
@@ -145,14 +144,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-
-            if ($form->isValid() && $startDate) {
-                $formData = $form->getFormData($formData);
-
-                $event->setStartDate($startDate)
-                    ->setEndDate(self::_loadDate($formData['end_date']));
-
+            if ($form->isValid()) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -233,7 +225,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $form = new PosterForm();
+        $form = $this->getForm('calendar_event_poster');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -253,39 +245,49 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    private function receive(FileUpload $upload, Event $event)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('calendar.poster_path');
+
+        $upload->receive();
+
+        $image = new Imagick($upload->getFileName('poster'));
+        unlink($upload->getFileName('poster'));
+
+        if ($event->getPoster() != '' || $event->getPoster() !== null) {
+            $fileName = '/' . $event->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+
+        $image->writeImage($filePath . $fileName);
+
+        $event->setPoster($fileName);
+    }
+
     public function uploadAction()
     {
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $form = new PosterForm();
+        $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('calendar.poster_path');
 
-            $upload = new FileTransfer();
+            $upload = new FileUpload();
             $inputFilter = $form->getInputFilter()->get('poster');
             if ($inputFilter instanceof InputInterface)
                 $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($upload->isValid()) {
-                $upload->receive();
-
-                $image = new Imagick($upload->getFileName('poster'));
-                unlink($upload->getFileName('poster'));
-
-                if ($event->getPoster() != '' || $event->getPoster() !== null) {
-                    $fileName = '/' . $event->getPoster();
-                } else {
-                    do {
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
-                }
-
-                $image->writeImage($filePath . $fileName);
-                $event->setPoster($fileName);
+                $this->receive($upload, $event);
 
                 $this->getEntityManager()->flush();
 
@@ -299,7 +301,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'status' => 'success',
                         'info' => array(
                             'info' => array(
-                                'name' => $fileName,
+                                'name' => $event->getPoster(),
                             )
                         )
                     )
@@ -440,14 +442,5 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $event;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

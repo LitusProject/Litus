@@ -18,9 +18,6 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Node\Event;
-
 /**
  * Edit an event.
  */

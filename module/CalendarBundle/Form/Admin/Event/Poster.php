@@ -18,52 +18,32 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CommonBundle\Component\OldForm\Admin\Element\File,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Event poster form.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Poster extends \CommonBundle\Component\OldForm\Admin\Form
+class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILESIZE = '10MB';
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->setAttribute('id', 'uploadPoster');
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new File('poster');
-        $field->setLabel('Poster')
-            ->setAttribute('data-help', 'The poster must be an image of max ' . self::FILESIZE . '.')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'image_edit');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'poster',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'poster',
+            'label'      => 'Poster',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The poster must be an image of max ' . self::FILESIZE . '.',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
@@ -75,10 +55,10 @@ class Poster extends \CommonBundle\Component\OldForm\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'image_edit');
     }
 }

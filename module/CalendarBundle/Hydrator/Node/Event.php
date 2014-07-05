@@ -44,13 +44,12 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
 
         $startDate = self::_loadDate($data['start_date']);
-        $endDate = self::_loadDate($data['end_date']);
 
-        if (null === $startDate || null === $endDate)
+        if (null === $startDate)
             throw new InvalidDateException();
 
-        $object->setStartDate($startDate);
-        $object->setEndDate($endDate);
+        $object->setStartDate($startDate)
+            ->setEndDate(self::_loadDate($data['end_date']));
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }

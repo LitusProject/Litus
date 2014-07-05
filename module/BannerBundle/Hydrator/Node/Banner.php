@@ -49,8 +49,8 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $startDate || null === $endDate)
             throw new InvalidDateException();
 
-        $object->setStartDate($startDate);
-        $object->setEndDate($endDate);
+        $object->setStartDate($startDate)
+            ->setEndDate($endDate);
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }

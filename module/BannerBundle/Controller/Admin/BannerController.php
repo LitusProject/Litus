@@ -98,7 +98,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('banner.image_path');
 
-        $fileName = '';
         do {
             $fileName = '/' . sha1(uniqid());
         } while (file_exists($filePath . $fileName));
