@@ -21,6 +21,7 @@ namespace GalleryBundle\Entity\Album;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
+    Locale,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,14 +42,14 @@ class Album
     private $id;
 
     /**
-     * @var \DateTime The time of creation of this album
+     * @var DateTime The time of creation of this album
      *
      * @ORM\Column(name="create_time", type="datetime")
      */
     private $createTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this album
+     * @var Person The person who created this album
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="create_person", referencedColumnName="id")
@@ -56,7 +57,7 @@ class Album
     private $createPerson;
 
     /**
-     * @var \DateTime The date the photo's of this album were created
+     * @var DateTime The date the photo's of this album were created
      *
      * @ORM\Column(name="date_activity", type="datetime")
      */
@@ -92,9 +93,9 @@ class Album
     private $photos;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime                        $date
-     * @param boolean                          $watermark
+     * @param Person   $person
+     * @param DateTime $date
+     * @param boolean  $watermark
      */
     public function __construct(Person $person, DateTime $date, $watermark = true)
     {
@@ -122,7 +123,7 @@ class Album
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getCreatePerson()
     {
@@ -130,9 +131,8 @@ class Album
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return \GalleryBundle\Entity\Album\Album
+     * @param  DateTime $date
+     * @return self
      */
     public function setDate(DateTime $date)
     {
@@ -142,7 +142,7 @@ class Album
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -150,9 +150,8 @@ class Album
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
-     *
-     * @return \GalleryBundle\Entity\Album\Translation
+     * @param  Language         $language
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -160,18 +159,18 @@ class Album
             if (null !== $language && $translation->getLanguage() == $language)
                 return $translation;
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault())
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;
     }
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param Language $language
      *
      * @return string
      */
@@ -222,7 +221,7 @@ class Album
     }
 
     /**
-     * @return \GalleryBundle\Entity\Album\Photo
+     * @return Photo
      */
     public function getPhoto()
     {
@@ -234,9 +233,8 @@ class Album
     }
 
     /**
-     * @param string $name
      *
-     * @return \NewsBundle\Entity\Node\News
+     * @return self
      */
     public function updateName()
     {

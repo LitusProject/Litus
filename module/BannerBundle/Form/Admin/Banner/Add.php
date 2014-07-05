@@ -29,6 +29,8 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'BannerBundle\Hydrator\Node\Banner';
+
     const BANNER_WIDTH = 940;
     const BANNER_HEIGHT = 100;
     const BANNER_FILESIZE = '10MB';
@@ -50,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -72,8 +74,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'end_date',
             'label'      => 'End Date',
             'required'   => true,
-            'attributes' => array(
-                'data-help' => 'The end date for showing this banner, overrulled by "active".',
+            'attributes'  => array(
+                'data-help'       => 'The end date for showing this banner, overrulled by "active".',
             ),
             'options'    => array(
                 'input' => array(
@@ -96,11 +98,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'       => 'file',
             'name'       => 'file',
-            'label'      => 'Image (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')',
-            'required'   => true,
-            'attributes' => array(
+            'label'      => 'Image  (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')',
+            'attributes'  => array(
                 'data-help' => 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.',
             ),
+            'required'   => false,
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
@@ -132,11 +134,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'url',
             'label'      => 'URL',
             'attributes' => array(
-                'data-help' => 'The url to open after clicking on the banner',
+                'data-help' => 'The url to open after clicking on the banner.',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

@@ -39,7 +39,7 @@ class Restriction
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session The session of the queue item
+     * @var Session The session of the queue item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session", inversedBy="restrictions")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
@@ -87,10 +87,10 @@ class Restriction
     );
 
     /**
-     * @param \CudiBundle\Entity\Sale\Session $session
-     * @param string                          $type
-     * @param string                          $startValue
-     * @param string                          $endValue
+     * @param Session $session
+     * @param string  $type
+     * @param string  $startValue
+     * @param string  $endValue
      */
     public function __construct(Session $session, $type, $startValue, $endValue)
     {
@@ -104,6 +104,7 @@ class Restriction
     }
 
     /**
+     * @param  string  $type
      * @return boolean
      */
     public static function isValidType($type)
@@ -120,7 +121,7 @@ class Restriction
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Session
      */
     public function getSession()
     {
@@ -180,8 +181,8 @@ class Restriction
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param EntityManager $entityManager
+     * @param Person        $person
      *
      * @return boolean
      */

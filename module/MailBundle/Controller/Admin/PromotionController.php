@@ -18,12 +18,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Form\Admin\Promotion\Mail as MailForm,
+use MailBundle\Form\Admin\Promotion\Mail as MailForm,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
-    Zend\Mime\Message as MimeMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,12 +88,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The mail was successfully sent!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The mail was successfully sent!'
                 );
 
                 $this->redirect()->toRoute(

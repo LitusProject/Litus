@@ -30,23 +30,23 @@ use CommonBundle\Entity\User\Person,
 class Doctrine extends \CommonBundle\Component\Authentication\Result
 {
     /**
-     * @var \CommonBundle\Entity\User\Person The user object given by the DQL query
+     * @var Person The user object given by the DQL query
      */
     private $_personObject = null;
 
     /**
-     * @var \CommonBundle\Entity\User\Session The session object
+     * @var Session The session object
      */
     private $_sessionObject = null;
 
     /**
      * Overwriting the standard constructor to allow for some specific fields.
      *
-     * @param int                               $code          The result code
-     * @param string                            $identity      The authenticated user's identity
-     * @param array                             $messages      The result messages
-     * @param \CommonBundle\Entity\User\Person  $personObject  The user object given by the DQL query
-     * @param \CommonBundle\Entity\User\Session $sessionObject The session object
+     * @param int     $code          The result code
+     * @param string  $identity      The authenticated user's identity
+     * @param array   $messages      The result messages
+     * @param Person  $personObject  The user object given by the DQL query
+     * @param Session $sessionObject The session object
      */
     public function __construct($code, $identity, array $messages = array(), Person $personObject = null, Session $sessionObject = null)
     {
@@ -59,7 +59,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * Return the user object given by the DQL query.
      *
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPersonObject()
     {
@@ -69,7 +69,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * Return the session object.
      *
-     * @return \CommonBundle\Entity\User\Session
+     * @return Session
      */
     public function getSessionObject()
     {
@@ -79,7 +79,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * Setter for the session property.
      *
-     * @return \CommonBundle\Component\Authentication\Result\Doctrine
+     * @return self
      */
     public function setSessionObject(Session $sessionObject)
     {

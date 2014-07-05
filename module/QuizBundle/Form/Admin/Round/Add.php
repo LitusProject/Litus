@@ -35,18 +35,18 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz the round will belong to
+     * @var Quiz The quiz the round will belong to
      */
     protected $_quiz = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \QuizBundle\Entity\Quiz     $quiz
+     * @param EntityManager $entityManager
+     * @param Quiz          $quiz
      * @var null|string|int $name Optional name for the form
      */
     public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
@@ -80,7 +80,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
     /**
      * Populates the form with values from the entity
      *
-     * @param \QuizBundle\Entity\Round $round
+     * @param Round $round
      */
     public function populateFromRound(Round $round)
     {

@@ -18,8 +18,7 @@
 
 namespace PageBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Category,
+use PageBundle\Entity\Category,
     PageBundle\Entity\Category\Translation,
     PageBundle\Form\Admin\Category\Add as AddForm,
     PageBundle\Form\Admin\Category\Edit as EditForm,
@@ -91,12 +90,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The category was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The category was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -163,12 +159,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The category was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The category was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -212,12 +205,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     private function _getCategory()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the category!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the category!'
             );
 
             $this->redirect()->toRoute(
@@ -235,12 +225,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $category) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No category with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No category with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

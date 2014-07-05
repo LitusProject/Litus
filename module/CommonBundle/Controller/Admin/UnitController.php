@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\Acl\Role,
+use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap,
     CommonBundle\Form\Admin\Unit\Add as AddForm,
@@ -115,12 +114,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The unit was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The unit was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -177,12 +173,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     );
 
                 if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'This academic already is a member of this unit!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This academic already is a member of this unit!'
                     );
                 } else {
                     $member = new UnitMap($academic, $this->getCurrentAcademicYear(), $unit, $formData['coordinator']);
@@ -190,12 +183,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($member);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The member was succesfully added!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The member was succesfully added!'
                     );
                 }
 
@@ -283,12 +273,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The unit was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The unit was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -366,12 +353,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The tree was succesfully pruned!'
-            )
+        $this->flashMessenger()->success(
+            'Succes',
+            'The tree was succesfully pruned!'
         );
 
         $this->redirect()->toRoute(
@@ -384,15 +368,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return Unit|null
+     */
     private function _getUnit()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the unit!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the unit!'
             );
 
             $this->redirect()->toRoute(
@@ -410,12 +394,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $unit) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No unit with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No unit with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -431,15 +412,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $unit;
     }
 
+    /**
+     * @return UnitMap|null
+     */
     private function _getMember()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the member!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the member!'
             );
 
             $this->redirect()->toRoute(
@@ -457,12 +438,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $member) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No member with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No member with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -478,6 +456,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $member;
     }
 
+    /**
+     * @param Role      $role
+     * @param Unit|null $parent
+     */
     private function _findRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent)
@@ -489,6 +471,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return $this->_findRoleWithParent($role, $parent->getParent());
     }
 
+    /**
+     * @param Role      $role
+     * @param Unit|null $parent
+     */
     private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent)

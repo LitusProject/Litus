@@ -19,8 +19,7 @@
 namespace SecretaryBundle\Form\Registration;
 
 use Doctrine\ORM\EntityManager,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -34,19 +33,19 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic     $academic                The academic
-     * @param \CommonBundle\Entity\General\AcademicYear     $academicYear            The academic year
-     * @param \SecretaryBundle\Entity\Organization\MetaData $metaData                The organization metadata
-     * @param \Zend\Cache\Storage\StorageInterface          $cache                   The cache instance
-     * @param \Doctrine\ORM\EntityManager                   $entityManager           The EntityManager instance
-     * @param string                                        $identification          The university identification
-     * @param boolean                                       $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int                               $name                    Optional name for the element
+     * @param Academic        $academic                The academic
+     * @param AcademicYear    $academicYear            The academic year
+     * @param MetaData|null   $metaData                The organization metadata
+     * @param CacheStorage    $cache                   The cache instance
+     * @param EntityManager   $entityManager           The EntityManager instance
+     * @param string          $identification          The university identification
+     * @param boolean         $enableOtherOrganization Enable the "other organization" option
+     * @param null|string|int $name                    Optional name for the element
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $enableOtherOrganization = false, $name = null)
     {

@@ -439,4 +439,28 @@ class ReturnItem extends EntityRepository
 
         return $resultSet;
     }
+
+    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p.id')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->innerJoin('m.academic', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    null === $organization ? '1=1' : $query->expr()->eq('m.organization', $organization->getId())
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        $ids = array(0);
+        foreach ($resultSet as $item) {
+            $ids[] = $item['id'];
+        }
+
+        return $ids;
+    }
 }

@@ -21,8 +21,8 @@ namespace CommonBundle\Component\Lilo;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     Exception,
+    Zend\Http\PhpEnvironment\Request,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent;
 
@@ -35,25 +35,32 @@ use CommonBundle\Component\Authentication\Authentication,
 class Client
 {
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication $_authentication The authentication instance
+     * @var Authentication The authentication instance
      */
     private $_authentication;
 
     /**
-     * @var \CommonBundle\Compnent\Lilo\Connection $_connection The connection to the Lilo server
+     * @var Connection The connection to the Lilo server
      */
     private $_connection;
 
     /**
+     * @var Request The request to the page
+     */
+    private $_request;
+
+    /**
      * Constructs a new Lilo client.
      *
-     * @param \CommonBundle\Compnent\Lilo\Connection                $connection     The connection to the Lilo server
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication instance
+     * @param Connection          $connection     The connection to the Lilo server
+     * @param Authentication|null $authentication The authentication instance
+     * @param Request             $request        The request to the page
      */
-    public function __construct(Connection $connection, Authentication $authentication = null)
+    public function __construct(Connection $connection, Authentication $authentication = null, Request $request)
     {
         $this->_authentication = $authentication;
         $this->_connection = $connection;
+        $this->_request = $request;
     }
 
     /**
@@ -73,13 +80,13 @@ class Client
     /**
      * Sends an exception to the server.
      *
-     * @param  \Exception $exception The exception that should be sent
+     * @param  Exception $exception The exception that should be sent
      * @return void
      */
     public function sendException(Exception $exception)
     {
         $this->_connection->send(
-            new ExceptionData($exception, $this->_authentication)
+            new ExceptionData($exception, $this->_authentication, $this->_request)
         );
     }
 
@@ -87,7 +94,7 @@ class Client
      * Handler that can be attached to Zend's EventManager and extracts the exception
      * from an MvcEvent
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent passed by the EventManager
+     * @param  MvcEvent $e The MvcEvent passed by the EventManager
      * @return void
      */
     public function handleMvcEvent(MvcEvent $e)

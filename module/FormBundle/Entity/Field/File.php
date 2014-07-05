@@ -39,11 +39,12 @@ class File extends Field
     private $maxSize;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param bool                        $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
+     * @param Form        $form
+     * @param integer     $order
+     * @param bool        $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
+     * @param int         $maxSize
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $maxSize)
     {
@@ -62,12 +63,12 @@ class File extends Field
     }
 
     /**
-     * @param  integer                        $maxSize The maximum size of the file
-     * @return \FormBundle\Entity\Fields\File
+     * @param  integer $maxSize The maximum size of the file
+     * @return File
      */
     public function setMaxSize($maxSize)
     {
-        if (!is_numeric($maxSize))
+        if (!is_int($maxSize))
             $maxSize = 4;
         $this->maxSize = $maxSize;
 
@@ -75,9 +76,9 @@ class File extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
-     * @return string
+     * @param  Language $language
+     * @param  boolean  $value
+     * @return boolean
      */
     public function getValueString(Language $language, $value)
     {

@@ -32,13 +32,13 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param null|string|int             $name          Optional name for the form
+     * @param EntityManager   $entityManager
+     * @param null|string|int $name          Optional name for the form
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

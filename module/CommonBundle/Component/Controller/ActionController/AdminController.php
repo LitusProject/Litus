@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Form\Auth\Login as LoginForm,
+use CommonBundle\Entity\General\Language,
     CommonBundle\Component\Util\NamedPriorityQueue,
     Zend\Mvc\MvcEvent,
     Zend\Validator\AbstractValidator;
@@ -36,7 +34,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      */
     public function onDispatch(MvcEvent $e)
@@ -49,7 +47,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'display' => date('l, F j Y, H:i', time())
         );
 
-        if ($this->hasAccess('cudi_admin_stock_period', 'new')) {
+        if ($this->hasAccess()->toResourceAction('cudi_admin_stock_period', 'new')) {
             $period = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
@@ -84,7 +82,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
 
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+        AbstractValidator::setDefaultTranslator($this->getTranslator());
     }
 
     /**

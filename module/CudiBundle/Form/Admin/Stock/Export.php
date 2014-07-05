@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use Zend\Form\Element\Submit;
 
 /**
  * Export Stock

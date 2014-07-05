@@ -18,12 +18,9 @@
 
 namespace BrBundle\Form\Admin\Person;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Edit Person

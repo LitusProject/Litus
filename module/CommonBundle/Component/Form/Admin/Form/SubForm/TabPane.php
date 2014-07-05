@@ -30,15 +30,10 @@ class TabPane extends \CommonBundle\Component\Form\Fieldset
         $this->addClass('tab_pane');
     }
 
-    public function populateValues($data)
+    public function setName($name)
     {
-        parent::populateValues($data);
+        $this->setAttribute('id', $name);
 
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->populateValues($data);
-        }
-
-        return $this;
+        return parent::setName($name);
     }
 }

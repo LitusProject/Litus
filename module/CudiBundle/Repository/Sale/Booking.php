@@ -715,7 +715,7 @@ class Booking extends EntityRepository
             throw new Exception("There is no active stock period!");
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('b')
+        $query->select('b')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
                 $query->expr()->andX(

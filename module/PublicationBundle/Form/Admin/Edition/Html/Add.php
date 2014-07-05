@@ -38,25 +38,25 @@ use CommonBundle\Component\OldForm\Admin\Element\File,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \PublicationBundle\Entity\Publication The publication
+     * @var Publication The publication
      */
     private $_publication = null;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
+     * @var AcademicYear The current academic year
      */
     private $_academicYear = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \PublicationBundle\Entity\Publication     $publication   The publication to add an edition to.
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear  The current academic year.
-     * @param null|string|int                           $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Publication     $publication   The publication to add an edition to.
+     * @param AcademicYear    $academicYear  The current academic year.
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $name = null)
     {

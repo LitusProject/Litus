@@ -20,8 +20,7 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.
@@ -32,20 +31,8 @@ use CommonBundle\Entity\General\Language,
 class Checkbox extends Field
 {
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param bool                        $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-    }
-
-    /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
+     * @param  Language $language
+     * @param  boolean  $value
      * @return string
      */
     public function getValueString(Language $language, $value)

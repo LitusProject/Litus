@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

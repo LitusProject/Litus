@@ -196,4 +196,15 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
             ->get('litus.hydratormanager')
             ->get($name);
     }
+
+    /**
+     * We want an easy method to retrieve the Authentication from
+     * the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\Authentication
+     */
+    public function getAuthentication()
+    {
+        return $this->getServiceLocator()->get('authentication');
+    }
 }

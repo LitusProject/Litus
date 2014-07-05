@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 class External extends \CudiBundle\Entity\Article
 {
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function duplicate()
     {

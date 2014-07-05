@@ -33,9 +33,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Hidden,
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $barcodePrefix
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param string          $barcodePrefix
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
     {
@@ -52,8 +52,8 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->setAttribute('id', 'articleSearch')
             ->setAttribute('autocomplete', 'off')
             ->setAttribute('data-provide', 'typeahead')
-            ->setValue($barcodePrefix)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($barcodePrefix);
         $this->add($field);
 
         $field = new Text('number');

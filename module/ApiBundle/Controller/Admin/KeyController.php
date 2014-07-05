@@ -35,11 +35,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->getEntityManager()
                 ->getRepository('ApiBundle\Entity\Key')
                 ->findAllActiveQuery(),
-            $this->getParam('page'),
-            array(),
-            array(
-                'host' => 'ASC'
-            )
+            $this->getParam('page')
         );
 
         return new ViewModel(
@@ -64,12 +60,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()->persist($key);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The key was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The key was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -103,12 +96,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The key was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The key was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -149,15 +139,15 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    /**
+     * @return Key|null
+     */
     private function _getKey()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the key!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the key!'
             );
 
             $this->redirect()->toRoute(
@@ -175,12 +165,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneById($this->getParam('id'));
 
         if (null === $key) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No key with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No key with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

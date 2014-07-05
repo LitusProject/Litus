@@ -19,9 +19,7 @@
 namespace NotificationBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    Markdown_Parser;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.
@@ -41,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \NotificationBundle\Entity\Node\Notification The notification of this translation
+     * @var Notification The notification of this translation
      *
      * @ORM\ManyToOne(targetEntity="NotificationBundle\Entity\Node\Notification", inversedBy="translations")
      * @ORM\JoinColumn(name="notification", referencedColumnName="id")
@@ -49,7 +47,7 @@ class Translation
     private $notification;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -64,10 +62,9 @@ class Translation
     private $content;
 
     /**
-     * @param \NotificationBundle\Entity\Node\Notification $notification
-     * @param \CommonBundle\Entity\General\Language        $language
-     * @param string                                       $title
-     * @param string                                       $content
+     * @param Notification $notification
+     * @param Language     $language
+     * @param string       $content
      */
     public function __construct(Notification $notification, Language $language, $content)
     {
@@ -77,7 +74,15 @@ class Translation
     }
 
     /**
-     * @return \NotificationBundle\Entity\Node\Notification
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Notification
      */
     public function getNotification()
     {
@@ -85,7 +90,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -102,8 +107,7 @@ class Translation
 
     /**
      * @param string $content
-     *
-     * @param \NotificationBundle\Entity\Node\Translation
+     * @param self
      */
     public function setContent($content)
     {

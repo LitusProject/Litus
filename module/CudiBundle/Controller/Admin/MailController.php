@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Form\Admin\Mail\Send as MailForm,
+use CudiBundle\Form\Admin\Mail\Send as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 

@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
-    CudiBundle\Entity\Supplier as Supplier,
+    CudiBundle\Entity\Supplier,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
@@ -45,14 +45,14 @@ class Article
     private $id;
 
     /**
-     * @var \DateTime The time the article was created
+     * @var DateTime The time the article was created
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CudiBundle\Entity\Article The main article of this sale article
+     * @var MainArticle The main article of this sale article
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -95,7 +95,7 @@ class Article
     private $sellable;
 
     /**
-     * @var \CudiBundle\Entity\Supplier The supplier of the article
+     * @var Supplier The supplier of the article
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier", referencedColumnName="id")
@@ -131,41 +131,41 @@ class Article
     private $isHistory;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The discounts of the article
+     * @var ArrayCollection The discounts of the article
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Article\Discount\Discount", mappedBy="article")
      */
     private $discounts;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The barcodes of the article
+     * @var ArrayCollection The barcodes of the article
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Article\Barcode", mappedBy="article", cascade={"persist", "remove"})
      */
     private $barcodes;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The restrictions of the article
+     * @var ArrayCollection The restrictions of the article
      *
      * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Article\Restriction", mappedBy="article", cascade={"persist", "remove"})
      */
     private $restrictions;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CudiBundle\Entity\Article  $mainArticle   The main article of this sale article
-     * @param integer                     $barcode       The barcode of the article
-     * @param integer                     $purchasePrice The purchase price of the articl
-     * @param integer                     $sellPrice     The sell price of the article
-     * @param boolean                     $bookable      Flag whether the article is bookable
-     * @param boolean                     $unbookable    Flag whether the article is unbookable
-     * @param boolean                     $sellable      Flag whether the article is sellable
-     * @param \CudiBundle\Entity\Supplier $supplier      The supplier of the article
-     * @param boolean                     $canExpire     Flag whether the aritcle can expire
+     * @param MainArticle $mainArticle   The main article of this sale article
+     * @param integer     $barcode       The barcode of the article
+     * @param integer     $purchasePrice The purchase price of the articl
+     * @param integer     $sellPrice     The sell price of the article
+     * @param boolean     $bookable      Flag whether the article is bookable
+     * @param boolean     $unbookable    Flag whether the article is unbookable
+     * @param boolean     $sellable      Flag whether the article is sellable
+     * @param Supplier    $supplier      The supplier of the article
+     * @param boolean     $canExpire     Flag whether the aritcle can expire
      */
     public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, $sellable, Supplier $supplier, $canExpire)
     {
@@ -196,7 +196,7 @@ class Article
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -204,9 +204,9 @@ class Article
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setTimestamp(DateTime $timestamp)
     {
@@ -216,7 +216,7 @@ class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Article
+     * @return MainArticle
      */
     public function getMainArticle()
     {
@@ -224,11 +224,11 @@ class Article
     }
 
     /**
-     * @param \CudiBundle\Entity\Article $mainArticle
+     * @param MainArticle $mainArticle
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
-    public function setMainArticle($mainArticle)
+    public function setMainArticle(MainArticle $mainArticle)
     {
         $this->mainArticle = $mainArticle;
 
@@ -249,7 +249,7 @@ class Article
     /**
      * @param integer $barcode
      *
-     * @return \CudiBundle\Entity\Article
+     * @return self
      */
     public function setBarcode($barcode)
     {
@@ -286,11 +286,11 @@ class Article
     /**
      * @param float $purchasePrice
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setPurchasePrice($purchasePrice)
     {
-        $this->purchasePrice = round(str_replace(',', '.', $purchasePrice) * 100);
+        $this->purchasePrice = (int) round(str_replace(',', '.', $purchasePrice) * 100);
 
         return $this;
     }
@@ -306,11 +306,11 @@ class Article
     /**
      * @param float $sellPrice
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setSellPrice($sellPrice)
     {
-        $this->sellPrice = round(str_replace(',', '.', $sellPrice) * 100);
+        $this->sellPrice = (int) round(str_replace(',', '.', $sellPrice) * 100);
 
         return $this;
     }
@@ -326,7 +326,7 @@ class Article
     /**
      * @param boolean $bookable
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setIsBookable($bookable)
     {
@@ -346,7 +346,7 @@ class Article
     /**
      * @param boolean $unbookable
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setIsUnbookable($unbookable)
     {
@@ -366,7 +366,7 @@ class Article
     /**
      * @param boolean $sellable
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setIsSellable($sellable)
     {
@@ -376,7 +376,7 @@ class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Suppplier
+     * @return Supplier
      */
     public function getSupplier()
     {
@@ -384,9 +384,9 @@ class Article
     }
 
     /**
-     * @param \CudiBundle\Entity\Supplier $supplier
+     * @param Supplier $supplier
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setSupplier(Supplier $supplier)
     {
@@ -406,7 +406,7 @@ class Article
     /**
      * @param boolean $canExpire
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setCanExpire($canExpire)
     {
@@ -426,7 +426,7 @@ class Article
     /**
      * @param integer $versionNumber
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setVersionNumber($versionNumber)
     {
@@ -446,7 +446,7 @@ class Article
     /**
      * @param integer $stockValue
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setStockValue($stockValue)
     {
@@ -458,7 +458,7 @@ class Article
     /**
      * @param integer $stockValue
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function addStockValue($stockValue)
     {
@@ -478,7 +478,7 @@ class Article
     /**
      * @param boolean $isHistory
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function setIsHistory($isHistory)
     {
@@ -488,7 +488,7 @@ class Article
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getDiscounts()
     {
@@ -496,9 +496,9 @@ class Article
     }
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article\Barcode $barcode
+     * @param Barcode $barcode
      *
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function addBarcode(Barcode $barcode)
     {
@@ -508,7 +508,7 @@ class Article
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getBarcodes()
     {
@@ -516,7 +516,7 @@ class Article
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getRestrictions()
     {
@@ -524,8 +524,8 @@ class Article
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \Doctrine\ORM\EntityManager      $entityManager
+     * @param Person        $person
+     * @param EntityManager $entityManager
      *
      * @return boolean
      */
@@ -540,7 +540,7 @@ class Article
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return self
      */
     public function duplicate()
     {
@@ -562,9 +562,9 @@ class Article
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Sale\Session
+     * @return Article
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -574,8 +574,8 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -586,8 +586,8 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getNumberSoldToMembers(AcademicYear $academicYear, Organization $organization = null)
@@ -598,9 +598,9 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  string                                    $discount
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  string       $discount
+     * @param  Organization $organization
      * @return integer
      */
     public function getNumberSoldWithDiscount(AcademicYear $academicYear, $discount, Organization $organization = null)
@@ -611,8 +611,8 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getNumberReturned(AcademicYear $academicYear, Organization $organization = null)
@@ -623,7 +623,7 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNumberDelivered(AcademicYear $academicYear)
@@ -634,8 +634,8 @@ class Article
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param  \CommonBundle\Entity\General\Organization $organization
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)

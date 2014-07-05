@@ -33,11 +33,11 @@ class External extends \CudiBundle\Entity\Sale\SaleItem
     private $person;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article  $article
-     * @param integer                          $number
-     * @param integer                          $price
-     * @param string                           $person
-     * @param \Doctrine\ORM\EntityManager|null $entityManager
+     * @param Article            $article
+     * @param integer            $number
+     * @param integer            $price
+     * @param string             $person
+     * @param EntityManager|null $entityManager
      */
     public function __construct(Article $article, $number, $price, $person, EntityManager $entityManager = null)
     {

@@ -21,7 +21,6 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -113,7 +112,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
@@ -142,12 +141,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Something went wrong while logging you in. Please try again later.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Something went wrong while logging you in. Please try again later.'
         );
 
         $this->redirect()->toRoute(
@@ -157,6 +153,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @return string
+     */
     private function _getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
@@ -172,12 +171,15 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         $shibbolethUrl .= '?source=admin';
 
-        if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $server = $this->getRequest()->getServer();
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

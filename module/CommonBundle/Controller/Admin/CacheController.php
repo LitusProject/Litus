@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * CacheController
@@ -54,12 +53,9 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->getCache()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The cache was successfully cleared!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The cache was successfully cleared!'
         );
 
         $this->redirect()->toRoute(

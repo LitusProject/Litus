@@ -49,7 +49,7 @@ class MoneyUnit
      */
     public function __construct($unit)
     {
-        $this->unit = $unit * 100;
+        $this->unit = (int) $unit * 100;
     }
 
     /**
@@ -61,7 +61,7 @@ class MoneyUnit
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getUnit()
     {

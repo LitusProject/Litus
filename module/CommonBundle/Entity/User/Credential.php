@@ -73,7 +73,6 @@ class Credential
      *
      * @param  string                    $algorithm  The algorithm that should be used to create the hash
      * @param  string                    $credential The credential that will be hashed and stored
-     * @param  int                       $integer    The number of hash iterations
      * @throws \InvalidArgumentException
      */
     public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
@@ -86,6 +85,14 @@ class Credential
         $this->iterations = $iterations;
 
         $this->hash = $this->_hash($credential);
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

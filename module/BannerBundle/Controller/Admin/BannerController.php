@@ -18,10 +18,10 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     BannerBundle\Entity\Node\Banner,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,7 +51,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     public function addAction()
     {
         $form = $this->getForm('banner_banner_add');
-
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -75,7 +74,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         $form = $this->getForm('banner_banner_edit', $banner);
-
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -115,129 +113,107 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $form = $this->getForm('banner_banner_add');
+        $isNew = !($banner = $this->_getBanner(false));
+
+        if ($isNew)
+            $form = $this->getForm('banner_banner_add');
+        else
+            $form = $this->getForm('banner_banner_edit', $banner);
 
         $upload = new FileUpload();
-        $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+        $inputFilter = $form->getInputFilter()->get('file');
+        if ($inputFilter instanceof InputInterface)
+            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
-        if (!($banner = $this->_getBanner(false))) {
-            $form = $this->getForm('banner_banner_add');
-            $form->setData($this->getRequest()->getPost());
-
-            if ($form->isValid() && $upload->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $banner = new Banner(
-                    $this->getAuthentication()->getPersonObject()
-                );
-                $form->hydrateObject($banner);
-                $this->receive($upload, $banner);
-
-                $this->getEntityManager()->persist($banner);
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The banner was successfully added!'
-                    )
-                );
-
-                return new ViewModel(
-                    array(
-                        'status' => 'success',
-                        'info' => array(
-                            'info' => (object) array(
-                                'name' => $banner->getName(),
-                            ),
-                        ),
-                    )
-                );
-            } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
-                        continue;
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                if (sizeof($upload->getMessages()) > 0)
-                    $formErrors['file'] = $upload->getMessages();
-
-                return new ViewModel(
-                    array(
-                        'status' => 'error',
-                        'form' => array(
-                            'errors' => $formErrors,
-                        ),
-                    )
-                );
-            }
-        } else {
-            $form = $this->getForm('banner_banner_edit', $banner);
+        if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                if ($upload->isValid()) {
+                if ($isNew && $upload->isValid()) {
+                    $banner = $form->hydrateObject(
+                        new Banner($this->getAuthentication()->getPersonObject())
+                    );
+
                     $this->receive($upload, $banner);
-                }
 
-                $this->getEntityManager()->flush();
+                    $this->getEntityManager()->persist($banner);
+                    $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
+                    $this->flashMessenger()->success(
+                        'Succes',
+                        'The banner was successfully added!'
+                    );
+
+                    return new ViewModel(
+                        array(
+                            'status' => 'success',
+                            'info' => array(
+                                'info' => (object) array(
+                                    'name' => $banner->getName(),
+                                ),
+                            ),
+                        )
+                    );
+                } elseif (!$isNew) {
+                    if ($upload->isValid()) {
+                        $this->receive($upload, $banner);
+                    }
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
                         'Succes',
                         'The banner was successfully edited!'
-                    )
-                );
+                    );
 
-                return new ViewModel(
-                    array(
-                        'status' => 'success',
-                        'info' => array(
-                            'info' => (object) array(
-                                'name' => $banner->getName(),
+                    return new ViewModel(
+                        array(
+                            'status' => 'success',
+                            'info' => array(
+                                'info' => (object) array(
+                                    'name' => $banner->getName(),
+                                ),
                             ),
-                        ),
-                    )
-                );
-            } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
-                        continue;
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
+                        )
+                    );
                 }
-
-                return new ViewModel(
-                    array(
-                        'status' => 'error',
-                        'form' => array(
-                            'errors' => $formErrors,
-                        ),
-                    )
-                );
             }
+
+            $errors = $form->getMessages();
+            $formErrors = array();
+
+            foreach ($form->getElements() as $key => $element) {
+                if (!isset($errors[$element->getName()]))
+                    continue;
+
+                $formErrors[$element->getAttribute('id')] = array();
+
+                foreach ($errors[$element->getName()] as $error) {
+                    $formErrors[$element->getAttribute('id')][] = $error;
+                }
+            }
+
+            if (sizeof($upload->getMessages()) > 0)
+                $formErrors['file'] = $upload->getMessages();
+
+            return new ViewModel(
+                array(
+                    'status' => 'error',
+                    'form' => array(
+                        'errors' => $formErrors,
+                    ),
+                )
+            );
         }
 
-        return new ViewModel();
+        return new ViewModel(
+            array(
+                'status' => 'error',
+                'form' => array(
+                    'errors' => $formErrors,
+                ),
+            )
+        );
     }
 
     public function deleteAction()
@@ -248,7 +224,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
 
         $this->getEntityManager()->remove($banner);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -260,16 +235,16 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return Banner|null
+     */
     private function _getBanner($redirect = true)
     {
         if (null === $this->getParam('id')) {
             if ($redirect) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'No ID was given to identify the banner!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No ID was given to identify the banner!'
                 );
 
                 $this->redirect()->toRoute(
@@ -289,12 +264,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
         if (null === $banner) {
             if ($redirect) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'No banner with the given ID was found!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No banner with the given ID was found!'
                 );
 
                 $this->redirect()->toRoute(

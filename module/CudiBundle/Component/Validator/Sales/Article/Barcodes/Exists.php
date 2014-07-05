@@ -30,7 +30,7 @@ class Exists extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -46,8 +46,8 @@ class Exists extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {

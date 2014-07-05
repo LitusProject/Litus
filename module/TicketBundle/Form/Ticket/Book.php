@@ -24,7 +24,6 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
-    Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 
@@ -36,25 +35,25 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
 class Book extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var Event
      */
     private $_event;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person;
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param \TicketBundle\Entity\Event       $event
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param null|string|int                  $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Event           $event
+     * @param Person          $person
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, Person $person, $name = null)
     {

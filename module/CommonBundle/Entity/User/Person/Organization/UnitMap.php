@@ -44,7 +44,7 @@ class UnitMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The person
+     * @var Academic The person
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="organizationMap")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
@@ -52,7 +52,7 @@ class UnitMap
     private $academic;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The academic year
+     * @var AcademicYear The academic year
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -60,7 +60,7 @@ class UnitMap
     private $academicYear;
 
     /**
-     * @var \CommonBundle\Entity\General\Organization\Unit The unit
+     * @var Unit The unit
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
      * @ORM\JoinColumn(name="unit", referencedColumnName="id")
@@ -75,10 +75,10 @@ class UnitMap
     private $coordinator;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic      $person       The person
-     * @param \CommonBundle\Entity\General\AcademicYear      $academicYear The academic year
-     * @param \CommonBundle\Entity\General\Organization\Unit $unit         The unit
-     * @param boolean                                        $coordinator  Whether or not the academic is the coordinator
+     * @param Academic     $academic     The person
+     * @param AcademicYear $academicYear The academic year
+     * @param Unit         $unit         The unit
+     * @param boolean      $coordinator  Whether or not the academic is the coordinator
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, Unit $unit, $coordinator)
     {
@@ -97,7 +97,7 @@ class UnitMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getAcademic()
     {
@@ -105,7 +105,7 @@ class UnitMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -113,7 +113,7 @@ class UnitMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization
+     * @return Unit
      */
     public function getUnit()
     {

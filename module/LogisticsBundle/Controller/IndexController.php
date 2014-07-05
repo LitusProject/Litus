@@ -18,9 +18,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
-    IntlDateFormatter,
+use DateTime,
     LogisticsBundle\Form\VanReservation\Add as AddForm,
     LogisticsBundle\Form\VanReservation\Edit as EditForm,
     LogisticsBundle\Document\Token,
@@ -72,7 +70,10 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $driver = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
@@ -97,8 +98,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 }
 
                 $reservation = new VanReservation(
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate,
+                    $endDate,
                     $formData['reason'],
                     $formData['load'],
                     $van,
@@ -201,7 +202,10 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $driver = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
@@ -216,8 +220,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         ->findOneById($formData['passenger_id']);
                 }
 
-                $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                $reservation->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setReason($formData['reason'])
                     ->setLoad($formData['load'])
                     ->setAdditionalInfo($formData['additional_info']);
@@ -512,6 +516,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         return $reservations;
     }
 
+    /**
+     * @return VanReservation
+     */
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
@@ -527,5 +534,14 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         }
 
         return $reservation;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

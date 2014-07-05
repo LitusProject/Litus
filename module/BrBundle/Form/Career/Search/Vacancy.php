@@ -19,8 +19,7 @@
 namespace BrBundle\Form\Career\Search;
 
 use BrBundle\Entity\Company,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 

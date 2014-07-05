@@ -30,7 +30,7 @@ use Zend\Form\ElementPrepareAwareInterface,
 class Collection extends \Zend\Form\Element\Collection
 {
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @param  string|null                        $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
@@ -52,7 +52,7 @@ class Collection extends \Zend\Form\Element\Collection
      * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
      * name clashes if the same fieldset is used multiple times
      *
-     * @param  Form       $form
+     * @param  FormInterface $form
      * @return mixed|void
      */
     public function prepareElement(FormInterface $form)
@@ -100,7 +100,7 @@ class Collection extends \Zend\Form\Element\Collection
         } else {
             foreach ($this->byName as $name => $element) {
                 if (!isset($data[$name])) {
-                    if ($this->get($name) instanceOf Fieldset)
+                    if ($this->get($name) instanceof Fieldset)
                         $data[$name] = array();
                     else
                         $data[$name] = '';
@@ -114,8 +114,8 @@ class Collection extends \Zend\Form\Element\Collection
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
+     * @param  array|\Traversable                 $messages
+     * @return Collection
      * @throws Exception\InvalidArgumentException
      */
     public function setMessages($messages)

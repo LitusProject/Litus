@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    QuizBundle\Entity\Point,
+use QuizBundle\Entity\Point,
     Zend\View\Model\ViewModel;
 
 /**
@@ -164,12 +163,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     private function _getQuiz()
     {
         if ($this->getParam('quizid') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the quiz!'
             );
 
             $this->redirect()->toRoute(
@@ -187,12 +183,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('quizid'));
 
         if ($quiz === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No quiz with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No quiz with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -206,12 +199,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this quiz!'
             );
 
             $this->redirect()->toRoute(
@@ -233,12 +223,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     private function _getRound()
     {
         if ($this->getParam('roundid') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the round!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the round!'
             );
 
             $this->redirect()->toRoute(
@@ -256,12 +243,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('roundid'));
 
         if ($round === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No round with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No round with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -275,12 +259,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this quiz!'
             );
 
             $this->redirect()->toRoute(
@@ -302,12 +283,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     private function _getTeam()
     {
         if ($this->getParam('teamid') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the team!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the team!'
             );
 
             $this->redirect()->toRoute(
@@ -325,12 +303,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('teamid'));
 
         if ($team === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No team with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No team with the given id was found!'
             );
 
             $this->redirect()->toRoute(
@@ -344,12 +319,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You do not have the permissions to modify this quiz!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You do not have the permissions to modify this quiz!'
             );
 
             $this->redirect()->toRoute(

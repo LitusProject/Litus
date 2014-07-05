@@ -18,9 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -33,6 +32,12 @@ use CommonBundle\Component\OldForm\Admin\Element\Collection,
  */
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
+
+    /**
+     * @var \CommonBundle\Form\Admin\Address\Add
+     */
+    private $_addressForm;
+
     /**
      * @param null|string|int $name Optional name for the element
      */
@@ -45,9 +50,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->setRequired();
         $this->add($field);
 
-        $field = new AddressForm('', 'address');
-        $field->setLabel('Address');
-        $this->add($field);
+        $this->_addressForm = new AddressForm('', 'address');
+        $this->_addressForm->setLabel('Address');
+        $this->add($this->_addressForm);
 
         $geographical = new Collection('greographical');
         $geographical->setLabel('Geographical');
@@ -73,8 +78,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
     {
         $inputFilter = new InputFilter();
 
-        $inputs = $this->get('address')
-            ->getInputs();
+        $inputs = $this->_addressForm->getInputs();
         foreach($inputs as $input)
             $inputFilter->add($input);
 

@@ -40,7 +40,7 @@ class Mapping
     private $id;
 
     /**
-     * @var \FormBundle\Entity\Node\Form The form of this mapping
+     * @var Form The form of this mapping
      *
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Node\Form")
      * @ORM\JoinColumn(name="form", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Mapping
     private $form;
 
     /**
-     * @var \FormBundle\Entity\Node\Group The group of this mapping
+     * @var Group The group of this mapping
      *
      * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\Group", inversedBy="forms")
      * @ORM\JoinColumn(name="form_group", referencedColumnName="id")
@@ -62,6 +62,11 @@ class Mapping
      */
     private $order;
 
+    /**
+     * @param Form    $form  The form of this mapping
+     * @param Group   $group The group of this mapping
+     * @param integer $order
+     */
     public function __construct(Form $form, Group $group, $order)
     {
         $this->form = $form;
@@ -78,7 +83,7 @@ class Mapping
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form
+     * @return Form
      */
     public function getForm()
     {
@@ -86,8 +91,8 @@ class Mapping
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Form          $form
-     * @return \FormBundle\Entity\Node\Group\Mapping
+     * @param  Form $form
+     * @return self
      */
     public function setForm(Form $form)
     {
@@ -97,7 +102,7 @@ class Mapping
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Group
+     * @return Group
      */
     public function getGroup()
     {
@@ -105,8 +110,8 @@ class Mapping
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Group         $group
-     * @return \FormBundle\Entity\Node\Group\Mapping
+     * @param  Group $group
+     * @return self
      */
     public function setGroup(Group $group)
     {
@@ -124,7 +129,8 @@ class Mapping
     }
 
     /**
-     * @param integer $order
+     * @param  integer $order
+     * @return self
      */
     public function setOrder($order)
     {

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     Zend\View\Model\ViewModel;
 
@@ -48,24 +47,18 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You have been successfully logged in!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You have been successfully logged in!'
                     );
 
                     $this->redirect()->toRoute(
                         'cudi_sale_sale'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'You could not be logged in!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'You could not be logged in!'
                     );
 
                     $this->redirect()->toRoute(
@@ -112,7 +105,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
@@ -167,12 +160,9 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Something went wrong while logging you in. Please try again later.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Something went wrong while logging you in. Please try again later.'
         );
 
         $this->redirect()->toRoute(

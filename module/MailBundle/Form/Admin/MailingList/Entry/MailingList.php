@@ -24,7 +24,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Collection,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    \MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
  * Add MailingList
@@ -34,27 +35,27 @@ use CommonBundle\Component\OldForm\Admin\Element\Collection,
 class MailingList extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The authenticated person
+     * @var Person The authenticated person
      */
     protected $_authenticatedPerson = null;
 
     /**
-     * @var \MailBundle\Entity\MailingList The current list
+     * @var MailingListEntity The current list
      */
     protected $_currentList = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager       The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $authenticatedPerson The authenticated person
-     * @param \MailBundle\Entity\MailingList   $currentList         The current list
-     * @param null|string|int                  $name                Optional name for the element
+     * @param EntityManager     $entityManager       The EntityManager instance
+     * @param Person            $authenticatedPerson The authenticated person
+     * @param MailingListEntity $currentList         The current list
+     * @param null|string|int   $name                Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, Person $authenticatedPerson, \MailBundle\Entity\MailingList $currentList, $name = null)
+    public function __construct(EntityManager $entityManager, Person $authenticatedPerson, MailingListEntity $currentList, $name = null)
     {
         parent::__construct($name);
 

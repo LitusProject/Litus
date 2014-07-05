@@ -18,10 +18,9 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\OldForm\Admin\Element\Password,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\PhoneNumber as PhonenumberValidator,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Component\Validator\Username as UsernameValidator,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -35,13 +34,13 @@ use CommonBundle\Component\OldForm\Admin\Element\Password,
 abstract class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

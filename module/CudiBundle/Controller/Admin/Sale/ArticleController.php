@@ -18,13 +18,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
     CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
@@ -111,8 +111,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new AddForm($this->getEntityManager());
 
-        $precalculatedSellPrice = $article->isInternal() ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = $article->isInternal() ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
+        $precalculatedSellPrice = ($article instanceof InternalArticle) ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = ($article instanceof InternalArticle) ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -144,12 +144,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The sale article was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The sale article was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -180,8 +177,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = new EditForm($this->getEntityManager(), $saleArticle);
 
-        $precalculatedSellPrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = $saleArticle->getMainArticle()->isInternal() ? $saleArticle->getMainArticle()->precalculatePurchasePrice($this->getEntityManager()) : 0;
+        $mainArticle = $saleArticle->getMainArticle();
+
+        $precalculatedSellPrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculateSellPrice($this->getEntityManager()) : 0;
+        $precalculatedPurchasePrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculatePurchasePrice($this->getEntityManager()) : 0;
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -206,15 +205,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
 
-                $article = $saleArticle->getMainArticle();
-                if ($article->isInternal()) {
+                if ($mainArticle instanceof InternalArticle) {
                     $cachePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
-                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
-                        unlink($cachePath . '/' . $article->getFrontPage());
-                        $article->setFrontPage();
-                    }
+                    if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage()))
+                        unlink($cachePath . '/' . $mainArticle->getFrontPage());
+
+                    $mainArticle->setFrontPage();
                 }
 
                 if (isset($formData['bookable']) && $formData['bookable'] && !$history->getPrecursor()->isBookable())
@@ -224,12 +222,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The sale article was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The sale article was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -297,15 +292,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The article is successfully assigned to ' . $counter . ' persons'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The article is successfully assigned to ' . $counter . ' persons'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -437,12 +429,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                      }
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The email was successfully send to ' . sizeof($persons) . ' academics!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The email was successfully send to ' . sizeof($persons) . ' academics!'
                 );
 
                 $this->redirect()->toRoute(
@@ -482,15 +471,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The bookings were successfully cancelled'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The bookings were successfully cancelled'
         );
 
-        $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
 
         return new ViewModel();
     }
@@ -517,15 +503,15 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return SaleArticle
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -543,12 +529,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -567,12 +550,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -590,12 +570,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

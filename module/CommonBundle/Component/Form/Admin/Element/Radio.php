@@ -33,4 +33,11 @@ class Radio extends \Zend\Form\Element\Radio implements \CommonBundle\Component\
     {
         $this->setLabelAttributes(array('class' => 'radio'));
     }
+
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
 }

@@ -59,12 +59,12 @@ class File
     private $description;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param string                      $path          The path to the file
-     * @param string                      $name          The name of the file
-     * @param string                      $description   The description of the file
-     * @param \CudiBundle\Entity\Article  $article       The article of the file
-     * @param boolean                     $printable     Flag whether the file is the printable one or not
+     * @param EntityManager   $entityManager
+     * @param string          $path          The path to the file
+     * @param string          $name          The name of the file
+     * @param string          $description   The description of the file
+     * @param InternalArticle $article       The article of the file
+     * @param boolean         $printable     Flag whether the file is the printable one or not
      */
     public function __construct(EntityManager $entityManager, $path, $name, $description, InternalArticle $article, $printable)
     {
@@ -94,7 +94,7 @@ class File
     /**
      * @param string $path
      *
-     * @return \CudiBundle\Entity\File\File
+     * @return self
      */
     public function setPath($path)
     {
@@ -114,7 +114,7 @@ class File
     /**
      * @param string $name
      *
-     * @return \CudiBundle\Entity\File\File
+     * @return self
      */
     public function setName($name)
     {
@@ -134,7 +134,7 @@ class File
     /**
      * @param string $description
      *
-     * @return \CudiBundle\Entity\File\File
+     * @return self
      */
     public function setDescription($description)
     {

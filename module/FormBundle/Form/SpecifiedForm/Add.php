@@ -47,16 +47,16 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
 class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \FormBundle\Entity\Node\Form
+     * @var Form
      */
     protected $_form;
 
     /**
-     * @param \Doctrine\ORM\EntityManager            $entityManager
-     * @param \CommonBundle\Entity\General\Language  $language
-     * @param \FormBundle\Entity\Node\Form           $form
-     * @param \CommonBundle\Entity\Users\Person|null $person
-     * @param null|string|int                        $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Language        $language
+     * @param Form            $form
+     * @param null|Person     $person
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
     {
@@ -143,7 +143,7 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 
     public function populateFromEntry(Entry $entry)
     {
-        $formData = array();
+        $formData = $this->data == null ? array() : $this->data;
 
         if ($entry->isGuestEntry()) {
             $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
@@ -158,6 +158,9 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
         $this->setData($formData);
     }
 
+    /**
+     * @param boolean $hasDraft
+     */
     public function hasDraft($hasDraft)
     {
         if ($hasDraft) {
@@ -169,11 +172,11 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 
     public function populateFromGuestInfo(GuestInfo $guestInfo)
     {
-        $data = array(
-            'first_name' => $guestInfo->getFirstName(),
-            'last_name' => $guestInfo->getLastName(),
-            'email' => $guestInfo->getEmail(),
-        );
+        $data = $this->data == null ? array() : $this->data;
+
+        $data['first_name'] = $guestInfo->getFirstName();
+        $data['last_name'] = $guestInfo->getLastName();
+        $data['email'] = $guestInfo->getEmail();
 
         $this->setData($data);
     }
@@ -206,8 +209,6 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                         )
                     )
                 );
-            } elseif ($fieldSpecification instanceof DropdownField) {
-            } elseif ($fieldSpecification instanceof CheckboxField) {
             } elseif ($fieldSpecification instanceof FileField) {
                 $inputFilter->add(
                     $factory->createInput(

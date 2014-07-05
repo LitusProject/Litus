@@ -20,8 +20,7 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Group as GroupEntity,
-    SyllabusBundle\Entity\Study as StudyEntity;
+    SyllabusBundle\Entity\Group as GroupEntity;
 
 /**
  * Group

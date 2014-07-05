@@ -19,27 +19,38 @@
 namespace BannerBundle\Hydrator\Node;
 
 use BannerBundle\Entity\Node\Banner as BannerEntity,
-    InvalidArgumentException;
+    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
+    CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    DateTime;
 
+/**
+ * This hydrator hydrates/extracts Banner data.
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ */
 class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
-        'name', 'start_date', 'end_date', 'active', 'url',
-    );
+    /**
+     * @static @var string[] Key attributes to hydrate using the standard method.
+     */
+    private static $std_keys = array('name', 'active', 'url');
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
-            throw new InvalidArgumentException('The Banner hydrator doesn\'t support creating a new banner');
-        }
+        // BannerEntity requires the Person that created it, so
+        // we cannot create an object here.
+        if (null === $object)
+            throw new InvalidObjectException();
 
-        if (array_key_exists('start_date', $data)) {
-            $data['start_date'] = DateTime::createFromFormat('d#m#Y H#i', $data['start_date']) ?: null;
-        }
+        $startDate = self::_loadDate($data['start_date']);
+        $endDate = self::_loadDate($data['end_date']);
 
-        if (array_key_exists('end_date', $data)) {
-            $data['end_date'] = DateTime::createFromFormat('d#m#Y H#i', $data['end_date']) ?: null;
-        }
+        if (null === $startDate || null === $endDate)
+            throw new InvalidDateException();
+
+        $object->setStartDate($startDate);
+        $object->setEndDate($endDate);
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
@@ -52,14 +63,18 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        if (array_key_exists('start_date', $data) && !empty($data['start_date'])) {
-            $data['start_date'] = $data['start_date']->format('d/m/Y H:i');
-        }
-
-        if (array_key_exists('end_date', $data) && !empty($data['end_date'])) {
-            $data['end_date'] = $data['end_date']->format('d/m/Y H:i');
-        }
+        $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
+        $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
         return $data;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

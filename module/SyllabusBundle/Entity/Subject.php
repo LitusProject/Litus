@@ -68,7 +68,7 @@ class Subject
     private $credits;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The enrollments of the subject
+     * @var ArrayCollection The enrollments of the subject
      *
      * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
      */
@@ -105,8 +105,8 @@ class Subject
     }
 
     /**
-     * @param  string                         $code
-     * @return \SyllabusBundle\Entity\Subject
+     * @param  string $code
+     * @return self
      */
     public function setCode($code)
     {
@@ -124,8 +124,8 @@ class Subject
     }
 
     /**
-     * @param  string                         $name
-     * @return \SyllabusBundle\Entity\Subject
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -143,8 +143,8 @@ class Subject
     }
 
     /**
-     * @param  integer                        $semester
-     * @return \SyllabusBundle\Entity\Subject
+     * @param  integer $semester
+     * @return self
      */
     public function setSemester($semester)
     {
@@ -162,8 +162,8 @@ class Subject
     }
 
     /**
-     * @param  integer                        $credits
-     * @return \SyllabusBundle\Entity\Subject
+     * @param  integer $credits
+     * @return self
      */
     public function setCredits($credits)
     {
@@ -173,8 +173,7 @@ class Subject
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     *
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNbEnrollment(AcademicYear $academicYear)
@@ -188,9 +187,8 @@ class Subject
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     *
-     * @return \SyllabusBundle\Entity\StudentEnrollment
+     * @param  AcademicYear           $academicYear
+     * @return StudentEnrollment|null
      */
     public function getEnrollment(AcademicYear $academicYear)
     {

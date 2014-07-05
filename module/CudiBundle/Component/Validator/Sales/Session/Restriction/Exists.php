@@ -31,12 +31,12 @@ class Exists extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Session
+     * @var Session
      */
     private $_session = null;
 
@@ -52,9 +52,9 @@ class Exists extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Session $session
-     * @param mixed                           $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Session       $session
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Session $session, $opts = null)
     {

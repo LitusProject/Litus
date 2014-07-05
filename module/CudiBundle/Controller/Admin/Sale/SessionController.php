@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
+use CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
     CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
@@ -93,12 +92,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The session was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The session was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -141,12 +137,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The comment was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The comment was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -217,12 +210,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The cash register was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The cash register was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -294,12 +284,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The session was successfully closed!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The session was successfully closed!'
                 );
 
                    $this->redirect()->toRoute(
@@ -350,15 +337,15 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return Session
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the session!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the session!'
             );
 
             $this->redirect()->toRoute(
@@ -376,12 +363,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $session) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No session with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No session with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -397,15 +381,15 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         return $session;
     }
 
+    /**
+     * @return CashRegister
+     */
     private function _getCashRegister()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the cash register!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the cash register!'
             );
 
             $this->redirect()->toRoute(
@@ -423,12 +407,9 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $cashRegister) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No cash register with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No cash register with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

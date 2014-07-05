@@ -30,8 +30,8 @@ use CommonBundle\Entity\User\Person,
 class Added extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person      $person
-     * @param \CudiBundle\Entity\Article\SubjectMap $subjectMap
+     * @param Person     $person
+     * @param SubjectMap $subjectMap
      */
     public function __construct(Person $person, SubjectMap $subjectMap)
     {
@@ -39,7 +39,8 @@ class Added extends \CudiBundle\Entity\Log
     }
 
     /**
-     * @return \CudiBundle\Entity\Article\SubjectMap
+     * @param  EntityManager $entityManager
+     * @return SubjectMap
      */
     public function getSubjectMap(EntityManager $entityManager)
     {

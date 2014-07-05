@@ -18,11 +18,9 @@
 
 namespace CudiBundle\Form\Sale\Sale;
 
-use CommonBundle\Component\Validator\Username as UsernameValidator,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CudiBundle\Component\Validator\Sales\Article\Barcodes\Exists as BarcodeValidator,
+use CommonBundle\Component\Form\Bootstrap\Element\Reset,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
@@ -36,13 +34,13 @@ use CommonBundle\Component\Validator\Username as UsernameValidator,
 class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

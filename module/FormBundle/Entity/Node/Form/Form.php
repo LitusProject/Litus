@@ -41,8 +41,8 @@ class Form extends BaseForm
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
      * @return string
      */
     protected function _getSummary(Entry $entry, Language $language)
@@ -54,7 +54,7 @@ class Form extends BaseForm
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {
             $result .= $fieldEntry->getField()->getLabel($language) . ': ';
-            $result .= $fieldEntry->getField() instanceOf FileField ? $fieldEntry->getReadableValue() : $fieldEntry->getValueString($language);
+            $result .= $fieldEntry->getField() instanceof FileField ? $fieldEntry->getReadableValue() : $fieldEntry->getValueString($language);
             $result .= PHP_EOL;
         }
 
