@@ -65,10 +65,12 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
+        $this->_initAuthenticationService();
         $this->_initControllerPlugins();
         $this->_initFallbackLanguage();
         $this->_initLocalization();
         $this->_initUriScheme();
+        $this->_initViewHelpers();
 
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
@@ -166,6 +168,38 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * Initializes our custom view helpers.
+     *
+     * @return void
+     */
+    private function _initViewHelpers()
+    {
+        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+
+        $renderer->plugin('url')
+            ->setLanguage($this->getLanguage())
+            ->setRouter($this->getServiceLocator()->get('router'));
+
+        // HasAccess View Helper
+        $renderer->plugin('hasAccess')->setDriver(
+            new HasAccessDriver(
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
+            )
+        );
+
+        // GetParam View Helper
+        $renderer->plugin('getParam')->setRouteMatch(
+            $this->getEvent()->getRouteMatch()
+        );
+
+        // StaticMap View Helper
+        $renderer->plugin('staticMap')
+            ->setEntityManager($this->getEntityManager());
+    }
+
+    /**
      * Modifies the reponse headers for a JSON reponse.
      *
      * @param  array $additionalHeaders Any additional headers that should be set
@@ -191,6 +225,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
     }
 
+    private function _initAuthenticationService()
+    {
+        $this->getServiceLocator()->get('authentication_service')
+            ->setRequest($this->getRequest())
+            ->setResponse($this->getResponse());
+    }
+
     /**
      * Initializes our custom controller plugins.
      *
@@ -199,19 +240,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     private function _initControllerPlugins()
     {
         // Url Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'url', 'CommonBundle\Component\Controller\Plugin\Url'
-        );
         $this->url()->setLanguage($this->getLanguage());
 
         // HasAccess Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
-        );
-
         $this->hasAccess()->setDriver(
             new HasAccessDriver(
-                $this->_getAcl(), false
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
     }
