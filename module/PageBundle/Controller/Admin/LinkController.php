@@ -18,8 +18,7 @@
 
 namespace PageBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    PageBundle\Entity\Link,
+use PageBundle\Entity\Link,
     PageBundle\Entity\Link\Translation,
     PageBundle\Form\Admin\Link\Add as AddForm,
     PageBundle\Form\Admin\Link\Edit as EditForm,
@@ -93,12 +92,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The link was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The link was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -173,12 +169,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The link was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The link was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -222,12 +215,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     private function _getLink()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the link!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the link!'
             );
 
             $this->redirect()->toRoute(
@@ -245,12 +235,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $link) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No link with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No link with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

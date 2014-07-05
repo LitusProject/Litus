@@ -39,7 +39,7 @@ class Translation
     private $id;
 
     /**
-     * @var \CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour The opening hour of this translation
+     * @var OpeningHour The opening hour of this translation
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour", inversedBy="translations")
      * @ORM\JoinColumn(name="opening_hour", referencedColumnName="id")
@@ -47,7 +47,7 @@ class Translation
     private $openingHour;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this translation
+     * @var Language The language of this translation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -62,9 +62,9 @@ class Translation
     private $comment;
 
     /**
-     * @param \CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour $openingHour
-     * @param \CommonBundle\Entity\General\Language                       $language
-     * @param string                                                      $comment
+     * @param OpeningHour $openingHour
+     * @param Language    $language
+     * @param string      $comment
      */
     public function __construct(OpeningHour $openingHour, Language $language, $comment)
     {
@@ -74,7 +74,15 @@ class Translation
     }
 
     /**
-     * @return \CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return OpeningHour
      */
     public function getOpeningHour()
     {
@@ -82,7 +90,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -100,7 +108,7 @@ class Translation
     /**
      * @param string $comment
      *
-     * @return \CudiBundle\Repository\Sale\Session\OpeningHour\Translation
+     * @return self
      */
     public function setComment($comment)
     {

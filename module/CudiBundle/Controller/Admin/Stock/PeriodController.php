@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Stock\Period,
+use CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Period\Value\Start as StartValue,
     Zend\View\Model\ViewModel;
 
@@ -96,12 +95,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The stock period was succesfully created.'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The stock period was succesfully created.'
         );
 
         $this->redirect()->toRoute(
@@ -190,12 +186,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
     private function _getPeriod()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the period!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the period!'
             );
 
             $this->redirect()->toRoute(
@@ -213,12 +206,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $period) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No period with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No period with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

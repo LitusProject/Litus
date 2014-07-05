@@ -18,8 +18,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
     DateTime,
+    FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
@@ -45,12 +46,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -79,12 +77,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -173,14 +168,19 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
                         break;
                     case 'timeslot':
+                        $startDate = self::_loadDate($formData['timeslot_start_date']);
+                        $endDate = self::_loadDate($formData['timeslot_end_date']);
+                        if (!$startDate && !$endDate)
+                            throw new RuntimeException('Invalid date given');
+
                         $field = new TimeSlotField(
                             $formSpecification,
                             0,
                             $formData['required'],
                             $visibilityDecissionField,
                             isset($visibilityDecissionField) ? $formData['visible_value'] : null,
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']),
-                            DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date'])
+                            $startDate,
+                            $endDate
                         );
 
                         foreach ($languages as $language) {
@@ -218,12 +218,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The field was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The field was successfully created!'
                 );
 
                 if (isset($formData['submit_repeat'])) {
@@ -263,12 +260,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -328,8 +322,13 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                 } elseif ($field instanceof FileField) {
                     $field->setMaxSize($formData['max_size'] === '' ? 4 : $formData['max_size']);
                 } elseif ($field instanceof TimeSlotField) {
-                    $field->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['timeslot_end_date']));
+                    $startDate = self::_loadDate($formData['timeslot_start_date']);
+                    $endDate = self::_loadDate($formData['timeslot_end_date']);
+
+                    if ($startDate && $endDate) {
+                        $field->setStartDate($startDate)
+                            ->setEndDate($endDate);
+                    }
 
                     foreach ($languages as $language) {
                         $translation = $field->getTimeSlotTranslation($language, false);
@@ -376,12 +375,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The field was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The field was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -413,12 +409,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -487,12 +480,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -510,12 +500,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -534,12 +521,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getField()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the field!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the field!'
             );
 
             $this->redirect()->toRoute(
@@ -557,12 +541,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $field) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No field with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No field with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -576,5 +557,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $field;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

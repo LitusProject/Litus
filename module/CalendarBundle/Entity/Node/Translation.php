@@ -40,7 +40,7 @@ class Translation
     private $id;
 
     /**
-     * @var \CalendarBundle\Entity\Node\Event The event of this translation
+     * @var Event The event of this translation
      *
      * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event", inversedBy="translations")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Translation
     private $event;
 
     /**
-     * @var \CommonBundle\Entity\General\Language The language of this tanslation
+     * @var Language The language of this tanslation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
@@ -77,11 +77,11 @@ class Translation
     private $content;
 
     /**
-     * @param \CalendarBundle\Entity\Node\Event     $event
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param string                                $location
-     * @param string                                $title
-     * @param string                                $content
+     * @param Event    $event
+     * @param Language $language
+     * @param string   $location
+     * @param string   $title
+     * @param string   $content
      */
     public function __construct(Event $event, Language $language, $location, $title, $content)
     {
@@ -93,7 +93,15 @@ class Translation
     }
 
     /**
-     * @return \CalendarBundle\Entity\Node\Event
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Event
      */
     public function getEvent()
     {
@@ -101,7 +109,7 @@ class Translation
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Language
+     * @return Language
      */
     public function getLanguage()
     {
@@ -119,7 +127,7 @@ class Translation
     /**
      * @param string $location
      *
-     * @return \CalendarBundle\Entity\Node\Translation
+     * @return self
      */
     public function setLocation($location)
     {
@@ -139,7 +147,7 @@ class Translation
     /**
      * @param string $title
      *
-     * @return \CalendarBundle\Entity\Node\Translation
+     * @return self
      */
     public function setTitle($title)
     {
@@ -159,7 +167,7 @@ class Translation
     /**
      * @param string $content
      *
-     * @return \CalendarBundle\Entity\Node\Translation
+     * @return self
      */
     public function setContent($content)
     {

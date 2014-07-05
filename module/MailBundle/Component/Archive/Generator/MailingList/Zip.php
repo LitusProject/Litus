@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Zip
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -42,8 +42,8 @@ class Zip
     private $_lists;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The entityManager
-     * @param arrays                      $lists         The array containing the mailinglists
+     * @param EntityManager $entityManager The entityManager
+     * @param arrays        $lists         The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
@@ -54,7 +54,7 @@ class Zip
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {

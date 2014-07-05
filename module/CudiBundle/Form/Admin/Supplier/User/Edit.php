@@ -31,9 +31,9 @@ use CommonBundle\Entity\User\Person,
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person        The person we're going to modify
-     * @param null|string|int                  $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Person          $person        The person we're going to modify
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Person $person, $name = null)
     {

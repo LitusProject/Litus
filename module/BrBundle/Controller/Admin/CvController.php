@@ -61,8 +61,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
     public function exportAction()
     {
-        $academicYear = $this->getAcademicYear();
-
         $file = new TmpFile();
         $year = $this->getAcademicYear();
 
@@ -96,7 +94,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
             ->findAllByAcademicYear($this->getAcademicYear());
 
         $file = new CsvFile();
-        $language = $this->getLanguage();
         $heading = array('First Name', 'Last Name', 'Email', 'Address', 'Phone', 'Study');
 
         $results = array();

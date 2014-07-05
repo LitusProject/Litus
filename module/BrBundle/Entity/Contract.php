@@ -79,7 +79,7 @@ class Contract
     private $company;
 
     /**
-     * @var \BrBundle\Entity\Br\Contracts\Composition The sections this contract contains
+     * @var ArrayCollection The sections this contract contains
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"all"})
      * @ORM\OrderBy({"position" = "ASC"})
@@ -144,7 +144,7 @@ class Contract
 
     /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
-     * @param \BrBundle\Entity\Contract        $company  The company for which this contract is meant
+     * @param Company                          $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract
      * @param string                           $title    The title of the contract
      */
@@ -235,7 +235,7 @@ class Contract
     }
 
     /**
-     * @return \BrBundle\Entity\Br\Contract
+     * @return Contract
      */
     public function setDate()
     {
@@ -255,7 +255,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param  \CommonBundle\Entity\User\Person $author
-     * @return \BrBundle\Entity\Br\Contract
+     * @return Contract
      */
     public function setAuthor(Collaborator $author)
     {
@@ -268,7 +268,7 @@ class Contract
     }
 
     /**
-     * @return BrBundle\Entity\Company
+     * @return Company
      */
     public function getCompany()
     {
@@ -277,8 +277,8 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  \BrBundle\Entity\Company     $company
-     * @return \BrBundle\Entity\Br\Contract
+     * @param  \BrBundle\Entity\Company  $company
+     * @return Contract
      */
     public function setCompany(Company $company)
     {
@@ -290,10 +290,6 @@ class Contract
         return $this;
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     * @param  int                          $discount The discount, $discount >= 0.
-     * @return \BrBundle\Entity\Br\Contract
      */
     public function setDiscount($discount)
     {
@@ -323,8 +319,8 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  string                       $title The title of the contract
-     * @return \BrBundle\Entity\Br\Contract
+     * @param  string                    $title The title of the contract
+     * @return Contract
      */
     public function setTitle($title)
     {
@@ -345,8 +341,8 @@ class Contract
     }
 
     /**
-     * @param  bool                         $dirty
-     * @return \BrBundle\Entity\Br\Contract
+     * @param  bool     $dirty
+     * @return Contract
      */
     public function setDirty($dirty = true)
     {
@@ -383,8 +379,8 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  int                          $invoiceNb
-     * @return \BrBundle\Entity\Br\Contract
+     * @param  int                       $invoiceNb
+     * @return Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
@@ -409,8 +405,8 @@ class Contract
     }
 
     /**
-     * @param  int                          $contractNb
-     * @return \BrBundle\Entity\Br\Contract
+     * @param  int      $contractNb
+     * @return Contract
      */
     public function setContractNb($contractNb)
     {

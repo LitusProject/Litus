@@ -31,7 +31,7 @@ use CommonBundle\Component\Authentication\Result\Doctrine as Result,
 abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -66,16 +66,16 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     private $_authenticationResult = array();
 
     /**
-     * @var \Litus\Entity\Users\Person The object returned by our DQL query
+     * @var \CommonBundle\Entity\User\Person The object returned by our DQL query
      */
     private $_personObject = null;
 
     /**
-     * @param  \Doctrine\ORM\EntityManager                                                       $entityManager  The EntityManager instance
-     * @param  string                                                                            $entityName     The name of the class in the model that has the authentication information
-     * @param  string                                                                            $identityColumn The name of the column that holds the identity
-     * @param  bool                                                                              $caseSensitive  Whether or not the username check is case-sensitive
-     * @throws \CommonBundle\Component\Authentication\Adapter\Exception\InvalidArgumentException The entity name cannot have a leading backslash
+     * @param  EntityManager                      $entityManager  The EntityManager instance
+     * @param  string                             $entityName     The name of the class in the model that has the authentication information
+     * @param  string                             $identityColumn The name of the column that holds the identity
+     * @param  bool                               $caseSensitive  Whether or not the username check is case-sensitive
+     * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
@@ -105,7 +105,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     protected function getEntityManager()
     {
@@ -137,8 +137,8 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     }
 
     /**
-     * @param  string                                                  $identity
-     * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
+     * @param  string $identity
+     * @return self
      */
     public function setIdentity($identity)
     {
@@ -156,8 +156,8 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     }
 
     /**
-     * @param  string                                                  $credential
-     * @return \CommonBundle\Component\Authentication\Adapter\Doctrine
+     * @param  string $credential
+     * @return self
      */
     public function setCredential($credential)
     {
@@ -186,7 +186,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     protected function getPersonObject()
     {
@@ -196,7 +196,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Authenticate the user.
      *
-     * @return \CommonBundle\Component\Authentication\Result
+     * @return Result
      */
     public function authenticate()
     {
@@ -210,9 +210,9 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Execute the DQL query.
      *
-     * @param  \Doctrine\ORM\QueryBuilder                                                    $query The DQL query that should be executed
+     * @param  QueryBuilder                   $query The DQL query that should be executed
      * @return void
-     * @throws \CommonBundle\Component\Authentication\Adapter\Exception\QueryFailedException The adapter failed to execute the query
+     * @throws Exception\QueryFailedException The adapter failed to execute the query
      */
     protected function executeQuery(QueryBuilder $query)
     {
@@ -230,15 +230,15 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Create the Doctrine query.
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     abstract protected function createQuery();
 
     /**
      * Validate the query result: check the number of results.
      *
-     * @param  array                             $resultSet The result set of the DQL query
-     * @return \Litus\Authentication\Result|void
+     * @param  array       $resultSet The result set of the DQL query
+     * @return Result|void
      */
     protected function validateResultSet(array $resultSet)
     {
@@ -274,7 +274,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Create the authentication result.
      *
-     * @return \CommonBundle\Component\Authentication\Result
+     * @return Result
      */
     protected function createResult()
     {

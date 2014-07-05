@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Authentication\Authentication,
+use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
@@ -49,20 +48,14 @@ class AuthController extends \FormBundle\Component\Controller\FormController
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You have been successfully logged in!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You have been successfully logged in!'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given username and password did not match. Please try again.'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given username and password did not match. Please try again.'
                     );
                 }
             }
@@ -106,7 +99,7 @@ class AuthController extends \FormBundle\Component\Controller\FormController
                     'CommonBundle\Entity\User\Person\Academic',
                     'universityIdentification'
                 ),
-                $this->getServiceLocator()->get('authentication_doctrineservice')
+                $this->getAuthenticationService()
             );
 
             $code = $this->getEntityManager()
@@ -135,12 +128,9 @@ class AuthController extends \FormBundle\Component\Controller\FormController
             }
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'Something went wrong while logging you in. Please try again later.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'Something went wrong while logging you in. Please try again later.'
         );
 
         $this->redirect()->toRoute(

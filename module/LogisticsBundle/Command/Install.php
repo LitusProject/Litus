@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Command;
 
-use Exception,
-    LogisticsBundle\Entity\Reservation\VanReservation,
+use LogisticsBundle\Entity\Reservation\VanReservation,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Entity\Reservation\ReservableResource;
 

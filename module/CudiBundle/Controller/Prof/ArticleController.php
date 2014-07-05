@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
@@ -131,12 +130,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -241,12 +237,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -329,7 +322,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     }
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal && $duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $formData['binding']) {
                             $duplicate->setBinding($this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')
@@ -370,7 +363,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         ->setIsDownloadable($formData['downloadable'])
                         ->setType($formData['type']);
 
-                    if ($formData['internal']) {
+                    if ($article instanceof Internal) {
                         $article->setBinding(
                                 $this->getEntityManager()
                                     ->getRepository('CudiBundle\Entity\Article\Option\Binding')
@@ -388,12 +381,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The article was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The article was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -455,17 +445,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
+    /**
+     * @return Article|null
+     */
     private function _getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -484,12 +474,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -506,18 +493,18 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
+    /**
+     * @return \SyllabusBundle\Entity\Subject|null
+     */
     private function _getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear()))
             return;
 
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -540,12 +527,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             );
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

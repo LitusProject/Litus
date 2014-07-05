@@ -26,9 +26,9 @@ use BrBundle\Entity\Company,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     Imagick,
-    Zend\Http\Headers,
-    Zend\File\Transfer\Transfer as FileTransfer,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
+    Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -271,39 +271,38 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if (!(in_array($_FILES['file']['type'], array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')) && $_POST['type'] == 'image') &&
-                    $_POST['type'] !== 'file') {
-                return new ViewModel();
-            }
-
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/';
-
             $upload = new FileUpload();
 
-            $fileName = '';
-            do {
-                $fileName = sha1(uniqid());
-            } while (file_exists($filePath . $fileName));
+            if ('image' == $formData['type'])
+                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            if ($upload->isValid()) {
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/';
 
-            $url = $this->url()->fromRoute(
-                'br_career_file',
-                array(
-                    'name' => $fileName,
-                )
-            );
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
 
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'name' => $url,
+                $upload->addFilter('Rename', $filePath . $fileName);
+                $upload->receive();
+
+                $url = $this->url()->fromRoute(
+                    'br_career_file',
+                    array(
+                        'name' => $fileName,
                     )
-                )
-            );
+                );
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'name' => $url,
+                        )
+                    )
+                );
+            }
         }
 
         return new ViewModel();
@@ -324,22 +323,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $upload = new FileTransfer();
-            $upload->setValidators($form->getInputFilter()->get('logo')->getValidatorChain()->getValidators());
+            $upload = new FileUpload();
+            $inputFilter = $form->getInputFilter()->get('logo');
+            if ($inputFilter instanceof InputInterface)
+                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
             if ($form->isValid() && $upload->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $upload->receive();
 
-                $image = new Imagick($upload->getFileName());
-                unlink($upload->getFileName());
+                $image = new Imagick($upload->getFileName('logo'));
+                unlink($upload->getFileName('logo'));
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
                     $fileName = '/' . $company->getLogo();
                 } else {
-                    $fileName = '';
                     do {
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
@@ -447,6 +445,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         }
     }
 
+    /**
+     * @return Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\QueueItem,
+use CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
@@ -128,12 +127,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The sale was successfully returned!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The sale was successfully returned!'
                 );
 
                 $this->redirect()->toRoute(

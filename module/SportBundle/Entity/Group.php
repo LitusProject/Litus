@@ -19,9 +19,9 @@
 namespace SportBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This entity represents a group of friends.
@@ -41,7 +41,7 @@ class Group
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the enrollment
+     * @var AcademicYear The year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -56,7 +56,7 @@ class Group
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The members of this group
+     * @var ArrayCollection The members of this group
      *
      * @ORM\OneToMany(targetEntity="SportBundle\Entity\Runner", mappedBy="group")
      * @ORM\OrderBy({"lastName" = "ASC"})
@@ -64,21 +64,21 @@ class Group
     private $members;
 
     /**
-     * @var array The happy hours of this group
+     * @var string The happy hours of this group
      *
      * @ORM\Column(name="happy_hours", type="string")
      */
     private $happyHours;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param string                                    $name
-     * @param array                                     $happyHours
+     * @param AcademicYear $academicYear
+     * @param string       $name
+     * @param array        $happyHours
      */
     public function __construct(AcademicYear $academicYear, $name, array $happyHours)
     {
@@ -86,6 +86,7 @@ class Group
 
         $this->name = $name;
         $this->happyHours = serialize($happyHours);
+        $this->members = new ArrayCollection();
     }
 
     /**
@@ -105,8 +106,8 @@ class Group
     }
 
     /**
-     * @param  string                    $name
-     * @return \SportBundle\Entity\Group
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -132,8 +133,8 @@ class Group
     }
 
     /**
-     * @param  array                     $happyHours
-     * @return \SportBundle\Entity\Group
+     * @param  array $happyHours
+     * @return self
      */
     public function setHappyHours(array $happyHours)
     {
@@ -143,8 +144,8 @@ class Group
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \SportBundle\Entity\Group
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -156,7 +157,7 @@ class Group
     /**
      * Returns the current point total of the group.
      *
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear The academic year
+     * @param  AcademicYear $academicYear The academic year
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)

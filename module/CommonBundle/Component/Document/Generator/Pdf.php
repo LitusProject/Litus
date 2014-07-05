@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    RuntimeException;
 
 /**
  * This class provides a container to create documents
@@ -31,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 abstract class Pdf
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
 
@@ -41,7 +42,7 @@ abstract class Pdf
     protected $_xslPath;
 
     /**
-     * @var \CommonBundle\Component\Util\File\TmpFile A tempory file which holds the generated XML structure
+     * @var TmpFile A tempory file which holds the generated XML structure
      */
     protected $_xmlFile;
 
@@ -51,9 +52,9 @@ abstract class Pdf
     protected $_pdfPath;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param string                      $xslPath       The path to the document's XSL file
-     * @param string                      $pdfPath       The path all PDF's should be exported to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $xslPath       The path to the document's XSL file
+     * @param string        $pdfPath       The path all PDF's should be exported to
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
@@ -109,7 +110,7 @@ abstract class Pdf
     /**
      * Generate the document's XML structure.
      *
-     * @param  \CommonBundle\Component\Util\TmpFile $xmlFile A tempory file which holds the generated XML structure
+     * @param  TmpFile $xmlFile A tempory file which holds the generated XML structure
      * @return void
      */
     abstract protected function generateXml(TmpFile $xmlFile);
@@ -118,7 +119,7 @@ abstract class Pdf
      * Generate the PDF document using the specified XSL and XML files, using FOP.
      *
      * @return void
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function generatePdf()
     {
@@ -128,7 +129,7 @@ abstract class Pdf
 
         if (!file_exists($pdfDir)) {
             if (!mkdir($pdfDir, 0770))
-                throw new \RuntimeException('Failed to create the PDF directory');
+                throw new RuntimeException('Failed to create the PDF directory');
         }
 
         $resultValue = 0;
@@ -137,18 +138,17 @@ abstract class Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('fop_command');
 
-        $command = escapeshellcmd($fopCommand . ' -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath);
-
-        $result = exec(
-            $command, $output, $resultValue
+        system(
+            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
 
         if ($resultValue != 0)
-            throw new \RuntimeException('The FOP command failed with return value ' . $resultValue . '. Returnvalue 127 can indicate that the command can not be found. Output: ' . implode('\n', $output));
+            throw new RuntimeException('The FOP command failed with return value ' . $resultValue);
+
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {

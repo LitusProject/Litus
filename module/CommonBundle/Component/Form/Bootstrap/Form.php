@@ -75,8 +75,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
+     * @param  array|\Traversable                 $messages
+     * @return Form
      * @throws Exception\InvalidArgumentException
      */
     public function setMessages($messages)
@@ -94,8 +94,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable                  $data
-     * @return void
+     * @param  array|\Traversable                 $data
+     * @return Form
      * @throws Exception\InvalidArgumentException
      */
     public function populateValues($data)

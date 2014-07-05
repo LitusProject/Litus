@@ -20,8 +20,6 @@ namespace CudiBundle\Form\Admin\Article;
 
 use CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
 /**
@@ -32,14 +30,14 @@ use CudiBundle\Entity\Article,
 class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
     /**
-     * @var \CudiBundle\Entity\Article
+     * @var Article
      */
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Article  $article
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Article         $article
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {

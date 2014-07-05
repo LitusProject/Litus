@@ -21,7 +21,6 @@ namespace BrBundle\Form\Admin\Product;
 use BrBundle\Entity\Product,
     BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 

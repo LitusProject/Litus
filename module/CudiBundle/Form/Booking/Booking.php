@@ -31,14 +31,13 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     /**
      * The maximum number allowed to enter in the textbook booking form.
      */
     const MAX_BOOKING_NUMBER = 5;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
@@ -48,8 +47,8 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
     private $_inputs = array();
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

@@ -34,7 +34,8 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\Form\Fieldset;
 
 /**
  * Add Cv
@@ -44,14 +45,14 @@ use BrBundle\Entity\Cv\Entry as CvEntry,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * The entity manager.
+     * @var EntityManager
      */
-    private $_entityManager;
+    protected $_entityManager;
 
     /**
-     * The academic this form is for.
+     * @var Academic
      */
-    private $_academic;
+    protected $_academic;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -364,11 +365,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $count > 0 && $count <= 5;
     }
 
-    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, $parent)
+    /**
+     * @param Add $parent
+     */
+    private function _addCountFilters(InputFilter $inputFilter, InputFactory $factory, Fieldset $parent)
     {
         $iterator = $parent->getIterator();
         foreach ($iterator as $element) {
-            if ($element instanceof \Zend\Form\Fieldset) {
+            if ($element instanceof Fieldset) {
                 $this->_addCountFilters($inputFilter, $factory, $element);
             } else {
                 if (FALSE !== strpos($element->getAttribute('class'), 'count')) {

@@ -22,7 +22,6 @@ use LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
     DateTime,
     LogisticsBundle\Entity\Driver,
     LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\View\Model\ViewModel;
@@ -95,7 +94,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -113,8 +115,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
 
                 $reservation = new VanReservation(
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $startDate,
+                    $endDate,
                     $formData['reason'],
                     $formData['load'],
                     $van,
@@ -128,12 +130,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The reservation was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The reservation was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -167,7 +166,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getFormData($formData);
 
                 $repository = $this->getEntityManager()
@@ -180,8 +182,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
                     ->getRepository('LogisticsBundle\Entity\Driver')
                     ->findOneById($formData['driver']);
 
-                $reservation->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                    ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                $reservation->setStartDate($startDate)
+                    ->setEndDate($endDate)
                     ->setReason($formData['reason'])
                     ->setLoad($formData['load'])
                     ->setAdditionalInfo($formData['additional_info'])
@@ -190,12 +192,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The reservation was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The reservation was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -278,15 +277,15 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         );
     }
 
+    /**
+     * @return VanReservation
+     */
     private function _getReservation()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the reservation!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the reservation!'
             );
 
             $this->redirect()->toRoute(
@@ -304,12 +303,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             ->findOneById($this->getParam('id'));
 
         if (null === $reservation) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -323,5 +319,14 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         return $reservation;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

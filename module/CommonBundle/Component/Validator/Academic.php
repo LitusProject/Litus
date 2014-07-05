@@ -30,17 +30,17 @@ class Academic extends \Zend\Validator\AbstractValidator
     const NO_SUCH_USER = 'noUser';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @var Boolean Indicates whether the user should be searched by id or by name.
+     * @var boolean Indicates whether the user should be searched by id or by name.
      */
     protected $_byId = false;
 
     /**
-     * @var Boolean Indicates whether an empty id or name should be accepted.
+     * @var boolean Indicates whether an empty id or name should be accepted.
      */
     protected $_isRequired = false;
 
@@ -52,11 +52,11 @@ class Academic extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options. The following additional options are available:
-     *                                                   'byId' can be set to indicate whether a user id or user name is validated.
-     *                                                   By default this is false, indicating search by user name.
-     *                                                   'isRequired' is false by default. True indicates that empty values are not accepted.
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param mixed         $opts          The validator's options. The following additional options are available:
+     *                                     'byId' can be set to indicate whether a user id or user name is validated.
+     *                                     By default this is false, indicating search by user name.
+     *                                     'isRequired' is false by default. True indicates that empty values are not accepted.
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
@@ -92,6 +92,10 @@ class Academic extends \Zend\Validator\AbstractValidator
         return true;
     }
 
+    /**
+     * @param  string                           $value
+     * @return \CommonBundle\Entity\User\Person
+     */
     protected function getPerson($value)
     {
         $repository = $this->_entityManager

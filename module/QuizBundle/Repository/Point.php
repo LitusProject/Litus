@@ -31,7 +31,7 @@ class Point extends EntityRepository
 {
     /**
      * Gets all points belonging to a quiz
-     * @param QuizBundle\Entity\Quiz $quiz The quiz the points must belong to
+     * @param QuizEntity $quiz The quiz the points must belong to
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {

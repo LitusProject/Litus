@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Entity\Node\Form,
@@ -78,10 +77,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $entries = $this->getEntityManager()
@@ -100,12 +99,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -127,7 +123,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'specification' => $formSpecification,
                 )
             );
-        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && null === $draftVersion) {
+        } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && !isset($draftVersion)) {
             return new ViewModel(
                 array(
                     'message'       => 'You can\'t fill this form more than once.',
@@ -178,7 +174,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -191,20 +187,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if (!isset($formData['save_as_draft'])) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been recorded.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been recorded.'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been saved.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been saved.'
                     );
                 }
 
@@ -238,16 +228,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $group = $this->_getGroup($entry->getForm());
         $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -259,25 +246,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
-            }
-        }
-
-        $person = $this->getAuthentication()->getPersonObject();
-        $guestInfo = null;
-
-        if (null !== $person) {
-            $draftVersion = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
-            $guestInfo = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
-
-            if ($guestInfo) {
-                $draftVersion = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Node\Entry')
-                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
             }
         }
 
@@ -340,12 +308,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -374,10 +339,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $formEntry = $this->getEntityManager()
@@ -396,14 +361,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'Your entry has been recorded.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'Your entry has been recorded.'
                 );
 
                 $this->_redirectFormComplete($group, $progressBarInfo, $formSpecification);
@@ -443,8 +405,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $notValid = false;
-
         $now = new DateTime();
         if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
             return new ViewModel(
@@ -466,9 +426,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $group = $this->_getGroup($formSpecification);
-        $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $formSpecification);
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
@@ -480,19 +439,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
         $formEntry = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
-        } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $formEntry = $this->getEntityManager()
@@ -511,15 +466,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 return new ViewModel(
                     array(
                         'result' => (object) array('status' => 'success'),
                     )
                 );
-
-                return new ViewModel();
             } else {
                 $errors = $form->getMessages();
                 $formErrors = array();
@@ -573,16 +526,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $group = $this->_getGroup($entry->getForm());
         $progressBarInfo = null;
 
-        if ($group) {
+        if (null !== $group) {
             $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'Please submit these forms in order.'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'Please submit these forms in order.'
                 );
 
                 $this->redirect()->toRoute(
@@ -604,10 +554,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
-        } elseif (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
+        } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                ->findOneBySessionId($this->_getCookie());
 
             if ($guestInfo) {
                 $draftVersion = $this->getEntityManager()
@@ -617,7 +567,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new EditForm($this->getEntityManager(), $this->getLanguage(), $entry->getForm(), $entry, $person);
-        $form->hasDraft(null !== $draftVersion && $draftVersion != $entry);
+        $form->hasDraft(isset($draftVersion) && $draftVersion != $entry);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -626,7 +576,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || isset($formData['save_as_draft'])) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url());
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -638,20 +588,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if (!isset($formData['save_as_draft'])) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been updated.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been updated.'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'Your entry has been saved.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'Your entry has been saved.'
                     );
                 }
 
@@ -681,7 +625,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByFormAndSessionId($form, $this->getParam('key'));
 
         if (null !== $guestInfo)
-            $guestInfo->renew();
+            $guestInfo->renew($this->getRequest());
         else
             return $this->notFoundAction();
 
@@ -769,10 +713,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = $this->getAuthentication()->getPersonObject();
         $guestInfo = null;
-        if (isset($_COOKIE[GuestInfo::$cookieNamespace]) && null === $person) {
+        if ($this->_isCookieSet() && null === $person) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                ->findOneBySessionId($this->_getCookie());
         }
 
         if ($person !== null && $entry->getCreationPerson() != $person) {
@@ -792,9 +736,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($form);
 
-        if (null !== $mapping) {
+        if (null !== $mapping)
             return $mapping->getGroup();
-        }
     }
 
     private function _progressBarInfo(Group $group, Form $form)
@@ -843,12 +786,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         } else {
             $guestInfo = null;
-            if (isset($_COOKIE[GuestInfo::$cookieNamespace])) {
+            if ($this->_isCookieSet()) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($_COOKIE[GuestInfo::$cookieNamespace]);
+                    ->findOneBySessionId($this->_getCookie());
 
-                $guestInfo->renew();
+                $guestInfo->renew($this->getRequest());
             }
 
             foreach ($group->getForms() as $groupForm) {
@@ -917,5 +860,27 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 )
             );
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    private function _isCookieSet()
+    {
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies->offsetExists(GuestInfo::$cookieNamespace);
+    }
+
+    /**
+     * @return string
+     */
+    private function _getCookie()
+    {
+        /** @var \Zend\Http\Header\Cookie $cookies */
+        $cookies = $this->getRequest()->getHeader('Cookie');
+
+        return $cookies[GuestInfo::$cookieNamespace];
     }
 }

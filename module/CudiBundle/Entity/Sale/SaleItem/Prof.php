@@ -33,10 +33,10 @@ class Prof extends \CudiBundle\Entity\Sale\SaleItem
     private $person;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article  $article
-     * @param integer                          $number
-     * @param string                           $person
-     * @param \Doctrine\ORM\EntityManager|null $entityManager
+     * @param Article            $article
+     * @param integer            $number
+     * @param string             $person
+     * @param EntityManager|null $entityManager
      */
     public function __construct(Article $article, $number, $person, EntityManager $entityManager = null)
     {

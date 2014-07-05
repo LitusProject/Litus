@@ -29,8 +29,8 @@ use CudiBundle\Entity\Supplier,
 class Edit extends \CudiBundle\Form\Admin\Supplier\Add
 {
     /**
-     * @param \CudiBundle\Entity\Supplier $supplier
-     * @param null|string|int             $name     Optional name for the element
+     * @param Supplier        $supplier
+     * @param null|string|int $name     Optional name for the element
      */
     public function __construct(Supplier $supplier, $name = null)
     {

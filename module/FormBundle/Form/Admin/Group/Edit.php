@@ -23,7 +23,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Node\Group,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -35,9 +34,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager   $entityManager The EntityManager instance
-     * @param \FormBundle\Entity\Node\Group $group         The group we're going to edit
-     * @param null|string|int               $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Group           $group         The group we're going to edit
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Group $group, $name = null)
     {

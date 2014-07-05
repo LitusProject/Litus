@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     MailBundle\Form\Admin\Group\Mail as MailForm,
     Zend\Mail\Message,
@@ -132,12 +131,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 if ('development' != getenv('APPLICATION_ENV'))
                     $this->getMailTransport()->send($mail);
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The mail was successfully sent!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The mail was successfully sent!'
                 );
 
                 $this->redirect()->toRoute(
@@ -163,12 +159,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
     private function _getType()
     {
         if (null === $this->getParam('type')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No university status given to send a mail to!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No university status given to send a mail to!'
             );
 
             $this->redirect()->toRoute(
@@ -184,12 +177,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         $type = $this->getParam('type');
 
         if ('organization' != $type && 'university' != $type) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No university status given to send a mail to!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No university status given to send a mail to!'
             );
 
             $this->redirect()->toRoute(
@@ -208,12 +198,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
     private function _getUniversityStatus()
     {
         if (null === $this->getParam('group')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No university status given to send a mail to!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No university status given to send a mail to!'
             );
 
             $this->redirect()->toRoute(
@@ -229,12 +216,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         $status = $this->getParam('group');
 
         if (!array_key_exists($status, UniversityStatus::$possibleStatuses)) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given university status was not valid!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given university status was not valid!'
             );
 
             $this->redirect()->toRoute(
@@ -253,12 +237,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
     private function _getOrganizationStatus()
     {
         if (null === $this->getParam('group')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No organization status given to send a mail to!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No organization status given to send a mail to!'
             );
 
             $this->redirect()->toRoute(
@@ -274,12 +255,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         $status = $this->getParam('group');
 
         if (!array_key_exists($status, OrganizationStatus::$possibleStatuses)) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given organization status was not valid!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given organization status was not valid!'
             );
 
             $this->redirect()->toRoute(

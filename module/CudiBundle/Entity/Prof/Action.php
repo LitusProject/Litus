@@ -67,14 +67,14 @@ class Action
     private $action;
 
     /**
-     * @var \DateTime The time this action was executed
+     * @var DateTime The time this action was executed
      *
      * @ORM\Column(type="datetime")
      */
     private $timestamp;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person executed this action
+     * @var Person The person executed this action
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -82,7 +82,7 @@ class Action
     private $person;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person completed this action
+     * @var Person The person completed this action
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="completed_person", referencedColumnName="id")
@@ -90,30 +90,30 @@ class Action
     private $completedPerson;
 
     /**
-     * @var \DateTime The time this action was confirmed
+     * @var DateTime The time this action was confirmed
      *
      * @ORM\Column(name="confirm_date", type="datetime", nullable=true)
      */
     private $confirmDate;
 
     /**
-     * @var \DateTime The time this action was refused
+     * @var DateTime The time this action was refused
      *
      * @ORM\Column(name="refuse_date", type="datetime", nullable=true)
      */
     private $refuseDate;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person     The person executed this action
-     * @param string                           $entity     The entity name
-     * @param integer                          $entityId   The entity id
-     * @param string                           $action     The action type
-     * @param integer                          $previousId The previous entity id
+     * @param Person  $person     The person executed this action
+     * @param string  $entity     The entity name
+     * @param integer $entityId   The entity id
+     * @param string  $action     The action type
+     * @param integer $previousId The previous entity id
      */
     public function __construct(Person $person, $entity, $entityId, $action, $previousId = null)
     {
@@ -163,7 +163,7 @@ class Action
     /**
      * @param integer $entityId
      *
-     * @return \CudiBundle\Entity\Prof\Action
+     * @return self
      */
     public function setEntityId($entityId)
     {
@@ -202,7 +202,7 @@ class Action
     /**
      * @param integer $previousId
      *
-     * @return \CudiBundle\Entity\Prof\Action
+     * @return self
      */
     public function setPreviousId($previousId)
     {
@@ -220,7 +220,7 @@ class Action
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -228,7 +228,7 @@ class Action
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -236,7 +236,7 @@ class Action
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getCompletedPerson()
     {
@@ -244,15 +244,15 @@ class Action
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getConfirmDate()
     {
-        return $this->completeDate;
+        return $this->confirmDate;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getRefuseDate()
     {
@@ -260,9 +260,9 @@ class Action
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $completedPerson
+     * @param Person $completedPerson
      *
-     * @return \CudiBundle\Entity\Prof\Action
+     * @return self
      */
     public function setCompleted(Person $completedPerson)
     {
@@ -274,9 +274,9 @@ class Action
     }
 
     /**
-     * @param \CommonBundle\Entity\User\Person $completedPerson
+     * @param Person $completedPerson
      *
-     * @return \CudiBundle\Entity\Prof\Action
+     * @return self
      */
     public function setRefused(Person $completedPerson)
     {
@@ -312,9 +312,9 @@ class Action
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param EntityManager $entityManager
      *
-     * @return \CudiBundle\Entity\Prof\Action
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {

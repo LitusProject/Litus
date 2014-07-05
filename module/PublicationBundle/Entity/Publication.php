@@ -17,8 +17,7 @@
  */
 namespace PublicationBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a publication
@@ -63,6 +62,9 @@ class Publication
         $this->deleted = false;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
@@ -78,7 +80,7 @@ class Publication
 
     /**
      * @param $title The new title
-     * @return \PublicationBundle\Entity\Publiation This
+     * @return Publication This
      */
     public function setTitle($title)
     {
@@ -88,7 +90,7 @@ class Publication
     }
 
     /**
-     * @return \PublicationBundle\Entity\Publiation This
+     * @return Publication This
      */
     public function delete()
     {

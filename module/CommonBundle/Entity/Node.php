@@ -51,14 +51,14 @@ abstract class Node
     private $id;
 
     /**
-     * @var \DateTime The time of creation of this node
+     * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this node
+     * @var Person The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
@@ -66,7 +66,7 @@ abstract class Node
     private $creationPerson;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $creationPerson
+     * @param Person $creationPerson
      */
     public function __construct(Person $creationPerson)
     {
@@ -83,7 +83,7 @@ abstract class Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -91,7 +91,7 @@ abstract class Node
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getCreationPerson()
     {

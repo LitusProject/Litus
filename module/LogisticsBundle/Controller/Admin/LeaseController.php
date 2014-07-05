@@ -17,8 +17,7 @@
  */
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Controller\ActionController\AdminController,
+use CommonBundle\Component\Controller\ActionController\AdminController,
     LogisticsBundle\Entity\Lease\Item,
     LogisticsBundle\Form\Admin\Lease\Add as AddItemForm,
     LogisticsBundle\Form\Admin\Lease\Edit as EditItemForm,
@@ -62,12 +61,9 @@ class LeaseController extends AdminController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The item was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The item was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -108,12 +104,9 @@ class LeaseController extends AdminController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The item was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The item was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -170,15 +163,15 @@ class LeaseController extends AdminController
         );
     }
 
+    /**
+     * @return Item
+     */
     private function _getItem()
     {
         if ($this->getParam('id') === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No id was given to identify the item!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No id was given to identify the item!'
             );
 
             $this->redirect()->toRoute(
@@ -196,12 +189,9 @@ class LeaseController extends AdminController
             ->findOneById($this->getParam('id'));
 
         if ($item === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No item with the given id was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No item with the given id was found!'
             );
 
             $this->redirect()->toRoute(

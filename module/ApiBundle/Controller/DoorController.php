@@ -75,7 +75,10 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        $log = new Log($this->_getAcademic());
+        if (!($academic = $this->_getAcademic()))
+            return $this->error(500, 'The person does not exist');
+
+        $log = new Log($academic);
 
         $this->getDocumentManager()->persist($log);
         $this->getDocumentManager()->flush();
@@ -87,6 +90,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    /**
+     * @return Academic|null
+     */
     private function _getAcademic()
     {
         if (null !== $this->getRequest()->getPost('academic')) {

@@ -18,15 +18,13 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    MailBundle\Form\Admin\Study\Mail as MailForm,
+use MailBundle\Form\Admin\Study\Mail as MailForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\InputFilter\InputInterface,
     Zend\Mail\Message,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
-    Zend\Validator\File\Count as CountValidator,
-    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -62,7 +60,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $formData = $form->getFormData($formData);
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
-                $upload->setValidators($form->getInputFilter()->get('file')->getValidatorChain()->getValidators());
+                $inputFilter = $form->getInputFilter()->get('file');
+                if ($inputFilter instanceof InputInterface)
+                    $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
 
                 if ($upload->isValid()) {
                     $enrollments = array();
@@ -258,12 +258,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     if ('development' != getenv('APPLICATION_ENV'))
                         $this->getMailTransport()->send($mail);
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            'The mail was successfully sent!'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The mail was successfully sent!'
                     );
 
                     $this->redirect()->toRoute(

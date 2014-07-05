@@ -38,19 +38,19 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var Event
      */
     private $_event;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event  $event
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager
+     * @param Event           $event
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Event $event, $name = null)
     {

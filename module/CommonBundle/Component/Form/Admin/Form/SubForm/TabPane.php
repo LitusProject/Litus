@@ -28,7 +28,7 @@ class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
     /**
      * Constructor
      *
-     * @param null|string|int $name Optional name for the element
+     * @param string $name Optional name for the element
      */
     public function __construct($name = null)
     {
@@ -41,8 +41,8 @@ class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
     /**
      * Recursively populate values of attached elements and fieldsets
      *
-     * @param  array|Traversable                  $data
-     * @return void
+     * @param  array|\Traversable                 $data
+     * @return TabPane
      * @throws Exception\InvalidArgumentException
      */
     public function populateValues($data)
@@ -60,8 +60,8 @@ class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|Traversable                          $messages
-     * @return Element|ElementInterface|FieldsetInterface
+     * @param  array|\Traversable                 $messages
+     * @return TabPane
      * @throws Exception\InvalidArgumentException
      */
     public function setMessages($messages)

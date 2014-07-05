@@ -32,7 +32,7 @@ use CommonBundle\Entity\User\Person,
 class Driver
 {
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The person this driver represents
+     * @var Person The person this driver represents
      *
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
@@ -41,7 +41,7 @@ class Driver
     private $person;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The years during which the person was a driver
+     * @var ArrayCollection The years during which the person was a driver
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\General\AcademicYear", cascade={"persist"})
      * @ORM\JoinTable(name="logistics.drivers_years",
@@ -66,7 +66,7 @@ class Driver
     private $removed;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person The person to mark as a driver
+     * @param Person $person The person to mark as a driver
      * @param $color The color for this driver
      */
     public function __construct(Person $person, $color)
@@ -79,7 +79,7 @@ class Driver
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -95,8 +95,8 @@ class Driver
     }
 
     /**
-     * @param  array                          $years
-     * @return \LogisticsBundle\Entity\Driver
+     * @param  array $years
+     * @return self
      */
     public function setYears(array $years)
     {
@@ -117,8 +117,8 @@ class Driver
     }
 
     /**
-     * @param  string                         $color
-     * @return \LogisticsBundle\Entity\Driver
+     * @param  string $color
+     * @return self
      */
     public function setColor($color)
     {
@@ -128,8 +128,8 @@ class Driver
     }
 
     /**
-     * @param  boolean                        $removed
-     * @return \LogisticsBundle\Entity\Driver
+     * @param  boolean $removed
+     * @return self
      */
     public function setRemoved($removed)
     {

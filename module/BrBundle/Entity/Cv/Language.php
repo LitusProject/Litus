@@ -47,7 +47,7 @@ class Language
     );
 
     /**
-     * @var string The language entry's ID
+     * @var int The language entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -85,8 +85,10 @@ class Language
     private $oral;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $year     The current academic year.
+     * @param Entry  $entry
+     * @param string $name
+     * @param string $written
+     * @param string $oral
      */
     public function __construct(Entry $entry, $name, $written, $oral)
     {
@@ -97,7 +99,7 @@ class Language
     }
 
     /**
-     * @return The id.
+     * @return int id.
      */
     public function getId()
     {
@@ -121,6 +123,7 @@ class Language
     }
 
     /**
+     * @param  string  $skill
      * @return boolean
      */
     public static function isValidWrittenSkill($skill)
@@ -130,6 +133,7 @@ class Language
 
 
     /**
+     * @param  string  $skill
      * @return boolean
      */
     public static function isValidOralSkill($skill)

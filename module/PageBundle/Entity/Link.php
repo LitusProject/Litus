@@ -42,7 +42,7 @@ class Link
     private $id;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The link's parent
+     * @var Page The link's parent
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -50,7 +50,7 @@ class Link
     private $parent;
 
     /**
-     * @var \PageBundle\Entity\Node\Page The link's category
+     * @var Category The link's category
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
@@ -58,14 +58,14 @@ class Link
     private $category;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this link
+     * @var ArrayCollection The translations of this link
      *
      * @ORM\OneToMany(targetEntity="PageBundle\Entity\Link\Translation", mappedBy="link", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @param \PageBundle\Entity\Category $category
+     * @param Category $category
      */
     public function __construct(Category $category)
     {
@@ -75,7 +75,7 @@ class Link
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getId()
     {
@@ -83,7 +83,7 @@ class Link
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @return Page
      */
     public function getParent()
     {
@@ -91,8 +91,8 @@ class Link
     }
 
     /**
-     * @param  \PageBundle\Entity\Node\Page $category The page's category
-     * @return \PageBundle\Entity\Category
+     * @param  Page $parent
+     * @return self
      */
     public function setParent(Page $parent)
     {
@@ -102,7 +102,7 @@ class Link
     }
 
     /**
-     * @return \PageBundle\Entity\Category
+     * @return Category
      */
     public function getCategory()
     {
@@ -110,10 +110,10 @@ class Link
     }
 
     /**
-     * @param  \PageBundle\Entity\Category $category
-     * @return \PageBundle\Entity\Link
+     * @param  Category $category
+     * @return self
      */
-    public function setCategory($category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
 
@@ -121,9 +121,9 @@ class Link
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
-     * @return \PageBundle\Entity\Link\Translation
+     * @param  Language|null                            $language
+     * @param  boolean                                  $allowFallback
+     * @return \PageBundle\Entity\Link\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
@@ -135,15 +135,15 @@ class Link
                 $fallbackTranslation = $translation;
         }
 
-        if ($allowFallback)
+        if ($allowFallback && isset($fallbackTranslation))
             return $fallbackTranslation;
 
         return null;
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getName(Language $language = null, $allowFallback = true)
@@ -157,8 +157,8 @@ class Link
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getUrl(Language $language = null, $allowFallback = true)

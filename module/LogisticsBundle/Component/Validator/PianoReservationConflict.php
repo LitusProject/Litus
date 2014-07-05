@@ -53,7 +53,7 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
     private $_format;
 
     /**
-     * @var LogisticsBundle\Entity\Reservation\ReservableResource
+     * @var string
      */
     private $_resource;
 
@@ -63,18 +63,21 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
     private $_reservationId;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
      * Sets validator options
      *
-     * @param  mixed  $token
-     * @param  string $format
+     * @param  string        $format
+     * @param  string        $startDate
+     * @param  string        $resource
+     * @param  EntityManager $entityManager
+     * @param  integer       $reservationId
      * @return void
      */
-    public function __construct($startDate, $format, $resource, $entityManager, $reservationId = -1)
+    public function __construct($startDate, $format, $resource, EntityManager $entityManager, $reservationId = -1)
     {
         parent::__construct(null);
 

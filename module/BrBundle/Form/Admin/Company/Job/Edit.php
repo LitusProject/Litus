@@ -19,7 +19,6 @@
 namespace BrBundle\Form\Admin\Company\Job;
 
 use BrBundle\Entity\Company\Job,
-    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**

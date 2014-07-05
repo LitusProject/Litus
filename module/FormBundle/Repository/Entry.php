@@ -18,8 +18,7 @@
 
 namespace FormBundle\Repository;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     FormBundle\Entity\Field as FieldEntity,
     FormBundle\Entity\Node\Entry as FormEntryEntity;
 

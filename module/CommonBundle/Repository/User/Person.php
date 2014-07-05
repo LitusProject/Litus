@@ -19,7 +19,6 @@
 namespace CommonBundle\Repository\User;
 
 use CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**

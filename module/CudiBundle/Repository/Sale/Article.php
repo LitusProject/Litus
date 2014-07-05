@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as ArticleEntity,
     CudiBundle\Entity\Supplier,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Supplier;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Auth\Login as LoginForm,
+use CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -45,20 +44,14 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You have been successfully logged in!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You have been successfully logged in!'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'You could not be logged in!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'You could not be logged in!'
                     );
                 }
             }
@@ -78,12 +71,9 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
     {
         $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You have been successfully logged out!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'You have been successfully logged out!'
         );
 
         $this->redirect()->toRoute(

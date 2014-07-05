@@ -34,7 +34,10 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @param string          $subject
+     * @param string          $message
+     * @param integer         $semester
+     * @param null|string|int $name     Optional name for the element
      */
     public function __construct($subject, $message, $semester, $name = null)
     {
@@ -43,21 +46,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
-            ->setValue($subject)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($subject);
         $this->add($field);
 
         $field = new Select('semester');
         $field->setLabel('Semester')
-            ->setValue($semester)
-            ->setAttribute('options', array(1 => 'First Semester', 2 => 'Second Semester'))
-            ->setRequired();
+        ->setAttribute('options', array(1 => 'First Semester', 2 => 'Second Semester'))
+            ->setRequired()
+            ->setValue($semester);
         $this->add($field);
 
         $field = new Textarea('message');
         $field->setLabel('Message')
-            ->setValue($message)
-            ->setRequired();
+            ->setRequired()
+            ->setValue($message);
         $this->add($field);
 
         $field = new Checkbox('test_it');

@@ -46,7 +46,7 @@ class Round
     private $name;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz this round belongs to
+     * @var Quiz The quiz this round belongs to
      *
      * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Quiz")
      * @ORM\JoinColumn(name="quiz", referencedColumnName="id")
@@ -68,16 +68,16 @@ class Round
     private $maxPoints;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The points in this round
+     * @var ArrayCollection The points in this round
      *
      * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="round", cascade="remove")
      */
     private $points;
 
     /**
-     * @param \QuizBundle\Entity\Quiz $quiz
-     * @param string                  $name
-     * @param integer                 $order
+     * @param Quiz    $quiz
+     * @param string  $name
+     * @param integer $order
      */
     public function __construct(Quiz $quiz, $name, $maxPoints, $order)
     {
@@ -97,7 +97,7 @@ class Round
     }
 
     /**
-     * @return \QuizBundle\Entity\Quiz
+     * @return Quiz
      */
     public function getQuiz()
     {
@@ -113,8 +113,8 @@ class Round
     }
 
     /**
-     * @param  string                   $name
-     * @return \QuizBundle\Entity\Round
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -132,8 +132,8 @@ class Round
     }
 
     /**
-     * @param  int                      $order
-     * @return \QuizBundle\Entity\Round
+     * @param  int  $order
+     * @return self
      */
     public function setOrder($order)
     {
@@ -151,8 +151,8 @@ class Round
     }
 
     /**
-     * @param  int                      $maxPoints
-     * @return \QuizBundle\Entity\Round
+     * @param  int  $maxPoints
+     * @return self
      */
     public function setMaxPoints($maxPoints)
     {
