@@ -29,16 +29,4 @@ class TabPane extends \CommonBundle\Component\Form\Fieldset
     {
         $this->addClass('tab_pane');
     }
-
-    public function populateValues($data)
-    {
-        parent::populateValues($data);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->populateValues($data);
-        }
-
-        return $this;
-    }
 }

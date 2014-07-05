@@ -61,15 +61,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
+            'type'       => 'datetime',
             'name'       => 'start_date',
             'label'      => 'Start Date',
             'requred'    => true,
             'attributes'  => array(
                 'data-help'       => 'The start date for showing this banner, overrulled by "active".',
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
-                'data-datepicker' => true,
-                'data-timepicker' => true,
             ),
             'options'    => array(
                 'input' => array(
@@ -89,15 +87,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
+            'type'       => 'datetime',
             'name'       => 'end_date',
             'label'      => 'End Date',
             'requred'    => true,
             'attributes'  => array(
                 'data-help'       => 'The end date for showing this banner, overrulled by "active".',
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
-                'data-datepicker' => true,
-                'data-timepicker' => true,
             ),
             'options'    => array(
                 'input' => array(
