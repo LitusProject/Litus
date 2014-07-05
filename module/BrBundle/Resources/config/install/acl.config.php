@@ -49,7 +49,7 @@ return array(
             'product', 'edit', 'delete', 'view', 'add', 'old', 'manage'
         ),
         'br_admin_overview' => array(
-            'person', 'company'
+            'person', 'company', 'view'
         ),
         'br_admin_product' => array(
             'add', 'delete', 'manage', 'edit', 'old'
