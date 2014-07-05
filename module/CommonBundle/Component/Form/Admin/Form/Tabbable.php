@@ -70,7 +70,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
 
-                $tabs->addTab(array($language->getName() => '#' . $prefix . 'tab_' . $abbrev));
+                $tabs->addTab(array($language->getName() => $this->escapeTabContentId('#' . $tabContent->getName() . '[' . $prefix . 'tab_' . $abbrev . ']')));
                 $tabContent->add($pane);
             }
 
@@ -110,6 +110,15 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     {
         $element->init();
         $this->getFormFactory()->configureFieldset($element, array());
+    }
+
+    /**
+     * @param string $id The id of the tab content
+     * @return string
+     */
+    private function escapeTabContentId($id)
+    {
+        return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
     }
 
     /**

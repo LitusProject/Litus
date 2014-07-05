@@ -29,4 +29,11 @@ class TabPane extends \CommonBundle\Component\Form\Fieldset
     {
         $this->addClass('tab_pane');
     }
+
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
 }

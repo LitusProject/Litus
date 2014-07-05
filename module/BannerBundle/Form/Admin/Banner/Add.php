@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'datetime',
             'name'       => 'start_date',
             'label'      => 'Start Date',
-            'requred'    => true,
+            'required'   => true,
             'attributes'  => array(
                 'data-help'       => 'The start date for showing this banner, overrulled by "active".',
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'datetime',
             'name'       => 'end_date',
             'label'      => 'End Date',
-            'requred'    => true,
+            'required'   => true,
             'attributes'  => array(
                 'data-help'       => 'The end date for showing this banner, overrulled by "active".',
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
