@@ -68,6 +68,25 @@ class Contract extends EntityRepository
         return ++$highestContractNb;
     }
 
+    public function findAllNewOrSignedByPerson(CollaboratorEntity $person)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.author', ':person'),
+                    $query->expr()->eq('o.old', 'false')
+                )
+            )
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
     public function findAllNewOrSignedByPersonQuery(CollaboratorEntity $person)
     {
         $query = $this->_em->createQueryBuilder();
@@ -77,10 +96,7 @@ class Contract extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.author', ':person'),
-                    $query->expr()->orX(
-                        $query->expr()->eq('o.old', 'false'),
-                        $query->expr()->eq('c.signed', true)
-                    )
+                    $query->expr()->eq('o.old', 'false')
                 )
             )
             ->setParameter('person', $person)
@@ -162,15 +178,11 @@ class Contract extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.company', ':company'),
-                    $query->expr()->orX(
-                        $query->expr()->eq('o.old', 'false'),
-                        $query->expr()->eq('c.signed', 'true')
-                    )
+                    $query->expr()->eq('o.old', 'false')
                 )
             )
             ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
 
         return $result;
     }
