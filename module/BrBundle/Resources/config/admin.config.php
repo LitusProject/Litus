@@ -46,8 +46,9 @@ return array(
                     'help'  => 'Manage the orders of each company.  Orders can be added or deleted.  Creating an order instantly creates a contract that can be signed.  A the order of a signed contract cannot be removed.'
                 ),
                 'br_admin_overview' => array(
-                    'title' => 'Overview',
-                    'help'  => 'A general overview for each member or company individually.',
+                    'title'  => 'Overview',
+                    'action' => 'person',
+                    'help'   => 'A general overview for each member or company individually.',
                 ),
                 'br_admin_product'  => array(
                     'title' => 'Products',
