@@ -120,7 +120,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $signed = 0;
             $paid = 0;
             foreach ($contracts as $contract) {
-                $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
+                $contract->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $contract->getOrder()->getTotalCost();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
                 if ($contract->isSigned()) {
@@ -143,7 +144,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
 
-        return array('array' => $collection,'totals' => $totals);
+        return [$collection,$totals];
     }
 
     private function _getPersonOverview()
@@ -165,14 +166,15 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewOrSignedByPersonQuery($person);
+                ->findAllNewOrSignedByPerson($person);
 
             $contracted = 0;
             $signed = 0;
             $paid = 0;
             foreach ($contracts as $contract) {
                 $contractNmbr = $contractNmbr + 1;
-                $value = $contract->getOrder()->getTotalCost($this->getEntityManager());
+                $contract->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $contract->getOrder()->getTotalCost();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
                 if ($contract->isSigned()) {
@@ -184,7 +186,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
             }
-
             $collection[] = array(
                 'person' => $person,
                 'amount' => sizeof($contracts),
@@ -200,8 +201,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             'paid' => $totalPaid,
             'signed' => $totalSigned
         );
-
-        return array('array' => $collection,'totals' => $totals);
+        return [$collection,$totals];
 
     }
 

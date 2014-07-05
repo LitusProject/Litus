@@ -18,8 +18,11 @@
 
 return array(
     'brbundle' => array(
+        'br_admin_collaborator' => array(
+            'add', 'retire', 'edit', 'manage', 'rehire'
+        ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload'
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'contacts'
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload'
@@ -33,11 +36,23 @@ return array(
         'br_admin_company_logo' => array(
             'manage', 'add', 'delete'
         ),
+        'br_admin_contract' => array(
+            'manage', 'edit', 'view', 'history', 'sign', 'download', 'delete'
+        ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics'
         ),
-        'br_admin_section' => array(
-            'manage', 'add', 'edit', 'delete',
+        'br_admin_invoice' => array(
+            'history', 'view', 'edit', 'manage', 'download'
+        ),
+        'br_admin_order' => array(
+            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage'
+        ),
+        'br_admin_overview' => array(
+            'person', 'company', 'view'
+        ),
+        'br_admin_product' => array(
+            'add', 'delete', 'manage', 'edit', 'old'
         ),
         'br_career_index' => array(
             'index'
@@ -54,11 +69,9 @@ return array(
         'br_career_internship' => array(
             'view', 'overview'
         ),
-
         'br_cv_index' => array(
             'cv', 'edit', 'complete',
         ),
-
         'br_corporate_auth' => array(
             'login', 'logout',
         ),
