@@ -290,7 +290,6 @@ class Contract
         return $this;
     }
 
-     */
     public function setDiscount($discount)
     {
         if ($discount < 0)
