@@ -19,6 +19,7 @@
 namespace CalendarBundle\Form\Admin\Event;
 
 use CalendarBundle\Component\Validator\Name as EventNameValidator,
+    CalendarBundle\Entity\Node\Event as EventEntity,
     CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\Language,
@@ -32,6 +33,11 @@ use CalendarBundle\Component\Validator\Name as EventNameValidator,
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     protected $hydrator = 'CalendarBundle\Hydrator\Node\Event';
+
+    /**
+     * @var \CalendarBundle\Entity\Node\Event
+     */
+    private $_event;
 
     public function init()
     {
@@ -75,6 +81,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->addSubmit('Add', 'calendar_add');
+
+        if (null !== $this->getEvent())
+            $this->bind($this->getEvent());
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
@@ -90,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new EventNameValidator($this->getEntityManager(), $language),
+                        new EventNameValidator($this->getEntityManager(), $language, $this->getEvent()),
                     ),
                 ),
             ),
@@ -123,5 +132,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ),
             ),
         ));
+    }
+
+    /**
+     * @param \CalendarBundle\Entity\Node\Event
+     * @return \CalendarBundle\Form\Admin\Event\Add
+     */
+    public function setEvent(EventEntity $event)
+    {
+        $this->_event = $event;
+        return $this;
+    }
+
+    /**
+     * @return \CalendarBundle\Entity\Node\Event
+     */
+    public function getEvent()
+    {
+        return $this->_event;
     }
 }

@@ -19,6 +19,7 @@
 namespace CalendarBundle\Hydrator\Node;
 
 use CalendarBundle\Entity\Node\Event as EventEntity,
+    CalendarBundle\Entity\Node\Translation as TranslationEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     DateTime;
@@ -37,7 +38,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     private static $std_keys = array();
 
     protected function doHydrate(array $data, $object = null)
-    {
+    {echo 'sdfsdf';var_dump($data);exit;
         // EventEntity requires the Person that created it, so
         // we cannot create an object here.
         if (null === $object)
@@ -50,6 +51,32 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setStartDate($startDate)
             ->setEndDate(self::_loadDate($data['end_date']));
+
+        foreach($this->getLanguages() as $language) {
+            echo $language->getAbbrev();continue;
+            $translation = $object->getTranslation($language, false);
+
+            $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
+
+            if (null !== $translation) {
+                $translation->setLocation($translationData['location'])
+                    ->setTitle($translationData['title'])
+                    ->setContent($translationData['content']);
+            } else {
+                if ('' != $translationData['location'] && '' != $translationData['title'] && '' != $translationData['content']) {
+                    $translation = new TranslationEntity(
+                            $event,
+                            $language,
+                            $translationData['location'],
+                            $translationData['title'],
+                            $translationData['content']
+                        );
+                    $object->addTranslation($translation);
+                }
+            }
+        }
+
+        $object->updateName();
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
@@ -66,7 +93,20 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         if (null !== $object->getEndDate())
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
+        foreach($this->getLanguages() as $language) {
+            $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['location'] = $object->getLocation($language);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['content'] = $object->getContent($language);
+        }
+
         return $data;
+    }
+
+    private function getLanguages()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
     }
 
     /**

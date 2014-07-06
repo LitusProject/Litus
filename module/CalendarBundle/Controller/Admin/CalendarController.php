@@ -19,11 +19,6 @@
 namespace CalendarBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event,
-    CalendarBundle\Entity\Node\Translation,
-    CalendarBundle\Form\Admin\Event\Add as AddForm,
-    CalendarBundle\Form\Admin\Event\Edit as EditForm,
-    CalendarBundle\Form\Admin\Event\Poster as PosterForm,
-    DateTime,
     Imagick,
     Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -85,29 +80,6 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->getEntityManager()->persist($event);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if (
-                        '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
-                            && '' != $formData['content_' . $language->getAbbrev()]
-                    ) {
-                        $event->addTranslation(
-                            new Translation(
-                                $event,
-                                $language,
-                                $formData['location_' . $language->getAbbrev()],
-                                $formData['title_' . $language->getAbbrev()],
-                                $formData['content_' . $language->getAbbrev()]
-                            )
-                        );
-                    }
-                }
-                $event->updateName();
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -138,43 +110,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $form = $this->getForm('calendar_event_edit', $event);
+        $form = $this->getForm('calendar_event_edit', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $event->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setLocation($formData['location_' . $language->getAbbrev()])
-                            ->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
-                    } else {
-                        if (
-                            '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
-                                && '' != $formData['content_' . $language->getAbbrev()]
-                        ) {
-                            $translation = new Translation(
-                                    $event,
-                                    $language,
-                                    $formData['location_' . $language->getAbbrev()],
-                                    $formData['title_' . $language->getAbbrev()],
-                                    $formData['content_' . $language->getAbbrev()]
-                                );
-                            $event->addTranslation($translation);
-                            $this->getEntityManager()->persist($translation);
-                        }
-                    }
-                }
-                $event->updateName();
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

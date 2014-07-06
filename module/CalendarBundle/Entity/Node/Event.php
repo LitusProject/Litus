@@ -76,8 +76,6 @@ class Event extends \CommonBundle\Entity\Node
     {
         parent::__construct($person);
 
-        $this->name = $startDate->format('d_m_Y_H_i');
-
         $this->translations = new ArrayCollection();
     }
 
