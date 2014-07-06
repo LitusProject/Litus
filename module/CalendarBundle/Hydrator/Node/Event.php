@@ -38,7 +38,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     private static $std_keys = array();
 
     protected function doHydrate(array $data, $object = null)
-    {echo 'sdfsdf';var_dump($data);exit;
+    {
         // EventEntity requires the Person that created it, so
         // we cannot create an object here.
         if (null === $object)
@@ -52,7 +52,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setStartDate($startDate)
             ->setEndDate(self::_loadDate($data['end_date']));
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             echo $language->getAbbrev();continue;
             $translation = $object->getTranslation($language, false);
 
@@ -93,7 +93,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         if (null !== $object->getEndDate())
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
-        foreach($this->getLanguages() as $language) {
+        foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language);
             $data['tab_content']['tab_' . $language->getAbbrev()]['location'] = $object->getLocation($language);
             $data['tab_content']['tab_' . $language->getAbbrev()]['content'] = $object->getContent($language);

@@ -141,6 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     public function setEvent(EventEntity $event)
     {
         $this->_event = $event;
+
         return $this;
     }
 
