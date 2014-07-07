@@ -304,8 +304,10 @@ class Article extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet && (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
-            return $resultSet->getArticle();
+        if ($resultSet) {
+            if (!$article->isInternal() || $article->isOfficial())
+                return $resultSet->getArticle();
+        }
 
         $actions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -315,6 +317,6 @@ class Article extends EntityRepository
             return $actions[0]->setEntityManager($this->_em)
                 ->getEntity();
 
-        return null;
+        return $resultSet->getArticle();
     }
 }
