@@ -18,150 +18,142 @@
 
 namespace CommonBundle\Form\Account;
 
-use CommonBundle\Component\Form\Bootstrap\Element\File,
-    CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Upload Profile Image
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Profile extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->setAttribute('class', 'form-inline');
 
-        $field = new Hidden('x');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new Hidden('y');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new Hidden('x2');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new Hidden('y2');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new Hidden('w');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new Hidden('h');
-        $field->setValue(0);
-        $this->add($field);
-
-        $field = new File('profile');
-        $field->setAttribute('data-type', 'small');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'x',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'x',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'y',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'y',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'x2',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'x2',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'y2',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'y2',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'w',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'w',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'h',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'h',
+            'required'   => false,
+            'value'      => 0,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
                         array(
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'profile',
+            'required'   => false,
+            'attributes' => array(
+                'data-type' => 'small',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileextension',
@@ -176,10 +168,8 @@ class Profile extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
-
-        return $inputFilter;
+                ),
+            ),
+        ));
     }
 }

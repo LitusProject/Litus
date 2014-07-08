@@ -24,9 +24,7 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
-    CommonBundle\Form\Account\Activate as ActivateForm,
     CommonBundle\Form\Account\Edit as EditForm,
-    CommonBundle\Form\Account\Profile as ProfileForm,
     CudiBundle\Entity\Sale\Booking,
     DateTime,
     Imagick,
@@ -86,7 +84,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         foreach($subjects as $enrollment)
             $subjectIds[] = $enrollment->getSubject()->getId();
 
-        $profileForm = new ProfileForm();
+        $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -488,14 +486,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if (!($user = $this->_getUser()))
             return new ViewModel();
 
-        $form = new ActivateForm();
+        $form = $this->getForm('common_account_activate');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $user->setCode(null)
                     ->setCredential(
@@ -555,7 +553,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
-        $form = new ProfileForm();
+        $form = $this->getForm('common_account_profile');
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('profile');

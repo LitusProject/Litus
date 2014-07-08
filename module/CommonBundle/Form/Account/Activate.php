@@ -18,63 +18,39 @@
 
 namespace CommonBundle\Form\Account;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Password,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Account activate form.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activate extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Password('credential');
-        $field->setLabel('Password')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Password('verify_credential');
-        $field->setLabel('Verify Password')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Activate');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'credential',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'password',
+            'name'       => 'credential',
+            'label'      => 'Password',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'verify_credential',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'password',
+            'name'       => 'verify_credential',
+            'label'      => 'Verify Password',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -85,10 +61,10 @@ class Activate extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Activate');
     }
 }
