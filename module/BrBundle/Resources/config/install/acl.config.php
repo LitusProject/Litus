@@ -43,13 +43,13 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics'
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download'
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay'
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'view', 'add', 'old', 'manage'
         ),
         'br_admin_overview' => array(
-            'person', 'company', 'view'
+            'person', 'company', 'view','personview','companyview'
         ),
         'br_admin_product' => array(
             'add', 'delete', 'manage', 'edit', 'old'
