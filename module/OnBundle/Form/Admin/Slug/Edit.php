@@ -18,10 +18,6 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-use Doctrine\ODM\MongoDB\DocumentManager,
-    OnBundle\Document\Slug,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Slug
  *
@@ -29,42 +25,15 @@ use Doctrine\ODM\MongoDB\DocumentManager,
  */
 class Edit extends Add
 {
-    /**
-     * @var Slug The slug we're going to modify
-     */
-    private $_slug = null;
-
-    /**
-     * @param DocumentManager $documentManager The DocumentManager instance
-     * @param Slug            $slug            The slug we're going to modify
-     * @param null|string|int $name            Optional name for the element
-     */
-    public function __construct(DocumentManager $documentManager, Slug $slug, $name = null)
+    public function init()
     {
-        parent::__construct($documentManager, $name);
-
-        $this->_slug = $slug;
+        parent::init();
 
         $this->get('name')
             ->setRequired();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'slug_edit');
-        $this->add($field);
-
-        $this->_populateFromSlug($slug);
-    }
-
-    private function _populateFromSlug(Slug $slug)
-    {
-        $data = array(
-            'name' => $slug->getName(),
-            'url' => $slug->getUrl()
-        );
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'slug_edit');
     }
 }

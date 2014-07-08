@@ -19,8 +19,6 @@
 namespace OnBundle\Controller\Admin;
 
 use OnBundle\Document\Slug,
-    OnBundle\Form\Admin\Slug\Add as AddForm,
-    OnBundle\Form\Admin\Slug\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,33 +45,18 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getDocumentManager());
+        $form = $this->getForm('on_slug_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ('' == $formData['name']) {
-                    do {
-                        $name = $this->_createRandomName();
-                        $found = $this->getDocumentManager()
-                            ->getRepository('OnBundle\Document\Slug')
-                            ->findOneByName($name);
-                    } while (isset($found));
-                } else {
-                    $name = strtolower($formData['name']);
-                }
-
-                $slug = new Slug(
-                    $this->getAuthentication()->getPersonObject(),
-                    $name,
-                    $formData['url']
+                $slug = $form->hydrateObject(
+                    new Slug($this->getAuthentication()->getPersonObject())
                 );
-                $this->getDocumentManager()->persist($slug);
 
+                $this->getDocumentManager()->persist($slug);
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -104,18 +87,13 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         if (!($slug = $this->_getSlug()))
             return new ViewModel();
 
-        $form = new EditForm($this->getDocumentManager(), $slug);
+        $form = $this->getForm('on_slug_edit', array('slug' => $slug));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $slug->setName(strtolower($formData['name']))
-                    ->setUrl($formData['url']);
-
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -157,17 +135,6 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 'result' => (object) array('status' => 'success'),
             )
         );
-    }
-
-    private function _createRandomName()
-    {
-        $characters = 'abcdefghijklmnopqrstuwxyz0123456789';
-
-        $name = array();
-        for ($i = 0; $i < 8; $i++)
-            $name[$i] = $characters[rand(0, strlen($characters) - 1)];
-
-        return implode('', $name);
     }
 
     /**
