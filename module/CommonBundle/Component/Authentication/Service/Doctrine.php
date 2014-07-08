@@ -81,6 +81,9 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
+        if (null == $this->_request)
+            return;
+
         $server = $this->_request->getServer();
 
         if ('' == $this->getIdentity() && null !== $adapter) {
