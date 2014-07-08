@@ -53,7 +53,7 @@
             {% endif %}
         {% endfor %}
         {% for child in fieldset.getFieldsets() %}
-            {% if child.isCollection() %}
+            {% if child.showAs() == 'fieldset' %}
                 <fieldset class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
                     <legend>{{ translate(child.getLabel()) }}</legend>
                     {{ _self.renderFieldset(child) }}

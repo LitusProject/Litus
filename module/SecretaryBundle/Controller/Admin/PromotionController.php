@@ -22,7 +22,6 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
-    SecretaryBundle\Form\Admin\Promotion\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -111,7 +110,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $form = new AddForm();
+        $form = $this->getForm('secretary_promotion_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

@@ -34,6 +34,13 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
         return 'fieldset';
     }
 
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
+
     /**
      * Set a hash of element names/messages to use when validation fails
      *
