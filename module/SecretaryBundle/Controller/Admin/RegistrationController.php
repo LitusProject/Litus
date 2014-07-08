@@ -147,7 +147,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('secretary_registration_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

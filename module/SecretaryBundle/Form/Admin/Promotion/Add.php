@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Academic',
             'required'   => $requireAcademic,
             'attributes' => array(
-                'id' => 'academicSearch',
+                'id'           => 'academicSearch',
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',
             ),
