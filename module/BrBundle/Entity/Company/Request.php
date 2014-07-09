@@ -95,4 +95,6 @@ abstract class Request
     abstract public function approveRequest();
 
     abstract public function rejectRequest();
+
+    abstract public function getJob();
 }

@@ -44,7 +44,62 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
+        if (!($request = $this->_getRequest()))
+            return new ViewModel();
 
+        switch ($request->getJob()->getType()) {
+            case 'internship':
+                $this->redirect()->toRoute(
+                    'br_career_internship',
+                    array(
+                        'action' => 'view',
+                        'id' => $request->getJob()->getId()
+                    )
+                );
+                break;
+
+            case 'vacancy':
+                $this->redirect()->toRoute(
+                    'br_career_vacancy',
+                    array(
+                        'action' => 'view',
+                        'id' => $request->getJob()->getId()
+                    )
+                );
+                break;
+
+            default:break;
+        }
+    }
+
+    public function viewEditAction()
+    {
+        if (!($request = $this->_getRequest()))
+            return new ViewModel();
+
+        switch ($request->getJob()->getType()) {
+            case 'internship':
+                $this->redirect()->toRoute(
+                    'br_career_internship',
+                    array(
+                        'action' => 'view',
+                        'id' => $request->getEditJob()->getId()
+                    )
+                );
+                break;
+
+            case 'vacancy':
+                $this->redirect()->toRoute(
+                    'br_career_vacancy',
+                    array(
+                        'action' => 'view',
+                        'id' => $request->getEditJob()->getId()
+                    )
+                );
+                break;
+
+            default:break;
+        }
     }
 
     public function approveAction()

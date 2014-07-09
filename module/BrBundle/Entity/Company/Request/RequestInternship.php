@@ -110,7 +110,7 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
     {
         switch ($this->requestType) {
             case 'add':
-                $this->getJob()->approved();
+                $this->getJob()->approve();
                 break;
 
             case 'edit':
