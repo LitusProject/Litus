@@ -70,8 +70,6 @@ class Slug
 
     /**
      * @param Person $person
-     * @param string $name
-     * @param string $url
      */
     public function __construct(Person $person)
     {

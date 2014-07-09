@@ -30,37 +30,12 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Notification    $notification  The notification we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Notification $notification, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'notification_edit');
-        $this->add($field);
-
-        $this->_populateFromNotification($notification);
-    }
-
-    private function _populateFromNotification(Notification $notification)
-    {
-        $data = array(
-            'start_date' => $notification->getEndDate() ? $notification->getStartDate()->format('d/m/Y H:i') : '',
-            'end_date' => $notification->getEndDate() ? $notification->getEndDate()->format('d/m/Y H:i') : '',
-            'active' => $notification->isActive(),
-        );
-
-        foreach ($this->getLanguages() as $language) {
-            $data['content_' . $language->getAbbrev()] = $notification->getContent($language, false);
-        }
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'notification_edit');
     }
 }
