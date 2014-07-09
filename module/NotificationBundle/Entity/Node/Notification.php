@@ -61,7 +61,7 @@ class Notification extends \CommonBundle\Entity\Node
     private $active;
 
     /**
-     * @param Person   $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
