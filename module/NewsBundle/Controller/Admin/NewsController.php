@@ -18,11 +18,7 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use DateTime,
-    NewsBundle\Entity\Node\News,
-    NewsBundle\Entity\Node\Translation,
-    NewsBundle\Form\Admin\News\Add as AddForm,
-    NewsBundle\Form\Admin\News\Edit as EditForm,
+use NewsBundle\Entity\Node\News,
     Zend\View\Model\ViewModel;
 
 /**
@@ -54,41 +50,18 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('news_news_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-
-                $news = new News(
-                    $this->getAuthentication()->getPersonObject(),
-                    $endDate ? $endDate : null
+                $news = $form->hydrateObject(
+                    new News($this->getAuthentication()->getPersonObject())
                 );
+
                 $this->getEntityManager()->persist($news);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                        $news->addTranslation(
-                            new Translation(
-                                $news,
-                                $language,
-                                $formData['title_' . $language->getAbbrev()],
-                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
-                            )
-                        );
-                    }
-                }
-                $news->updateName();
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -119,46 +92,13 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         if (!($news = $this->_getNews()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $news);
+        $form = $this->getForm('news_news_edit', $news);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-                if ($endDate)
-                    $news->setEndDate($endDate);
-                else
-                    $news->setEndDate(null);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $news->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
-                    } else {
-                        if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                            $news->addTranslation(
-                                new Translation(
-                                    $news,
-                                    $language,
-                                    $formData['title_' . $language->getAbbrev()],
-                                    str_replace('#', '', $formData['content_' . $language->getAbbrev()])
-                                )
-                            );
-                        }
-                    }
-                }
-                $news->updateName();
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

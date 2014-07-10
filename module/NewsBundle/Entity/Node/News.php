@@ -56,15 +56,12 @@ class News extends \CommonBundle\Entity\Node
 
     /**
      * @param Person   $person
-     * @param DateTime $endDate
      */
-    public function __construct(Person $person, DateTime $endDate = null)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
 
-        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s');
         $this->translations = new ArrayCollection();
-        $this->endDate = $endDate;
     }
 
     /**

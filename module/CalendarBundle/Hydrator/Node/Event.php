@@ -93,9 +93,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
         foreach ($this->getLanguages() as $language) {
-            $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language);
-            $data['tab_content']['tab_' . $language->getAbbrev()]['location'] = $object->getLocation($language);
-            $data['tab_content']['tab_' . $language->getAbbrev()]['content'] = $object->getContent($language);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language, false);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['location'] = $object->getLocation($language, false);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['content'] = $object->getContent($language, false);
         }
 
         return $data;

@@ -18,16 +18,9 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Node\News,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language,
+    NewsBundle\Entity\Node\News;
 
 /**
  * Add News
@@ -35,124 +28,65 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'NewsBundle\Hydrator\Node\News';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setAttribute('width', '400px')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-
-            $pane->add($field);
-
-            $field = new Textarea('content_' . $language->getAbbrev());
-            $field->setLabel('Content')
-                ->setAttribute('rows', 20)
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'news_add');
-        $this->add($field);
-    }
-
-    protected function getLanguages()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            if ($language->getAbbrev() !== \Locale::getDefault())
-                continue;
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'content_' . $language->getAbbrev(),
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => false,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'end_date',
+            'label'      => 'End Date',
+            'required'   => false,
+            'attributes' => array(
+                'placeholder'     => 'dd/mm/yyyy hh:mm',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        )
-                    )
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'news_add');
+    }
+
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
+    {
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'title',
+            'label'      => 'Title',
+            'required'   => $isDefault,
+            'attributes' => array(
+                'width' => '400px',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $container->add(array(
+            'type'       => 'textarea',
+            'name'       => 'content',
+            'label'      => 'Content',
+            'required'   => $isDefault,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
     }
 }
