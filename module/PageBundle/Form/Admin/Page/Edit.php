@@ -18,100 +18,28 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    PageBundle\Component\Validator\Title as TitleValidator,
-    PageBundle\Entity\Node\Page,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use PageBundle\Component\Validator\Title as TitleValidator;
 
 /**
  * Edit a page.
  */
 class Edit extends Add
 {
-    /**
-     * @var Page
-     */
-    private $_page;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Page            $page
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Page $page, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_page = $page;
-
-        $categories = $this->_entityManager
+        $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         foreach ($categories as $category) {
-            $this->remove('parent_' . $category->getId());
-
-            $field = new Select('parent_' . $category->getId());
-            $field->setLabel('Parent')
-                ->setAttribute('class', 'parent')
-                ->setAttribute('options', $this->createPagesArray($category, $page->getCategory()->getId() == $category->getId() ? $page->getTitle() : ''));
-            $this->add($field);
+            $this->get('parent_' . $category->getId())
+                ->setValueOptions($this->createPagesArray($category, $this->getPage()->getCategory()->getId() == $category->getId() ? $this->getPage()->getTitle() : ''));
         }
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'category_edit');
-        $this->add($field);
-
-        $this->_populateFromPage($page);
-    }
-
-    private function _populateFromPage(Page $page)
-    {
-        $data = array();
-        foreach ($this->getLanguages() as $language) {
-            $data['title_' . $language->getAbbrev()] = $page->getTitle($language, false);
-            $data['content_' . $language->getAbbrev()] = $page->getContent($language, false);
-        }
-
-        $data['category'] = $page->getCategory()->getId();
-
-        $data['edit_roles'] = array();
-        foreach ($page->getEditRoles() as $role)
-            $data['edit_roles'][] = $role->getName();
-
-        $data['parent_' . $page->getCategory()->getId()] = null !== $page->getParent() ? $page->getParent()->getId() : '';
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->remove('title_' . $language->getAbbrev());
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new TitleValidator($this->_entityManager, $this->_page->getName()),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
+        $this->addSubmit('Save', 'category_edit');
     }
 }

@@ -20,8 +20,6 @@ namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Node\Page,
     PageBundle\Entity\Node\Translation,
-    PageBundle\Form\Admin\Page\Add as AddForm,
-    PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 
@@ -71,64 +69,18 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('page_page_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $fallbackLanguage = \Locale::getDefault();
-
-                $category = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findOneById($formData['category']);
-
-                $editRoles = array();
-                if (isset($formData['edit_roles'])) {
-                    foreach ($formData['edit_roles'] as $editRole) {
-                        $editRoles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($editRole);
-                    }
-                }
-
-                $page = new Page(
-                    $this->getAuthentication()->getPersonObject(),
-                    $formData['title_' . $fallbackLanguage],
-                    $category,
-                    $editRoles
+                $page = $form->hydrateObject(
+                    new Page($this->getAuthentication()->getPersonObject())
                 );
 
-                if ('' != $formData['parent_' . $category->getId()]) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent_' . $category->getId()]);
-
-                    $page->setParent($parent);
-                }
-
                 $this->getEntityManager()->persist($page);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $page,
-                            $language,
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['content_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -173,88 +125,13 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 );
         }
 
-        $form = new EditForm($this->getEntityManager(), $page);
+        $form = $this->getForm('page_page_edit', array('page' => $page));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $page->close();
-
-                $category = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findOneById($formData['category']);
-
-                $editRoles = array();
-                if (isset($formData['edit_roles'])) {
-                    foreach ($formData['edit_roles'] as $editRole) {
-                        $editRoles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($editRole);
-                    }
-                }
-
-                $newPage = new Page(
-                    $this->getAuthentication()->getPersonObject(),
-                    $page->getName(),
-                    $category,
-                    $editRoles
-                );
-
-                if ('' != $formData['parent_' . $category->getId()]) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent_' . $category->getId()]);
-
-                    $newPage->setParent($parent);
-                }
-
-                $orphanedPages = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findByParent($page->getId());
-
-                foreach ($orphanedPages as $orphanedPage) {
-                    $orphanedPage->setParent($newPage);
-                }
-
-                $orphanedCategories = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Category')
-                        ->findByParent($page->getId());
-
-                foreach ($orphanedCategories as $orphanedCategory) {
-                    $orphanedCategory->setParent($newPage);
-                }
-
-                $orphanedLinks = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Link')
-                        ->findByParent($page->getId());
-
-                foreach ($orphanedLinks as $orphanedLink) {
-                    $orphanedLink->setParent($newPage);
-                }
-
-                $this->getEntityManager()->persist($newPage);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['content_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $newPage,
-                            $language,
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['content_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

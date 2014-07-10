@@ -19,8 +19,7 @@
 namespace NewsBundle\Form\Admin\News;
 
 use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    NewsBundle\Entity\Node\News;
+    CommonBundle\Entity\General\Language;
 
 /**
  * Add News
