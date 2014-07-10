@@ -55,7 +55,7 @@ class News extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @param Person   $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
