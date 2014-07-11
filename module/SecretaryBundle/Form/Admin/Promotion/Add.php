@@ -18,8 +18,6 @@
 
 namespace SecretaryBundle\Form\Admin\Promotion;
 
-use CommonBundle\Component\Form\Collection;
-
 /**
  * Add Promotion form
  *
@@ -40,9 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'value'      => true,
         ));
 
-        $academic = new Collection('academic');
-        $academic->setLabel('Academic');
-        $this->add($academic);
+        $academic = $this->addCollection('Academic', 'academic');
 
         $academic->add(array(
             'type'       => 'hidden',
@@ -84,9 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $external = new Collection('external');
-        $external->setLabel('External');
-        $this->add($external);
+        $external = $this->addCollection('External', 'external');
 
         $external->add(array(
             'type'       => 'text',

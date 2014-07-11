@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+use CommonBundle\Component\Form\Collection,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
@@ -85,9 +86,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Adds a submit button to the form.
      *
-     * @var string $value
-     * @var string $class
-     * @var string $name
+     * @param  string $value
+     * @param  string $class
+     * @param  string $name
      * @return self
      */
     public function addSubmit($value, $class = null, $name = 'submit')
@@ -106,6 +107,25 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         $this->add($submit);
 
         return $this;
+    }
+
+    /**
+     * Adds a collection to the form.
+     *
+     * @param  string     $label
+     * @param  string     $name
+     * @return Collection
+     */
+    public function addCollection($label, $name)
+    {
+        $collection = new Collection($name);
+        $collection->setLabel($label);
+
+        $this->getFormFactory()->configureFieldset($collection, array());
+
+        $this->add($collection);
+
+        return $collection;
     }
 
     /**
