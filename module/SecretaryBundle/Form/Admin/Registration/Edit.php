@@ -18,9 +18,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    Doctrine\ORM\EntityManager,
-    SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
+use SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Organization\MetaData;
 
@@ -32,67 +30,89 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Edit extends Add
 {
     /**
-     * @var Registration The registration data
+     * @var Registration
      */
-    protected $_registration = null;
+    private $_registration;
 
     /**
-     * @var MetaData The meta data
+     * @var MetaData
      */
-    protected $_metaData = null;
+    private $_metaData;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Registration    $registration  The registration data
-     * @param MetaData        $metaData      The meta data
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Registration $registration, MetaData $metaData = null, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        $this->_registration = $registration;
-        $this->_metaData = $metaData;
+        parent::init();
 
         $this->remove('person_id');
         $this->remove('person');
 
-        $field = new Checkbox('cancel');
-        $field->setLabel('Cancelled')
-            ->setValue($registration->isCancelled());
-        $this->add($field);
-
-        $this->get('payed')->setValue($registration->hasPayed());
-        if ($metaData) {
-            $this->get('irreeel')->setValue($metaData->receiveIrReeelAtCudi());
-            $this->get('bakske')->setValue($metaData->bakskeByMail());
-            $this->get('tshirt_size')->setValue($metaData->getTshirtSize());
-        }
-
-        $organization = $registration->getAcademic()->getOrganization($registration->getAcademicYear());
-        $this->get('organization')->setValue($organization ? $organization->getId() : 0);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('person_id');
-        $inputFilter->remove('person');
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'cancel',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'cancel',
+            'label'      => 'Cancelled',
+            'value'      => $this->getRegistration()->isCancelled(),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         new CancelRegistrationValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->get('payed')
+            ->setValue($this->getRegistration()->hasPayed());
+
+        $metaData = $this->getMetaData();
+
+        if (null !== $metaData) {
+            $this->get('irreeel')
+                ->setValue($metaData->receiveIrReeelAtCudi());
+            $this->get('bakske')
+                ->setValue($metaData->bakskeByMail());
+            $this->get('tshirt_size')
+                ->setValue($metaData->getTshirtSize());
+        }
+
+        $organization = $this->getRegistration()->getAcademic()->getOrganization($this->getRegistration()->getAcademicYear());
+        $this->get('organization')->setValue($organization ? $organization->getId() : 0);
+    }
+
+    /**
+     * @param Registration
+     * @return \SecretaryBundle\Form\Admin\Registration\Edit
+     */
+    public function setRegistration(Registration $registration)
+    {
+        $this->_registration = $registration;
+
+        return $this;
+    }
+
+    /**
+     * @return Registration
+     */
+    public function getRegistration()
+    {
+        return $this->_registration;
+    }
+
+    /**
+     * @param MetaData
+     * @return \SecretaryBundle\Form\Admin\Registration\Edit
+     */
+    public function setMetaData(MetaData $metaData)
+    {
+        $this->_metaData = $metaData;
+
+        return $this;
+    }
+
+    /**
+     * @return MetaData
+     */
+    public function getMetaData()
+    {
+        return $this->_metaData;
     }
 }

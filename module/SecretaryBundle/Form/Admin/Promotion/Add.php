@@ -29,14 +29,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $requireAcademic = true; //isset($this->data['academic_add']) && $this->data['academic_add']
-
         $this->add(array(
             'type'       => 'checkbox',
             'name'       => 'academic_add',
             'label'      => 'Academic',
             'value'      => true,
         ));
+
+        $requireAcademic = $this->get('academic_add')->getValue(); //isset($this->data['academic_add']) && $this->data['academic_add']
 
         $academic = $this->addCollection('Academic', 'academic');
 

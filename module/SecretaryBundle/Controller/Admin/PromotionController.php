@@ -117,8 +117,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
+exit;
                 if ($formData['academic_add']) {
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')

@@ -53,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
+            'type'       => 'text',
             'name'       => 'person',
             'label'      => 'Person',
             'required'   => true,
