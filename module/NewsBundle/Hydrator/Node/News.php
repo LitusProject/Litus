@@ -31,11 +31,6 @@ use NewsBundle\Entity\Node\News as NewsEntity,
  */
 class News extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    /**
-     * @static @var string[] Key attributes to hydrate using the standard method.
-     */
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         // NewsEntity requires the Person that created it, so
@@ -70,7 +65,7 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->updateName();
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -79,7 +74,7 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = array();
 
         if (null !== $object->getEndDate())
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');

@@ -20,10 +20,13 @@ namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
+    Zend\Form\FieldsetInterface,
     Zend\Form\FormInterface,
     Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilterInterface,
+    Zend\InputFilter\InputProviderInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -141,5 +144,40 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             throw new RuntimeException('Cannot hydrate object with data from an invalid form');
 
         return $this->getHydrator()->hydrate($this->getData(), $object);
+    }
+
+    /**
+     * Validate the form
+     *
+     * Typically, will proxy to the composed input filter.
+     *
+     * @return bool
+     * @throws Zend\Form\Exception\DomainException
+     */
+    public function isValid()
+    {
+        $this->injectSelfInValidators($this);
+
+        return parent::isValid();
+    }
+
+    private function injectSelfInValidators(FieldsetInterface $fieldset)
+    {
+        foreach ($fieldset->getElements() as $element) {
+            if (!$element instanceof InputProviderInterface)
+                continue;
+            $spec = $element->getInputSpecification();
+
+            if (isset($spec['validators'])) {
+                foreach ($spec['validators'] as $validator) {
+                    if ($validator instanceof FormAwareInterface)
+                        $validator->setForm($this);
+                }
+            }
+        }
+
+        foreach ($fieldset->getFieldsets() as $child) {
+            $this->injectSelfInValidators($child);
+        }
     }
 }

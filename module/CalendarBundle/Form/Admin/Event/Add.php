@@ -48,7 +48,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'start_date',
             'label'      => 'Start Date',
             'required'   => true,
-            'attributes'  => array(
+            'attributes' => array(
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
             ),
             'options'    => array(
@@ -64,8 +64,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'datetime',
             'name'       => 'end_date',
             'label'      => 'End Date',
-            'required'   => true,
-            'attributes'  => array(
+            'required'   => false,
+            'attributes' => array(
                 'placeholder'     => 'dd/mm/yyyy hh:mm',
             ),
             'options'    => array(

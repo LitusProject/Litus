@@ -32,11 +32,6 @@ use CalendarBundle\Entity\Node\Event as EventEntity,
  */
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    /**
-     * @static @var string[] Key attributes to hydrate using the standard method.
-     */
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         // EventEntity requires the Person that created it, so
@@ -77,7 +72,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->updateName();
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -86,7 +81,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = array();
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         if (null !== $object->getEndDate())

@@ -18,7 +18,9 @@
 
 namespace CalendarBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Util\Url,
+    CommonBundle\Component\Validator\FormAwareInterface,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     CalendarBundle\Entity\Node\Event;
@@ -29,7 +31,7 @@ use CommonBundle\Component\Util\Url,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \Zend\Validator\AbstractValidator
+class Name extends \Zend\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
@@ -47,6 +49,11 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var Language
      */
     private $_language;
+
+    /**
+     * @var Form
+     */
+    private $_form;
 
     /**
      * @var array The error messages
@@ -81,7 +88,7 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $date = \DateTime::createFromFormat('d#m#Y H#i', $context['start_date']);
+        $date = \DateTime::createFromFormat('d#m#Y H#i', $this->_form->get('start_date')->getValue());
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
@@ -97,5 +104,16 @@ class Name extends \Zend\Validator\AbstractValidator
         }
 
         return false;
+    }
+
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
+
+        return $this;
     }
 }

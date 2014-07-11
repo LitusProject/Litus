@@ -30,11 +30,6 @@ use PageBundle\Entity\Node\Page as PageEntity,
  */
 class Page extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    /**
-     * @static @var string[] Key attributes to hydrate using the standard method.
-     */
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         // PageEntity requires the Person that created it, so
@@ -125,7 +120,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -134,7 +129,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = array();
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language, false);

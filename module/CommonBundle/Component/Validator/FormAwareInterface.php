@@ -16,18 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CalendarBundle\Form\Admin\Event;
+namespace CommonBundle\Component\Validator;
+
+use CommonBundle\Component\Form\Form;
 
 /**
- * Edit an event.
+ * Extending Zend's validator component, so that we can inject a form
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+interface FormAwareInterface
 {
-    public function init()
-    {
-        parent::init();
-
-        $this->remove('submit');
-        $this->addSubmit('Save', 'calendar_edit');
-    }
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form);
 }

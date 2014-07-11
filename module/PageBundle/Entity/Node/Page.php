@@ -198,6 +198,7 @@ class Page extends \CommonBundle\Entity\Node
     public function setName($name)
     {
         $this->name = Url::createSlug($name);
+
         return $this;
     }
 

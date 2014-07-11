@@ -18,8 +18,6 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use PageBundle\Component\Validator\Title as TitleValidator;
-
 /**
  * Edit a page.
  */
