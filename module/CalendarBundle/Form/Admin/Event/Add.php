@@ -22,8 +22,7 @@ use CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Node\Event as EventEntity,
     CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\Language,
-    Zend\Form\FormInterface;
+    CommonBundle\Entity\General\Language;
 
 /**
  * Add an event.

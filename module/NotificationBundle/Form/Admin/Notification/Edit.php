@@ -18,10 +18,6 @@
 
 namespace NotificationBundle\Form\Admin\Notification;
 
-use Doctrine\ORM\EntityManager,
-    NotificationBundle\Entity\Node\Notification,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Notification
  *

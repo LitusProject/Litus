@@ -19,13 +19,11 @@
 namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
     Zend\Form\FieldsetInterface,
     Zend\Form\FormInterface,
     Zend\InputFilter\InputFilterAwareInterface,
-    Zend\InputFilter\InputFilterInterface,
     Zend\InputFilter\InputProviderInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
@@ -44,6 +42,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     use ElementTrait;
     use FieldsetTrait;
 
+    /**
+     * @param null|string|int $name               Optional name for the element
+     * @param array           $options
+     */
     public function __construct($name = null, $options = array())
     {
         parent::__construct($name, $options);
@@ -128,7 +130,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return Zend\InputFilter\Factory
+     * @return \Zend\InputFilter\Factory
      */
     public function getInputFilterFactory()
     {

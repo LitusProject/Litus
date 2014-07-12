@@ -19,9 +19,6 @@
 namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Category,
-    PageBundle\Entity\Category\Translation,
-    PageBundle\Form\Admin\Category\Add as AddForm,
-    PageBundle\Form\Admin\Category\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**

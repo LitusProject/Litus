@@ -18,8 +18,7 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-use NewsBundle\Entity\Node\News as NewsEntity,
-    NewsBundle\Entity\Node\Translation as TranslationEntity,
+use NewsBundle\Entity\Node\Translation as TranslationEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     DateTime;
 

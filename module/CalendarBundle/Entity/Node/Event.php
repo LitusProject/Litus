@@ -69,8 +69,6 @@ class Event extends \CommonBundle\Entity\Node
 
     /**
      * @param Person        $person
-     * @param DateTime      $startDate
-     * @param DateTime|null $endDate
      */
     public function __construct(Person $person)
     {

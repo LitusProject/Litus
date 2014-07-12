@@ -18,9 +18,7 @@
 
 namespace OnBundle\Hydrator;
 
-use OnBundle\Document\Slug as SlugDocument,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    DateTime;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts slug data.

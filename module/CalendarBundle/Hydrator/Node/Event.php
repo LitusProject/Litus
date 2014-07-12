@@ -18,8 +18,7 @@
 
 namespace CalendarBundle\Hydrator\Node;
 
-use CalendarBundle\Entity\Node\Event as EventEntity,
-    CalendarBundle\Entity\Node\Translation as TranslationEntity,
+use CalendarBundle\Entity\Node\Translation as TranslationEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     DateTime;

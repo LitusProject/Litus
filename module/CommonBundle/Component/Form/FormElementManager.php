@@ -57,7 +57,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
     private $data;
 
     /**
-     * @param ConfigInterface         $configuration
+     * @param ConfigInterface         $config
      * @param boolean                 $isAdmin
      * @param ServiceLocatorInterface $mainServiceLocator
      */

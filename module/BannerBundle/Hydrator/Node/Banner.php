@@ -18,8 +18,7 @@
 
 namespace BannerBundle\Hydrator\Node;
 
-use BannerBundle\Entity\Node\Banner as BannerEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     DateTime;
 

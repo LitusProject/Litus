@@ -18,10 +18,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\Element\Collection as ZendCollection,
-    Zend\Form\FormInterface,
-    Zend\Form\ElementPrepareAwareInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
@@ -37,6 +34,9 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
+    /**
+     * @param string $name
+     */
     public function __construct($name = null, $options = array())
     {
         parent::__construct($name, $options);
@@ -44,6 +44,10 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
         $this->setHydrator(new ClassMethodsHydrator());
     }
 
+    /**
+     * @param  string $name
+     * @return self
+     */
     public function setName($name)
     {
         $this->setAttribute('id', $name);

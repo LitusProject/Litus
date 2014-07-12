@@ -43,6 +43,10 @@ class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
         return parent::get($name, $options, $usePeeringServiceManagers);
     }
 
+    /**
+     * @param  string $name
+     * @return string
+     */
     private function getHydratorName($name)
     {
         $parts = explode('\\', $name, 3);

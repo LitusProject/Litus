@@ -18,8 +18,7 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use DateTime,
-    BannerBundle\Entity\Node\Banner,
+use BannerBundle\Entity\Node\Banner,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;

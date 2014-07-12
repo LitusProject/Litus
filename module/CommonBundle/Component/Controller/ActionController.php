@@ -23,7 +23,6 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     Locale,
     Zend\Http\Header\HeaderInterface,
@@ -443,7 +442,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * @param  string                   $name
      * @param  array|object|null        $data
-     * @return \Zend\Form\FormInterface
+     * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)
     {

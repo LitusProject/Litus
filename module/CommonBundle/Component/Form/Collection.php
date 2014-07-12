@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\ElementPrepareAwareInterface,
-    Zend\Form\FormInterface as OriginalFormInterface;
-
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {
     use ElementTrait;
@@ -45,7 +42,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
      * Set a hash of element names/messages to use when validation fails
      *
      * @param  array|\Traversable                         $messages
-     * @return Element|ElementInterface|FieldsetInterface
+     * @return Collection
      * @throws Exception\InvalidArgumentException
      */
     public function setMessages($messages)

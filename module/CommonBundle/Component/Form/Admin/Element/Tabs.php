@@ -46,7 +46,7 @@ class Tabs extends \Zend\Form\Element
     /**
      * @param array $tabs
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return Tabs
      */
     public function setTabs($tabs = array())
     {
@@ -66,7 +66,7 @@ class Tabs extends \Zend\Form\Element
     /**
      * @param array $tab
      *
-     * @return \CommonBundle\Component\Form\Bootstrap\Element\Tabs
+     * @return Tabs
      */
     public function addTab($tab)
     {

@@ -21,8 +21,7 @@ namespace CommonBundle\Component\Form\Admin\Form;
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     Locale,
-    RuntimeException,
-    Zend\InputFilter\InputFilter;
+    RuntimeException;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

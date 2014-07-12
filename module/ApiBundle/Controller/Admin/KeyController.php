@@ -18,8 +18,7 @@
 
 namespace ApiBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    ApiBundle\Entity\Key,
+use ApiBundle\Entity\Key,
     Zend\View\Model\ViewModel;
 
 /**

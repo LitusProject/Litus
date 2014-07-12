@@ -19,7 +19,6 @@
 namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Node\Page,
-    PageBundle\Entity\Node\Translation,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\View\Model\ViewModel;
 

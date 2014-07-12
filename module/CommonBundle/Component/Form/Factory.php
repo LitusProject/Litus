@@ -19,8 +19,7 @@
 namespace CommonBundle\Component\Form;
 
 use Zend\Form\ElementInterface as OriginalElementInterface,
-    Zend\Form\FieldsetInterface as OriginalFieldsetInterface,
-    Zend\Form\FormInterface;
+    Zend\Form\FieldsetInterface as OriginalFieldsetInterface;
 
 /**
  * Creates forms
@@ -47,7 +46,7 @@ class Factory extends \Zend\Form\Factory
      *          set<Key>, with <Key> the array key of the value.
      * - object: the object will be bound to the object
      *
-     * @param  array|\Traversable          $type
+     * @param  array|\Traversable          $spec
      * @param  array|object|null           $data
      * @return \Zend\Form\ElementInterface
      */

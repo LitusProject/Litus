@@ -93,9 +93,6 @@ class Page extends \CommonBundle\Entity\Node
 
     /**
      * @param Person   $person
-     * @param string   $name
-     * @param Category $category
-     * @param array    $editRoles
      */
     public function __construct(Person $person)
     {

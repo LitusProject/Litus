@@ -25,9 +25,6 @@ use CommonBundle\Component\Util\AcademicYear,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Form\Admin\Registration\Add as AddForm,
-    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
-    SecretaryBundle\Form\Admin\Registration\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**

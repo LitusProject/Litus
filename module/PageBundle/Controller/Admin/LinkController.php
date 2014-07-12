@@ -19,9 +19,6 @@
 namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Link,
-    PageBundle\Entity\Link\Translation,
-    PageBundle\Form\Admin\Link\Add as AddForm,
-    PageBundle\Form\Admin\Link\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**

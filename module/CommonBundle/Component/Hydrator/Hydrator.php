@@ -188,6 +188,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     }
 
     /**
+     * @param  string $name
      * @return \Zend\Stdlib\Hydrator\HydratorInterface
      */
     public function getHydrator($name)
