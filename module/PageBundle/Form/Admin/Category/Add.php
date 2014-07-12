@@ -18,15 +18,8 @@
 
 namespace PageBundle\Form\Admin\Category;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Tabs,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language;
 
 /**
  * Add Category
@@ -34,65 +27,46 @@ use CommonBundle\Component\OldForm\Admin\Element\Select,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'PageBundle\Hydrator\Category';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'parent',
+            'label'      => 'Parent',
+            'options'    => array(
+                'options' => $this->_createPagesArray(),
+            ),
+        ));
 
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('name_' . $language->getAbbrev());
-            $field->setLabel('Name')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Select('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('options', $this->_createPagesArray());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'category_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'category_add');
     }
 
-    protected function getLanguages()
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => $isDefault,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
     }
 
     private function _createPagesArray()
     {
-        $pages = $this->_entityManager
+        $pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findAll();
 
@@ -103,27 +77,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
             $pageOptions[$page->getId()] = $page->getTitle();
 
         return $pageOptions;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'name_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
     }
 }

@@ -64,13 +64,8 @@ class Link
      */
     private $translations;
 
-    /**
-     * @param Category $category
-     */
-    public function __construct(Category $category)
+    public function __construct()
     {
-        $this->category = $category;
-
         $this->translations = new ArrayCollection();
     }
 

@@ -18,16 +18,9 @@
 
 namespace PageBundle\Form\Admin\Link;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Tabs,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
-    PageBundle\Entity\Category,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language,
+    PageBundle\Entity\Category;
 
 /**
  * Add Link
@@ -35,82 +28,82 @@ use CommonBundle\Component\OldForm\Admin\Element\Select,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'PageBundle\Hydrator\Link';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'category',
+            'label'      => 'Category',
+            'required'   => true,
+            'options'    => array(
+                'options' => $this->_createCategoriesArray(),
+            ),
+        ));
 
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('name_' . $language->getAbbrev());
-            $field->setLabel('Name')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $field = new Text('url_' . $language->getAbbrev());
-            $field->setLabel('URL')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Select('category');
-        $field->setLabel('Category')
-            ->setRequired()
-            ->setAttribute('options', $this->_createCategoriesArray());
-        $this->add($field);
-
-        $categories = $this->_entityManager
+        $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         foreach ($categories as $category) {
-            $field = new Select('parent_' . $category->getId());
-            $field->setLabel('Parent')
-                ->setAttribute('class', 'parent')
-                ->setAttribute('options', $this->_createPagesArray($category));
-            $this->add($field);
+            $this->add(array(
+                'type'       => 'select',
+                'name'       => 'parent_' . $category->getId(),
+                'label'      => 'Parent',
+                'attributes' => array(
+                    'class' => 'parent',
+                ),
+                'options'    => array(
+                    'options' => $this->_createPagesArray($category),
+                ),
+            ));
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'link_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'link_add');
     }
 
-    protected function getLanguages()
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => $isDefault,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'url',
+            'label'      => 'URL',
+            'required'   => $isDefault,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Uri'),
+                    ),
+                ),
+            ),
+        ));
     }
 
     private function _createCategoriesArray()
     {
-        $categories = $this->_entityManager
+        $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
@@ -128,7 +121,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
 
     private function _createPagesArray(Category $category)
     {
-        $pages = $this->_entityManager
+        $pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findByCategory($category, array('name' => 'ASC'));
 
@@ -139,51 +132,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
             $pageOptions[$page->getId()] = $page->getTitle();
 
         return $pageOptions;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'name_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'url_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Uri'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'category',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

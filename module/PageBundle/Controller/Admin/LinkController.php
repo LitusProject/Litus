@@ -48,48 +48,16 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('page_link_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $category = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findOneById($formData['category']);
-
-                $link = new Link($category);
-
-                if ('' != $formData['parent_' . $category->getId()]) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent_' . $category->getId()]);
-
-                    $link->setParent($parent);
-                }
+                $link = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($link);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['name_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $link,
-                            $language,
-                            $formData['name_' . $language->getAbbrev()],
-                            $formData['url_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -120,53 +88,13 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         if (!($link = $this->_getLink()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $link);
+        $form = $this->getForm('page_link_edit', $link);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $category = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Category')
-                    ->findOneById($formData['category']);
-
-                $link->setCategory($category);
-
-                if ('' != $formData['parent_' . $category->getId()]) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent_' . $category->getId()]);
-
-                    $link->setParent($parent);
-                }
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $link->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setName($formData['name_' . $language->getAbbrev()])
-                            ->setUrl($formData['url_' . $language->getAbbrev()]);
-                    } else {
-                        if ('' != $formData['name_' . $language->getAbbrev()]) {
-                            $translation = new Translation(
-                                $link,
-                                $language,
-                                $formData['name_' . $language->getAbbrev()],
-                                $formData['url_' . $language->getAbbrev()]
-                            );
-
-                            $this->getEntityManager()->persist($translation);
-                        }
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

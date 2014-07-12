@@ -18,10 +18,6 @@
 
 namespace PageBundle\Form\Admin\Category;
 
-use Doctrine\ORM\EntityManager,
-    PageBundle\Entity\Category,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Category
  *
@@ -30,33 +26,12 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Category        $category      The category we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Category $category, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'category_edit');
-        $this->add($field);
-
-        $this->_populateFromCategory($category);
-    }
-
-    private function _populateFromCategory(Category $category)
-    {
-        $data = array();
-        foreach($this->getLanguages() as $language)
-            $data['name_' . $language->getAbbrev()] = $category->getName($language, false);
-
-        $data['parent'] = null !== $category->getParent() ? $category->getParent()->getId() : '';
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'category_edit');
     }
 }
