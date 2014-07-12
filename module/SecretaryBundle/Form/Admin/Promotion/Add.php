@@ -36,18 +36,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'value'      => true,
         ));
 
-        $requireAcademic = $this->get('academic_add')->getValue(); //isset($this->data['academic_add']) && $this->data['academic_add']
-
-        $academic = $this->addCollection('Academic', 'academic');
+        $academic = $this->addFieldset('Academic', 'academic');
 
         $academic->add(array(
             'type'       => 'hidden',
             'name'       => 'academic_id',
-            'required'   => $requireAcademic,
+            'required'   => true,
             'attributes' => array(
-                'id' => 'academicId',
+                'id'       => 'academicId',
             ),
-            'options' => array(
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -65,13 +63,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'text',
             'name'       => 'academic_name',
             'label'      => 'Academic',
-            'required'   => $requireAcademic,
+            'required'   => true,
             'attributes' => array(
                 'id'           => 'academicSearch',
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',
             ),
-            'options' => array(
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -80,14 +78,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $external = $this->addCollection('External', 'external');
+        $external = $this->addFieldset('External', 'external');
 
         $external->add(array(
             'type'       => 'text',
             'name'       => 'external_first_name',
             'label'      => 'First Name',
-            'required'   => !$requireAcademic,
-            'options' => array(
+            'required'   => true,
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -100,8 +98,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'text',
             'name'       => 'external_last_name',
             'label'      => 'Last Name',
-            'required'   => !$requireAcademic,
-            'options' => array(
+            'required'   => true,
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -114,8 +112,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'text',
             'name'       => 'external_email',
             'label'      => 'Email',
-            'required'   => !$requireAcademic,
-            'options' => array(
+            'required'   => true,
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),

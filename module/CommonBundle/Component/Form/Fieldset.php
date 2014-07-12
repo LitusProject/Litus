@@ -44,6 +44,13 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
         $this->setHydrator(new ClassMethodsHydrator());
     }
 
+    public function setName($name)
+    {
+        $this->setAttribute('id', $name);
+
+        return parent::setName($name);
+    }
+
     public function showAs()
     {
         return 'fieldset';

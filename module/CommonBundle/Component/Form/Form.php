@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\Form\Collection,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
@@ -110,22 +109,22 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * Adds a collection to the form.
+     * Adds a fieldset to the form.
      *
      * @param  string     $label
      * @param  string     $name
      * @return Collection
      */
-    public function addCollection($label, $name)
+    public function addFieldset($label, $name)
     {
-        $collection = new Collection($name);
-        $collection->setLabel($label);
+        $fieldset = new Fieldset($name);
+        $fieldset->setLabel($label);
 
-        $this->getFormFactory()->configureFieldset($collection, array());
+        $this->getFormFactory()->configureFieldset($fieldset, array());
 
-        $this->add($collection);
+        $this->add($fieldset);
 
-        return $collection;
+        return $fieldset;
     }
 
     /**
