@@ -19,7 +19,6 @@
 namespace MailBundle\Controller\Admin;
 
 use DateTime,
-    MailBundle\Form\Admin\Cudi\Mail as MailForm,
     Markdown_Parser,
     Zend\Mail\Message,
     Zend\Mime\Part,
@@ -49,14 +48,14 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $mailSubject = $mailData['subject'];
         $message = $mailData['message'];
 
-        $form = new MailForm($mailSubject, $message, $semester);
+        $form = $this->getForm('mail_prof_mail', array('subject' => $mailSubject, 'message' => $message, 'semester' => $semester));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData($formData);
                 $semester = $formData['semester'];
 
                 $mailAddress = $this->getEntityManager()

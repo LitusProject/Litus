@@ -30,7 +30,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getCurrentAcademicYear($organization = false)
+    public function getCurrentAcademicYear($organization = false)
     {
         return AcademicYear::getUniversityYear($this->getEntityManager());
     }

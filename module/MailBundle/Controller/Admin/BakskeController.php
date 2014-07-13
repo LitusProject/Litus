@@ -34,15 +34,15 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 {
     public function sendAction()
     {
-        $form = new SendForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = $this->getForm('mail_bakske_mail', array('academicYear' => $this->getCurrentAcademicYear()));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
+                $formData = $form->getData();
+                
                 $editionId = $formData['edition'];
 
                 $edition = $this->getEntityManager()

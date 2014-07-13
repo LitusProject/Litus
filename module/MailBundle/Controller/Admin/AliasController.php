@@ -18,9 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Entity\Alias\Academic as Alias,
-    MailBundle\Form\Admin\Alias\Add as AddForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 class AliasController extends \MailBundle\Component\Controller\AdminController
 {
@@ -45,28 +43,15 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('mail_alias_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $alias = $form->hydrateObject();
 
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
-
-                $alias = new Alias(
-                    $formData['alias'], $academic
-                );
                 $this->getEntityManager()->persist($alias);
                 $this->getEntityManager()->flush();
 
