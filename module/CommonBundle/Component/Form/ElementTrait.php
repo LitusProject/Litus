@@ -95,7 +95,7 @@ trait ElementTrait
             // create default
             return array(
                 'name'     => $this->getName(),
-                'required' => false,
+                'required' => $this->isRequired(),
             );
         }
 
