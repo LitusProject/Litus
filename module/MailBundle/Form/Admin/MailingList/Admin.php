@@ -18,106 +18,106 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Validator\Academic as AcademicValidator,
+    MailBundle\Component\Validator\AdminMap as AdminMapValidator,
+    MailBundle\Entity\MailingList;
 
 /**
  * Add Admin
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Admin extends \CommonBundle\Component\OldForm\Admin\Form
+class Admin extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'MailBundle\Hydrator\MailingList\AdminMap';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var MailingList
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    private $_list;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'person_id',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => true,
+                            )
+                        )
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('person_name');
-        $field->setLabel('Name')
-            ->setRequired(true)
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'person_name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'id'           => 'personSearch',
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AdminMapValidator($this->getEntityManager(), $this->getList()),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Checkbox('edit_admin');
-        $field->setLabel('Can Edit Admins');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'edit_admin',
+            'label'      => 'Can Edit Admins',
+        ));
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'mail_add');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'admin_map',
+            'value'      => 'Add',
+            'attributes' => array(
+                'class' => 'mail_add',
+            ),
+        ));
     }
 
-    public function getInputFilter()
+    /**
+     * @param  MailingList $list
+     * @return self
+     */
+    public function setList(MailingList $list)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_list = $list;
 
-        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_name',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => false,
-                                )
-                            )
-                        ),
-                    )
-                )
-            );
-        } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_id',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => true,
-                                )
-                            )
-                        ),
-                    )
-                )
-            );
-        }
+        return $this;
+    }
 
-        return $inputFilter;
+    /**
+     * @return MailingList
+     */
+    public function getList()
+    {
+        return $this->_list;
     }
 }

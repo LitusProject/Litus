@@ -440,8 +440,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @param  string                   $name
-     * @param  array|object|null        $data
+     * @param  string                            $name
+     * @param  array|object|null                 $data
      * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)

@@ -105,6 +105,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function setSubject($subject)
     {
         $this->_subject = $subject;
+
         return $this;
     }
 
@@ -123,6 +124,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function setMessage($message)
     {
         $this->_message = $message;
+
         return $this;
     }
 
@@ -141,6 +143,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function setSemester($semester)
     {
         $this->_semester = $semester;
+
         return $this;
     }
 

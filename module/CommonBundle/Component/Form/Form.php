@@ -43,7 +43,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     use FieldsetTrait;
 
     /**
-     * @param null|string|int $name               Optional name for the element
+     * @param null|string|int $name    Optional name for the element
      * @param array           $options
      */
     public function __construct($name = null, $options = array())

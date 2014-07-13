@@ -82,8 +82,8 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @param string  $code
-     * @param int     $expirationTime
+     * @param string $code
+     * @param int    $expirationTime
      */
     public function __construct($code, $expirationTime = /* 5 years */ 157680000)
     {

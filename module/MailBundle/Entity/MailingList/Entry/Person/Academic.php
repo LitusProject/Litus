@@ -41,13 +41,11 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * Creates a new list entry for the given list with the given academic?
      *
-     * @param MailingList    $list     The list for this entry
-     * @param AcademicEntity $academic The academic to add
+     * @param MailingList $list The list for this entry
      */
-    public function __construct(MailingList $list, AcademicEntity $academic)
+    public function __construct(MailingList $list)
     {
         parent::__construct($list);
-        $this->academic = $academic;
     }
 
     /**
@@ -56,6 +54,17 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     public function getAcademic()
     {
         return $this->academic;
+    }
+
+    /**
+     * @param  \CommonBundle\Entity\User\Person\Academic $academic
+     * @return self
+     */
+    public function setAcademic(AcademicEntity $academic)
+    {
+        $this->academic = $academic;
+
+        return $this;
     }
 
     /**

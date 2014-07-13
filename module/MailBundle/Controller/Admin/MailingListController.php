@@ -21,10 +21,8 @@ namespace MailBundle\Controller\Admin;
 use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
     MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
     MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
-    MailBundle\Entity\MailingList\Named as NamedList,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
-    MailBundle\Form\Admin\MailingList\Add as AddForm,
     MailBundle\Form\Admin\MailingList\Admin as AdminForm,
     MailBundle\Form\Admin\MailingList\AdminRole as AdminRoleForm,
     MailBundle\Form\Admin\MailingList\Entry\MailingList as MailingListForm,
@@ -88,31 +86,14 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('mail_mailinglist_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $list = new NamedList($formData['name']);
-                $this->getEntityManager()->persist($list);
-
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
-
-                $admin = new ListAdmin($list, $academic, true);
-                $this->getEntityManager()->persist($admin);
-
+                $list = $form->hydrateObject();
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -147,114 +128,39 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         if (!$this->_checkAccess($list, false))
             return new ViewModel();
 
-        $academicForm = new AcademicForm($this->getEntityManager());
-        $externalForm = new ExternalForm($this->getEntityManager());
-        $mailingListForm = new MailingListForm(
-            $this->getEntityManager(), $this->getAuthentication()->getPersonObject(), $list
-        );
+        $academicForm = $this->getForm('mail_mailinglist_entry_person_academic', array('list' => $list));
+        $externalForm = $this->getForm('mail_mailinglist_entry_person_external', array('list' => $list));
+        $mailingListForm = $this->getForm('mail_mailinglist_entry_mailinglist', array('person' => $this->getAuthentication()->getPersonObject(), 'list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $academicForm->setData($formData);
+            $externalForm->setData($formData);
+            $mailingListForm->setData($formData);
 
-            if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
-                $externalForm->setData($formData);
-                $form = $externalForm;
-            } elseif (isset($formData['entry'])) {
-                $mailingListForm->setData($formData);
-                $form = $mailingListForm;
-            } else {
-                $academicForm->setData($formData);
-                $form = $academicForm;
+            $entry = null;
+            if (isset($formData['academic_add']) && $academicForm->isValid()) {
+                $entry = $academicForm->hydrateObject(
+                    new AcademicEntry($list)
+                );
+            } elseif (isset($formData['external_add']) && $externalForm->isValid()) {
+                $entry = $externalForm->hydrateObject(
+                    new ExternalEntry($list)
+                );
+            } elseif (isset($formData['list_add']) && $mailingListForm->isValid()) {
+                $entry = $mailingListForm->hydrateObject(
+                    new MailingListEntry($list)
+                );
             }
 
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+            if (null !== $entry) {
+                $this->getEntityManager()->persist($entry);
+                $this->getEntityManager()->flush();
 
-                $entry = null;
-                if (isset($formData['first_name'], $formData['last_name'], $formData['email'])) {
-                    $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\MailingList\Entry\Person\External')
-                        ->findOneBy(
-                            array(
-                                'list' => $list,
-                                'email' => $formData['email']
-                            )
-                        );
-
-                    if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->error(
-                            'Error',
-                            'This external address already has been subscribed to this list!'
-                        );
-                    } else {
-                        $entry = new ExternalEntry(
-                            $list,
-                            $formData['first_name'],
-                            $formData['last_name'],
-                            $formData['email']
-                        );
-                    }
-                } elseif (isset($formData['entry'])) {
-                    $entry = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\MailingList\Named')
-                        ->findOneById($formData['entry']);
-
-                    $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\MailingList\Entry\MailingList')
-                        ->findOneBy(
-                            array(
-                                'list' => $list,
-                                'entry' => $entry
-                            )
-                        );
-
-                    if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->error(
-                            'Error',
-                            'This list already has been subscribed to this list!'
-                        );
-                    } else {
-                        $entry = new MailingListEntry($list, $entry);
-                    }
-                } else {
-                    if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                        $academic = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                            ->findOneByUsername($formData['person_name']);
-                    } else {
-                        $academic = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                            ->findOneById($formData['person_id']);
-                    }
-
-                    $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('MailBundle\Entity\MailingList\Entry\Person\Academic')
-                        ->findOneBy(
-                            array(
-                                'list' => $list,
-                                'academic' => $academic
-                            )
-                        );
-
-                    if (null !== $repositoryCheck) {
-                        $this->flashMessenger()->error(
-                            'Error',
-                            'This member already has been subscribed to this list!'
-                        );
-                    } else {
-                        $entry = new AcademicEntry($list, $academic);
-                    }
-                }
-
-                if (null !== $entry) {
-                    $this->getEntityManager()->persist($entry);
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The entry was succesfully created!'
-                    );
-                }
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The entry was succesfully created!'
+                );
 
                 $this->redirect()->toRoute(
                     'mail_admin_list',
@@ -285,59 +191,32 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if(!($list = $this->_getList()))
-
+        if (!($list = $this->_getList()))
             return new ViewModel();
 
         if (!$this->_checkAccess($list, true))
             return new ViewModel();
 
-        $adminForm = new AdminForm($this->getEntityManager());
-        $adminRoleForm = new AdminRoleForm($this->getEntityManager());
+        $adminForm = $this->getForm('mail_mailinglist_admin', array('list' => $list));
+        $adminRoleForm = $this->getForm('mail_mailinglist_adminrole', array('list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $adminForm->setData($formData);
             $adminRoleForm->setData($formData);
 
-            if ($adminForm->isValid()) {
-                $formData = $adminForm->getFormData($formData);
+            if (isset($formData['admin_map']) && $adminForm->isValid()) {
+                $admin = $adminForm->hydrateObject(
+                    new ListAdmin($list)
+                );
 
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
+                $this->getEntityManager()->persist($admin);
+                $this->getEntityManager()->flush();
 
-                $repositoryCheck = $this->getEntityManager()
-                    ->getRepository('MailBundle\Entity\MailingList\AdminMap')
-                    ->findOneBy(
-                        array(
-                            'list' => $list,
-                            'academic' => $academic
-                        )
-                    );
-
-                if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'This member already has admin rights on this list!'
-                    );
-                } else {
-                    $admin = new ListAdmin($list, $academic, $formData['edit_admin']);
-
-                    $this->getEntityManager()->persist($admin);
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The admin was succesfully added!'
-                    );
-                }
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The admin was succesfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'mail_admin_list',
@@ -350,38 +229,18 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 return new ViewModel();
             }
 
-            if ($adminRoleForm->isValid()) {
-                $formData = $adminRoleForm->getFormData($formData);
+            if (isset($formData['admin_role']) && $adminRoleForm->isValid()) {
+                $adminRole = $adminRoleForm->hydrateObject(
+                    new ListAdminRole($list)
+                );
 
-                $role = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName($formData['role']);
+                $this->getEntityManager()->persist($adminRole);
+                $this->getEntityManager()->flush();
 
-                $repositoryCheck = $this->getEntityManager()
-                    ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
-                    ->findOneBy(
-                        array(
-                            'list' => $list,
-                            'role' => $role
-                        )
-                    );
-
-                if (null !== $repositoryCheck) {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'This role already has admin rights on this list!'
-                    );
-                } else {
-                    $adminRole = new ListAdminRole($list, $role, $formData['edit_admin']);
-
-                    $this->getEntityManager()->persist($adminRole);
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The admin role was succesfully added!'
-                    );
-                }
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The admin role was succesfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'mail_admin_list',

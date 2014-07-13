@@ -18,85 +18,76 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry;
 
-use CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    \MailBundle\Entity\MailingList as MailingListEntity;
+use CommonBundle\Entity\User\Person,
+    MailBundle\Component\Validator\Entry\MailingList as MailingListEntryValidator,
+    MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
  * Add MailingList
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class MailingList extends \CommonBundle\Component\OldForm\Admin\Form
+class MailingList extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'MailBundle\Hydrator\MailingList\Entry\MailingList';
 
     /**
      * @var Person The authenticated person
      */
-    protected $_authenticatedPerson = null;
+    protected $_person = null;
 
     /**
      * @var MailingListEntity The current list
      */
-    protected $_currentList = null;
+    protected $_list = null;
 
-    /**
-     * @param EntityManager     $entityManager       The EntityManager instance
-     * @param Person            $authenticatedPerson The authenticated person
-     * @param MailingListEntity $currentList         The current list
-     * @param null|string|int   $name                Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Person $authenticatedPerson, MailingListEntity $currentList, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_authenticatedPerson = $authenticatedPerson;
-        $this->_currentList = $currentList;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'entry',
+            'label'      => 'List',
+            'required'   => true,
+            'options'    => array(
+                'options' => $this->_createEntriesArray(),
+                'input' => array(
+                    'validators' => array(
+                        new MailingListEntryValidator($this->getEntityManager(), $this->getList()),
+                    ),
+                ),
+            ),
+        ));
 
-        $list = new Collection('list');
-        $list->setLabel('Add List');
-        $this->add($list);
-
-        $field = new Select('entry');
-        $field->setLabel('List')
-            ->setRequired(true)
-            ->setAttribute('options', $this->_createEntriesArray());
-        $list->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'mail_add');
-        $list->add($field);
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'list_add',
+            'value'      => 'Add',
+            'attributes' => array(
+                'class' => 'mail_add',
+            ),
+        ));
     }
 
     private function _createEntriesArray()
     {
         $editor = false;
-        foreach ($this->_authenticatedPerson->getFlattenedRoles() as $role) {
+        foreach ($this->getPerson()->getFlattenedRoles() as $role) {
             if ($role->getName() == 'editor') {
                 $editor = true;
                 break;
             }
         }
 
-        $lists =  $this->_entityManager
+        $lists =  $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findBy(array(), array('name' => 'ASC'));
 
         if (!$editor) {
             $listsArray = array();
             foreach ($lists as $list) {
-                if ($list->canBeEditedBy($this->_authenticatedPerson))
+                if ($list->canBeEditedBy($this->getPerson()))
                     $listsArray[] = $list;
             }
         } else {
@@ -104,15 +95,15 @@ class MailingList extends \CommonBundle\Component\OldForm\Admin\Form
         }
 
         foreach ($listsArray as $key => $value) {
-            $lists = $this->_entityManager
+            $lists = $this->getEntityManager()
                 ->getRepository('MailBundle\Entity\MailingList\Entry\MailingList')
                 ->findBy(
                     array(
-                        'list' => $this->_currentList,
+                        'list' => $this->getList(),
                         'entry' => $value
                     )
                 );
-            if ($value === $this->_currentList || count($lists) > 0)
+            if ($value === $this->getList() || count($lists) > 0)
                 unset($listsArray[$key]);
         }
 
@@ -123,20 +114,41 @@ class MailingList extends \CommonBundle\Component\OldForm\Admin\Form
         return $lists;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  MailingListEntity $list
+     * @return self
+     */
+    public function setList(MailingListEntity $list)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_list = $list;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'entry',
-                    'required' => true,
-                )
-            )
-        );
+        return $this;
+    }
 
-        return $inputFilter;
+    /**
+     * @return MailingListEntity
+     */
+    public function getList()
+    {
+        return $this->_list;
+    }
+
+    /**
+     * @param  Person $person
+     * @return self
+     */
+    public function setPerson(Person $person)
+    {
+        $this->_person = $person;
+
+        return $this;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->_person;
     }
 }

@@ -42,7 +42,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 
             if ($form->isValid()) {
                 $formData = $form->getData();
-                
+
                 $editionId = $formData['edition'];
 
                 $edition = $this->getEntityManager()

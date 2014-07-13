@@ -40,13 +40,11 @@ class MailingList extends \MailBundle\Entity\MailingList\Entry
     /**
      * Creates a new list entry for the given list with the given list.
      *
-     * @param MailingListEntity $list  The list for this entry
-     * @param MailingListEntity $entry The list associated with this entry
+     * @param MailingListEntity $list The list for this entry
      */
-    public function __construct(MailingListEntity $list, MailingListEntity $entry)
+    public function __construct(MailingListEntity $list)
     {
         parent::__construct($list);
-        $this->entry = $entry;
     }
 
     /**
@@ -55,6 +53,17 @@ class MailingList extends \MailBundle\Entity\MailingList\Entry
     public function getEntry()
     {
         return $this->entry;
+    }
+
+    /**
+     * @param  MailingListEntity $entry
+     * @return self
+     */
+    public function setEntry(MailingListEntity $entry)
+    {
+        $this->entry = $entry;
+
+        return $this;
     }
 
     /**

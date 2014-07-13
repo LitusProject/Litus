@@ -20,7 +20,6 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
-    MailBundle\Form\Admin\Group\Mail as MailForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -56,28 +55,14 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $statuses = UniversityStatus::$possibleStatuses;
         }
 
-        $form = new MailForm();
+        $form = $this->getForm('mail_group_mail');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $mailAddress = $formData['from'];
-                if ('' == $mailAddress) {
-                    $mailAddress = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_address');
-                }
-
-                $mailName = $formData['name'];
-                if ('' == $mailName) {
-                    $mailName = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_mail_name');
-                }
+                $formData = $form->getData($formData);
 
                 $body = $formData['message'];
                 if ($formData['test'])
@@ -85,7 +70,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
                 $mail = new Message();
                 $mail->setBody($body)
-                    ->setFrom($mailAddress, $mailName)
+                    ->setFrom($formData['from'], $formData['name'])
                     ->setSubject($formData['subject']);
 
                 if ('organization' == $type) {

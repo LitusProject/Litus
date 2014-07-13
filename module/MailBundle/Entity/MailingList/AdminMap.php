@@ -67,7 +67,7 @@ class AdminMap
      * @param Academic $academic  The academic of the mapping
      * @param boolean  $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
      */
-    public function __construct(MailingList $list, Academic $academic, $editAdmin)
+    public function __construct(MailingList $list, Academic $academic = null, $editAdmin = false)
     {
         $this->list = $list;
         $this->academic = $academic;
@@ -96,10 +96,32 @@ class AdminMap
     }
 
     /**
+     * @param  Academic $academic
+     * @return self
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->academic = $academic;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function canEditAdmin()
     {
         return $this->editAdmin;
+    }
+
+    /**
+     * @param  bool $editAdmin
+     * @return self
+     */
+    public function setEditAdmin($editAdmin)
+    {
+        $this->editAdmin = $editAdmin;
+
+        return $this;
     }
 }

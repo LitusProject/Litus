@@ -98,6 +98,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     public function setAcademicYear(AcademicYear $academicYear)
     {
         $this->_academicYear = $academicYear;
+
         return $this;
     }
 

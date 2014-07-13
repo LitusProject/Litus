@@ -68,7 +68,7 @@ class Event extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @param Person        $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {

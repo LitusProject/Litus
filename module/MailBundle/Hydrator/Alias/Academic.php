@@ -18,8 +18,7 @@
 
 namespace MailBundle\Hydrator\Alias;
 
-use MailBundle\Entity\Alias\Academic as AcademicEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use MailBundle\Entity\Alias\Academic as AcademicEntity;
 
 /**
  * This hydrator hydrates/extracts alias data.
@@ -66,14 +65,5 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

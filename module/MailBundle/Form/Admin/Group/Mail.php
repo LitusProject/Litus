@@ -18,105 +18,111 @@
 
 namespace MailBundle\Form\Admin\Group;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit,
-    Zend\Validator\EmailAddress as EmailAddressValidator;
-
 /**
  * Send Mail
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mail extends \CommonBundle\Component\OldForm\Admin\Form
+class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('from');
-        $field->setLabel('From')
-            ->setAttribute('style', 'width: 400px;');
-        $this->add($field);
+        $from = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_mail_address');
 
-        $field = new Text('name');
-        $field->setLabel('Sender Name')
-            ->setAttribute('style', 'width: 400px;');
-        $this->add($field);
+        $name = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_mail_name');
 
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('message');
-        $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px; height: 200px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('test');
-        $field->setLabel('Test Mail');
-        $this->add($field);
-
-        $field = new Submit('send');
-        $field->setValue('Send')
-            ->setAttribute('id', 'send_mail')
-            ->setAttribute('class', 'mail');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'from',
-                    'required' => false,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'from',
+            'label'      => 'From',
+            'required'   => true,
+            'value'      => $from,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new EmailAddressValidator(),
+                        array('name' => 'emailaddress')
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Sender Name',
+            'required'   => true,
+            'value'      => $name,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'message',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'subject',
+            'label'      => 'Subject',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'message',
+            'label'      => 'Message',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 500px; height: 200px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'test',
+            'label'      => 'Test Mail',
+        ));
+
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'send',
+            'value'      => 'Send',
+            'attributes' => array(
+                'class' => 'mail',
+            ),
+        ));
     }
 }
