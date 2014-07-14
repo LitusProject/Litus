@@ -38,26 +38,14 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
     {
         $currentYear = $this->getCurrentAcademicYear(false);
 
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($currentYear);
-
-        $groups = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findAll();
-
-        $storedMessages = $this->getDocumentManager()
-            ->getRepository('MailBundle\Document\Message')
-            ->findAll(array(), array('creationTime' => 'DESC'));
-
-        $form = new MailForm($studies, $groups, $storedMessages);
+        $form = $this->getForm('mail_study_mail', array('academicYear' => $currentYear));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+            if ($form->isValid()) {exit;
+                $formData = $form->getData();
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
                 $inputFilter = $form->getInputFilter()->get('file');

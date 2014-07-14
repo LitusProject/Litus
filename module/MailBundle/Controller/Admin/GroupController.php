@@ -62,7 +62,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData($formData);
+                $formData = $form->getData();
 
                 $body = $formData['message'];
                 if ($formData['test'])

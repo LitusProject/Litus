@@ -31,11 +31,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 {
     public function sendAction()
     {
-        $from = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.mail');
-
-        $form = new MailForm($this->getEntityManager());
+        $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -58,6 +54,10 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                             ->findAllByAcademicYear($academicYear)
                     );
                 }
+
+                $from = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.mail');
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

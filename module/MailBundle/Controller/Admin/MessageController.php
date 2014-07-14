@@ -52,18 +52,13 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
         if (!($message = $this->_getMessage()))
             return new ViewModel();
 
-        $form = new EditForm($message);
+        $form = $this->getForm('mail_message_edit', $message);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $message->setSubject($formData['subject'])
-                    ->setBody($formData['body']);
-
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(

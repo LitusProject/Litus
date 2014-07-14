@@ -21,7 +21,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#send_mail').click(function () {
+            $('#controller_action form input[type=submit]').click(function () {
                 if ($(this).prop('disabled'))
                     return false;
 
@@ -33,6 +33,10 @@
                     $this.closest('form').submit();
                 }, 10);
             });
+
+            $('#select_message\\[stored_message\\]').change(function () {
+                $('#compose_message').toggle($(this).val() == '');
+            }).change();
         });
     </script>
 {% endblock %}

@@ -18,86 +18,53 @@
 
 namespace MailBundle\Form\Admin\Message;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    MailBundle\Document\Message,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Message
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Component\OldForm\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct(Message $message, $name = null)
+    protected $hydrator = 'MailBundle\Hydrator\Message';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('body');
-        $field->setLabel('Body')
-            ->setAttribute('style', 'width: 500px; height: 200px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'mail_edit');
-        $this->add($field);
-
-        $this->_populateFromMessage($message);
-    }
-
-    private function _populateFromMessage(Message $message)
-    {
-        $data = array(
-            'subject' => $message->getSubject(),
-            'body' => $message->getBody()
-        );
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'subject',
+            'label'      => 'Subject',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'body',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'body',
+            'label'      => 'Body',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 500px; height: 200px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'mail_edit');
     }
 }

@@ -36,7 +36,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
     {
         $currentYear = $this->getCurrentAcademicYear();
 
-        $form = new MailForm($this->getEntityManager());
+        $form = $this->getForm('mail_volunteer_mail');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

@@ -55,7 +55,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData($formData);
+                $formData = $form->getData();
                 $semester = $formData['semester'];
 
                 $mailAddress = $this->getEntityManager()
