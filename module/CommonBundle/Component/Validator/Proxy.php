@@ -60,9 +60,9 @@ class Proxy extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         if (is_callable($this->_condition)) {
-            $result = call_user_func_array($this->_condition, array());
+            $result = call_user_func($this->_condition);
         } else {
-            $result = $this->_condition ? true : false;
+            $result = (bool) $this->_condition;
         }
 
         if ($result) {
