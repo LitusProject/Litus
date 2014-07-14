@@ -26,7 +26,7 @@ use BrBundle\Entity\Company\Request,
 /**
  * This is the entity for an event.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request\RequestVacancy")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request\RequestInternship")
  * @ORM\Table(name="br.companies_request_internship")
  */
 class RequestInternship extends \BrBundle\Entity\Company\Request

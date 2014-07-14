@@ -1,11 +1,8 @@
 {% extends 'corporate/partials/vacancy.twig' %}
 
 {% block content %}
-    {#TODO add translations#}
-    <h1>Jobs</h1>
-    <a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}">Voeg Andere Job Toe</a>
-    <br>
-    <br>
+    <h1>{{ translate('Vacancy') }}</h1>
+    <a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover full-width">
@@ -34,9 +31,9 @@
                             <div class="col-md-2">
                                 <table>
                                     <tr>
-                                        <td><a class="btn btn-default" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">View</a></td>
-                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">Edit</a></td>
-                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">Delete</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a></td>
+                                        <td><a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">{{ translate('Delete') }}</a></td>
                                     </tr>
                                 </table>
                             </div>

@@ -54,6 +54,9 @@ return array(
         'br_admin_product' => array(
             'add', 'delete', 'manage', 'edit', 'old'
         ),
+        'br_admin_request' => array(
+            'reject', 'approve', 'manage', 'view'
+        ),
         'br_career_index' => array(
             'index'
         ),
@@ -80,6 +83,12 @@ return array(
         ),
         'br_corporate_cv' => array(
             'downloadArchive', 'grouped', 'list', 'search',
+        ),
+        'br_corporate_internship' => array(
+            'overview', 'add', 'delete', 'edit',
+        ),
+        'br_corporate_vacancy' => array(
+            'overview', 'add', 'delete', 'edit',
         ),
     ),
 );

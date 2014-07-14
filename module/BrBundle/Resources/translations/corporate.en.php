@@ -50,4 +50,8 @@ return array(
     'Personal' => 'Personal',
     'Hobbies' => 'Hobbies',
     'About Myself' => 'About Myself',
+    'Add other item' => 'Add other item',
+    'Edit' => 'Edit',
+    'View' => 'View',
+    'Delete' => 'Delete',
 );

@@ -19,7 +19,12 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
+    BrBundle\Entity\Company\Request\RequestInternship,
+    BrBundle\Form\Corporate\Internship\Add as AddForm,
+    BrBundle\Form\Corporate\Internship\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -55,35 +60,176 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    public function viewAction()
+    public function editAction()
     {
-        $vacancy = $this->_getVacancy();
+        if (!($oldJob = $this->_getJob()))
+            return new ViewModel();
 
-        $logoPath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.public_logo_path');
+        $form = new EditForm($oldJob);
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $contact = $this->getAuthentication()->getPersonObject();
+
+                $job = new Job(
+                    $formData['job_name'],
+                    $formData['description'],
+                    $formData['benefits'],
+                    $formData['profile'],
+                    $formData['contact'],
+                    $formData['city'],
+                    $contact->getCompany(),
+                    'internship',
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['sector']
+                );
+
+                $job->pending();
+
+                $this->getEntityManager()->persist($job);
+
+                $request = new RequestInternship($job, 'edit', $contact,$oldJob);
+
+                $this->getEntityManager()->persist($request);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The request has been sent to our administrators for approval.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_internship',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
 
         return new ViewModel(
             array(
-                'vacancy' => $vacancy,
-                'logoPath' => $logoPath,
+                'form' => $form,
             )
         );
     }
 
-    private function _getVacancy()
+    public function addAction()
+    {
+        $form = new AddForm();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                $contact = $this->getAuthentication()->getPersonObject();
+
+                $job = new Job(
+                    $formData['job_name'],
+                    $formData['description'],
+                    $formData['benefits'],
+                    $formData['profile'],
+                    $formData['contact'],
+                    $formData['city'],
+                    $contact->getCompany(),
+                    'internship',
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
+                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    $formData['sector']
+                );
+
+                $job->pending();
+
+                $this->getEntityManager()->persist($job);
+
+                $request = new RequestInternship($job, 'add', $contact);
+
+                $this->getEntityManager()->persist($request);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addMessage(
+                    new FlashMessage(
+                        FlashMessage::SUCCESS,
+                        'Success',
+                        'The request has been sent to our administrators for approval.'
+                    )
+                );
+
+                $this->redirect()->toRoute(
+                    'br_corporate_internship',
+                    array(
+                        'action' => 'overview',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function deleteAction()
+    {
+        $internship = $this->_getInternship();
+
+        $contact = $this->getAuthentication()->getPersonObject();
+
+        $request = new RequestInternship($internship, 'delete', $contact);
+
+        $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addMessage(
+            new FlashMessage(
+                FlashMessage::SUCCESS,
+                'Success',
+                'The request has been sent to our administrators for approval.'
+            )
+        );
+
+        $this->redirect()->toRoute(
+            'br_corporate_internship',
+            array(
+                'action' => 'overview',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    private function _getInternship()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No ID was given to identify the vacancy!'
+                    'No ID was given to identify the internship!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'br_corporate_vacancy',
+                'br_corporate_internship',
                 array(
                     'action' => 'overview'
                 )
@@ -92,21 +238,21 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return;
         }
 
-        $vacancy = $this->getEntityManager()
+        $internship = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
 
-        if (null === $vacancy) {
+        if (null === $internship) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,
                     'Error',
-                    'No vacancy with the given ID was found!'
+                    'No internship with the given ID was found!'
                 )
             );
 
             $this->redirect()->toRoute(
-                'br_corporate_vacancy',
+                'br_corporate_internship',
                 array(
                     'action' => 'overview'
                 )
@@ -115,7 +261,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return;
         }
 
-        return $vacancy;
+        return $internship;
     }
 
     private function _getSectors()
