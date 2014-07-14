@@ -208,7 +208,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             array(
                 'status' => 'error',
                 'form' => array(
-                    'errors' => $formErrors,
+                    'errors' => array(),
                 ),
             )
         );

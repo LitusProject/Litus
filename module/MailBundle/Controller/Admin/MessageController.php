@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Message\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * MessageController

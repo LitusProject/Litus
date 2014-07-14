@@ -23,11 +23,6 @@ use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
     MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
-    MailBundle\Form\Admin\MailingList\Admin as AdminForm,
-    MailBundle\Form\Admin\MailingList\AdminRole as AdminRoleForm,
-    MailBundle\Form\Admin\MailingList\Entry\MailingList as MailingListForm,
-    MailBundle\Form\Admin\MailingList\Entry\Person\Academic as AcademicForm,
-    MailBundle\Form\Admin\MailingList\Entry\Person\External as ExternalForm,
     Zend\View\Model\ViewModel;
 
 /**

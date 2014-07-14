@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Promotion\Mail as MailForm,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**

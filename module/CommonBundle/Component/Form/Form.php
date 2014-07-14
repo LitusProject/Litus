@@ -113,9 +113,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Adds a fieldset to the form.
      *
-     * @param  string     $label
-     * @param  string     $name
-     * @return Collection
+     * @param  string   $label
+     * @param  string   $name
+     * @return Fieldset
      */
     public function addFieldset($label, $name)
     {

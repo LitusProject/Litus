@@ -74,6 +74,9 @@ trait ElementTrait
         return $this;
     }
 
+    /**
+     * @param array $attributes
+     */
     public function setAttributes($attributes)
     {
         if (array_key_exists('class', $attributes)) {
@@ -84,11 +87,18 @@ trait ElementTrait
         parent::setAttributes($attributes);
     }
 
+    /**
+     * @param  string $option
+     * @return bool
+     */
     public function hasOption($option)
     {
         return array_key_exists($option, $this->options);
     }
 
+    /**
+     * @return array
+     */
     public function getInputSpecification()
     {
         if (!$this->hasOption('input')) {

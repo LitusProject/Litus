@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Volunteer\Mail as MailForm,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
