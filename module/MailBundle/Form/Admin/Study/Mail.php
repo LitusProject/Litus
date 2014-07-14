@@ -18,8 +18,10 @@
 
 namespace MailBundle\Form\Admin\Study;
 
-use CommonBundle\Entity\General\AcademicYear,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator;
+use CommonBundle\Component\Validator\Proxy as ProxyValidator,
+    CommonBundle\Entity\General\AcademicYear,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
+    Zend\Validator\NotEmpty as NotEmptyValidator;
 
 /**
  * Send Mail
@@ -161,14 +163,32 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'text',
             'name'       => 'subject',
             'label'      => 'Subject',
-            'required'   => true,
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
             'options'    => array(
+                'label_attributes' => array(
+                    'class' => 'required',
+                ),
                 'input' => array(
+                    'allow_empty' => false,
+                    'continue_if_empty' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 'null',
+                            )
+                        ),
+                        new ProxyValidator(
+                            new NotEmptyValidator(),
+                            function () use ($selectMessage) {
+                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
+                            }
+                        ),
                     ),
                 ),
             ),
@@ -178,14 +198,32 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'textarea',
             'name'       => 'message',
             'label'      => 'Message',
-            'required'   => true,
             'attributes' => array(
                 'style' => 'width: 500px; height: 200px;',
             ),
             'options'    => array(
+                'label_attributes' => array(
+                    'class' => 'required',
+                ),
                 'input' => array(
+                    'allow_empty' => false,
+                    'continue_if_empty' => true,
                     'filters' => array(
                         array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 'null',
+                            )
+                        ),
+                        new ProxyValidator(
+                            new NotEmptyValidator(),
+                            function () use ($selectMessage) {
+                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
+                            }
+                        ),
                     ),
                 ),
             ),
@@ -195,7 +233,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'file',
             'name'       => 'file',
             'label'      => 'Attachments',
-            'required'   => true,
             'attributes' => array(
                 'multiple' => true,
             ),
