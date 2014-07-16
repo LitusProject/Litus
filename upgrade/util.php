@@ -42,6 +42,13 @@ function renameConfigKey($connection, $oldName, $newName, $description = null)
         pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
 }
 
+function updateConfigValue($connection, $name, $newValue, $description = null)
+{
+    pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
+    if (null !== $description)
+        pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
+}
+
 function publishConfigValue($connection, $name)
 {
     pg_query($connection, 'UPDATE general.config SET published = TRUE WHERE key = \'' . $name . '\'');
