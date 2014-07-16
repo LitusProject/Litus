@@ -97,6 +97,8 @@ class Study
             $entityManager->clear();
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
+            $this->_academicYear = $this->_getAcademicYear();
+
             $xml = simplexml_load_file($url);
 
             $this->_subjects = array();
