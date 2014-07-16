@@ -80,27 +80,19 @@ class Study
         $this->_mailTransport = $mailTransport;
         $this->_callback = $callback;
 
-        if ($this->_entityManager->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1')
+        if ($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1')
             return;
 
+        $this->_academicYear = $this->_getAcademicYear();
+
         $urls = $this->_getUrls();
-
-        /*
-        To add one xml without destroying database:
-            add here
-                $urls = array(your_xml);
-            add return at start of _cleanUpAcademicYear function
-
-            search for duplicate subject-prof mappings and remove them:
-                SELECT *
-                FROM syllabus.subjects_profs_map AS first
-                JOIN syllabus.subjects_profs_map AS second ON first.prof_id = second.prof_id AND first.subject_id = second.subject_id AND first.id != second.id AND first.academic_year = second.academic_year
-                ORDER BY first.prof_id
-        */
 
         $this->_callback('progress', 1);
 
         $counter = 0;
+
+        $this->_cleanUpAcademicYear();
+        $this->_callback('cleanup', '');
 
         foreach ($urls as $url) {
             $counter++;
@@ -108,13 +100,6 @@ class Study
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
             $xml = simplexml_load_file($url);
-
-            $this->_academicYear = $this->_getAcademicYear($xml->properties->academiejaar->startjaar);
-
-            if ($counter <= 1) {
-                $this->_cleanUpAcademicYear($this->_academicYear);
-                $this->_callback('cleanup', '');
-            }
 
             $this->_subjects = array();
             $this->_profs = array();
@@ -373,27 +358,27 @@ class Study
     }
 
     /**
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @return void
      */
-    private function _cleanUpAcademicYear(AcademicYearEntity $academicYear)
+    private function _cleanUpAcademicYear()
     {
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
-            ->findByAcademicYear($academicYear);
+            ->findByAcademicYear($this->_academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findByAcademicYear($academicYear);
+            ->findByAcademicYear($this->_academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findByAcademicYear($academicYear);
+            ->findByAcademicYear($this->_academicYear);
 
         foreach($mapping as $map)
             $this->getEntityManager()->remove($map);
@@ -477,12 +462,14 @@ class Study
      */
     private function _getUrls()
     {
-        $url = $this->_entityManager
+        $url = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.root_xml');
 
+        $url = str_replace('{{ year }}', $this->_academicYear->getStartDate()->format('Y'), $url);
+
         $departments = unserialize(
-            $this->_entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('syllabus.department_ids')
             );
@@ -510,13 +497,15 @@ class Study
             }
         }
 
-        $departmentUrl = $this->_entityManager
+        $departmentUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.department_url');
+        $departmentUrl = str_replace('{{ year }}', $this->_academicYear->getStartDate()->format('Y'), $departmentUrl);
 
-        $studyUrl = $this->_entityManager
+        $studyUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.study_url');
+        $studyUrl = str_replace('{{ year }}', $this->_academicYear->getStartDate()->format('Y'), $studyUrl);
 
         $urls = array();
 
@@ -554,30 +543,10 @@ class Study
     }
 
     /**
-     * @param  int                                       $start
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    private function _getAcademicYear($start)
+    private function _getAcademicYear()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear(
-            new DateTime($start . '-12-25 0:0')
-        );
-        $academicYear = $this->_entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if (null === $academicYear) {
-            $organizationStart = str_replace(
-                '{{ year }}',
-                $startAcademicYear->format('Y'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('start_organization_year')
-            );
-            $organizationStart = new DateTime($organizationStart);
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->_entityManager->persist($academicYear);
-        }
-
-        return $academicYear;
+        return AcademicYear::getOrganizationYear($this->getEntityManager());
     }
 }
