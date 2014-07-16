@@ -19,7 +19,6 @@
 namespace SyllabusBundle\Component\XMLParser;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
@@ -60,7 +59,7 @@ class Study
     private $_callback;
 
     /**
-     * @var AcademicYearEntity
+     * @var \CommonBundle\Entity\General\AcademicYear
      */
     private $_academicYear;
 
@@ -84,7 +83,6 @@ class Study
             return;
 
         $this->_academicYear = $this->_getAcademicYear();
-
         $urls = $this->_getUrls();
 
         $this->_callback('progress', 1);
@@ -98,6 +96,8 @@ class Study
             $counter++;
             $entityManager->clear();
             $this->_callback('load_xml', substr($url, strrpos($url, '/') + 1));
+
+            $this->_academicYear = $this->_getAcademicYear();
 
             $xml = simplexml_load_file($url);
 
