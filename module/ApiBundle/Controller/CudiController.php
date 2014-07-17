@@ -459,7 +459,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         )
                     ),
                     'price'     => $commonArticle->getSellPrice()/100,
-                    'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
+                    'sold'      => in_array($commonArticle->getId(), $sold),
                     'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($authenticatedPerson, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
