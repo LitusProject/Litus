@@ -305,6 +305,12 @@
                                 <dl>
                                     <dt>{{ translate('Name') }}</dt>
                                     <dd>{{ shift.getName() }}</dd>
+                                    <dt>{{ translate('Reward') }}</dt>
+                                    <dd>{{ shift.getReward() }} {{ translate('Coins') }}
+                                        {% if shift.getHandledOnEvent() %}
+                                            {{ translate('on the event')}}
+                                        {% endif %}
+                                    </dd>
                                     <dt>{{ translate('Start') }}</dt>
                                     <dd>{{ dateLocalized(shift.getStartDate(), 'd/M/y HH:mm') }}</dd>
                                     <dt>{{ translate('End') }}</dt>

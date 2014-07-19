@@ -57,5 +57,8 @@ return array(
     'History message' => 'Hier kan je enkele statistieken zien over shiften die je al gedaan hebt.',
     'Total' => 'Totaal',
     'As Volunteer' => 'als vrijwilliger',
-    'As Responsible' => 'als verantwoordelijke'
+    'As Responsible' => 'als verantwoordelijke',
+    'Reward' => 'Beloning',
+    'Coins' => 'bonnetjes',
+    'on the event' => 'op het evenement'
 );

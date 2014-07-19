@@ -57,5 +57,8 @@ return array(
     'History message' => 'Here you can see some statistics about shifts you have done before.',
     'Total' => 'Total',
     'As Volunteer' => 'as volunteer',
-    'As Responsible' => 'as responsible'
+    'As Responsible' => 'as responsible',
+    'Reward' => 'Reward',
+    'Coins' => 'coins',
+    'on the event' => 'on the event'
 );
