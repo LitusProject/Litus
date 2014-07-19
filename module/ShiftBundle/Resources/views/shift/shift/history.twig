@@ -11,7 +11,7 @@
     	{{ translate('History message') }}
     </div>
     <br>
-    {#{% if shiftsAsResponsible %}
+    {% if shiftsAsResponsible %}
     	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
     	{% for unit in shiftsAsResponsible %}
     	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
@@ -24,7 +24,7 @@
     {% for unit in shiftsAsVolunteer %}
     	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
     {% endfor %}
-    <b>{{ translate('Total') }}: </b> {{ totalAsVolunteer }} <br>#}
+    <b>{{ translate('Total') }}: </b> {{ totalAsVolunteer }} <br>
 
 
 

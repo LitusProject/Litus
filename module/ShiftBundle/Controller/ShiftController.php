@@ -445,7 +445,65 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     public function historyAction()
     {
 
-        return new ViewModel();
+        $asVolunteer = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsVolunteer($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        $asResponsible = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        $now = new DateTime();
+
+        $shiftsAsVolunteer = array();
+        $shiftsAsVolunteerCount = 0;
+        foreach ($asVolunteer as $shift) {
+
+            if ($shift->getStartDate() > $now)
+                continue;
+
+            if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
+                $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
+                    'count' => 1,
+                    'unitName' => $shift->getUnit()->getName()
+                    );
+            } else {
+                $shiftsAsVolunteer[$shift->getUnit()->getId()]['count']++;
+            }
+            $shiftsAsVolunteerCount++;
+        }
+
+        $shiftsAsResponsible = array();
+        $shiftsAsResponsibleCount = 0;
+        foreach ($asResponsible as $shift) {
+
+            if ($shift->getStartDate() > $now)
+                continue;
+
+            if (!isset($shiftsAsResponsible[$shift->getUnit()->getId()])) {
+                $shiftsAsResponsible[$shift->getUnit()->getId()] = array(
+                    'count' => 1,
+                    'unitName' => $shift->getUnit()->getName()
+                    );
+            } else {
+                $shiftsAsResponsible[$shift->getUnit()->getId()]['count']++;
+            }
+            $shiftsAsResponsibleCount++;
+        }
+
+
+        return new ViewModel(
+            array(
+                'shiftsAsVolunteer' => $shiftsAsVolunteer,
+                'totalAsVolunteer' => $shiftsAsVolunteerCount,
+                'shiftsAsResponsible' => $shiftsAsResponsible,
+                'totalAsResponsible' => $shiftsAsResponsibleCount
+            )
+        );
     }
 
     /**
