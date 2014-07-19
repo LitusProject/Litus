@@ -1,0 +1,32 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Shifts') }} <small>&mdash; {{ translate('History') }}</small></h1>
+    </div>
+
+    {% include 'shift/shift/partials/navigation.twig' %}
+
+    <div style="text-align: justify;">
+    	{{ translate('History message') }}
+    </div>
+    <br>
+    {#{% if shiftsAsResponsible %}
+    	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
+    	{% for unit in shiftsAsResponsible %}
+    	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
+    	{% endfor %}
+    	<b>{{  translate('Total') }}: </b> {{ totalAsResponsible }} <br>
+    	<h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
+    {% else %}
+    	<h2>{{ translate('Shifts')}}:</h2>
+    {% endif %}
+    {% for unit in shiftsAsVolunteer %}
+    	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
+    {% endfor %}
+    <b>{{ translate('Total') }}: </b> {{ totalAsVolunteer }} <br>#}
+
+
+
+
+{% endblock %}

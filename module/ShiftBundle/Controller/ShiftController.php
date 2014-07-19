@@ -442,6 +442,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function historyAction()
+    {
+
+        return new ViewModel();
+    }
+
     /**
      * @return \ShiftBundle\Entity\Shift|null
      */

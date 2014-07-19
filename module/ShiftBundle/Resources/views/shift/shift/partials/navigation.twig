@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs hidden-xs">
+    {% if hasAccess('shift', 'index') %}
+        <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
+            <a href="{{ url('shift', {'action': 'index'}) }}">
+                {{ translate('Shifts') }}
+            </a>
+        </li>
+    {% endif %}
+
+    {% if hasAccess('shift', 'history') %}
+        <li {% if getParam('action') == 'history' %}class="active"{% endif %}>
+            <a href="{{ url('shift', {'action': 'history'}) }}">
+                {{ translate('History') }}
+            </a>
+        </li>
+    {% endif %}
+</ul>
