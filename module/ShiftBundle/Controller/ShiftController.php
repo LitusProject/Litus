@@ -505,7 +505,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsResponsibleCount++;
         }
 
-
         return new ViewModel(
             array(
                 'shiftsAsVolunteer' => $shiftsAsVolunteer,

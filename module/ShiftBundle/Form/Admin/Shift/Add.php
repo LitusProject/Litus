@@ -402,7 +402,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $reward = array();
         $reward[2] = 2;
-        $reward[0] = 0;        
+        $reward[0] = 0;
         $reward[3] = 3;
         $reward[10] = 10;
 
