@@ -60,5 +60,7 @@ return array(
     'As Responsible' => 'as responsible',
     'Reward' => 'Reward',
     'Coins' => 'coins',
-    'on the event' => 'on the event'
+    'on the event' => 'on the event',
+    'You have currently' => 'You have currently',
+    'unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.'
 );

@@ -11,6 +11,10 @@
     	{{ translate('History message') }}
     </div>
     <br>
+    {% if unPayedShifts %}
+        {{ translate('You have currently') }} {{ unPayedShifts }} {{ translate('unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.') }}
+    {% endif %}
+
     {% if shiftsAsResponsible %}
     	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
     	{% for unit in shiftsAsResponsible %}

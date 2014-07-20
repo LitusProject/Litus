@@ -60,5 +60,7 @@ return array(
     'As Responsible' => 'als verantwoordelijke',
     'Reward' => 'Beloning',
     'Coins' => 'bonnetjes',
-    'on the event' => 'op het evenement'
+    'on the event' => 'op het evenement',
+    'You have currently' => 'Je hebt momenteel',
+    'unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'onbetaalde shiften. Je can je beloning komen halen bij de vice-praeses op \'blok 6\'. Deze beloning zal vervallen op het einde van dit academiejaar.'
 );

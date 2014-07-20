@@ -28,7 +28,8 @@ use DateTime,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
     Zend\Http\Headers,
     Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    CommonBundle\Component\Util\AcademicYear;
 
 /**
  * ShiftController
@@ -444,14 +445,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), null);
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsVolunteer($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByPersonAsVolunteer($this->getAuthentication()->getPersonObject(), $academicYear);
 
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $academicYear);
 
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
@@ -461,6 +463,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $shiftsAsVolunteer = array();
         $shiftsAsVolunteerCount = 0;
+        $unPayedShifts = 0;
+        $unPayedCoins = 0;
         foreach ($asVolunteer as $shift) {
 
             if ($shift->getStartDate() > $now)
@@ -475,6 +479,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $shiftsAsVolunteer[$shift->getUnit()->getId()]['count']++;
             }
             $shiftsAsVolunteerCount++;
+            foreach ($shift->getVolunteers() as $volunteer){
+                if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())){
+                    $unPayedShifts += 1;
+                    $unPayedCoins += $shift->getReward();
+                }
+            }
         }
 
         $shiftsAsResponsible = array();
@@ -501,7 +511,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'shiftsAsVolunteer' => $shiftsAsVolunteer,
                 'totalAsVolunteer' => $shiftsAsVolunteerCount,
                 'shiftsAsResponsible' => $shiftsAsResponsible,
-                'totalAsResponsible' => $shiftsAsResponsibleCount
+                'totalAsResponsible' => $shiftsAsResponsibleCount,
+                'unPayedShifts' => $unPayedShifts,
+                'unPayedCoins' => $unPayedCoins
             )
         );
     }
