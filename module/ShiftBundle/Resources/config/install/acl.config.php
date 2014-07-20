@@ -22,7 +22,7 @@ return array(
             'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search'
         ),
         'shift_admin_shift_counter' => array(
-            'delete', 'index', 'payed', 'search', 'units', 'view'
+            'delete', 'index', 'payed', 'payout', 'search', 'units', 'view'
         ),
         'shift_admin_shift_ranking' => array(
             'index'

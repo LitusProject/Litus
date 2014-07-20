@@ -2,6 +2,18 @@
 
 {% block content %}
     {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width payout_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The shift's payed status was successfully changed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width payout_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to change the shift's payed status.</p>
+        </div>
+    </div>
 
     {% include 'shift/admin/counter/partials/navigation.twig' %}
 
@@ -31,6 +43,7 @@
                 <tr>
                     <th width="200px">University Identification</th>
                     <th>Name</th>
+                    <th width="120px">Payout</th>
                     <th width="120px">Count</th>
                     <th width="70px">Actions</th>
                 </tr>
@@ -54,9 +67,10 @@
                         $('#shift_counter_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.universityIdentification + '</td>')
                             .append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.unpayed + '</td>')
                             .append('<td>' + this.count + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
-
+                                actions.append('<a href="#" data-person="'+this.id+'" class="edit" onclick="payout(this)">Payout</a>');
                         {% if hasAccess('shift_admin_shift_counter', 'view') %}
                             actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'" class="view">View</a>');
                         {% endif %}
@@ -68,6 +82,31 @@
                 }
             });
             {% endif %}
+
         });
+
+        function payout(e) {
+            $.get('{{ url('shift_admin_shift_counter', {"action": "payout"}) }}0/'+ $(e).data('person'), function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.payout_success').removeClass('hide');
+                } else {
+                    errorRemove();
+                }
+            }, 'json').error(errorPayout);
+
+            $('.flashmessage').delay(2000).addClass('hide')
+        }
+
+        function errorPayout() {
+            $('.flashmessage').addClass('hide');
+            $('.payout_error').removeClass('hide');
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.shift_removed_error').removeClass('hide');
+            $('#removeShift').modal('hide');
+        }
     </script>
 {% endblock %}
