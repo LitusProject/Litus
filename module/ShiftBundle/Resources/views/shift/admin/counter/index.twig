@@ -72,7 +72,7 @@
                             .append(actions = $('<td>', {'class': 'actions'}));
                                 actions.append('<a href="#" data-person="'+this.id+'" class="edit" onclick="payout(this)">Payout</a>');
                         {% if hasAccess('shift_admin_shift_counter', 'view') %}
-                            actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'" class="view">View</a>');
+                            actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'/{{ activeAcademicYear.getCode() }}" class="view">View</a>');
                         {% endif %}
                     });
                     $('#shift_counter_search table').change();
