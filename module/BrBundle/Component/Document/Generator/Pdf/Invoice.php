@@ -108,12 +108,13 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                                     : $entry->getInvoiceDescription()
                         ),
                         new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format($price, 2))),
+                        new XmlObject('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
                         new XmlObject('vat_type', null, $vatTypes[$product->getVatType()] . '%')
                     )
                 );
 
-                $totalExclusive += $price;
-                $totalVat += ($price * $vatTypes[$product->getVatType()]) / 100;
+                $totalExclusive += $price * $entry->getOrderEntry()->getQuantity();
+                $totalVat += ($price * $entry->getOrderEntry()->getQuantity() * $vatTypes[$product->getVatType()]) / 100;
 
                 $count++;
             }
@@ -134,6 +135,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 array(
                     new XmlObject('description', null,"Korting"),//TODO need translation later
                     new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
+                    new XmlObject('amount', null, ' '),
                     new XmlObject('vat_type', null, ' ')
                 )
             );
@@ -142,6 +144,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                     array(
                         new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
                         new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
+                        new XmlObject('amount', null, ' '),
                         new XmlObject('vat_type', null, ' ')
                     )
                 );

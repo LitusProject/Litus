@@ -51,4 +51,7 @@
 	    <xsl:text>TE BETALEN</xsl:text>
 	</xsl:template>
 
+	<xsl:template name="product_amount">
+	    <xsl:text>Aantal</xsl:text>
+	</xsl:template>
 </xsl:stylesheet>

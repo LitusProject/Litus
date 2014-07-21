@@ -193,8 +193,9 @@
 
 	<xsl:template match="entries">
 	    <fo:table table-layout="fixed" width="100%" border-style="solid" border-width="1px">
-	        <fo:table-column column-width="80%"/>
+	        <fo:table-column column-width="70%"/>
 	        <fo:table-column column-width="15%"/>
+	        <fo:table-column column-width="10%"/>
 	        <fo:table-column column-width="5%"/>
 
 	        <fo:table-body>
@@ -204,6 +205,9 @@
 	                </fo:table-cell>
 	                <fo:table-cell border-width="1px" border-style="solid" margin-left="0px" margin-right="0px" display-align="center" text-align="center" padding-before="2px">
 	                    <fo:block><xsl:call-template name="total_excl_short"/></fo:block>
+	                </fo:table-cell>
+	                <fo:table-cell border-width="1px" border-style="solid" margin-left="0px" margin-right="0px" display-align="center" text-align="center" padding-before="2px">
+	                    <fo:block><xsl:call-template name="product_amount"/></fo:block>
 	                </fo:table-cell>
 	                <fo:table-cell border-width="1px" border-style="solid" margin-left="0px" margin-right="0px" display-align="center" text-align="center" padding-before="2px">
 	                    <fo:block><xsl:text> </xsl:text></fo:block>
@@ -217,6 +221,9 @@
 	<xsl:template match="empty_line">
 	    <fo:table-row>
 	        <fo:table-cell display-align="center" text-align="left" margin-right="0px" margin-left="5px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
+	            <fo:block><xsl:text>&#x00A0;</xsl:text></fo:block>
+	        </fo:table-cell>
+	        <fo:table-cell display-align="center" text-align="right" margin-right="5px" margin-left="0px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
 	            <fo:block><xsl:text>&#x00A0;</xsl:text></fo:block>
 	        </fo:table-cell>
 	        <fo:table-cell display-align="center" text-align="right" margin-right="5px" margin-left="0px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
@@ -236,13 +243,16 @@
 	        <fo:table-cell display-align="center" text-align="right" margin-right="5px" margin-left="0px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
 	            <xsl:apply-templates select="price"/>
 	        </fo:table-cell>
+	        <fo:table-cell display-align="center" text-align="right" margin-right="5px" margin-left="0px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
+	            <xsl:apply-templates select="amount"/>
+	        </fo:table-cell>
 	        <fo:table-cell display-align="center" text-align="center" margin-right="0px" margin-left="0px" padding-before="2px" border-right-style="solid" border-right-width="1px" border-left-style="solid" border-left-width="1px">
 	            <fo:block><xsl:value-of select="vat_type"/></fo:block>
 	        </fo:table-cell>
 	    </fo:table-row>
 	</xsl:template>
 
-	<xsl:template match="description|price|price_excl|price_vat|price_incl">
+	<xsl:template match="amount|description|price|price_excl|price_vat|price_incl">
 	    <fo:block><xsl:apply-templates/></fo:block>
 	</xsl:template>
 

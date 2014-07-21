@@ -173,8 +173,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     ->findNextInvoiceNb()
             );
 
-            $history = new InvoiceHistory($invoice);
-            $this->getEntityManager()->persist($history);
+//            $history = new InvoiceHistory($invoice);
+//            $this->getEntityManager()->persist($history);
 
             $this->getEntityManager()->persist($invoice);
         }
