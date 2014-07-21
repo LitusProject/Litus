@@ -53,9 +53,14 @@ return array(
             'description' => 'Explains what the VAT',
     ),
     array(
-            'key'         => 'br.invoice_below_entries',
-            'value'       => 'CHANGE ME br.invoice_below_entries',
-            'description' => 'CHANGE ME  I have no Idea',
+        'key'         => 'br.invoice_below_entries',
+        'value'       => serialize(
+            array(
+                'en' => 'Please pay at the latest 30 days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
+                'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste 30 dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
+            )
+        ),
+        'description' => 'The email sent when an account is activated',
     ),
     array(
             'key'         => 'br.invoice_footer',

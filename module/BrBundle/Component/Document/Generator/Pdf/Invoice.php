@@ -84,7 +84,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         else
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();
 
-        $subEntries = $configs->getConfigValue('br.invoice_below_entries');
+        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl']; //TODO make this possible in both english and dutch.
+
         $footer = $configs->getConfigValue('br.invoice_footer');
 
         $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
