@@ -60,7 +60,7 @@ return array(
                 'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste 30 dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
             )
         ),
-        'description' => 'The email sent when an account is activated',
+        'description' => 'Payment information',
     ),
     array(
             'key'         => 'br.invoice_footer',
@@ -137,6 +137,11 @@ Example content of this section.
 </content>
 </section>',
         'description' => 'The foreword of the CV Book',
+    ),
+    array(
+            'key'         => 'br.organization_name',
+            'value'       => 'VTK Ondersteuning VZW',
+            'description' => 'Name of corporate relations VZW',
     ),
     array(
         'key'         => 'br.vat_types',

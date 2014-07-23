@@ -146,13 +146,29 @@
 	</xsl:template>
 
 	<!-- FOOTER -->
-
 	<xsl:template match="footer">
 	    <fo:table table-layout="fixed" width="100%">
 
 	        <fo:table-body>
 	            <fo:table-row>
-	            	<fo:table-cell><fo:block>Vlaamse Technische Kring		Studentenwijk Arenberg 6, Bus 0 3001 Heverlee</fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>BTW: BE 0479.482.282 <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>Vlaams Technische Kring <xsl:apply-templates select="center"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>Tel: +32 (0)16 20.00.97 <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
+	            </fo:table-row>
+	            <fo:table-row>
+	            	<fo:table-cell><fo:block>KBC: 745-175900-11 <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>Faculteitskring Ingenieurswetenschappen <xsl:apply-templates select="center"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>Fax: +32 (0)16 20.65.29 <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
+	            </fo:table-row>
+	            <fo:table-row>
+	            	<fo:table-cell><fo:block>IBAN: BE30 7450 1759 0011 <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>aan de K.U.Leuven <xsl:apply-templates select="center"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>http://www.vtk.be <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
+	            </fo:table-row>
+	            <fo:table-row>
+	            	<fo:table-cell><fo:block>BIC: KREDBAB <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block><xsl:apply-templates select="center"/></fo:block></fo:table-cell>
+	            	<fo:table-cell><fo:block>bedrijvenrelaties@vtk.be <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
 	            </fo:table-row>
 	            <!-- <xsl:apply-templates select="f_row"/> -->
 	        </fo:table-body>
@@ -193,10 +209,10 @@
 
 	<xsl:template match="entries">
 	    <fo:table table-layout="fixed" width="100%" border-style="solid" border-width="1px">
-	        <fo:table-column column-width="70%"/>
+	        <fo:table-column column-width="69%"/>
 	        <fo:table-column column-width="15%"/>
-	        <fo:table-column column-width="10%"/>
-	        <fo:table-column column-width="5%"/>
+	        <fo:table-column column-width="8%"/>
+	        <fo:table-column column-width="8%"/>
 
 	        <fo:table-body>
 	            <fo:table-row background-color="#EEEEEE">
@@ -210,7 +226,7 @@
 	                    <fo:block><xsl:call-template name="product_amount"/></fo:block>
 	                </fo:table-cell>
 	                <fo:table-cell border-width="1px" border-style="solid" margin-left="0px" margin-right="0px" display-align="center" text-align="center" padding-before="2px">
-	                    <fo:block><xsl:text> </xsl:text></fo:block>
+	                    <fo:block><xsl:call-template name="VAT"/></fo:block>
 	                </fo:table-cell>
 	            </fo:table-row>
 	            <xsl:apply-templates select="entry|empty_line"/>

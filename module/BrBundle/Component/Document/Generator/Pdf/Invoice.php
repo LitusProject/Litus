@@ -74,7 +74,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $invoiceNb = $this->_invoice->getInvoiceNumber();
 
-        $unionName = $configs->getConfigValue('organization_name');
+        $unionName = $configs->getConfigValue('br.organization_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
