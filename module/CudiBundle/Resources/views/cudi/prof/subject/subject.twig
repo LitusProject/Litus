@@ -137,52 +137,62 @@
     </div>
     <br class="clear" />
 
-    <div id="modalRemoveArticle" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Remove Article') }}</h3>
-        </div>
-        <div class="modal-body">
-            {{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
-        </div>
-    </div>
-
-    <div id="modalRemoveProf" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Remove Docent') }}</h3>
-        </div>
-        <div class="modal-body">
-            {{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+    <div id="modalRemoveArticle" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h3>{{ translate('Remove Article') }}</h3>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalActivateArticle" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Activate Article') }}</h3>
+    <div id="modalRemoveProf" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h3>{{ translate('Remove Docent') }}</h3>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to article the following article') }}: <b><span class="articleTitle"></span></b>?</p>
-            <p>
-                {{ translate('Will the content of the article be the same af previous year?') }}
-                <select id="sameAsPreviousYear" style="width: auto;">
-                    <option value="yes">{{ translate('Yes') }}</option>
-                    <option value="no">{{ translate('No') }}</option>
-                </select>
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+    </div>
+
+    <div id="modalActivateArticle" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h3>{{ translate('Activate Article') }}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{{ translate('Are you sure you want to activate the following article') }}: <b><span class="articleTitle"></span></b>?</p>
+                <p>
+                    {{ translate('Will the content of the article be the same af previous year?') }}
+                    <select id="sameAsPreviousYear" style="width: auto;">
+                        <option value="yes">{{ translate('Yes') }}</option>
+                        <option value="no">{{ translate('No') }}</option>
+                    </select>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+                <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+            </div>
         </div>
     </div>
 {% endblock %}
