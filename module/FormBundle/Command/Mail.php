@@ -111,7 +111,7 @@ EOT
             if ($form->getReminderMail()->getBcc())
                 $mail->addBcc($mailAddress);
 
-            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail'))
+            if ($this->getOption('mail'))
                 $this->getMailTransport()->send($mail);
         }
     }
