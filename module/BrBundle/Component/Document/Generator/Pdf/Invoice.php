@@ -266,7 +266,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlObject('sub_entries', null, $subEntries),
 
-                new XmlObject('footer', null, $footer)
+                new XmlObject('footer'),
+
+                new XmlObject('sale_conditions_nl')
             )
         ));
     }

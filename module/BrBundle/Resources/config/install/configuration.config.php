@@ -63,11 +63,6 @@ return array(
         'description' => 'Payment information',
     ),
     array(
-            'key'         => 'br.invoice_footer',
-            'value'       => 'CHANGE ME br.invoice_footer',
-            'description' => 'The footer of the invoice',
-    ),
-    array(
             'key'         => 'br.contract_language',
             'value'       => 'en',
             'description' => 'The language the contracts are in',
