@@ -98,13 +98,12 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
-        /*$entry_s = array();
         foreach ($entries as $entry)
-            $entry_s[] = new XmlObject('entry', null, $entry->getContractText());*/
-        
-        $p = new BulletParser();
-        $p->parse($entry->getContractText());
-        $entry_s = XmlObject::fromString($p->getXml());
+        {
+            $p = new BulletParser();
+            $p->parse($entry->getContractText());
+            $entry_s = XmlObject::fromString($p->getXml());
+        }
 
         $xml->append(
             new XmlObject(
@@ -216,7 +215,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     ),
                     $entry_s,
                     new XmlObject('sub_entries', null, $sub_entries),
-                    new XmlObject('footer')
+                    new XmlObject('footer'),
+                    new XmlObject('sale_conditions_nl')
                 )
             )
         );
