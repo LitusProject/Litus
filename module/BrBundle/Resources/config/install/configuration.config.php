@@ -106,13 +106,8 @@ Het VTK Bedrijvenrelaties Team'
     ),
     array(
             'key'         => 'br.contract_name',
-            'value'       => 'Will see where I show up!',
+            'value'       => 'Vlaamse Technische Kring',
             'description' => 'I have no idea',
-    ),
-    array(
-            'key'         => 'br.contract_footer',
-            'value'       => 'Will see where I show up contract_footer!!',
-            'description' => 'I have no idea contract_footer',
     ),
     array(
             'key'         => 'br.contract_final_entry',
@@ -120,9 +115,14 @@ Het VTK Bedrijvenrelaties Team'
             'description' => 'I have no idea contract_final_entry',
     ),
     array(
-            'key'         => 'br.contract_below_entries',
-            'value'       => 'CHANGE ME br.contract_below_entries',
-            'description' => 'CHANGE ME  I have no Idea',
+        'key'         => 'br.contract_below_entries',
+        'value'       => serialize(
+            array(
+                'en' => 'Herewith I agree to the terms and conditions of VTK Leuven, found at the end of this contract.',
+                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden aan het einde van dit contract.',
+            )
+        ),
+        'description' => 'Payment information',
     ),
     array(
         'key'         => 'br.cv_book_foreword',

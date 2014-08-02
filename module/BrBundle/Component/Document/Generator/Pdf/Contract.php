@@ -19,6 +19,7 @@
 namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Contract as ContractEntity,
+    BrBundle\Component\ContractParser\Parser,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -68,6 +69,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
     protected function generateXml(TmpFile $tmpFile)
     {
+        $parser = new Parser();
+
         $xml = new XmlGenerator($tmpFile);
 
         $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
@@ -95,8 +98,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $finalEntry = $configs->getConfigValue('br.contract_final_entry');
 
-        $sub_entries = $configs->getConfigValue('br.contract_below_entries');
-        $footer = $configs->getConfigValue('br.contract_footer');
+        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
         $entry_s = array();
         foreach ($entries as $entry)
@@ -211,8 +213,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         )
                     ),
                     new XmlObject('entries', null, $entry_s),
-                    //new XmlObject('sub_entries', null, $sub_entries),
-                    new XmlObject('footer', null, $footer)
+                    new XmlObject('sub_entries', null, $sub_entries),
+                    new XmlObject('footer')
                 )
             )
         );
