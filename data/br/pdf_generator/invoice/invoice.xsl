@@ -276,10 +276,10 @@
 
 	<xsl:template match="total">
 	    <fo:table table-layout="fixed" width="100%">
-	        <fo:table-column column-width="60%"/>
-	        <fo:table-column column-width="20%"/>
-	        <fo:table-column column-width="15%"/>
-	        <fo:table-column column-width="5%"/>
+	        <fo:table-column column-width="59%"/>
+	        <fo:table-column column-width="25%"/>
+	        <fo:table-column column-width="16%"/>
+	        <fo:table-column column-width="0%"/>
 
 	        <fo:table-body>
 	            <fo:table-row>
