@@ -34,9 +34,9 @@
                         {% if booking.getArticle().getDiscounts()|length > 0 %}
                             <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
                             {% for discount in booking.getArticle().getDiscounts() %}
-                                <span class='badge badge-info'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(booking.getArticle().getSellPrice())/100)|number_format(2) }}<br/>
+                                <span class='badge'>{{ translate(discount.getType()) }}</span> &euro; {{ (discount.apply(booking.getArticle().getSellPrice())/100)|number_format(2) }}<br/>
                             {% endfor %}
-                        " data-placement="right" style="cursor: pointer">&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
+                        " data-placement="right" style="cursor: pointer">&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }} <span class="glyphicon glyphicon-info-sign"></span></span>
                         {% else %}
                             <span>&euro; {{ (booking.getArticle().getSellPrice()/100)|number_format(2) }}</span>
                         {% endif %}

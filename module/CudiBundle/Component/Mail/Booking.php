@@ -190,12 +190,11 @@ class Booking
         if ($sendMailsToCudi)
             $mail->addCc($mailAddress, $mailName);
 
-        if ('development' != getenv('APPLICATION_ENV'))
-            $mailTransport->send($mail);
+        $mailTransport->send($mail);
     }
 
     /**
-     * Send a warning mail before expiring bookings
+     * Send a mail when expiring bookings
      *
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
