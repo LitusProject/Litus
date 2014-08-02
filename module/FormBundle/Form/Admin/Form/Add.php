@@ -43,13 +43,13 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -143,7 +143,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $field = new Checkbox('editable_by_user');
         $field->setLabel('Allow Users To Edit Their Info')
             ->setAttribute('class', 'form doodle')
-            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries.');
+            ->setAttribute('data-help', 'The users are allowed to edit the info of previously submitted entries. This will also enable the "Save as Concept" button.');
+        $this->add($field);
+
+        $field = new Checkbox('send_guest_login_mail');
+        $field->setLabel('Send Guest Login Mail')
+            ->setAttribute('class', 'form doodle')
+            ->setAttribute('data-help', 'Send a mail to guests after submitting form to login later and edit/view their submission.<br>For this option the confirmation mail must be enabled!');
         $this->add($field);
 
         $field = new Checkbox('names_visible_for_others');
@@ -206,8 +212,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'form doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($mailTemplate[$language->getAbbrev()]) ? $mailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $mailTabContent->add($pane);
@@ -264,8 +270,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $field->setLabel('Body')
                 ->setAttribute('class', 'doodle')
                 ->setAttribute('rows', 20)
-                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
+                ->setRequired($language->getAbbrev() == \Locale::getDefault())
+                ->setValue(isset($reminderMailTemplate[$language->getAbbrev()]) ? $reminderMailTemplate[$language->getAbbrev()]['content'] : '');
             $pane->add($field);
 
             $reminderMailTabContent->add($pane);

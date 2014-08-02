@@ -32,7 +32,7 @@ class Title extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
@@ -49,9 +49,9 @@ class Title extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
+     * @param EntityManager $entityManager The EntityManager instance
      * @param string The name exluded from this check
-     * @param mixed                       $opts          The validator's options
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, $exclude = '', $opts = null)
     {
@@ -72,7 +72,6 @@ class Title extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $realParent = null;
         $parentName = null;
         if (isset($context['parent_' . $context['category']]) && '' != $context['parent_' . $context['category']]) {
             $realParent = $this->_entityManager

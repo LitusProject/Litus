@@ -51,32 +51,34 @@ var LanguageDefinition = {
 
   'function-link'       :   {
                               exec: function(txt, selText, $field, uploadURL) {
-                                var modal = $('<div>', {'class': 'modal fade'});
+                                var modal = $('<div>', {'class': 'modal fade', 'tabindex': '-1'});
                                 modal.append(
-                                    $('<div>', {'class': 'modal-header'}).append(
-                                        $('<span>').html('Litus Admin'),
-                                        document.createTextNode('/Insert Link')
-                                    ),
-                                    $('<div>', {'class': 'modal-body'}).append(
-                                        form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
-                                            $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'file'}),
-                                            $('<b>').html('Link Text'),
-                                            $('<br />'),
-                                            linkText = $('<input>', {'type': 'text', 'placeholder': 'Link Text', 'name': 'linkText', 'value': selText}),
-                                            $('<br />'),
-                                            $('<br />'),
-                                            $('<b>').html('URL'),
-                                            $('<br />'),
-                                            url = $('<input>', {'type': 'text', 'placeholder': 'URL'}).val('http://'),
-                                            $('<br />'),
-                                            $('<br />')
+                                    $('<div>', {'class': 'modal-dialog'}).append(
+                                        $('<div>', {'class': 'modal-header'}).append(
+                                            $('<span>').html('Litus Admin'),
+                                            document.createTextNode('/Insert Link')
                                         ),
-                                        progress = $('<div>', {'class': 'progress progress-striped active'}).append(
-                                            $('<div>', {'class': 'bar', 'style': 'width: 100%'})
-                                        ),
-                                        footer = $('<div>', {'class': 'footer'}).append(
-                                          ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
-                                            $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
+                                        $('<div>', {'class': 'modal-body'}).append(
+                                            form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                                $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'file'}),
+                                                $('<b>').html('Link Text'),
+                                                $('<br />'),
+                                                linkText = $('<input>', {'type': 'text', 'placeholder': 'Link Text', 'name': 'linkText', 'value': selText}),
+                                                $('<br />'),
+                                                $('<br />'),
+                                                $('<b>').html('URL'),
+                                                $('<br />'),
+                                                url = $('<input>', {'type': 'text', 'placeholder': 'URL'}).val('http://'),
+                                                $('<br />'),
+                                                $('<br />')
+                                            ),
+                                            progress = $('<div>', {'class': 'progress progress-striped active'}).append(
+                                                $('<div>', {'class': 'bar', 'style': 'width: 100%'})
+                                            ),
+                                            footer = $('<div>', {'class': 'footer'}).append(
+                                              ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
+                                                $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
+                                            )
                                         )
                                     )
                                 );
@@ -141,32 +143,34 @@ var LanguageDefinition = {
 
   'function-image'      :   {
                               exec: function(txt, selText, $field, uploadURL) {
-                                var modal = $('<div>', {'class': 'modal fade'});
+                                var modal = $('<div>', {'class': 'modal fade', 'tabindex': '-1'});
                                 modal.append(
-                                    $('<div>', {'class': 'modal-header'}).append(
-                                        $('<span>').html('Litus Admin'),
-                                        document.createTextNode('/Insert Image')
-                                    ),
-                                    $('<div>', {'class': 'modal-body'}).append(
-                                        form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
-                                            $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'image'}),
-                                            $('<b>').html('Alternative Text'),
-                                            $('<br />'),
-                                            linkText = $('<input>', {'type': 'text', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
-                                            $('<br />'),
-                                            $('<br />'),
-                                            $('<b>').html('Image'),
-                                            $('<br />'),
-                                            file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'}),
-                                            $('<br />'),
-                                            $('<br />')
+                                    $('<div>', {'class': 'modal-dialog'}).append(
+                                        $('<div>', {'class': 'modal-header'}).append(
+                                            $('<span>').html('Litus Admin'),
+                                            document.createTextNode('/Insert Image')
                                         ),
-                                        progress = $('<div>', {'class': 'progress progress-striped active'}).append(
-                                            $('<div>', {'class': 'bar', 'style': 'width: 100%'})
-                                        ),
-                                        footer = $('<div>', {'class': 'footer'}).append(
-                                          ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
-                                            $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
+                                        $('<div>', {'class': 'modal-body'}).append(
+                                            form = $('<form>', {'action': uploadURL, 'method': 'post', 'enctype': 'multipart/form-data'}).append(
+                                                $('<input>', {'type': 'hidden', 'name': 'type', 'value': 'image'}),
+                                                $('<b>').html('Alternative Text'),
+                                                $('<br />'),
+                                                linkText = $('<input>', {'type': 'text', 'placeholder': 'Alternative Text', 'name': 'linkText'}),
+                                                $('<br />'),
+                                                $('<br />'),
+                                                $('<b>').html('Image'),
+                                                $('<br />'),
+                                                file = $('<input>', {'type': 'file', 'name': 'file', 'accept': 'image/jpeg,image/png,image/gif'}),
+                                                $('<br />'),
+                                                $('<br />')
+                                            ),
+                                            progress = $('<div>', {'class': 'progress progress-striped active'}).append(
+                                                $('<div>', {'class': 'bar', 'style': 'width: 100%'})
+                                            ),
+                                            footer = $('<div>', {'class': 'footer'}).append(
+                                              ok = $('<input>', {'type': 'button', 'class': 'add', 'value': 'Insert'}),
+                                                $('<input>', {'type': 'button', 'class': 'cancel', 'data-dismiss': 'modal', 'value': 'Cancel'})
+                                            )
                                         )
                                     )
                                 );

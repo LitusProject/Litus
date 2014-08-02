@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Entity\General;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Zend\Http\Client;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents a geographic location associated with an address.
@@ -50,7 +48,7 @@ class Location
     private $name;
 
     /**
-     * @var string The address associated with the location
+     * @var \CommonBundle\Entity\General\Address The address associated with the location
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
@@ -72,16 +70,15 @@ class Location
     private $longitude;
 
     /**
-     * @var bool Whether or not the category is active
+     * @var boolean Whether or not the location is active
      *
      * @ORM\Column(type="boolean")
      */
     private $active;
 
     /**
-     * @param \Doctrine\ORM\EntityManager          $entityManager
-     * @param string                               $name
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param string  $name
+     * @param Address $address
      */
     public function __construct($name, Address $address, $latitude, $longitude)
     {
@@ -109,8 +106,8 @@ class Location
     }
 
     /**
-     * @param  string                                $name
-     * @return \CommonBundle\Entity\General\Location
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -120,7 +117,7 @@ class Location
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getAddress()
     {
@@ -128,8 +125,8 @@ class Location
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager          $entityManager
-     * @param \CommonBundle\Entity\General\Address $address
+     * @param  Address $address
+     * @return self
      */
     public function setAddress(Address $address)
     {
@@ -147,8 +144,8 @@ class Location
     }
 
     /**
-     * @param  string                               $latitude
-     * @return CommonBundle\Entity\General\Location
+     * @param  string $latitude
+     * @return self
      */
     public function setLatitude($latitude)
     {
@@ -166,8 +163,8 @@ class Location
     }
 
     /**
-     * @param  string                               $longitude
-     * @return CommonBundle\Entity\General\Location
+     * @param  string $longitude
+     * @return self
      */
     public function setLongitude($longitude)
     {

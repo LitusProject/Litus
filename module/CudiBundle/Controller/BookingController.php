@@ -18,16 +18,11 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Form\Booking\Booking as BookingForm,
     CudiBundle\Form\Booking\Search as SearchForm,
-    DateInterval,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,18 +36,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
-        if (null === $authenticatedPerson) {
+        if (null === $authenticatedPerson)
             return $this->notFoundAction();
-        }
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($authenticatedPerson);
 
         $total = 0;
-        foreach ($bookings as $booking) {
+        foreach ($bookings as $booking)
             $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
-        }
 
         return new ViewModel(
             array(
@@ -66,17 +59,13 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->_getBooking()))
             return $this->notFoundAction();
-        }
 
         if (!($booking->getArticle()->isUnbookable())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given booking cannot be cancelled!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given booking cannot be cancelled!'
             );
 
             $this->redirect()->toRoute(
@@ -115,9 +104,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
-        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
+        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic))
             return $this->notFoundAction();
-        }
 
         $currentYear = $this->getCurrentAcademicYear();
 
@@ -303,20 +291,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->flush();
 
                 if (0 == $total) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::WARNING,
-                            'Warning',
-                            'You have not booked any textbooks!'
-                        )
+                    $this->flashMessenger()->warn(
+                        'Warning',
+                        'You have not booked any textbooks!'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'Success',
-                            $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.'
-                        )
+                    $this->flashMessenger()->success(
+                        'Success',
+                        $enableAssignment ? 'The textbooks have been booked!' : 'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.'
                     );
                 }
 
@@ -501,12 +483,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             $this->getEntityManager()->flush();
 
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::SUCCESS,
-                    'Success',
-                    'The textbooks have been booked!'
-                )
+            $this->flashMessenger()->success(
+                'Success',
+                'The textbooks have been booked!'
             );
 
             return new ViewModel(
@@ -516,12 +495,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             );
         }
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'The textbooks couldn\'t be booked!'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'The textbooks couldn\'t be booked!'
         );
 
         return new ViewModel(

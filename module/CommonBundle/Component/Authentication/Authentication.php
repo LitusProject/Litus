@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Action\Doctrine,
-    Zend\Authentication\Adapter\AdapterInterface,
+use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
 
 /**
@@ -32,27 +31,27 @@ use CommonBundle\Component\Authentication\Action\Doctrine,
 class Authentication
 {
     /**
-     * @var \CommonBundle\Component\Authentication\Adapter\Doctrine The authentication adapter
+     * @var DoctrineAdapter The authentication adapter
      */
     private $_adapter = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\AbstractAuthenticationService The authentication service
+     * @var AuthenticationService The authentication service
      */
     private $_service = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Result The authentication result
+     * @var Result The authentication result
      */
     private $_result = null;
 
     /**
      * Construct a new Authentication object.
      *
-     * @param \Zend\Authentication\Adapter                                         $adapter The authentication adapter that should be used
-     * @param \CommonBundle\Component\Authentication\AbstractAuthenticationService $service The service that should be used
+     * @param DoctrineAdapter       $adapter The authentication adapter that should be used
+     * @param AuthenticationService $service The service that should be used
      */
-    public function __construct(AdapterInterface $adapter, AuthenticationService $service)
+    public function __construct(DoctrineAdapter $adapter, AuthenticationService $service)
     {
         $this->_adapter = $adapter;
         $this->_service = $service;
@@ -84,7 +83,7 @@ class Authentication
     /**
      * Forget the current user.
      *
-     * @return void
+     * @return \CommonBundle\Entity\User\Session|null
      */
     public function forget()
     {
@@ -95,7 +94,7 @@ class Authentication
     }
 
     /**
-     * Returns true if the provided user has been authenticated.
+     * Returns true if the user has been authenticated.
      *
      * @return bool
      */
@@ -128,7 +127,7 @@ class Authentication
     /**
      * Return the person object.
      *
-     * @return \CommonBundle\Entity\User\Person
+     * @return null|\CommonBundle\Entity\User\Person
      */
     public function getPersonObject()
     {
@@ -143,7 +142,7 @@ class Authentication
     /**
      * Return the session object.
      *
-     * @return \CommonBundle\Entity\User\Session
+     * @return null|\CommonBundle\Entity\User\Session
      */
     public function getSessionObject()
     {

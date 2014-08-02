@@ -22,11 +22,13 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form as FormEntity,
     FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Entry as FormEntry,
+    Zend\Http\PhpEnvironment\Request,
     Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface as MailTransport;
+    Zend\Mail\Transport\TransportInterface as MailTransport,
+    Zend\Mvc\Controller\Plugin\Url;
 
 /**
  * Doodle actions
@@ -35,14 +37,15 @@ use CommonBundle\Entity\General\Language,
  */
 class Doodle
 {
-    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, Form $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormEntity $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null, Request $request)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(
                 $entityManager,
                 $formData['first_name'],
                 $formData['last_name'],
-                $formData['email']
+                $formData['email'],
+                $request
             );
             $entityManager->persist($guestInfo);
         }
@@ -70,11 +73,19 @@ class Doodle
 
         $entityManager->flush();
 
-        if ($formSpecification->hasMail() && isset($mailTransport)) {
+        if ($formSpecification->hasMail() && isset($mailTransport) && isset($url)) {
+            $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
+                'form_view',
+                array(
+                    'action' => 'login',
+                    'id' => $formSpecification->getId(),
+                    'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : ''
+                )
+            );
             $mailAddress = $formSpecification->getMail()->getFrom();
 
             $mail = new Message();
-            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language))
+            $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
                 ->setFrom($mailAddress)
                 ->setSubject($formSpecification->getMail()->getSubject())
                 ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());

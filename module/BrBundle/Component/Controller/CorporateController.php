@@ -19,7 +19,6 @@
 namespace BrBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
@@ -80,28 +79,8 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         $date = null;
         if (null !== $this->getParam('academicyear'))
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->getEntityManager(), $date);
     }
 
     /**

@@ -22,7 +22,6 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
-    IntlDateFormatter,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form as BaseForm;
@@ -43,7 +42,7 @@ class Doodle extends BaseForm
     private $namesVisibleForOthers;
 
     /**
-     * @var \FormBundle\Entity\Mail\Mail The mail sent for reminding.
+     * @var Mail|null The mail sent for reminding.
      *
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
      * @ORM\JoinColumn(name="reminder_mail", referencedColumnName="id")
@@ -51,24 +50,25 @@ class Doodle extends BaseForm
     private $reminderMail;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime                        $startDate
-     * @param \DateTime                        $endDate
-     * @param boolean                          $active
-     * @param boolean                          $multiple
-     * @param boolean                          $nonMember
-     * @param boolean                          $editableByUser
-     * @param boolean                          $namesVisibleForOthers
+     * @param Person   $person
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param boolean  $active
+     * @param boolean  $multiple
+     * @param boolean  $nonMember
+     * @param boolean  $editableByUser
+     * @param boolean  $sendGuestLoginMail
+     * @param boolean  $namesVisibleForOthers
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $namesVisibleForOthers)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail, $namesVisibleForOthers)
     {
-        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser);
+        parent::__construct($person, $startDate, $endDate, $active, 0, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail);
 
         $this->namesVisibleForOthers = $namesVisibleForOthers;
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person|null $person
+     * @param  Person|null $person
      * @return boolean
      */
     public function canBeSavedBy(Person $person = null)
@@ -101,8 +101,8 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param  boolean                             $namesVisibleForOthers
-     * @return \FormBundle\Entity\Node\Form\Doodle
+     * @param  boolean $namesVisibleForOthers
+     * @return self
      */
     public function setNamesVisibleForOthers($namesVisibleForOthers)
     {
@@ -128,9 +128,8 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail|null $reminderMail
-     *
-     * @return \FormBundle\Entity\Node\Form\Doodle
+     * @param  Mail|null $reminderMail
+     * @return self
      */
     public function setReminderMail(Mail $reminderMail = null)
     {
@@ -140,7 +139,7 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @return \FormBundle\Entity\Mail\Mail
+     * @return Mail|null
      */
     public function getReminderMail()
     {
@@ -156,8 +155,8 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
      * @return string
      */
     public function getCompletedReminderMailBody(Entry $entry, Language $language)
@@ -173,8 +172,8 @@ class Doodle extends BaseForm
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
      * @return string
      */
     protected function _getSummary(Entry $entry, Language $language)
@@ -182,24 +181,6 @@ class Doodle extends BaseForm
         $fieldEntries = $this->_entityManager
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
-
-        $formatterDate = new IntlDateFormatter(
-            $language->getAbbrev(),
-            IntlDateFormatter::NONE,
-            IntlDateFormatter::NONE,
-            date_default_timezone_get(),
-            IntlDateFormatter::GREGORIAN,
-            'd MMMM Y'
-        );
-
-        $formatterHour = new IntlDateFormatter(
-            $language->getAbbrev(),
-            IntlDateFormatter::NONE,
-            IntlDateFormatter::NONE,
-            date_default_timezone_get(),
-            IntlDateFormatter::GREGORIAN,
-            'H:mm'
-        );
 
         $result = '';
         foreach ($fieldEntries as $fieldEntry) {

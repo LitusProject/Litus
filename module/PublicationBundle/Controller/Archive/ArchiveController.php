@@ -18,8 +18,7 @@
 
 namespace PublicationBundle\Controller\Archive;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -92,12 +91,9 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
     private function _getPublication()
     {
         if (null === $this->getParam('publication')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the publication!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the publication!'
             );
 
             $this->redirect()->toRoute(
@@ -115,12 +111,9 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('publication'));
 
         if (null === $publication) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No publication with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No publication with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -139,12 +132,9 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
     private function _getYear()
     {
         if (null === $this->getParam('year')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the year!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the year!'
             );
 
             $this->redirect()->toRoute(
@@ -162,12 +152,9 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('year'));
 
         if (null === $year) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No year with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No year with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

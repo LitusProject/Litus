@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Sale\Article\Restriction,
+use CudiBundle\Entity\Sale\Article\Restriction,
     CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -56,12 +55,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The restriction was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The restriction was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -113,12 +109,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -136,12 +129,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -160,12 +150,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the restriction!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the restriction!'
             );
 
             $this->redirect()->toRoute(
@@ -183,12 +170,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->findOneById($this->getParam('id'));
 
         if (null === $restriction) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No restriction with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No restriction with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

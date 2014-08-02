@@ -43,15 +43,6 @@ use CommonBundle\Entity\General\Language,
 abstract class Form extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The ID of this form
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
-    /**
      * @var int The maximum number of entries of this form.
      *
      * @ORM\Column(name="max", type="integer")
@@ -80,8 +71,16 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $editableByUser;
 
     /**
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
+     * @var boolean Send a mail to guests after submitting form to login later and edit/view their submission
      *
+     * @ORM\Column(name="send_guest_login_mail", type="boolean")
+     */
+    private $sendGuestLoginMail;
+
+    /**
+     * @var ArrayCollection The form's fields
+     *
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field", mappedBy="form")
      * @ORM\OrderBy({"order" = "ASC"})
      */
     private $fields;
@@ -108,7 +107,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $active;
 
     /**
-     * @var \FormBundle\Entity\Mail\Mail The mail sent upon completion.
+     * @var Mail|null The mail sent upon completion.
      *
      * @ORM\OneToOne(targetEntity="FormBundle\Entity\Mail\Mail")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
@@ -116,28 +115,29 @@ abstract class Form extends \CommonBundle\Entity\Node
     private $mail;
 
     /**
-     * @var array The translations of this form
+     * @var ArrayCollection The translations of this form
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Node\Translation\Form", mappedBy="form", cascade={"remove"})
      */
     private $translations;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \DateTime                        $startDate
-     * @param \DateTime                        $endDate
-     * @param boolean                          $active
-     * @param boolean                          $max
-     * @param boolean                          $multiple
-     * @param boolean                          $nonMember
-     * @param boolean                          $editableByUser
+     * @param Person   $person
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param boolean  $active
+     * @param int      $max
+     * @param boolean  $multiple
+     * @param boolean  $nonMember
+     * @param boolean  $editableByUser
+     * @param boolean  $sendGuestLoginMail
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser)
+    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail)
     {
         parent::__construct($person);
 
@@ -145,6 +145,7 @@ abstract class Form extends \CommonBundle\Entity\Node
         $this->multiple = $multiple;
         $this->nonMember = $nonMember;
         $this->editableByUser = $editableByUser;
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->startDate = $startDate;
@@ -155,7 +156,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param int $max
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return self
      */
     public function setMax($max)
     {
@@ -175,7 +176,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $multiple
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return self
      */
     public function setMultiple($multiple)
     {
@@ -195,7 +196,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $editableByUser
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return self
      */
     public function setEditableByUser($editableByUser)
     {
@@ -215,7 +216,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @param boolean $nonMember
      *
-     * @return \FormBundle\Entity\Node\Form
+     * @return self
      */
     public function setNonMember($nonMember)
     {
@@ -233,9 +234,29 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \FormBundle\Entity\Field The field to add to this form.
+     * @param  boolean                      $sendGuestLoginMail
+     * @return \FormBundle\Entity\Node\Form
      */
-    public function addField($field)
+    public function setSendGuestLoginMail($sendGuestLoginMail)
+    {
+        $this->sendGuestLoginMail = $sendGuestLoginMail;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function sendGuestLoginMail()
+    {
+        return $this->sendGuestLoginMail;
+    }
+
+    /**
+     * @param  Field                        $field The field to add to this form.
+     * @return \FormBundle\Entity\Node\Form
+     */
+    public function addField(Field $field)
     {
         $this->fields->add($field);
 
@@ -251,11 +272,10 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param DateTime $startDate
-     *
-     * @return \FormBundle\Entity\Node\Form
+     * @param  DateTime $startDate
+     * @return self
      */
-    public function setStartDate($startDate)
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
 
@@ -271,11 +291,10 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \DateTime $endDate
-     *
-     * @return \FormBundle\Entity\Node\Form
+     * @param  DateTime $endDate
+     * @return self
      */
-    public function setEndDate($endDate)
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
 
@@ -283,7 +302,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -291,9 +310,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $active
-     *
-     * @return \FormBundle\Entity\Node\Form
+     * @param  boolean $active
+     * @return self
      */
     public function setActive($active)
     {
@@ -319,9 +337,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param \FormBundle\Entity\Mail\Mail|null $mail
-     *
-     * @return \FormBundle\Entity\Node\Form
+     * @param  Mail|null $mail
+     * @return self
      */
     public function setMail(Mail $mail = null)
     {
@@ -331,7 +348,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \FormBundle\Entity\Mail\Mail
+     * @return Mail|null
      */
     public function getMail()
     {
@@ -339,8 +356,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -354,8 +371,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getIntroduction(Language $language = null, $allowFallback = true)
@@ -369,8 +386,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getSubmitText(Language $language = null, $allowFallback = true)
@@ -384,8 +401,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getUpdateText(Language $language = null, $allowFallback = true)
@@ -399,7 +416,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language    $language
+     * @param  Language|null                            $language
      * @param  boolean                                  $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Form
      */
@@ -422,7 +439,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can view this form.
      *
-     * @param  \CommonBundle\Entity\User\Persons $person The person to check.
+     * @param  Person|null $person The person to check.
      * @return boolean
      */
     public function canBeViewedBy(Person $person = null)
@@ -440,7 +457,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can edit this form.
      *
-     * @param  \CommonBundle\Entity\User\Person $person The person to check.
+     * @param  Person|null $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
@@ -462,11 +479,11 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * Returns the value for the given entry and field.
      *
-     * @param \FormBundle\Entity\Node\Entry         $entry    The entry to find the value for.
-     * @param \FormBundle\Entity\Field              $field    The field to find the value for.
-     * @param \CommonBundle\Entity\General\Language $language The language to get the value in.
+     * @param Entry    $entry    The entry to find the value for.
+     * @param Field    $field    The field to find the value for.
+     * @param Language $language The language to get the value in.
      *
-     * @return The value.
+     * @return string The value.
      */
     public function getValueFor(Entry $entry, Field $field, Language $language)
     {
@@ -480,8 +497,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager  $entityManager
-     * @return \FormBundle\Entity\Node\Form
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -496,11 +513,12 @@ abstract class Form extends \CommonBundle\Entity\Node
     abstract public function getType();
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
+     * @param  string   $url
      * @return string
      */
-    public function getCompletedMailBody(Entry $entry, Language $language)
+    public function getCompletedMailBody(Entry $entry, Language $language, $url)
     {
         $body = $this->getMail()->getContent($language);
         $body = str_replace('%id%', $entry->getId(), $body);
@@ -509,12 +527,19 @@ abstract class Form extends \CommonBundle\Entity\Node
 
         $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
 
+        if ($this->sendGuestLoginMail() && $entry->isGuestEntry()) {
+            $body = str_replace('#guest_login_text#', '', $body);
+            $body = str_replace('%guest_login%', $url, $body);
+        } else {
+            $body = preg_replace('/#guest_login_text#.*#guest_login_text#\%guest_login\%/', '', $body);
+        }
+
         return $body;
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Entry         $entry
-     * @param  \CommonBundle\Entity\General\Language $language
+     * @param  Entry    $entry
+     * @param  Language $language
      * @return string
      */
     abstract protected function _getSummary(Entry $entry, Language $language);

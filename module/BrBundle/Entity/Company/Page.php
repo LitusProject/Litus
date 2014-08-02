@@ -18,10 +18,8 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Util\Url,
+use BrBundle\Entity\Company,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -57,9 +55,10 @@ class Page
     private $description;
 
     /**
-     * @var BrBundle\Entity\Company
+     * @var Company
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company", inversedBy="page")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
 
@@ -73,11 +72,11 @@ class Page
     private $years;
 
     /**
-     * @param string $company     The company
-     * @param string $summary     The page's summary
-     * @param string $description The page's description
+     * @param Company $company     The company
+     * @param string  $summary     The page's summary
+     * @param string  $description The page's description
      */
-    public function __construct($company, $summary, $description)
+    public function __construct(Company $company, $summary, $description)
     {
         $this->setSummary($summary);
         $this->setDescription($description);
@@ -102,7 +101,7 @@ class Page
     }
 
     /**
-     * @return string
+     * @return Company
      */
     public function getCompany()
     {

@@ -19,7 +19,7 @@
 namespace CommonBundle\Component\Acl\Driver;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Authentication\Authentication;
+    CommonBundle\Component\Acl\RoleAware;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user
@@ -30,37 +30,44 @@ use CommonBundle\Component\Acl\Acl,
 class HasAccess
 {
     /**
-     * @var \CommonBundle\Component\Acl\Acl The ACL object
+     * @var Acl The ACL object
      */
     private $_acl = null;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Authentication The authentication object
+     * @var RoleAware The authentication entity
      */
-    private $_authentication = null;
+    private $_entity = null;
 
     /**
-     * @param \CommonBundle\Component\Acl\Acl                       $acl            The ACL object
-     * @param \CommonBundle\Component\Authentication\Authentication $authentication The authentication object
+     * @var boolean Whether the person is authenticated
      */
-    public function __construct(Acl $acl, Authentication $authentication)
+    private $_authenticated = false;
+
+    /**
+     * @param Acl       $acl           The ACL object
+     * @param boolean   $authenticated Whether the person is authenticated
+     * @param RoleAware $entity        The authenticated entity
+     */
+    public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)
     {
         $this->_acl = $acl;
-        $this->_authentication = $authentication;
+        $this->_authenticated = $authenticated;
+        $this->_entity = $entity;
     }
 
     /**
-     * @param  string $resource The resource that should be verified
-     * @param  string $action   The module that should be verified
-     * @return bool
+     * @param  string       $resource The resource that should be verified
+     * @param  string       $action   The module that should be verified
+     * @return boolean|null
      */
     public function __invoke($resource, $action)
     {
         if (null === $this->_acl)
             throw new Exception\RuntimeException('No ACL object was provided');
 
-        if (null === $this->_authentication)
-            throw new Exception\RuntimeException('No authentication object was provided');
+        if ($this->_authenticated && null === $this->_entity)
+            throw new Exception\RuntimeException('No entity was provided');
 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
         if ('development' == getenv('APPLICATION_ENV'))
@@ -69,8 +76,8 @@ class HasAccess
         if (!$this->_acl->hasResource($resource))
             return false;
 
-        if ($this->_authentication->isAuthenticated()) {
-            foreach ($this->_authentication->getPersonObject()->getRoles() as $role) {
+        if ($this->_authenticated && null !== $this->_entity) {
+            foreach ($this->_entity->getRoles() as $role) {
                 if (
                     $role->isAllowed(
                         $this->_acl, $resource, $action

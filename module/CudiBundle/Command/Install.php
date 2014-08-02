@@ -154,7 +154,7 @@ class Install extends \CommonBundle\Component\Console\Command\Install
     private function _installAddresses()
     {
         try {
-            $config = $this->getEntityManager()
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.delivery_address');
         } catch (Exception $e) {
@@ -173,7 +173,7 @@ class Install extends \CommonBundle\Component\Console\Command\Install
         }
 
         try {
-            $config = $this->getEntityManager()
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.billing_address');
         } catch (Exception $e) {

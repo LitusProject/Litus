@@ -21,7 +21,6 @@ namespace CudiBundle\Form\Admin\Sales\Article;
 use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -33,14 +32,14 @@ use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcod
 class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 {
     /**
-     * @var \CudiBundle\Entity\Sale\Article
+     * @var Article
      */
     private $_article;
 
     /**
-     * @param \Doctrine\ORM\EntityManager     $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Sale\Article $article
-     * @param null|string|int                 $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Article         $article
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Article $article, $name = null)
     {
@@ -70,7 +69,7 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
 
     public function getInputFilter()
     {
-        $inputFilter = new InputFilter();
+        $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
         $inputFilter->remove('barcode');

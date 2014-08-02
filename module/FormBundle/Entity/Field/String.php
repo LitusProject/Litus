@@ -53,14 +53,14 @@ class String extends Field
     private $multiLine;
 
     /**
-     * @param FormBundle\Entity\Node\Form $form
-     * @param integer                     $order
-     * @param boolean                     $required
-     * @param \FormBundle\Entity\Field    $visibityDecisionField
-     * @param string                      $visibilityValue
-     * @param integer                     $lineLength
-     * @param integer                     $lines
-     * @param boolean                     $multiLine
+     * @param Form        $form
+     * @param integer     $order
+     * @param boolean     $required
+     * @param Field|null  $visibityDecisionField
+     * @param string|null $visibilityValue
+     * @param integer     $lineLength
+     * @param integer     $lines
+     * @param boolean     $multiLine
      */
     public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $lineLength, $lines, $multiLine)
     {
@@ -81,8 +81,8 @@ class String extends Field
     }
 
     /**
-     * @param  integer                          $lineLength The maximum number of characters per line.
-     * @return \FormBundle\Entity\Fields\String
+     * @param  integer $lineLength The maximum number of characters per line.
+     * @return self
      */
     public function setLineLength($lineLength)
     {
@@ -104,8 +104,8 @@ class String extends Field
     }
 
     /**
-     * @param  integer                          $lines Returns the maximum number of lines for this field.
-     * @return \FormBundle\Entity\Fields\String
+     * @param  integer $lines Returns the maximum number of lines for this field.
+     * @return self
      */
     public function setLines($lines)
     {
@@ -125,8 +125,8 @@ class String extends Field
     }
 
     /**
-     * @param  boolean                          $multiLine Returns whether this is a multiline field.
-     * @return \FormBundle\Entity\Fields\String
+     * @param  boolean $multiLine Returns whether this is a multiline field.
+     * @return self
      */
     public function setMultiLine($multiLine)
     {
@@ -149,9 +149,9 @@ class String extends Field
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $value
-     * @return string
+     * @param  Language $language
+     * @param  boolean  $value
+     * @return boolean
      */
     public function getValueString(Language $language, $value)
     {

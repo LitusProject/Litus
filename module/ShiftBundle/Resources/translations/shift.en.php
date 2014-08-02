@@ -35,7 +35,7 @@ return array(
     'Volunteers' => 'Volunteers',
     'Location' => 'Location',
     'Results' => 'Results',
-    'Signout' => 'Signout',
+    'Sign Out' => 'Sign Out',
     'There are no shifts to be shown yet; please use the search functions on the left.' => 'There are no shifts to be shown yet; please use the search functions on the left.',
     'You were singed out from the selected shift!' => 'You were singed out from the selected shift!',
     'You have not yet signed up for any shifts. You can use the search functions on the left to look for some!' => 'You have not yet signed up for any shifts. You can use the search functions on the left to look for some!',

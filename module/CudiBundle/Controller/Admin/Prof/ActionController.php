@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Prof;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article\History,
+use CudiBundle\Entity\Article\History,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Prof\Article\Confirm as ArticleForm,
     CudiBundle\Form\Admin\Prof\File\Confirm as FileForm,
@@ -106,12 +105,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The action is successfully refused!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The action is successfully refused!'
         );
 
         $this->redirect()->toRoute(
@@ -142,6 +138,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
+            } elseif ($action->getAction() == 'delete') {
+                $action->getEntity()->setIsHistory(true);
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();
@@ -209,12 +207,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The action is successfully confirmed!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The action is successfully confirmed!'
         );
 
         $this->redirect()->toRoute(
@@ -235,12 +230,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $action->setEntityManager($this->getEntityManager());
 
         if ($action->getEntity()->isDraft()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No action with was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No action with was found!'
             );
 
             $this->redirect()->toRoute(
@@ -372,12 +364,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
     private function _getAction()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the action!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the action!'
             );
 
             $this->redirect()->toRoute(
@@ -395,12 +384,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $action) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No action with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No action with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

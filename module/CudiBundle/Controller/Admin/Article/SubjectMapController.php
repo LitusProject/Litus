@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
+use CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog,
     CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog,
@@ -81,12 +81,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     $this->getEntityManager()->flush();
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The mapping was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The mapping was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -135,14 +132,13 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 
         $article = $mapping->getArticle();
 
-        if ($article->isInternal()) {
+        if ($article instanceof InternalArticle) {
             $cachePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.front_page_cache_dir');
-            if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+            if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage()))
                 unlink($cachePath . '/' . $article->getFrontPage());
-                $article->setFrontPage();
-            }
+            $article->setFrontPage();
         }
 
         $this->getEntityManager()->flush();
@@ -154,15 +150,15 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return SubjectMap
+     */
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -180,12 +176,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -204,12 +197,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -227,12 +217,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

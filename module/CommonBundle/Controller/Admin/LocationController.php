@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Admin\Location\Add as AddForm,
+use CommonBundle\Form\Admin\Location\Add as AddForm,
     CommonBundle\Form\Admin\Location\Edit as EditForm,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Location,
@@ -83,16 +82,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $form = new AddForm(
-                    $this->getEntityManager()
-                );
-
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The location was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The location was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -132,7 +124,6 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
                 $location->setName($formData['name'])
                     ->setAddress(
-                        $this->getEntityManager(),
                         new Address(
                             $formData['address_street'],
                             $formData['address_number'],
@@ -147,12 +138,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The location was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The location was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -221,15 +209,15 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return Location|null
+     */
     private function _getLocation()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the location!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the location!'
             );
 
             $this->redirect()->toRoute(
@@ -247,12 +235,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $location) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No location with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No location with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

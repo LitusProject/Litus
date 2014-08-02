@@ -18,10 +18,9 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
-    DateTime,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
@@ -186,12 +185,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The runner was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The runner was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -217,12 +213,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        $baseDirectory = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-        system('kill $(ps aux | grep -i "php public/index.php socket:sport:run-queue --run" | grep -v grep | awk \'{print $2}\')');
-
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => WebSocketUtil::kill($this->getEntityManager(), 'sport:run-queue'),
             )
         );
     }
@@ -244,12 +237,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     public function _getRunner()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the runner!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the runner!'
             );
 
             $this->redirect()->toRoute(
@@ -267,12 +257,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneById($this->getParam('id'));
 
         if (null === $runner) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No runner with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No runner with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -301,12 +288,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneByUniversityStart($start);
 
         if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(

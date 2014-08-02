@@ -43,7 +43,6 @@ class TmpFile
      */
     public function __construct($tmpDirectory = '/tmp')
     {
-        $filename = '';
         do {
             $filename = '/.' . uniqid();
         } while (file_exists($tmpDirectory . $filename));
@@ -107,7 +106,7 @@ class TmpFile
     {
         if ($this->_isOpen()) {
             $fileHandle = $this->fileHandle;
-            $this->_fileHandle = null;
+            $this->fileHandle = null;
 
             fclose($fileHandle);
             if (file_exists($this->_filename))

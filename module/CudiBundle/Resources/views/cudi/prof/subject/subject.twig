@@ -98,10 +98,10 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_article', 'addFromSubject') %}
-            <a href="{{ url('cudi_prof_article', {"action": "addFromSubject", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add New Article') }}</a>
+            <a href="{{ url('cudi_prof_article', {"action": "addFromSubject", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add New Article') }}</a>
         {% endif %}
         {% if hasAccess('cudi_prof_article_mapping', 'add') %}
-            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Existing Article') }}</a>
+            <a href="{{ url('cudi_prof_article_mapping', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add Existing Article') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
@@ -132,57 +132,69 @@
     </table>
     <div class="pull-right">
         {% if hasAccess('cudi_prof_prof', 'add') %}
-            <a href="{{ url('cudi_prof_prof', {"action": "add", "id": subject.getId(), "language": language.getAbbrev()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
+            <a href="{{ url('cudi_prof_prof', {"action": "add", "id": subject.getId()}) }}" class="btn btn-success">{{ translate('Add Docent') }}</a>
         {% endif %}
     </div>
     <br class="clear" />
 
-    <div id="modalRemoveArticle" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Remove Article') }}</h3>
-        </div>
-        <div class="modal-body">
-            {{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
-        </div>
-    </div>
-
-    <div id="modalRemoveProf" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Remove Docent') }}</h3>
-        </div>
-        <div class="modal-body">
-            {{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+    <div id="modalRemoveArticle" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h3>{{ translate('Remove Article') }}</h3>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove the following article') }}: <b><span class="articleTitle"></span></b>?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="modalActivateArticle" class="modal fade hide">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h3>{{ translate('Activate Article') }}</h3>
+    <div id="modalRemoveProf" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h3>{{ translate('Remove Docent') }}</h3>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure you want to remove the following docent') }}: <b><span class="profName"></span></b>?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <p>{{ translate('Are you sure you want to article the following article') }}: <b><span class="articleTitle"></span></b>?</p>
-            <p>
-                {{ translate('Will the content of the article be the same af previous year?') }}
-                <select id="sameAsPreviousYear" style="width: auto;">
-                    <option value="yes">{{ translate('Yes') }}</option>
-                    <option value="no">{{ translate('No') }}</option>
-                </select>
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
-            <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+    </div>
+
+    <div id="modalActivateArticle" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h3>{{ translate('Activate Article') }}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>{{ translate('Are you sure you want to activate the following article') }}: <b><span class="articleTitle"></span></b>?</p>
+                    <p>
+                        {{ translate('Will the content of the article be the same af previous year?') }}
+                        <select id="sameAsPreviousYear" style="width: auto;">
+                            <option value="yes">{{ translate('Yes') }}</option>
+                            <option value="no">{{ translate('No') }}</option>
+                        </select>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -207,7 +219,7 @@
             activateArticle.find('.articleTitle').html($(this).data('article'));
             activateArticle.find('.confirm').unbind('click').click(function () {
                 $.post(
-                    '{{ url('cudi_prof_article_mapping', {"action": "activate", "language": language.getAbbrev()})}}' + $this.data('id'),
+                    '{{ url('cudi_prof_article_mapping', {"action": "activate"})}}' + $this.data('id'),
                     {'sameAsPreviousYear': $('#sameAsPreviousYear').val()},
                     function (data) {
                         if (data && 'success' == data.status) {
@@ -234,7 +246,7 @@
             var removeArticle = $('#modalRemoveArticle');
             removeArticle.find('.articleTitle').html($(this).data('article'));
             removeArticle.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_article_mapping', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_article_mapping', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#article_removed_success').addClass('in');
@@ -261,7 +273,7 @@
             var removeProf = $('#modalRemoveProf');
             removeProf.find('.profName').html($(this).data('name'));
             removeProf.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_prof', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_prof', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#prof_removed_success').addClass('in');

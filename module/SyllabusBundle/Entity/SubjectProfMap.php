@@ -38,7 +38,7 @@ class SubjectProfMap
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\User\Person\Academic The prof of the mapping
+     * @var Academic The prof of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -46,7 +46,7 @@ class SubjectProfMap
     private $prof;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject The subject of the mapping
+     * @var Subject The subject of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -54,7 +54,7 @@ class SubjectProfMap
     private $subject;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     * @var AcademicYear The year of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -62,9 +62,9 @@ class SubjectProfMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Subject            $subject
-     * @param \CommonBundle\Entity\User\Person\Academic $prof
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The year of the mapping
+     * @param Subject      $subject
+     * @param Academic     $prof
+     * @param AcademicYear $academicYear The year of the mapping
      */
     public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
     {
@@ -82,7 +82,7 @@ class SubjectProfMap
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject
+     * @return Subject
      */
     public function getSubject()
     {
@@ -90,7 +90,7 @@ class SubjectProfMap
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Academic
+     * @return Academic
      */
     public function getProf()
     {
@@ -98,7 +98,7 @@ class SubjectProfMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

@@ -31,7 +31,7 @@ class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Comp
     private $_required = false;
 
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @param  string                             $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
@@ -46,8 +46,8 @@ class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Comp
      *
      * Also sets the HTML5 'required' attribute.
      *
-     * @param  boolean $flag
-     * @return void
+     * @param  boolean  $flag
+     * @return Checkbox
      */
     public function setRequired($flag = true)
     {

@@ -29,7 +29,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Generator
 {
     /**
-     * @var \CommonBundle\Component\Util\TmpFile The file where the data will be saved to
+     * @var TmpFile The file where the data will be saved to
      */
     private $_data = null;
 
@@ -39,7 +39,7 @@ class Generator
     private $_destroy = true;
 
     /**
-     * @param \CommonBundle\Component\Util\File\TmpFile $tmpFile The file where the data will be saved to
+     * @param TmpFile|null $tmpFile The file where the data will be saved to
      */
     public function __construct(TmpFile $tmpFile = null)
     {
@@ -57,7 +57,7 @@ class Generator
     /**
      * Append an XML object to the file.
      *
-     * @param  \CommonBunle\Component\Util\Xml\Object $object The object that should be appended
+     * @param  Object $object The object that should be appended
      * @return void
      */
     public function append(Object $object)

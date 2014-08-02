@@ -244,8 +244,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 $filters['grade']['max'] = 100;
         }
 
-        $type = $this->getParam('type');
-
         $filtered = $this->_doFilter($this->_getList($academicYear), $filters);
         $result = array();
         foreach ($filtered as $entry) {
@@ -293,6 +291,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             ->getConfigValue('br.file_path') . '/cv/';
 
         $archiveYearKey = '';
+        $archiveYear = null;
         foreach ($archive as $key => $year) {
             if ($year['full_year'] == $this->getParam('academicyear')) {
                 $archiveYear = $year;
@@ -301,7 +300,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears())) {
+        if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears()) || null === $archiveYear) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
                     FlashMessage::ERROR,

@@ -22,6 +22,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Order\Item,
     Doctrine\ORM\EntityManager,
@@ -30,18 +31,18 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Xml
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var Order
      */
     private $_order;
 
     /**
-     * @param \Doctrine\ORM\EntityManager    $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order $order         The order
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Order         $order         The order
      */
     public function __construct(EntityManager $entityManager, Order $order)
     {
@@ -52,7 +53,7 @@ class Xml
     /**
      * Generate an archive to download.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $archive The file to write to
+     * @param TmpFile $archive The file to write to
      */
     public function generateArchive(TmpFile $archive)
     {
@@ -90,13 +91,13 @@ class Xml
 
     private function _generateXml(Item $item, TmpFile $tmpFile)
     {
-        $configs = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config');
-
         $xml = new Generator($tmpFile);
 
-        $num = 1;
+        $mainArticle = $item->getArticle()->getMainArticle();
+        if (!($mainArticle instanceof InternalArticle))
+            return;
 
+        $num = 1;
         $attachments = array(
             new Object(
                 'Attachment',
@@ -110,7 +111,7 @@ class Xml
 
         $mappings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findAllByArticle($item->getArticle()->getMainArticle());
+            ->findAllByArticle($mainArticle);
         foreach ($mappings as $mapping) {
             $attachments[] = new Object(
                 'Attachment',
@@ -122,7 +123,7 @@ class Xml
             );
         }
 
-        switch ($item->getArticle()->getMainArticle()->getBinding()->getCode()) {
+        switch ($mainArticle->getBinding()->getCode()) {
             case 'glued':
                 $binding = 'Ingelijmd';
                 break;
@@ -144,7 +145,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        $item->getArticle()->getMainArticle()->getTitle()
+                        $mainArticle->getTitle()
                     )
                 )
             ),
@@ -196,7 +197,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        $item->getArticle()->getMainArticle()->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
+                        $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
                     )
                 )
             ),
@@ -209,7 +210,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        (string) $item->getArticle()->getMainArticle()->isRectoVerso() ? 'Recto-Verso' : 'Recto'
+                        (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
                     )
                 )
             ),

@@ -18,9 +18,7 @@
 
 namespace ShiftBundle\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    DateTime,
+use DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
@@ -49,12 +47,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $dateSearchForm = new DateSearchForm($this->getEntityManager());
 
         if (!$this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::WARNING,
-                    'Warning',
-                    'Please login to view the shifts!'
-                )
+            $this->flashMessenger()->warn(
+                'Warning',
+                'Please login to view the shifts!'
             );
 
             $this->redirect()->toRoute(
@@ -104,12 +99,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $resultString = $this->getTranslator()->translate('Shifts for %event%');
                     $resultString = str_replace('%event%', $event->getTitle(), $resultString);
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }
@@ -131,12 +123,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $resultString = $this->getTranslator()->translate('Shifts for %unit%');
                     $resultString = str_replace('%unit%', $unit->getName(), $resultString);
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }
@@ -149,12 +138,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
                     if (!$start_date) {
-                        $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Error',
-                                'The given search query was invalid; please enter a date in the format dd/mm/yyyy!'
-                            )
+                        $this->flashMessenger()->error(
+                            'Error',
+                            'The given search query was invalid; please enter a date in the format dd/mm/yyyy!'
                         );
                     } else {
                         $start_date->setTime(0, 0, 0);
@@ -170,12 +156,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
                     }
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given search query was invalid!'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given search query was invalid!'
                     );
                 }
             }
@@ -297,7 +280,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getConfigValue('shift.mail_name');
 
                     if (!($language = $volunteer->getPerson()->getLanguage())) {
-                        $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                        $language = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
                     }
 
@@ -346,7 +330,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function signoutAction()
+    public function signOutAction()
     {
         $this->initAjax();
 
@@ -358,7 +342,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($shift->canSignout($this->getEntityManager(), $person))) {
+        if (!($shift->canSignOut($this->getEntityManager()))) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error')
@@ -367,7 +351,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $remove = $shift->removePerson($person);
-
         if (null !== $remove)
             $this->getEntityManager()->remove($remove);
 
@@ -459,6 +442,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     private function _getShift()
     {
         if (null === $this->getRequest()->getPost('id'))
@@ -471,6 +457,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     private function _getPerson()
     {
         if (null === $this->getRequest()->getPost('person'))

@@ -22,8 +22,21 @@ return array(
         'parents' => array(
         ),
         'actions' => array(
-            'api_auth' => array(
-                'getPerson'
+            'api_oauth' => array(
+                'authorize', 'shibboleth'
+            ),
+        ),
+    ),
+    'student' => array(
+        'system' => true,
+        'parents' => array(
+        ),
+        'actions' => array(
+            'api_cudi' => array(
+                'articles', 'book', 'bookings', 'cancelBooking', 'currentSession'
+            ),
+            'api_shift' => array(
+                'active', 'responsible', 'volunteer', 'signOut'
             ),
         ),
     ),

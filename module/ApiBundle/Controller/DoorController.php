@@ -32,6 +32,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getRulesAction()
     {
+        $this->initJson();
+
         $result = array();
 
         $statuses = $this->getEntityManager()
@@ -71,11 +73,14 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
     public function logAction()
     {
-        $this->getDocumentManager()->persist(
-            new Log(
-                $this->_getAcademic()
-            )
-        );
+        $this->initJson();
+
+        if (!($academic = $this->_getAcademic()))
+            return $this->error(500, 'The person does not exist');
+
+        $log = new Log($academic);
+
+        $this->getDocumentManager()->persist($log);
         $this->getDocumentManager()->flush();
 
         return new ViewModel(
@@ -85,6 +90,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    /**
+     * @return Academic|null
+     */
     private function _getAcademic()
     {
         if (null !== $this->getRequest()->getPost('academic')) {

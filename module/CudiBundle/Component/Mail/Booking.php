@@ -20,7 +20,6 @@ namespace CudiBundle\Component\Mail;
 
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    IntlDateFormatter,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface;
 
@@ -34,9 +33,10 @@ class Booking
     /**
      * Send a mail for assigned bookings
      *
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array                                   $bookings
-     * @param \CommonBundle\Entity\User\Person        $person
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param array              $bookings
+     * @param Person             $person
      */
     public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -115,9 +115,10 @@ class Booking
     /**
      * Send a warning mail before expiring bookings
      *
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array                                   $bookings
-     * @param \CommonBundle\Entity\User\Person        $person
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param array              $bookings
+     * @param Person             $person
      */
     public static function sendExpireWarningMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
@@ -189,16 +190,16 @@ class Booking
         if ($sendMailsToCudi)
             $mail->addCc($mailAddress, $mailName);
 
-        if ('development' != getenv('APPLICATION_ENV'))
-            $mailTransport->send($mail);
+        $mailTransport->send($mail);
     }
 
     /**
-     * Send a warning mail before expiring bookings
+     * Send a mail when expiring bookings
      *
-     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
-     * @param array                                   $bookings
-     * @param \CommonBundle\Entity\User\Person        $person
+     * @param EntityManager      $entityManager
+     * @param TransportInterface $mailTransport
+     * @param array              $bookings
+     * @param Person             $person
      */
     public static function sendExpireMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {

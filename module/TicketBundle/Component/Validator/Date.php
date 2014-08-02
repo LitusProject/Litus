@@ -31,7 +31,7 @@ class Date extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -52,9 +52,9 @@ class Date extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event  $event         The event
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager
+     * @param mixed         $opts          The validator's options
+     * @param string        $format
      */
     public function __construct(EntityManager $entityManager, $format, $opts = null)
     {
@@ -74,6 +74,9 @@ class Date extends \Zend\Validator\AbstractValidator
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
+
+        if (!is_numeric($context['event']))
+            return false;
 
         $activity = $this->_entityManager
             ->getRepository('CalendarBundle\Entity\Node\Event')

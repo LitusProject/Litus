@@ -20,8 +20,9 @@ namespace FormBundle\Command;
 
 use DateTime,
     DateInterval,
-    Zend\Mail\Message,
-    FormBundle\Entity\Field\TimeSlot;
+    FormBundle\Entity\Field\TimeSlot,
+    FormBundle\Entity\Node\Form\Doodle,
+    Zend\Mail\Message;
 
 /**
  * RenderMail
@@ -52,10 +53,6 @@ EOT
             $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');
         }
 
-        $english = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev('en');
-
         $start = new DateTime();
         $start->setTime(0, 0);
         $start->add(new DateInterval('P1D'));
@@ -79,7 +76,16 @@ EOT
 
     private function _sendMailForTimeSlot(TimeSlot $timeSlot)
     {
-        $this->writeln('Form <comment>' . $timeSlot->getForm()->getTitle($english)
+        $form = $timeSlot->getForm();
+
+        if (!($form instanceof Doodle))
+            return;
+
+        $english = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        $this->writeln('Form <comment>' . $form->getTitle($english)
             . '</comment>: TimeSlot <comment>' . $timeSlot->getLabel($english) . '</comment>');
 
         $entries = $this->getEntityManager()
@@ -89,23 +95,23 @@ EOT
         foreach ($entries as $entry) {
             $this->writeln('Reminder for ' . $entry->getFormEntry()->getPersonInfo()->getFullName());
 
-            $timeSlot->getForm()->setEntityManager($em);
-            $mailAddress = $timeSlot->getForm()->getReminderMail()->getFrom();
+            $form->setEntityManager($this->getEntityManager());
+            $mailAddress = $form->getReminderMail()->getFrom();
 
             $language = $english;
             if ($entry->getFormEntry()->getCreationPerson())
                 $language = $entry->getFormEntry()->getCreationPerson()->getLanguage();
 
             $mail = new Message();
-            $mail->setBody($timeSlot->getForm()->getCompletedReminderMailBody($entry->getFormEntry(), $language))
+            $mail->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
                 ->setFrom($mailAddress)
-                ->setSubject($timeSlot->getForm()->getReminderMail()->getSubject())
+                ->setSubject($form->getReminderMail()->getSubject())
                 ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());
 
-            if ($timeSlot->getForm()->getReminderMail()->getBcc())
+            if ($form->getReminderMail()->getBcc())
                 $mail->addBcc($mailAddress);
 
-            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail'))
+            if ($this->getOption('mail'))
                 $this->getMailTransport()->send($mail);
         }
     }

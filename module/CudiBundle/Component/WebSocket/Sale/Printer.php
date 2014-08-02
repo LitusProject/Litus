@@ -18,19 +18,24 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
+use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
 class Printer
 {
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param string                           $printer
-     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array                            $bookings
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $bookings
      */
     public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
+        $academic = $queueItem->getPerson();
+        if (!($academic instanceof Academic))
+            return;
+
         $articles = array();
         $totalPrice = 0;
         foreach ($bookings as $booking) {
@@ -44,11 +49,11 @@ class Printer
         }
 
         $data = array(
-            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'id' => $academic->getUniversityIdentification(),
             'barcode' => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
-            'name' => $queueItem->getPerson()->getFullName(),
+            'name' => $academic->getFullName(),
             'queuenumber' => $queueItem->getQueueNumber(),
             'totalAmount' => (string) number_format($totalPrice / 100, 2),
             'items' => $articles,
@@ -59,13 +64,17 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param string                           $printer
-     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array                            $bookings
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $bookings
      */
     public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
+        $academic = $queueItem->getPerson();
+        if (!($academic instanceof Academic))
+            return;
+
         $articles = array();
         $totalPrice = 0;
         foreach ($bookings as $booking) {
@@ -79,11 +88,11 @@ class Printer
         }
 
         $data = array(
-            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'id' => $academic->getUniversityIdentification(),
             'barcode' => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
-            'name' => $queueItem->getPerson()->getFullName(),
+            'name' => $academic->getFullName(),
             'queuenumber' => $queueItem->getQueueNumber(),
             'totalAmount' => (string) number_format($totalPrice / 100, 2),
             'items' => $articles,
@@ -94,13 +103,17 @@ class Printer
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager
-     * @param string                           $printer
-     * @param CudiBundle\Entity\Sale\QueueItem $queueItem
-     * @param array                            $saleItems
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param EntityQueueItem $queueItem
+     * @param array           $saleItems
      */
     public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
     {
+        $academic = $queueItem->getPerson();
+        if (!($academic instanceof Academic))
+            return;
+
         $articles = array();
         $totalPrice = 0;
         foreach ($saleItems as $saleItem) {
@@ -114,11 +127,11 @@ class Printer
         }
 
         $data = array(
-            'id' => $queueItem->getPerson()->getUniversityIdentification(),
+            'id' => $academic->getUniversityIdentification(),
             'barcode' => (int) $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_item_barcode_prefix') + $queueItem->getId(),
-            'name' => $queueItem->getPerson()->getFullName(),
+            'name' => $academic->getFullName(),
             'queuenumber' => $queueItem->getQueueNumber(),
             'totalAmount' => (string) number_format($totalPrice / 100, 2),
             'items' => $articles,
@@ -128,7 +141,12 @@ class Printer
         self::_print($entityManager, $printer, $data);
     }
 
-    private static function _print(EntityManager $entityManager, $printer, $data)
+    /**
+     * @param EntityManager $entityManager
+     * @param string        $printer
+     * @param array         $data
+     */
+    private static function _print(EntityManager $entityManager, $printer, array $data)
     {
         $enablePrinters = $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_printers');

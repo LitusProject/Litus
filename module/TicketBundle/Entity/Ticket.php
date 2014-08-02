@@ -20,6 +20,7 @@ namespace TicketBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
+    InvalidArgumentException,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,7 +53,7 @@ class Ticket
     private $id;
 
     /**
-     * @var string The event of the ticket
+     * @var Event The event of the ticket
      *
      * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
@@ -67,7 +68,7 @@ class Ticket
     private $status;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who bought/reserved the ticket
+     * @var Person|null The person who bought/reserved the ticket
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -75,7 +76,7 @@ class Ticket
     private $person;
 
     /**
-     * @var \TicketBundle\Entity\GuestInfo The guest info of who bought/reserved the ticket
+     * @var GuestInfo|null The guest info of who bought/reserved the ticket
      *
      * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\GuestInfo")
      * @ORM\JoinColumn(name="guest_info", referencedColumnName="id")
@@ -83,28 +84,28 @@ class Ticket
     private $guestInfo;
 
     /**
-     * @var \DateTime The date the ticket was booked
+     * @var DateTime|null The date the ticket was booked
      *
      * @ORM\Column(name="book_date", type="datetime", nullable=true)
      */
     private $bookDate;
 
     /**
-     * @var \DateTime The date the ticket was sold
+     * @var DateTime|null The date the ticket was sold
      *
      * @ORM\Column(name="sold_date", type="datetime", nullable=true)
      */
     private $soldDate;
 
     /**
-     * @var integer The number of the ticket (unique for an event)
+     * @var integer|null The number of the ticket (unique for an event)
      *
      * @ORM\Column(type="bigint", nullable=true)
      */
     private $number;
 
     /**
-     * @var \TicketBundle\Entity\Option The option of the ticket
+     * @var Option|null The option of the ticket
      *
      * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
      * @ORM\JoinColumn(name="option", referencedColumnName="id")
@@ -112,25 +113,26 @@ class Ticket
     private $option;
 
     /**
-     * @var boolean Flag whether the ticket was sold to a member
+     * @var boolean|null Flag whether the ticket was sold to a member
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $member;
 
     /**
-     * @param \TicketBundle\Entity\Event       $event
-     * @param string                           $status
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \TicketBundle\Entity\GuestInfo   $guestInfo
-     * @param \DateTime                        $bookDate
-     * @param \DateTime                        $soldDate
-     * @param integer                          $number
+     * @param  Event                    $event
+     * @param  string                   $status
+     * @param  Person|null              $person
+     * @param  GuestInfo|null           $guestInfo
+     * @param  DateTime|null            $bookDate
+     * @param  DateTime|null            $soldDate
+     * @param  integer|null             $number
+     * @throws InvalidArgumentException
      */
     public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
         if (!self::isValidTicketStatus($status))
-            throw new \InvalidArgumentException('The TicketStatus is not valid.');
+            throw new InvalidArgumentException('The TicketStatus is not valid.');
 
         $this->event = $event;
         $this->status = $status;
@@ -142,6 +144,7 @@ class Ticket
     }
 
     /**
+     * @param  string  $status
      * @return boolean
      */
     public static function isValidTicketStatus($status)
@@ -158,7 +161,7 @@ class Ticket
     }
 
     /**
-     * @return \TicketBundle\Entity\Event
+     * @return Event
      */
     public function getEvent()
     {
@@ -182,13 +185,14 @@ class Ticket
     }
 
     /**
-     * @param  string                      $status
-     * @return \TicketBundle\Entity\Ticket
+     * @param  string                   $status
+     * @return self
+     * @throws InvalidArgumentException
      */
     public function setStatus($status)
     {
         if (!self::isValidTicketStatus($status))
-            throw new \InvalidArgumentException('The TicketStatus is not valid.');
+            throw new InvalidArgumentException('The TicketStatus is not valid.');
 
         if ($status == 'empty') {
             $this->person = null;
@@ -210,7 +214,7 @@ class Ticket
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person|null
      */
     public function getPerson()
     {
@@ -218,8 +222,8 @@ class Ticket
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person $person
-     * @return \TicketBundle\Entity\Ticket
+     * @param  Person|null $person
+     * @return self
      */
     public function setPerson(Person $person = null)
     {
@@ -229,7 +233,7 @@ class Ticket
     }
 
     /**
-     * @return \TicketBundle\Entity\GuestInfo
+     * @return GuestInfo|null
      */
     public function getGuestInfo()
     {
@@ -237,8 +241,8 @@ class Ticket
     }
 
     /**
-     * @param  \TicketBundle\Entity\GuestInfo $guestInfo
-     * @return \TicketBundle\Entity\Ticket
+     * @param  GuestInfo|null $guestInfo
+     * @return self
      */
     public function setGuestInfo(GuestInfo $guestInfo = null)
     {
@@ -262,7 +266,7 @@ class Ticket
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getBookDate()
     {
@@ -270,8 +274,8 @@ class Ticket
     }
 
     /**
-     * @param  \DateTime                   $bookDate
-     * @return \TicketBundle\Entity\Ticket
+     * @param  DateTime $bookDate
+     * @return self
      */
     public function setBookDate(DateTime $bookDate)
     {
@@ -281,7 +285,7 @@ class Ticket
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
     public function getSoldDate()
     {
@@ -289,8 +293,8 @@ class Ticket
     }
 
     /**
-     * @param  \DateTime                   $soldDate
-     * @return \TicketBundle\Entity\Ticket
+     * @param  DateTime $soldDate
+     * @return self
      */
     public function setSoldDate(DateTime $soldDate)
     {
@@ -300,7 +304,7 @@ class Ticket
     }
 
     /**
-     * @return integer
+     * @return integer|null
      */
     public function getNumber()
     {
@@ -308,8 +312,8 @@ class Ticket
     }
 
     /**
-     * @param  integer                     $number
-     * @return \TicketBundle\Entity\Ticket
+     * @param  integer $number
+     * @return self
      */
     public function setNumber($number)
     {
@@ -319,7 +323,7 @@ class Ticket
     }
 
     /**
-     * @return \TicketBundle\Entity\Option
+     * @return Option|null
      */
     public function getOption()
     {
@@ -327,8 +331,8 @@ class Ticket
     }
 
     /**
-     * @param  \TicketBundle\Entity\Option $option
-     * @return \TicketBundle\Entity\Ticket
+     * @param  Option|null $option
+     * @return self
      */
     public function setOption(Option $option = null)
     {
@@ -338,7 +342,7 @@ class Ticket
     }
 
     /**
-     * @return boolean
+     * @return boolean|null
      */
     public function isMember()
     {
@@ -346,8 +350,8 @@ class Ticket
     }
 
     /**
-     * @param  boolean                     $member
-     * @return \TicketBundle\Entity\Ticket
+     * @param  boolean $member
+     * @return self
      */
     public function setMember($member)
     {

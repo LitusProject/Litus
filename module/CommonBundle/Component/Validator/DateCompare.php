@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Validator;
 
-use DateTime,
-    Doctrine\ORM\EntityManager;
+use DateTime;
 
 /**
  * Matches the given faq title against the database to check whether it is
@@ -62,8 +61,8 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param  mixed  $token
      * @param  string $format
+     * @param  string $endDate
      * @return void
      */
     public function __construct($endDate = null, $format)

@@ -21,7 +21,8 @@ namespace FormBundle\Entity\Node;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    DateTime;
 
 /**
  * This entity stores the form group item
@@ -31,15 +32,6 @@ use CommonBundle\Entity\General\Language,
  */
 class Group extends \CommonBundle\Entity\Node
 {
-    /**
-     * @var int The ID of this tanslation
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
     /**
      * @var array The translations of this form
      *
@@ -56,24 +48,15 @@ class Group extends \CommonBundle\Entity\Node
     private $forms;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $_entityManager;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
+     * @param  DateTime $startDate
+     * @return self
      */
-    public function __construct(Person $person)
-    {
-        parent::__construct($person);
-    }
-
-    /**
-     * @param DateTime $startDate
-     *
-     * @return \FormBundle\Entity\Node\Group
-     */
-    public function setStartDate($startDate)
+    public function setStartDate(DateTime $startDate)
     {
         if (sizeof($this->forms) > 0) {
             foreach ($this->forms as $form) {
@@ -94,11 +77,10 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param DateTime $endDate
-     *
-     * @return \FormBundle\Entity\Node\Group
+     * @param  DateTime $endDate
+     * @return self
      */
-    public function setEndDate($endDate)
+    public function setEndDate(DateTime $endDate)
     {
         if (sizeof($this->forms) > 0) {
             foreach ($this->forms as $form) {
@@ -110,7 +92,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate()
     {
@@ -119,9 +101,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $active
-     *
-     * @return \FormBundle\Entity\Node\Group
+     * @param  boolean $active
+     * @return self
      */
     public function setActive($active)
     {
@@ -144,9 +125,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param int $max
-     *
-     * @return \FormBundle\Entity\Node\Group
+     * @param  int  $max
+     * @return self
      */
     public function setMax($max)
     {
@@ -169,9 +149,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $editableByUser
-     *
-     * @return \FormBundle\Entity\Node\Group
+     * @param  boolean $editableByUser
+     * @return self
      */
     public function setEditableByUser($editableByUser)
     {
@@ -194,9 +173,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $nonMember
-     *
-     * @return \FormBundle\Entity\Node\Group
+     * @param  boolean $nonMember
+     * @return self
      */
     public function setNonMember($nonMember)
     {
@@ -219,8 +197,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
@@ -234,8 +212,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getIntroduction(Language $language = null, $allowFallback = true)
@@ -249,7 +227,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language     $language
+     * @param  Language|null                             $language
      * @param  boolean                                   $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Group
      */
@@ -278,7 +256,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \FormBundle\Entity\Node\Form $form
+     * @param  Form    $form
      * @return integer
      */
     public function getFormNumber(Form $form)
@@ -297,8 +275,8 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager  $entityManager
-     * @return \FormBundle\Entity\Node\Form
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -310,7 +288,7 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can edit this form.
      *
-     * @param  \CommonBundle\Entity\User\Person $person The person to check.
+     * @param  Person|null $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
@@ -332,7 +310,7 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * Indicates whether the given person can view this group.
      *
-     * @param  \CommonBundle\Entity\User\Persons $person The person to check.
+     * @param  Person|null $person The person to check.
      * @return boolean
      */
     public function canBeViewedBy(Person $person = null)

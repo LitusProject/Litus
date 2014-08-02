@@ -23,8 +23,6 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
     CommonBundle\Entity\General\Config,
-    Symfony\Component\Console\Input\InputInterface,
-    Symfony\Component\Console\Output\OutputInterface,
     RuntimeException;
 
 /**
@@ -168,6 +166,9 @@ EOT
                     $entry = new Config($item['key'], $item['value']);
                     $entry->setDescription($item['description']);
 
+                    if (isset($item['published']))
+                        $entry->setPublished($item['published']);
+
                     $this->getEntityManager()->persist($entry);
                 } else {
                     $entry->setDescription($item['description']);
@@ -175,6 +176,9 @@ EOT
             } catch (\Exception $e) {
                 $entry = new Config($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
+
+                if (isset($item['published']))
+                    $entry->setPublished($item['published']);
 
                 $this->getEntityManager()->persist($entry);
             }

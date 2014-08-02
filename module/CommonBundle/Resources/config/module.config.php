@@ -30,19 +30,14 @@ return Config::create(
     array(
         'service_manager' => array(
             'factories' => array(
-                'translator' => function ($serviceManager) {
-                    $config = $serviceManager->get('Config');
-
-                    return new \Zend\Mvc\I18n\Translator(new \Zend\I18n\Translator\Translator($config['translator']));
-                },
-
                 'authentication' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Authentication(
                         $serviceManager->get('authentication_credentialadapter'),
-                        $serviceManager->get('authentication_doctrineservice')
+                        $serviceManager->get('authentication_service')
                     );
                 },
-                'authentication_credentialadapter' => function ($serviceManager) {
+
+                'authentication_doctrinecredentialadapter' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Person',
@@ -55,23 +50,24 @@ return Config::create(
                         'CommonBundle\Entity\User\Session',
                         2678400,
                         $serviceManager->get('authentication_sessionstorage'),
-                        'Litus_Auth',
+                        getenv('ORGANIZATION') . '_Litus_Auth',
                         'Session',
                         $serviceManager->get('authentication_action')
                     );
                 },
-                'authentication_action' => function ($serviceManager) {
+                'authentication_doctrineaction' => function ($serviceManager) {
                     return new \CommonBundle\Component\Authentication\Action\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );
                 },
-                'authentication_sessionstorage' => function ($serviceManager) {
-                    return new \Zend\Authentication\Storage\Session('Litus_Auth');
+
+                'authentication_sessionstorage' => function () {
+                    return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
                 },
 
-                'common_sessionstorage' => function ($serviceManager) {
-                    return new Zend\Session\Container('Litus_Common');
+                'common_sessionstorage' => function () {
+                    return new \Zend\Session\Container(getenv('ORGANIZATION') . '_Litus_Common');
                 },
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
@@ -85,6 +81,12 @@ return Config::create(
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
+
+                'authentication_service' => 'authentication_doctrineservice',
+                'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
+                'authentication_action' => 'authentication_doctrineaction',
+
+                'translator' => 'MvcTranslator',
             ),
         ),
         'translator' => array(
@@ -111,6 +113,24 @@ return Config::create(
             'display_not_found_reason' => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
             'display_exceptions'       => in_array(getenv('APPLICATION_ENV'), array('development', 'staging')),
         ),
+        'view_helpers' => array(
+            'invokables' => array(
+                'url'           => 'CommonBundle\Component\View\Helper\Url',
+                'hasaccess'     => 'CommonBundle\Component\View\Helper\HasAccess',
+                'getparam'      => 'CommonBundle\Component\View\Helper\GetParam',
+                'datelocalized' => 'CommonBundle\Component\View\Helper\DateLocalized',
+                'staticmap'     => 'CommonBundle\Component\View\Helper\StaticMap',
+                'hideemail'     => 'CommonBundle\Component\View\Helper\HideEmail',
+            ),
+        ),
+        'controller_plugins' => array(
+            'invokables' => array(
+                'url'            => 'CommonBundle\Component\Controller\Plugin\Url',
+                'hasaccess'      => 'CommonBundle\Component\Controller\Plugin\HasAccess',
+                'paginator'      => 'CommonBundle\Component\Controller\Plugin\Paginator',
+                'flashmessenger' => 'CommonBundle\Component\Controller\Plugin\FlashMessenger',
+            ),
+        ),
         'assetic_configuration' => array(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug' => false,
@@ -127,7 +147,7 @@ return Config::create(
             ),
         ),
         'authentication_sessionstorage' => array(
-            'namespace' => 'Litus_Auth',
+            'namespace' => getenv('ORGANIZATION') . '_Litus_Auth',
             'member'    => 'storage',
         ),
     )

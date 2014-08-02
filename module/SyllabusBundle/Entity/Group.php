@@ -73,6 +73,11 @@ class Group
     private $excludedMembers;
 
     /**
+     * @var EntityManager The EntityManager instance
+     */
+    protected $_entityManager = null;
+
+    /**
      * @param string  $name
      * @param boolean $cvBook
      * @param string  $extraMembers
@@ -105,8 +110,8 @@ class Group
     }
 
     /**
-     * @param  string                       $name
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -124,8 +129,8 @@ class Group
     }
 
     /**
-     * @param  boolean                      $cvBook
-     * @return \SyllabusBundle\Entity\Group
+     * @param  boolean $cvBook
+     * @return self
      */
     public function setCvBook($cvBook)
     {
@@ -135,7 +140,7 @@ class Group
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Group
+     * @return self
      */
     public function setRemoved()
     {
@@ -153,8 +158,8 @@ class Group
     }
 
     /**
-     * @param  string                       $extraMembers
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $extraMembers
+     * @return self
      */
     public function setExtraMembers($extraMembers)
     {
@@ -172,8 +177,8 @@ class Group
     }
 
     /**
-     * @param  string                       $excludedMembers
-     * @return \SyllabusBundle\Entity\Group
+     * @param  string $excludedMembers
+     * @return self
      */
     public function setExcludedMembers($excludedMembers)
     {
@@ -183,8 +188,8 @@ class Group
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager  $entityManager
-     * @return \SyllabusBundle\Entity\Group
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -194,7 +199,7 @@ class Group
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getNbStudents(AcademicYear $academicYear)

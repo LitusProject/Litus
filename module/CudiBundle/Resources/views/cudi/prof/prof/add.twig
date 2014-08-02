@@ -21,7 +21,7 @@
         $(document).ready(function () {
             $('#profSearch').typeaheadRemote(
                 {
-                    source: '{{ url("cudi_prof_typeahead", {"language": language.getAbbrev()})}}',
+                    source: '{{ url("cudi_prof_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

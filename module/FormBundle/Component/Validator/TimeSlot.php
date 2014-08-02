@@ -18,7 +18,7 @@
 
 namespace FormBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person as PersonEntity,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField;
 
@@ -44,12 +44,12 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @var \FormBundle\Entity\Field\TimeSlot
+     * @var TimeSlotField
      */
     private $_timeSlot;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -61,12 +61,12 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param \FormBundle\Entity\Field\TimeSlot
-     * @param  \Doctrine\ORM\EntityManager      $entityManager
+     * @param  TimeSlotField                    $timeSlot
+     * @param  EntityManager                    $entityManager
      * @param  \CommonBundle\Entity\User\Person $person
      * @return void
      */
-    public function __construct(TimeSlotField $timeSlot, EntityManager $entityManager, Person $person = null, $opts = null)
+    public function __construct(TimeSlotField $timeSlot, EntityManager $entityManager, PersonEntity $person = null, $opts = null)
     {
         parent::__construct($opts);
 

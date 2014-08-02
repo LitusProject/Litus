@@ -19,17 +19,14 @@
 namespace CommonBundle\Component\Controller;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
+    CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
     Locale,
-    Zend\Cache\StorageFactory,
+    Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
-    Zend\Paginator\Adapter\ArrayAdapter,
     Zend\View\Model\ViewModel;
 
 /**
@@ -37,20 +34,26 @@ use CommonBundle\Component\Acl\Acl,
  * and some other common functionality.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
+ * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
+ * @method \CommonBundle\Component\Controller\Plugin\Paginator paginator()
+ * @method \CommonBundle\Component\Controller\Plugin\Url url()
+ * @method \Zend\Http\PhpEnvironment\Response getResponse()
+ * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
 class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
-    private $_language;
+    protected $_language = null;
 
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                       $e The MVC event
      * @return array
-     * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
+     * @throws Exception\HasNoAccessException The user does not have permissions to access this resource
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -59,6 +62,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
+        $this->_initAuthenticationService();
         $this->_initControllerPlugins();
         $this->_initFallbackLanguage();
         $this->_initViewHelpers();
@@ -88,7 +92,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findAll();
         $result->flashMessenger = $this->flashMessenger();
-        $result->persistentFlashMessages = array();
         $result->authenticatedPerson = $authenticatedPerson;
         $result->authenticated = $this->getAuthentication()->isAuthenticated();
         $result->environment = getenv('APPLICATION_ENV');
@@ -103,18 +106,23 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * Does some initialization work for asynchronously requested actions.
      *
      * @return void
-     * @throws \CommonBundle\Component\Controller\Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
+     * @throws Request\Exception\NoXmlHttpRequestException The method was not accessed by a XHR request
      */
     protected function initAjax()
     {
-        if (
-            !$this->getRequest()->getHeaders()->get('X_REQUESTED_WITH')
-            || 'XMLHttpRequest' != $this->getRequest()->getHeaders()->get('X_REQUESTED_WITH')->getFieldValue()
-        ) {
+        $requestWith = $this->getRequest()->getHeader('X_REQUESTED_WITH');
+        if (null === $requestWith || !($requestWith instanceof HeaderInterface) || 'XMLHttpRequest' != $requestWith->getFieldValue()) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );
         }
+    }
+
+    private function _initAuthenticationService()
+    {
+        $this->getServiceLocator()->get('authentication_service')
+            ->setRequest($this->getRequest())
+            ->setResponse($this->getResponse());
     }
 
     /**
@@ -125,32 +133,23 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     private function _initControllerPlugins()
     {
         // Url Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'url', 'CommonBundle\Component\Controller\Plugin\Url'
-        );
         $this->url()->setLanguage($this->getLanguage());
 
         // HasAccess Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'hasaccess', 'CommonBundle\Component\Controller\Plugin\HasAccess'
-        );
         $this->hasAccess()->setDriver(
-            new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+            new HasAccessDriver(
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
-        );
-
-        // Paginator Plugin
-        $this->getPluginManager()->setInvokableClass(
-            'paginator', 'CommonBundle\Component\Controller\Plugin\Paginator'
         );
     }
 
     /**
-     * Initializes the fallback language and stores it in the Registry so that it is
-     * accessible troughout the application.
+     * Initializes the fallback language and make it the default Locale.
      *
      * @return void
+     * @throws RuntimeException
      */
     private function _initFallbackLanguage()
     {
@@ -164,17 +163,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 );
 
             if (null === $fallbackLanguage) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'Warning',
-                        'The specified fallback language does not exist!'
-                    )
+                $this->flashMessenger()->warn(
+                    'Warning',
+                    'The specified fallback language does not exist'
                 );
             } else {
                 Locale::setDefault($fallbackLanguage->getAbbrev());
             }
         } catch (\Exception $e) {
+            throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
 
@@ -187,77 +184,66 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     {
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
 
-        // Url Plugin
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'url', 'CommonBundle\Component\View\Helper\Url'
-        );
-
-        $renderer->plugin('url')->setLanguage($this->getLanguage())
+        $renderer->plugin('url')
+            ->setLanguage($this->getLanguage())
             ->setRouter($this->getServiceLocator()->get('router'));
 
         // HasAccess View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'hasaccess', 'CommonBundle\Component\View\Helper\HasAccess'
-        );
         $renderer->plugin('hasAccess')->setDriver(
-            new HasAccess(
-                $this->_getAcl(), $this->getAuthentication()
+            new HasAccessDriver(
+                $this->_getAcl(),
+                $this->getAuthentication()->isAuthenticated(),
+                $this->getAuthentication()->getPersonObject()
             )
         );
 
         // GetParam View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'getparam', 'CommonBundle\Component\View\Helper\GetParam'
-        );
         $renderer->plugin('getParam')->setRouteMatch(
             $this->getEvent()->getRouteMatch()
         );
 
-        // Date View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'dateLocalized', 'CommonBundle\Component\View\Helper\DateLocalized'
-        );
-
         // StaticMap View Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'staticMap', 'CommonBundle\Component\View\Helper\StaticMap'
-        );
         $renderer->plugin('staticMap')
             ->setEntityManager($this->getEntityManager());
-
-        // Hide Email Helper
-        $renderer->getHelperPluginManager()->setInvokableClass(
-            'hideEmail', 'CommonBundle\Component\View\Helper\HideEmail'
-        );
     }
 
     /**
-     * Redirects after a successful authentication.
+     * Modifies the reponse headers for a JSON reponse.
      *
-     * If this returns null, no redirection will take place.
-     *
+     * @param  array $additionalHeaders Any additional headers that should be set
      * @return void
      */
-    protected function redirectAfterAuthentication()
+    protected function initJson(array $additionalHeaders = array())
     {
-        return $this->redirect()->toRoute(
-            $this->getAuthenticationHandler()['redirect_route']
+        unset($additionalHeaders['Content-Type']);
+
+        $headers = $this->getResponse()->getHeaders();
+
+        $contentType = $headers->get('Content-Type');
+        if ($contentType instanceof HeaderInterface)
+            $headers->removeHeader($contentType);
+
+        $headers->addHeaders(
+            array_merge(
+                array(
+                    'Content-Type' => 'application/json',
+                ),
+                $additionalHeaders
+            )
         );
     }
 
     /**
      * Initializes the authentication.
      *
-     * @return void
+     * @return \Zend\Http\Response|null
      */
     protected function initAuthentication()
     {
         $authenticationHandler = $this->getAuthenticationHandler();
         if (null !== $authenticationHandler) {
             if (
-                $this->hasAccess()->resourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
+                $this->hasAccess()->toResourceAction($this->getParam('controller'), $this->getParam('action'))
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (
@@ -293,18 +279,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initLocalization()
     {
-        $language = $this->getLanguage();
-
         $this->getTranslator()->setCache($this->getCache())
-            ->setLocale($this->getLanguage()->getAbbrev());
-
-        $this->getMvcTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
-            $this->getAuthentication()->getPersonObject()->setLanguage($language);
+            $this->getAuthentication()->getPersonObject()->setLanguage($this->getLanguage());
             $this->getEntityManager()->flush();
         }
     }
@@ -312,7 +293,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Returns the ACL object.
      *
-     * @return \CommonBundle\Component\Acl\Acl
+     * @return Acl
      */
     private function _getAcl()
     {
@@ -345,6 +326,17 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * We want an easy method to retrieve the Authentication Service
+     * from the DI container.
+     *
+     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
+     */
+    public function getAuthenticationService()
+    {
+        return $this->getServiceLocator()->get('authentication_doctrineservice');
+    }
+
+    /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
      *
@@ -355,8 +347,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         throw new \RuntimeException(
             'Do not extend \CommonBundle\Component\Controller\ActionController directly'
         );
-
-        return null;
     }
 
     /**
@@ -424,6 +414,12 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
+        if (!isset($language) && isset($this->getSessionStorage()->language)) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev($this->getSessionStorage()->language);
+        }
+
         if (!isset($language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
@@ -439,22 +435,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             }
         }
 
+        $this->getSessionStorage()->language = $language->getAbbrev();
+
         $this->_language = $language;
 
         return $language;
-    }
-
-    /**
-     * Add a persistent flash message
-     * @param mixed                                               $result       The result of onDispatch
-     * @param \CommonBundle\Component\FlashMessenger\FlashMessage $flashMessage The flash message
-     */
-    protected function addPersistentFlashMessage($result, FlashMessage $flashMessage)
-    {
-        $result->persistentFlashMessages = array_merge(
-            $result->persistentFlashMessages,
-            array($flashMessage)
-        );
     }
 
     /**
@@ -494,7 +479,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\Translator
+     * @return \Zend\Mvc\I18n\Translator
      */
     public function getTranslator()
     {
@@ -502,13 +487,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
+     * Redirects after a successful authentication.
+     * If this returns null, no redirection will take place.
      *
-     * @return \Zend\I18n\Translator\Translator
+     * @return \Zend\Http\Response
      */
-    public function getMvcTranslator()
+    protected function redirectAfterAuthentication()
     {
-        return $this->getServiceLocator()->get('MvcTranslator');
+        return $this->redirect()->toRoute(
+            $this->getAuthenticationHandler()['redirect_route']
+        );
     }
 }

@@ -19,8 +19,7 @@
 namespace SecretaryBundle\Entity\Promotion;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a promotion.
@@ -54,10 +53,10 @@ class External extends \SecretaryBundle\Entity\Promotion
     /**
      * Creates a new promotion with the given academic.
      *
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The academic year for this promotion.
-     * @param string                                    $firstName    The first name to add
-     * @param string                                    $lastName     The last name to add
-     * @param string                                    $email        The e-mail address to add
+     * @param AcademicYear $academicYear The academic year for this promotion.
+     * @param string       $firstName    The first name to add
+     * @param string       $lastName     The last name to add
+     * @param string       $email        The e-mail address to add
      */
     public function __construct(AcademicYear $academicYear, $firstName, $lastName, $email)
     {

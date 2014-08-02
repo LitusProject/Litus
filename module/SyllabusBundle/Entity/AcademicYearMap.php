@@ -37,7 +37,7 @@ class AcademicYearMap
     private $id;
 
     /**
-     * @var \SyllabusBundle\Entity\Study The study of the mapping
+     * @var Study The study of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinColumn(name="study", referencedColumnName="id")
@@ -45,7 +45,7 @@ class AcademicYearMap
     private $study;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The year of the mapping
+     * @var AcademicYear The year of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -53,8 +53,8 @@ class AcademicYearMap
     private $academicYear;
 
     /**
-     * @param \SyllabusBundle\Entity\Study              $study
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
+     * @param Study        $study
+     * @param AcademicYear $academicYear
      */
     public function __construct(Study $study, AcademicYear $academicYear)
     {
@@ -71,7 +71,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Study
+     * @return Study
      */
     public function getStudy()
     {
@@ -79,7 +79,7 @@ class AcademicYearMap
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

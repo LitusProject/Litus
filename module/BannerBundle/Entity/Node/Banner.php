@@ -18,11 +18,8 @@
 
 namespace BannerBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\Url,
+use CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,16 +30,6 @@ use CommonBundle\Entity\General\Language,
  */
 class Banner extends \CommonBundle\Entity\Node
 {
-
-    /**
-     * @var The banner's unique identifier
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="bigint")
-     */
-    private $id;
-
     /**
      * @var string The name of the banner
      *
@@ -86,8 +73,13 @@ class Banner extends \CommonBundle\Entity\Node
     private $url;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $category
+     * @param Person   $person
+     * @param string   $name
+     * @param string   $image
+     * @param DateTime $startDate
+     * @param DateTime $endDate
+     * @param boolean  $active
+     * @param string   $url
      */
     public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url)
     {
@@ -104,7 +96,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $name
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setName($name)
     {
@@ -124,7 +116,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $image
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setImage($image)
     {
@@ -144,7 +136,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $startDate
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setStartDate($startDate)
     {
@@ -164,7 +156,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param DateTime $endDate
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setEndDate($endDate)
     {
@@ -184,7 +176,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param boolean $active
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setActive($active)
     {
@@ -204,7 +196,7 @@ class Banner extends \CommonBundle\Entity\Node
     /**
      * @param string $url
      *
-     * @return \BannerBundle\Entity\Node\Notification
+     * @return self
      */
     public function setUrl($url)
     {

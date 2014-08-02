@@ -37,14 +37,6 @@ class MultiMail extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param mixed $opts The validator's options
-     */
-    public function __construct($opts = null)
-    {
-        parent::__construct($opts);
-    }
-
-    /**
      * Returns true if no matching record is found in the database.
      *
      * @param  string  $value   The value of the field that will be validated

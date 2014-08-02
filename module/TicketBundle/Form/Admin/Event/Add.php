@@ -29,8 +29,6 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilterProviderInterface,
     Zend\Form\Element\Submit;
 
@@ -42,13 +40,13 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilterProviderInterface
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -60,6 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
 
         $field = new Select('event');
         $field->setLabel('Event')
+            ->setRequired()
             ->setAttribute('options', $this->_createEventsArray());
         $this->add($field);
 
@@ -208,6 +207,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             array(
                 'name'     => 'event',
                 'required' => true,
+                'filter' => array(
+                    array('name' => 'StringTrim'),
+                ),
                 'validators' => array(
                     new ActivityValidator($this->_entityManager),
                 ),

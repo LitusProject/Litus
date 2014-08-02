@@ -19,7 +19,12 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action,
-    Zend\Authentication\Storage\StorageInterface as StorageInterface;
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
+    Zend\Authentication\Storage\StorageInterface,
+    Zend\Http\PhpEnvironment\Request,
+    Zend\Http\PhpEnvironment\Response,
+    Zend\Http\Header\Cookie,
+    Zend\Http\Header\SetCookie;
 
 /**
  * An authentication service superclass that handles the setting and clearing of the cookie.
@@ -44,19 +49,33 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_duration = -1;
 
     /**
-     * @var \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     * @var Action The action that should be taken after authentication
      */
     protected $_action;
 
     /**
-     * @param \Zend\Authentication\Storage\StorageInterface $storage      The persistent storage handler
-     * @param string                                        $namespace    The namespace the storage handlers will use
-     * @param string                                        $cookieSuffix The cookie suffix that is used to store the session cookie
-     * @param int                                           $duration     The expiration time for the cookie
-     * @param \CommonBundle\Component\Authentication\Action $action       The action that should be taken after authentication
+     * @var Request The request
      */
-    public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action
-    )
+    protected $_request;
+
+    /**
+     * @var \Zend\Http\Header\Cookie The received cookies
+     */
+    private $_cookies;
+
+    /**
+     * @var Response The HTTP response
+     */
+    private $_response;
+
+    /**
+     * @param StorageInterface $storage      The persistent storage handler
+     * @param string           $namespace    The namespace the storage handlers will use
+     * @param string           $cookieSuffix The cookie suffix that is used to store the session cookie
+     * @param int              $duration     The expiration time for the cookie
+     * @param Action           $action       The action that should be taken after authentication
+     */
+    public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action)
     {
         parent::__construct($storage);
 
@@ -67,13 +86,36 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     }
 
     /**
-     * @param \CommonBundle\Component\Authentication\Action The action that should be taken after authentication
+     * @param Action $action The action that should be taken after authentication
      *
-     * @return \CommonBundle\Component\Authentication\Service\Doctrine
+     * @return self
      */
     public function setAction(Action $action)
     {
         $this->_action = $action;
+
+        return $this;
+    }
+
+    /**
+     * @param  Request $request The HTTP request
+     * @return self
+     */
+    public function setRequest(Request $request)
+    {
+        $this->_cookies = $request->getCookie();
+        $this->_request = $request;
+
+        return $this;
+    }
+
+    /**
+     * @param  Response $response The HTTP response
+     * @return self
+     */
+    public function setResponse(Response $response)
+    {
+        $this->_response = $response;
 
         return $this;
     }
@@ -95,7 +137,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function _getCookie()
     {
-        return $_COOKIE[$this->_cookie];
+        return $this->_cookies[$this->_cookie];
     }
 
     /**
@@ -105,7 +147,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function _hasCookie()
     {
-        return isset($_COOKIE[$this->_cookie]);
+        return isset($this->_cookies[$this->_cookie]);
     }
 
     /**
@@ -113,32 +155,59 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function _clearCookie()
     {
-        unset($_COOKIE[$this->_cookie]);
-        setcookie(
-            $this->_cookie,
-            '',
-            -1,
-            '/'
+        if (isset($this->_cookies[$this->_cookie]))
+            unset($this->_cookies[$this->_cookie]);
+
+        $this->_response->getHeaders()->addHeader(
+            (new SetCookie())
+                ->setName($this->_cookie)
+                ->setValue('deleted')
+                ->setExpires(0)
+                ->setMaxAge(0)
+                ->setPath('/')
+                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
         );
     }
 
     /**
      * Set the authentication cookie.
      *
-     * @param string $value  The cookie's value
-     * @param int    $expire The cookie's expiration time
+     * @param string $value The cookie's value
      */
     protected function _setCookie($value)
     {
         $this->_clearCookie();
 
-        $_COOKIE[$this->_cookie] = $value;
-        setcookie(
-            $this->_cookie,
-            $value,
-            time() + $this->_duration,
-            '/',
-            str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
+        $this->_cookies[$this->_cookie] = $value;
+        $this->_response->getHeaders()->addHeader(
+            (new SetCookie())
+                ->setName($this->_cookie)
+                ->setValue($value)
+                ->setExpires(time() + $this->_duration)
+                ->setMaxAge($this->_duration)
+                ->setPath('/')
+                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
         );
+    }
+
+    // The following methods exist because we need to update their signatures.
+
+    /**
+     * @param  \CommonBundle\Component\Authentication\Adapter\Doctrine|null $adapter
+     * @param  boolean                                                      $rememberMe
+     * @param  boolean                                                      $shibboleth
+     * @return Result
+     */
+    public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
+    {
+        return parent::authenticate($adapter);
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Session|null
+     */
+    public function clearIdentity()
+    {
+        return parent::clearIdentity();
     }
 }

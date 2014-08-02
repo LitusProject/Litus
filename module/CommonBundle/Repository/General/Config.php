@@ -64,6 +64,9 @@ class Config extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param string $key
+     */
     public function getConfigValue($key)
     {
         $config = $this->find($key);

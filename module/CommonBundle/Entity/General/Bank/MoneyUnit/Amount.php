@@ -38,7 +38,7 @@ class Amount
     private $id;
 
     /**
-     * @var \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
+     * @var CashRegister The cash register this amount is assigned to
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\CashRegister", inversedBy="moneyUnitAmounts")
      * @ORM\JoinColumn(name="cash_register_id", referencedColumnName="id")
@@ -46,7 +46,7 @@ class Amount
     private $cashRegister;
 
     /**
-     * @var CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
+     * @var MoneyUnit The unit for which this is the amount
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Bank\MoneyUnit")
      * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
@@ -61,8 +61,8 @@ class Amount
     private $amount;
 
     /**
-     * @param \CommonBundle\Entity\General\Bank\CashRegister The cash register this amount is assigned to
-     * @param \CommonBundle\Entity\General\Bank\MoneyUnit The unit for which this is the amount
+     * @param CashRegister The cash register this amount is assigned to
+     * @param MoneyUnit The unit for which this is the amount
      * @param int $amount The number of units
      */
     public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
@@ -81,7 +81,7 @@ class Amount
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Bank\MoneyUnit
+     * @return MoneyUnit
      */
     public function getUnit()
     {
@@ -89,7 +89,7 @@ class Amount
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmount()
     {
@@ -97,8 +97,8 @@ class Amount
     }
 
     /**
-     * @param  int                                                 $amount The number of units
-     * @return \CommonBundle\Entity\General\Bank\BankDevice\Amount
+     * @param  integer $number
+     * @return self
      */
     public function setAmount($number)
     {
@@ -110,7 +110,7 @@ class Amount
     /**
      * Returns the value of the amount.
      *
-     * @return int
+     * @return integer
      */
     public function getValue()
     {

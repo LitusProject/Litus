@@ -22,7 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     CudiBundle\Entity\Stock\Order\Order,
-    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -33,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \CudiBundle\Entity\Stock\Order
+     * @var Order
      */
     private $_order;
 
@@ -43,10 +42,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     private $_sortOrder;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CudiBundle\Entity\Stock\Order            $order         The order
-     * @param string                                    $sortOrder
-     * @param \CommonBundle\Component\Util\File\TmpFile $file          The file to write to
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Order         $order         The order
+     * @param string        $sortOrder
+     * @param TmpFile       $file          The file to write to
      */
     public function __construct(EntityManager $entityManager, Order $order, $sortOrder, TmpFile $file)
     {
@@ -66,7 +65,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * Generate the XML for the fop.
      *
-     * @param \CommonBundle\Component\Util\TmpFile $tmpFile The file to write to.
+     * @param TmpFile $tmpFile The file to write to.
      */
     protected function generateXml(TmpFile $tmpFile)
     {

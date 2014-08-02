@@ -18,7 +18,8 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,13 +31,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 {
     public function getPersonAction()
     {
-        if (null === ($person = $this->_getPerson())) {
-            return new ViewModel(
-                array(
-                    'result' => null
-                )
-            );
-        }
+        $this->initJson();
+
+        if (null === ($person = $this->_getPerson()))
+            return $this->error(500, 'The person was not found');
 
         $result = array(
             'username' => $person->getUsername(),
@@ -49,11 +47,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($person->getId());
 
         if (null !== $academic) {
-            $result['university_status'] = (null !== $person->getUniversityStatus($this->getCurrentAcademicYear()))
-                ? $person->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
+            $result['university_status'] = (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear()))
+                ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
                 : '';
-            $result['organization_status'] = (null !== $person->getOrganizationStatus($this->getCurrentAcademicYear(true)))
-                ? $person->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
+            $result['organization_status'] = (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)))
+                ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
                 : '';
         }
 
@@ -64,8 +62,14 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    /**
+     * @return Person|null
+     */
     private function _getPerson()
     {
+        if (null !== $this->getAccessToken())
+            return $this->getAccessToken()->getPerson($this->getEntityManager());
+
         if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Session')

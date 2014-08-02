@@ -73,35 +73,43 @@
         </aside>
     {% endif %}
 
-    <div class="modal hide fade" id="viewPhoto">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /View Photo
-        </div>
-        <div class="modal-body">
-            <div class="photo"></div>
-            <div class="footer">
-                <button data-dismiss="modal">Close</button>
+    <div class="modal fade" id="viewPhoto" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /View Photo
+                </div>
+                <div class="modal-body">
+                    <div class="photo"></div>
+                    <div class="footer">
+                        <button data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal hide fade" id="removePhoto">
-        <div class="modal-header">
-            <span>Litus Admin</span>
-            /Delete Photo
-        </div>
-        <div class="modal-body">
-            <p>
-                You are about to delete the following photo: <b class="name"></b>?
-                Please note that this operation cannot be undone!
-            </p>
-            <p>
-                Are you sure you want to continue?
-            </p>
-            <div class="footer">
-                <button class="delete">Yes</button>
-                <button class="cancel" data-dismiss="modal">No</button>
+    <div class="modal fade" id="removePhoto" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Photo
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following photo: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

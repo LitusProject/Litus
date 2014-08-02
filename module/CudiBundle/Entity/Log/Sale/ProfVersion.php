@@ -29,8 +29,8 @@ use CommonBundle\Entity\User\Person,
 class ProfVersion extends \CudiBundle\Entity\Log
 {
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \CudiBundle\Entity\Sale\Article  $article
+     * @param Person  $person
+     * @param Article $article
      */
     public function __construct(Person $person, Article $article)
     {

@@ -28,12 +28,12 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var The maximum length per line
+     * @var int The maximum length per line
      */
     private $_charsPerLine;
 
     /**
-     * @var The maximum number of lines
+     * @var int The maximum number of lines
      */
     private $_lines;
 
@@ -45,9 +45,9 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param $charsPerLine The maximum number of characters per line
-     * @param $lines The maximum number of lines
-     * @param mixed $opts The validator's options
+     * @param int   $charsPerLine The maximum number of characters per line
+     * @param int   $lines        The maximum number of lines
+     * @param mixed $opts         The validator's options
      */
     public function __construct($charsPerLine, $lines, $opts = null)
     {
@@ -77,7 +77,6 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
         }
 
         $len = $len + strlen($lines[count($lines) - 1]);
-        $value = preg_replace('/\r\n|\r|\n/s', str_repeat(' ', $this->_lines), $value);
 
         if ($this->_lines * $this->_charsPerLine - $len >= 0)
             return true;

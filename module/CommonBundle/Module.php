@@ -21,8 +21,8 @@ namespace CommonBundle;
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
     Zend\Mvc\MvcEvent,
     Zend\Console\Request as ConsoleRequest,
-    Zend\EventManager\EventInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
+    Zend\ServiceManager\ServiceManager,
     Symfony\Component\Console\Application as ConsoleApplication;
 
 class Module
@@ -34,7 +34,7 @@ class Module
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('production' == getenv('APPLICATION_ENV'))
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
 
         $injectTemplateListener = new InjectTemplateListener();
@@ -54,8 +54,8 @@ class Module
     /**
      * Adds the console routes to the $application.
      *
-     * @param  \Symfony\Component\Console\Application       $application    the console application
-     * @param  \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator the ZF2 service locator
+     * @param  ConsoleApplication      $application    the console application
+     * @param  ServiceLocatorInterface $serviceLocator the ZF2 service locator
      * @return void
      */
     public function initializeConsole(ConsoleApplication $application, ServiceLocatorInterface $serviceLocator)
@@ -67,9 +67,11 @@ class Module
 
         // Use the $serviceLocator here because it injects dependencies of the instantiated classes.
         // Added bonus: allows commands to be overriden!
-        foreach ($config as $name => $invokable) {
-            $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
-            $commands[$name] = $serviceLocator->get('litus.console.' . $name);
+        if ($serviceLocator instanceof ServiceManager) {
+            foreach ($config as $name => $invokable) {
+                $serviceLocator->setInvokableClass('litus.console.' . $name, $invokable);
+                $commands[$name] = $serviceLocator->get('litus.console.' . $name);
+            }
         }
 
         $application->addCommands(array_values($commands));

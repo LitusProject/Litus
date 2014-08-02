@@ -28,14 +28,14 @@ use CommonBundle\Entity\General\Language;
 class Url extends \Zend\Mvc\Controller\Plugin\Url
 {
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
     private $_language;
 
     /**
-     * @param \CommonBundle\Entity\General\Language $language
+     * @param Language $language
      *
-     * @return \CommonBundle\Component\Controller\Plugin\Url
+     * @return self
      */
     public function setLanguage(Language $language)
     {

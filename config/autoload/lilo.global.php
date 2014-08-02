@@ -29,7 +29,8 @@ if ('development' != getenv('APPLICATION_ENV')) {
                 'lilo' => function ($serviceManager) {
                     return new \CommonBundle\Component\Lilo\Client(
                         $serviceManager->get('lilo_connection'),
-                        $serviceManager->get('authentication')
+                        $serviceManager->get('authentication'),
+                        $serviceManager->get('Request')
                     );
                 },
                 'lilo_connection' => function ($serviceManager) {

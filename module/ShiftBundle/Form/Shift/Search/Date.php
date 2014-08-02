@@ -19,7 +19,6 @@
 namespace ShiftBundle\Form\Shift\Search;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     DateTime,
     Doctrine\ORM\EntityManager,
     Zend\InputFilter\InputFilter,
@@ -33,13 +32,13 @@ use CommonBundle\Component\Form\Bootstrap\Element\Text,
 class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -54,21 +53,6 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setAttribute('placeholder', 'dd/mm/yyyy')
             ->setValue($today->format('d/m/Y'));
         $this->add($field);
-    }
-
-    private function _createUnitsArray()
-    {
-        $units = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActive();
-
-        $unitsArray = array(
-            '' => ''
-        );
-        foreach ($units as $unit)
-            $unitsArray[$unit->getId()] = $unit->getName();
-
-        return $unitsArray;
     }
 
     public function getInputFilter()

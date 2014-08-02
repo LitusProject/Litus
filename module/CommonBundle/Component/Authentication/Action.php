@@ -29,16 +29,16 @@ interface Action
     /**
      * The authorization has failed.
      *
-     * @param $result
+     * @param  Result $result
      * @return void
      */
-    public function failedAction($result);
+    public function failedAction(Result $result);
 
     /**
      * The authorization was successful.
      *
-     * @param $result
+     * @param  Result $result
      * @return void
      */
-    public function succeededAction($result);
+    public function succeededAction(Result $result);
 }

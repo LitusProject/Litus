@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Mail\Translation as MailTranslation,
     FormBundle\Entity\Node\Form\Doodle,
@@ -88,7 +87,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -103,12 +105,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if ($formData['type'] == 'doodle') {
                     $form = new Doodle(
                         $this->getAuthentication()->getPersonObject(),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $startDate,
+                        $endDate,
                         $formData['active'],
                         $formData['multiple'],
                         $formData['non_members'],
                         $formData['editable_by_user'],
+                        $formData['send_guest_login_mail'],
                         $formData['names_visible_for_others']
                     );
 
@@ -130,13 +133,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 } else {
                     $form = new Form(
                         $this->getAuthentication()->getPersonObject(),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                        DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                        $startDate,
+                        $endDate,
                         $formData['active'],
                         $max,
                         $formData['multiple'],
                         $formData['non_members'],
-                        $formData['editable_by_user']
+                        $formData['editable_by_user'],
+                        $formData['send_guest_login_mail']
                     );
                 }
 
@@ -178,12 +182,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The form was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The form was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -217,12 +218,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByForm($formSpecification);
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this form!'
             );
 
             $this->redirect()->toRoute(
@@ -241,7 +239,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            if ($form->isValid()) {
+            $startDate = self::_loadDate($formData['start_date']);
+            $endDate = self::_loadDate($formData['end_date']);
+
+            if ($form->isValid() && $startDate && $endDate) {
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
                     ->findAll();
@@ -258,17 +259,18 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     else
                         $max = $formData['max'];
 
-                    $formSpecification->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
+                    $formSpecification->setStartDate($startDate)
+                        ->setEndDate($endDate)
                         ->setActive($formData['active'])
                         ->setMax($max)
                         ->setEditableByUser($formData['editable_by_user'])
-                        ->setNonMember($formData['non_members']);
+                        ->setNonMember($formData['non_members'])
+                        ->setSendGuestLoginMail($formData['send_guest_login_mail']);
                 }
 
                 $formSpecification->setMultiple($formData['multiple']);
 
-                if ($formSpecification instanceOf Doodle) {
+                if ($formSpecification instanceof Doodle) {
                     $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
 
                     if ($formData['reminder_mail']) {
@@ -368,12 +370,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The form was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The form was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -405,12 +404,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to delete this form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to delete this form!'
             );
 
             $this->redirect()->toRoute(
@@ -472,12 +468,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -495,12 +488,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $form) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -514,5 +504,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $form;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

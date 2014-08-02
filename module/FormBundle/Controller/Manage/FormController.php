@@ -18,21 +18,17 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     DateTime,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
-    FormBundle\Entity\Entry as FieldEntry,
-    FormBundle\Entity\Field\File as FileField,
     FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
     FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel,
     ZipArchive;
@@ -78,12 +74,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $form);
 
         if (!$viewerMap) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -145,12 +138,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $formSpecification);
 
         if (!$viewerMap || !$viewerMap->isEdit()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to edit the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to edit the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -180,7 +170,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -191,12 +181,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     );
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The entry was successfully added.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The entry was successfully added.'
                 );
 
                 $this->redirect()->toRoute(
@@ -244,12 +231,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $formEntry->getForm());
 
         if (!$viewerMap || !$viewerMap->isEdit()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to edit the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to edit the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -273,7 +257,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager());
+                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -284,12 +268,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     );
                 }
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The entry was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The entry was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -347,14 +328,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_id']);
                 }
 
-                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The entry was successfully added.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The entry was successfully added.'
                 );
 
                 $this->redirect()->toRoute(
@@ -403,12 +381,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $formEntry->getForm());
 
         if (!$viewerMap || !$viewerMap->isEdit()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to edit the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to edit the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -422,10 +397,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $formEntries = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($formSpecification);
-
         $notValid = false;
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
 
@@ -435,14 +406,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager());
+                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The entry was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The entry was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -486,12 +454,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $formEntry->getForm());
 
         if (!$viewerMap || !$viewerMap->isEdit()) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to edit the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to edit the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -530,12 +495,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneByPersonAndForm($person, $form);
 
         if (!$viewerMap) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the given form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to the given form!'
             );
 
             $this->redirect()->toRoute(
@@ -562,6 +524,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 ->findAllByForm($form);
 
             $maxSlots = 0;
+            $results = array();
             foreach ($entries as $entry) {
                 $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
                 if ($viewerMap->isMail())
@@ -702,12 +665,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the form!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the form!'
             );
 
             $this->redirect()->toRoute(
@@ -725,12 +685,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneById($this->getParam('id'));
 
         if (null === $formSpecification) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No form with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No form with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -751,12 +708,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
     private function _getEntry()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the entry!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the entry!'
             );
 
             $this->redirect()->toRoute(
@@ -774,12 +728,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No entry with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No entry with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -798,12 +749,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
     private function _getField()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the field!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the field!'
             );
 
             $this->redirect()->toRoute(
@@ -821,12 +769,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findOneById($this->getParam('id'));
 
         if (null === $field) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No field with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No field with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

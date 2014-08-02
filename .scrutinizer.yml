@@ -1,0 +1,36 @@
+tools:
+    php_code_sniffer:
+        enabled: true
+        config:
+            standard: PSR2
+        filter:
+            paths: ["module/*"]
+        config:
+            sniffs:
+                psr2:
+                    namespaces:
+                        # disable warnings with us having one `use' statement
+                        # per file instead of per line
+                        use_declaration_sniff: false
+    php_cs_fixer:
+        enabled: true
+    php_loc:
+        enabled: true
+        excluded_dirs: ["bin", "data", "config", "vendor"]
+    php_mess_detector:
+        enabled: true
+        filter:
+            paths: ["module/*"]
+    php_pdepend:
+        enabled: true
+        excluded_dirs: ["bin", "data", "config", "vendor", "upgrade"]
+    php_analyzer:
+        enabled: true
+        filter:
+            paths: ["module/*"]
+        config:
+            use_statement_fixes:
+                # this allows us to use one `use' keyword per file instead of
+                # one per line
+                preserve_multiple:    true
+    # sensiolabs_security_checker: true

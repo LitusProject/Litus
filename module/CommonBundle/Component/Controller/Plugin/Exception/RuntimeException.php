@@ -26,5 +26,4 @@ namespace CommonBundle\Component\Controller\Plugin\Exception;
  */
 class RuntimeException extends \RuntimeException
 {
-
 }

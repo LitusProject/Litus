@@ -38,7 +38,7 @@ class Point
     private $id;
 
     /**
-     * @var \QuizBundle\Entity\Round The round this point belongs to
+     * @var Round The round this point belongs to
      *
      * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Round")
      * @ORM\JoinColumn(name="round", referencedColumnName="id")
@@ -46,7 +46,7 @@ class Point
     private $round;
 
     /**
-     * @var \QuizBundle\Entity\Team The team this point belongs to
+     * @var Team The team this point belongs to
      *
      * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Team")
      * @ORM\JoinColumn(name="team", referencedColumnName="id")
@@ -61,9 +61,9 @@ class Point
     private $point;
 
     /**
-     * @param \QuizBundle\Entity\Round $round
-     * @param \QuizBundle\Entity\Team  $team
-     * @param integer                  $point
+     * @param Round   $round
+     * @param Team    $team
+     * @param integer $point
      */
     public function __construct(Round $round, Team $team, $point)
     {
@@ -81,7 +81,7 @@ class Point
     }
 
     /**
-     * @return \QuizBundle\Entity\Round
+     * @return Round
      */
     public function getRound()
     {
@@ -89,7 +89,7 @@ class Point
     }
 
     /**
-     * @return \QuizBundle\Entity\Team
+     * @return Team
      */
     public function getTeam()
     {
@@ -105,8 +105,8 @@ class Point
     }
 
     /**
-     * @param  int                      $point
-     * @return \QuizBundle\Entity\Point
+     * @param  int  $point
+     * @return self
      */
     public function setPoint($point)
     {

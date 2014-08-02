@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -36,28 +35,8 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
         $date = null;
         if (null !== $this->getParam('academicyear'))
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
+        return AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
     }
 
     /**
@@ -72,12 +51,9 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             ->findOneActive();
 
         if (null === $period) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'There is no active stock period!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'There is no active stock period!'
             );
 
             $this->redirect()->toRoute(

@@ -21,7 +21,6 @@ namespace PublicationBundle\Form\Admin\Publication;
 use Doctrine\ORM\EntityManager,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -33,20 +32,20 @@ use Doctrine\ORM\EntityManager,
 class Edit extends \PublicationBundle\Form\Admin\Publication\Add
 {
     /**
-     * @var \PublicationBundle\Entity\Publication
+     * @var Publication
      */
-    private $_id;
+    private $_publication;
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \PublicationBundle\Entity\Publication $publication
-     * @param null|string|int                       $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Publication     $publication
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Publication $publication, $name = null)
     {
         parent::__construct($entityManager, $name);
 
-        $this->_id = $publication->getId();
+        $this->_publication = $publication;
 
         $this->remove('submit');
 
@@ -83,7 +82,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_id)
+                        new TitleValidator($this->_entityManager, $this->_publication->getId())
                     ),
                 )
             )

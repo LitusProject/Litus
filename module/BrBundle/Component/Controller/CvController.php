@@ -18,8 +18,7 @@
 
 namespace BrBundle\Component\Controller;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -36,27 +35,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\A
         $date = null;
         if (null !== $this->getParam('academicyear'))
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No academic year was found!'
-                )
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_cv_entry',
-                array(
-                    'action' => 'manage'
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
+        return AcademicYear::getUniversityYear($this->getEntityManager(), $date);
     }
 }

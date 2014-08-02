@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\Group\Mapping,
     FormBundle\Entity\Node\Translation\Group as GroupTranslation,
@@ -116,12 +115,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The group was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The group was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -150,12 +146,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $group->setEntityManager($this->getEntityManager());
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this group!'
             );
 
             $this->redirect()->toRoute(
@@ -221,12 +214,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The group was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The group was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -257,12 +247,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to delete this group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to delete this group!'
             );
 
             $this->redirect()->toRoute(
@@ -297,12 +284,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($this->getRequest()->isPost()) {
             if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'You are not authorized to edit this group!'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'You are not authorized to edit this group!'
                 );
 
                 $this->redirect()->toRoute(
@@ -365,12 +349,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The form was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The form was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -402,12 +383,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this group!'
             );
 
             $this->redirect()->toRoute(
@@ -456,12 +434,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
 
         if (!$mapping->getGroup()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You are not authorized to edit this group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authorized to edit this group!'
             );
 
             $this->redirect()->toRoute(
@@ -490,12 +465,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getGroup()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the group!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the group!'
             );
 
             $this->redirect()->toRoute(
@@ -513,12 +485,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $group) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No group with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No group with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -537,12 +506,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getMapping()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -560,12 +526,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

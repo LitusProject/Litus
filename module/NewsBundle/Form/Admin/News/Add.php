@@ -18,8 +18,7 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
@@ -39,13 +38,13 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

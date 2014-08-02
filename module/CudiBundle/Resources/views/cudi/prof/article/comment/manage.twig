@@ -142,7 +142,7 @@
             e.preventDefault();
             var removeComment = $('#removeComment');
             removeComment.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('cudi_prof_article_comment', {"action": "delete", "language": language.getAbbrev()})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('cudi_prof_article_comment', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#comment_removed_success').addClass('in');

@@ -34,17 +34,17 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     const EXCEEDS_MAX = 'exceedsMax';
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @var \TicketBundle\Entity\Event
+     * @var Event
      */
     private $_event;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person;
 
@@ -62,9 +62,10 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \TicketBundle\Entity\Event  $event         The event
-     * @param mixed                       $opts          The validator's options
+     * @param EntityManager $entityManager
+     * @param Event         $event         The event
+     * @param Person|null   $person
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Event $event, Person $person = null, $opts = null)
     {
@@ -94,7 +95,8 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
                 $number += $context['number_non_member'];
             }
         } else {
-            foreach ($this->_event->getOptions() as $option) {
+            $options = $this->_event->getOptions();
+            foreach ($options as $option) {
                 $number += $context['option_' . $option->getId() . '_number_member'];
                 if (!$this->_event->isOnlyMembers()) {
                     $number += $context['option_' . $option->getId() . '_number_non_member'];

@@ -96,8 +96,8 @@ return array(
 
         <ul>
             <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
         </ul>
 
         <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
@@ -106,14 +106,14 @@ return array(
 
         <ul>
             <li>every Monday, Tuesday and Thursday evening from 19h until 22h from week 39 until 21, except official closing days of the KU Leuven</li>
-            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KUL</li>
-            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KUL</li>
+            <li>all workdays between 9h and 18h in the Christmas and Easter holidays, except official closing days of KU Leuven</li>
+            <li>all workdays between 9h and 18h in July (from week 28) and August, except official closing days of KU Leuven</li>
         </ul>
 
         <p>Choose a moment you want to play music below, and reserve it! One reservation each week will be assigned to you, if you want to play more times a week, other students are given priority.</p>
 
         <p>It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.</p>',
-    'Please login to reservate a slot.' => 'Please login to reservate a slot.',
+    'Please login to reserve a slot.' => 'Please login to reserve a slot.',
 
     'Lease' => 'Lease',
     'Return' => 'Return',

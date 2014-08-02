@@ -34,17 +34,17 @@ class Name extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CalendarBundle\Entity\Node\Event The event exluded from this check
+     * @var Event The event exluded from this check
      */
     private $_event;
 
     /**
-     * @var \CommonBundle\Entity\General\Language
+     * @var Language
      */
     private $_language;
 
@@ -56,10 +56,10 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\Language $language
-     * @param \CalendarBundle\Entity\Node\Event The event exluded from this check
-     * @param mixed                                 $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Language      $language
+     * @param Event         $event         The event exluded from this check
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Language $language, Event $event = null, $opts = null)
     {

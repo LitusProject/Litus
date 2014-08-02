@@ -38,25 +38,25 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
-    protected $_entityManager = null;
+    protected $_entityManager;
 
     /**
-     * @var \SyllabusBundle\Entity\Subject
+     * @var Subject
      */
-    protected $_subject = null;
+    protected $_subject;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      */
-    protected $_academicYear = null;
+    protected $_academicYear;
 
     /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \SyllabusBundle\Entity\Subject            $subject
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param null|string|int                           $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param Subject         $subject
+     * @param AcademicYear    $academicYear
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, Subject $subject, AcademicYear $academicYear, $name = null)
     {

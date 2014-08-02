@@ -21,10 +21,8 @@ namespace BannerBundle\Form\Admin\Banner;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
-    BannerBundle\Controller\Admin\BannerController,
     BannerBundle\Entity\Node\Banner,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
@@ -45,13 +43,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     const BANNER_FILESIZE = '10MB';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {

@@ -18,9 +18,9 @@
 
 namespace FormBundle\Entity\Node;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM,
+    Zend\Http\PhpEnvironment\Request;
 
 /**
  * This entity stores the node item.
@@ -67,12 +67,16 @@ class GuestInfo
      */
     private $email;
 
+    public static $cookieNamespace = 'Litus_Form';
+
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
+     * @param EntityManager $entityManager
+     * @param string        $firstName
+     * @param string        $lastName
+     * @param string        $email
+     * @param Request       $request
      */
-    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email)
+    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email, Request $request)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -87,7 +91,7 @@ class GuestInfo
 
         $this->sessionId = $sessionId;
 
-        $this->renew();
+        $this->renew($request);
     }
 
     /**
@@ -99,7 +103,7 @@ class GuestInfo
     }
 
     /**
-     * @return string firstName
+     * @return string
      */
     public function getFirstName()
     {
@@ -109,7 +113,7 @@ class GuestInfo
     /**
      * @param string firstName
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setFirstName($firstName)
     {
@@ -119,7 +123,7 @@ class GuestInfo
     }
 
     /**
-     * @return string lastName
+     * @return string
      */
     public function getLastName()
     {
@@ -129,7 +133,7 @@ class GuestInfo
     /**
      * @param string $lastName
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setLastName($lastName)
     {
@@ -139,7 +143,7 @@ class GuestInfo
     }
 
     /**
-     * @return string The full name
+     * @return string
      */
     public function getFullName()
     {
@@ -147,7 +151,7 @@ class GuestInfo
     }
 
     /**
-     * @return string $email
+     * @return string
      */
     public function getEmail()
     {
@@ -157,7 +161,7 @@ class GuestInfo
     /**
      * @param string $email
      *
-     * @return \FormBundle\Entity\Node\GuestInfo
+     * @return self
      */
     public function setEmail($email)
     {
@@ -167,16 +171,25 @@ class GuestInfo
     }
 
     /**
+     * @return string
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
+     * @param  Request                           $request
      * @return \FormBundle\Entity\Node\GuestInfo
      */
-    public function renew()
+    public function renew(Request $request)
     {
         setcookie(
-            'LITUS_form',
+            self::$cookieNamespace,
             $this->sessionId,
             time() + (60*60*24*25),
             '/',
-            str_replace(array('www.', ','), '', $_SERVER['SERVER_NAME'])
+            str_replace(array('www.', ','), '', $request->getServer('SERVER_NAME'))
         );
 
         return $this;

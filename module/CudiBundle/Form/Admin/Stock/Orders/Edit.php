@@ -32,8 +32,8 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param \CudiBundle\Entity\Stock\Order\Item $item
-     * @param null|string|int                     $name Optional name for the element
+     * @param Item            $item
+     * @param null|string|int $name Optional name for the element
      */
     public function __construct(Item $item, $name = null)
     {
@@ -42,8 +42,8 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $field = new Text('number');
         $field->setLabel('Number')
             ->setAttribute('autocomplete', 'off')
-            ->setValue($item->getNumber())
-            ->setRequired();
+            ->setRequired()
+            ->setValue($item->getNumber());
         $this->add($field);
 
         $field = new Submit('edit');

@@ -20,10 +20,10 @@ namespace LogisticsBundle\Form\Admin\VanReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit;
 
@@ -35,15 +35,15 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
 class Edit extends Add
 {
     /**
-     * @var \LogisticsBundle\Entity\Reservation\VanReservation
+     * @var VanReservation
      */
     private $_reservation;
 
     /**
-     * @param \Doctrine\ORM\EntityManager                       $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear         $academicYear  The academic year
-     * @param LogisticsBundle\Entity\Reservation\VanReservation $reservation
-     * @param null|string|int                                   $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param AcademicYear    $currentYear   The current Academic Year
+     * @param VanReservation  $reservation
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, AcademicYear $currentYear, VanReservation $reservation, $name = null)
     {
@@ -72,9 +72,11 @@ class Edit extends Add
             'driver' => $reservation->getDriver() === null ? -1 : $reservation->getDriver()->getPerson()->getId(),
         );
 
-        if (null !== $reservation->getPassenger()) {
-            $data['passenger_id'] = $reservation->getPassenger()->getId();
-            $data['passenger'] = $reservation->getPassenger()->getFullName() . ' - ' . $reservation->getPassenger()->getUniversityIdentification();
+        $person = $reservation->getPassenger();
+
+        if (null !== $person) {
+            $data['passenger_id'] = $person->getId();
+            $data['passenger'] = $person->getFullName() . ($person instanceof Academic ? ' - ' . $person->getUniversityIdentification() : '');
         }
 
         $this->setData($data);

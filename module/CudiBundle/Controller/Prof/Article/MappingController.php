@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CudiBundle\Entity\Article\SubjectMap,
+use CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
@@ -72,12 +71,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The mapping was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The mapping was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -153,12 +149,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'The mapping was successfully activated!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'The mapping was successfully activated!'
         );
 
         return new ViewModel(
@@ -174,12 +167,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             return;
 
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the mapping!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the mapping!'
             );
 
             $this->redirect()->toRoute(
@@ -202,12 +192,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         if (null === $mapping || null === $mappingProf) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No mapping with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No mapping with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -230,12 +217,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             return;
 
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the subject!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the subject!'
             );
 
             $this->redirect()->toRoute(
@@ -258,12 +242,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             );
 
         if (null === $mapping) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No subject with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No subject with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -285,12 +266,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (null === $id) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the article!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the article!'
             );
 
             $this->redirect()->toRoute(
@@ -309,12 +287,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
         if (null === $article) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No article with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No article with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

@@ -19,6 +19,7 @@
 namespace GalleryBundle\Form\Admin\Album;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
@@ -35,18 +36,18 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \GalleryBundle\Entity\Album\Album
+     * @var Album
      */
     protected $album = null;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @param EntityManager   $entityManager The EntityManager instance
+     * @param null|string|int $name          Optional name for the element
      */
     public function __construct(EntityManager $entityManager, $name = null)
     {
@@ -80,6 +81,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->setRequired();
         $this->add($field);
 
+        $field = new Checkbox('watermark');
+        $field->setLabel('Watermark')
+            ->setValue(true)
+            ->setAttribute('data-help', 'Embed a watermark into to photo\'s of this album. (Will only be applied to new uploaded photo\'s)');
+        $this->add($field);
+
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'gallery_add');
@@ -90,6 +97,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $data = array(
             'date' => $album->getDate()->format('d/m/Y'),
+            'watermark' => $album->hasWatermark(),
         );
         foreach ($this->_getLanguages() as $language) {
             $data['title_' . $language->getAbbrev()] = $album->getTitle($language);

@@ -200,7 +200,7 @@ class Delivery extends EntityRepository
             ->orderBy('d.timestamp', 'DESC')
             ->getQuery();
 
-        return $query;
+        return $resultSet;
     }
 
     public function findAllByArticleAndAcademicYearQuery($article, AcademicYear $academicYear)

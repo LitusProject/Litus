@@ -21,7 +21,6 @@ namespace SecretaryBundle\Controller;
 use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
@@ -44,7 +43,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     /**
      * Execute the request.
      *
-     * @param  \Zend\Mvc\MvcEvent                                                $e The MVC event
+     * @param  MvcEvent                                                          $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -56,9 +55,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if (!$enableRegistration) {
+        if (!$enableRegistration)
             return $this->notFoundAction();
-        }
 
         return $result;
     }
@@ -71,12 +69,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
             if (null !== $academic && null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::WARNING,
-                        'WARNING',
-                        'You have already registered for this academic year.'
-                    )
+                $this->flashMessenger()->warn(
+                    'WARNING',
+                    'You have already registered for this academic year.'
                 );
 
                 if ($this->_isValidCode()) {
@@ -86,7 +81,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
                     $authentication->authenticate(
                         $this->getParam('identification'), '', true
@@ -201,7 +196,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     $this->getEntityManager()->persist($academic);
 
-                    $academic->setBirthday(DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00'))
+                    $academic->setBirthday(self::_loadDate($formData['birthday']))
                         ->addUniversityStatus(
                             new UniversityStatus(
                                 $academic,
@@ -276,7 +271,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'CommonBundle\Entity\User\Person\Academic',
                             'universityIdentification'
                         ),
-                        $this->getServiceLocator()->get('authentication_doctrineservice')
+                        $this->getAuthenticationService()
                     );
 
                     $this->getEntityManager()->remove($code);
@@ -286,12 +281,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification'), '', true
                     );
 
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You are succesfully registered!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You are succesfully registered!'
                     );
 
                     $this->redirect()->toRoute(
@@ -598,12 +590,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'Your registration was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'Your registration was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -786,7 +775,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
-        } catch (\ErrorException $e) {}
+        } catch (\ErrorException $e) {
+            // No load balancer active
+        }
 
         if ('%2F' != substr($shibbolethUrl, 0, -3))
             $shibbolethUrl .= '%2F';
@@ -802,7 +793,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'CommonBundle\Entity\User\Person\Academic',
                 'universityIdentification'
             ),
-            $this->getServiceLocator()->get('authentication_doctrineservice')
+            $this->getAuthenticationService()
         );
 
         $code = $this->getEntityManager()
@@ -817,5 +808,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $this->getParam('identification'), '', true
             );
         }
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
     }
 }

@@ -70,8 +70,16 @@ class Mail
     }
 
     /**
-     * @param  string                       $form
-     * @return \FormBundle\Entity\Mail\Mail
+     * @var int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param  string $from
+     * @return self
      */
     public function setFrom($from)
     {
@@ -89,8 +97,8 @@ class Mail
     }
 
     /**
-     * @param  boolean                      $bcc
-     * @return \FormBundle\Entity\Mail\Mail
+     * @param  boolean $bcc
+     * @return self
      */
     public function setBcc($bcc)
     {
@@ -100,7 +108,7 @@ class Mail
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getBcc()
     {
@@ -108,8 +116,8 @@ class Mail
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language $language
+     * @param  boolean  $allowFallback
      * @return string
      */
     public function getSubject(Language $language = null, $allowFallback = true)
@@ -123,8 +131,8 @@ class Mail
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
+     * @param  Language $language
+     * @param  boolean  $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -138,9 +146,9 @@ class Mail
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Language $language
-     * @param  boolean                               $allowFallback
-     * @return \FormBundle\Entity\Mail\Translation
+     * @param  Language                                 $language
+     * @param  boolean                                  $allowFallback
+     * @return \FormBundle\Entity\Mail\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

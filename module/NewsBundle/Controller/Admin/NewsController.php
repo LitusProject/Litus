@@ -18,8 +18,7 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     NewsBundle\Entity\Node\News,
     NewsBundle\Entity\Node\Translation,
     NewsBundle\Form\Admin\News\Add as AddForm,
@@ -92,12 +91,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The news item was successfully added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The news item was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -165,12 +161,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The news item was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The news item was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -214,12 +207,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     private function _getNews()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the news item!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the news item!'
             );
 
             $this->redirect()->toRoute(
@@ -237,12 +227,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $news) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No news item with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No news item with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

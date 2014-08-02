@@ -26,12 +26,12 @@ class Barcode extends \Zend\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
 
     /**
-     * @var \CommonBundle\Entity\User\Person
+     * @var Person
      */
     private $_person = null;
 
@@ -47,9 +47,9 @@ class Barcode extends \Zend\Validator\AbstractValidator
     /**
      * Create a new Unique Article Barcode validator.
      *
-     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param mixed                            $opts          The validator's options
+     * @param EntityManager $entityManager The EntityManager instance
+     * @param Person        $person
+     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, Person $person = null, $opts = null)
     {
@@ -58,7 +58,6 @@ class Barcode extends \Zend\Validator\AbstractValidator
         $this->_entityManager = $entityManager;
         $this->_person = $person;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the

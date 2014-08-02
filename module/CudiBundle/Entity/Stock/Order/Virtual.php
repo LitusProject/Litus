@@ -38,7 +38,7 @@ class Virtual
     private $id;
 
     /**
-     * @var \CudiBundle\Entity\Sale\Article The article of the item
+     * @var Article The article of the item
      *
      * @ORM\ManyToOne(targetEntity="CudiBundle\Entity\Sale\Article")
      * @ORM\JoinColumn(name="article", referencedColumnName="id")
@@ -53,15 +53,15 @@ class Virtual
     private $number;
 
     /**
-     * @var \DateTime The time the order was created
+     * @var DateTime The time the order was created
      *
      * @ORM\Column(name="date_created", type="datetime")
      */
     private $dateCreated;
 
     /**
-     * @param \CudiBundle\Entity\Sale\Article $article The article of the item
-     * @param integer                         $number  The number of items ordered
+     * @param Article $article The article of the item
+     * @param integer $number  The number of items ordered
      */
     public function __construct(Article $article, $number)
     {
@@ -79,7 +79,7 @@ class Virtual
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article
+     * @return Article
      */
     public function getArticle()
     {
@@ -95,8 +95,8 @@ class Virtual
     }
 
     /**
-     * @param  integer                                $number
-     * @return \CudiBundle\Entity\Stock\Order\Virtual
+     * @param  integer $number
+     * @return self
      */
     public function setNumber($number)
     {

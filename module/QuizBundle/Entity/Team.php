@@ -46,7 +46,7 @@ class Team
     private $name;
 
     /**
-     * @var \QuizBundle\Entity\Quiz The quiz this team belongs to
+     * @var Quiz The quiz this team belongs to
      *
      * @ORM\ManyToOne(targetEntity="QuizBundle\Entity\Quiz")
      * @ORM\JoinColumn(name="quiz", referencedColumnName="id")
@@ -61,16 +61,15 @@ class Team
     private $number;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The points scored by this team
+     * @var ArrayCollection The points scored by this team
      *
      * @ORM\OneToMany(targetEntity="QuizBundle\Entity\Point", mappedBy="team", cascade="remove")
      */
     private $points;
 
     /**
-     * @param \QuizBundle\Entity\Quiz $quiz
-     * @param string                  $name
-     * @param integer                 $order
+     * @param Quiz   $quiz
+     * @param string $name
      */
     public function __construct(Quiz $quiz, $name, $number)
     {
@@ -89,7 +88,7 @@ class Team
     }
 
     /**
-     * @return \QuizBundle\Entity\Quiz
+     * @return Quiz
      */
     public function getQuiz()
     {
@@ -105,8 +104,8 @@ class Team
     }
 
     /**
-     * @param  string                  $name
-     * @return \QuizBundle\Entity\Team
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -124,8 +123,8 @@ class Team
     }
 
     /**
-     * @param  int                     $number
-     * @return \QuizBundle\Entity\Team
+     * @param  int  $number
+     * @return self
      */
     public function setNumber($number)
     {

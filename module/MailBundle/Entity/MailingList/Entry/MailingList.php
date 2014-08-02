@@ -30,7 +30,7 @@ use MailBundle\Entity\MailingList as MailingListEntity,
 class MailingList extends \MailBundle\Entity\MailingList\Entry
 {
     /**
-     * @var MailBundle\Entity\MailingList The list associated with this entry
+     * @var MailingListEntity The list associated with this entry
      *
      * @ORM\ManyToOne(targetEntity="MailBundle\Entity\MailingList", cascade={"persist"})
      * @ORM\JoinColumn(name="entry", referencedColumnName="id", nullable=false)
@@ -40,8 +40,8 @@ class MailingList extends \MailBundle\Entity\MailingList\Entry
     /**
      * Creates a new list entry for the given list with the given list.
      *
-     * @param \MailBundle\Entity\MailingList $list  The list for this entry
-     * @param \MailBundle\Entity\MailingList $entry The list associated with this entry
+     * @param MailingListEntity $list  The list for this entry
+     * @param MailingListEntity $entry The list associated with this entry
      */
     public function __construct(MailingListEntity $list, MailingListEntity $entry)
     {
@@ -50,7 +50,7 @@ class MailingList extends \MailBundle\Entity\MailingList\Entry
     }
 
     /**
-     * @return \MailBundle\Entity\MailingList
+     * @return MailingListEntity
      */
     public function getEntry()
     {

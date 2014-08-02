@@ -20,8 +20,6 @@ namespace CommonBundle\Form\Account;
 
 use CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\Factory as InputFactory;
 

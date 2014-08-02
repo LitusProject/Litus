@@ -17,7 +17,7 @@
  */
 
 return array(
-    'My Bookings' => 'Mijn Cursus Reservaties',
+    'My Bookings' => 'Mijn Reservaties',
 
     'Please login to view your bookings.' => 'Meld je aan om je cursusreservaties te bekijken.',
     'Please login to book textbooks.' => 'Meld je aan om cursussen te reserveren.',
@@ -47,7 +47,7 @@ return array(
 
     'General' => 'Algemeen',
 
-    'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.' => 'De boeken zijn gereserveerd! Gelieve te wachten totdat deze toegewezen zijn voor je naar de cursusdienst komt.',
+    'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.' => 'De boeken zijn gereserveerd! Gelieve te wachten totdat deze toegewezen zijn voor je naar de cursusdienst komt.',
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'Er zijn nieuwe reservaties aan je toegewezen, die je mag komen afhalen.',
     'View Bookings' => 'Bekijk Reservaties',

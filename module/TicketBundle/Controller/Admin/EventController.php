@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket,
@@ -85,7 +84,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findOneById($formData['event']),
                     $formData['bookable_praesidium'],
                     $formData['bookable'],
-                    strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null,
+                    self::_loadDate($formData['bookings_close_date']),
                     $formData['active'],
                     $formData['generate_tickets'],
                     $formData['number_of_tickets'],
@@ -116,12 +115,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -160,15 +156,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     if ($event->areTicketsGenerated()) {
                         if ($formData['number_of_tickets'] >= $event->getNumberOfTickets()) {
                             for ($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
-                                do {
-                                    $number = rand();
-                                    $ticket = $this->getEntityManager()
-                                        ->getRepository('TicketBundle\Entity\Ticket')
-                                        ->findOneByEventAndNumber($event, $number);
-                                } while ($ticket !== null);
-
-                                $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
-                                $this->getEntityManager()->persist($ticket);
+                                $this->getEntityManager()->persist(
+                                    new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
+                                );
                                 $this->getEntityManager()->flush();
                             }
                         } else {
@@ -187,15 +177,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         }
                     } else {
                         for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                            do {
-                                $number = rand();
-                                $ticket = $this->getEntityManager()
-                                    ->getRepository('TicketBundle\Entity\Ticket')
-                                    ->findOneByEventAndNumber($event, $number);
-                            } while ($ticket !== null);
-
-                            $ticket = new Ticket($event, 'empty', null, null, null, null, $number);
-                            $this->getEntityManager()->persist($ticket);
+                            $this->getEntityManager()->persist(
+                                new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
+                            );
                             $this->getEntityManager()->flush();
                         }
                     }
@@ -210,12 +194,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $enableOptions = isset($formData['enable_options']) && $formData['enable_options'] || sizeof($event->getOptions()) > 0;
 
-                $event->setActivity($this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Node\Event')
-                        ->findOneById($formData['event']))
+                $commonEvent = $this->getEntityManager()
+                    ->getRepository('CalendarBundle\Entity\Node\Event')
+                    ->findOneById($formData['event']);
+
+                $event->setActivity($commonEvent)
                     ->setBookablePraesidium($formData['bookable_praesidium'])
                     ->setBookable($formData['bookable'])
-                    ->setBookingsCloseDate(strlen($formData['bookings_close_date']) ? DateTime::createFromFormat('d#m#Y H#i', $formData['bookings_close_date']) : null)
+                    ->setBookingsCloseDate(self::_loadDate($formData['bookings_close_date']))
                     ->setActive($formData['active'])
                     ->setTicketsGenerated($formData['generate_tickets'])
                     ->setNumberOfTickets($formData['number_of_tickets'])
@@ -250,12 +236,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -295,15 +278,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return Event|null
+     */
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -321,12 +304,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -340,5 +320,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

@@ -40,21 +40,21 @@ class Session
     private $id;
 
     /**
-     * @var \DateTime The time at which this session was started
+     * @var DateTime The time at which this session was started
      *
      * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
-     * @var \DateTime The time at which this session will end
+     * @var DateTime The time at which this session will end
      *
      * @ORM\Column(name="expiration_time", type="datetime")
      */
     private $expirationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person associated with this session
+     * @var Person The person associated with this session
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person", fetch="EAGER")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -83,17 +83,19 @@ class Session
     private $active;
 
     /**
-     * @var string The type of this session
+     * @var bool The type of this session
      *
      * @ORM\Column(type="boolean")
      */
     private $shibboleth;
 
     /**
-     * @param int|\DateTime                    $expirationTime
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param string                           $userAgent
-     * @param string                           $ip
+     * @param integer      $expirationTime
+     * @param Person       $person
+     * @param string       $userAgent
+     * @param string       $ip
+     * @param bool         $shibboleth
+     * @param DateTime|int $expirationTime
      */
     public function __construct(Person $person, $userAgent, $ip, $shibboleth, $expirationTime = 3600)
     {
@@ -101,12 +103,13 @@ class Session
 
         $this->startTime = new DateTime();
 
-        if (is_int($expirationTime)) {
+        if ($expirationTime instanceof DateTime) {
+            $this->expirationTime = $expirationTime;
+        } else {
+            $expirationTime = is_int($expirationTime) ? $expirationTime : 3600;
             $this->expirationTime = new DateTime(
                 'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
             );
-        } else {
-            $this->expirationTime = $expirationTime;
         }
 
         $this->person = $person;
@@ -127,7 +130,7 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartTime()
     {
@@ -135,7 +138,7 @@ class Session
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {
@@ -143,7 +146,7 @@ class Session
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Person
      */
     public function getPerson()
     {
@@ -183,14 +186,6 @@ class Session
     }
 
     /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * @return boolean
      */
     public function isShibboleth()
@@ -205,9 +200,9 @@ class Session
      * We don't delete expired sessions here, but wait for the garbage collector to clean up all expired sessions
      * at once.
      *
-     * @param  \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param  string                      $userAgent     The user agent that should be checked
-     * @param  string                      $ip            The IP currently used to connect to the site
+     * @param  EntityManager $entityManager The EntityManager instance
+     * @param  string        $userAgent     The user agent that should be checked
+     * @param  string        $ip            The IP currently used to connect to the site
      * @return bool|string
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)

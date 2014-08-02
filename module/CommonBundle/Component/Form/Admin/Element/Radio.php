@@ -26,7 +26,12 @@ namespace CommonBundle\Component\Form\Admin\Element;
 class Radio extends \Zend\Form\Element\Radio
 {
     /**
-     * @param  null|int|string                    $name    Optional name for the element
+     * @var boolean
+     */
+    private $_required = false;
+
+    /**
+     * @param  string                             $name    Optional name for the element
      * @param  array                              $options Optional options for the element
      * @throws Exception\InvalidArgumentException
      */
@@ -42,7 +47,7 @@ class Radio extends \Zend\Form\Element\Radio
      * Also sets the HTML5 'required' attribute.
      *
      * @param  boolean $flag
-     * @return void
+     * @return Radio
      */
     public function setRequired($flag = true)
     {
