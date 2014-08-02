@@ -82,14 +82,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Textarea('contract_text');
         $field->setLabel('Contract Text')
             ->setRequired(false)
-            ->setValue('<entry>
-A single entry is a single bullet on the contract. Formatting options are indicated on the right and entries can be nested by including an "entries" tag in a parent entry, like so:
-    <entries>
-        <entry>
-            This is a nested entry.
-        </entry>
-    </entries>
-</entry>');
+            ->setValue('* You have to start every line with a *.
+* Also the second bullet.
+     * You can also make a sub bullet only use spaces before the bullet.
+     * The next sub bullet most be lined up with the one above.
+     At a sublevel you can also drop the bullet. This will be renderered without bullet.
+       
+     Empty lines are permitted, but ignored.
+     * Another sub bullet.
+* This line must start with a *.
+*       The amount of spaces between the * and the text does not matter.
+        Unless the text has multiple lines.
+        * Bullet must be lined up with text.
+        Text belonging to upper bullet.
+        *
+            Who cares about the empty lines again?
+* * * * Ninja bullet.
+      * Ninja bro.
+    ');
         $this->add($field);
 
         $field = new Select('event');

@@ -19,6 +19,8 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Product,
+    BrBundle\Component\ContractParser\Parser as BulletParser,
+    BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Form\Admin\Product\Add as AddForm,
     BrBundle\Form\Admin\Product\Edit as EditForm,
     CommonBundle\Component\FlashMessenger\FlashMessage,
@@ -60,6 +62,28 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                try {
+                    $p = new BulletParser();
+                    $p->parse($formData['contract_text']);
+                }
+                catch (IllegalFormatException $e)
+                {
+                    $this->flashMessenger()->addMessage(
+                            new FlashMessage(
+                                    FlashMessage::ERROR,
+                                    'Parse error',
+                                    'Line ' . $e->getLineNumber() . ': ' .
+                                    $e->getMessage()
+                            )
+                    );
+                    return new ViewModel(
+                            array(
+                                    'form' => $form,
+                            )
+                    );
+                
+                }
+                
                 $newProduct = new Product(
                     $this->getEntityManager(),
                     $formData['name'],
@@ -124,6 +148,28 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
+                try {
+                    $p = new BulletParser();
+                    $p->parse($formData['contract_text']);
+                }
+                catch (IllegalFormatException $e)
+                {
+                    $this->flashMessenger()->addMessage(
+                        new FlashMessage(
+                                FlashMessage::ERROR,
+                                'Parse error',
+                                'Line ' . $e->getLineNumber() . ': ' .
+                                    $e->getMessage()
+                        )
+                    );
+                    return new ViewModel(
+                            array(
+                                    'form' => $form,
+                            )
+                    );
+                    
+                }
+                
                 $product->setEntityManager($this->getEntityManager())
                     ->setName($formData['name'])
                     ->setDescription($formData['description'])
