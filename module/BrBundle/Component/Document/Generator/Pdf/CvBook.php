@@ -70,7 +70,6 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     {
         $xml = new Generator($tmpFile);
 
-
         $data = Util::getGrouped($this->getEntityManager(), $this->_year);
 
         $groups = array();

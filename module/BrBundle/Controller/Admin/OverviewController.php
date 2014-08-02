@@ -201,6 +201,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             'paid' => $totalPaid,
             'signed' => $totalSigned
         );
+
         return [$collection,$totals];
 
     }

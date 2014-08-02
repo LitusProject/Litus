@@ -73,7 +73,7 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _createProductArray(Array $currentProducts)
+    private function _createProductArray(array $currentProducts)
     {
         $products = $this->_entityManager
             ->getRepository('BrBundle\Entity\Product')

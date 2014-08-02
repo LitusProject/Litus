@@ -98,8 +98,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
-        foreach ($entries as $entry)
-        {
+        foreach ($entries as $entry) {
             $p = new BulletParser();
             $p->parse($entry->getContractText());
             $entry_s = XmlObject::fromString($p->getXml());

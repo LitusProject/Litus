@@ -65,9 +65,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 try {
                     $p = new BulletParser();
                     $p->parse($formData['contract_text']);
-                }
-                catch (IllegalFormatException $e)
-                {
+                } catch (IllegalFormatException $e) {
                     $this->flashMessenger()->addMessage(
                             new FlashMessage(
                                     FlashMessage::ERROR,
@@ -76,14 +74,15 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                                     $e->getMessage()
                             )
                     );
+
                     return new ViewModel(
                             array(
                                     'form' => $form,
                             )
                     );
-                
+
                 }
-                
+
                 $newProduct = new Product(
                     $this->getEntityManager(),
                     $formData['name'],
@@ -151,9 +150,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 try {
                     $p = new BulletParser();
                     $p->parse($formData['contract_text']);
-                }
-                catch (IllegalFormatException $e)
-                {
+                } catch (IllegalFormatException $e) {
                     $this->flashMessenger()->addMessage(
                         new FlashMessage(
                                 FlashMessage::ERROR,
@@ -162,14 +159,15 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                                     $e->getMessage()
                         )
                     );
+
                     return new ViewModel(
                             array(
                                     'form' => $form,
                             )
                     );
-                    
+
                 }
-                
+
                 $product->setEntityManager($this->getEntityManager())
                     ->setName($formData['name'])
                     ->setDescription($formData['description'])
