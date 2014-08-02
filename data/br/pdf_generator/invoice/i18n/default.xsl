@@ -24,7 +24,7 @@
 	</xsl:template>
 	
 	<xsl:template name="vat_client_u">
-	    <xsl:text>BTW-nummer Klant</xsl:text>
+	    <xsl:text>BTW-nummer klant</xsl:text>
 	</xsl:template>
 	
 	<xsl:template name="reference_u">

@@ -69,7 +69,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $invoiceDate = $this->_invoice->getCreationTime()->format('j/m/Y');
         $dueDate = $this->_invoice->getExpirationTime($this->getEntityManager())->format('j/m/Y');
-        $clientVat = $this->_invoice->getOrder()->getCompany()->getVatNumber();
+        $clientVat = $this->_VATFormat($this->_invoice->getOrder()->getCompany()->getVatNumber());
         $reference = '/'; // TODO? (this was here already)
 
         $invoiceNb = $this->_invoice->getInvoiceNumber();
@@ -135,7 +135,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null,"Korting"),//TODO need translation later
-                    new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
+                    new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                     new XmlObject('amount', null, ' '),
                     new XmlObject('vat_type', null, ' ')
                 )
@@ -144,7 +144,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 $entries[] = new XmlObject('entry', null,
                     array(
                         new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
-                        new XmlObject('price', null, XmlObject::fromString('- <euro/>' . $discount)),
+                        new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                         new XmlObject('amount', null, ' '),
                         new XmlObject('vat_type', null, ' ')
                     )
@@ -271,5 +271,10 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 new XmlObject('sale_conditions_nl')
             )
         ));
+    }
+
+    private function _VATFormat($vat)
+    {
+        return substr_replace(substr_replace(substr_replace($vat, " ", 2,0),".",7,0),".",11,0);
     }
 }

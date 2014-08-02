@@ -135,8 +135,8 @@ Example content of this section.
     ),
     array(
             'key'         => 'br.organization_name',
-            'value'       => 'VTK Ondersteuning VZW',
-            'description' => 'Name of corporate relations VZW',
+            'value'       => 'VTK Ondersteuning vzw',
+            'description' => 'Name of corporate relations vzw',
     ),
     array(
         'key'         => 'br.vat_types',
