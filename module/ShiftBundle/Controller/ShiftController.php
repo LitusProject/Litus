@@ -18,7 +18,8 @@
 
 namespace ShiftBundle\Controller;
 
-use DateTime,
+use CommonBundle\Component\Util\AcademicYear,
+    DateTime,
     DateInterval,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
@@ -28,8 +29,7 @@ use DateTime,
     ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
     Zend\Http\Headers,
     Zend\Mail\Message,
-    Zend\View\Model\ViewModel,
-    CommonBundle\Component\Util\AcademicYear;
+    Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -445,7 +445,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), null);
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager());
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -466,7 +466,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $unPayedShifts = 0;
         $unPayedCoins = 0;
         foreach ($asVolunteer as $shift) {
-
             if ($shift->getStartDate() > $now)
                 continue;
 
@@ -474,13 +473,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
                     'count' => 1,
                     'unitName' => $shift->getUnit()->getName()
-                    );
+                );
             } else {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()]['count']++;
             }
+
             $shiftsAsVolunteerCount++;
-            foreach ($shift->getVolunteers() as $volunteer){
-                if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())){
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())) {
                     $unPayedShifts += 1;
                     $unPayedCoins += $shift->getReward();
                 }
@@ -490,7 +490,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $shiftsAsResponsible = array();
         $shiftsAsResponsibleCount = 0;
         foreach ($asResponsible as $shift) {
-
             if ($shift->getStartDate() > $now)
                 continue;
 
@@ -498,10 +497,11 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $shiftsAsResponsible[$shift->getUnit()->getId()] = array(
                     'count' => 1,
                     'unitName' => $shift->getUnit()->getName()
-                    );
+                );
             } else {
                 $shiftsAsResponsible[$shift->getUnit()->getId()]['count']++;
             }
+
             $shiftsAsResponsibleCount++;
         }
 

@@ -127,7 +127,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
                     $payed[$shift->getId()] = $volunteer->isPayed();
-                    if (!$volunteer->isPayed()){
+                    if (!$volunteer->isPayed()) {
                         $totalRewardLeft += $shift->getReward();
                     }
             }
@@ -255,10 +255,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->findAllByPersonAsVolunteer($person, $academicYear);
             $unpayed = 0;
-            foreach($asVolunteer as $shift){
+            foreach ($asVolunteer as $shift) {
                 foreach ($shift->getVolunteers() as $volunteer) {
                     if ($volunteer->getPerson() == $person) {
-                        if (!$volunteer->isPayed()){
+                        if (!$volunteer->isPayed()) {
                             $unpayed += $shift->getReward();
                         }
                     }
@@ -281,17 +281,16 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function payoutAction(){
-
+    public function payoutAction()
+    {
         $this->initAjax();
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if (null === $person)
             return new ViewModel();
-        }
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -310,7 +309,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'succes'
+                    'status' => 'success'
                 ),
             )
         );

@@ -70,12 +70,18 @@
                             .append('<td>' + this.unpayed + '</td>')
                             .append('<td>' + this.count + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
-                                actions.append('<a href="#" data-person="'+this.id+'" class="edit" onclick="payout(this)">Payout</a>');
+
+                        {% if hasAccess('shift_admin_shift_counter', 'payout') %}
+                            actions.append('<a href="#" data-person="' + this.id + '" class="edit payout">Payout</a>');
+                        {% endif %}
+
                         {% if hasAccess('shift_admin_shift_counter', 'view') %}
                             actions.append('<a href="{{ url('shift_admin_shift_counter', {"action": "view"}) }}' + this.id +'/{{ activeAcademicYear.getCode() }}" class="view">View</a>');
                         {% endif %}
                     });
                     $('#shift_counter_search table').change();
+
+                    $('.item .payout').click(payout);
                 },
                 clear: function () {
                     $('#shift_counter_search table').find('tr.item').remove();
@@ -86,12 +92,12 @@
         });
 
         function payout(e) {
-            $.get('{{ url('shift_admin_shift_counter', {"action": "payout"}) }}0/'+ $(e).data('person'), function (data) {
+            $.get('{{ url('shift_admin_shift_counter', {"action": "payout"}) }}0/'+ $(this).data('person'), function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.payout_success').removeClass('hide');
                 } else {
-                    errorRemove();
+                    errorPayout();
                 }
             }, 'json').error(errorPayout);
 
@@ -101,12 +107,6 @@
         function errorPayout() {
             $('.flashmessage').addClass('hide');
             $('.payout_error').removeClass('hide');
-        }
-
-        function errorRemove() {
-            $('.flashmessage').addClass('hide');
-            $('.shift_removed_error').removeClass('hide');
-            $('#removeShift').modal('hide');
         }
     </script>
 {% endblock %}

@@ -54,13 +54,12 @@ return array(
     'If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).' => 'If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).',
     'Shifts on' => 'Shifts on',
     'History' => 'history',
-    'History message' => 'Here you can see some statistics about shifts you have done before.',
+    'Here you can see some statistics about shifts you have done before.' => 'Here you can see some statistics about shifts you have done before.',
     'Total' => 'Total',
     'As Volunteer' => 'as volunteer',
     'As Responsible' => 'as responsible',
     'Reward' => 'Reward',
     'Coins' => 'coins',
     'on the event' => 'on the event',
-    'You have currently' => 'You have currently',
-    'unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.'
+    'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.'
 );

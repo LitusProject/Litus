@@ -2,35 +2,45 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ translate('Shifts') }} <small>&mdash; {{ translate('History') }}</small></h1>
+        <h1>{{ translate('Shifts') }}</h1>
     </div>
 
     {% include 'shift/shift/partials/navigation.twig' %}
 
     <div style="text-align: justify;">
-    	{{ translate('History message') }}
+    	{{ translate('Here you can see some statistics about shifts you have done before.') }}
     </div>
     <br>
+
     {% if unPayedShifts %}
-        {{ translate('You have currently') }} {{ unPayedShifts }} {{ translate('unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.') }}
+        {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
     {% endif %}
 
     {% if shiftsAsResponsible %}
     	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
-    	{% for unit in shiftsAsResponsible %}
-    	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
-    	{% endfor %}
-    	<b>{{  translate('Total') }}: </b> {{ totalAsResponsible }} <br>
+
+        <dl class="dl-horizontal">
+            {% for unit in shiftsAsResponsible %}
+                <dt>{{ unit['unitName'] }}</dt>
+                <dd>{{ unit['count'] }}</dd>
+            {% endfor %}
+
+            <dt>{{ translate('Total') }}</dt>
+            <dd>{{ totalAsResponsible }}</dd>
+        </dl>
+
     	<h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
     {% else %}
     	<h2>{{ translate('Shifts')}}:</h2>
     {% endif %}
-    {% for unit in shiftsAsVolunteer %}
-    	<b>{{ unit['unitName'] }}: </b> {{ unit['count'] }} <br>
-    {% endfor %}
-    <b>{{ translate('Total') }}: </b> {{ totalAsVolunteer }} <br>
 
+    <dl class="dl-horizontal">
+        {% for unit in shiftsAsVolunteer %}
+            <dt>{{ unit['unitName'] }}</dt>
+            <dd>{{ unit['count'] }}</dd>
+        {% endfor %}
 
-
-
+        <dt>{{ translate('Total') }}</dt>
+        <dd>{{ totalAsVolunteer }}</dd>
+    </dl>
 {% endblock %}

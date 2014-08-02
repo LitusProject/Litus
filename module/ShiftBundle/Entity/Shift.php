@@ -182,7 +182,7 @@ class Shift
     /**
      * @var integer The amount of coins this shift is worth
      *
-     * @ORM\Column(type="integer"))
+     * @ORM\Column(type="integer")
      */
     private $reward;
 
