@@ -84,12 +84,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(false)
             ->setValue('* You have to start every line with a *.
 * Also the second bullet.
-     * You can also make a sub bullet only use spaces before the bullet.
-     * The next sub bullet most be lined up with the one above.
-     At a sublevel you can also drop the bullet. This will be renderered without bullet.
+  * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
+  * The next sub bullet most be lined up with the one above.
+  At a sublevel you can also drop the bullet. This will be renderered without bullet.
        
-     Empty lines are permitted, but ignored.
-     * Another sub bullet.
+  Empty lines are permitted, but ignored.
+  * Another sub bullet.
 * This line must start with a *.
 *       The amount of spaces between the * and the text does not matter.
         Unless the text has multiple lines.
