@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>{{ translate('Internship') }}</h1>
+    
     <a class="btn btn-default" href="{{ url('br_corporate_internship', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
     <div class="row">
         <div class="col-md-12">
@@ -31,9 +32,9 @@
                             <div class="col-md-2">
                                 <table>
                                     <tr>
-                                        <td><a class="btn btn-default" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a></td>
-                                        <td><a class="btn btn-default" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a></td>
-                                        <td><a class="btn btn-default" href="{{ url('br_corporate_internship', {'action': 'delete', 'id': internship.getId()}) }}">{{ translate('Delete') }}</a></td>
+                                        <td><a class="btn btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a></td>
+                                        <td><a class="btn btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a></td>
+                                        <td><a class="btn btn-danger" href="{{ url('br_corporate_internship', {'action': 'delete', 'id': internship.getId()}) }}">{{ translate('Delete') }}</a></td>
                                     </tr>
                                 </table>
                             </div>

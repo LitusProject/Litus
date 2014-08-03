@@ -79,7 +79,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        if('' == $this->_invoice->getVATContext())
+        if ('' == $this->_invoice->getVATContext())
             $vatTypeExplanation = "";
         else
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();

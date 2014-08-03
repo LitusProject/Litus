@@ -66,7 +66,7 @@ class Entry implements Node
             throw new IllegalFormatException('Illegal Indent');
 
         if ($indent == $this->indent) {
-            if ($text[0] == '*')
+            if ('*' == $text[0])
                 $this->parseEntry($text);
             else
                 $this->parseText($text);
@@ -91,7 +91,7 @@ class Entry implements Node
     {
         $l = strlen($line);
         for ($i = 0 ; $i < $l ; $i++) {
-            if ($line[$i] != ' ')
+            if (' ' != $line[$i])
                 break;
         }
 

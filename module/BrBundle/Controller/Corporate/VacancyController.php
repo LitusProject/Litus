@@ -39,12 +39,10 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     {
         $person = $this->getAuthentication()->getPersonObject();
 
-        $query = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'vacancy');
-
         $paginator = $this->paginator()->createFromQuery(
-            $query,
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'vacancy'),
             $this->getParam('page')
         );
 
@@ -191,7 +189,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        $vacancy = $this->_getVacancy();
+        if (!($vacancy = $this->_getVacancy()))
+            return new ViewModel();
 
         $contact = $this->getAuthentication()->getPersonObject();
 

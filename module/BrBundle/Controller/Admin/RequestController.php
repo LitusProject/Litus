@@ -114,7 +114,6 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $request->approveRequest();
         $request->handled();
 
-        $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(
@@ -143,7 +142,6 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $request->rejectRequest();
         $request->handled();
 
-        $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->addMessage(

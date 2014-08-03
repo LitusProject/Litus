@@ -295,8 +295,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $order->setOld();
 
-                $this->getEntityManager()->persist($order);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addMessage(

@@ -38,12 +38,10 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     {
         $person = $this->getAuthentication()->getPersonObject();
 
-        $query = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'internship');
-
         $paginator = $this->paginator()->createFromQuery(
-            $query,
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company\Job')
+                ->findAllActiveByCompanyAndTypeQuery($person->getCompany(), 'internship'),
             $this->getParam('page')
         );
 
@@ -94,7 +92,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'edit', $contact,$oldJob);
+                $request = new RequestInternship($job, 'edit', $contact, $oldJob);
 
                 $this->getEntityManager()->persist($request);
 
@@ -190,7 +188,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        $internship = $this->_getInternship();
+        if (!($internship = $this->_getInternship()))
+            return new ViewModel();
 
         $contact = $this->getAuthentication()->getPersonObject();
 
