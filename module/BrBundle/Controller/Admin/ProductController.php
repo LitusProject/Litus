@@ -143,7 +143,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $p = new BulletParser();
                     $p->parse($formData['contract_text']);
                 } catch (IllegalFormatException $e) {
-                    $this->flashMessenger()->error(,
+                    $this->flashMessenger()->error(
                         'Parse error',
                         'Line ' . $e->getLineNumber() . ': ' . $e->getMessage()
                     );
