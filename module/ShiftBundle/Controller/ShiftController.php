@@ -19,8 +19,8 @@
 namespace ShiftBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
-    DateTime,
     DateInterval,
+    DateTime,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
@@ -445,7 +445,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager());
+        $academicYear = $this->getCurrentAcademicYear();
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
