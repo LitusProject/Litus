@@ -23,7 +23,6 @@ use BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Form\Admin\Invoice\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
     Zend\Http\Headers,
@@ -120,12 +119,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The invoice was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The invoice was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -220,12 +216,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     private function _getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the invoice!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the invoice!'
             );
 
             $this->redirect()->toRoute(
@@ -243,12 +236,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $invoice) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No invoice with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No invoice with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -262,12 +252,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         if ($invoice->isPaid() && !$allowPaid) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given invoice has been paid! Paid invoices cannot be modified.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given invoice has been paid! Paid invoices cannot be modified.'
             );
 
             $this->redirect()->toRoute(

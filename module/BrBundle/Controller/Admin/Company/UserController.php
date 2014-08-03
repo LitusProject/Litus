@@ -89,12 +89,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'SUCCESS',
-                        'The corporate user was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The corporate user was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -139,12 +136,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The corporate user was successfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The corporate user was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -182,12 +176,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Succes',
-                'The user was successfully activated!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The user was successfully activated!'
         );
 
         $this->redirect()->toRoute(
@@ -224,12 +215,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -247,12 +235,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -274,12 +259,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     private function _getUser()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the corporate user!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the corporate user!'
             );
 
             $this->redirect()->toRoute(
@@ -297,12 +279,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $corporate) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No corporate user with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No corporate user with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

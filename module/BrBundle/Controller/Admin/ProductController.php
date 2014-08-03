@@ -23,7 +23,6 @@ use BrBundle\Entity\Product,
     BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Form\Admin\Product\Add as AddForm,
     BrBundle\Form\Admin\Product\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -66,13 +65,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $p = new BulletParser();
                     $p->parse($formData['contract_text']);
                 } catch (IllegalFormatException $e) {
-                    $this->flashMessenger()->addMessage(
-                            new FlashMessage(
-                                    FlashMessage::ERROR,
-                                    'Parse error',
-                                    'Line ' . $e->getLineNumber() . ': ' .
-                                    $e->getMessage()
-                            )
+                    $this->flashMessenger()->error(
+                        'Parse error',
+                        'Line ' . $e->getLineNumber() . ': ' . $e->getMessage()
                     );
 
                     return new ViewModel(
@@ -107,12 +102,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->persist($newProduct);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The product was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The product was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -151,13 +143,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                     $p = new BulletParser();
                     $p->parse($formData['contract_text']);
                 } catch (IllegalFormatException $e) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                                FlashMessage::ERROR,
-                                'Parse error',
-                                'Line ' . $e->getLineNumber() . ': ' .
-                                    $e->getMessage()
-                        )
+                    $this->flashMessenger()->error(,
+                        'Parse error',
+                        'Line ' . $e->getLineNumber() . ': ' . $e->getMessage()
                     );
 
                     return new ViewModel(
@@ -188,12 +176,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The product was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The product was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -252,12 +237,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     private function _getProduct()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the product!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the product!'
             );
 
             $this->redirect()->toRoute(
@@ -275,12 +257,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $product) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No product with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No product with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

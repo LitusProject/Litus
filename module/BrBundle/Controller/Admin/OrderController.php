@@ -27,7 +27,6 @@ use BrBundle\Entity\Collaborator,
     BrBundle\Form\Admin\Order\Add as AddForm,
     BrBundle\Form\Admin\Order\Edit as EditForm,
     BrBundle\Form\Admin\Order\AddProduct as AddProductForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -297,12 +296,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The order was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The order was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -378,12 +374,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getOrder($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the order!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the order!'
             );
 
             $this->redirect()->toRoute(
@@ -401,12 +394,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $order) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No order with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No order with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -419,12 +409,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
         if ($order->getContract()->isSigned() && !$allowSigned) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given order\'s contract has been signed! Signed orders cannot be modified.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given order\'s contract has been signed! Signed orders cannot be modified.'
             );
 
             $this->redirect()->toRoute(
@@ -443,12 +430,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getEntry($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the order entry!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the order entry!'
             );
 
             $this->redirect()->toRoute(
@@ -466,12 +450,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No order entry with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No order entry with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -484,12 +465,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
         if ($entry->getOrder()->getContract()->isSigned() && !$allowSigned) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given order\'s contract has been signed! Signed orders cannot be modified.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given order\'s contract has been signed! Signed orders cannot be modified.'
             );
 
             $this->redirect()->toRoute(

@@ -99,12 +99,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The request has been sent to our administrators for approval.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
                 );
 
                 $this->redirect()->toRoute(
@@ -161,12 +158,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The request has been sent to our administrators for approval.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
                 );
 
                 $this->redirect()->toRoute(
@@ -199,12 +193,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The request has been sent to our administrators for approval.'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The request has been sent to our administrators for approval.'
         );
 
         $this->redirect()->toRoute(
@@ -220,12 +211,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     private function _getVacancy()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the vacancy!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the vacancy!'
             );
 
             $this->redirect()->toRoute(
@@ -243,12 +231,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
 
         if (null === $vacancy) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No vacancy with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No vacancy with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -276,12 +261,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     private function _getJob()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the job!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the job!'
             );
 
             $this->redirect()->toRoute(
@@ -299,12 +281,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             ->findOneById($this->getParam('id'));
 
         if (null === $job) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No job with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No job with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

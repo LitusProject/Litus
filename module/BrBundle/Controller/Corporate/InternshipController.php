@@ -98,12 +98,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The request has been sent to our administrators for approval.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
                 );
 
                 $this->redirect()->toRoute(
@@ -160,12 +157,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The request has been sent to our administrators for approval.'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request has been sent to our administrators for approval.'
                 );
 
                 $this->redirect()->toRoute(
@@ -198,12 +192,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The request has been sent to our administrators for approval.'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The request has been sent to our administrators for approval.'
         );
 
         $this->redirect()->toRoute(
@@ -219,12 +210,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     private function _getInternship()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the internship!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the internship!'
             );
 
             $this->redirect()->toRoute(
@@ -242,12 +230,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
 
         if (null === $internship) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No internship with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No internship with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

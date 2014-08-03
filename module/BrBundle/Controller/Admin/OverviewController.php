@@ -192,7 +192,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                     }
                 }
             }
-            
+
             $collection[] = array(
                 'person' => $person,
                 'amount' => sizeof($contracts),
@@ -216,12 +216,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     private function _getAuthor()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the author!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the author!'
             );
 
             $this->redirect()->toRoute(
@@ -239,12 +236,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $person) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No person with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No person with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -263,12 +257,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -286,12 +277,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

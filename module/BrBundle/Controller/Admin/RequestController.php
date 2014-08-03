@@ -18,8 +18,7 @@
 
 namespace BrBundle\Controller\Admin;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * RequestController
@@ -116,12 +115,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'The request was succesfully approved.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'The request was succesfully approved.'
         );
 
         $this->redirect()->toRoute(
@@ -144,12 +140,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::ERROR,
-                'Error',
-                'The request was succesfully rejected.'
-            )
+        $this->flashMessenger()->error(
+            'Error',
+            'The request was succesfully rejected.'
         );
 
         $this->redirect()->toRoute(
@@ -165,12 +158,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     private function _getRequest()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the request!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the request!'
             );
 
             $this->redirect()->toRoute(
@@ -188,12 +178,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             ->findRequestById($this->getParam('id'));
 
         if (null === $request) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No request with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No request with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

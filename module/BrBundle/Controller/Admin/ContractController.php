@@ -26,7 +26,6 @@ use BrBundle\Entity\Contract,
     BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Form\Admin\Contract\Edit as EditForm,
     BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -124,12 +123,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The contract was succesfully updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The contract was succesfully updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -216,12 +212,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The contract was succesfully signed!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The contract was succesfully signed!'
         );
 
         $this->redirect()->toRoute(
@@ -332,12 +325,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     private function _getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the contract!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the contract!'
             );
 
             $this->redirect()->toRoute(
@@ -355,12 +345,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->findOneById($this->getParam('id'));
 
         if (null === $contract) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No contract with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No contract with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -374,12 +361,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         if ($contract->isSigned() && !$allowSigned) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'The given contract has been signed! Signed contracts cannot be modified.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'The given contract has been signed! Signed contracts cannot be modified.'
             );
 
             $this->redirect()->toRoute(

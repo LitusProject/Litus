@@ -21,7 +21,6 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Collaborator,
     BrBundle\Form\Admin\Collaborator\Add as AddForm,
     BrBundle\Form\Admin\Collaborator\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -65,12 +64,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The collaborator was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The collaborator was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -107,12 +103,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The collaborator was succesfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The collaborator was succesfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -142,12 +135,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The collaborator succesfully retired!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The collaborator succesfully retired!'
         );
 
         $this->redirect()->toRoute(
@@ -169,12 +159,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'Success',
-                'The collaborator succesfully rehired!'
-            )
+        $this->flashMessenger()->success(
+            'Success',
+            'The collaborator succesfully rehired!'
         );
 
         $this->redirect()->toRoute(
@@ -190,12 +177,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
     private function _getCollaborator()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the collaborator!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the collaborator!'
             );
 
             $this->redirect()->toRoute(
@@ -213,12 +197,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
             ->findOneById($this->getParam('id'));
 
         if (null === $collaborator) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No collaborator with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No collaborator with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
