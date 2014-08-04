@@ -445,7 +445,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        $academicYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear(true);
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -454,10 +454,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $academicYear);
-
-        $units = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActive();
 
         $now = new DateTime();
 
