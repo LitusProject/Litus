@@ -1,6 +1,20 @@
 {% extends 'corporate/partials/vacancy.twig' %}
 
 {% block content %}
+
+    <div class="flashmessage alert alert-danger fade" id="vacancy_removed_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while removing vacancy.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="vacancy_removed_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The removal of the vacancy was succesfully registered.  This will be reviewed by our corporate relations team.') }}
+        </div>
+    </div>
+
     <h1>{{ translate('Vacancy') }}</h1>
 
     <a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
@@ -34,7 +48,7 @@
                                     <tr>
                                         <td><a class="btn btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a></td>
                                         <td><a class="btn btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a></td>
-                                        <td><a class="btn btn-danger" href="{{ url('br_corporate_vacancy', {'action': 'delete', 'id': vacancy.getId()}) }}">{{ translate('Delete') }}</a></td>
+                                        <td><a class="btn btn-danger deleteVacancy" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a></td>
                                     </tr>
                                 </table>
                             </div>
@@ -52,4 +66,61 @@
             {% include 'site/partials/paginationControl.twig' %}
         </div>
     </div>
+
+    <div id="modalDeleteVacancy" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Remove vacancy') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure that you want to remove this vacancy') }}?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.deleteVacancy').click(openRemoveVacancy);
+        });
+
+        function openRemoveVacancy(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var deleteVacancy = $('#modalDeleteVacancy');
+            deleteVacancy.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('br_corporate_vacancy', {"action": "delete"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#vacancy_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        deleteVacancy.modal('hide');
+                    } else {
+                        errorDeleteVacancy();
+                    }
+                }, 'json').error(errorDeleteVacancy);
+            });
+            deleteVacancy.modal();
+        }
+
+        function errorDeleteVacancy() {
+            $('.flashmessage').removeClass('in');
+            $('#vacancy_removed_error').addClass('in');
+            $('#modalDeleteVacancy').modal('hide');
+        }
+    </script>
+{% endblock %}
+

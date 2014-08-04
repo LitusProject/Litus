@@ -1,6 +1,20 @@
 {% extends 'corporate/partials/internship.twig' %}
 
 {% block content %}
+
+    <div class="flashmessage alert alert-danger fade" id="internship_removed_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while removing internship.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="internship_removed_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The removal of the internship was succesfully registered.  This will be reviewed by our corporate relations team.') }}
+        </div>
+    </div>
+
     <h1>{{ translate('Internship') }}</h1>
 
     <a class="btn btn-default" href="{{ url('br_corporate_internship', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
@@ -34,7 +48,7 @@
                                     <tr>
                                         <td><a class="btn btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a></td>
                                         <td><a class="btn btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a></td>
-                                        <td><a class="btn btn-danger" href="{{ url('br_corporate_internship', {'action': 'delete', 'id': internship.getId()}) }}">{{ translate('Delete') }}</a></td>
+                                        <td><a class="btn btn-danger deleteInternship" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a></td>
                                     </tr>
                                 </table>
                             </div>
@@ -52,4 +66,60 @@
             {% include 'site/partials/paginationControl.twig' %}
         </div>
     </div>
+
+    <div id="modalDeleteInternship" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Remove Internship') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure that you want to remove this internship') }}?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('.deleteInternship').click(openRemoveInternship);
+        });
+
+        function openRemoveInternship(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var deleteInternship = $('#modalDeleteInternship');
+            deleteInternship.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('br_corporate_internship', {"action": "delete"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#internship_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        deleteInternship.modal('hide');
+                    } else {
+                        errordeleteInternship();
+                    }
+                }, 'json').error(errordeleteInternship);
+            });
+            deleteInternship.modal();
+        }
+
+        function errordeleteInternship() {
+            $('.flashmessage').removeClass('in');
+            $('#internship_removed_error').addClass('in');
+            $('#modalDeleteInternship').modal('hide');
+        }
+    </script>
 {% endblock %}

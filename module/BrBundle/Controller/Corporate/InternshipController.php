@@ -192,19 +192,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->success(
-            'Success',
-            'The request has been sent to our administrators for approval.'
-        );
-
-        $this->redirect()->toRoute(
-            'br_corporate_internship',
+        return new ViewModel(
             array(
-                'action' => 'overview',
+                'result' => (object) array('status' => 'success'),
             )
         );
-
-        return new ViewModel();
     }
 
     private function _getInternship()
