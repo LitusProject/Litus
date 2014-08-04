@@ -162,5 +162,14 @@ Example content of this section.
             )
         ),
         'description' => 'The cv archive years'
+    ),
+    array(
+            'key'         => 'br.product_contract_text',
+            'value'       => '* You have to start every line with a *.
+* Also the second bullet.
+  * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
+  * The next sub bullet most be lined up with the one above.
+  At a sublevel you can also drop the bullet. This will be renderered without bullet.',
+            'description' => 'The standard text that is displayed on the creation of a new product.',
     )
 );

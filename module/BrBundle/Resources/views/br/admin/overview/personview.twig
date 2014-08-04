@@ -39,11 +39,8 @@
                             {% if hasAccess('br_admin_contract', 'download') %}
                                 <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="contract" value="Download">Download</a>
                             {% endif %}
-                            {#
-                             //TODO Create icon for this.
-                            #}
                             {% if hasAccess('br_admin_contract', 'history') %}
-                                <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="contract" value="History">History</a>
+                                <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="history" value="History">History</a>
                             {% endif %}
                             {% if hasAccess('br_admin_contract', 'delete') and contract.isSigned() == false %}
                                 <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>

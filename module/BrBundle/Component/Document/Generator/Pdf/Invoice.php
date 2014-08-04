@@ -84,7 +84,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         else
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();
 
-        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl']; //TODO make this possible in both english and dutch.
+        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl'];
 
         $footer = $configs->getConfigValue('br.invoice_footer');
 
@@ -134,7 +134,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             if('' == $this->_invoice->getOrder()->getContract()->getDiscountContext())
                 $entries[] = new XmlObject('entry', null,
                 array(
-                    new XmlObject('description', null,"Korting"),//TODO need translation later
+                    new XmlObject('description', null,"Korting"),
                     new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                     new XmlObject('amount', null, ' '),
                     new XmlObject('vat_type', null, ' ')

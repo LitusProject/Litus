@@ -169,9 +169,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     ->findNextInvoiceNb()
             );
 
-//            $history = new InvoiceHistory($invoice);
-//            $this->getEntityManager()->persist($history);
-
             $this->getEntityManager()->persist($invoice);
         }
 
@@ -301,25 +298,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 )
             );
         }
-    }
-
-    public function deleteAction()
-    {
-        $this->initAjax();
-
-        if (!($contract = $this->_getContract(false)))
-            return new ViewModel();
-
-        // TODO: remove
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                ),
-            )
-        );
     }
 
     private function _getContract($allowSigned = true)

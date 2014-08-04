@@ -79,27 +79,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired(false);
         $this->add($field);
 
+        $contractText =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.product_contract_text');
+
         $field = new Textarea('contract_text');
         $field->setLabel('Contract Text')
             ->setRequired(false)
-            ->setValue('* You have to start every line with a *.
-* Also the second bullet.
-  * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
-  * The next sub bullet most be lined up with the one above.
-  At a sublevel you can also drop the bullet. This will be renderered without bullet.
-
-  Empty lines are permitted, but ignored.
-  * Another sub bullet.
-* This line must start with a *.
-*       The amount of spaces between the * and the text does not matter.
-        Unless the text has multiple lines.
-        * Bullet must be lined up with text.
-        Text belonging to upper bullet.
-        *
-            Who cares about the empty lines again?
-* * * * Ninja bullet.
-      * Ninja bro.
-    ');
+            ->setValue($contractText);
         $this->add($field);
 
         $field = new Select('event');
