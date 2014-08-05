@@ -31,7 +31,7 @@ return array(
             'entries'
         ),
         'api_cudi' => array(
-            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours'
+            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus'
         ),
         'api_door' => array(
             'getRules', 'log'
