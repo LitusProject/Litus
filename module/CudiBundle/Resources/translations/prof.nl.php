@@ -122,6 +122,7 @@ return array(
     'Remove Docent' => 'Vewijder Docent',
     'Activate Article' => 'Activeer Artikel',
     'Are you sure you want to remove the following article' => 'Ben je zeker dat je volgend artikel wil verwijderen',
+    'Are you sure you want to activate the following article' => 'Ben je zeker dat je volgend artikel wil activeren',
     'Are you sure you want to remove the following docent' => 'Ben je zeker dat je volgende docent wil verwijderen',
     'Are you sure you want to activate the following docent' => 'Ben je zeker dat je volgend artikel wil activeren',
     'Will the content of the article be the same af previous year?' => 'Zal de inhoud van het artikel hetzelfde zijn als voorgaande jaar?',
