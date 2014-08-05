@@ -67,12 +67,23 @@ h2 {
     background: url(@iBaseBackground) 50% 0 repeat-x;
 
     a {
-        position: absolute;
-        width: 139px;
-        height: 36px;
-        margin: 43px 0 0 26px;
-        display: block;
-        background: url(@iHeaderLogo) no-repeat;
+        &.litus {
+            position: absolute;
+            width: 139px;
+            height: 36px;
+            margin: 43px 0 0 26px;
+            display: block;
+            background: url(@iHeaderLitusLogo) no-repeat;
+        }
+
+        &.logo {
+            position: absolute;
+            left: 35%;
+            width: 30%;
+            height: 60px;
+            margin-top: 20px;
+            background: url(@iHeaderLogo) no-repeat center;
+        }
     }
 
     p {
