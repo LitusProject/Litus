@@ -89,7 +89,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $ranks = array(
-            'none' => ''
+            'none' => 'None'
         );
         foreach ($rankingCriteria as $key => $criterium)
             $ranks[$key] = ucfirst($criterium['name']);
