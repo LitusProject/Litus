@@ -30,16 +30,6 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
 class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 {
     /**
-     * @var string
-     */
-    private $_semester;
-
-    /**
-     * @var AcademicYear
-     */
-    private $_academicYear;
-
-    /**
      * @param EntityManager $entityManager The EntityManager instance
      * @param AcademicYear  $academicYear  The academic year
      * @param integer       $semester      The semester
