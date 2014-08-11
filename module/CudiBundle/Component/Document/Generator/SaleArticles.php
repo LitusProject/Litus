@@ -20,6 +20,7 @@ namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -44,6 +45,15 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             'Stock',
         );
 
+        $organizations = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
+        foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+            foreach($organizations as $organization)
+                $headers[] = 'Sell Price (' . $type . ' Discounted ' . $organization->getName() . ')';
+        }
+
         parent::__construct(
             $headers,
             $this->_getData($entityManager, $academicYear, $semester)
@@ -56,15 +66,40 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findAllByAcademicYear($academicYear, $semester);
 
+        $organizations = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         $data = array();
         foreach ($articles as $article) {
-            $data[] = array(
+            $articleData = array(
                 $article->getMainArticle()->getTitle(),
                 $article->getMainArticle()->getAuthors(),
                 $article->getBarcode(),
                 number_format($article->getSellPrice() / 100, 2),
                 $article->getStockValue()
             );
+
+            $discounts = $article->getDiscounts();
+
+            foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+                foreach ($organizations as $organization) {
+                    $foundDiscount = null;
+
+                    foreach ($discounts as $discount) {
+                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || null === $discount->getOrganization()))
+                            $foundDiscount = $discount;
+                    }
+
+                    if (null !== $foundDiscount) {
+                        $articleData[] = number_format($foundDiscount->apply($article->getSellPrice()) / 100, 2);
+                    } else {
+                        $articleData[] = '';
+                    }
+                }
+            }
+
+            $data[] = $articleData;
         }
 
         return $data;
