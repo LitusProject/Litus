@@ -63,7 +63,19 @@
                         <td>{{ article.getMainArticle().getTitle() }}</td>
                         <td>{{ article.getMainArticle().getAuthors() }}</td>
                         <td class="wider">{{ article.getBarcode() }}</td>
-                        <td>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</td>
+                        <td>
+                            &euro; {{ (article.getSellPrice()/100)|number_format(2) }}
+                            {% if article.getDiscounts()|length > 0 %}
+                                <span class="info-button"
+                                    data-info="
+                                        <h2>Discounts:</h2>
+                                        {% for discount in article.getDiscounts() %}
+                                            <b>{{ translate(discount.getType()) }}{% if discount.getOrganization() %} {{ discount.getOrganization().getName() }}{% endif %}:</b> &euro; {{ (discount.apply(article.getSellPrice())/100)|number_format(2) }}
+                                        {% endfor %}
+                                    "
+                                >i</span>
+                            {% endif %}
+                        </td>
                         <td>{{ article.getStockValue() }}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_sales_article', 'view') %}
