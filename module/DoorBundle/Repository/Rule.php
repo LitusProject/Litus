@@ -18,7 +18,8 @@
 
 namespace DoorBundle\Repository;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use DateTime,
+    Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * Rule
@@ -28,4 +29,13 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class Rule extends DocumentRepository
 {
+    public function findAll()
+    {
+        $resultSet = $this->createQueryBuilder()
+            ->field('endDate')->gte(new DateTime())
+            ->getQuery()
+            ->execute();
+
+        return $resultSet;
+    }
 }
