@@ -37,7 +37,7 @@ return array(
             'completed', 'confirmArticle', 'confirmFile', 'confirm', 'manage', 'refused', 'refuse', 'view'
         ),
         'cudi_admin_sales_article' => array(
-            'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'history', 'mail', 'manage', 'search', 'typeahead', 'view'
+            'activate', 'add', 'assignAll', 'cancelBookings', 'delete', 'edit', 'export', 'history', 'mail', 'manage', 'search', 'typeahead', 'view'
         ),
         'cudi_admin_sales_article_sale' => array(
             'sale'
