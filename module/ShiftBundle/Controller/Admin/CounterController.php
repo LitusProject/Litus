@@ -127,9 +127,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
                     $payed[$shift->getId()] = $volunteer->isPayed();
-                    if (!$volunteer->isPayed()) {
-                        $totalRewardLeft += $shift->getReward();
-                    }
             }
         }
 
@@ -138,8 +135,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'person' => $person->getId(),
                 'asResponsible' => $asResponsible,
                 'asVolunteer' => $asVolunteer,
-                'payed' => $payed,
-                'totalLeft' => $totalRewardLeft
+                'payed' => $payed
             )
         );
     }
@@ -258,7 +254,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($asVolunteer as $shift) {
                 foreach ($shift->getVolunteers() as $volunteer) {
                     if ($volunteer->getPerson() == $person) {
-                        if (!$volunteer->isPayed()) {
+                        if (!$volunteer->isPayed() && !$shift->getHandledOnEvent()) {
                             $unpayed += $shift->getReward();
                         }
                     }

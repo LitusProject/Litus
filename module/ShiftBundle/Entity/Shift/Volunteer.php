@@ -63,12 +63,13 @@ class Volunteer
 
     /**
      */
-    public function __construct(Person $person)
+    public function __construct(Person $person,boolean $payed = null)
     {
         $this->signupTime = new DateTime();
         $this->person = $person;
-
-        $this->payed = false;
+        if ($payed == null)
+            $payed = false;
+        $this->payed = $payed;
     }
 
     /**

@@ -83,7 +83,7 @@
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getReward() }}</td>
                         <td style="text-align: center;">
-                            <input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />
+                            {% if shift.getHandledOnEvent() == false %}<input type="checkbox" id="{{ shift.getId() }}" {% if payed[shift.getId()] %}checked="checked"{% endif %} />{% else %}event{% endif %}
                         </td>
                         <td>
                             {% if hasAccess('shift_admin_shift', 'delete') %}
