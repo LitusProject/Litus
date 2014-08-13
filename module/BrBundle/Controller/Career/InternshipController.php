@@ -20,7 +20,6 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
     BrBundle\Form\Career\Search\Internship as InternshipSearchForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -102,12 +101,9 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
     private function _getInternship()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the internship!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the internship!'
             );
 
             $this->redirect()->toRoute(
@@ -125,12 +121,9 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
 
         if (null === $internship) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No internship with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No internship with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

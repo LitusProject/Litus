@@ -45,7 +45,7 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $field = new Select('organization');
-        $field->setLabel('Organiztion')
+        $field->setLabel('Organization')
             ->setAttribute('options', $this->_getOrganizations());
         $this->add($field);
 

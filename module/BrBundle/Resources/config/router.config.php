@@ -18,6 +18,32 @@
 
 return array(
     'routes' => array(
+        'br_install' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/install/br[/]',
+                'defaults' => array(
+                    'controller' => 'br_install',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+
+        'br_admin_collaborator' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/collaborator[/:action[/:id]][/]',
+                'constraints'   => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'        => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_collaborator',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+
         'br_admin_company' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -111,11 +137,11 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/contract[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/br/contract[/:action[/:id[/:signed]]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
-                    'confirm' => '[01]',
+                    'signed'  => '(true|false)',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',
@@ -123,17 +149,75 @@ return array(
                 ),
             ),
         ),
-        'br_admin_section' => array(
+        'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/section[/:action[/:id[/:confirm]]][/]',
+                'route' => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
-                    'confirm' => '[01]',
+                    'payed'  => '(true|false)',
+                    'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}'
                 ),
                 'defaults' => array(
-                    'controller' => 'br_admin_section',
+                    'controller' => 'br_admin_invoice',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_order' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/order[/:action[/:id]][/]',
+                'constraints'   => array(
+                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'        => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_order',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_overview' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/overview[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_overview',
+                    'action'     => 'person',
+                ),
+            ),
+        ),
+        'br_admin_product' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/product[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_product',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_request' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/br/request[/:action[/:id[/:approved]]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                    'approved'  => '(true|false)',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_request',
                     'action'     => 'manage',
                 ),
             ),
@@ -295,6 +379,38 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_vacancy' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/corporate/vacancy[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '[a-z]{2}',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_vacancy',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
+        'br_corporate_internship' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/corporate/internship[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '[a-z]{2}',
+                    'page'     => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_internship',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_cv_index' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -310,27 +426,34 @@ return array(
             ),
         ),
     ),
-
     'controllers' => array(
-        'br_admin_company'         => 'BrBundle\Controller\Admin\CompanyController',
-        'br_admin_company_event'   => 'BrBundle\Controller\Admin\Company\EventController',
-        'br_admin_company_job'     => 'BrBundle\Controller\Admin\Company\JobController',
-        'br_admin_company_user'    => 'BrBundle\Controller\Admin\Company\UserController',
-        'br_admin_company_logo'    => 'BrBundle\Controller\Admin\Company\LogoController',
-        'br_admin_cv_entry'        => 'BrBundle\Controller\Admin\CvController',
-        'br_admin_section'         => 'BrBundle\Controller\Admin\SectionController',
-        'br_admin_contract'        => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_company'          => 'BrBundle\Controller\Admin\CompanyController',
+        'br_admin_company_event'    => 'BrBundle\Controller\Admin\Company\EventController',
+        'br_admin_company_job'      => 'BrBundle\Controller\Admin\Company\JobController',
+        'br_admin_company_user'     => 'BrBundle\Controller\Admin\Company\UserController',
+        'br_admin_company_logo'     => 'BrBundle\Controller\Admin\Company\LogoController',
+        'br_admin_cv_entry'         => 'BrBundle\Controller\Admin\CvController',
 
-        'br_corporate_index'       => 'BrBundle\Controller\Corporate\IndexController',
-        'br_corporate_cv'          => 'BrBundle\Controller\Corporate\CvController',
-        'br_corporate_auth'        => 'BrBundle\Controller\Corporate\AuthController',
+        'br_admin_collaborator'     => 'BrBundle\Controller\Admin\CollaboratorController',
+        'br_admin_contract'         => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_order'            => 'BrBundle\Controller\Admin\OrderController',
+        'br_admin_product'          => 'BrBundle\Controller\Admin\ProductController',
+        'br_admin_invoice'          => 'BrBundle\Controller\Admin\InvoiceController',
+        'br_admin_overview'         => 'BrBundle\Controller\Admin\OverviewController',
+        'br_admin_request'          => 'BrBundle\Controller\Admin\RequestController',
 
-        'br_career_index'          => 'BrBundle\Controller\Career\IndexController',
-        'br_career_vacancy'        => 'BrBundle\Controller\Career\VacancyController',
-        'br_career_internship'     => 'BrBundle\Controller\Career\InternshipController',
-        'br_career_event'          => 'BrBundle\Controller\Career\EventController',
-        'br_career_company'        => 'BrBundle\Controller\Career\CompanyController',
+        'br_corporate_index'        => 'BrBundle\Controller\Corporate\IndexController',
+        'br_corporate_cv'           => 'BrBundle\Controller\Corporate\CvController',
+        'br_corporate_auth'         => 'BrBundle\Controller\Corporate\AuthController',
+        'br_corporate_vacancy'      => 'BrBundle\Controller\Corporate\VacancyController',
+        'br_corporate_internship'   => 'BrBundle\Controller\Corporate\InternshipController',
 
-        'br_cv_index'              => 'BrBundle\Controller\CvController',
+        'br_career_index'           => 'BrBundle\Controller\Career\IndexController',
+        'br_career_vacancy'         => 'BrBundle\Controller\Career\VacancyController',
+        'br_career_internship'      => 'BrBundle\Controller\Career\InternshipController',
+        'br_career_event'           => 'BrBundle\Controller\Career\EventController',
+        'br_career_company'         => 'BrBundle\Controller\Career\CompanyController',
+
+        'br_cv_index'               => 'BrBundle\Controller\CvController',
     ),
 );

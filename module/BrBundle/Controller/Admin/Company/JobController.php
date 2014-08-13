@@ -91,12 +91,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()->persist($job);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The job was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The job was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -148,12 +145,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The job was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The job was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -199,12 +193,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -222,12 +213,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -249,12 +237,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     private function _getJob()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the job!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the job!'
             );
 
             $this->redirect()->toRoute(
@@ -272,12 +257,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             ->findOneById($this->getParam('id'));
 
         if (null === $job) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No job with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No job with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

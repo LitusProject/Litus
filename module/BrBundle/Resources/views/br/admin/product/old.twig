@@ -1,0 +1,31 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/product/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th width="150px">Created By</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for product in paginator %}
+                <tr class="item item-{{ product.getId() }}">
+                    <td>{{ product.getName() }}</td>
+                    <td>{{ product.getAuthor().getFullName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_product', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ product.getId() }}" data-name="{{ product.getName() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

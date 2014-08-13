@@ -1,0 +1,44 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/overview/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h2><b>General overview</b></h2>
+
+        <p>Total Number of contracts: <b>{{totals['amount']}}</b></p>
+        <p>Total Contracted: <b>&euro; {{totals['contract']}}</b></p>
+        <p>Total Signed: <b>&euro; {{totals['signed']}}</b></p>
+        <p>Total Paid: <b>&euro; {{totals['paid']}}</b></p><br>
+
+        <h2><b>Individual overview</b></h2>
+        <table class="full_width manage">
+            <tr>
+                <th>Person</th>
+                <th>Number of Contracts</th>
+                <th>Contracted</th>
+                <th>Signed</th>
+                <th>Paid</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for entry in array %}
+                <tr class="item item-{{ entry['person'].getId() }}">
+                    <td>{{entry['person'].getPerson().getFullName()}}</td>
+                    <td>{{entry['amount']}}</td>
+                    <td>&euro; {{entry['contract']}}</td>
+                    <td>&euro; {{entry['signed']}}</td>
+                    <td>&euro; {{entry['paid']}}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_overview', 'view') %}
+                            <a href="{{ url('br_admin_overview', {"action": "personview", "id": entry['person'].getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/contract/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+            	<th width="60px">Version</th>
+                <th>Company</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for contractHistory in paginator %}
+                <tr class="item item-{{ contract.getId() }}">
+                	<td>{{ contractHistory.getVersion() }}</td>
+                    <td>{{ contractHistory.getContract().getCompany().getName() }}</td>
+                    <td>{{ contractHistory.getContract().getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ contractHistory.getContract().getTitle() }}</td>
+                    <td>{{ contractHistory.getContract().getDate().format('j/m/Y') }}</td>
+
+                    <td class="actions">
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": contractHistory.getContract().getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'download') %}
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contractHistory.getContract().getId()}) }}" class="contract" value="Download">Download</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}
