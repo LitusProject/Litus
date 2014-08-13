@@ -20,4 +20,4 @@ pg_query($connection, 'ALTER TABLE br.contracts ADD version INT');
 pg_query($connection, 'UPDATE br.contracts SET version = 0');
 
 pg_query($connection, 'ALTER TABLE br.contracts ADD signed BOOLEAN');
-pg_query($connection, 'UPDATE br.contracts SET signed = TRUE');
+pg_query($connection, 'UPDATE br.contracts SET signed = FALSE');
