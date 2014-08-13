@@ -141,7 +141,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The banner was successfully added!'
                 );
 
@@ -215,7 +215,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The banner was successfully edited!'
                 );
 

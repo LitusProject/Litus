@@ -127,12 +127,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The logo has successfully been added!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The logo has successfully been added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -189,12 +186,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -212,12 +206,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -236,12 +227,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     private function _getLogo()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the logo!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the logo!'
             );
 
             $this->redirect()->toRoute(
@@ -259,12 +247,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (null === $logo) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No logo with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No logo with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

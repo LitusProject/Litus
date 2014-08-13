@@ -81,7 +81,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The configuration entry was successfully updated!'
                 );
 

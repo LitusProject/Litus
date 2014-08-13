@@ -111,6 +111,7 @@ class Logo
 
         if (!self::isValidLogoType($type))
             throw new \InvalidArgumentException('The logo type is not valid.');
+
         $this->type = $type;
     }
 

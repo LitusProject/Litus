@@ -18,133 +18,204 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Contract,
-    CommonBundle\Component\Util\TmpFile,
+use BrBundle\Entity\Contract as ContractEntity,
+    BrBundle\Component\ContractParser\Parser as BulletParser,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Object as XmlObject;
+    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    Doctrine\ORM\EntityManager,
+    IntlDateFormatter,
+    Zend\I18n\Translator\Translator;
 
 /**
  * Generate a PDF for a contract.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \Litus\Entity\Br\Contract
+     * @var \BrBundle\Entity\Contract
      */
     private $_contract;
+
+    /**
+     * @var \Zend\I18n\Translator\Translator
+     */
+    private $_translator;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Contract   $contract      The contract for which we want to generate a PDF
      */
-    public function __construct(EntityManager $entityManager, Contract $contract)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, Translator $translator)
     {
         parent::__construct(
-            Registry::get('litus.resourceDirectory') . '/pdf_generators/contract.xsl',
-            Registry::get('litus.resourceDirectory') . '/pdf/br/' . $contract->getId() . '/contract.pdf'
+            $entityManager,
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.pdf_generator_path') . '/contract/contract.xsl',
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $contract->getId() . '/contract.pdf'
         );
+        $this->_translator = $translator;
         $this->_contract = $contract;
     }
 
-    protected function _generateXml(TmpFile $tmpFile)
+    protected function generateXml(TmpFile $tmpFile)
     {
         $xml = new XmlGenerator($tmpFile);
 
-        $configs = $this->_getConfigRepository();
+        $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $title = $this->_contract->getTitle();
-        /** @var \Litus\Entity\Users\People\Company $company  */
-        $company = $this->_contract->getCompany();
-        $date = $this->_contract->getDate()->format('j F Y');
-        $ourContactPerson = $this->_contract->getAuthor();
-        $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
-        $entries = $this->_contract->getComposition();
+        $company = $this->_contract->getOrder()->getCompany();
 
-        $unionName = $configs->getConfigValue('br.contract.union_name');
-        $unionNameShort = $configs->getConfigValue('br.contract.union_name_short');
-        $unionAddress = $configs->getConfigValue('br.contract.union_address');
+        $locale = $configs->getConfigValue('br.contract_language');
+        $this->_translator->setLocale($locale);
 
-        $location = $configs->getConfigValue('br.contract.location');
+        $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
+        $date = $formatter->format($this->_contract->getOrder()->getCreationTime());
 
-        $brName = $configs->getConfigValue('br.contract.br_name');
-        $logo = $configs->getConfigValue('br.contract.logo');
+        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
+        $entries = $this->_contract->getEntries();
 
-        $sub_entries = $configs->getConfigValue('br.contract.sub_entries');
-        $footer = $configs->getConfigValue('br.contract.footer');
+        $unionName = $configs->getConfigValue('organization_name');
+        $unionNameShort = $configs->getConfigValue('organization_short_name');
+        $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
 
-        // Generate the xml
+        $location = $unionAddressArray['city'];
 
-        $entry_s = array();
+        $brName = $configs->getConfigValue('br.contract_name');
+        $logo = $configs->getConfigValue('organization_logo');
+
+        $finalEntry = $configs->getConfigValue('br.contract_final_entry');
+
+        $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
+
         foreach ($entries as $entry) {
-            $entry_s[] = $entry->getSection()->getContent();
+            $p = new BulletParser();
+            $p->parse($entry->getContractText());
+            $entry_s = XmlObject::fromString($p->getXml());
         }
 
         $xml->append(
             new XmlObject(
                 'contract',
-
-                // params of <contract>
                 array(
                     'location' => $location,
                     'date' => $date
                 ),
-
-                // children of <contract>
                 array(
                     new XmlObject('title', null, $title),
-
                     new XmlObject(
                         'our_union',
-
-                        // params of <our_union>
                         array(
                              'short_name' => $unionNameShort,
                              'contact_person' => $ourContactPerson
                         ),
-
-                        // children of <our_union>
                         array(
                             new XmlObject('name', null, $brName),
                             new XmlObject('logo', null, $logo)
                         )
                     ),
-
                     new XmlObject(
                         'company',
-
-                        // params of <company>
                         array(
-                            'contact_person' => $company->getFirstName() . ' ' . $company->getLastName()
+                            'contact_person' => $this->_contract->getOrder()->getContact()->getFullName(),
                         ),
-
-                        // children of <company>
                         array(
                             new XmlObject('name', null, $company->getName()),
-                            new XmlObject('address', null, self::_formatAddress($company->getAddress()))
+                            new XmlObject(
+                                'address',
+                                null,
+                                array(
+                                    new XmlObject(
+                                        'street',
+                                        null,
+                                        $company->getAddress()->getStreet()
+                                    ),
+                                    new XmlObject(
+                                        'number',
+                                        null,
+                                        $company->getAddress()->getNumber()
+                                    ),
+                                    new XmlObject(
+                                        'mailbox',
+                                        null,
+                                        $company->getAddress()->getMailbox()
+                                    ),
+                                    new XmlObject(
+                                        'postal',
+                                        null,
+                                        $company->getAddress()->getPostal()
+                                    ),
+                                    new XmlObject(
+                                        'city',
+                                        null,
+                                        $company->getAddress()->getCity()
+                                    ),
+                                    new XmlObject(
+                                        'country',
+                                        null,
+                                        $this->_translator->translate($company->getAddress()->getCountry())
+                                    )
+                                )
+                            )
                         )
                     ),
-
                     new XmlObject(
                         'union_address',
-
-                        // params of <union_address>
                         null,
-
-                        // children of <union_address>
                         array(
                             new XmlObject('name', null, $unionName),
-                            new XmlObject('address', null, self::_formatAddress($unionAddress))
+                            new XmlObject(
+                                'address',
+                                null,
+                                array(
+                                    new XmlObject(
+                                        'street',
+                                        null,
+                                        $unionAddressArray['street']
+                                    ),
+                                    new XmlObject(
+                                        'number',
+                                        null,
+                                        $unionAddressArray['number']
+                                    ),
+                                    new XmlObject(
+                                        'mailbox',
+                                        null,
+                                        $unionAddressArray['mailbox']
+                                    ),
+                                    new XmlObject(
+                                        'postal',
+                                        null,
+                                        $unionAddressArray['postal']
+                                    ),
+                                    new XmlObject(
+                                        'city',
+                                        null,
+                                        $unionAddressArray['city']
+                                    ),
+                                    new XmlObject(
+                                        'country',
+                                        null,
+                                        $unionAddressArray['country']
+                                    )
+                                )
+                            )
                         )
                     ),
-
-                    new XmlObject('entries', null, $entry_s),
-
+                    $entry_s,
                     new XmlObject('sub_entries', null, $sub_entries),
-
-                    new XmlObject('footer', null, $footer)
+                    new XmlObject('footer'),
+                    new XmlObject('sale_conditions_nl')
                 )
             )
         );

@@ -93,7 +93,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->_updateCache();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The role was successfully created!'
                 );
 
@@ -173,7 +173,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->_updateCache();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The role was successfully updated!'
                 );
 
@@ -260,7 +260,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         $this->_updateCache();
 
         $this->flashMessenger()->success(
-            'Succes',
+            'Success',
             'The tree was successfully pruned!'
         );
 
