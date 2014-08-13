@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Form\Admin\Export;
+namespace CudiBundle\Form\Admin\Sales\Article;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
@@ -44,14 +44,16 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
 
         $this->_entityManager = $entityManager;
 
-        $field = new Select('organization');
-        $field->setLabel('Organization')
-            ->setAttribute('options', $this->_getOrganizations());
-        $this->add($field);
-
         $field = new Select('academic_year');
         $field->setLabel('Academic Year')
+            ->setRequired()
             ->setAttribute('options', $this->_getAcademicYears());
+        $this->add($field);
+
+        $field = new Select('semester');
+        $field->setLabel('Semester')
+            ->setRequired()
+            ->setAttribute('options', $this->_getSemesters());
         $this->add($field);
 
         $field = new Submit('submit');
@@ -60,17 +62,14 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
         $this->add($field);
     }
 
-    private function _getOrganizations()
+    private function _getSemesters()
     {
-        $organizations = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-
-        $organizationsArray = array();
-        foreach ($organizations as $organization)
-            $organizationsArray[$organization->getId()] = $organization->getName();
-
-        return $organizationsArray;
+        return array(
+            '0' => 'All',
+            '1' => 'Semester 1',
+            '2' => 'Semester 2',
+            '3' => 'Semester 1 & 2',
+        );
     }
 
     private function _getAcademicYears()
