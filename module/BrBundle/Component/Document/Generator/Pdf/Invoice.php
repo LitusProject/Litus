@@ -86,8 +86,6 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl'];
 
-        $footer = $configs->getConfigValue('br.invoice_footer');
-
         $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
 
         $company = $this->_invoice->getOrder()->getCompany();
