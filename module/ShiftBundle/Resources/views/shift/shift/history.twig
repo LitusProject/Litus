@@ -13,7 +13,7 @@
     <br>
 
     {% if unPayedShifts %}
-        {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
+        {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
     {% endif %}
 
     {% if shiftsAsResponsible %}
@@ -34,13 +34,21 @@
     	<h2>{{ translate('Shifts')}}:</h2>
     {% endif %}
 
-    <dl class="dl-horizontal">
-        {% for unit in shiftsAsVolunteer %}
-            <dt>{{ unit['unitName'] }}</dt>
-            <dd>{{ unit['count'] }}</dd>
-        {% endfor %}
+    {% if shiftsAsVolunteer%}
+        <div style="text-align: justify;">
+            {{ translate('You have done your last shift on %lastShift%.')|replace({'%lastShift%': lastShift}) }}
+        </div>
+        <br>
+        <dl class="dl-horizontal">
+            {% for unit in shiftsAsVolunteer %}
+                <dt>{{ unit['unitName'] }}</dt>
+                <dd>{{ unit['count'] }}</dd>
+            {% endfor %}
 
-        <dt>{{ translate('Total') }}</dt>
-        <dd>{{ totalAsVolunteer }}</dd>
-    </dl>
+            <dt>{{ translate('Total') }}</dt>
+            <dd>{{ totalAsVolunteer }}</dd>
+        </dl>
+    {% else %}
+        {{ translate('You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!')}}
+    {% endif %}
 {% endblock %}

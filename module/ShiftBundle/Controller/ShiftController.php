@@ -466,9 +466,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $shiftsAsVolunteerCount = 0;
         $unPayedShifts = 0;
         $unPayedCoins = 0;
+        $lastShift = new DateTime();
         foreach ($asVolunteer as $shift) {
             if ($shift->getStartDate() > $now)
                 continue;
+
+            //if ($shift->getEndDate() > $lastShift)
+                $lastShift = $shift->getEndDate();
 
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
@@ -513,7 +517,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'shiftsAsResponsible' => $shiftsAsResponsible,
                 'totalAsResponsible' => $shiftsAsResponsibleCount,
                 'unPayedShifts' => $unPayedShifts,
-                'unPayedCoins' => $unPayedCoins
+                'unPayedCoins' => $unPayedCoins,
+                'lastShift' => $lastShift->format('d/m/Y')
             )
         );
     }
