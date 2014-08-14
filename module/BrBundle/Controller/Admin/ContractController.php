@@ -18,163 +18,32 @@
 
 namespace BrBundle\Controller\Admin;
 
-// use \Admin\Form\Contract\Add as AddForm;
-// use \Admin\Form\Contract\Edit as EditForm;
-
-// use \Litus\Util\File as FileUtil;
-// use \Litus\Br\ContractGenerator;
-// use \Litus\Br\LetterGenerator;
-// use \Litus\Br\InvoiceGenerator;
-// use \Litus\Entity\Br\Contract;
-// use \Litus\Entity\Br\Contracts\Composition;
-
-// use \RuntimeException;
-// use \DirectoryIterator;
-
-// use \Litus\Application\Resource\Doctrine as DoctrineResource;
-
-// use \Zend\Paginator\Paginator;
-// use \Zend\Paginator\Adapter\ArrayAdapter;
-// use \Zend\Json\Json;
-// use \Zend\Registry;
-
 use BrBundle\Entity\Contract,
-    BrBundle\Form\Admin\Contract\Add as AddForm,
+    BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
+    BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\InvoiceEntry,
+    BrBundle\Entity\Invoice\InvoiceHistory,
+    BrBundle\Form\Admin\Contract\Edit as EditForm,
+    BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
+    CommonBundle\Component\Util\File as FileUtil,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
  * ContractController
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
 class ContractController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    // private $_json = null;
-
-    // public function init()
-    // {
-    //     parent::init();
-
-    //     $contextSwitch = $this->broker('contextSwitch');
-    //     $contextSwitch->setContext(
-    //         'pdf',
-    //         array(
-    //              'headers' => array(
-    //                  'Content-Type' => 'application/pdf',
-    //                  'Pragma' => 'public',
-    //                  'Cache-Control' => 'private, max-age=0, must-revalidate'
-    //              )
-    //         )
-    //     );
-
-    //     $contextSwitch->setActionContext('download', 'pdf')
-    //         ->initContext();
-
-    //     $this->broker('contextSwitch')
-    //         ->addActionContext('compose', 'json')
-    //         ->setAutoJsonSerialization(false)
-    //         ->initContext();
-
-    //     $this->_json = new Json();
-    // }
-
-    // private function _generateFiles($id, $invoiceOnly = false)
-    // {
-    //     $contract = $this->getEntityManager()
-    //         ->getRepository('Litus\Entity\Br\Contract')
-    //         ->find($id);
-
-    //     if (null === $contract)
-    //         throw new \InvalidArgumentException('No contract found with the given ID');
-
-    //     if ($contract->isDirty()) {
-    //         if (!$invoiceOnly) {
-    //             $generator = new ContractGenerator($contract);
-    //             $generator->generate();
-
-    //             $generator = new LetterGenerator($contract);
-    //             $generator->generate();
-    //         }
-
-    //         if (-1 != $contract->getInvoiceNb()) {
-    //             $generator = new InvoiceGenerator($contract);
-    //             $generator->generate();
-    //         }
-
-    //         $contract->setDirty(false);
-    //     }
-    // }
-
-    // public function indexAction()
-    // {
-    //     $this->_forward('add');
-    // }
-
-    public function addAction()
-    {
-        $contractCreated = false;
-        $form = new AddForm($this->getEntityManager());
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $company = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Company')
-                    ->findOneById($formData['company']);
-
-                $newContract = new Contract(
-                    $this->getAuthentication()->getPersonObject(),
-                    $company,
-                    $formData['discount'],
-                    $formData['title']
-                );
-
-                $newContract->setContractNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextContractNb()
-                );
-
-                $contractComposition = array();
-                foreach ($formData['sections'] as $id) {
-                    $section = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract\Section')
-                        ->findOneById($id);
-
-                    $contractComposition[] = $section;
-                }
-                $newContract->addSections($contractComposition);
-
-                $this->getEntityManager()->persist($newContract);
-                $this->getEntityManager()->flush();
-
-                $contractCreated = true;
-
-                return new ViewModel(
-                    array(
-                        'contractCreated' => $contractCreated,
-                        'form' => $form,
-                        'contractId' => $newContract->getId(),
-                        'sections' => $contractComposition,
-                    )
-                );
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'contractCreated' => $contractCreated,
-                'form' => $form,
-            )
-        );
-    }
-
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Contract',
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAllNewOrSignedQuery(),
             $this->getParam('page')
         );
 
@@ -186,168 +55,305 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    // public function editAction()
-    // {
-    //     $contractRepository = $this->getEntityManager()->getRepository('Litus\Entity\Br\Contract');
-    //     $contract = $contractRepository->findOneById($this->getRequest()->getParam('id'));
+    public function viewAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     $form = new EditForm($contract);
+        return new ViewModel(
+            array(
+                'contract' => $contract,
+            )
+        );
+    }
 
-    //     $this->view->form = $form;
-    //     $this->view->contractEdited = false;
+    public function historyAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-    //     if ($this->getRequest()->isPost()) {
-    //         $formData = $this->getRequest()->getPost();
-    //         $form->setData($formData);
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractHistory')
+                ->findAllContractVersions($contract),
+            $this->getParam('page')
+        );
 
-    //         if ($form->isValid()) {
-    //             $company = $this->getEntityManager()
-    //                 ->getRepository('Litus\Entity\Users\People\Company')
-    //                 ->findOneById($formData['company']);
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
 
-    //             $contract->setCompany($company)
-    //                 ->setDiscount($formData['discount'])
-    //                 ->setTitle($formData['title'])
-    //                 ->setContractNb($formData['contract_nb']);
+    public function editAction()
+    {
+        if (!($contract = $this->_getContract(false)))
+            return new ViewModel();
 
-    //             if($contract->isSigned())
-    //                 $contract->setInvoiceNb($formData['invoice_nb']);
+        $form = new EditForm($this->getEntityManager(), $contract);
 
-    //             $contractComposition = array();
-    //             foreach ($formData['sections'] as $id) {
-    //                 $section = $this->getEntityManager()
-    //                     ->getRepository('Litus\Entity\Br\Contracts\Section')
-    //                     ->findOneById($id);
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-    //                 $contractComposition[] = $section;
-    //             }
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
 
-    //             $contract->resetComposition()
-    //                 ->setDirty();
+                $contract->setTitle($formData['title']);
 
-    //             $this->_flush();
+                $newVersionNb = 0;
 
-    //             $contract->addSections($contractComposition);
+                foreach ($contract->getEntries() as $entry) {
+                    if ($entry->getVersion() == $contract->getVersion()) {
+                        $newVersionNb = $entry->getVersion() + 1;
+                        $newContractEntry = new ContractEntry($contract, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
 
-    //             $this->view->contractId = $contract->getId();
-    //             $this->view->sections = $contractComposition;
+                        $this->getEntityManager()->persist($newContractEntry);
 
-    //             $this->view->contractUpdated = true;
-    //         }
-    //     }
-    // }
+                        $newContractEntry->setContractText($formData['entry_' . $entry->getId()]);
+                    }
+                }
 
-    // public function deleteAction()
-    // {
-    //     if (null !== $this->getRequest()->getParam('id')) {
-    //         $contract = $this->getEntityManager()
-    //             ->getRepository('Litus\Entity\Br\Contract')
-    //             ->findOneById($this->getRequest()->getParam('id'));
-    //     } else {
-    //         $contract = null;
-    //     }
+                $contract->setVersion($newVersionNb);
 
-    //     $this->view->contractDeleted = false;
+                $history = new ContractHistory($contract);
+                $this->getEntityManager()->persist($history);
 
-    //     if (null === $this->getRequest()->getParam('confirm')) {
-    //         $this->view->contract = $contract;
-    //     } else {
-    //         if (1 == $this->getRequest()->getParam('confirm')) {
-    //             $this->getEntityManager()->remove($contract);
-    //             $this->view->contractDeleted = true;
-    //         } else {
-    //             $this->_redirect('manage');
-    //         }
-    //     }
-    // }
+                $this->getEntityManager()->flush();
 
-    // public function signAction()
-    // {
-    //     if (0 == $this->getRequest()->getParam('id'))
-    //         throw new \InvalidArgumentException('need a valid contract id');
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The contract was succesfully updated!'
+                );
 
-    //     $contractRepository = $this->getEntityManager()
-    //         ->getRepository('\Litus\Entity\Br\Contract');
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'view',
+                        'id' => $contract->getId(),
+                    )
+                );
 
-    //     $contract = $contractRepository->find(
-    //         $this->getRequest()->getParam('id')
-    //     );
+                return new ViewModel();
+            }
+        }
 
-    //     if($contract->isSigned())
-    //         throw new \InvalidArgumentException('Contract "' . $contract->getTitle() . '" has already been signed');
+        return new ViewModel(
+            array(
+                'contract' => $contract,
+                'form' => $form,
+            )
+        );
+    }
 
-    //     $dirty = $contract->isDirty();
-
-    //     $contract->setDirty()
-    //         ->setInvoiceNb($contractRepository->findNextInvoiceNb());
-
-    //     // Flush here, otherwise we might create two contracts with the same invoiceNb
-    //     $this->_flush();
-
-    //     $this->_forward('manage');
-    // }
-
-    // public function downloadAction()
-    // {
-    //     if ('pdf' == $this->getRequest()->getParam('format')) {
-    //         $this->broker('viewRenderer')->setNoRender();
-    //         $this->_generateFiles(
-    //             $this->getRequest()->getParam('id')
-    //         );
-
-    //         $file = FileUtil::getRealFilename(
-    //             Registry::get('litus.resourceDirectory') . '/pdf/br/'
-    //                 . $this->getRequest()->getParam('id') . '/'
-    //                 . $this->getRequest()->getParam('type') .
-    //                 '.pdf'
-    //         );
-
-    //         $this->getResponse()->setHeader(
-    //             'Content-Disposition', 'inline; filename="' . $this->getRequest()->getParam('type') . '.pdf"'
-    //         );
-    //         $this->getResponse()->setHeader('Content-Length', filesize($file));
-
-    //         readfile($file);
-    //     } else {
-    //         $this->view->paginator = $this->_createPaginator('Litus\Entity\Br\Contract');
-    //     }
-    // }
-
-    public function composeAction()
+    public function signedAction()
     {
         $this->initAjax();
 
-        $postData = $this->getRequest()->getPost();
-        parse_str($postData['sections'], $sections);
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
 
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($postData['contractId']);
+        if ('true' == $this->getParam('signed')) {
+            $invoice = new Invoice($contract->getOrder());
 
-        $contractComposition = array();
-        foreach ($sections['contractComposition'] as $position => $id) {
-            $contractComposition[$position] = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract\Section')
-                ->findOneById($id);
+            foreach ($contract->getEntries() as $entry) {
+                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
+                $this->getEntityManager()->persist($invoiceEntry);
+            }
+
+            $contract->setInvoiceNb(
+                $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract')
+                    ->findNextInvoiceNb()
+            );
+
+            $this->getEntityManager()->persist($invoice);
         }
 
-        $contract->resetComposition()
-            ->setDirty();
-
-        // Avoiding duplicate key violations
-        $this->getEntityManager()->flush();
-
-        // Saving the new contract composition
-        $contract->addSections($contractComposition);
+        $contract->setSigned('true' == $this->getParam('signed') ? true : false);
 
         $this->getEntityManager()->flush();
 
         return new ViewModel(
             array(
-                'result' => (object) array(
-                    'status' => 'success',
+                'result' => array(
+                    'status' => 'success'
                 ),
             )
         );
+    }
+
+    public function signAction()
+    {
+        if (!($contract = $this->_getContract(false)))
+            return new ViewModel();
+
+        $invoice = new Invoice($contract->getOrder());
+
+        foreach ($contract->getEntries() as $entry) {
+            $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
+            $this->getEntityManager()->persist($invoiceEntry);
+        }
+
+        $this->getEntityManager()->persist($invoice);
+
+        $contract->setSigned();
+
+        $contract->setInvoiceNb(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findNextInvoiceNb()
+        );
+
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Success',
+            'The contract was succesfully signed!'
+        );
+
+        $this->redirect()->toRoute(
+            'br_admin_contract',
+            array(
+                'action' => 'view',
+                'id' => $contract->getId(),
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function downloadAction()
+    {
+        if (!($contract = $this->_getContract()))
+            return new ViewModel();
+
+        $generator = new ContractGenerator($this->getEntityManager(), $contract, $this->getTranslator()->getTranslator());
+        $generator->generate();
+
+        $file = FileUtil::getRealFilename(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.file_path') . '/contracts/'
+                . $this->getParam('id') . '/contract.pdf'
+        );
+        $fileHandler = fopen($file, 'r');
+        $content = fread($fileHandler, filesize($file));
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contract.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $content,
+            )
+        );
+    }
+
+    public function composeAction()
+    {
+        $this->initAjax();
+
+        if ($this->getRequest()->isPost()) {
+            $postData = $this->getRequest()->getPost();
+            parse_str($postData['sections'], $sections);
+
+            $contract = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findOneById($postData['contractId']);
+
+            if ($contract->isSigned())
+                return new ViewModel();
+
+            $contractComposition = array();
+            foreach ($sections['contractComposition'] as $position => $id) {
+                $contractEntry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                    ->findOneById($id);
+
+                $contractEntry->setPosition($position);
+            }
+
+            $this->getEntityManager()->flush();
+
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'success',
+                    ),
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'error',
+                    ),
+                )
+            );
+        }
+    }
+
+    private function _getContract($allowSigned = true)
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the contract!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        $contract = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $contract) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No contract with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        if ($contract->isSigned() && !$allowSigned) {
+            $this->flashMessenger()->error(
+                'Error',
+                'The given contract has been signed! Signed contracts cannot be modified.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage'
+                )
+            );
+
+            return;
+        }
+
+        return $contract;
     }
 }

@@ -109,12 +109,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The event was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -189,12 +186,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $event->getEvent()->updateName();
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The event was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The event was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -295,12 +289,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The event\'s poster has successfully been updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The event\'s poster has successfully been updated!'
                 );
 
                 return new ViewModel(
@@ -343,12 +334,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -366,12 +354,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -393,12 +378,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -416,12 +398,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->findOneById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

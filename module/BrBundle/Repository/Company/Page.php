@@ -82,7 +82,7 @@ class Page extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('y', ':year'),
-                    $query->expr()->like('LOWER(c.name)', ':name')
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name')
                 )
             )
             ->orderBy('c.name', 'ASC')

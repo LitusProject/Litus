@@ -20,7 +20,6 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
     BrBundle\Form\Career\Search\Vacancy as VacancySearchForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Zend\View\Model\ViewModel;
 
 /**
@@ -102,12 +101,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
     private function _getVacancy()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the vacancy!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the vacancy!'
             );
 
             $this->redirect()->toRoute(
@@ -125,12 +121,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
 
         if (null === $vacancy) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No vacancy with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No vacancy with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

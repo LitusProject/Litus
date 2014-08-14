@@ -5,44 +5,167 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <div class="flashmessage success_message full_width change_signed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract's signed status was successfully changed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width change_signed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to change the contract's signed status.</p>
+        </div>
+    </div>
 
+    <div class="flashmessage success_message full_width contract_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The contract was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width contract_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a contract.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th width="90px">Contract Nb</th>
+                <th width="70px">Signed</th>
+                <th width="70px">Actions</th>
+            </tr>
 
-        <div id="normal_page">
+            {% for contract in paginator %}
+                <tr class="item item-{{ contract.getId() }}">
+                    <td>{{ contract.getCompany().getName() }}</td>
+                    <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ contract.getTitle() }}</td>
+                    <td>{{ contract.getDate().format('j/m/Y') }}</td>
+                    <td>{{ contract.getContractNb() }}</td>
 
-            <table class="full_width manage">
-                <tr>
-                    <th>Contract No</th>
-                    <th>Title</th>
-                    <th width="150px">Author</th>
-                    <th width="75px">Date</th>
-                    <th>Invoice No</th>
-                    <th width="70px">Actions</th>
-                </tr>
-
-                {% for contract in paginator %}
-                    <tr class="item item-{{ contract.getId() }}">
-                        <td>{{ contract.getContractNb() }}</td>
-                        <td>{{ contract.getTitle() }}</td>
-                        <td>{{ contract.getAuthor().getFirstName() }} {{ contract.getAuthor().getLastName() }}</td>
-                        <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                        <td>{% if contract.isSigned() %} {{ contract.getInvoiceNb() }} {% endif %}</td>
-                        <td class="actions">
-                            {% if hasAccess('br_admin_contract', 'edit') %}
-                                <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('br_admin_contract', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ contract.getId() }}" data-name="{{ contract.getTitle() }}">Delete</a>
-                            {% endif %}
+                    {% if contract.isSigned() %}
+                        <td style="text-align: center;">
+                            <input type="checkbox" disabled id="{{ contract.getId() }}" checked="checked"/>
                         </td>
-                    </tr>
-                {% endfor %}
-            </table>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <input type="checkbox" id="{{ contract.getId() }}"/>
+                        </td>
+                    {% endif %}
 
-        </div>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'view') %}
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'history') %}
+                            <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="history">History</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'view') and contract.isSigned() == true %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": contract.getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_contract', 'download') %}
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="download" value="Download">Download</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
+    <div class="modal fade" id="removeContract" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Contract
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following contract: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+            $('.item input[type=checkbox]').click(changeSigned);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeContract = $('#removeContract');
+            removeContract.find('.name').html($(this).data('name'));
+            var id = $this.data('id');
+            removeContract.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_contract', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.contract_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeContract.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeContract.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.contract_removed_error').removeClass('hide');
+            $('#removeContract').modal('hide');
+        }
+
+        function changeSigned(e) {
+            $.get('{{ url('br_admin_contract', {"action": "signed"}) }}' +  $(this).attr('id') + '/'+ $(this).is(':checked'), function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.change_signed_success').removeClass('hide');
+                } else {
+                    errorChangeSigned();
+                }
+            }, 'json').error(errorChangeSigned);
+
+            $('.flashmessage').delay(2000).addClass('hide')
+        }
+
+        function errorChangeSigned() {
+            $('.flashmessage').addClass('hide');
+            $('.change_signed_error').removeClass('hide');
+        }
+
+    </script>
 {% endblock %}

@@ -105,9 +105,9 @@
                                     {% if map['article'].getDiscounts()|length > 0 %}
                                         <span rel="popover" data-original-title="{{ translate('Discounts') }}" data-content="
                                         {% for discount in map['article'].getDiscounts() %}
-                                            <span class='badge badge-info'>{{ translate(discount.getType()) }} {% if discount.getOrganization() %}{{ discount.getOrganization().getName() }}{% endif %}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
+                                            <span class='badge'>{{ translate(discount.getType()) }} {% if discount.getOrganization() %}{{ discount.getOrganization().getName() }}{% endif %}</span> &euro; {{ (discount.apply(map['article'].getSellPrice())/100)|number_format(2) }}<br/>
                                         {% endfor %}
-                                    " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
+                                    " data-placement="right" style="cursor: pointer">&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }} <span class="glyphicon glyphicon-info-sign"></span></span>
                                     {% else %}
                                         <span>&euro; {{ (map['article'].getSellPrice()/100)|number_format(2) }}</span>
                                     {% endif %}
