@@ -312,15 +312,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
-        /*$payed = false;
+        $payed = false;
         if ($shift->getHandledOnEvent())
-            $payed = true;*/
+            $payed = true;
 
         $shift->addVolunteer(
             $this->getEntityManager(),
             new Volunteer(
                 $person,
-                false
+                $payed
             )
         );
 
