@@ -107,9 +107,13 @@ class Invoice
         $this->setVATContext();
     }
 
-    public function getInvoiceNumber()
+    public function getInvoiceNumber(EntityManager $entityManager)
     {
-        return $this->creationTime->format('Y') . str_pad($this->order->getContract()->getInvoiceNb(), 4, '0', STR_PAD_LEFT);
+        $brNumber = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_number');
+
+        return $this->creationTime->format('Y') . $brNumber . str_pad($this->order->getContract()->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
     }
 
     public function setVATContext($text = '')
