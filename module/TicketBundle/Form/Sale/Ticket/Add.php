@@ -18,147 +18,176 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Doctrine\ORM\EntityManager,
+use LogicException,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
-    TicketBundle\Entity\Event,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    TicketBundle\Entity\Event;
 
 /**
  * Add Ticket
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
-
     /**
      * @var Event
      */
-    private $_event;
+    private $event;
 
-    /**
-     * @param EntityManager   $entityManager
-     * @param Event           $event
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Event $event, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->event) {
+            throw new LogicException('Cannot create tickets for null event.');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_event = $event;
+        parent::init();
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        $field = new Checkbox('force');
-        $field->setLabel('Force (Ignore limits)');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'force',
+            'label' => 'Force (Ignore limits)',
+        ));
 
-        $field = new Checkbox('is_guest');
-        $field->setLabel('Is Guest');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'is_guest',
+            'label' => 'Is Guest',
+        ));
 
-        $personForm = new Collection('person_form');
-        $personForm->setLabel('Person')
-            ->setAttribute('id', 'person_form');
-        $this->add($personForm);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'person_form',
+            'label'      => 'Person',
+            'attributes' => array(
+                'id' => 'person_form'
+            ),
+            'elements'   => array(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'person_id',
+                    'attributes' => array(
+                        'id' => 'personId',
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'person',
+                    'label'      => 'Person',
+                    'required'   => true,
+                    'attributes' => array(
+                        'autocomplete' => 'off',
+                        'data-provice' => 'typeahead',
+                        'id'           => 'personSearch',
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $personForm->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'guest_form',
+            'label'      => 'Guest',
+            'attributes' => array(
+                'id' => 'guest_form',
+            ),
+            'elements'   => array(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'guest_first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'guest_last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'guest_email',
+                    'label'    => 'Email',
+                    'required' => true,
+                ),
+            ),
+        ));
 
-        $field = new Text('person');
-        $field->setLabel('Person')
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $personForm->add($field);
+        $optionElements = array();
 
-        $guestForm = new Collection('guest_form');
-        $guestForm->setLabel('Guest')
-            ->setAttribute('id', 'guest_form');
-        $this->add($guestForm);
+        if (empty($this->event->getOptions())) {
+            $optionElements[] = array(
+                'type'       => 'select',
+                'name'       => 'number_member',
+                'label'      => 'Number Member',
+                'attributes' => array(
+                    'class'      => 'ticket_option',
+                    'data-price' => $this->event->getPriceMembers(),
+                    'options'    => $this->getNumberOptions(),
+                ),
+            );
 
-        $field = new Text('guest_first_name');
-        $field->setLabel('First Name')
-            ->setRequired();
-        $guestForm->add($field);
-
-        $field = new Text('guest_last_name');
-        $field->setLabel('Last Name')
-            ->setRequired();
-        $guestForm->add($field);
-
-        $field = new Text('guest_email');
-        $field->setLabel('Email')
-            ->setRequired();
-        $guestForm->add($field);
-
-        $optionsForm = new Collection('options_form');
-        $optionsForm->setLabel('Options');
-        $this->add($optionsForm);
-
-        if (count($event->getOptions()) == 0) {
-            $field = new Select('number_member');
-            $field->setLabel('Number Member')
-                ->setAttribute('options', $this->_getNumberOptions())
-                ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                ->setAttribute('data-price', $event->getPriceMembers());
-            $optionsForm->add($field);
-
-            if (!$event->isOnlyMembers()) {
-                $field = new Select('number_non_member');
-                $field->setLabel('Number Non Member')
-                    ->setAttribute('options', $this->_getNumberOptions())
-                    ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                    ->setAttribute('data-price', $event->getPriceNonMembers());
-                $optionsForm->add($field);
+            if (!$this->event->isOnlyMembers()) {
+                $optionElements[] = array(
+                    'type'       => 'select',
+                    'name'       => 'number_non_member',
+                    'label'      => 'Number Non Member',
+                    'attributes' => array(
+                        'class'      => 'ticket_option',
+                        'data-price' => $this->event->getPriceNonMembers(),
+                        'options'    => $this->getNumberOptions(),
+                    ),
+                );
             }
         } else {
-            foreach ($event->getOptions() as $option) {
-                $field = new Select('option_' . $option->getId() . '_number_member');
-                $field->setLabel(ucfirst($option->getName()) . ' (Member)')
-                    ->setAttribute('options', $this->_getNumberOptions())
-                    ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                    ->setAttribute('data-price', $option->getPriceMembers());
-                $optionsForm->add($field);
+            foreach ($this->event->getOptions() as $option) {
+                $optionElements[] = array(
+                    'type'       => 'select',
+                    'name'       => 'option_' . $option->getId() . '_number_member',
+                    'label'      => ucfirst($option->getName()) . ' (Member)',
+                    'attributes' => array(
+                        'class'      => 'ticket_option',
+                        'data-price' => $option->getPriceMembers(),
+                        'options'    => $this->getNumberOptions(),
+                    ),
+                );
 
-                if (!$event->isOnlyMembers()) {
-                    $field = new Select('option_' . $option->getId() . '_number_non_member');
-                    $field->setLabel(ucfirst($option->getName()) . ' (Non Member)')
-                        ->setAttribute('options', $this->_getNumberOptions())
-                        ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                        ->setAttribute('data-price', $option->getPriceNonMembers());
-                    $optionsForm->add($field);
+                if (!$this->event->isOnlyMembers()) {
+                    $optionElements[] = array(
+                        'type'       => 'select',
+                        'name'       => 'option_' . $option->getId() . '_number_non_member',
+                        'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                        'attributes' => array(
+                            'class'      => 'ticket_option',
+                            'data-price' => $option->getPriceNonMembers(),
+                            'options'    => $this->getNumberOptions(),
+                        ),
+                    );
                 }
             }
         }
 
-        $field = new Checkbox('payed');
-        $field->setLabel('Payed');
-        $optionsForm->add($field);
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'options',
+            'label'    => 'Options',
+            'elements' => $optionElements,
+        ));
 
-        $field = new Submit('sale_tickets');
-        $field->setValue('Sale');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'payed',
+            'label' => 'Payed',
+        ));
+
+        $this->addSubmit('Sale', 'sale_tickets');
     }
 
-    private function _getNumberOptions()
+    private function getNumberOptions()
     {
         $numbers = array();
-        $max = $this->_event->getLimitPerPerson() == 0 ? 10 : $this->_event->getLimitPerPerson();
+        $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
 
         for ($i = 0 ; $i <= $max ; $i++) {
             $numbers[$i] = $i;
@@ -167,158 +196,127 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
         return $numbers;
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $inputFilter = array();
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'force',
-                    'required' => false,
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'force',
+            'required' => false,
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'is_guest',
-                    'required' => false,
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'is_guest',
+            'required' => false,
         );
 
         $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
         $force = isset($this->data['force']) && $this->data['force'];
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'guest_first_name',
-                    'required' => $isGuest,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'guest_first_name',
+            'required' => $isGuest,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'guest_last_name',
-                    'required' => $isGuest,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'guest_last_name',
+            'required' => $isGuest,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'guest_email',
-                    'required' => $isGuest,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'EmailAddress'),
-                    ),
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'guest_email',
+            'required' => $isGuest,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array('name' => 'EmailAddress'),
+            ),
         );
 
-        $inputFilter->add(
-            $factory->createInput(
+        $inputFilter[] = array(
+            'name'     => 'person_id',
+            'required' => !$isGuest,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
                 array(
-                    'name'     => 'person_id',
-                    'required' => !$isGuest,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                )
-            )
+                    'name' => 'int',
+                ),
+            ),
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'person',
-                    'required' => !$isGuest,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
+        $inputFilter[] = array(
+            'name'     => 'person',
+            'required' => !$isGuest,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
         );
 
         if (!$force) {
-            if (count($this->_event->getOptions()) == 0) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'number_member',
-                            'required' => true,
-                            'validators' => array(
-                                new NumberTicketsValidator($this->_entityManager, $this->_event),
-                            )
-                        )
-                    )
+            if (empty($this->event->getOptions())) {
+                $inputFilter[] = array(
+                    'name'     => 'number_member',
+                    'required' => true,
+                    'validators' => array(
+                        new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                    ),
                 );
 
-                if (!$this->_event->isOnlyMembers()) {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'number_non_member',
-                                'required' => true,
-                                'validators' => array(
-                                    new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                )
-                            )
-                        )
+                if (!$this->event->isOnlyMembers()) {
+                    $inputFilter[] = array(
+                        'name'     => 'number_non_member',
+                        'required' => true,
+                        'validators' => array(
+                            new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                        ),
                     );
                 }
             } else {
-                foreach ($this->_event->getOptions() as $option) {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'option_' . $option->getId() . '_number_member',
-                                'required' => true,
-                                'validators' => array(
-                                    new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                )
-                            )
-                        )
+                $options = array();
+                foreach ($this->event->getOptions() as $option) {
+                    $options[] = array(
+                        'name'     => 'option_' . $option->getId() . '_number_member',
+                        'required' => true,
+                        'validators' => array(
+                            new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                        ),
                     );
 
-                    if (!$this->_event->isOnlyMembers()) {
-                        $inputFilter->add(
-                            $factory->createInput(
-                                array(
-                                    'name'     => 'option_' . $option->getId() . '_number_non_member',
-                                    'required' => true,
-                                    'validators' => array(
-                                        new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                    )
-                                )
-                            )
+                    if (!$this->event->isOnlyMembers()) {
+                        $options[] = array(
+                            'name'     => 'option_' . $option->getId() . '_number_non_member',
+                            'required' => true,
+                            'validators' => array(
+                                new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                            ),
                         );
                     }
                 }
+
+                $inputFilter['options'] = $options;
             }
         }
 
         return $inputFilter;
+    }
+
+    /**
+     * @param  Event $event
+     * @return self
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+
+        return $this;
     }
 }

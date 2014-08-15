@@ -140,38 +140,10 @@ class Event
      */
     private $tickets;
 
-    /**
-     * @param CalendarEvent $activity
-     * @param boolean       $bookablePraesidium
-     * @param boolean       $bookable
-     * @param DateTime      $bookingsCloseDate
-     * @param boolean       $active
-     * @param boolean       $ticketsGenerated
-     * @param integer       $numberOfTickets
-     * @param integer       $limitPerPerson
-     * @param boolean       $allowRemove
-     * @param boolean       $onlyMembers
-     * @param integer       $priceMembers
-     * @param integer       $priceNonMembers
-     */
-    public function __construct(CalendarEvent $activity, $bookablePraesidium, $bookable, DateTime $bookingsCloseDate = null, $active, $ticketsGenerated, $numberOfTickets = null, $limitPerPerson = null, $allowRemove, $onlyMembers, $priceMembers, $priceNonMembers)
+    public function __construct()
     {
-        $this->activity = $activity;
-        $this->bookablePraesidium = $bookablePraesidium;
-        $this->bookable = $bookable;
-        $this->bookingsCloseDate = $bookingsCloseDate;
-        $this->active = $active;
-        $this->ticketsGenerated = $ticketsGenerated;
-        $this->numberOfTickets = $numberOfTickets;
-        $this->limitPerPerson = $limitPerPerson;
-        $this->onlyMembers = $onlyMembers;
-        $this->allowRemove = $allowRemove;
-
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
-
-        $this->setPriceMembers($priceMembers)
-            ->setPriceNonMembers($priceNonMembers);
     }
 
     /**

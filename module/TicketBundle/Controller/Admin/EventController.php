@@ -22,8 +22,6 @@ use DateTime,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket,
-    TicketBundle\Form\Admin\Event\Add as AddForm,
-    TicketBundle\Form\Admin\Event\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -69,48 +67,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('ticket_event_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $event = new Event(
-                    $this->getEntityManager()
-                        ->getRepository('CalendarBundle\Entity\Node\Event')
-                        ->findOneById($formData['event']),
-                    $formData['bookable_praesidium'],
-                    $formData['bookable'],
-                    self::_loadDate($formData['bookings_close_date']),
-                    $formData['active'],
-                    $formData['generate_tickets'],
-                    $formData['number_of_tickets'],
-                    $formData['limit_per_person'],
-                    $formData['allow_remove'],
-                    $formData['only_members'],
-                    $formData['enable_options'] ? 0 : $formData['price_members'],
-                    $formData['enable_options'] ? 0 : ($formData['only_members'] ? 0 : $formData['price_non_members'])
-                );
-
-                if ($formData['enable_options']) {
-                    foreach ($formData['options'] as $option) {
-                        if (strlen($option['option']) == 0)
-                            continue;
-                        $option = new Option($event, $option['option'], $option['price_members'], $formData['only_members'] ? 0 : $option['price_non_members']);
-                        $this->getEntityManager()->persist($option);
-                    }
-                }
-
-                if ($formData['generate_tickets']) {
-                    for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                        $ticket = new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()));
-                        $this->getEntityManager()->persist($ticket);
-                        $this->getEntityManager()->flush();
-                    }
-                }
+                $event = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
@@ -143,97 +106,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($event = $this->_getEvent()))
             return new ViewModel();
 
-        $form = new EditForm($event, $this->getEntityManager());
+        $form = $this->getForm('ticket_event_edit', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['generate_tickets']) {
-                    if ($event->areTicketsGenerated()) {
-                        if ($formData['number_of_tickets'] >= $event->getNumberOfTickets()) {
-                            for ($i = $event->getNumberOfTickets() ; $i < $formData['number_of_tickets'] ; $i++) {
-                                $this->getEntityManager()->persist(
-                                    new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
-                                );
-                                $this->getEntityManager()->flush();
-                            }
-                        } else {
-                            $tickets = $this->getEntityManager()
-                                ->getRepository('TicketBundle\Entity\Ticket')
-                                ->findAllEmptyByEvent($event);
-                            $numberOfTickets = $event->getNumberOfTickets() - $formData['number_of_tickets'];
-
-                            foreach ($tickets as $ticket) {
-                                if ($numberOfTickets == 0)
-                                    break;
-
-                                $numberOfTickets--;
-                                $this->getEntityManager()->remove($ticket);
-                            }
-                        }
-                    } else {
-                        for ($i = 0 ; $i < $formData['number_of_tickets'] ; $i++) {
-                            $this->getEntityManager()->persist(
-                                new Ticket($event, 'empty', null, null, null, null, $event->generateTicketNumber($this->getEntityManager()))
-                            );
-                            $this->getEntityManager()->flush();
-                        }
-                    }
-                } else {
-                    $tickets = $this->getEntityManager()
-                        ->getRepository('TicketBundle\Entity\Ticket')
-                        ->findAllEmptyByEvent($event);
-                    foreach ($tickets as $ticket) {
-                        $this->getEntityManager()->remove($ticket);
-                    }
-                }
-
-                $enableOptions = isset($formData['enable_options']) && $formData['enable_options'] || sizeof($event->getOptions()) > 0;
-
-                $commonEvent = $this->getEntityManager()
-                    ->getRepository('CalendarBundle\Entity\Node\Event')
-                    ->findOneById($formData['event']);
-
-                $event->setActivity($commonEvent)
-                    ->setBookablePraesidium($formData['bookable_praesidium'])
-                    ->setBookable($formData['bookable'])
-                    ->setBookingsCloseDate(self::_loadDate($formData['bookings_close_date']))
-                    ->setActive($formData['active'])
-                    ->setTicketsGenerated($formData['generate_tickets'])
-                    ->setNumberOfTickets($formData['number_of_tickets'])
-                    ->setLimitPerPerson($formData['limit_per_person'])
-                    ->setAllowRemove($formData['allow_remove'])
-                    ->setOnlyMembers($formData['only_members'])
-                    ->setPriceMembers($enableOptions ? 0 : $formData['price_members'])
-                    ->setPriceNonMembers($enableOptions ? 0 : ($formData['only_members'] ? 0 : $formData['price_non_members']));
-
-                if ($enableOptions) {
-                    foreach ($formData['options'] as $optionData) {
-                        if (strlen($optionData['option']) == 0)
-                            continue;
-
-                        if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
-                            $option = $this->getEntityManager()
-                                ->getRepository('TicketBundle\Entity\Option')
-                                ->findOneById($optionData['option_id']);
-                            $option->setName($optionData['option'])
-                                ->setPriceMembers($optionData['price_members'])
-                                ->setPriceNonMembers($formData['only_members'] ? 0 : $optionData['price_non_members']);
-                        } else {
-                            $option = new Option($event, $optionData['option'], $optionData['price_members'], $formData['only_members'] ? 0 : $optionData['price_non_members']);
-                            $this->getEntityManager()->persist($option);
-                        }
-                    }
-                } else {
-                    foreach ($event->getOptions() as $option) {
-                        $this->getEntityManager()->remove($option);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -320,14 +198,5 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

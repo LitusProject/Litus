@@ -18,177 +18,151 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Component\Validator\Date as DateValidator,
-    Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Element\Submit;
+    Ticketbundle\Entity\Event;
 
 /**
  * Add Event
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form implements InputFilterProviderInterface
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'event',
+            'label'      => 'Event',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createEventsArray(),
+            ),
+        ));
 
-        $field = new Select('event');
-        $field->setLabel('Event')
-            ->setRequired()
-            ->setAttribute('options', $this->_createEventsArray());
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'active',
+            'label' => 'Active',
+        ));
 
-        $field = new Checkbox('active');
-        $field->setLabel('Active');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'bookable',
+            'label' => 'Bookable',
+        ));
 
-        $field = new Checkbox('bookable');
-        $field->setLabel('Bookable');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'bookable_praesidium',
+            'label' => 'Bookable For Praesidium',
+        ));
 
-        $field = new Checkbox('bookable_praesidium');
-        $field->setLabel('Bookable For Praesidium');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'bookings_close_date',
+            'label'      => 'Booking Close Date',
+        ));
 
-        $field = new Text('bookings_close_date');
-        $field->setLabel('Booking Close Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true);
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'generate_tickets',
+            'label' => 'Generate Tickets (needed to print out ticket)',
+        ));
 
-        $field = new Checkbox('generate_tickets');
-        $field->setLabel('Generate Tickets (needed to print out ticket)');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'text',
+            'name'  => 'number_of_tickets',
+            'label' => 'Number Of Tickets (0: No Limit)',
+            'value' => 0,
+        ));
 
-        $field = new Text('number_of_tickets');
-        $field->setLabel('Number Of Tickets (0: No Limit)')
-            ->setValue(0);
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'text',
+            'name'  => 'limit_per_person',
+            'label' => 'Maximum Number Of Tickets Per Person (0: No Limit)',
+            'value' => 0,
+        ));
 
-        $field = new Text('limit_per_person');
-        $field->setLabel('Maximum Number Of Tickets Per Person (0: No Limit)')
-            ->setValue(0);
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'allow_remove',
+            'label' => 'Allow Users To Remove Reservations',
+        ));
 
-        $field = new Checkbox('allow_remove');
-        $field->setLabel('Allow Users To Remove Reservations');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'only_members',
+            'label' => 'Only Members',
+        ));
 
-        $field = new Checkbox('only_members');
-        $field->setLabel('Only Members');
-        $this->add($field);
+        $this->add(array(
+            'type' => 'hidden',
+            'name' => 'enable_options_hidden',
+        ));
 
-        $field = new Hidden('enable_options_hidden');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'enable_options',
+            'label' => 'Enable Options',
+        ));
 
-        $field = new Checkbox('enable_options');
-        $field->setLabel('Enable Options');
-        $this->add($field);
-
-        $collection = new Collection('prices');
-        $collection->setLabel('Prices')
-            ->setAttribute('class', $field->getAttribute('class') . ' half_width');
-        $this->add($collection);
-
-        $field = new Text('price_members');
-        $field->setLabel('Price Members')
-            ->setRequired();
-        $collection->add($field);
-
-        $field = new Text('price_non_members');
-        $field->setLabel('Price Non Members')
-            ->setRequired()
-            ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
-        $collection->add($field);
-
-        $field = new Collection('options');
-        $field->setLabel('Options')
-            ->setAttribute('class', $field->getAttribute('class') . ' half_width')
-            ->setCount(0)
-            ->setShouldCreateTemplate(true)
-            ->setAllowAdd(true)
-            ->setTargetElement(
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'prices',
+            'label'      => 'Prices',
+            'attributes' => array(
+                'class' => 'half_width',
+            ),
+            'elements'   => array(
                 array(
+                    'type'     => 'text',
+                    'name'     => 'price_members',
+                    'label'    => 'Price Members',
+                    'required' => true,
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'price_non_members',
+                    'label'      => 'Price Non Members',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class' => 'price_non_members',
+                    )
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'collection',
+            'name'       => 'options',
+            'label'      => 'Options',
+            'attributes' => array(
+                'class' => 'half_width'
+            ),
+            'options'    => array(
+                'count'                  => 0,
+                'should_create_template' => true,
+                'allow_add'              => true
+                'target_element'         => array(
                     'type' => 'TicketBundle\Form\Admin\Event\Option',
-                )
-            );
-        $this->add($field);
+                ),
+            ),
+        ));
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'shift_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'shift_add');
     }
 
-    public function populateFromEvent(Event $event)
+    protected function createEventsArray()
     {
-        $events = $this->_createEventsArray();
-        $events[$event->getActivity()->getId()] = $event->getActivity()->getTitle();
-        $this->get('event')->setAttribute('options', $events);
-
-        $data = array(
-            'event' => $event->getActivity()->getId(),
-            'active' => $event->isActive(),
-            'bookable_praesidium' => $event->isBookablePraesidium(),
-            'bookable' => $event->isBookable(),
-            'bookings_close_date' => $event->getBookingsCloseDate() ? $event->getBookingsCloseDate()->format('d/m/Y H:i') : '',
-            'generate_tickets' => $event->areTicketsGenerated(),
-            'number_of_tickets' => $event->getNumberOfTickets(),
-            'limit_per_person' => $event->getLimitPerPerson(),
-            'allow_remove' => $event->allowRemove(),
-            'only_members' => $event->isOnlyMembers(),
-        );
-
-        if (sizeof($event->getOptions()) == 0) {
-            $data['price_members'] = number_format($event->getPriceMembers()/100, 2);
-            $data['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers()/100, 2);
-        } else {
-            $data['enable_options'] = true;
-            $data['enable_options_hidden'] = '1';
-            $this->get('enable_options')
-                ->setAttribute('disabled', 'disabled');
-
-            foreach ($event->getOptions() as $option) {
-                $data['options'][] = array(
-                    'option_id' => $option->getId(),
-                    'option' => $option->getName(),
-                    'price_members' => number_format($option->getPriceMembers()/100, 2),
-                    'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
-                );
-            }
-        }
-
-        $this->setData($data);
-    }
-
-    private function _createEventsArray()
-    {
-        $events = $this->_entityManager
+        $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
@@ -211,7 +185,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form implements InputFil
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new ActivityValidator($this->_entityManager),
+                    new ActivityValidator($this->getEntityManager()),
                 ),
             ),
             array(
@@ -228,7 +202,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form implements InputFil
                         ),
                     ),
                     new DateCompareValidator('now', 'd/m/Y H:i'),
-                    new DateValidator($this->_entityManager, 'd/m/Y H:i'),
+                    new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
                 ),
             )
         );
@@ -281,25 +255,26 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form implements InputFil
 
         if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) &&
             (!isset($this->data['enable_options_hidden']) || $this->data['enable_options_hidden'] != '1')) {
-            $inputs[] = array(
-                'name'     => 'price_members',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
+            $inputs['prices'] = array(
+                array(
+                    'name'     => 'price_members',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator()
+                    ),
                 ),
-                'validators' => array(
-                    new PriceValidator()
-                ),
-            );
-
-            $inputs[] = array(
-                'name'     => 'price_non_members',
-                'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator()
+                array(
+                    'name'     => 'price_non_members',
+                    'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator()
+                    ),
                 ),
             );
         }

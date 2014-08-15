@@ -22,7 +22,6 @@ use CommonBundle\Entity\User\Person,
     TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\GuestInfo,
-    TicketBundle\Form\Sale\Ticket\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -38,14 +37,13 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $form = new AddForm($this->getEntityManager(), $event);
+        $form = $this->getForm('ticket_sale_ticket_add', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if ($formData['is_guest']) {
                     $person = null;
@@ -109,11 +107,10 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $form = new AddForm($this->getEntityManager(), $event);
+        $form = $this->getForm('ticket_sale_ticket_add', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
                 return new ViewModel(
