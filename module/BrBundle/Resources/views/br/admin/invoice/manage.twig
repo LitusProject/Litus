@@ -34,7 +34,7 @@
                     <td>{{ invoice.getOrder().getCompany().getName()}}</td>
                     <td>{{ invoice.getOrder().getDescription() }}</td>
                     <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
-                    <td>{{ invoice.getInvoiceNumber() }}</td>
+                    <td>{{ invoice.getInvoiceNumber(entityManager) }}</td>
                     {% if invoice.isPayed() %}
                             <td style="text-align: center;">
                                 <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>

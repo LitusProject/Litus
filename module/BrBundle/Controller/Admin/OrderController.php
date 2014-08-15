@@ -182,8 +182,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $counter = 0;
 
                 foreach ($entries as $entry) {
-                    $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                     $orderEntry = new OrderEntry($updatedOrder, $entry->getProduct(), $entry->getQuantity());
+                    $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
                     $order->setEntry($orderEntry);
                     $contract->setEntry($contractEntry);
                     $counter++;
@@ -194,12 +194,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $newProduct = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Product')
                     ->findProductById($formData['product']);
-                $orderEntry = new OrderEntry($updatedOrder, $newProduct[0], $formData['amount']);
-                $contractEntry = new ContractEntry($contract, $orderEntry, $counter,0);
-                $order->setEntry($orderEntry);
+                $newOrderEntry = new OrderEntry($updatedOrder, $newProduct[0], $formData['amount']);
+                $contractEntry = new ContractEntry($contract, $newOrderEntry, $counter,0);
+                $order->setEntry($newOrderEntry);
                 $contract->setEntry($contractEntry);
 
-                $this->getEntityManager()->persist($orderEntry);
+                $this->getEntityManager()->persist($newOrderEntry);
                 $this->getEntityManager()->persist($contractEntry);
                 $this->getEntityManager()->persist($updatedOrder);
                 $this->getEntityManager()->persist($contract);

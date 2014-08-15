@@ -59,6 +59,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'entityManager' => $this->getEntityManager(),
             )
         );
     }

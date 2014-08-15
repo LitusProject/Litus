@@ -37,7 +37,7 @@ return array(
             'manage', 'add', 'delete'
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'download', 'delete'
+            'manage', 'edit', 'view', 'history', 'sign', 'signed', 'download', 'delete'
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics'

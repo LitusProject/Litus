@@ -139,6 +139,11 @@ Example content of this section.
             'description' => 'Name of corporate relations vzw',
     ),
     array(
+            'key'         => 'br.invoice_number',
+            'value'       => '1',
+            'description' => 'The default number that is used on an invoice created by BR',
+    ),
+    array(
         'key'         => 'br.vat_types',
         'value'       => serialize(
             array(
