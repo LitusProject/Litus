@@ -30,7 +30,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'OnBundle\Hydrator\Slug';
 
-    private $_slug;
+    /**
+     * @var SlugDocument|null
+     */
+    private $slug;
 
     public function init()
     {
@@ -47,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getDocumentManager(), $this->getSlug()),
+                        new NameValidator($this->getDocumentManager(), $this->slug),
                     ),
                 ),
             ),
@@ -73,24 +76,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'slug_add');
+
+        if (null !== $this->slug)
+            $this->bind($this->slug);
     }
 
     /**
-     * @param \OnBundle\Document\Slug
-     * @return \OnBundle\Form\Admin\Slug\Add
+     * @param  SlugDocument $slug
+     * @return self
      */
     public function setSlug(SlugDocument $slug)
     {
-        $this->_slug = $slug;
+        $this->slug = $slug;
 
         return $this;
-    }
-
-    /**
-     * @return \OnBundle\Document\Slug
-     */
-    public function getSlug()
-    {
-        return $this->_slug;
     }
 }

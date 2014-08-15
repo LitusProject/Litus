@@ -42,16 +42,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'start_date',
             'label'      => 'Start Date',
             'required'   => true,
-            'attributes'  => array(
-                'placeholder'     => 'dd/mm/yyyy hh:mm',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
         ));
 
         $this->add(array(
@@ -59,19 +49,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'end_date',
             'label'      => 'End Date',
             'required'   => true,
-            'attributes'  => array(
-                'placeholder'     => 'dd/mm/yyyy hh:mm',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                    ),
-                ),
-            ),
         ));
 
         $this->add(array(

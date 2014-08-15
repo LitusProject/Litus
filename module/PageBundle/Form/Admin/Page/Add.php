@@ -22,7 +22,8 @@ use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Category,
-    PageBundle\Entity\Node\Page as PageEntity;
+    PageBundle\Entity\Node\Page as PageEntity,
+    RuntimeException;
 
 /**
  * Add Page
@@ -32,9 +33,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected $hydrator = 'PageBundle\Hydrator\Node\Page';
 
     /**
-     * @var \PageBundle\Entity\Node\Page
+     * @var PageEntity
      */
-    private $_page;
+    private $page;
 
     public function init()
     {
@@ -45,8 +46,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'category',
             'label'      => 'Category',
             'required'   => true,
-            'options'    => array(
-                'options' => $this->_createCategoriesArray(),
+            'attributes'    => array(
+                'options' => $this->createCategoriesArray(),
             ),
         ));
 
@@ -77,7 +78,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'multiple' => true,
             ),
             'options'    => array(
-                'options' => $this->_createEditRolesArray(),
+                'options' => $this->createEditRolesArray(),
             ),
         ));
 
@@ -124,14 +125,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
     }
 
-    private function _createCategoriesArray()
+    private function createCategoriesArray()
     {
         $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         if (empty($categories))
-            throw new \RuntimeException('There needs to be at least one category before you can add a page');
+            throw new RuntimeException('There needs to be at least one category before you can add a page');
 
         $categoryOptions = array();
         foreach($categories as $category)
@@ -159,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $pageOptions;
     }
 
-    private function _createEditRolesArray()
+    private function createEditRolesArray()
     {
         $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -172,27 +173,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
 
         if (empty($rolesArray))
-            throw new \RuntimeException('There needs to be at least one role before you can add a page');
+            throw new RuntimeException('There needs to be at least one role before you can add a page');
 
         return $rolesArray;
     }
 
     /**
-     * @param \PageBundle\Entity\Node\Page
-     * @return \PageBundle\Form\Admin\Page\Add
+     * @param PageEntity
+     * @return self
      */
     public function setPage(PageEntity $page)
     {
-        $this->_page = $page;
+        $this->page = $page;
 
         return $this;
     }
 
     /**
-     * @return \PageBundle\Entity\Node\Page
+     * @return PageEntity
      */
     public function getPage()
     {
-        return $this->_page;
+        return $this->page;
     }
 }

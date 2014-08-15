@@ -18,7 +18,8 @@
 
 namespace OnBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    OnBundle\Document\Slug as SlugDocument;
 
 /**
  * This hydrator hydrates/extracts slug data.
@@ -37,24 +38,21 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        // SlugDocument requires the Person that created it, so
-        // we cannot create an object here.
         if (null === $object)
-            throw new InvalidObjectException();
+            $object = new SlugDocument($this->getPerson());
 
         if ('' == $data['name']) {
             do {
-                $name = $this->_createRandomName();
+                $name = $this->createRandomName();
                 $found = $this->getDocumentManager()
                     ->getRepository('OnBundle\Document\Slug')
                     ->findOneByName($name);
             } while (isset($found));
-        } else {
-            $name = strtolower($data['name']);
-        }
 
-        $object->setName(strtolower($name))
-            ->setUrl($data['url']);
+            $data['name'] = $name;
+        } else {
+            $data['name'] = strtolower($data['name']);
+        }
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
@@ -65,12 +63,10 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
-
-        return $data;
+        return $this->stdExtract($object, self::$std_keys);
     }
 
-    private function _createRandomName()
+    private function createRandomName()
     {
         $characters = 'abcdefghijklmnopqrstuwxyz0123456789';
 

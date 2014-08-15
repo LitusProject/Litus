@@ -40,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'parent',
             'label'      => 'Parent',
             'options'    => array(
-                'options' => $this->_createPagesArray(),
+                'options' => $this->createPagesArray(),
             ),
         ));
 
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
     }
 
-    private function _createPagesArray()
+    private function createPagesArray()
     {
         $pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')

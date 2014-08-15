@@ -71,13 +71,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm('page_page_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $page = $form->hydrateObject(
-                    new Page($this->getAuthentication()->getPersonObject())
-                );
+                $page = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($page);
                 $this->getEntityManager()->flush();
@@ -127,8 +124,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm('page_page_edit', array('page' => $page));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
@@ -161,7 +157,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $this->initAjax();
 
         if (!($page = $this->_getPage()))
-            return;
+            return new ViewModel();
 
         $page->close();
 

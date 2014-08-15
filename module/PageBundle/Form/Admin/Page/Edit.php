@@ -37,7 +37,6 @@ class Edit extends Add
         }
 
         $this->remove('submit');
-
         $this->addSubmit('Save', 'category_edit');
     }
 }

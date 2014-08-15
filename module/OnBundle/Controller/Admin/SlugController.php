@@ -52,9 +52,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $slug = $form->hydrateObject(
-                    new Slug($this->getAuthentication()->getPersonObject())
-                );
+                $slug = $form->hydrateObject();
 
                 $this->getDocumentManager()->persist($slug);
                 $this->getDocumentManager()->flush();

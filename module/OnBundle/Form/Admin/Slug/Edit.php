@@ -33,7 +33,6 @@ class Edit extends Add
             ->setRequired();
 
         $this->remove('submit');
-
         $this->addSubmit('Save', 'slug_edit');
     }
 }

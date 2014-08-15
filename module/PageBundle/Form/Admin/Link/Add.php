@@ -20,7 +20,8 @@ namespace PageBundle\Form\Admin\Link;
 
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Category;
+    PageBundle\Entity\Category,
+    RuntimeException;
 
 /**
  * Add Link
@@ -42,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'Category',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_createCategoriesArray(),
+                'options' => $this->createCategoriesArray(),
             ),
         ));
 
@@ -59,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'class' => 'parent',
                 ),
                 'options'    => array(
-                    'options' => $this->_createPagesArray($category),
+                    'options' => $this->createPagesArray($category),
                 ),
             ));
         }
@@ -101,14 +102,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
     }
 
-    private function _createCategoriesArray()
+    private function createCategoriesArray()
     {
         $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
         if (empty($categories))
-            throw new \RuntimeException('There needs to be at least one category before you can add a link');
+            throw new RuntimeException('There needs to be at least one category before you can add a link');
 
         $categoryOptions = array();
         foreach($categories as $category)
@@ -119,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $categoryOptions;
     }
 
-    private function _createPagesArray(Category $category)
+    private function createPagesArray(Category $category)
     {
         $pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')

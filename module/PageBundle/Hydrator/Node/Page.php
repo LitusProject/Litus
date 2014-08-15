@@ -18,9 +18,9 @@
 
 namespace PageBundle\Hydrator\Node;
 
-use PageBundle\Entity\Node\Page as PageEntity,
-    PageBundle\Entity\Node\Translation as TranslationEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use Locale,
+    PageBundle\Entity\Node\Page as PageEntity,
+    PageBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts page data.
@@ -32,43 +32,35 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        // PageEntity requires the Person that created it, so
-        // we cannot create an object here.
-        if (null === $object)
-            throw new InvalidObjectException();
+        $newPage = new Page($this->getPerson());
 
-        if (null !== $object->getName()) {
-            $oldPage = $object;
-            $oldPage->close();
+        if (null !== $object && null !== $object->getName()) {
+            $object->close();
 
-            $object = new PageEntity(
-                // TODO: get current user
-            );
+            $newPage->setName($object->getName());
 
-            $object->setName($oldPage->getName());
-
-            $this->getEntityManager()->persist($object);
+            $this->getEntityManager()->persist($newPage);
 
             $orphanedPages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
-                ->findByParent($oldPage->getId());
+                ->findByParent($object->getId());
 
             foreach ($orphanedPages as $orphanedPage)
-                $orphanedPage->setParent($object);
+                $orphanedPage->setParent($newPage);
 
             $orphanedCategories = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Category')
-                    ->findByParent($oldPage->getId());
+                    ->findByParent($object->getId());
 
             foreach ($orphanedCategories as $orphanedCategory)
-                $orphanedCategory->setParent($object);
+                $orphanedCategory->setParent($newPage);
 
             $orphanedLinks = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Link')
-                    ->findByParent($oldPage->getId());
+                    ->findByParent($object->getId());
 
             foreach ($orphanedLinks as $orphanedLink)
-                $orphanedLink->setParent($object);
+                $orphanedLink->setParent($newPage);
         }
 
         $category = $this->getEntityManager()
@@ -84,9 +76,9 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        $fallbackLanguage = \Locale::getDefault();
+        $fallbackLanguage = Locale::getDefault();
 
-        $object->setCategory($category)
+        $newPage->setCategory($category)
             ->setEditRoles($editRoles)
             ->setName($data['tab_content']['tab_' . $fallbackLanguage]['title']);
 
@@ -95,11 +87,11 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($data['parent_' . $category->getId()]);
 
-            $object->setParent($parent);
+            $newPage->setParent($parent);
         }
 
         foreach ($this->getLanguages() as $language) {
-            $translation = $object->getTranslation($language, false);
+            $translation = $newPage->getTranslation($language, false);
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
@@ -109,7 +101,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             } else {
                 if ('' != $translationData['title'] && '' != $translationData['content']) {
                     $translation = new TranslationEntity(
-                        $object,
+                        $newPage,
                         $language,
                         $translationData['title'],
                         $translationData['content']
@@ -120,7 +112,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        return $object;
+        return $newPage;
     }
 
     protected function doExtract($object = null)

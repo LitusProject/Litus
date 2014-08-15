@@ -42,7 +42,7 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 
             $object->setParent($parent);
         } else {
-            $object->setParent();
+            $object->setParent(null);
         }
 
         foreach ($this->getLanguages() as $language) {
@@ -60,6 +60,9 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
                         $translationData['name']
                     );
 
+                    // this persists the translations even if the returned
+                    // object is never persisted.
+                    // This should never happen though.
                     $this->getEntityManager()->persist($translation);
                 }
             }
