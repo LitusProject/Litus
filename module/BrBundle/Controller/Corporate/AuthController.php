@@ -46,29 +46,20 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::SUCCESS,
-                            'SUCCESS',
-                            'You have been successfully logged in!'
-                        )
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You have been successfully logged in!'
                     );
                 } else {
-                    $this->flashMessenger()->addMessage(
-                        new FlashMessage(
-                            FlashMessage::ERROR,
-                            'Error',
-                            'The given username and password did not match. Please try again.'
-                        )
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The given username and password did not match. Please try again.'
                     );
                 }
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'The given username and password did not match. Please try again.'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'The given username and password did not match. Please try again.'
                 );
             }
         }
@@ -87,12 +78,9 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->getAuthentication()->forget();
 
-        $this->flashMessenger()->addMessage(
-            new FlashMessage(
-                FlashMessage::SUCCESS,
-                'SUCCESS',
-                'You have been successfully logged out!'
-            )
+        $this->flashMessenger()->success(
+            'SUCCESS',
+            'You have been successfully logged out!'
         );
 
         $this->redirect()->toRoute(

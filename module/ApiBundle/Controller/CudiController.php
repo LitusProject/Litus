@@ -235,7 +235,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) array()
+                'result' => (object) array(
+                    'status' => 'success',
+                )
             )
         );
     }
@@ -339,7 +341,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $authenticatedPerson);
 
-        if (null == $queueItem) {
+        if (null === $queueItem) {
             $queueItem = new QueueItem($this->getEntityManager(), $authenticatedPerson, $session);
 
             $this->getEntityManager()->persist($queueItem);
@@ -357,6 +359,54 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ),
             )
         );
+    }
+
+    public function signInStatusAction()
+    {
+        $this->initJson();
+
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+            return $this->error(401, 'The access token is not valid');
+
+        $authenticatedPerson = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($person->getId());
+
+        if (null === $authenticatedPerson)
+            return $this->error(500, 'The person is not an academic');
+
+        $sessions = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOpen();
+
+        if (sizeof($sessions) == 0)
+            return $this->error(500, 'The is no open sale session');
+
+        $session = $sessions[0];
+
+        $queueItem = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
+            ->findOneByPersonNotSold($session, $authenticatedPerson);
+
+        if (null === $queueItem) {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => 'not_signed_in',
+                    ),
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array(
+                        'status' => $queueItem->getStatus(),
+                        'number' => $queueItem->getQueueNumber(),
+                        'paydesk' => $queueItem->getPayDesk(),
+                    ),
+                )
+            );
+        }
     }
 
     /**
@@ -459,7 +509,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         )
                     ),
                     'price'     => $commonArticle->getSellPrice()/100,
-                    'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
+                    'sold'      => in_array($commonArticle->getId(), $sold),
                     'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($authenticatedPerson, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),

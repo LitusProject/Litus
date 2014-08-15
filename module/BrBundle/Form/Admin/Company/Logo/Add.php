@@ -36,7 +36,6 @@ use BrBundle\Component\Validator\Logo\Type as TypeValidator,
  */
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
-
     const FILESIZE = '10MB';
 
     /**

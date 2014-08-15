@@ -113,6 +113,17 @@ VTK'
         'description' => 'The path to the logo of the organization',
     ),
     array(
+            'key'         => 'organization_address_array',
+            'value'       => serialize(array(
+                            'street' => 'Studentenwijk Arenberg',
+                            'number' => '6',
+                            'mailbox' => '1',
+                            'postal' => '3001',
+                            'city' => 'Heverlee',
+                            'country' => 'Belgium')),
+            'description' => 'The address of the organization',
+    ),
+    array(
         'key'         => 'organization_url',
         'value'       => 'http://vtk.be',
         'description' => 'The URL of the organization',
@@ -295,7 +306,7 @@ Disallow: /admin/*
 
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2014052500',
+        'value'       => '2014081300',
         'description' => 'The last Litus schema update performed on this system',
     ),
 );

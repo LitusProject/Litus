@@ -285,18 +285,26 @@ class Article extends EntityRepository
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findByProf($person);
 
-        $ids = array(0);
+        $subjectIds = array(0);
         foreach($subjects as $subject)
-            $ids[] = $subject->getSubject()->getId();
+            $subjectIds[] = $subject->getSubject()->getId();
+
+        $articleIds = array_merge(
+            $this->_getCurrentArticleIdsByProf($person),
+            $this->_getAddedArticleIdsByProf($person)
+        );
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
+            ->innerJoin('m.article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.removed', 'false'),
                     $query->expr()->eq('m.article', ':id'),
-                    $query->expr()->in('m.subject', $ids)
+                    $query->expr()->in('m.subject', $subjectIds),
+                    $query->expr()->in('a.id', $articleIds),
+                    $query->expr()->notIn('a.id', $this->_getRemovedArticleIds())
                 )
             )
             ->setParameter('id', $id)
@@ -304,8 +312,10 @@ class Article extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet && (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()))
-            return $resultSet->getArticle();
+        if ($resultSet) {
+            if (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial())
+                return $resultSet->getArticle();
+        }
 
         $actions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -315,6 +325,7 @@ class Article extends EntityRepository
             return $actions[0]->setEntityManager($this->_em)
                 ->getEntity();
 
-        return null;
+        if ($resultSet)
+            return $resultSet->getArticle();
     }
 }

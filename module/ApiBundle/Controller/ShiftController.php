@@ -113,7 +113,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
 
         return new ViewModel(
             array(
-                'result' => (object) array()
+                'result' => (object) array(
+                    'status' => 'success',
+                )
             )
         );
     }
@@ -190,7 +192,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
 
         return new ViewModel(
             array(
-                'result' => (object) array()
+                'result' => (object) array(
+                    'status' => 'success',
+                )
             )
         );
     }
@@ -223,7 +227,9 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
 
         return new ViewModel(
             array(
-                'result' => (object) array()
+                'result' => (object) array(
+                    'status' => 'success',
+                )
             )
         );
     }

@@ -19,7 +19,6 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
@@ -98,7 +97,6 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         $results = array();
         foreach ($entries as $entry) {
-
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();
             if ($address->getMailbox())
@@ -152,12 +150,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
     private function _getEntry()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the entry!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the entry!'
             );
 
             $this->redirect()->toRoute(
@@ -175,12 +170,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
             ->findOneById($this->getParam('id'));
 
         if (null === $entry) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No entry with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No entry with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

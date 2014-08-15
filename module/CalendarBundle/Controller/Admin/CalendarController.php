@@ -83,7 +83,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The event was successfully added!'
                 );
 
@@ -120,7 +120,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The event was successfully edited!'
                 );
 

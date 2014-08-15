@@ -110,7 +110,6 @@
                             .append('<td>' + this.email + '</td>')
                             .append(
                                 $('<td>', {'class': 'actions'})
-                                    .append('<a href="{{ url('mail_admin_alias', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
                             deleteButton.data({

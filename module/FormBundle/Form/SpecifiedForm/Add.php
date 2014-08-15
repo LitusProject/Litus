@@ -209,6 +209,10 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                         )
                     )
                 );
+            } elseif ($fieldSpecification instanceof CheckboxField) {
+                // Do nothing
+            } elseif ($fieldSpecification instanceof DropdownField) {
+                // Do nothing
             } elseif ($fieldSpecification instanceof FileField) {
                 $inputFilter->add(
                     $factory->createInput(

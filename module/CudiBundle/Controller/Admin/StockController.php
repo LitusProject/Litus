@@ -514,6 +514,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 array(
                     'articles' => $articles,
                     'form' => $form,
+                    'period' => $period,
                 )
             );
         }

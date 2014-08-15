@@ -141,7 +141,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The academic was successfully created!'
                 );
 
@@ -328,7 +328,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The academic was successfully updated!'
                 );
 
@@ -365,7 +365,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         $this->getEntityManager()->flush();
 
         $this->flashMessenger()->success(
-            'Succes',
+            'Success',
             'The academic was successfully activated!'
         );
 

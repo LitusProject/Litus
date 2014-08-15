@@ -122,6 +122,7 @@ return array(
     'Remove Docent' => 'Remove Docent',
     'Activate Article' => 'Activate Article',
     'Are you sure you want to remove the following article' => 'Are you sure you want to remove the following article',
+    'Are you sure you want to activate the following article' => 'Are you sure you want to activate the following article',
     'Are you sure you want to remove the following docent' => 'Are you sure you want to remove the following docent',
     'Are you sure you want to activate the following article' => 'Are you sure you want to activate the following article',
     'Will the content of the article be the same af previous year?' => 'Will the content of the article be the same af previous year?',

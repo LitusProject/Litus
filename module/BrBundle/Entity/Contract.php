@@ -19,11 +19,15 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Collaborator,
     BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\Section,
+    BrBundle\Entity\Contract\ContractEntry,
     CommonBundle\Entity\User\Person,
+    BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,6 +48,14 @@ class Contract
     private $id;
 
     /**
+     * @var \BrBundle\Entity\Product\Order The contract accompanying this order
+     *
+     * @ORM\OneToOne(targetEntity="BrBundle\Entity\Product\Order")
+     * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
+     */
+    private $order;
+
+    /**
      * @var \DateTime The date and time when this contract was written
      *
      * @ORM\Column(type="datetime")
@@ -53,7 +65,7 @@ class Contract
     /**
      * @var \CommonBundle\Entity\User\Person The author of this contract
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     private $author;
@@ -69,22 +81,24 @@ class Contract
     /**
      * @var ArrayCollection The sections this contract contains
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Contract\Composition",
-     *      mappedBy="contract",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"all"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $composition;
+    private $contractEntries;
 
     /**
-     * @var int The discount the company gets, in %.
+     * @var int The discount the company gets.
      *
      * @ORM\Column(type="integer")
      */
     private $discount;
+
+    /**
+     * @var string A possible context for the discount
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $discountContext;
 
     /**
      * @var string The title of the contract
@@ -115,23 +129,93 @@ class Contract
     private $dirty;
 
     /**
+     * @var bool True if the contract has been signed or not.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $signed;
+
+    /**
+     * @var Integer that resembles the version of this contract.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
+    /**
      * @param \CommonBundle\Entity\User\Person $author   The author of this contract
      * @param Company                          $company  The company for which this contract is meant
      * @param int                              $discount The discount associated with this contract
      * @param string                           $title    The title of the contract
      */
-    public function __construct(Person $author, Company $company, $discount, $title)
+    public function __construct(Order $order, Collaborator $author, Company $company, $discount, $title)
     {
+        $this->setOrder($order);
         $this->setDate();
         $this->setAuthor($author);
         $this->setCompany($company);
         $this->setDiscount($discount);
         $this->setTitle($title);
+        $this->setVersion(0);
 
         $this->setDirty();
         $this->setInvoiceNb();
 
-        $this->composition = new ArrayCollection();
+        $this->contractEntries = new ArrayCollection();
+        $this->signed = false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountContext()
+    {
+        return $this->discountContext;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setDiscountContext($text)
+    {
+        $this->discountContext = $text;
+    }
+
+    public function hasDiscount()
+    {
+        return $this->discount > 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param int $versionNb
+     */
+    public function setVersion($versionNb)
+    {
+        $this->version = $versionNb;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function setOrder(Order $order)
+    {
+        return $this->order = $order;
     }
 
     /**
@@ -173,9 +257,9 @@ class Contract
      * @param  \CommonBundle\Entity\User\Person $author
      * @return Contract
      */
-    public function setAuthor(Person $author)
+    public function setAuthor(Collaborator $author)
     {
-        if ($author === null)
+        if (null === $author)
             throw new \InvalidArgumentException('Author cannot be null');
 
         $this->author = $author;
@@ -198,7 +282,7 @@ class Contract
      */
     public function setCompany(Company $company)
     {
-        if ($company === null)
+        if (null === $company)
             throw new \InvalidArgumentException('Company cannot be null');
 
         $this->company = $company;
@@ -206,58 +290,9 @@ class Contract
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getComposition()
-    {
-        return $this->composition->toArray();
-    }
-
-    /**
-     * @return Contract
-     */
-    public function resetComposition()
-    {
-        $this->composition->clear();
-
-        return $this;
-    }
-
-    /**
-     * @param  Section  $section  The section that should be added
-     * @param  int      $position The position of this section
-     * @return Contract
-     */
-    public function addSection(Section $section, $position)
-    {
-        $this->composition->add(
-            new Composition($this, $section, $position)
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param  array    $sections The array containing all sections that should be added; the array keys will be used as the position
-     * @return Contract
-     */
-    public function addSections(array $sections)
-    {
-        foreach ($sections as $position => $section)
-            $this->addSection($section, $position);
-
-        return $this;
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     * @param  int                       $discount The discount, $discount >= 0 && $discount <= 100
-     * @return Contract
-     */
     public function setDiscount($discount)
     {
-        if (($discount < 0) || ($discount > 100))
+        if ($discount < 0)
             throw new \InvalidArgumentException('Invalid discount');
 
         $this->discount = $discount;
@@ -288,7 +323,7 @@ class Contract
      */
     public function setTitle($title)
     {
-        if (($title === null) || !is_string($title))
+        if (null === $title || !is_string($title))
             throw new \InvalidArgumentException('Invalid title');
 
         $this->title = $title;
@@ -320,7 +355,17 @@ class Contract
      */
     public function isSigned()
     {
-        return $this->getInvoiceNb() != -1;
+        return $this->signed;
+    }
+
+    /**
+     *
+     */
+    public function setSigned($bool = true)
+    {
+        $this->signed = $bool;
+
+        return $this;
     }
 
     /**
@@ -338,7 +383,7 @@ class Contract
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
-        if (($invoiceNb === null) || !is_numeric($invoiceNb))
+        if (null === $invoiceNb || !is_numeric($invoiceNb))
             throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
 
         $this->invoiceNb = $invoiceNb;
@@ -348,10 +393,14 @@ class Contract
 
     /**
      * @return int
-     */
+     *
+     * @note    The contractnumber gets constructed by the following format "AAxYYY"
+     *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and
+     *          YYY the number of current contract.
+     **/
     public function getContractNb()
     {
-        return $this->contractNb;
+        return '22' . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -360,10 +409,47 @@ class Contract
      */
     public function setContractNb($contractNb)
     {
-        if(($contractNb === null) || !is_numeric($contractNb))
+        if(null === $contractNb || !is_numeric($contractNb))
             throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
 
         $this->contractNb = $contractNb;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllEntries()
+    {
+        return $this->contractEntries->toArray();
+    }
+
+    /**
+     * @return array
+     * @note    The array that is returned only contains the most recent entries.
+     */
+    public function getEntries()
+    {
+        $array = array();
+
+        $entries = $this->getAllEntries();
+
+        foreach ($entries as $entry) {
+            if($entry->getVersion() == $this->version)
+                array_push($array, $entry);
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param  ContractEntry             $entry
+     * @return \BrBundle\Entity\Contract
+     */
+    public function setEntry(ContractEntry $entry)
+    {
+        $this->contractEntries->add($entry);
 
         return $this;
     }

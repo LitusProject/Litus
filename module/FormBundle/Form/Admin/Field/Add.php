@@ -112,7 +112,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $field = new Text('order');
         $field->setLabel('Order')
             ->setAttribute('data-help', 'The display order of the fields, lower numbers are displayed first.')
-            ->setRequired(True);
+            ->setRequired(true);
         $this->add($field);
 
         $field = new Checkbox('required');

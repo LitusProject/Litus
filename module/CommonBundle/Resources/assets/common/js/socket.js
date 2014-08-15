@@ -22,12 +22,12 @@
             }
 
             clearTimeout(socketConnectTimeout);
-                socketConnectTimeout = setTimeout(
-                    function () {
-                        $.webSocket(settings)
-                    },
-                    1000
-                );
+            socketConnectTimeout = setTimeout(
+                function () {
+                    ws.close();
+                },
+                1000
+            );
 
             $(ws)
                 .bind('open', function (e) {
@@ -36,7 +36,7 @@
                 })
                 .bind('close', function (e) {
                     clearTimeout(socketConnectTimeout);
-                    setTimeout(function () {$.webSocket(settings)}, 1000);
+                    socketConnectTimeout = setTimeout(function () {$.webSocket(settings)}, 1000);
                     settings.error(e);
                 })
                 .bind('error', function (e) {

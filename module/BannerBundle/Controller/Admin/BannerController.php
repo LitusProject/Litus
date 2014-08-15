@@ -137,10 +137,10 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     $this->getEntityManager()->persist($banner);
                     $this->getEntityManager()->flush();
 
-                    $this->flashMessenger()->success(
-                        'Succes',
-                        'The banner was successfully added!'
-                    );
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The banner was successfully added!'
+                );
 
                     return new ViewModel(
                         array(
