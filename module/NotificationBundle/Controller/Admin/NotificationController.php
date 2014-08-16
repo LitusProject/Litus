@@ -18,9 +18,7 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use DateTime,
-    NotificationBundle\Entity\Node\Notification,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * NotificationController
@@ -57,9 +55,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $notification = $form->hydrateObject(
-                    new Notification($this->getAuthentication()->getPersonObject())
-                );
+                $notification = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($notification);
                 $this->getEntityManager()->flush();
@@ -183,14 +179,5 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $notification;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

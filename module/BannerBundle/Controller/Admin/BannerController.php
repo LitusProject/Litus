@@ -128,19 +128,17 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
             if ($form->isValid()) {
                 if ($isNew && $upload->isValid()) {
-                    $banner = $form->hydrateObject(
-                        new Banner($this->getAuthentication()->getPersonObject())
-                    );
+                    $banner = $form->hydrateObject();
 
                     $this->receive($upload, $banner);
 
                     $this->getEntityManager()->persist($banner);
                     $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The banner was successfully added!'
-                );
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The banner was successfully added!'
+                    );
 
                     return new ViewModel(
                         array(

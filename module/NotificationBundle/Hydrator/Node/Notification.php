@@ -18,7 +18,8 @@
 
 namespace NotificationBundle\Hydrator\Node;
 
-use NotificationBundle\Entity\Node\Translation as TranslationEntity,
+use NotificationBundle\Entity\Node\Notification as NotificationEntity,
+    NotificationBundle\Entity\Node\Translation as TranslationEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     DateTime;
@@ -38,10 +39,9 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        // NotificationEntity requires the Person that created it, so
-        // we cannot create an object here.
-        if (null === $object)
-            throw new InvalidObjectException();
+        if (null === $object) {
+            $object = new NotificationEntity($this->getPerson());
+        }
 
         $startDate = self::_loadDate($data['start_date']);
         $endDate = self::_loadDate($data['end_date']);

@@ -18,8 +18,8 @@
 
 namespace BannerBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+use BannerBundle\Entity\Node\Banner as BannerEntity,
+    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     DateTime;
 
 /**
@@ -37,10 +37,9 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        // BannerEntity requires the Person that created it, so
-        // we cannot create an object here.
-        if (null === $object)
-            throw new InvalidObjectException();
+        if (null === $object) {
+            $object = new BannerEntity($this->getPerson());
+        }
 
         $startDate = self::_loadDate($data['start_date']);
         $endDate = self::_loadDate($data['end_date']);

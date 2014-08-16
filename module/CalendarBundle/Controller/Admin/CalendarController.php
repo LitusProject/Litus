@@ -75,9 +75,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $event = $form->hydrateObject(
-                    new Event($this->getAuthentication()->getPersonObject())
-                );
+                $event = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
