@@ -18,8 +18,8 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-use NewsBundle\Entity\Node\Translation as TranslationEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+use NewsBundle\Entity\Node\News as NewsEntity,
+    NewsBundle\Entity\Node\Translation as TranslationEntity,
     DateTime;
 
 /**
@@ -32,10 +32,9 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        // NewsEntity requires the Person that created it, so
-        // we cannot create an object here.
-        if (null === $object)
-            throw new InvalidObjectException();
+        if (null === $object) {
+            $object = new NewsEntity($this->getPerson());
+        }
 
         $endDate = self::_loadDate($data['end_date']);
 

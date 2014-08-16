@@ -18,8 +18,7 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use NewsBundle\Entity\Node\News,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -57,9 +56,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $news = $form->hydrateObject(
-                    new News($this->getAuthentication()->getPersonObject())
-                );
+                $news = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($news);
                 $this->getEntityManager()->flush();
