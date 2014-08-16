@@ -94,7 +94,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required' => false,
                     'validators' => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => '30MB',
                             ),
