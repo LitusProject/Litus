@@ -19,8 +19,6 @@
 namespace PublicationBundle\Controller\Admin;
 
 use PublicationBundle\Entity\Publication,
-    PublicationBundle\Form\Admin\Publication\Add as AddForm,
-    PublicationBundle\Form\Admin\Publication\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -49,15 +47,14 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('publication_publication_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-
-                $publication = new Publication($formData['title']);
+                $publication = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($publication);
                 $this->getEntityManager()->flush();
@@ -90,15 +87,12 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $publication);
+        $form = $this->getForm('publication_publication_edit', array('publication' => $publication));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-
-                $publication->setTitle($formData['title']);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

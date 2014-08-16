@@ -16,28 +16,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PublicationBundle\Form\Admin\Publication;
+namespace PublicationBundle\Hydrator;
 
-use LogicException;
+use PublicationBundle\Entity\Publication as PublicationEntity;
 
-/**
- * This form allows the user to edit the Publication.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- */
-class Edit extends Add
+class Publication extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    public function init()
+    private static $std_keys = array('title');
+
+    protected function doHydrate(array $data, $object = null)
     {
-        if (null === $this->publication) {
-            throw new LogicException('Cannot edit a null publication.');
+        if (null === $object) {
+            return new PublicationEntity($data['title']);
         }
 
-        parent::init();
+        return $this->stdHydrate($data, $object, self::$std_keys);
+    }
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'publication_edit');
+    protected function doExtract($object = null)
+    {
+        if (null === $object) {
+            return array();
+        }
 
-        $this->bind($this->publication);
+        return $this->stdExtract($object, self::$std_keys);
     }
 }
