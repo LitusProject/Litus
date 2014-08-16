@@ -400,12 +400,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     private function _createRewardArray()
     {
-        $reward = unserialize(
-                $this->_entityManager
+        return unserialize(
+            $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.reward_numbers')
-            );
-
-        return $reward;
+        );
     }
 }
