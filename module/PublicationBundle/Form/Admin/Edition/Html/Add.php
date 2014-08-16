@@ -18,150 +18,79 @@
 
 namespace PublicationBundle\Form\Admin\Edition\Html;
 
-use CommonBundle\Component\OldForm\Admin\Element\File,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
-    PublicationBundle\Entity\Publication,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
+    PublicationBundle\Entity\Publication;
 
 /**
  * The form used to add a new Publication
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
     /**
      * @var Publication The publication
      */
-    private $_publication = null;
+    private $publication;
 
-    /**
-     * @var AcademicYear The current academic year
-     */
-    private $_academicYear = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Publication     $publication   The publication to add an edition to.
-     * @param AcademicYear    $academicYear  The current academic year.
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $name = null)
+    public function init()
     {
-        parent::__construct($name);
-
-        $this->_entityManager = $entityManager;
-        $this->_publication = $publication;
-        $this->_academicYear = $academicYear;
+        parent::init();
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setRequired(true);
-        $this->add($field);
-
-        $field = new Select('pdf_version');
-        $field->setLabel('PDF Version')
-            ->setAttribute('options', $this->getPDFEditions())
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('html');
-        $field->setLabel('HTML')
-            ->setAttribute('rows', 20)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('date');
-        $field->setLabel('Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-datepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new File('file');
-        $field->setLabel('Images Archive')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'html_add');
-        $this->add($field);
-    }
-
-    public function getPDFEditions()
-    {
-        $pdfs = $this->_entityManager
-            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
-            ->findAllByPublicationAndAcademicYear($this->_publication, $this->_academicYear);
-
-        $options = array();
-        foreach ($pdfs as $pdf) {
-            $options[$pdf->getId()] = $pdf->getTitle();
-        }
-
-        return $options;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'title',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                        new TitleValidator($this->getEntityManager(), $this->publication, $this->getCurrentAcademicYear(true)),
                     ),
                 )
             )
-        );
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'date',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'pdf_version',
+            'label'      => 'PDF Version',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getPDFEditions(),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'file',
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'html',
+            'label'      => 'HTML',
+            'required'   => true,
+            'attributes' => array(
+                'rows' => 20,
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'date',
+            'name'     => 'date',
+            'label'    => 'Date',
+            'required' => true,
+        ));
+
+        $this->add(array(
+            'type'     => 'file',
+            'name'     => 'file',
+            'label'    => 'Image Archive',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'required' => false,
                     'validators' => array(
                         array(
@@ -177,10 +106,35 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'html_add');
+    }
+
+    public function getPDFEditions()
+    {
+        $pdfs = $this->getEntityManager()
+            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
+            ->findAllByPublicationAndAcademicYear($this->publication, $this->getCurrentAcademicYear(true));
+
+        $options = array();
+        foreach ($pdfs as $pdf) {
+            $options[$pdf->getId()] = $pdf->getTitle();
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param  Publication $publication
+     * @return self
+     */
+    public function setPublication(Publication $publication)
+    {
+        $this->publication = $publication;
+
+        return $this;
     }
 }

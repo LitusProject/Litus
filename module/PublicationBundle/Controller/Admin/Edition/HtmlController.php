@@ -21,7 +21,6 @@ namespace PublicationBundle\Controller\Admin\Edition;
 use DateTime,
     PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
-    PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\Validator\File\Size as SizeValidator,
@@ -62,7 +61,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
+        $form = $this->getForm('publication_edition_html_add', array('publication' => $publication));
+
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -87,7 +87,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         if (!($publication = $this->_getPublication()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
+        $form = $this->getForm('publication_edition_html_add', array('publication' => $publication));
         $formData = $this->getRequest()->getPost();
         $form->setData($formData);
 
@@ -99,7 +99,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $date = self::_loadDate($formData['date']);
 
         if ($form->isValid() && $upload->isValid() && $date) {
-            $formData = $form->getFormData($formData);
+            $formData = $form->getData();
 
             $publicFilePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
