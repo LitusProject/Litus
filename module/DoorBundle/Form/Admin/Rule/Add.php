@@ -18,91 +18,27 @@
 
 namespace DoorBundle\Form\Admin\Rule;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    Doctrine\ODM\MongoDB\DocumentManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Add Key
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var DocumentManager The DocumentManager instance
-     */
-    protected $_documentManager = null;
+    protected $hydrator = 'DoorBundle\Hydrator\Rule';
 
-    /**
-     * @param DocumentManager $documentManager The DocumentManager instance
-     * @param null|string|int $name            Optional name for the element
-     */
-    public function __construct(DocumentManager $documentManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_documentManager = $documentManager;
-
-        $field = new Hidden('academic_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Text('academic');
-        $field->setLabel('Academic')
-            ->setAttribute('id', 'academicSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('start_time');
-        $field->setLabel('Start Time')
-            ->setAttribute('placeholder', 'hh:mm')
-            ->setAttribute('data-timepicker', true);
-        $this->add($field);
-
-        $field = new Text('end_time');
-        $field->setLabel('End Time')
-            ->setAttribute('placeholder', 'hh:mm')
-            ->setAttribute('data-timepicker', true);
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'rule_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'academic_id',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'academic_id',
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -111,102 +47,57 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'academic',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'academic',
+            'label'      => 'Academic',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'academicSearch',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => true,
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_time',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'     => 'time',
+            'name'     => 'start_time',
+            'label'    => 'Start Time',
+            'required' => true,
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_time',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'     => 'time',
+            'name'     => 'end_time',
+            'label'    => 'End Time',
+            'required' => true,
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'rule_add');
     }
 }

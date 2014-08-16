@@ -21,8 +21,6 @@ namespace DoorBundle\Controller\Admin;
 use DateInterval,
     DateTime,
     DoorBundle\Document\Rule,
-    DoorBundle\Form\Admin\Rule\Add as AddForm,
-    DoorBundle\Form\Admin\Rule\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,34 +49,15 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getDocumentManager());
+        $form = $this->getForm('door_rule_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
+            if ($form->isValid()) {
+                $rule = $form->hydrateObject();
 
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $academic = ('' == $formData['academic_id'])
-                    ? $repository->findOneByUsername($formData['academic'])
-                    : $repository->findOneById($formData['academic_id']);
-
-                $rule = new Rule(
-                    $startDate,
-                    $endDate,
-                    str_replace(':', '', $formData['start_time']),
-                    str_replace(':', '', $formData['end_time']),
-                    $academic
-                );
                 $this->getDocumentManager()->persist($rule);
-
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -109,31 +88,12 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         if (!($rule = $this->_getRule()))
             return new ViewModel();
 
-        $form = new EditForm($this->getDocumentManager(), $rule);
+        $form = $this->getForm('door_rule_edit', $rule);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person');
-
-                $person = ('' == $formData['person_id'])
-                    ? $repository->findOneByUsername($formData['person'])
-                    : $repository->findOneById($formData['person_id']);
-
-                $rule->setAcademic($person)
-                    ->setStartDate($startDate)
-                    ->setEndDate($endDate)
-                    ->setStartTime(str_replace(':', '', $formData['start_time']))
-                    ->setEndTime(str_replace(':', '', $formData['end_time']));
-
+            if ($form->isValid()) {
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -273,14 +233,5 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $logGraphData;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

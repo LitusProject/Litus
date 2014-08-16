@@ -76,18 +76,10 @@ class Rule
     private $academic;
 
     /**
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param int      $startTime
-     * @param int      $endTime
      * @param Academic $academic
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, $startTime, $endTime, Academic $academic)
+    public function __construct(Academic $academic)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
         $this->academic = $academic->getId();
     }
 
@@ -100,7 +92,7 @@ class Rule
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate()
     {
