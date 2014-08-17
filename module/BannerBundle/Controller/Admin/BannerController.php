@@ -19,8 +19,6 @@
 namespace BannerBundle\Controller\Admin;
 
 use BannerBundle\Entity\Node\Banner,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -91,7 +89,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    private function receive(FileUpload $upload, Banner $banner)
+    private function receive($file, Banner $banner)
     {
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -101,8 +99,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
             $fileName = '/' . sha1(uniqid());
         } while (file_exists($filePath . $fileName));
 
-        $upload->addFilter('Rename', $filePath . $fileName);
-        $upload->receive();
+        rename($file['tmp_name'], $filePath . $fileName);
 
         $banner->setImage($fileName);
     }
@@ -118,19 +115,19 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         else
             $form = $this->getForm('banner_banner_edit', $banner);
 
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
-                if ($isNew && $upload->isValid()) {
+                $formData = $form->getData();
+
+                if ($isNew) {
                     $banner = $form->hydrateObject();
 
-                    $this->receive($upload, $banner);
+                    $this->receive($formData['file'], $banner);
 
                     $this->getEntityManager()->persist($banner);
                     $this->getEntityManager()->flush();
@@ -151,9 +148,8 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                         )
                     );
                 } elseif (!$isNew) {
-                    if ($upload->isValid()) {
-                        $this->receive($upload, $banner);
-                    }
+                    if (isset($formData['file']))
+                        $this->receive($formData['file'], $banner);
 
                     $this->getEntityManager()->flush();
 
@@ -188,9 +184,6 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     $formErrors[$element->getAttribute('id')][] = $error;
                 }
             }
-
-            if (sizeof($upload->getMessages()) > 0)
-                $formErrors['file'] = $upload->getMessages();
 
             return new ViewModel(
                 array(

@@ -28,7 +28,7 @@ class Edit extends Add
 {
     public function init()
     {
-        parent::init();
+        parent::init(false);
 
         $this->remove('submit');
         $this->addSubmit('Save', 'banner_edit');

@@ -35,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     const BANNER_HEIGHT = 100;
     const BANNER_FILESIZE = '10MB';
 
-    public function init()
+    public function init($fileRequired = true)
     {
         parent::init();
 
@@ -102,12 +102,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes'  => array(
                 'data-help' => 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.',
             ),
-            'required'   => false,
+            'required'   => $fileRequired,
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::BANNER_FILESIZE,
                             ),

@@ -63,6 +63,7 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        $data['active'] = $object->isActive();
 
         return $data;
     }
