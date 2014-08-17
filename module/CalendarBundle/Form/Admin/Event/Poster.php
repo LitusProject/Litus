@@ -32,7 +32,6 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->setAttribute('id', 'uploadPoster');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
             'type'       => 'file',
@@ -49,7 +48,7 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),

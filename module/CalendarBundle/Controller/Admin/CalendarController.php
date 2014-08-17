@@ -21,8 +21,6 @@ namespace CalendarBundle\Controller\Admin;
 use CalendarBundle\Entity\Node\Event,
     Imagick,
     Zend\Http\Headers,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -185,16 +183,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function receive(FileUpload $upload, Event $event)
+    private function receive($file, Event $event)
     {
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('calendar.poster_path');
 
-        $upload->receive();
-
-        $image = new Imagick($upload->getFileName('poster'));
-        unlink($upload->getFileName('poster'));
+        $image = new Imagick($file['tmp_name']);
+        unlink($file['tmp_name']);
 
         if ($event->getPoster() != '' || $event->getPoster() !== null) {
             $fileName = '/' . $event->getPoster();
@@ -217,17 +213,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('calendar.poster_path');
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
-            $upload = new FileUpload();
-            $inputFilter = $form->getInputFilter()->get('poster');
-            if ($inputFilter instanceof InputInterface)
-                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            if ($upload->isValid()) {
-                $this->receive($upload, $event);
+                $this->receive($formData['poster'], $event);
 
                 $this->getEntityManager()->flush();
 
@@ -247,10 +241,19 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
             } else {
+                $errors = $form->getMessages();
                 $formErrors = array();
 
-                if (sizeof($upload->getMessages()) > 0)
-                    $formErrors['poster'] = $upload->getMessages();
+                foreach ($form->getElements() as $key => $element) {
+                    if (!isset($errors[$element->getName()]))
+                        continue;
+
+                    $formErrors[$element->getAttribute('id')] = array();
+
+                    foreach ($errors[$element->getName()] as $error) {
+                        $formErrors[$element->getAttribute('id')][] = $error;
+                    }
+                }
 
                 return new ViewModel(
                     array(
