@@ -18,12 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
-    SyllabusBundle\Component\Validator\Study\Recursion as RecursionValidator,
-    SyllabusBundle\Entity\Study,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Study
@@ -32,68 +27,15 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @var Study
-     */
-    private $_study = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Study           $study         The study we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Study $study, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        $this->_study = $study;
+        if (null === $this->study) {
+            throw new LogicException('Cannot edit a null study');
+        }
 
         $this->remove('submit');
+        $this->addSubmit('Save', 'edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->populateFromStudy($study);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('kul_id');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'kul_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new KulIdValidator($this->_entityManager, $this->_study),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'parent',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new RecursionValidator($this->_entityManager, $this->_study),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->bind($this->study);
     }
 }

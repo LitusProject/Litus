@@ -18,28 +18,46 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Comment;
 
-use SyllabusBundle\Entity\Subject\Comment,
-    Zend\Form\Element\Submit;
+use LogicException,
+    SyllabusBundle\Entity\Subject\Comment;
 
 /**
  * Mark Comment As Read
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class MarkAsRead extends \CommonBundle\Component\OldForm\Admin\Form
+class MarkAsRead extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var Comment
      */
-    public function __construct(Comment $comment, $name = null)
+    private $comment;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->comment) {
+            throw new LogicException('No comment given to mark as read');
+        }
+
+        parent::init();
 
         $this->setAttribute('class', '');
 
-        $field = new Submit('mark_as_read');
-        $field->setValue($comment->isRead() ? 'Mark As Unread': 'Mark As Read')
-            ->setAttribute('class', 'sign');
-        $this->add($field);
+        $this->addSubmit(
+            $this->comment->isRead() ? 'Mark As Unread' : 'Mark As Read'.
+            'sign',
+            'mark_as_read'
+        );
+    }
+
+    /**
+     * @param  Comment $comment
+     * @return self
+     */
+    public function setComment(Comment $comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
     }
 }

@@ -18,17 +18,10 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
-use CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
+use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Component\Validator\Subject\Study as StudyValidator,
     SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\StudySubjectMap,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    SyllabusBundle\Entity\StudySubjectMap;
 
 /**
  * Add Study to Subject
@@ -37,76 +30,42 @@ use CommonBundle\Component\OldForm\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
+    protected $hydrator = 'SyllabusBundle\Hydrator\StudySubjectMap';
+
     /**
-     * @var EntityManager The EntityManager instance
+     * @var StudySubjectMap|null
      */
-    protected $_entityManager;
+    protected $mapping = null;
 
     /**
      * @var Subject
      */
-    protected $_subject;
+    private $subject;
 
     /**
      * @var AcademicYear
      */
-    protected $_academicYear;
+    private $academicYear;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Subject         $subject
-     * @param AcademicYear    $academicYear
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Subject $subject, AcademicYear $academicYear, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->subject) {
+            throw new LogicException('No subject was given to add a study to');
+        }
+        if (null === $this->academicYear) {
+            throw new LogicException('No academic year was given');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_subject = $subject;
-        $this->_academicYear = $academicYear;
+        parent::init();
 
-        $field = new Hidden('study_id');
-        $field->setAttribute('id', 'studyId');
-        $this->add($field);
-
-        $field = new Text('study');
-        $field->setLabel('Study')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'studySearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function populateFromMapping(StudySubjectMap $mapping)
-    {
-        $this->setData(
-            array(
-                'mandatory' => $mapping->isMandatory(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'study_id',
+            'attributes' => array(
+                'id' => 'studyId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -116,25 +75,75 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'study',
+            'label'      => 'Study',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'studySearch',
+                'style'        => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new StudyValidator($this->_entityManager, $this->_subject, $this->_academicYear),
+                        new StudyValidator($this->getEntityManager(), $this->subject, $this->academicYear),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
+        ));
+
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Subject $subject
+     * @return self
+     */
+    public function setSubject(Subject $subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * @param  StudySubjectMap $map
+     * @return self
+     */
+    public function setMapping(StudySubjectMap $map)
+    {
+        $this->mapping = $map;
+
+        $this->setSubject($map->getSubject())
+            ->setAcademicYear($map->getAcademicYear());
+
+        return $this;
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return self
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->academicYear = $academicYear;
+
+        return $this;
     }
 }

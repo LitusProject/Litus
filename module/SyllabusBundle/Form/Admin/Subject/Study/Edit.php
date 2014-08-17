@@ -18,10 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\StudySubjectMap,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Subject
@@ -30,33 +27,20 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param StudySubjectMap $mapping
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, StudySubjectMap $mapping, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $mapping->getSubject(), $mapping->getAcademicYear(), $name);
+        if (null === $this->mapping) {
+            throw new LogicException('Cannot edit null subject-study map');
+        }
 
-        $this->remove('study_id');
-        $this->remove('study');
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
+        $this->remove('study_id')
+            ->remove('study')
+            ->remove('submit');
 
-        $this->populateFromMapping($mapping);
-    }
+        $this->addSubmit('Save', 'edit');
 
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('study_id');
-        $inputFilter->remove('study');
-
-        return $inputFilter;
+        $this->bind($this->mapping);
     }
 }

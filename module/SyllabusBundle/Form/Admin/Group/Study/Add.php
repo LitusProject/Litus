@@ -18,54 +18,25 @@
 
 namespace SyllabusBundle\Form\Admin\Group\Study;
 
-use CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Add Study
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('study_id');
-        $field->setAttribute('id', 'studyId');
-        $this->add($field);
-
-        $field = new Text('study');
-        $field->setLabel('Study')
-            ->setAttribute('style', 'width: 500px')
-            ->setAttribute('id', 'studySearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'study_id',
+            'attributes' => array(
+                'id' => 'studyId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -75,22 +46,30 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'study',
+            'label'      => 'Study',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'studySearch',
+                'style'        => 'width: 500px',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
     }
 }

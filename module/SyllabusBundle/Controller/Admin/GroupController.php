@@ -21,11 +21,7 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\StudyGroupMap,
-    SyllabusBundle\Form\Admin\Group\Add as AddForm,
-    SyllabusBundle\Form\Admin\Group\Edit as EditForm,
-    SyllabusBundle\Form\Admin\Group\Study\Add as StudyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -70,19 +66,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($academicYear = $this->_getAcademicYear()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('syllabus_group_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $extraMembers = preg_split("/[,;\s]+/", $formData['extra_members']);
-                $excludedMembers = preg_split("/[,;\s]+/", $formData['excluded_members']);
-
-                $this->getEntityManager()->persist(new Group($formData['name'], $formData['cvbook'], serialize($extraMembers), serialize($excludedMembers)));
+                $this->getEntityManager()->persist($form->hydrateObject());
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -123,22 +113,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($group = $this->_getGroup()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $group);
+        $form = $this->getForm('syllabus_group_edit', array('group' => $group));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $extraMembers = preg_split("/[,;\s]+/", $formData['extra_members']);
-                $excludedMembers = preg_split("/[,;\s]+/", $formData['excluded_members']);
-
-                $group->setName($formData['name'])
-                    ->setCvBook($formData['cvbook'])
-                    ->setExtraMembers(serialize($extraMembers))
-                    ->setExcludedMembers(serialize($excludedMembers));
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -181,14 +161,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($group = $this->_getGroup()))
             return new ViewModel();
 
-        $form = new StudyForm();
+        $form = $this->getForm('syllabus_group_study_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')

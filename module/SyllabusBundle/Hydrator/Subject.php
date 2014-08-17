@@ -16,28 +16,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Group;
+namespace SyllabusBundle\Hydrator;
 
-use LogicException;
+use SyllabusBundle\Entity\Subect as SubjectEntity;
 
-/**
- * Edit Group
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Edit extends Add
+class Subject extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    public function init()
+    private static $std_keys = array('code', 'name', 'semester', 'credits');
+
+    protected function doHydrate(array $data, $object = null)
     {
-        if (null === $this->group) {
-            throw new LogicException('Cannot edit null group');
+        if (null === $object) {
+            $object = new SubjectEntity;
         }
 
-        parent::init();
+        return $this->stdHydrate($data, $object, self::$std_keys);
+    }
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'edit');
+    protected function doExtract($object = null)
+    {
+        if (null === $object) {
+            return array();
+        }
 
-        $this->bind($this->group);
+        return $this->stdExtract($object, self::$std_keys);
     }
 }

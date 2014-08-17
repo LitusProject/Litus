@@ -18,128 +18,97 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    Doctrine\ORM\EntityManager,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
+use MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
-    SyllabusBundle\Entity\Group,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    SyllabusBundle\Entity\Group;
 
 /**
  * Add Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'SyllabusBundle\Hydrator\Group';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Group|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $group = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setAttribute('size', 70)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('cvbook');
-        $field->setLabel('Show in CV Book');
-        $this->add($field);
-
-        $field = new Textarea('extra_members');
-        $field->setLabel('Extra Members');
-        $this->add($field);
-
-        $field = new Textarea('excluded_members');
-        $field->setLabel('Excluded Members');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    protected function populateFromGroup(Group $group)
-    {
-        $extraMembers = unserialize($group->getExtraMembers());
-        $excludedMembers = unserialize($group->getExcludedMembers());
-
-        $this->setData(
-            array(
-                'name' => $group->getName(),
-                'cvbook' => $group->getCvBook(),
-                'extra_members' => $extraMembers ? implode(',', $extraMembers) : '',
-                'excluded_members' => $excludedMembers ? implode(',', $excludedMembers) : '',
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'size' => 70,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->_entityManager),
+                        new NameValidator($this->getEntityManager(), $this->group),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'extra_members',
-                    'required' => false,
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'cv_book',
+            'label' => 'Show in CV Book',
+        ));
+
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'extra_members',
+            'label'   => 'Extra Members',
+            'options' => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new MultiMailValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'excluded_members',
-                    'required' => false,
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'excluded_members',
+            'label'   => 'Excluded Members',
+            'options' => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new MultiMailValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Group $group
+     * @return self
+     */
+    public function setGroup(Group $group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }

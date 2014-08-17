@@ -18,162 +18,97 @@
 
 namespace SyllabusBundle\Form\Admin\Subject;
 
-use CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
-    SyllabusBundle\Entity\Subject,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Add Subject
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'SyllabusBundle\Hydrator\Subject';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Subject|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $subject = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('code');
-        $field->setLabel('Code')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('semester');
-        $field->setLabel('Semester')
-            ->setAttribute(
-                'options',
-                array(
-                    '1' => 'First Semester',
-                    '2' => 'Second Semester',
-                    '3' => 'Both Semesters',
-                )
-            )
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('credits');
-        $field->setLabel('Credits')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Hidden('study_id');
-        $field->setAttribute('id', 'studyId');
-        $this->add($field);
-
-        $field = new Text('study');
-        $field->setLabel('Study')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'studySearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function populateFromSubject(Subject $subject)
-    {
-        $this->setData(
-            array(
-                'code' => $subject->getCode(),
-                'name' => $subject->getName(),
-                'semester' => $subject->getSemester(),
-                'credits' => $subject->getCredits(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'code',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'code',
+            'label'    => 'Code',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new CodeValidator($this->_entityManager),
+                        new CodeValidator($this->getEntityManager(), $this->subject),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'semester',
-                    'required' => true,
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'semester',
+            'label'      => 'Semester',
+            'required'   => true,
+            'attributes' => array(
+                'options' => array(
+                    '1' => 'First Semester',
+                    '2' => 'Second Semester',
+                    '3' => 'Both Semesters',
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'credits',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'credits',
+            'label'    => 'Credits',
+            'required' => true,
+            'options' => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int')
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'study_id',
+            'attributes' => array(
+                'id' => 'studyId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -183,22 +118,47 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'study',
+            'label'      => 'Study',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'studySearch',
+                'style'        => 'width: 400px',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
+        ));
+
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Subject $subject
+     * @return self
+     */
+    public function setSubject(Subject $subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
     }
 }

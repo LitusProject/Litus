@@ -21,8 +21,6 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    SyllabusBundle\Form\Admin\Academic\Study\Add as StudyForm,
-    SyllabusBundle\Form\Admin\Academic\Subject\Add as SubjectForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -141,13 +139,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = new StudyForm();
+        $form = $this->getForm('syllabus_academic_study_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($formData['study_id']);
@@ -155,6 +154,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $enrollment = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                     ->findOneByAcademicAndAcademicYearAndStudy($academic, $academicYear, $study);
+
                 if (null === $enrollment)
                     $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
 
@@ -220,13 +220,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = new SubjectForm();
+        $form = $this->getForm('syllabus_academic_subject_add')
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
                     ->findOneById($formData['subject_id']);

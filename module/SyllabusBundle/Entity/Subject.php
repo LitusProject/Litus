@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -74,18 +75,9 @@ class Subject
      */
     private $enrollments;
 
-    /**
-     * @param string  $code
-     * @param string  $name
-     * @param integer $semester
-     * @param integer $credits
-     */
-    public function __construct($code, $name, $semester, $credits)
+    public function __construct()
     {
-        $this->code = $code;
-        $this->name = $name;
-        $this->semester = $semester;
-        $this->credits = $credits;
+        $this->enrollments = new ArrayCollection;
     }
 
     /**

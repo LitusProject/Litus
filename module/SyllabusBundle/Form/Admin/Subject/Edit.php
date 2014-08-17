@@ -18,11 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Subject;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
-    SyllabusBundle\Entity\Subject,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Subject
@@ -31,59 +27,21 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @var Subject
-     */
-    private $_subject = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Subject         $subject       The subject we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->subject) {
+            throw new LogicException('Cannot edit a null subject');
+        }
 
-        $this->_subject = $subject;
+        parent::init();
 
-        $this->remove('study_id');
-        $this->remove('study');
-        $this->remove('mandatory');
-        $this->remove('submit');
+        $this->remove('study_id')
+            ->remove('study')
+            ->remove('mandatory')
+            ->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
+        $this->addSubmit('Save', 'edit');
 
-        $this->populateFromSubject($subject);
+        $this->bind($this->subject);
     }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('study_id');
-        $inputFilter->remove('study');
-
-        $inputFilter->remove('code');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'code',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new CodeValidator($this->_entityManager, $this->_subject),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
-    }
-}
+w}

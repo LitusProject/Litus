@@ -20,7 +20,6 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\SubjectProfMap,
-    SyllabusBundle\Form\Admin\Prof\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -42,14 +41,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = new AddForm();
+        $form = $this->getForm('syllabus_prof_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $docent = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
