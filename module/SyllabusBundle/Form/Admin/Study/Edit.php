@@ -33,6 +33,8 @@ class Edit extends Add
             throw new LogicException('Cannot edit a null study');
         }
 
+        parent::init();
+
         $this->remove('submit');
         $this->addSubmit('Save', 'edit');
 

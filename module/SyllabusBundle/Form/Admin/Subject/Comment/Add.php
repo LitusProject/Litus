@@ -30,7 +30,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'     => 'text',
+            'type'     => 'textarea',
             'name'     => 'text',
             'label'    => 'Comment',
             'required' => true,

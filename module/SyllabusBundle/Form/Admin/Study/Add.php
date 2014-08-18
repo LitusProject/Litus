@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Form\Admin\Study;
 
 use SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
+    SyllabusBundle\Component\Validator\Study\Recursion as RecursionValidator,
     SyllabusBundle\Entity\Study;
 
 /**
@@ -50,6 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
+                        array('name' => 'int'),
                         new KulIdValidator($this->getEntityManager(), $this->study),
                     ),
                 ),

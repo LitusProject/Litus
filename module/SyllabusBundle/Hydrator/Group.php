@@ -33,8 +33,8 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         $extraMembers = preg_split("/[,;\s]+/", $data['extra_members']);
         $excludedMembers = preg_split("/[,;\s]+/", $data['excluded_members']);
 
-        $object->setExtraMembers($extraMembers)
-            ->setExcludedMembers($excludedMembers);
+        $object->setExtraMembers(serialize($extraMembers))
+            ->setExcludedMembers(serialize($excludedMembers));
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
@@ -45,8 +45,8 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $extraMembers = unserialize($group->getExtraMembers()) or array();
-        $excludedMembers = unserialize($group->getExcludedMembers()) or array();
+        $extraMembers = unserialize($object->getExtraMembers()) or array();
+        $excludedMembers = unserialize($object->getExcludedMembers()) or array();
 
         $data = $this->stdExtract($object, self::$std_keys);
 

@@ -44,4 +44,4 @@ class Edit extends Add
 
         $this->bind($this->subject);
     }
-w}
+}

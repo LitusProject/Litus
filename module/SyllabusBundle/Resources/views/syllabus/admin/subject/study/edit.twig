@@ -16,7 +16,7 @@
         <p>Credits: <b>{{ mapping.getSubject().getCredits() }}</b></p>
         <p>Students: <b>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</b></p>
         <br />
-        <p>Students: <b>{{ mapping.getStudy().getFullTitle() }}</b></p>
+        <p>Study: <b>{{ mapping.getStudy().getFullTitle() }}</b></p>
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}

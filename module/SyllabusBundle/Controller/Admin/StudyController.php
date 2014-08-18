@@ -100,8 +100,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         return new ViewModel(
             array(
+                'academicYears' => $academicYears,
                 'form' => $form,
                 'currentAcademicYear' => $academicYear,
             )

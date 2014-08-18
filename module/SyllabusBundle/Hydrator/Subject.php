@@ -18,7 +18,7 @@
 
 namespace SyllabusBundle\Hydrator;
 
-use SyllabusBundle\Entity\Subect as SubjectEntity;
+use SyllabusBundle\Entity\Subject as SubjectEntity;
 
 class Subject extends \CommonBundle\Component\Hydrator\Hydrator
 {

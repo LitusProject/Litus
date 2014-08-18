@@ -28,7 +28,7 @@ use CommonBundle\Entity\General\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'SyllabusBundle\Hydrator\StudySubjectMap';
 

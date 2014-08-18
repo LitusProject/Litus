@@ -220,7 +220,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = $this->getForm('syllabus_academic_subject_add')
+        $form = $this->getForm('syllabus_academic_subject_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
