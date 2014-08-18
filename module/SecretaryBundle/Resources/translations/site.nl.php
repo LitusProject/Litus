@@ -60,7 +60,7 @@ return array(
     'You haven\'t checked the option to become a member. Being a member has many advantages.' => 'Je hebt de optie om lid te worden niet aangeduid. Als lid geniet je echter veel voordelen.',
     'Are you sure you want to continue?' => 'Ben je zeker dat je wil verdergaan?',
     'Your registration was succesfully updated!' => 'Je inschrijving is succesvol opgeslagen!',
-    'As a professor, you do not have to register. An account has already been created automatically for you.' => 'Als professor is het niet nodig om te registeren. Een account werd reeds automatisch aangemaakt voor u.'
+    'As a professor, you do not have to register. An account has already been created automatically for you.' => 'Als professor is het niet nodig om te registeren. Een account werd reeds automatisch aangemaakt voor u.',
     'You have already registered for this academic year.' => 'Je hebt je reeds ingeschreven voor dit academiejaar.',
     'You are succesfully registered!' => 'Je ben succesvol ingeschreven!',
     'Terms and Conditions' => 'Voorwaarden',
