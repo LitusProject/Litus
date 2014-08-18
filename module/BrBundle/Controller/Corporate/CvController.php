@@ -36,12 +36,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login to view the CV book.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
             );
 
             $this->redirect()->toRoute(
@@ -73,12 +70,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
                 $onlyArchive = true;
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'You don\'t have access to the CVs of this year.'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
                 );
 
                 $this->redirect()->toRoute(
@@ -111,12 +105,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login to view the CV book.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
             );
 
             $this->redirect()->toRoute(
@@ -148,12 +139,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     && sizeof($person->getCompany()->getCvBookArchiveYears()) > 0) {
                 $onlyArchive = true;
             } else {
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::ERROR,
-                        'Error',
-                        'You don\'t have access to the CVs of this year.'
-                    )
+                $this->flashMessenger()->error(
+                    'Error',
+                    'You don\'t have access to the CVs of this year.'
                 );
 
                 $this->redirect()->toRoute(
@@ -188,12 +176,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login to view the CV book.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
             );
 
             $this->redirect()->toRoute(
@@ -209,12 +194,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $academicYear = $this->getAcademicYear();
 
         if (!in_array($academicYear, $person->getCompany()->getCvBookYears())) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the CVs of this year.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to the CVs of this year.'
             );
 
             $this->redirect()->toRoute(
@@ -262,12 +244,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $person = $this->getAuthentication()->getPersonObject();
 
         if ($person === null) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'Please login to view the CV book.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
             );
 
             $this->redirect()->toRoute(
@@ -301,12 +280,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         if (!in_array($archiveYearKey, $person->getCompany()->getCvBookArchiveYears()) || null === $archiveYear) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'You don\'t have access to the CVs of this year.'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'You don\'t have access to the CVs of this year.'
             );
 
             $this->redirect()->toRoute(

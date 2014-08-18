@@ -18,8 +18,7 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    \DateTime,
+use DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,12 +91,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     private function _getEvent()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the event!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the event!'
             );
 
             $this->redirect()->toRoute(
@@ -115,12 +111,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findOneActiveById($this->getParam('id'));
 
         if (null === $event) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No event with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No event with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

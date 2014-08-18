@@ -18,11 +18,15 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
     CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
+    CudiBundle\Form\Admin\Sales\Article\Export as ExportForm,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Sale\Article as SaleArticle,
@@ -73,6 +77,61 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
+    }
+
+    public function exportAction()
+    {
+        $form = new ExportForm($this->getEntityManager());
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'cudi_admin_sales_article', array('action' => 'download')
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function downloadAction()
+    {
+        $form = new ExportForm($this->getEntityManager());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $academicYear = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                    ->findOneById($formData['academic_year']);
+
+                $semester = $formData['semester'];
+
+                $file = new CsvFile();
+                $document = new SaleArticlesGenerator($this->getEntityManager(), $academicYear, $formData['semester']);
+                $document->generateDocument($file);
+
+                $this->getResponse()->getHeaders()
+                    ->addHeaders(
+                    array(
+                        'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
+                        'Content-Type' => 'text/csv',
+                    )
+                );
+
+                return new ViewModel(
+                    array(
+                        'data' => $file->getContent(),
+                    )
+                );
+            }
+        }
+
+        return $this->notFoundAction();
     }
 
     public function addAction()

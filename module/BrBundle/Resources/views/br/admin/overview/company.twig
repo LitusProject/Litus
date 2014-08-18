@@ -1,0 +1,43 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/overview/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h2><b>Company Overview</b></h2>
+
+        <p>Total Number of companies: <b>{{totals['amount']}}</b></p>
+        <p>Total Contracted: <b>&euro; {{totals['contract']}}</b></p>
+        <p>Total Signed: <b>&euro; {{totals['signed']}}</b></p>
+        <p>Total Paid: <b>&euro; {{totals['paid']}}</b></p><br>
+
+        <table class="full_width manage">
+            <tr>
+                <th>Company</th>
+                <th>Amount of contracts</th>
+                <th>Contracted</th>
+                <th>Signed</th>
+                <th>Paid</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for entry in array %}
+                <tr class="item item-{{ entry['company'].getId() }}">
+                    <td>{{entry['company'].getName()}}</td>
+                    <td>{{entry['amount']}}</td>
+                    <td>&euro; {{entry['contract']}}</td>
+                    <td>&euro; {{entry['signed']}}</td>
+                    <td>&euro; {{entry['paid']}}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_overview', 'view') %}
+                            <a href="{{ url('br_admin_overview', {"action": "companyview", "id": entry['company'].getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

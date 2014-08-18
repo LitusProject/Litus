@@ -89,7 +89,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The key was successfully created!'
                 );
 
@@ -146,7 +146,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The key was successfully edited!'
                 );
 

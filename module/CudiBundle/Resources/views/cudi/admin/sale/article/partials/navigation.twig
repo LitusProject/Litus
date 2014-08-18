@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('cudi_admin_sales_article', 'export') %}
+                <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_article', {"action": "export"}) }}">Export</a></li>
+            {% endif %}
             {% if hasAccess('cudi_admin_sales_article', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('cudi_admin_sales_article', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}

@@ -51,4 +51,12 @@
 	    <xsl:text>TO PAY</xsl:text>
 	</xsl:template>
 
+	<xsl:template name="VAT">
+	    <xsl:text>VAT</xsl:text>
+	</xsl:template>
+
+	<xsl:template name="product_amount">
+	    <xsl:text>Amount</xsl:text>
+	</xsl:template>
+
 </xsl:stylesheet>

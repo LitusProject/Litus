@@ -83,7 +83,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The location was successfully created!'
                 );
 
@@ -139,7 +139,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
-                    'Succes',
+                    'Success',
                     'The location was successfully updated!'
                 );
 
