@@ -46,5 +46,4 @@ class Edit extends Add
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
     }
-
 }

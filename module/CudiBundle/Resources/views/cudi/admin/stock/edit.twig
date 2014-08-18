@@ -93,8 +93,10 @@
             </tr>
         </table>
         <br style="clear:both" />
-        {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(stockForm) }}
+        <div class="stockForm" data-nbassigned="{{ period.getNbAssigned(article) }}">
+            {% import 'admin/partials/form.twig' as forms %}
+            {{ forms.renderForm(stockForm) }}
+        </div>
     </div>
 
     <aside>
@@ -151,6 +153,28 @@
                     openModal();
                 }
             });
+
+            $('.stockForm input[name=number]').bind('keyup blur', function () {
+                var nbAssigned = $('.stockForm').data().nbassigned;
+
+                if ($(this).val() < nbAssigned) {
+                    $(this).parent().append(
+                        $('<span>', {'class': 'warning'}).append('!').css({
+                            'display': 'inline-block',
+                            'width': 20,
+                            'height': 20,
+                            'font-size': '16px',
+                            'background': '#CB2C2C',
+                            'border-radius': 10,
+                            'text-align': 'center',
+                            'line-height': '20px',
+                            'color': '#fff',
+                            'cursor': 'pointer',
+                            'text-indent': 0
+                        }).click(showHelpModal)
+                    );
+                }
+            });
         });
 
         function openModal() {
@@ -165,6 +189,29 @@
                 $('#deliveryForm').submit();
             });
             overDelivery.modal();
+        }
+
+        function showHelpModal(e) {
+            var modal = $('<div>', {'class': 'modal fade', 'tabindex': '-1'}).append(
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<span>').html('Litus Admin'),
+                            '/Help'
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<div>').append(
+                                $('<p>').html('There are ' + $(this).closest('.stockForm').data().nbassigned + ' articles assigned, updating this value to a lower amount will unassign some of these.')
+                            ),
+                            $('<div>', {'class': 'footer'}).append(
+                                $('<input>', {'type': 'button', 'data-dismiss': 'modal', 'value': 'Close'})
+                            )
+                        )
+                    )
+                )
+            );
+            $('body').append(modal);
+            modal.modal();
         }
     </script>
 {% endblock %}

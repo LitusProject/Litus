@@ -330,6 +330,7 @@ class Company
     {
         if (!self::isValidSector($sector))
             throw new \InvalidArgumentException('The sector is not valid');
+
         $this->sector = $sector;
 
         return $this;

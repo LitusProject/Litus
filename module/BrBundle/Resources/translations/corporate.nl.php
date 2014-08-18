@@ -50,4 +50,8 @@ return array(
     'Personal' => 'Persoonlijk',
     'Hobbies' => 'Hobbies',
     'About Myself' => 'Over Mijzelf',
+    'The removal of the internship was succesfully registered.  This will be reviewed by our corporate relations team.' => 'Het verwijderen van de stage is succesvol geregistreerd.  Ons bedrijvenrelatie team zal dit zo snel mogelijk opvolgen.',
+    'The removal of the internship was succesfully registered.  This will be reviewed by our corporate relations team.' => 'Het verwijderen van de job is succesvol geregistreerd.  Ons bedrijvenrelatie team zal dit zo snel mogelijk opvolgen.',
+    'An error occurred while removing the internship.' => 'Er is een fout opgetreden tijdens het verwijderen van de stage.',
+    'An error occurred while removing the vacancy.' => 'Er is een fout opgetreden tijdens het verwijderen van de job.',
 );

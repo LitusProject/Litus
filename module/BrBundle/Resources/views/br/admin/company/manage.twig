@@ -123,11 +123,6 @@
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );
-
-                            {% if hasAccess('syllabus_admin_subject', 'manage') %}
-                                actions.append('<a href="{{ url('syllabus_admin_subject') }}manage/' + this.id + '" class="view">View</a>')
-                            {% endif %}
-
                             {% if hasAccess('br_admin_company_job', 'manage') %}
                                 actions.append('<a href="{{ url('br_admin_company_job') }}manage/' + this.id + '" class="view">Job</a>')
                             {% endif %}

@@ -21,7 +21,7 @@
                     </tr>
 
                     {% for article in articles %}
-                        <tr>
+                        <tr class="item" data-nbassigned="{{ period.getNbAssigned(article) }}">
                             <td>{{ article.getBarcode() }}</td>
                             <td>{{ article.getMainArticle().getTitle() }}</td>
                             <td>{{ article.getSupplier().getName() }}</td>
@@ -36,4 +36,59 @@
             {% endautoescape %}
         {% endif %}
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#controller_action .item').each(function () {
+                var field = $(this).find('input');
+                var nbAssigned = $(this).data().nbassigned;
+
+                field.bind('keyup blur', function () {
+                    $(this).parent().find('.warning').remove();
+                    if ($(this).val() < nbAssigned) {
+                        $(this).parent().append(
+                            $('<span>', {'class': 'warning'}).append('!').css({
+                                'display': 'inline-block',
+                                'width': 20,
+                                'height': 20,
+                                'font-size': '16px',
+                                'background': '#CB2C2C',
+                                'border-radius': 10,
+                                'text-align': 'center',
+                                'line-height': '20px',
+                                'color': '#fff',
+                                'cursor': 'pointer',
+                                'text-indent': 0
+                            }).click(showHelpModal)
+                        );
+                    }
+                });
+            });
+
+            function showHelpModal(e) {
+                var modal = $('<div>', {'class': 'modal fade', 'tabindex': '-1'}).append(
+                    $('<div>', {'class': 'modal-dialog'}).append(
+                        $('<div>', {'class': 'modal-content'}).append(
+                            $('<div>', {'class': 'modal-header'}).append(
+                                $('<span>').html('Litus Admin'),
+                                '/Help'
+                            ),
+                            $('<div>', {'class': 'modal-body'}).append(
+                                $('<div>').append(
+                                    $('<p>').html('There are ' + $(this).closest('.item').data().nbassigned + ' articles assigned, updating this value to a lower amount will unassign some of these.')
+                                ),
+                                $('<div>', {'class': 'footer'}).append(
+                                    $('<input>', {'type': 'button', 'data-dismiss': 'modal', 'value': 'Close'})
+                                )
+                            )
+                        )
+                    )
+                );
+                $('body').append(modal);
+                modal.modal();
+            }
+        });
+    </script>
 {% endblock %}

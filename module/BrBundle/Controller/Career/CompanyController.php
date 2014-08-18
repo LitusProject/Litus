@@ -18,8 +18,7 @@
 
 namespace BrBundle\Controller\Career;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    DateTime,
+use DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -131,12 +130,9 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
     private function _getPage()
     {
         if (null === $this->getParam('company')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No name was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No name was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -154,12 +150,9 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->findOneActiveBySlug($this->getParam('company'), $this->getCurrentAcademicYear());
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given name was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given name was found!'
             );
 
             $this->redirect()->toRoute(
@@ -178,12 +171,9 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
     private function _getCompanyByLogo()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -201,12 +191,9 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             ->findOneByLogo($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

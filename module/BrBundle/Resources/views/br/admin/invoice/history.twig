@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/invoice/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+            	<th width="60px">Version</th>
+                <th>Company</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for invoiceHistory in paginator %}
+                <tr class="item item-{{ invoice.getId() }}">
+                	<td>{{ invoiceHistory.getVersion() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getCompany().getName() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getTitle() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getCreationTime().format('j/m/Y') }}</td>
+
+                    <td class="actions">
+                        {% if hasAccess('br_admin_invoice', 'view') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoiceHistory.getInvoice().getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_invoice', 'download') %}
+                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoiceHistory.getInvoice().getId()}) }}" class="invoice" value="Download">Download</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}

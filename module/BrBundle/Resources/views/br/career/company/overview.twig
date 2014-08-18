@@ -51,9 +51,9 @@
                                 $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
                                     $('<span>').append(
                                         element.logo ?
-                                            $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '120px', 'max-width': '120px', 'vertical-align': 'middle'})
+                                            $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
                                         :
-                                            $('<h4>').html(element.name).css({'margin-top': '20px'}),
+                                            $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
                                         $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
                                     ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
                                 )
