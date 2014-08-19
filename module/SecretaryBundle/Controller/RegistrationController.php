@@ -64,6 +64,22 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     public function addAction()
     {
         if (null !== $this->getParam('identification')) {
+            if ('u' == substr($this->getParam('identification'), 0, 1)) {
+                $this->flashMessenger()->warn(
+                    'WARNING',
+                    'As a professor, you do not have to register. An account has already been created automatically for you.'
+                );
+
+                $this->redirect()->toRoute(
+                    'common_index',
+                    array(
+                        'action' => 'index',
+                    )
+                );
+
+                return new ViewModel();
+            }
+
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));

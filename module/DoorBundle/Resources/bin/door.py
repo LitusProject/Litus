@@ -3,6 +3,7 @@
 #
 # Door
 # @author Pieter Maene <pieter.maene@litus.cc>
+# @author Kristof Mariën <kristof.marien@litus.cc>
 #
 
 import datetime
@@ -54,6 +55,7 @@ def allowAccess(identification, academic):
 def getRules():
     global rules
 
+
     data = {
         'key': API_KEY
     }
@@ -102,24 +104,35 @@ while True:
         log('No rule for ' + identification)
         continue
 
-    if None != rules[identification]['start_date'] and None != rules[identification]['end_date']:
-        startDate = datetime.date.fromtimestamp(int(rules[identification]['start_date']))
-        endDate = datetime.date.fromtimestamp(int(rules[identification]['end_date']))
+    if False == isinstance(rules[identification], list) or len(rules[identification]) < 1:
+        log('No rule for ' + identification)
+        continue
 
-        now = datetime.datetime.now()
-        if startDate < now.date() and endDate > now.date():
-            startTime = int(rules[identification]['start_time'])
-            endTime = int(rules[identification]['end_time'])
+    accessAllowed = False
 
-            if 0 == startTime and 0 == endTime:
-                allowAccess(identification, rules[identification]['academic'])
-                continue
+    for rule in rules[identification]:
+        if None == rule['start_date'] and None == rule['end_date']:
+            accessAllowed = True
+            break
+        else:
+            startDate = datetime.date.fromtimestamp(int(rule['start_date']))
+            endDate = datetime.date.fromtimestamp(int(rule['end_date']))
 
-            if startTime < now.time().strftime('%H%M') and endTime > now.time().strftime('%H%M'):
-                allowAccess(identification, rules[identification]['academic'])
-                continue
+            now = datetime.datetime.now()
+            if startDate < now.date() and endDate > now.date():
+                startTime = int(rule['start_time'])
+                endTime = int(rule['end_time'])
 
-    allowAccess(identification, rules[identification]['academic'])
+                if 0 == startTime and 0 == endTime:
+                    accessAllowed = True
+                    break
+
+                if startTime < now.time().strftime('%H%M') and endTime > now.time().strftime('%H%M'):
+                    accessAllowed = True
+                    break
+
+    if True == accessAllowed:
+        allowAccess(identification, rule['academic'])
 
     if path.getmtime(CACHE_FILE) < time.time()-CACHE_TTL:
         getRules()

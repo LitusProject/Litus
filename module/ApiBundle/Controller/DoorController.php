@@ -41,7 +41,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAllByStatus('praesidium', $this->getCurrentAcademicYear());
 
         foreach ($statuses as $status) {
-            $result[$status->getPerson()->getUniversityIdentification()] = array(
+            $identification = $status->getPerson()->getUniversityIdentification();
+            if (!isset($result[$identification]))
+                $result[$identification] = array();
+
+            $result[$identification][] = array(
                 'academic' => $status->getPerson()->getId(),
                 'start_date' => null,
                 'end_date' => null,
@@ -55,7 +59,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAll();
 
         foreach ($rules as $rule) {
-            $result[$rule->getAcademic($this->getEntityManager())->getUniversityIdentification()] = array(
+            $identification = $rule->getAcademic($this->getEntityManager())->getUniversityIdentification();
+            if (!isset($result[$identification]))
+                $result[$identification] = array();
+
+            $result[$identification][] = array(
                 'academic' => $rule->getAcademic($this->getEntityManager())->getId(),
                 'start_date' => $rule->getStartDate()->format('U'),
                 'end_date' => $rule->getEndDate()->format('U'),
