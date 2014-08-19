@@ -62,8 +62,10 @@ class Volunteer
     private $payed;
 
     /**
+     * @param Person  $person The person that volunteered
+     * @param boolean $payed  Whether or not this volunteer has been payed already
      */
-    public function __construct(Person $person,$payed = false)
+    public function __construct(Person $person, $payed = false)
     {
         $this->signupTime = new DateTime();
         $this->person = $person;

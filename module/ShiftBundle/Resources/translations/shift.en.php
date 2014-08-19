@@ -61,5 +61,7 @@ return array(
     'Reward' => 'Reward',
     'Coins' => 'coins',
     'on the event' => 'on the event',
-    'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shifts. You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.'
+    'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.',
+    'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!' => 'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!',
+    'You have done your last shift on %lastShift%.' => 'You have done your last shift on %lastShift%.'
 );
