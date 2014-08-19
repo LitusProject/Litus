@@ -109,5 +109,6 @@ return array(
     'Enroll' => 'Schrijf In',
     'Unsubscribe' => 'Schrijf Uit',
 
-    'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="view-cookie-policy">our cookiepolicy</a> here.' => 'VTK gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de de toestemming om cookies te gebruiken. Indien u meer informatie wil over cookies en hoe ze gebruikt woren, kan u <a href="#" class="view-cookie-policy">onze cookiebeleid</a> hier lezen.',
+    'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de de toestemming om cookies te gebruiken. Indien u meer informatie wil over cookies en hoe ze gebruikt woren, kan u <a href="%url%">ons privacy beleid</a> hier lezen.',
+    'Privacy Policy' => 'Privacy Beleid',
 );

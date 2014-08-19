@@ -304,14 +304,14 @@ Disallow: /admin/*
         'description' => 'The team identifier of the Apple developer account that generated the certificates',
     ),
     array(
-        'key'         => 'common.cookie_policy',
+        'key'         => 'common.privacy_policy',
         'value'       => serialize(
             array(
                 'nl' => 'tekst',
                 'en' => 'text',
             )
         ),
-        'description' => 'The cookie policy',
+        'description' => 'The privacy policy',
     ),
 
     array(

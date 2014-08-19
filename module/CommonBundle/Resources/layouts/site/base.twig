@@ -291,7 +291,7 @@
         <div class="cookie-banner">
             <div class="container">
                 {% autoescape false %}
-                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="#" class="view-cookie-policy">our cookiepolicy</a> here.') }}</p>
+                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
                     <button type="button" class="btn btn-default cookie-permission">{{ translate('Continue') }}</button>
                 {% endautoescape %}
             </div>

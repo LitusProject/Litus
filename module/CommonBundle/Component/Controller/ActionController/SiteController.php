@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use Locale,
-    PageBundle\Entity\Node\Page,
+use PageBundle\Entity\Node\Page,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -63,18 +62,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('br.public_logo_path');
 
         $result->showCookieBanner = !isset($_COOKIE['cookie_permission']);
-        if ($result->showCookieBanner) {
-            $cookiePolicy = unserialize(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.cookie_policy')
-            );
-
-            if (isset($cookiePolicy[$this->getLanguage()->getAbbrev()]))
-                $result->cookiePolicy = $cookiePolicy[$this->getLanguage()->getAbbrev()];
-            else
-                $result->cookiePolicy = $cookiePolicy[Locale::getDefault()];
-        }
 
         $e->setResult($result);
 

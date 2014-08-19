@@ -262,6 +262,19 @@ return array(
                 ),
             ),
         ),
+        'common_privacy' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/privacy[/:action][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'common_privacy',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -282,5 +295,6 @@ return array(
         'common_auth'           => 'CommonBundle\Controller\AuthController',
         'common_robots'         => 'CommonBundle\Controller\RobotsController',
         'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
+        'common_privacy'        => 'CommonBundle\Controller\PrivacyController',
     ),
 );

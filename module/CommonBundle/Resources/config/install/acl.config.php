@@ -66,5 +66,8 @@ return array(
         'common_praesidium' => array(
             'overview'
         ),
+        'common_privacy' => array(
+            'index'
+        ),
     ),
 );
