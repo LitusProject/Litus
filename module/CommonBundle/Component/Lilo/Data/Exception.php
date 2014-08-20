@@ -20,7 +20,8 @@ namespace CommonBundle\Component\Lilo\Data;
 
 use CommonBundle\Component\Authentication\Authentication,
     Exception as GenericException,
-    Zend\Http\PhpEnvironment\Request;
+    Zend\Http\PhpEnvironment\Request,
+    Zend\Stdlib\RequestInterface;
 
 /**
  * This class converts an exception to the right format for the
@@ -36,18 +37,18 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     private $_data = array();
 
     /**
-     * @var Request The request to the page
+     * @var RequestInterface The request to the page
      */
     private $_request;
 
     /**
      * Construct a new Exception object.
      *
-     * @param \Exception     $exception      The exception that should be formatted
-     * @param Authentication $authentication The authentication instance
-     * @param Request        $request        The request to the page
+     * @param \Exception       $exception      The exception that should be formatted
+     * @param Authentication   $authentication The authentication instance
+     * @param RequestInterface $request        The request to the page
      */
-    public function __construct(GenericException $exception, Authentication $authentication, Request $request)
+    public function __construct(GenericException $exception, Authentication $authentication, RequestInterface $request)
     {
         $this->_request = $request;
         $this->_data = array(
@@ -62,7 +63,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
                     ? $authentication->getSessionObject()->getId()
                     : '',
                 'url' => $this->_formatUrl(),
-                'userAgent' => $request->getServer()->get('HTTP_USER_AGENT'),
+                'userAgent' => $this->_getUserAgent(),
             ),
         );
     }
@@ -109,8 +110,24 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatUrl()
     {
+        if (!($this->_request instanceof Request))
+            return '';
+
         return '' != $this->_request->getServer()->get('HTTP_HOST')
             ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
             : '';
+    }
+
+    /**
+     * Get the user agent
+     *
+     * @return string
+     */
+    private function _getUserAgent()
+    {
+        if (!($this->_request instanceof Request))
+            return 'Console';
+
+        return $this->_request->getServer()->get('HTTP_USER_AGENT');
     }
 }
