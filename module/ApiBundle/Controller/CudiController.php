@@ -235,7 +235,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) array()
+                'result' => (object) array(
+                    'status' => 'success',
+                )
             )
         );
     }

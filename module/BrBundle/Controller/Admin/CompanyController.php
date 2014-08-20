@@ -23,7 +23,6 @@ use BrBundle\Entity\Company,
     BrBundle\Form\Admin\Company\Add as AddForm,
     BrBundle\Form\Admin\Company\Edit as EditForm,
     BrBundle\Form\Admin\Company\Logo as LogoForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\Address,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -135,12 +134,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The company was successfully created!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The company was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -193,12 +189,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 if (count($formData['cvbook']) > 0) {
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
+
                     foreach ($formData['cvbook'] as $yearId) {
-                        if (strpos($yearId, 'archive-') === 0) {
+                        if (strpos($yearId, 'archive-') === 0)
                             $archiveYears[] = substr($yearId, strlen('archive-'));
-                        } else {
+                        else
                             $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
-                        }
                     }
                 }
 
@@ -210,9 +206,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $yearIds = $formData['years'];
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach ($yearIds as $yearId) {
+
+                    foreach ($yearIds as $yearId)
                         $years[] = $repository->findOneById($yearId);
-                    }
                 }
 
                 $company->getPage()
@@ -222,12 +218,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Succes',
-                        'The company was successfully edited!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The company was successfully edited!'
                 );
 
                 $this->redirect()->toRoute(
@@ -347,12 +340,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->addMessage(
-                    new FlashMessage(
-                        FlashMessage::SUCCESS,
-                        'Success',
-                        'The company\'s logo has successfully been updated!'
-                    )
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The company\'s logo has successfully been updated!'
                 );
 
                 $this->redirect()->toRoute(
@@ -411,10 +401,30 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    /**
-     *
-     * @return \Doctrine\ORM\Query
-     */
+    public function contactsAction()
+    {
+        $this->initAjax();
+
+        if (!($company = $this->_getCompany()))
+            return new ViewModel();
+
+        $contacts = $company->getContacts();
+
+        $result = array();
+        foreach ($contacts as $contact) {
+            $item = (object) array();
+            $item->id = $contact->getId();
+            $item->value = $contact->getFullName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     private function _search()
     {
         switch ($this->getParam('field')) {
@@ -431,12 +441,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -454,12 +461,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneById($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(
@@ -478,12 +482,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     private function _getCompanyByLogo()
     {
         if (null === $this->getParam('id')) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No ID was given to identify the company!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the company!'
             );
 
             $this->redirect()->toRoute(
@@ -501,12 +502,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->findOneByLogo($this->getParam('id'));
 
         if (null === $company) {
-            $this->flashMessenger()->addMessage(
-                new FlashMessage(
-                    FlashMessage::ERROR,
-                    'Error',
-                    'No company with the given ID was found!'
-                )
+            $this->flashMessenger()->error(
+                'Error',
+                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

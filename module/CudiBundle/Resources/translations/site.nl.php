@@ -60,6 +60,7 @@ return array(
     'Stop Search' => 'Stop Zoeken',
     'Search String' => 'Zoek Opdracht',
     'No Articles Found' => 'Geen Artikels Gevonden',
+    'No articles available for this subject.' => 'Geen artikels beschikbaar voor dit vak.',
 
     'The opening hours for next week are:' => 'De openingsuren voor de komende week zijn:',
 

@@ -61,6 +61,7 @@ return array(
     'Stop Search' => 'Stop Search',
     'Search String' => 'Search String',
     'No Articles Found' => 'No Articles Found',
+    'No articles available for this subject.' => 'No articles available for this subject.',
 
     'The opening hours for next week are:' => 'The opening hours for next week are:',
 
