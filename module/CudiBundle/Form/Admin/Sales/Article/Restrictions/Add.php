@@ -62,31 +62,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('type');
         $field->setAttribute('id', 'restriction_type')
             ->setLabel('Type')
-            ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('options', array('amount' => 'Amount', 'member' => 'Member', 'study' => 'Study'))
             ->setAttribute('data-help', 'Limit the sale of this article on user base:
                 <ul>
-                    <li><b>Member:</b> restrict this article to members only</li>
                     <li><b>Amount:</b> restrict the number of this article sold to this user</li>
+                    <li><b>Member:</b> restrict this article to members only</li>
+                    <li><b>Study:</b> restrict this article to students of one ore more studies</li>
                 </ul>')
             ->setRequired();
         $this->add($field);
 
-        foreach (Restriction::$POSSIBLE_TYPES as $key => $type) {
-            $field = new Hidden('type_' . $key);
-            $field->setAttribute('id', 'type_' . $key)
-                ->setValue(Restriction::$VALUE_TYPES[$key]);
-            $this->add($field);
-        }
-
-        $field = new Text('value_string');
-        $field->setAttribute('id', 'restriction_value_string')
-            ->setLabel('Value')
+        $field = new Text('value_amount');
+        $field->setAttribute('id', 'restriction_value_amount')
+            ->setLabel('Amount')
             ->setRequired();
         $this->add($field);
 
-        $field = new Checkbox('value_boolean');
-        $field->setAttribute('id', 'restriction_value_boolean')
-            ->setLabel('Value');
+        $field = new Checkbox('value_member');
+        $field->setAttribute('id', 'restriction_value_member')
+            ->setLabel('Member');
         $this->add($field);
 
         $field = new Submit('submit');
@@ -112,7 +106,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        if (isset(Restriction::$VALUE_TYPES[$this->data['type']]) && Restriction::$VALUE_TYPES[$this->data['type']] == 'boolean') {
+        /*if (isset(Restriction::$VALUE_TYPES[$this->data['type']]) && Restriction::$VALUE_TYPES[$this->data['type']] == 'boolean') {
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -151,7 +145,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 )
             );
-        }
+        }*/
 
         return $inputFilter;
     }

@@ -27,8 +27,15 @@ use CommonBundle\Component\Util\AcademicYear,
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction")
  * @ORM\Table(name="cudi.sales_articles_restrictions")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "amount"="CudiBundle\Entity\Sale\Article\Restriction\Amount",
+ *      "member"="CudiBundle\Entity\Sale\Article\Restriction\Member",
+ *      "study"="CudiBundle\Entity\Sale\Article\Restriction\Study"
+ * })
  */
-class Restriction
+abstract class Restriction
 {
     /**
      * @var integer The ID of the restriction
@@ -62,43 +69,11 @@ class Restriction
     private $value;
 
     /**
-     * @var array The possible types of a restriction
+     * @param Article $article The article of the restriction
      */
-    public static $POSSIBLE_TYPES = array(
-        'member' => 'Member',
-        'amount' => 'Amount',
-    );
-
-    /**
-     * @var array The possible value types of a restriction
-     */
-    public static $VALUE_TYPES = array(
-        'member' => 'boolean',
-        'amount' => 'integer',
-    );
-
-    /**
-     * @param Article     $article The article of the restriction
-     * @param string      $type    The type of the restriction
-     * @param string|null $value   The value of the restriction
-     */
-    public function __construct(Article $article, $type, $value = null)
+    public function __construct(Article $article)
     {
-        if (!self::isValidRestrictionType($type))
-            throw new \InvalidArgumentException('The restriction type is not valid.');
-
         $this->article = $article;
-        $this->type = $type;
-        $this->value = $value;
-    }
-
-    /**
-     * @param  string  $type
-     * @return boolean
-     */
-    public static function isValidRestrictionType($type)
-    {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
 
     /**
@@ -120,26 +95,7 @@ class Restriction
     /**
      * @return string
      */
-    public function getType()
-    {
-        return self::$POSSIBLE_TYPES[$this->type];
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
+    abstract public function getType();
 
     /**
      * @param Person        $person
@@ -147,31 +103,5 @@ class Restriction
      *
      * @return boolean
      */
-    public function canBook(Person $person, EntityManager $entityManager)
-    {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        if ('member' == $this->type) {
-            return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
-        } elseif ('amount' == $this->type) {
-            $amount = sizeof(
-                $entityManager
-                    ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                        $this->article,
-                        $person,
-                        $academicYear
-                )
-            );
-
-            return $amount < $this->value;
-        } else {
-            return false;
-        }
-    }
+    abstract public function canBook(Person $person, EntityManager $entityManager);
 }
