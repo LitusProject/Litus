@@ -190,7 +190,8 @@ class Booking
         if ($sendMailsToCudi)
             $mail->addCc($mailAddress, $mailName);
 
-        $mailTransport->send($mail);
+        if ('development' != getenv('APPLICATION_ENV'))
+            $mailTransport->send($mail);
     }
 
     /**

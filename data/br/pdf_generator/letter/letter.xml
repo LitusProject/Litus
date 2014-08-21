@@ -5,9 +5,9 @@
         <name><b>VTK Ondersteuning vzw</b></name>
         <contact_person>Tom Aertgeerts</contact_person>
         <address>
-        	<street>Studentenwijk Arenberg 6/1</street>
-        	<city>3001 Heverlee</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Studentenwijk Arenberg 6/1</street>
+            <city>3001 Heverlee</city>
+            <country>Belgi&#x00EB;</country>
         </address>
         <logo>data/images/logo/logo.jpg</logo>
         <vat_number>BTW: BE 0479.482.282</vat_number>
@@ -16,22 +16,22 @@
     <company>
         <name>Lunch Garden BVBA</name>
         <contact_person>
-        	<title>mevr.</title>
-        	<first_name>J&#x00E9;su</first_name>
-        	<last_name>The Gardener</last_name>
+            <title>mevr.</title>
+            <first_name>J&#x00E9;su</first_name>
+            <last_name>The Gardener</last_name>
         </contact_person>
         <address>
-        	<street>Tiensestraat 186</street>
-        	<city>3000 Leuven</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Tiensestraat 186</street>
+            <city>3000 Leuven</city>
+            <country>Belgi&#x00EB;</country>
         </address>
     </company>
 
     <paragraph>
-    	VTK Bedrijvenrelaties dankt u voor uw vertrouwen in onze studentenkring. Wij hebben een contract opgesteld voor de opties die u gekozen heeft. In bijlage vindt u twee contracten en een factuur. Zou u &#x00E9;&#x00E9;n contract ondertekend kunnen terugsturen (per post of e-mail)?
+        VTK Bedrijvenrelaties dankt u voor uw vertrouwen in onze studentenkring. Wij hebben een contract opgesteld voor de opties die u gekozen heeft. In bijlage vindt u twee contracten en een factuur. Zou u &#x00E9;&#x00E9;n contract ondertekend kunnen terugsturen (per post of e-mail)?
     </paragraph>
     <paragraph>
-    	Als u nog vragen heeft, aarzel niet om contact op te nemen met mij.
+        Als u nog vragen heeft, aarzel niet om contact op te nemen met mij.
     </paragraph>
 
     <footer>

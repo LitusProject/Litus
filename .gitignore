@@ -1,4 +1,3 @@
-.DS_Store
 # These files contain sensitive data
 config/database.config.php
 config/ldap.config.php

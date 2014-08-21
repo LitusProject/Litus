@@ -143,7 +143,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
-                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear()) && null === $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
                                 $this->redirect()->toRoute(
                                     'secretary_registration'
                                 );
