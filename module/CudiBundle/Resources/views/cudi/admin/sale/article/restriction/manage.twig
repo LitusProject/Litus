@@ -85,13 +85,10 @@
             $('.item .delete').click(openRemoveModal);
 
             $('#restriction_type').change(function () {
-                if ($('#type_' + $(this).find(':selected').val()).val() == 'boolean') {
-                    $('#restriction_value_boolean').closest('.row').show();
-                    $('#restriction_value_string').closest('.row').hide();
-                } else {
-                    $('#restriction_value_boolean').closest('.row').hide();
-                    $('#restriction_value_string').closest('.row').show();
-                }
+                $('.restriction_value').each(function () {
+                    $(this).closest('.row').hide();
+                });
+                $('#restriction_value_' + $(this).val()).closest('.row').show();
             }).trigger('change');
         });
 
