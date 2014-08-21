@@ -23,6 +23,7 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -241,6 +242,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $academic,
                             $this->getCurrentAcademicYear(),
                             $selectedOrganization
+                        );
+                    }
+
+                    if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $academic->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $academic,
+                                'non_member',
+                                $this->getCurrentAcademicYear()
+                            )
                         );
                     }
 
@@ -466,6 +477,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getCurrentAcademicYear()
                     );
                     $academic->addUniversityStatus($status);
+                }
+
+                if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            'non_member',
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
                 }
 
                 if (isset($formData['organization'])) {

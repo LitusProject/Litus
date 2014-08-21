@@ -54,6 +54,9 @@ return array(
         'cudi_admin_sales_article_discount_template' => array(
             'add', 'delete', 'edit', 'manage'
         ),
+        'cudi_admin_sales_article_restriction' => array(
+            'delete', 'manage'
+        ),
         'cudi_admin_sales_financial' => array(
             'export', 'overview', 'period'
         ),
