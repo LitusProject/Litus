@@ -20,7 +20,8 @@ namespace CommonBundle\Component\Lilo\Data;
 
 use CommonBundle\Component\Authentication\Authentication,
     Exception as GenericException,
-    Zend\Http\PhpEnvironment\Request,
+    Zend\Console\Request as ConsoleRequest,
+    Zend\Http\PhpEnvironment\Request as PhpRequest,
     Zend\Stdlib\RequestInterface;
 
 /**
@@ -110,12 +111,14 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatUrl()
     {
-        if (!($this->_request instanceof Request))
-            return '';
+        if ($this->_request instanceof ConsoleRequest)
+            return $this->_request->toString();
+        elseif ($this->_request instanceof PhpRequest)
+            return '' != $this->_request->getServer()->get('HTTP_HOST')
+                ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
+                : '';
 
-        return '' != $this->_request->getServer()->get('HTTP_HOST')
-            ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
-            : '';
+        return '';
     }
 
     /**
@@ -125,9 +128,11 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _getUserAgent()
     {
-        if (!($this->_request instanceof Request))
+        if ($this->_request instanceof ConsoleRequest)
             return 'Console';
+        elseif ($this->_request instanceof PhpRequest)
+            return $this->_request->getServer()->get('HTTP_USER_AGENT');
 
-        return $this->_request->getServer()->get('HTTP_USER_AGENT');
+        return '';
     }
 }
