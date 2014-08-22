@@ -18,7 +18,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Restriction,
+use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
+    CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
     CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -43,13 +45,21 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if (Restriction::$VALUE_TYPES[$formData['type']] == 'boolean') {
-                    $value = isset($formData['value_boolean']) && $formData['value_boolean'] ? '1' : '0';
-                } else {
-                    $value = $formData['value_string'];
-                }
+                if ('amount' == $formData['type']) {
+                    $restriction = new AmountRestriction($article, $formData['value_amount']);
+                } elseif ('member' == $formData['type']) {
+                    $restriction = new MemberRestriction($article, isset($formData['value_member']) && $formData['value_member']);
+                } elseif ('study' == $formData['type']) {
+                    $restriction = new StudyRestriction($article);
 
-                $restriction = new Restriction($article, $formData['type'], $value);
+                    foreach($formData['value_study'] as $id) {
+                        $study = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Study')
+                            ->findOneById($id);
+
+                        $restriction->addStudy($study);
+                    }
+                }
 
                 $this->getEntityManager()->persist($restriction);
 

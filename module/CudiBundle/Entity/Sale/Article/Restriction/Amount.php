@@ -34,7 +34,7 @@ class Amount extends Restriction
     /**
      * @var string|null The value of the restriction
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      */
     private $value;
 
@@ -54,7 +54,7 @@ class Amount extends Restriction
      */
     public function getType()
     {
-        return 'member';
+        return 'amount';
     }
 
     /**
@@ -84,7 +84,7 @@ class Amount extends Restriction
             $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                    $this->article,
+                    $this->getArticle(),
                     $person,
                     $academicYear
             )

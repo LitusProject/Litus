@@ -55,20 +55,6 @@ abstract class Restriction
     private $article;
 
     /**
-     * @var string The type of restriction
-     *
-     * @ORM\Column(type="string")
-     */
-    private $type;
-
-    /**
-     * @var string|null The value of the restriction
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $value;
-
-    /**
      * @param Article $article The article of the restriction
      */
     public function __construct(Article $article)
@@ -96,6 +82,11 @@ abstract class Restriction
      * @return string
      */
     abstract public function getType();
+
+    /**
+     * @return string
+     */
+    abstract public function getValue();
 
     /**
      * @param Person        $person

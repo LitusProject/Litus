@@ -22,8 +22,10 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Restriction,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Study")
@@ -36,7 +38,7 @@ class Study extends Restriction
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinTable(name="cudi.sales_articles_restrictions_study_map",
-     *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id", unique=true)},
+     *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id")}
      * )
      */
@@ -48,6 +50,8 @@ class Study extends Restriction
     public function __construct(Article $article)
     {
         parent::__construct($article);
+
+        $this->studies = new ArrayCollection();
     }
 
     /**
@@ -55,7 +59,19 @@ class Study extends Restriction
      */
     public function getType()
     {
-        return 'member';
+        return 'study';
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        $value = '';
+        foreach ($this->studies as $study)
+            $value .= $study->getTitle() . ' ; ';
+
+        return $value;
     }
 
     /**
@@ -92,13 +108,17 @@ class Study extends Restriction
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
 
-        $studies = $this->getEntityManager()
+        $studies = $entityManager
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
+        $allowedStudies = $this->studies->toArray();
+        foreach ($this->studies as $study)
+            $allowedStudies = array_merge($allowedStudies, $study->getAllChildren());
+
         foreach ($studies as $study) {
-            foreach ($this->studies as $allowedStudy) {
-                if ($allowedStudy == $study)
+            foreach ($allowedStudies as $allowedStudy) {
+                if ($allowedStudy == $study->getStudy())
                     return true;
             }
         }

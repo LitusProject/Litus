@@ -62,7 +62,7 @@ class Member extends Restriction
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->value ? 'Yes' : 'No';
     }
 
     /**
