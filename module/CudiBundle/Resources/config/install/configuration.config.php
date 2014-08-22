@@ -435,4 +435,9 @@ VTK Cudi
         'description' => 'The maximum distance the user can be from the cudi to be able to sign in (in meters)',
         'published'   => true,
     ),
+    array(
+        'key'         => 'cudi.booking_only_member',
+        'value'       => '0',
+        'description' => 'Enable bookings only for members (this will add a member restriction to all sale articles)',
+    ),
 );
