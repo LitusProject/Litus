@@ -18,7 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Entity\User\Barcode as BarcodeEntity,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
@@ -55,6 +57,15 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
         $this->_person = $person;
 
+        $field = new Select('type');
+        $field->setLabel('Type')
+            ->setAttribute(
+                'options',
+                BarcodeEntity::$possibleTypes
+            )
+            ->setValue($person->getBarcode()->getType());
+        $this->add($field);
+
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
@@ -83,13 +94,6 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
-                            ),
-                        ),
                         new BarcodeValidator($this->_entityManager, $this->_person),
                     ),
                 )

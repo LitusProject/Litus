@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Barcode\Ean12,
+    CommonBundle\Entity\User\Barcode\Qr,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -27,9 +29,24 @@ use CommonBundle\Entity\User\Person,
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Barcode")
  * @ORM\Table(name="users.barcodes")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "ean12"="CommonBundle\Entity\User\Barcode\Ean12",
+ *      "qr"="CommonBundle\Entity\User\Barcode\Qr"
+ * })
  */
-class Barcode
+abstract class Barcode
 {
+    /**
+     * @static
+     * @var array All the possible status values allowed
+     */
+    public static $possibleTypes = array(
+        'ean12' => 'EAN-12',
+        'qr'    => 'QR'
+    );
+
     /**
      * @var int The ID of this credential
      *
@@ -48,18 +65,11 @@ class Barcode
     private $person;
 
     /**
-     * @var integer The barcode
-     *
-     * @ORM\Column(type="bigint")
-     */
-    private $barcode;
-
-    /**
      * @var DateTime The time of creation
      *
      * @ORM\Column(type="datetime")
      */
-    private $time;
+    private $creationTime;
 
     /**
      * Constructs a new barcode
@@ -67,18 +77,10 @@ class Barcode
      * @param Person  $person
      * @param integer $barcode
      */
-    public function __construct(Person $person, $barcode)
+    public function __construct(Person $person)
     {
         $this->person = $person;
-        $this->time = new DateTime();
-
-        if (strlen($barcode) == 13)
-            $barcode = (int) floor($barcode / 10);
-
-        if (strlen($barcode) != 12)
-            throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
-
-        $this->barcode = $barcode;
+        $this->creationTime = new DateTime();
     }
 
     /**
@@ -100,8 +102,17 @@ class Barcode
     /**
      * @return integer
      */
-    public function getBarcode()
+    abstract public function getBarcode();
+
+    /**
+     * @return string
+     */
+    public function getType()
     {
-        return $this->barcode;
+        if ($this instanceof Ean12)
+            return 'ean12';
+
+        if ($this instanceof QR)
+            return 'qr';
     }
 }
