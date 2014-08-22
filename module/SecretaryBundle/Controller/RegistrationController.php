@@ -853,6 +853,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
      */
     private static function _loadDate($date)
     {
-        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
+        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

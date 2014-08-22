@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Restrictions\Exists as RestrictionValidator,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Restriction,
@@ -62,37 +63,63 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field = new Select('type');
         $field->setAttribute('id', 'restriction_type')
             ->setLabel('Type')
-            ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('options', array('amount' => 'Amount', 'member' => 'Member', 'study' => 'Study'))
             ->setAttribute('data-help', 'Limit the sale of this article on user base:
                 <ul>
-                    <li><b>Member:</b> restrict this article to members only</li>
                     <li><b>Amount:</b> restrict the number of this article sold to this user</li>
+                    <li><b>Member:</b> restrict this article to members only</li>
+                    <li><b>Study:</b> restrict this article to students of one ore more studies</li>
                 </ul>')
             ->setRequired();
         $this->add($field);
 
-        foreach (Restriction::$POSSIBLE_TYPES as $key => $type) {
-            $field = new Hidden('type_' . $key);
-            $field->setAttribute('id', 'type_' . $key)
-                ->setValue(Restriction::$VALUE_TYPES[$key]);
-            $this->add($field);
-        }
-
-        $field = new Text('value_string');
-        $field->setAttribute('id', 'restriction_value_string')
-            ->setLabel('Value')
+        $field = new Text('value_amount');
+        $field->setAttribute('id', 'restriction_value_amount')
+            ->setAttribute('class', 'restriction_value')
+            ->setLabel('Amount')
             ->setRequired();
         $this->add($field);
 
-        $field = new Checkbox('value_boolean');
-        $field->setAttribute('id', 'restriction_value_boolean')
-            ->setLabel('Value');
+        $field = new Checkbox('value_member');
+        $field->setAttribute('id', 'restriction_value_member')
+            ->setAttribute('class', 'restriction_value')
+            ->setLabel('Member');
+        $this->add($field);
+
+        $field = new Select('value_study');
+        $field->setAttribute('id', 'restriction_value_study')
+            ->setAttribute('class', 'restriction_value')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_getStudies())
+            ->setAttribute('style', 'max-width: 100%;')
+            ->setLabel('Studies')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    public function _getStudies()
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        $studies = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($academicYear);
+
+        $options = array();
+        foreach($studies as $study)
+            $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+
+        return $options;
     }
 
     public function getInputFilter()
@@ -112,23 +139,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        if (isset(Restriction::$VALUE_TYPES[$this->data['type']]) && Restriction::$VALUE_TYPES[$this->data['type']] == 'boolean') {
+        if ('amount' == $this->data['type']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'value_boolean',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        } elseif (isset(Restriction::$VALUE_TYPES[$this->data['type']]) && Restriction::$VALUE_TYPES[$this->data['type']] == 'integer') {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'value_string',
+                        'name'     => 'value_amount',
                         'required' => true,
                         'filters'  => array(
                             array('name' => 'StringTrim'),
@@ -139,15 +154,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     )
                 )
             );
-        } else {
+        } elseif ('member' == $this->data['type']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'value_string',
+                        'name'     => 'value_member',
                         'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    )
+                )
+            );
+        } elseif ('study' == $this->data['type']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'value_study',
+                        'required' => true,
                     )
                 )
             );

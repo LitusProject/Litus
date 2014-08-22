@@ -77,9 +77,19 @@ class Exists extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $restriction = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
-            ->findOneByArticleAndType($this->_article, $value);
+        if ('amount' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Amount')
+                ->findOneByArticle($this->_article);
+        } elseif ('member' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
+                ->findOneByArticle($this->_article);
+        } elseif ('study' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Study')
+                ->findOneByArticle($this->_article);
+        }
 
         if (null === $restriction)
             return true;

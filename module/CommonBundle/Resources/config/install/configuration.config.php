@@ -303,6 +303,11 @@ Disallow: /admin/*
         'value'       => '83GZ464K6U',
         'description' => 'The team identifier of the Apple developer account that generated the certificates',
     ),
+    array(
+        'key'         => 'common.ios_app_id',
+        'value'       => '892060967',
+        'description' => 'The unique identifier of the iOS app',
+    ),
 
     array(
         'key'         => 'last_upgrade',
