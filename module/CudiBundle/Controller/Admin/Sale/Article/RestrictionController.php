@@ -52,7 +52,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                 } elseif ('study' == $formData['type']) {
                     $restriction = new StudyRestriction($article);
 
-                    foreach($formData['value_study'] as $id) {
+                    foreach ($formData['value_study'] as $id) {
                         $study = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Study')
                             ->findOneById($id);
