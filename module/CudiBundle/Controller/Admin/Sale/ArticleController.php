@@ -28,7 +28,6 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
     CudiBundle\Form\Admin\Sales\Article\Export as ExportForm,
     CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
     CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
@@ -201,13 +200,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 if (isset($formData['bookable']))
                     $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
-
-                $onlyMember = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.booking_only_member');
-
-                if ($onlyMember)
-                    $this->getEntityManager()->persist(new MemberRestriction($saleArticle, true));
 
                 $this->getEntityManager()->flush();
 
