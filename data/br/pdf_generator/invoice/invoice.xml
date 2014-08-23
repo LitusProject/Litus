@@ -12,9 +12,9 @@
     <our_union>
         <name><b>VTK Ondersteuning vzw</b></name>
         <address>
-        	<street>Studentenwijk Arenberg 6/1</street>
-        	<city>3001 Heverlee</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Studentenwijk Arenberg 6/1</street>
+            <city>3001 Heverlee</city>
+            <country>Belgi&#x00EB;</country>
         </address>
         <logo>data/images/logo/logo.jpg</logo>
         <vat_number>BTW: BE 0479.482.282</vat_number>
@@ -23,9 +23,9 @@
     <company contact_person="J&#x00E9;su The Gardener">
         <name>Lunch Garden BVBA</name>
         <address>
-        	<street>Tiensestraat 186</street>
-        	<city>3000 Leuven</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Tiensestraat 186</street>
+            <city>3000 Leuven</city>
+            <country>Belgi&#x00EB;</country>
         </address>
     </company>
 
@@ -53,7 +53,7 @@
     </total>
 
     <sub_entries>
-    	Gelieve het bovenstaande factuurbedrag te betalen ten laatste 30 dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financi&#x00EB;le aard kan u steeds terecht op <a href="mailto:beheer@vtk.be">beheer@vtk.be</a>.
+        Gelieve het bovenstaande factuurbedrag te betalen ten laatste 30 dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financi&#x00EB;le aard kan u steeds terecht op <a href="mailto:beheer@vtk.be">beheer@vtk.be</a>.
     </sub_entries>
 
     <footer>

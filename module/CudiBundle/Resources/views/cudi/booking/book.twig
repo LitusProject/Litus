@@ -146,6 +146,14 @@
                                     </td>
                                 </tr>
                             {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" style="border-top-width:0px;">
+                                    <div>
+                                        <em>{{ translate('No articles available for this subject.') }}</em>
+                                    </div>
+                                </td>
+                            </tr>
                         {% endfor %}
                     {% endfor %}
 

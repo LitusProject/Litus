@@ -11,18 +11,18 @@
     <company contact_person="J&#xe9;su The Gardener">
         <name>Lunch Garden BVBA</name>
         <address>
-        	<street>Tiensestraat 186</street>
-        	<city>3000 Leuven</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Tiensestraat 186</street>
+            <city>3000 Leuven</city>
+            <country>Belgi&#x00EB;</country>
         </address>
     </company>
 
     <union_address>
         <name>VTK Ondersteuning vzw</name>
         <address>
-        	<street>Studentenwijk Arenberg 6/1</street>
-        	<city>3001 Heverlee</city>
-        	<country>Belgi&#x00EB;</country>
+            <street>Studentenwijk Arenberg 6/1</street>
+            <city>3001 Heverlee</city>
+            <country>Belgi&#x00EB;</country>
         </address>
     </union_address>
 
@@ -35,11 +35,11 @@
     </entries>
 
     <sub_entries>
-    	Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden op <a href="http://br.vtk.be/1112/verkoopsvoorwaarden.html">http://br.vtk.be/1112/verkoopsvoorwaarden.html</a>
+        Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden op <a href="http://br.vtk.be/1112/verkoopsvoorwaarden.html">http://br.vtk.be/1112/verkoopsvoorwaarden.html</a>
     </sub_entries>
 
     <footer>
-    	Vlaamse Technische Kring<br/>Faculteitskring van de Burgerlijk Ingenieurs aan de K.U.Leuven<br padding-after="5px"/>Studentenwijk Arenberg 6/0, B-3001 Heverlee — KBC 745-0175900-11<br/>Tel: +3216200097   http://www.vtk.be/br   e-mail: br@vtk.be
+        Vlaamse Technische Kring<br/>Faculteitskring van de Burgerlijk Ingenieurs aan de K.U.Leuven<br padding-after="5px"/>Studentenwijk Arenberg 6/0, B-3001 Heverlee — KBC 745-0175900-11<br/>Tel: +3216200097   http://www.vtk.be/br   e-mail: br@vtk.be
     </footer>
 
 </contract>

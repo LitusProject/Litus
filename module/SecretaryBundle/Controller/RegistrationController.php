@@ -23,6 +23,7 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -64,6 +65,22 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     public function addAction()
     {
         if (null !== $this->getParam('identification')) {
+            if ('u' == substr($this->getParam('identification'), 0, 1)) {
+                $this->flashMessenger()->warn(
+                    'WARNING',
+                    'As a professor, you do not have to register. An account has already been created automatically for you.'
+                );
+
+                $this->redirect()->toRoute(
+                    'common_index',
+                    array(
+                        'action' => 'index',
+                    )
+                );
+
+                return new ViewModel();
+            }
+
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('identification'));
@@ -225,6 +242,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $academic,
                             $this->getCurrentAcademicYear(),
                             $selectedOrganization
+                        );
+                    }
+
+                    if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                        $academic->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $academic,
+                                'non_member',
+                                $this->getCurrentAcademicYear()
+                            )
                         );
                     }
 
@@ -456,6 +483,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getCurrentAcademicYear()
                     );
                     $academic->addUniversityStatus($status);
+                }
+
+                if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            'non_member',
+                            $this->getCurrentAcademicYear()
+                        )
+                    );
                 }
 
                 if (isset($formData['organization'])) {
@@ -816,6 +853,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
      */
     private static function _loadDate($date)
     {
-        return DateTime::createFromFormat('d#m#Y', $date . ' 00:00') ?: null;
+        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

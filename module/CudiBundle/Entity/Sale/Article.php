@@ -23,6 +23,7 @@ use CommonBundle\Entity\User\Person,
     CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
+    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Supplier,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -531,7 +532,19 @@ class Article
      */
     public function canBook(Person $person, EntityManager $entityManager)
     {
-        foreach ($this->restrictions as $restriction) {
+        $restrictions = $this->restrictions->toArray();
+
+        $onlyMember = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_only_member');
+
+        $memberRestriction = $entityManager->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
+            ->findOneByArticle($this);
+
+        if ($onlyMember && null === $memberRestriction)
+            $restrictions[] = new MemberRestriction($this, false);
+
+        foreach ($restrictions as $restriction) {
             if (!$restriction->canBook($person, $entityManager))
                 return false;
         }

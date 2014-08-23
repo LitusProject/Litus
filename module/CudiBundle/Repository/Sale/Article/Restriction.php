@@ -49,24 +49,4 @@ class Restriction extends EntityRepository
 
         return $resultSet;
     }
-
-    public function findOneByArticleAndType(Article $article, $type)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-            ->from('CudiBundle\Entity\Sale\Article\Restriction', 'r')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('r.article', ':article'),
-                    $query->expr()->eq('r.type', ':type')
-                )
-            )
-            ->setParameter('article', $article)
-            ->setParameter('type', $type)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $resultSet;
-    }
 }
