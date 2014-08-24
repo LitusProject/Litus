@@ -41,6 +41,16 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 
+        $iosAppId = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.ios_app_id');
+
+        if ('' != $iosAppId) {
+            $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
+                ->plugin('headMeta')
+                ->appendName('apple-itunes-app', 'app-id=' . $iosAppId);
+        }
+
         $result = parent::onDispatch($e);
 
         $result->menu = $this->_buildMenu();
@@ -164,7 +174,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $sort = array();
         foreach ($menu as $key => $value)
-            $sort[$key] = isset($value['title'])? $value['title'] : $value['name'];
+            $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
 
         array_multisort($sort, $menu);
 

@@ -58,12 +58,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'organizations' => $organizations,
             )
         );
     }
@@ -125,9 +130,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByPersonAndAcademicYearQuery($this->getParam('string'), $academicYear);
             case 'organization':
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById(substr($this->getParam('string'), strlen('organization-')));
+
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndAcademicYearQuery($this->getParam('string'), $academicYear);
+                    ->findAllByOrganizationAndAcademicYearQuery($organization, $academicYear);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -269,9 +278,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByPersonAndSessionQuery($this->getParam('string'), $session);
             case 'organization':
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById(substr($this->getParam('string'), strlen('organization-')));
+
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndSessionQuery($this->getParam('string'), $session);
+                    ->findAllByOrganizationAndSessionQuery($organization, $session);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -476,9 +489,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByPersonAndArticleQuery($this->getParam('string'), $article, $academicYear);
             case 'organization':
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById(substr($this->getParam('string'), strlen('organization-')));
+
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndArticleQuery($this->getParam('string'), $article, $academicYear);
+                    ->findAllByOrganizationAndArticleQuery($organization, $article, $academicYear);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -623,9 +640,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
                     ->findAllByPersonAndSupplierQuery($this->getParam('string'), $supplier, $academicYear);
             case 'organization':
+                $organization = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization')
+                    ->findOneById(substr($this->getParam('string'), strlen('organization-')));
+
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndSupplierQuery($this->getParam('string'), $supplier, $academicYear);
+                    ->findAllByOrganizationAndSupplierQuery($organization, $supplier, $academicYear);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')

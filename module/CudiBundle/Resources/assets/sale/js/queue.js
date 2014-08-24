@@ -6,6 +6,7 @@
         tPrint: 'Print',
         tDone: 'Done',
         tCancel: 'Cancel',
+        tScan: 'Scan',
         tSell: 'Sell',
         tHold: 'Hold',
         tUnhold: 'Unhold',
@@ -387,32 +388,37 @@
             case 'signed_in':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
+                    row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startCollecting, .hold').show();
-                    row.find('.stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
+                    row.find('.stopCollecting, .startScanning, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'collecting':
-                row.find('.stopCollecting, .cancelCollecting, .hold').show();
-                row.find('.startCollecting, .startSale, .cancelSale, .unhold').hide();
+                if (data.collectPrinted) {
+                    row.find('.startScanning, .cancelCollecting, .hold').show();
+                    row.find('.startCollecting, .stopCollecting, .startSale, .cancelSale, .unhold').hide();
+                } else {
+                    row.find('.stopCollecting, .cancelCollecting, .hold').show();
+                    row.find('.startCollecting, .startScanning, .startSale, .cancelSale, .unhold').hide();
+                }
                 break;
             case 'collected':
                 if (currentView == 'sale' || currentView == 'collect') {
                     row.find('.hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
+                    row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
                     row.find('.startSale, .hold').show();
-                    row.find('.startCollecting, .stopCollecting, .cancelCollecting, .cancelSale, .unhold').hide();
+                    row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .cancelSale, .unhold').hide();
                 }
                 break;
             case 'selling':
                 row.find('.cancelSale, .hold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .unhold').hide();
+                row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .unhold').hide();
                 break;
             case 'hold':
                 row.find('.unhold').show();
-                row.find('.startCollecting, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .hold').hide();
+                row.find('.startCollecting, .startScanning, .stopCollecting, .cancelCollecting, .startSale, .cancelSale, .hold').hide();
                 break;
         }
 
@@ -448,6 +454,7 @@
             $('<td>', {'class': 'actions'}).append(
                 startCollecting = $('<button>', {'class': 'btn btn-success startCollecting'}).html(settings.tPrint).hide(),
                 stopCollecting = $('<button>', {'class': 'btn btn-success stopCollecting'}).html(settings.tDone).hide(),
+                startScanning = $('<button>', {'class': 'btn btn-success startScanning'}).html(settings.tScan).hide(),
                 cancelCollecting = $('<button>', {'class': 'btn btn-danger cancelCollecting'}).html(settings.tCancel).hide(),
                 startSale = $('<button>', {'class': 'btn btn-success startSale'}).html(settings.tSell).hide(),
                 cancelSale = $('<button>', {'class': 'btn btn-danger cancelSale'}).html(settings.tCancel).hide(),
@@ -459,6 +466,18 @@
         _updateItem($this, settings, row, data);
 
         startCollecting.click(function () {
+            if ($(this).is('.disabled'))
+                return;
+            settings.sendToSocket(
+                JSON.stringify({
+                    'command': 'action',
+                    'action': 'startCollecting',
+                    'id': $(this).closest('tr').data('info').id,
+                })
+            );
+        });
+
+        startScanning.click(function () {
             if ($(this).is('.disabled'))
                 return;
             settings.sendToSocket(
