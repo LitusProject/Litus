@@ -122,7 +122,6 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
 
         $payed = array();
-        $totalRewardLeft = 0;
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
