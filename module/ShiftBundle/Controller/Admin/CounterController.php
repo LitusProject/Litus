@@ -122,6 +122,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
 
         $payed = array();
+        $totalRewardLeft = 0;
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person)
@@ -246,10 +247,25 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('ShiftBundle\Entity\Shift')
                 ->countAllByPerson($person, $academicYear);
 
+            $asVolunteer = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift')
+                ->findAllByPersonAsVolunteer($person, $academicYear);
+            $unpayed = 0;
+            foreach ($asVolunteer as $shift) {
+                foreach ($shift->getVolunteers() as $volunteer) {
+                    if ($volunteer->getPerson() == $person) {
+                        if (!$volunteer->isPayed() && !$shift->getHandledOnEvent()) {
+                            $unpayed += $shift->getReward();
+                        }
+                    }
+                }
+            }
+
             $item = (object) array();
             $item->id = $person->getId();
             $item->universityIdentification = $person->getUniversityIdentification();
             $item->name = $person->getFullName();
+            $item->unpayed = $unpayed;
             $item->count = $shiftCount;
             $result[] = $item;
         }
@@ -257,6 +273,40 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function payoutAction()
+    {
+        $this->initAjax();
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($this->getParam('person'));
+
+        if (null === $person)
+            return new ViewModel();
+
+        $shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsVolunteer($person);
+
+        foreach ($shifts as $shift) {
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson() == $person) {
+                    $volunteer->setPayed(true);
+                }
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'status' => 'success'
+                ),
             )
         );
     }

@@ -18,8 +18,9 @@
 
 namespace ShiftBundle\Controller;
 
-use DateTime,
+use CommonBundle\Component\Util\AcademicYear,
     DateInterval,
+    DateTime,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
@@ -311,10 +312,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $payed = false;
+        if ($shift->getHandledOnEvent())
+            $payed = true;
+
         $shift->addVolunteer(
             $this->getEntityManager(),
             new Volunteer(
-                $person
+                $person,
+                $payed
             )
         );
 
@@ -438,6 +444,81 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function historyAction()
+    {
+        $academicYear = $this->getCurrentAcademicYear(true);
+
+        $asVolunteer = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsVolunteer($this->getAuthentication()->getPersonObject(), $academicYear);
+
+        $asResponsible = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $academicYear);
+
+        $now = new DateTime();
+
+        $shiftsAsVolunteer = array();
+        $shiftsAsVolunteerCount = 0;
+        $unPayedShifts = 0;
+        $unPayedCoins = 0;
+        $lastShift = new DateTime();
+        foreach ($asVolunteer as $shift) {
+            if ($shift->getStartDate() > $now)
+                continue;
+
+            //if ($shift->getEndDate() > $lastShift)
+                $lastShift = $shift->getEndDate();
+
+            if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
+                $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
+                    'count' => 1,
+                    'unitName' => $shift->getUnit()->getName()
+                );
+            } else {
+                $shiftsAsVolunteer[$shift->getUnit()->getId()]['count']++;
+            }
+
+            $shiftsAsVolunteerCount++;
+            foreach ($shift->getVolunteers() as $volunteer) {
+                if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())) {
+                    $unPayedShifts += 1;
+                    $unPayedCoins += $shift->getReward();
+                }
+            }
+        }
+
+        $shiftsAsResponsible = array();
+        $shiftsAsResponsibleCount = 0;
+        foreach ($asResponsible as $shift) {
+            if ($shift->getStartDate() > $now)
+                continue;
+
+            if (!isset($shiftsAsResponsible[$shift->getUnit()->getId()])) {
+                $shiftsAsResponsible[$shift->getUnit()->getId()] = array(
+                    'count' => 1,
+                    'unitName' => $shift->getUnit()->getName()
+                );
+            } else {
+                $shiftsAsResponsible[$shift->getUnit()->getId()]['count']++;
+            }
+
+            $shiftsAsResponsibleCount++;
+        }
+
+        return new ViewModel(
+            array(
+                'shiftsAsVolunteer' => $shiftsAsVolunteer,
+                'totalAsVolunteer' => $shiftsAsVolunteerCount,
+                'shiftsAsResponsible' => $shiftsAsResponsible,
+                'totalAsResponsible' => $shiftsAsResponsibleCount,
+                'unPayedShifts' => $unPayedShifts,
+                'unPayedCoins' => $unPayedCoins,
+                'lastShift' => $lastShift->format('d/m/Y')
             )
         );
     }

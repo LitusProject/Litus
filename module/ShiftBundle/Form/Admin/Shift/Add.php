@@ -22,6 +22,7 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Zend\InputFilter\InputFilter,
@@ -110,6 +111,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $field->setLabel('Unit')
             ->setRequired()
             ->setAttribute('options', $this->_createUnitsArray());
+        $this->add($field);
+
+        $field = new Select('reward');
+        $field->setLabel('Reward coins')
+            ->setRequired()
+            ->setAttribute('options', $this->_createRewardArray());
+        $this->add($field);
+
+        $field = new Checkbox('handled_on_event');
+        $field->setLabel('Payed at event');
         $this->add($field);
 
         $field = new Select('event');
@@ -385,5 +396,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             throw new \RuntimeException('There needs to be at least one role before you can add a page');
 
         return $rolesArray;
+    }
+
+    private function _createRewardArray()
+    {
+        return unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.reward_numbers')
+        );
     }
 }

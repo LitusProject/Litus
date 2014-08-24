@@ -22,10 +22,16 @@
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
-                <select id="searchStringSelect" style="display: none">
+                <select id="searchStringType" style="display: none">
                     <option value="regular">Regular</option>
                     <option value="prof">Prof</option>
                     <option value="external">External</option>
+                </select>
+                <select id="searchStringOrganization" style="display: none">
+                    {% for organization in organizations %}
+                        <option value="organization-{{ organization.getId() }}">{{ organization.getName() }}</option>
+                    {% endfor %}
+                    <option value="organization-0">Other</option>
                 </select>
             </div>
 
@@ -84,17 +90,24 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#searchStringSelect').change(function (e) {
-                $('#searchString').val($('#searchStringSelect').val()).trigger('keyup');
+            $('#searchStringType').change(function (e) {
+                $('#searchString').val($('#searchStringType').val()).trigger('keyup');
+            });
+
+            $('#searchStringOrganization').change(function (e) {
+                $('#searchString').val($('#searchStringOrganization').val()).trigger('keyup');
             });
 
             $('#searchField').change(function (e) {
                 if ($(this).val() == 'type') {
-                    $('#searchString').hide();
-                    $('#searchStringSelect').show().change();
+                    $('#searchString, #searchStringOrganization').hide();
+                    $('#searchStringType').show().change();
+                } else if ($(this).val() == 'organization') {
+                    $('#searchString, #searchStringType').hide();
+                    $('#searchStringOrganization').show().change();
                 } else {
                     $('#searchString').show();
-                    $('#searchStringSelect').hide();
+                    $('#searchStringType, #searchStringOrganization').hide();
                 }
             });
 

@@ -52,5 +52,16 @@ return array(
     'Shifts for %unit%' => 'Shiften voor %unit%',
     'Shifts for %event%' => 'Shiften voor %event%',
     'If you would like to help VTK from time to time, you can just sign up for a shift. In the left-hand column, you can choose shift according to date, event or category (like Cursusdienst or Theokot), but you don\'t have to. To the right, you find a list of all the shift to which you can enroll. If you click on a shift, all the useful information appears. Just click \'Sign In\' and you\'re done! Attention: you can only unsubscribe yourself up to 24 hours beforehand! If a shift is already completely full, you can probably still sign up by kicking off somebody from VTK itself. By doing so, you relieve that person\'s working load for which this person will be grateful the rest of his/her life :).' => 'Je inschrijven op een shift, hoe werkt dat? In de linkse kolom kan je de shiften kiezen per datum, evenement of per post (bijvoorbeeld Cursusdienst of Fakbar), maar dit hoeft niet. Rechts staan alle shiften waarop je je kan inschrijven. Als je op een bepaalde shift klikt, tover je alle informatie tevoorschijn i.v.m. die shift. Als je op sign in klikt, ben je ingeschreven! Je kan je maximaal 24h op voorhand weer uitschrijven! Ook als een shift al volledig volzet is, kan je je meestal toch nog op die shift inschrijven door praesidium uit te schrijven. Zo verlicht je het werk van dat praesidiumlid, waarvoor die je eeuwig dankbaar gaat zijn :).',
-    'Shifts on' => 'Shiften op'
+    'Shifts on' => 'Shiften op',
+    'History' => 'Geschiedenis',
+    'Here you can see some statistics about shifts you have done before.' => 'Hier kan je enkele statistieken zien over shiften die je al gedaan hebt.',
+    'Total' => 'Totaal',
+    'As Volunteer' => 'als vrijwilliger',
+    'As Responsible' => 'als verantwoordelijke',
+    'Reward' => 'Beloning',
+    'Coins' => 'bonnetjes',
+    'on the event' => 'op het evenement',
+    'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'Je hebt momenteel <span class="label label-info">%unPayedShifts%</span> onbetaalde shift(en). Je can je beloning komen halen bij de vice-praeses op \'blok 6\'. Deze beloning zal vervallen op het einde van dit academiejaar.',
+    'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!' => 'Je hebt momenteel nog geen shiften gedaan dit jaar. Schrijf je in voor een shift, have fun tijdens de shift, leer nieuwe mensen kennen en krijg bonnetjes als beloning!',
+    'You have done your last shift on %lastShift%.' => 'Je hebt je laatste shift gedaan op %lastShift%.'
 );
