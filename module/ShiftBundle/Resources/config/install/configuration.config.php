@@ -144,7 +144,11 @@ U bent verwijderd van de volgende shift door een administrator:
     ),
     array(
         'key'           => 'shift.reward_numbers',
-        'value'         => serialize(array(2,0,3,10)),
+        'value'         => serialize(array(
+            '2'=>2,
+            '0'=>0,
+            '3'=>3,
+            '10'=>10)),
         'description'   => 'The coins you can select as reward for a shift'
         )
 );
