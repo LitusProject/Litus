@@ -66,7 +66,7 @@ class Config
 
     /**
      * @param  string                   $key   The entry's key
-     * @param  string                   $value The entry's value
+     * @param  string|array             $value The entry's value
      * @throws InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
@@ -96,14 +96,13 @@ class Config
     }
 
     /**
-     * @param  string                   $value The entry's value
+     * @param  string|array $value The entry's value
      * @return self
-     * @throws InvalidArgumentException Value must be a string
      */
     public function setValue($value)
     {
         if(!is_string($value))
-            throw new InvalidArgumentException('Value must be a string');
+            $value = serialize($value);
 
         $this->value = $value;
 
@@ -133,7 +132,7 @@ class Config
 
     /**
      * @param  boolean $published
-     * @return Config
+     * @return self
      */
     public function setPublished($published)
     {
