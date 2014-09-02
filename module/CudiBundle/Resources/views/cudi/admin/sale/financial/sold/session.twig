@@ -72,7 +72,8 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="90px" class="widest">Article Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
             </table>
         </div>
@@ -88,7 +89,8 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="90px" class="widest">Article Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
 
                 {% for item in paginator %}
@@ -101,6 +103,7 @@
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
                         <td>&euro; {{ (item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
                         <td class="wider">{{ item.getDiscountType() }}</td>
+                        <td class="widest">{{ item.getArticle().getMainArticle().getType()|capitalize }}</td>
                         <td class="wider">{{ item.getType()|capitalize }}</td>
                     </tr>
                 {% endfor %}
