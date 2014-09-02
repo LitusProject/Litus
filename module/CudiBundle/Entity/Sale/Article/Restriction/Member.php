@@ -32,15 +32,15 @@ use CommonBundle\Component\Util\AcademicYear,
 class Member extends Restriction
 {
     /**
-     * @var string|null The value of the restriction
+     * @var boolean The value of the restriction
      *
      * @ORM\Column(type="boolean")
      */
     private $value;
 
     /**
-     * @param Article     $article The article of the restriction
-     * @param string|null $value   The value of the restriction
+     * @param Article $article The article of the restriction
+     * @param boolean $value   The value of the restriction
      */
     public function __construct(Article $article, $value)
     {

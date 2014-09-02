@@ -120,7 +120,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                                 ->findOneById($formData['location']),
                             $formData['name'],
                             $formData['description'],
-                            $editRoles
+                            $editRoles,
+                            $formData['reward'],
+                            $formData['handled_on_event']
                         );
 
                         if ('' != $formData['event']) {
@@ -225,7 +227,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                     ->setName($formData['name'])
                     ->setDescription($formData['description'])
-                    ->setEditRoles($editRoles);
+                    ->setEditRoles($editRoles)
+                    ->setReward($formData['reward'])
+                    ->setHandledOnEvent($formData['handled_on_event']);
 
                 if ('' != $formData['event']) {
                     $shift->setEvent(

@@ -65,7 +65,7 @@
           if (that.jsonRequest)
             that.jsonRequest.abort();
           that.jsonRequest = $.getJSON(that.source + that.query, function(items) {
-              if (!items.length)
+              if (!items.length || !that.$element.is(':visible'))
                 return that.shown ? that.hide() : that
 
               return that.render(items.slice(0, that.options.items)).show()

@@ -32,15 +32,15 @@ use CommonBundle\Component\Util\AcademicYear,
 class Amount extends Restriction
 {
     /**
-     * @var string|null The value of the restriction
+     * @var int The value of the restriction
      *
      * @ORM\Column(type="smallint")
      */
     private $value;
 
     /**
-     * @param Article     $article The article of the restriction
-     * @param string|null $value   The value of the restriction
+     * @param Article $article The article of the restriction
+     * @param int     $value   The value of the restriction
      */
     public function __construct(Article $article, $value)
     {
@@ -58,11 +58,11 @@ class Amount extends Restriction
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getValue()
     {
-        return $this->value;
+        return (string) $this->value;
     }
 
     /**
