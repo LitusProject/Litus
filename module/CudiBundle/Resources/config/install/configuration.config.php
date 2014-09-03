@@ -294,7 +294,7 @@ VTK Cudi
     ),
     array(
         'key'         => 'cudi.print_socket_port',
-        'value'       => '4444',
+        'value'       => '4445',
         'description' => 'The port of the print socket',
     ),
     array(
