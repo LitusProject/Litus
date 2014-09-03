@@ -328,6 +328,8 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYearAndDiscount(ArticleEntity $article, AcademicYear $academicYear, $discount, Organization $organization = null)
     {
         if (null !== $organization) {
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
@@ -335,6 +337,7 @@ class SaleItem extends EntityRepository
                 ->innerJoin('i.session', 's')
                 ->where(
                     $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
                         $query->expr()->eq('i.article', ':article'),
                         $query->expr()->gt('s.openDate', ':start'),
                         $query->expr()->lt('s.openDate', ':end'),
