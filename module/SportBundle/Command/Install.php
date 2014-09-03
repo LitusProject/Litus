@@ -18,8 +18,6 @@
 
 namespace SportBundle\Command;
 
-use SportBundle\Entity\Department;
-
 /**
  * InstallController
  *
@@ -28,84 +26,4 @@ use SportBundle\Entity\Department;
  */
 class Install extends \CommonBundle\Component\Console\Command\Install
 {
-    protected function postInstall()
-    {
-        $this->write('Installing Departments...');
-        $this->_installDepartments();
-        $this->writeln(' done.', true);
-    }
-
-    private function _installDepartments()
-    {
-        $departments = array(
-            array(
-                'name'       => 'Architectuur',
-                'happyHours' => array(
-                    '0809'
-                ),
-            ),
-            array(
-                'name'       => 'Bouwkunde',
-                'happyHours' => array(
-                    '1819'
-                ),
-            ),
-            array(
-                'name'       => 'Chemische Ingenieurstechnieken',
-                'happyHours' => array(
-                    '1415'
-                ),
-            ),
-            array(
-                'name'       => 'Computerwetenschappen',
-                'happyHours' => array(
-                    '1112'
-                ),
-            ),
-            array(
-                'name'       => 'Eerstejaars Burgies',
-                'happyHours' => array(
-                    '1718'
-                ),
-            ),
-            array(
-                'name'       => 'Elektrotechniek',
-                'happyHours' => array(
-                    '2300'
-                ),
-            ),
-            array(
-                'name'       => 'Materiaalkunde',
-                'happyHours' => array(
-                    '1213'
-                ),
-            ),
-            array(
-                'name'       => 'Tweedejaars Burgies',
-                'happyHours' => array(
-                    '2223'
-                ),
-            ),
-            array(
-                'name'       => 'Werktuigkunde',
-                'happyHours' => array(
-                    '1314'
-                ),
-            ),
-        );
-
-        foreach ($departments as $department) {
-            $repositoryCheck = $this->getEntityManager()
-                ->getRepository('SportBundle\Entity\Department')
-                ->findOneByName($department['name']);
-
-            if (null === $repositoryCheck) {
-                $newDepartment = new Department($department['name'], $department['happyHours']);
-                $this->getEntityManager()->persist($newDepartment);
-            } else {
-                $repositoryCheck->setHappyHours($department['happyHours']);
-            }
-        }
-        $this->getEntityManager()->flush();
-    }
 }

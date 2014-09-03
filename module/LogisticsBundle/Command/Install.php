@@ -18,10 +18,6 @@
 
 namespace LogisticsBundle\Command;
 
-use LogisticsBundle\Entity\Reservation\VanReservation,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    LogisticsBundle\Entity\Reservation\ReservableResource;
-
 /**
  * InstallController for the LogisticsBundle
  *
@@ -30,25 +26,4 @@ use LogisticsBundle\Entity\Reservation\VanReservation,
  */
 class Install extends \CommonBundle\Component\Console\Command\Install
 {
-    protected function postInstall()
-    {
-        $this->write('Installing Resources...');
-        $this->_installResources();
-        $this->writeln(' done.', true);
-    }
-
-    private function _installResources()
-    {
-        $resources = array(VanReservation::VAN_RESOURCE_NAME, PianoReservation::PIANO_RESOURCE_NAME);
-
-        foreach ($resources as $name) {
-            $resource = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                ->findOneByName($name);
-
-            if (null == $resource) {
-                $this->getEntityManager()->persist(new ReservableResource($name));
-            }
-        }
-    }
 }

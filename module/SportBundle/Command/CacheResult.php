@@ -73,7 +73,7 @@ EOT
         return 'CacheSportResult';
     }
 
-    protected function write($str, $raw = false)
+    public function write($str, $raw = false)
     {
         $now = new DateTime();
 
@@ -86,7 +86,7 @@ EOT
     /**
      * @param string $str
      */
-    protected function writeln($str, $raw = false)
+    public function writeln($str, $raw = false)
     {
         $now = new DateTime();
 

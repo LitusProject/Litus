@@ -39,24 +39,12 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @var string
-     */
-    private $_logName;
-
-    /**
-     * @var string
-     */
-    private $_logNameTag;
-
-    /**
      * @return int|void
      */
     protected function execute(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
-        $this->_logName = $this->getLogName();
-        $this->_logNameTag = $this->getLogNameTag();
 
         return $this->executeCommand();
     }
@@ -83,13 +71,13 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string  $string the string to write
      * @param boolean $raw    whether to output the string raw
      */
-    protected function write($string, $raw = false)
+    public function write($string, $raw = false)
     {
         if ($raw) {
             $this->output->write($string);
         } else {
             $this->output->write(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
             );
         }
     }
@@ -98,13 +86,13 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string  $string the string to write
      * @param boolean $raw    whether to output the string raw
      */
-    protected function writeln($string, $raw = false)
+    public function writeln($string, $raw = false)
     {
-        if ($raw || false === $this->_logName) {
+        if ($raw || false === $this->getLogName()) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
             );
         }
     }

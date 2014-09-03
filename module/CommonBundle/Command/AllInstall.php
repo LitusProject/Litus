@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Command;
 
-use RuntimeException;
-
 /**
  * AllInstallController calls all other installations.
  *
@@ -28,6 +26,11 @@ use RuntimeException;
  */
 class AllInstall extends \CommonBundle\Component\Console\Command
 {
+    /**
+     * @var string|null The name of the module currently being installed.
+     */
+    private $currentModule = null;
+
     /**
      * {@inheritdoc}
      */
@@ -44,18 +47,29 @@ EOT
 
     protected function executeCommand()
     {
-        foreach ($this->_getModules() as $module)
-            $this->_installModule($module);
+        foreach ($this->getModules() as $module)
+            $this->installModule($module);
 
         $this->writeln('Installation completed successfully!');
     }
 
     protected function getLogName()
     {
+        if ($this->currentModule !== null)
+            return $this->currentModule;
+
         return 'AllInstall';
     }
 
-    private function _getModules()
+    protected function getLogNameTag()
+    {
+        if ($this->currentModule !== null)
+            return 'fg=blue';
+
+        else return parent::getLogNameTag();
+    }
+
+    private function getModules()
     {
         $config = $this->getServiceLocator()
             ->get('Config');
@@ -68,17 +82,19 @@ EOT
         );
     }
 
-    private function _installModule($module)
+    private function installModule($module)
     {
         $this->writeln('Installing module <comment>' . $module . '</comment>');
 
-        $moduleName = str_replace('bundle', '', strtolower($module));
+        $this->currentModule = $module;
 
-        $command = $this->getApplication()->find('install:' . $moduleName);
+        $installer = $this->getServiceLocator()
+            ->get('litus.install.' . $module);
 
-        if (null === $command)
-            throw new RuntimeException('Unknown command install:' . $moduleName . ' for module ' . $module);
+        $installer->setCommand($this);
 
-        $command->execute($this->input, $this->output);
+        $installer->install();
+
+        $this->currentModule = null;
     }
 }

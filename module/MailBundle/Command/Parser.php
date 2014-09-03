@@ -74,7 +74,7 @@ EOT
         return 'MailParser';
     }
 
-    protected function write($str, $raw = false)
+    public function write($str, $raw = false)
     {
         if (null !== $this->_lilo) {
             $this->_sendToLilo($str);
@@ -86,7 +86,7 @@ EOT
     /**
      * @param string $str
      */
-    protected function writeln($str, $raw = false)
+    public function writeln($str, $raw = false)
     {
         if (null !== $this->_lilo) {
             $this->_sendToLilo($str);

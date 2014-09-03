@@ -16,14 +16,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Command;
+namespace OnBundle\Component\Module;
 
 /**
- * InstallController
+ * OnBundle installer
  *
- * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Install extends \CommonBundle\Component\Console\Command\Install
+class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
 }
