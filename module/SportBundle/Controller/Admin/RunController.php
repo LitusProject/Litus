@@ -21,7 +21,6 @@ namespace SportBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
-    SportBundle\Form\Admin\Runner\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -172,14 +171,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         if (!($runner = $this->_getRunner()))
             return new ViewModel();
 
-        $form = new EditForm();
+        $form = $this->getForm('sport_runner_edit');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $runner->setRunnerIdentification($formData['runner_identification']);
 

@@ -18,77 +18,85 @@
 
 namespace SportBundle\Form\Group;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Add a group of friends.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var EntityManager The EntityManager instance
+     * @var string[] An array containing all members that should be created
      */
-    private $_entityManager = null;
+    private $allMembers = array();
 
-    /**
-     * @var array An array containing all members that should be created
-     */
-    private $_allMembers = array();
-
-    /**
-     * @param EntityManager   $entityManager
-     * @param string[]        $allMembers
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, array $allMembers, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_allMembers = $allMembers;
-
-        $group = new Collection('group_information');
-        $group->setLabel('Group Information')
-            ->setAttribute('id', 'group_information');
-        $this->add($group);
-
-        $field = new Text('group_name');
-        $field->setLabel('Group Name')
-            ->setRequired();
-        $group->add($field);
-
-        $field = new Select('happy_hour_one');
-        $field->setLabel('First Happy Hour')
-            ->setAttribute('options', $this->_generateHappyHours(20));
-        $group->add($field);
-
-        $field = new Select('happy_hour_two');
-        $field->setLabel('Second Happy Hour')
-            ->setAttribute('options', $this->_generateHappyHours(8));
-        $group->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'group_information',
+            'label'      => 'Group Information',
+            'attributes' => array(
+                'id' => 'group_information',
+            ),
+            'elements'   => array(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'name',
+                    'label'    => 'Group Name',
+                    'required' => true,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'happy_hour_one',
+                    'label'      => 'First Happy Hour',
+                    'attributes' => array(
+                        'options' => $this->generateHappyHours(20),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'happy_hour_two',
+                    'label'      => 'Second Happy Hour',
+                    'attributes' => array(
+                        'options' => $this->generateHappyHours(8),
+                    ),
+                ),
+            ),
+        ));
 
         foreach ($allMembers as $i => $memberNb) {
-            $this->_generateMemberForm($memberNb, ($i < 2));
+            $this->generateMemberForm($memberNb, ($i < 2));
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Submit');
-        $this->add($field);
+        $this->addSubmit('Submit');
+    }
+
+    /**
+     * @param  string[] $allMembers
+     * @return self
+     */
+    public function setAllMembers(array $allMembers)
+    {
+        $this->allMembers = $allMembers;
+
+        return $this;
     }
 
     /**
      * @param integer $startTime
      */
-    private function _generateHappyHours($startTime)
+    private function generateHappyHours($startTime)
     {
         $optionsArray = array();
         for ($i = 0; $i < 6; $i++) {
@@ -106,14 +114,14 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
             $optionsArray[$optionKey] = $optionValue;
         }
 
-        $groups = $this->_entityManager
+        $groups = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Group')
             ->findLast();
 
         return $this->_cleanHappyHoursArray($optionsArray, $groups);
     }
 
-    private function _cleanHappyHoursArray(array $optionsArray, array $groups)
+    private function cleanHappyHoursArray(array $optionsArray, array $groups)
     {
         $returnArray = $optionsArray;
         foreach ($groups as $group) {
@@ -132,35 +140,68 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
     /**
      * @param string $memberNb
      */
-    private function _generateMemberForm($memberNb, $required = false)
+    private function generateMemberForm($memberNb, $required = false)
     {
-        $user = new Collection('user_' . $memberNb);
-        $user->setLabel('Runner ' . ucfirst($memberNb))
-            ->setAttribute('id', 'user_' . $memberNb);
-        $this->add($user);
-
-        $field = new Text('university_identification_' . $memberNb);
-        $field->setLabel('University Identification');
-        $user->add($field);
-
-        $field = new Text('first_name_' . $memberNb);
-        $field->setLabel('First Name')
-            ->setRequired($required);
-        $user->add($field);
-
-        $field = new Text('last_name_' . $memberNb);
-        $field->setLabel('Last Name')
-            ->setRequired($required);
-        $user->add($field);
-
-        $field = new Select('department_' . $memberNb);
-        $field->setLabel('Department')
-            ->setRequired($required)
-            ->setAttribute('options', $this->_getDepartments());
-        $user->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'user_' . $memberNb,
+            'label'      => 'Runner ' . ucfirst($memberNb),
+            'attributes' => array(
+                'id' => 'user_' . $memberNb,
+            ),
+            'elements'   => array(
+                array(
+                    'type'    => 'text',
+                    'name'    => 'university_identification',
+                    'label'   => 'University Identification',
+                    'options' => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => $required,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => $required,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'department',
+                    'label'      => 'Department',
+                    'requied'    => $required,
+                    'attributes' => array(
+                        'options' => $this->getDepartments(),
+                    ),
+                )
+            ),
+        ));
     }
 
-    private function _getDepartments()
+    private function getDepartments()
     {
         $departments = $this->_entityManager
             ->getRepository('SportBundle\Entity\Department')
@@ -171,87 +212,5 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
             $array[$department->getId()] = $department->getName();
 
         return $array;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'group_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'happy_hour_one',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'happy_hour_two',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        foreach ($this->_allMembers as $i => $memberNb) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'university_identification_' . $memberNb,
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'first_name_' . $memberNb,
-                        'required' => ($i < 2),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'last_name_' . $memberNb,
-                        'required' => ($i < 2),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
     }
 }

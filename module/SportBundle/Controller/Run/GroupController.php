@@ -20,7 +20,6 @@ namespace SportBundle\Controller\Run;
 
 use SportBundle\Entity\Group,
     SportBundle\Entity\Runner,
-    SportBundle\Form\Group\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -36,106 +35,94 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             'one', 'two', 'three', 'four', 'five'
         );
 
-        $form = new AddForm($this->getEntityManager(), $allMembers);
+        $form = $this->getForm('sport_group_add', array('all_members' => $allMembers));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             foreach ($allMembers as $memberNb) {
+                $memberData = $formData['user_' . $memberNb];
+
                 if (
-                    '' != $formData['university_identification_' . $memberNb]
-                        && !isset($formData['first_name_' . $memberNb])
-                        && !isset($formData['last_name_' . $memberNb])
+                    '' != $memberData['university_identification']
+                        && !isset($memberData['first_name'])
+                        && !isset($memberData['last_name'])
                 ) {
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
+                        ->findOneByUniversityIdentification($memberData['university_identification']);
 
-                    $formData['first_name_' . $memberNb] = $academic->getFirstName();
-                    $formData['last_name_' . $memberNb] = $academic->getLastName();
+                    $memberData['first_name'] = $academic->getFirstName();
+                    $memberData['last_name'] = $academic->getLastName();
                 }
             }
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
-                $createGroup = true;
+                $groupData = $formData['group_information'];
+
+                $newGroup = new Group(
+                    $this->getCurrentAcademicYear(),
+                    $groupData['name'],
+                    array(
+                        $groupData['happy_hour_one'],
+                        $groupData['happy_hour_two']
+                    )
+                );
+
+                $groupMembers = array();
                 foreach ($allMembers as $memberNb) {
-                    if ('' != $formData['university_identification_' . $memberNb]) {
-                        if ('' == $formData['first_name_' . $memberNb] && '' == $formData['last_name_' . $memberNb]) {
-                            if (true === $createGroup)
-                                $createGroup = false;
-                        }
-                    } else {
-                        $memberNbKey = array_keys($allMembers, $memberNb);
-                        unset(
-                            $allMembers[$memberNbKey[0]]
+                    $memberData = $formData['user_' . $memberNb];
+
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Runner')
+                        ->findOneByUniversityIdentification($memberData['university_identification']);
+
+                    if (null === $repositoryCheck) {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                            ->findOneByUniversityIdentification($memberData['university_identification']);
+
+                        $department = $this->getEntityManager()
+                            ->getRepository('SportBundle\Entity\Department')
+                            ->findOneById($memberData['department']);
+
+                        $newRunner = new Runner(
+                            $memberData['first_name'],
+                            $memberData['last_name'],
+                            $academic,
+                            $newGroup,
+                            $department
                         );
+
+                        $this->getEntityManager()->persist($newRunner);
+
+                        $groupMembers[] = $newRunner;
+                    } else {
+                        if (null === $repositoryCheck->getGroup()) {
+                            $repositoryCheck->setGroup($newGroup);
+                            $groupMembers[] = $repositoryCheck;
+                        }
                     }
                 }
 
-                if ($createGroup) {
-                    $newGroup = new Group(
-                        $this->getCurrentAcademicYear(),
-                        $formData['group_name'],
-                        array(
-                            $formData['happy_hour_one'],
-                            $formData['happy_hour_two']
-                        )
+                if (0 != count($groupMembers)) {
+                    $this->getEntityManager()->persist($newGroup);
+
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The group was successfully created!'
                     );
 
-                    $groupMembers = array();
-                    foreach ($allMembers as $memberNb) {
-                        $repositoryCheck = $this->getEntityManager()
-                            ->getRepository('SportBundle\Entity\Runner')
-                            ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
-
-                        if (null === $repositoryCheck) {
-                            $academic = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                                ->findOneByUniversityIdentification($formData['university_identification_' . $memberNb]);
-
-                            $department = $this->getEntityManager()
-                                ->getRepository('SportBundle\Entity\Department')
-                                ->findOneById($formData['department_' . $memberNb]);
-
-                            $newRunner = new Runner(
-                                $formData['first_name_' . $memberNb],
-                                $formData['last_name_' . $memberNb],
-                                $academic,
-                                $newGroup,
-                                $department
-                            );
-
-                            $this->getEntityManager()->persist($newRunner);
-
-                            $groupMembers[] = $newRunner;
-                        } else {
-                            if (null === $repositoryCheck->getGroup()) {
-                                $repositoryCheck->setGroup($newGroup);
-                                $groupMembers[] = $repositoryCheck;
-                            }
-                        }
-
-                    }
-
-                    if (0 != count($groupMembers)) {
-                        $this->getEntityManager()->persist($newGroup);
-
-                        $this->getEntityManager()->flush();
-
-                        $this->flashMessenger()->success(
-                            'Success',
-                            'The group was successfully created!'
-                        );
-
-                        $this->redirect()->toRoute(
-                            'sport_run_index',
-                            array(
-                                'action' => 'index'
-                            )
-                        );
-                    }
+                    $this->redirect()->toRoute(
+                        'sport_run_index',
+                        array(
+                            'action' => 'index'
+                        )
+                    );
                 }
             }
         }
