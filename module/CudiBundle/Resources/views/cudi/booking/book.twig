@@ -24,44 +24,48 @@
     {% if authenticatedPerson == null %}
         {{ translate('Please login to book textbooks.') }}
     {% else %}
-        {% if hasAccess('cudi_booking', 'search') %}
+        {% if hasAccess('cudi_booking', 'search') or hasAccess('cudi_booking', 'keepUpdated') %}
             <div style="height: 60px" class="hidden-xs hidden-sm">
                 <div class="pull-right">
                     {% if hasAccess('cudi_booking', 'keepUpdated') %}
                         <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Keep Me Updated') }}</button>
                         <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Don\'t Keep Me Updated') }}</button>
                     {% endif %}
-                    <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                    {% if hasAccess('cudi_booking', 'search') %}
+                        <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                    {% endif %}
                 </div>
             </div>
 
-            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(searchForm) }}
+            {% if hasAccess('cudi_booking', 'search') %}
+                <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(searchForm) }}
 
-                <table class="table bookings">
-                    <thead>
-                        <tr>
-                            <th>{{ translate('Title') }}</th>
-                            <th class="hidden-xs">{{ translate('Authors') }}</th>
-                            <th>{{ translate('Price / Piece') }}</th>
-                            <th class="hidden-xs">{{ translate('Remarks') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="spacer">
-                            <td colspan="7"></td>
-                        </tr>
-                        <tr class="course-title">
-                            <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table bookings">
+                        <thead>
+                            <tr>
+                                <th>{{ translate('Title') }}</th>
+                                <th class="hidden-xs">{{ translate('Authors') }}</th>
+                                <th>{{ translate('Price / Piece') }}</th>
+                                <th class="hidden-xs">{{ translate('Remarks') }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="spacer">
+                                <td colspan="7"></td>
+                            </tr>
+                            <tr class="course-title">
+                                <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
-                <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
-            </div>
+                    <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                    <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
+                </div>
+            {% endif %}
         {% endif %}
 
         <div id="viewArticlesPage">
