@@ -25,7 +25,7 @@
         {{ translate('Please login to book textbooks.') }}
     {% else %}
         {% if hasAccess('cudi_booking', 'search') %}
-            <div style="height: 30px" class="hidden-xs hidden-sm">
+            <div style="height: 60px" class="hidden-xs hidden-sm">
                 <div class="pull-right">
                     {% if hasAccess('cudi_booking', 'keepUpdated') %}
                         <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Keep Me Updated') }}</button>
