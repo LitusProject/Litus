@@ -18,11 +18,9 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager,
-    Shiftbundle\Entity\Shift,
-    Zend\Form\Element\Submit;
+use CommonBundle\Entity\User\Person\Academic,
+    LogicException,
+    Shiftbundle\Entity\Shift;
 
 /**
  * Edit Shift
@@ -32,47 +30,46 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Edit extends Add
 {
     /**
-     * @param Shift           $shift The shift we're going to modify
-     * @param null|string|int $name  Optional name for the element
+     * @var Shift|null The shift to edit.
      */
-    public function __construct(EntityManager $entityManager, Shift $shift, $name = null)
+    private $shift;
+
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        if ($shift->countResponsibles() != 0 || $shift->countVolunteers() != 0) {
-            $field = new Hidden('start_date');
-            $this->add($field);
-
-            $field = new Hidden('end_date');
-            $this->add($field);
+        if (null === $this->shift) {
+            throw new LogicException('Cannot edit a null shift');
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'shift_edit');
-        $this->add($field);
+        parent::init();
 
-        $this->_populateFromShift($shift);
+        if (!$this->shift->canEditDates()) {
+            $this->remove('start_date')
+                ->add(array(
+                    'type' => 'hidden',
+                    'name' => 'start_date',
+                ));
+
+            $this->remove('end_date')
+                ->add(array(
+                    'type' => 'hidden',
+                    'name' => 'end_date',
+                ))
+        }
+
+        $this->remove('submit')
+            ->addSubmit('Save', 'shift_edit');
+
+        $this->bind($this->shift);
     }
 
-    private function _populateFromShift(Shift $shift)
+    /**
+     * @param  Shift $shift
+     * @return self
+     */
+    public function setShift(Shift $shift)
     {
-        $academic = $shift->getManager();
+        $this->shift = $shift;
 
-        $data = array(
-            'manager_id' => $shift->getManager()->getId(),
-            'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
-            'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
-            'manager' => $academic->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
-            'nb_responsibles' => $shift->getNbResponsibles(),
-            'nb_volunteers' => $shift->getNbVolunteers(),
-            'unit' => $shift->getUnit()->getId(),
-            'event' => null === $shift->getEvent() ? '' : $shift->getEvent()->getId(),
-            'location' => $shift->getLocation()->getId(),
-            'name' => $shift->getName(),
-            'description' => $shift->getDescription()
-        );
-
-        $this->setData($data);
+        return $this;
     }
 }

@@ -18,46 +18,33 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Export Shifts
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Export extends \CommonBundle\Component\OldForm\Admin\Form
+class Export extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'event',
+            'label'      => 'Event',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createEventsArray(),
+            ),
+        ));
 
-        $field = new Select('event');
-        $field->setLabel('Event')
-            ->setAttribute('options', $this->_createEventsArray());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Export')
-            ->setAttribute('class', 'download');
-        $this->add($field);
+        $this->addSubmit('Export', 'download');
     }
 
-    private function _createEventsArray()
+    private function createEventsArray()
     {
-        $events = $this->_entityManager
+        $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 

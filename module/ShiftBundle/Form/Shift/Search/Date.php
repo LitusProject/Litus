@@ -18,66 +18,52 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use DateTime;
 
 /**
  * Search Date
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Date extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Date extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct($name = null)
     {
         parent::__construct($name, false, false);
+    }
 
-        $this->_entityManager = $entityManager;
+    public function init()
+    {
+        parent::init();
 
         $this->setAttribute('class', 'form-inline');
 
-        $today = new DateTime();
-        $field = new Text('date');
-        $field->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setValue($today->format('d/m/Y'));
-        $this->add($field);
-    }
+        $now = new DateTime();
 
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $factory->createInput(
-            array(
-                'name'     => 'date',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'date',
-                        'options' => array(
-                            'format' => 'd/m/Y',
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'date',
+            'label'      => 'Date',
+            'value'      => $now->format('d/m/Y'),
+            'attributes' => array(
+                'placeholder' => 'dd/mm/yyyy',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y',
+                            ),
                         ),
                     ),
                 ),
-            )
-        );
-
-        return $inputFilter;
+            ),
+        ));
     }
 }

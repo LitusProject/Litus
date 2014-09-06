@@ -21,7 +21,6 @@ namespace ShiftBundle\Controller\Admin;
 use ShiftBundle\Entity\Shift,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
-    ShiftBundle\Form\Admin\Subscription\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -40,15 +39,13 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $responsibles = $shift->getResponsibles();
         $volunteers = $shift->getVolunteers();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('shift_subscription_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $repository = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic');

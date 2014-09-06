@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use RecursiveArrayIterator,
+use DateTime,
+    RecursiveArrayIterator,
     RecursiveIteratorIterator,
     RuntimeException,
     Zend\Stdlib\Hydrator\Filter\FilterComposite;
@@ -217,5 +218,35 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     public function getPerson()
     {
         return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
+     * Loads the given date, ignoring the time.
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    protected static loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
+    }
+
+    /**
+     * Loads the given date and time.
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    protected static loadDateTime($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+    }
+
+    /**
+     * Loads the given time, ignoring the date.
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    protected static loadTime($date)
+    {
+        return DateTime::createFromFormat('H#i', $date) ?: null;
     }
 }

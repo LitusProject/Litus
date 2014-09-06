@@ -28,10 +28,10 @@ trait FieldsetTrait
         $spec = array();
 
         foreach ($this->byName as $name => $elementOrFieldset) {
-            if ($elementOrFieldset instanceof InputProviderInterface)
-                $spec[$name] = $elementOrFieldset->getInputSpecification();
-            elseif ($elementOrFieldset instanceof InputFilterProviderInterface)
+            if ($elementOrFieldset instanceof InputFilterProviderInterface)
                 $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
+            elseif ($elementOrFieldset instanceof InputProviderInterface)
+                $spec[$name] = $elementOrFieldset->getInputSpecification();
         }
 
         return $spec;

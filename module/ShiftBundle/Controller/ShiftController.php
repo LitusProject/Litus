@@ -23,9 +23,6 @@ use DateTime,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
-    ShiftBundle\Form\Shift\Search\Date as DateSearchForm,
-    ShiftBundle\Form\Shift\Search\Event as EventSearchForm,
-    ShiftBundle\Form\Shift\Search\Unit as UnitSearchForm,
     Zend\Http\Headers,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -42,9 +39,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        $eventSearchForm = new EventSearchForm($this->getEntityManager(), $this->getLanguage());
-        $unitSearchForm = new UnitSearchForm($this->getEntityManager());
-        $dateSearchForm = new DateSearchForm($this->getEntityManager());
+        $eventSearchForm = $this->getForm('shift_shift_search_event', array('language' => $this->getLanguage()));
+        $unitSearchForm = $this->getForm('shift_shift_search_unit')
+        $dateSearchForm = $this->getForm('shift_shift_search_date');
 
         if (!$this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->warn(
@@ -86,7 +83,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $eventSearchForm->setData($formData);
 
                 if ($eventSearchForm->isValid() && '' != $formData['event']) {
-                    $formData = $eventSearchForm->getFormData($formData);
+                    $formData = $eventSearchForm->getData();
 
                     $event = $this->getEntityManager()
                         ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -110,7 +107,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $unitSearchForm->setData($formData);
 
                 if ($unitSearchForm->isValid() && '' != $formData['unit']) {
-                    $formData = $unitSearchForm->getFormData($formData);
+                    $formData = $unitSearchForm->getData();
 
                     $unit = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization\Unit')
@@ -134,7 +131,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $dateSearchForm->setData($formData);
 
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {
-                    $formData = $dateSearchForm->getFormData($formData);
+                    $formData = $dateSearchForm->getData();
 
                     $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
                     if (!$start_date) {
