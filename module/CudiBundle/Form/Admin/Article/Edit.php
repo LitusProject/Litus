@@ -47,7 +47,7 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
 
         $this->remove('submit');
 
-        $this->remove('subject');
+        $this->remove('subject_form');
 
         if ($article->getType() == 'common') {
             $this->get('article')

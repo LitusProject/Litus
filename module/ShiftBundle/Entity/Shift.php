@@ -180,6 +180,20 @@ class Shift
     private $editRoles;
 
     /**
+     * @var integer The amount of coins this shift is worth
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $reward;
+
+    /**
+     * @var boolean Wheter or not the reward is payed at the event itself
+     *
+     * @ORM\Column(name="handled_on_event", type="boolean")
+     */
+    private $handledOnEvent;
+
+    /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
      */
@@ -678,5 +692,43 @@ class Shift
         }
 
         return false;
+    }
+
+    /**
+     * @param  integer $reward
+     * @return self
+     */
+    public function setReward($reward)
+    {
+        $this->reward = $reward;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getReward()
+    {
+        return $this->reward;
+    }
+
+    /**
+     * @param  boolean $handledOnEvent
+     * @return self
+     */
+    public function setHandledOnEvent($handledOnEvent)
+    {
+        $this->handledOnEvent = $handledOnEvent;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHandledOnEvent()
+    {
+        return $this->handledOnEvent;
     }
 }

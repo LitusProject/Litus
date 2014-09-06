@@ -238,6 +238,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             $nbToMuchAssigned -= $booking->getNumber();
                         }
 
+                        $enableAssignment = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.enable_automatic_assignment');
+
+                        if ($enableAssignment) {
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                ->assignAllByArticle($article, $this->getMailTransport());
+                            $this->getEntityManager()->flush();
+                        }
+
                         $this->getEntityManager()->flush();
                     }
 

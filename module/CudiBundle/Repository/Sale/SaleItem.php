@@ -328,6 +328,8 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYearAndDiscount(ArticleEntity $article, AcademicYear $academicYear, $discount, Organization $organization = null)
     {
         if (null !== $organization) {
+            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
@@ -335,6 +337,7 @@ class SaleItem extends EntityRepository
                 ->innerJoin('i.session', 's')
                 ->where(
                     $query->expr()->andX(
+                        $query->expr()->in('q.person', $ids),
                         $query->expr()->eq('i.article', ':article'),
                         $query->expr()->gt('s.openDate', ':start'),
                         $query->expr()->lt('s.openDate', ':end'),
@@ -610,35 +613,16 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndAcademicYearQuery($organization, AcademicYear $academicYear)
+    public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->where(
-                $query->expr()->in('q.person', $ids)
+                $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids)
             )
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -768,28 +752,9 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndSessionQuery($organization, SessionEntity $session)
+    public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $session->getAcademicYear())
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -798,7 +763,7 @@ class SaleItem extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
-                    $query->expr()->in('q.person', $ids)
+                    $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids)
                 )
             )
             ->setParameter('session', $session)
@@ -894,28 +859,9 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndArticleQuery($organization, ArticleEntity $article, AcademicYear $academicYear)
+    public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -923,7 +869,7 @@ class SaleItem extends EntityRepository
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->in('q.person', $ids),
+                    $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids),
                     $query->expr()->eq('i.article', ':article')
                 )
             )
@@ -1043,28 +989,9 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndSupplierQuery($organization, Supplier $supplier, AcademicYear $academicYear)
+    public function findAllByOrganizationAndSupplierQuery(Organization $organization = null, Supplier $supplier, AcademicYear $academicYear)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -1074,7 +1001,7 @@ class SaleItem extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.supplier', ':supplier'),
-                    $query->expr()->in('q.person', $ids)
+                    $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids)
                 )
             )
             ->setParameter('supplier', $supplier)

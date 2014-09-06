@@ -130,7 +130,7 @@
                 searchDiv: $('#article_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('cudi_admin_sales_article', {'action': 'manage', 'semester': currentSemester}) }}',
+                searchPage: '{{ url('cudi_admin_sales_article', {'action': 'manage', 'academicyear': activeAcademicYear.getCode(), 'semester': currentSemester}) }}',
                 url: '{{ url('cudi_admin_sales_article', {'action': 'search', 'academicyear': activeAcademicYear.getCode(), 'semester': currentSemester}) }}',
                 display: function (data) {
                     $('#article_search table').find('tr.item').remove();

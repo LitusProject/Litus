@@ -21,7 +21,7 @@ return array(
     'Van' => 'Kar',
 
     'January' => 'Januari',
-    'February' => 'Februaro',
+    'February' => 'Februari',
     'March' => 'Maart',
     'April' => 'April',
     'May' => 'Mei',

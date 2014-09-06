@@ -16,22 +16,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'shiftbundle' => array(
-        'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search'
-        ),
-        'shift_admin_shift_counter' => array(
-            'delete', 'index', 'payed', 'payout', 'search', 'units', 'view'
-        ),
-        'shift_admin_shift_ranking' => array(
-            'index'
-        ),
-        'shift_admin_shift_subscription' => array(
-            'manage', 'delete',
-        ),
-        'shift' => array(
-            'export', 'history', 'index', 'responsible', 'signOut', 'volunteer'
-        ),
-    ),
-);
+pg_query($connection, 'ALTER TABLE shifts.shifts ADD reward INT');
+pg_query($connection, 'UPDATE shifts.shifts SET reward = 1');
+
+pg_query($connection, 'ALTER TABLE shifts.shifts ADD handled_on_event BOOLEAN');
+pg_query($connection, 'UPDATE shifts.shifts SET handled_on_event = FALSE');

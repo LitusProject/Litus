@@ -37,6 +37,10 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
+        $paginator = $this->getDocumentManager()
+            ->getRepository('DoorBundle\Document\Rule')
+            ->findAll();
+
         return new ViewModel(
             array(
                 'logGraph' => $this->_getLogGraph(),
@@ -115,6 +119,25 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromDocument(
+            'DoorBundle\Document\Rule',
+            $this->getParam('page')
+        );
+
+        $paginator = $this->getDocumentManager()
+            ->getRepository('DoorBundle\Document\Rule')
+            ->findOld();
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'entityManager' => $this->getEntityManager()
             )
         );
     }

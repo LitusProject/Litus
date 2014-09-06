@@ -23,7 +23,14 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 class Shift extends CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('nb_responsibles', 'nb_volunteers', 'name', 'description');
+    private static $std_keys = array(
+        'nb_responsibles',
+        'nb_volunteers',
+        'name',
+        'description',
+        'reward',
+        'handled_on_event',
+    );
 
     protected function doExtract($object = null)
     {

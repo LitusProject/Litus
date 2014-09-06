@@ -208,6 +208,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'       => 'select',
+            'name'       => 'reward',
+            'label'      => 'Reward coins',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createRewardArray(),
+            ),
+        ));
+
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'handled_on_event',
+            'label' => 'Payed at event',
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
             'name'       => 'event',
             'label'      => 'Event',
             'attributes' => array(
@@ -336,5 +352,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             throw new RuntimeException('There needs to be at least one role before you can add a page');
 
         return $rolesArray;
+    }
+
+    private function createRewardArray()
+    {
+        return unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.reward_numbers')
+        );
     }
 }
