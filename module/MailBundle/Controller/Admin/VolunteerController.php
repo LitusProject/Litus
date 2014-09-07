@@ -18,7 +18,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\Mail\Message,
+use CommonBundle\Entity\General\AcademicYear,
+    Zend\Mail\Message,
     Zend\Mime\Part,
     Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
@@ -33,7 +34,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 {
     public function sendAction()
     {
-        $currentYear = $this->getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear();
 
         $form = $this->getForm('mail_volunteer_mail');
 
@@ -42,15 +43,14 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $body = $formData['message'];
 
                 $part = new Part($body);
-
                 $part->type = Mime::TYPE_TEXT;
-
                 $part->charset = 'utf-8';
+
                 $message = new MimeMessage();
                 $message->addPart($part);
 
@@ -61,32 +61,10 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 
                 $mail->addTo($formData['from']);
 
-                $rankingCriteria = unserialize($this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shift.ranking_criteria')
-                );
-
-                if ('none' == $formData['minimum_rank']) {
-                    $volunteers = $this->getEntityManager()
-                        ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                        ->findAllByCountMinimum($currentYear, 1);
-                } else {
-                    $volunteers = $this->getEntityManager()
-                        ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                        ->findAllByCountMinimum(
-                            $currentYear,
-                            $rankingCriteria[$formData['minimum_rank']]['limit']
-                        );
-                }
+                $volunteers = $this->_getVolunteers($formData['minimum_rank'], $academicYear);
 
                 foreach ($volunteers as $volunteer) {
-                    $person = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($volunteer['id']);
-
-                    if (!$person->isPraesidium($currentYear)) {
-                        $mail->addBcc($person->getEmail(), $person->getFullName());
-                    }
+                    $mail->addBcc($volunteer->getEmail(), $volunteer->getFullName());
                 }
 
                 if ('development' != getenv('APPLICATION_ENV'))
@@ -113,5 +91,39 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 'form' => $form,
             )
         );
+    }
+
+    private function _getVolunteers($minRank, AcademicYear $academicYear)
+    {
+        $rankingCriteria = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.ranking_criteria')
+        );
+
+        if ('none' == $minRank) {
+            $volunteers = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+                ->findAllByCountMinimum($academicYear, 1);
+        } else {
+            $volunteers = $this->getEntityManager()
+                ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+                ->findAllByCountMinimum(
+                    $academicYear,
+                    $rankingCriteria[$minRank]['limit']
+                );
+        }
+
+        $list = array();
+        foreach ($volunteers as $volunteer) {
+            $person = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById($volunteer['id']);
+
+            if (!$person->isPraesidium($academicYear))
+                $list[] = $person;
+        }
+
+        return $list;
     }
 }
