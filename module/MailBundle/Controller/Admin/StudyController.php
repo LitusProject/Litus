@@ -40,155 +40,142 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         $form = $this->getForm('mail_study_mail', array('academicYear' => $currentYear));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $upload = new FileUpload(array('ignoreNoFile' => true));
-                $inputFilter = $form->getInputFilter()->get('compose_message')->get('file');
-                if ($inputFilter instanceof InputInterface)
-                    $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+                $addresses = $this->_getAddresses($formData['studies'], $formData['groups'], $formData['bcc']);
 
-                if ($upload->isValid()) {
-                    $addresses = $this->_getAddresses($formData['studies'], $formData['groups'], $formData['bcc']);
+                if ('' == $formData['select_message']['stored_message']) {
+                    $body = $formData['compose_message']['message'];
 
-                    if ('' == $formData['select_message']['stored_message']) {
-                        $body = $formData['compose_message']['message'];
+                    $part = new Part($body);
 
-                        $part = new Part($body);
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($formData['html'])
+                        $part->type = Mime::TYPE_HTML;
 
-                        $part->type = Mime::TYPE_TEXT;
-                        if ($formData['html'])
-                            $part->type = Mime::TYPE_HTML;
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
 
-                        $part->charset = 'utf-8';
-                        $message = new MimeMessage();
-                        $message->addPart($part);
-
-                        if ($formData['test']) {
-                            $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($addresses as $address)
-                                $body = $body . $address . '<br/>';
-
-                            $part = new Part($body);
-                            $part->type = Mime::TYPE_HTML;
-                            $message->addPart($part);
-                        }
-
-                        $upload->receive();
-
-                        foreach ($upload->getFileInfo() as $file) {
-                            if ($file['size'] === NULL)
-                                continue;
-
-                            $part = new Part(fopen($file['tmp_name'], 'r'));
-                            $part->type = $file['type'];
-                            $part->id = $file['name'];
-                            $part->disposition = 'attachment';
-                            $part->filename = $file['name'];
-                            $part->encoding = Mime::ENCODING_BASE64;
-
-                            unlink($file['tmp_name']);
-
-                            $message->addPart($part);
-                        }
-
-                        $mail = new Message();
-                        $mail->setBody($message)
-                            ->setFrom($formData['from'])
-                            ->setSubject($formData['compose_message']['subject']);
-
-                        $mail->addTo($formData['from']);
-                    } else {
-                        $storedMessage = $this->getDocumentManager()
-                            ->getRepository('MailBundle\Document\Message')
-                            ->findOneById($formData['select_message']['stored_message']);
-
-                        $body = $storedMessage->getBody();
+                    if ($formData['test']) {
+                        $body = '<br/>This email would have been sent to:<br/>';
+                        foreach($addresses as $address)
+                            $body = $body . $address . '<br/>';
 
                         $part = new Part($body);
-
-                        $part->type = Mime::TYPE_TEXT;
-                        if ($storedMessage->getType() == 'html')
-                            $part->type = Mime::TYPE_HTML;
-
-                        $part->charset = 'utf-8';
-                        $message = new MimeMessage();
+                        $part->type = Mime::TYPE_HTML;
                         $message->addPart($part);
-
-                        if ($formData['test']) {
-                            $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($addresses as $address)
-                                $body = $body . $address . '<br/>';
-
-                            $part = new Part($body);
-                            $part->type = Mime::TYPE_HTML;
-                            $message->addPart($part);
-                        }
-
-                        foreach ($storedMessage->getAttachments() as $attachment) {
-                            $part = new Part($attachment->getData());
-                            $part->type = $attachment->getContentType();
-                            $part->id = $attachment->getFilename();
-                            $part->disposition = 'attachment';
-                            $part->filename = $attachment->getFilename();
-                            $part->encoding = Mime::ENCODING_BASE64;
-
-                            $message->addPart($part);
-                        }
-
-                        $mail = new Message();
-                        $mail->setBody($message)
-                            ->setFrom($formData['from'])
-                            ->setSubject($storedMessage->getSubject());
-
-                        $mail->addTo($formData['from']);
                     }
 
-                    $i = 0;
-                    if (!$formData['test']) {
-                        foreach ($addresses as $address) {
-                            $i++;
-                            $mail->addBcc($address);
+                    $upload->receive();
 
-                            if (500 == $i) {
-                                $i = 0;
+                    foreach ($upload->getFileInfo() as $file) {
+                        if ($file['size'] === NULL)
+                            continue;
 
-                                if ('development' != getenv('APPLICATION_ENV'))
-                                    $this->getMailTransport()->send($mail);
+                        $part = new Part(fopen($file['tmp_name'], 'r'));
+                        $part->type = $file['type'];
+                        $part->id = $file['name'];
+                        $part->disposition = 'attachment';
+                        $part->filename = $file['name'];
+                        $part->encoding = Mime::ENCODING_BASE64;
 
-                                $mail->setBcc(array());
-                            }
-                        }
+                        unlink($file['tmp_name']);
+
+                        $message->addPart($part);
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV'))
-                        $this->getMailTransport()->send($mail);
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($formData['from'])
+                        ->setSubject($formData['compose_message']['subject']);
 
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The mail was successfully sent!'
-                    );
-
-                    $this->redirect()->toRoute(
-                        'mail_admin_study',
-                        array(
-                            'action' => 'send'
-                        )
-                    );
-
-                    return new ViewModel();
+                    $mail->addTo($formData['from']);
                 } else {
-                    $dataError = $upload->getMessages();
-                    $error = array();
+                    $storedMessage = $this->getDocumentManager()
+                        ->getRepository('MailBundle\Document\Message')
+                        ->findOneById($formData['select_message']['stored_message']);
 
-                    foreach($dataError as $key=>$row)
-                        $error[] = $row;
+                    $body = $storedMessage->getBody();
 
-                    $form->setMessages(array('file'=>$error ));
+                    $part = new Part($body);
+
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($storedMessage->getType() == 'html')
+                        $part->type = Mime::TYPE_HTML;
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    if ($formData['test']) {
+                        $body = '<br/>This email would have been sent to:<br/>';
+                        foreach($addresses as $address)
+                            $body = $body . $address . '<br/>';
+
+                        $part = new Part($body);
+                        $part->type = Mime::TYPE_HTML;
+                        $message->addPart($part);
+                    }
+
+                    foreach ($storedMessage->getAttachments() as $attachment) {
+                        $part = new Part($attachment->getData());
+                        $part->type = $attachment->getContentType();
+                        $part->id = $attachment->getFilename();
+                        $part->disposition = 'attachment';
+                        $part->filename = $attachment->getFilename();
+                        $part->encoding = Mime::ENCODING_BASE64;
+
+                        $message->addPart($part);
+                    }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($formData['from'])
+                        ->setSubject($storedMessage->getSubject());
+
+                    $mail->addTo($formData['from']);
                 }
+
+                $i = 0;
+                if (!$formData['test']) {
+                    foreach ($addresses as $address) {
+                        $i++;
+                        $mail->addBcc($address);
+
+                        if (500 == $i) {
+                            $i = 0;
+
+                            if ('development' != getenv('APPLICATION_ENV'))
+                                $this->getMailTransport()->send($mail);
+
+                            $mail->setBcc(array());
+                        }
+                    }
+                }
+
+                if ('development' != getenv('APPLICATION_ENV'))
+                    $this->getMailTransport()->send($mail);
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The mail was successfully sent!'
+                );
+
+                $this->redirect()->toRoute(
+                    'mail_admin_study',
+                    array(
+                        'action' => 'send'
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 
@@ -258,7 +245,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
     private function _getGroupEnrollments($groupIds)
     {
         if (empty($groupIds))
-            return array();
+            return array(array(), array(), array());
 
         $currentYear = $this->getCurrentAcademicYear(false);
 
