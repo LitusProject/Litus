@@ -40,4 +40,4 @@ touch module/*/Resources/assets/*/less/base.less
 
 run assetic:build
 
-./bin/litus.sh common:acl-cleanup
+./bin/litus.sh common:acl-cleanup --flush
