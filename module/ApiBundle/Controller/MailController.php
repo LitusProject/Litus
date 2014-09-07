@@ -31,16 +31,18 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class MailController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getAliasesAction()
+    public function aliasesAction()
     {
         $aliases = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Alias')
             ->findAll();
 
         $headers = new Headers();
-        $headers->addHeaders(array(
-            'Content-Type' => 'text/plain'
-        ));
+        $headers->addHeaders(
+            array(
+                'Content-Type' => 'text/plain'
+            )
+        );
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
@@ -50,7 +52,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
-    public function getListsArchiveAction()
+    public function listsArchiveAction()
     {
         $lists = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList')

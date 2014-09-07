@@ -29,7 +29,7 @@ use CommonBundle\Entity\User\Person,
  */
 class AuthController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getPersonAction()
+    public function personAction()
     {
         $this->initJson();
 
