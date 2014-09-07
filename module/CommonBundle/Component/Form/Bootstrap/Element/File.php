@@ -27,7 +27,9 @@ use CommonBundle\Component\Form\ElementTrait;
  */
 class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
-    use ElementTrait;
+    use ElementTrait {
+        ElementTrait::getInputSpecification as getTraitInputSpecification;
+    }
 
     public function init()
     {
@@ -36,5 +38,13 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
                 'class' => 'col-sm-2 control-label',
             )
         );
+    }
+
+    public function getInputSpecification()
+    {
+        $specification = $this->getTraitInputSpecification();
+        $specification['type'] = 'Zend\InputFilter\FileInput';
+
+        return $specification;
     }
 }

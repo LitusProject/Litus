@@ -20,10 +20,12 @@ namespace CudiBundle\Form\Admin\Sales\Session\Restriction;
 
 use CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Exists as ExistsValidator,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Values as ValuesValidator,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
+    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
     Zend\InputFilter\InputFilter,
@@ -58,43 +60,79 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $this->_entityManager = $entityManager;
         $this->_session = $session;
 
-        $field = new Select('restriction_type');
+        $field = new Select('type');
         $field->setLabel('Type')
+            ->setAttribute('id', 'restriction_type')
             ->setRequired()
-            ->setAttribute('options', Restriction::$POSSIBLE_TYPES)
+            ->setAttribute('options', array('name' => 'Name', 'year' => 'Year', 'study' => 'Study'))
             ->setAttribute('data-help', 'Limit the students that can buy articles during this sale session:
                 <ul>
                     <li><b>Name:</b> restrict by name</li>
                     <li><b>Year:</b> restrict study year</li>
+                    <li><b>Study:</b> restrict by study</li>
                 </ul>');
         $this->add($field);
 
-        $field = new Text('start_value');
+        $field = new Text('start_value_name');
         $field->setLabel('Start Value')
+            ->setAttribute('class', 'restriction_value restriction_value_name')
             ->setRequired();
         $this->add($field);
 
-        $field = new Text('end_value');
+        $field = new Text('end_value_name');
         $field->setLabel('End Value')
+            ->setAttribute('class', 'restriction_value restriction_value_name')
             ->setRequired();
         $this->add($field);
 
         $field = new Select('start_value_year');
         $field->setLabel('Start Value')
+            ->setAttribute('class', 'restriction_value restriction_value_year')
             ->setRequired()
-            ->setAttribute('options', Restriction::$POSSIBLE_YEARS);
+            ->setAttribute('options', YearRestriction::$POSSIBLE_YEARS);
         $this->add($field);
 
         $field = new Select('end_value_year');
         $field->setLabel('End Value')
+            ->setAttribute('class', 'restriction_value restriction_value_year')
             ->setRequired()
-            ->setAttribute('options', Restriction::$POSSIBLE_YEARS);
+            ->setAttribute('options', YearRestriction::$POSSIBLE_YEARS);
+        $this->add($field);
+
+        $field = new Select('value_study');
+        $field->setAttribute('id', 'restriction_value_study')
+            ->setAttribute('class', 'restriction_value restriction_value_study')
+            ->setAttribute('multiple', true)
+            ->setAttribute('options', $this->_getStudies())
+            ->setAttribute('style', 'max-width: 100%;')
+            ->setLabel('Studies')
+            ->setRequired();
         $this->add($field);
 
         $field = new Submit('submit');
         $field->setValue('Add')
             ->setAttribute('class', 'add');
         $this->add($field);
+    }
+
+    public function _getStudies()
+    {
+        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
+        $startAcademicYear->setTime(0, 0);
+
+        $academicYear = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($startAcademicYear);
+
+        $studies = $this->_entityManager
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($academicYear);
+
+        $options = array();
+        foreach($studies as $study)
+            $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+
+        return $options;
     }
 
     public function getInputFilter()
@@ -105,7 +143,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
-                    'name'     => 'restriction_type',
+                    'name'     => 'type',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -117,7 +155,34 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             )
         );
 
-        if (isset($this->data['restriction_type']) && $this->data['restriction_type'] == 'year') {
+        if ('name' == $this->data['type']) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'start_value_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    )
+                )
+            );
+
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'end_value_name',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            new ValuesValidator('start_value_name')
+                        ),
+                    )
+                )
+            );
+        } elseif ('year' == $this->data['type']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
@@ -144,30 +209,12 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                     )
                 )
             );
-        } else {
+        } elseif ('study' == $this->data['type']) {
             $inputFilter->add(
                 $factory->createInput(
                     array(
-                        'name'     => 'start_value',
+                        'name'     => 'value_study',
                         'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_value',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new ValuesValidator('start_value')
-                        ),
                     )
                 )
             );

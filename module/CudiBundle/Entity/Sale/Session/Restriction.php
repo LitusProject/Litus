@@ -26,8 +26,15 @@ use CommonBundle\Entity\User\Person,
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction")
  * @ORM\Table(name="cudi.sales_session_restriction")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "name"="CudiBundle\Entity\Sale\Session\Restriction\Name",
+ *      "study"="CudiBundle\Entity\Sale\Session\Restriction\Study",
+ *      "year"="CudiBundle\Entity\Sale\Session\Restriction\Year"
+ * })
  */
-class Restriction
+abstract class Restriction
 {
     /**
      * @var integer The ID of the restriction
@@ -47,69 +54,11 @@ class Restriction
     private $session;
 
     /**
-     * @var string The type of restriction
-     *
-     * @ORM\Column(type="string")
-     */
-    private $type;
-
-    /**
-     * @var string The start value of restriction
-     *
-     * @ORM\Column(name="start_value", type="string")
-     */
-    private $startValue;
-
-    /**
-     * @var string The end value of restriction
-     *
-     * @ORM\Column(name="end_value", type="string")
-     */
-    private $endValue;
-
-    /**
-     * @var array The possible states of a queue item
-     */
-    public static $POSSIBLE_TYPES = array(
-        'name' => 'Name',
-        'year' => 'Year',
-    );
-
-    /**
-     * @var array The possible states of a queue item
-     */
-    public static $POSSIBLE_YEARS = array(
-        '1' => '1st Bachelor',
-        '2' => '2nd Bachelor',
-        '3' => '3th Bachelor',
-        '4' => '1st Master',
-        '5' => '2nd Master',
-    );
-
-    /**
      * @param Session $session
-     * @param string  $type
-     * @param string  $startValue
-     * @param string  $endValue
      */
-    public function __construct(Session $session, $type, $startValue, $endValue)
+    public function __construct(Session $session)
     {
-        if (!self::isValidType($type))
-            throw new \InvalidArgumentException('The type is not valid.');
-
         $this->session = $session;
-        $this->startValue = strtolower($startValue);
-        $this->endValue = strtolower($endValue);
-        $this->type = $type;
-    }
-
-    /**
-     * @param  string  $type
-     * @return boolean
-     */
-    public static function isValidType($type)
-    {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
     }
 
     /**
@@ -131,54 +80,7 @@ class Restriction
     /**
      * @return string
      */
-    public function getType()
-    {
-        return self::$POSSIBLE_TYPES[$this->type];
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartValue()
-    {
-        if ('year' == $this->type)
-            return self::$POSSIBLE_YEARS[$this->startValue];
-        return $this->startValue;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawStartValue()
-    {
-        return $this->startValue;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndValue()
-    {
-        if ('year' == $this->type)
-            return self::$POSSIBLE_YEARS[$this->endValue];
-        return $this->endValue;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawEndValue()
-    {
-        return $this->endValue;
-    }
+    abstract public function getReadableValue();
 
     /**
      * @param EntityManager $entityManager
@@ -186,27 +88,5 @@ class Restriction
      *
      * @return boolean
      */
-    public function canSignIn(EntityManager $entityManager, Person $person)
-    {
-        if ($this->getRawType() == 'year') {
-            $years = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
-                ->getYearsByPerson($person);
-            $yearFound = false;
-            foreach ($years as $year) {
-                if ($year >= $this->getRawStartValue() && $year <= $this->getRawEndValue()) {
-                    $yearFound = true;
-                    break;
-                }
-            }
-            if (!$yearFound)
-                return false;
-        } elseif ($this->getRawType() == 'name') {
-            if (strtolower(substr($person->getLastName(), 0, strlen($this->getStartValue()))) < $this->getStartValue())
-                return false;
-            if (strtolower(substr($person->getLastName(), 0, strlen($this->getEndValue()))) > $this->getEndValue())
-                return false;
-        }
-
-        return true;
-    }
+    abstract public function canSignIn(EntityManager $entityManager, Person $person);
 }

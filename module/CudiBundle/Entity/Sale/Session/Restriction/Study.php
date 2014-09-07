@@ -16,20 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Entity\Sale\Article\Restriction;
+namespace CudiBundle\Entity\Sale\Session\Restriction;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Restriction,
+    CudiBundle\Entity\Sale\Session,
+    CudiBundle\Entity\Sale\Session\Restriction,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
- * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Study")
- * @ORM\Table(name="cudi.sales_articles_restrictions_study")
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Study")
+ * @ORM\Table(name="cudi.sales_session_restriction_study")
  */
 class Study extends Restriction
 {
@@ -37,7 +37,7 @@ class Study extends Restriction
      * @var string|null The value of the restriction
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinTable(name="cudi.sales_articles_restrictions_study_map",
+     * @ORM\JoinTable(name="cudi.sales_session_restrictions_study_map",
      *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id")}
      * )
@@ -45,11 +45,11 @@ class Study extends Restriction
     private $studies;
 
     /**
-     * @param Article $article The article of the restriction
+     * @param Session $session
      */
-    public function __construct(Article $article)
+    public function __construct(Session $session)
     {
-        parent::__construct($article);
+        parent::__construct($session);
 
         $this->studies = new ArrayCollection();
     }
@@ -63,19 +63,7 @@ class Study extends Restriction
     }
 
     /**
-     * @return string
-     */
-    public function getValue()
-    {
-        $value = '';
-        foreach ($this->studies as $study)
-            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle() . ' ; ';
-
-        return $value;
-    }
-
-    /**
-     * @return string|null
+     * @return \Doctrine\Common\Collection\ArrayCollection
      */
     public function getStudies()
     {
@@ -94,12 +82,24 @@ class Study extends Restriction
     }
 
     /**
-     * @param Person        $person
+     * @return string
+     */
+    public function getReadableValue()
+    {
+        $value = '';
+        foreach ($this->studies as $study)
+            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle() . ' ; ';
+
+        return $value;
+    }
+
+    /**
      * @param EntityManager $entityManager
+     * @param Person        $person
      *
      * @return boolean
      */
-    public function canBook(Person $person, EntityManager $entityManager)
+    public function canSignIn(EntityManager $entityManager, Person $person)
     {
         $startAcademicYear = AcademicYear::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);

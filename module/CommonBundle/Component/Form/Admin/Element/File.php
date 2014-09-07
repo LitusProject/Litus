@@ -27,12 +27,22 @@ use CommonBundle\Component\Form\ElementTrait;
  */
 class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
-    use ElementTrait;
+    use ElementTrait {
+        ElementTrait::getInputSpecification as getTraitInputSpecification;
+    }
 
     public function setName($name)
     {
         $this->setAttribute('id', $name);
 
         return parent::setName($name);
+    }
+
+    public function getInputSpecification()
+    {
+        $specification = $this->getTraitInputSpecification();
+        $specification['type'] = 'Zend\InputFilter\FileInput';
+
+        return $specification;
     }
 }

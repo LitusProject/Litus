@@ -30,6 +30,8 @@ use CommonBundle\Component\Validator\Proxy as ProxyValidator,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '50MB';
+
     /**
      * @var AcademicYear
      */
@@ -40,27 +42,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->setAttribute('id', 'uploadFile');
-        $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('accept-charset', 'utf-8');
 
         $studies = $this->_getStudies();
-        $studyNames = array();
-        foreach($studies as $study)
-            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
-
-        $groups = $this->_getGroups();
-        $groupNames = array();
-        foreach($groups as $group)
-            $groupNames[$group->getId()] = $group->getName();
-
-        $storedMessages = $this->_getStoredMessages();
-        $storedMessagesTitles = array(
-            '' => ''
-        );
-        foreach ($storedMessages as $storedMessage)
-            $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
-
-        if (0 != count($studyNames)) {
+        if (0 != count($studies)) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'studies',
@@ -70,12 +54,13 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'multiple' => true,
                 ),
                 'options'    => array(
-                    'options' => $studyNames,
+                    'options' => $studies,
                 ),
             ));
         }
 
-        if (0 != count($groupNames)) {
+        $groups = $this->_getGroups();
+        if (0 != count($groups)) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'groups',
@@ -84,7 +69,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'multiple' => true,
                 ),
                 'options'    => array(
-                    'options' => $groupNames,
+                    'options' => $groups,
                 ),
             ));
         }
@@ -141,7 +126,8 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $selectMessage = null;
-        if (0 != count($storedMessages)) {
+        $storedMessages = $this->_getStoredMessages();
+        if (1 < count($storedMessages)) {
             $selectMessage = $this->addFieldset('Select Message', 'select_message');
 
             $selectMessage->add(array(
@@ -152,7 +138,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'style' => 'max-width: 100%;',
                 ),
                 'options'    => array(
-                    'options' => $storedMessagesTitles,
+                    'options' => $storedMessages,
                 ),
             ));
         }
@@ -235,14 +221,15 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Attachments',
             'attributes' => array(
                 'multiple' => true,
+                'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
             ),
             'options'    => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
-                                'max' => '50MB',
+                                'max' => self::FILESIZE,
                             ),
                         ),
                     ),
@@ -273,22 +260,42 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
     private function _getStudies()
     {
-        return $this->getEntityManager()
+        $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($this->_academicYear);
+
+        $studyNames = array();
+        foreach($studies as $study)
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+
+        return $studyNames;
     }
 
     private function _getGroups()
     {
-        return $this->getEntityManager()
+        $groups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findAll();
+
+        $groupNames = array();
+        foreach($groups as $group)
+            $groupNames[$group->getId()] = $group->getName();
+
+        return $groupNames;
     }
 
     private function _getStoredMessages()
     {
-        return $this->getDocumentManager()
+        $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')
             ->findAll(array(), array('creationTime' => 'DESC'));
+
+        $storedMessagesTitles = array(
+            '' => ''
+        );
+        foreach ($storedMessages as $storedMessage)
+            $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
+
+        return $storedMessagesTitles;
     }
 }
