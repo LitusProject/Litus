@@ -73,9 +73,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                         $message->addPart($part);
                     }
 
-                    $upload->receive();
-
-                    foreach ($upload->getFileInfo() as $file) {
+                    foreach ($formData['compose_message']['file'] as $file) {
                         if ($file['size'] === NULL)
                             continue;
 
