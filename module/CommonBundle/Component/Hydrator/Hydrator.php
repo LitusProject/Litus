@@ -18,11 +18,11 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use DateTime,
-    RecursiveArrayIterator,
-    RecursiveIteratorIterator,
-    RuntimeException,
-    Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use DateTime;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use Zend\Stdlib\Hydrator\Filter\FilterComposite;
 
 /**
  * A common superclass for hydrators.
@@ -64,7 +64,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
             $entity = explode('\\', $entity, 3);
 
             if ('Hydrator' != $entity[1])
-                throw new RuntimeException('Class ' . get_class($this) . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
+                throw new RuntimeException('Class '.get_class($this).' should be placed in namespace '.$entity[0].'\Hydrator');
             $entity[1] = 'Entity';
 
             $this->entity = implode('\\', $entity);
@@ -166,8 +166,8 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
         $keys = self::flatten($keys);
 
-        $hydrator = $this->getHydrator('classmethods');
-        if (empty($keys)) {
+        $hydrator = clone $this->getHydrator('classmethods');
+        if (!empty($keys)) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
                 $method = explode('::', $property)[1];
 
@@ -225,7 +225,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * @param  string        $date
      * @return DateTime|null
      */
-    protected static loadDate($date)
+    protected static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }
@@ -235,7 +235,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * @param  string        $date
      * @return DateTime|null
      */
-    protected static loadDateTime($date)
+    protected static function loadDateTime($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
@@ -245,7 +245,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * @param  string        $date
      * @return DateTime|null
      */
-    protected static loadTime($date)
+    protected static function loadTime($date)
     {
         return DateTime::createFromFormat('H#i', $date) ?: null;
     }
