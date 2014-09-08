@@ -28,7 +28,7 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'ShiftBundle\Hydrator\Shift'
+    protected $hydrator = 'ShiftBundle\Hydrator\Shift';
 
     public function init()
     {

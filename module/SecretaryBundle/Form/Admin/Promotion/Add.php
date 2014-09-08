@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'academic',
             'label'      => 'Academic',
             'attributes' => array(
-                'id' => 'academic'.,
+                'id' => 'academic',
             ),
             'elements'   => array(
                 array(
