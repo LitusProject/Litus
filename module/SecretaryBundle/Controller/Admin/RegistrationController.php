@@ -18,14 +18,14 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Barcode,
-    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Barcode;
+use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
+use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController
@@ -53,7 +53,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYear' => $academicYear,
             ),
             array(
-                'timestamp' => 'ASC'
+                'timestamp' => 'ASC',
             )
         );
 
@@ -147,6 +147,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['person_id']);
@@ -472,7 +474,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -493,7 +495,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -513,7 +515,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

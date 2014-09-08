@@ -18,436 +18,390 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use Doctrine\ORM\EntityManager,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Form\Address\Add as AddressForm,
-    CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
-    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
-    SecretaryBundle\Entity\Organization\MetaData,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator;
+use SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
+use SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Add Registration
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'SecretaryBundle\Hydrator\Organization\MetaData';
 
     /**
      * @var boolean Are the conditions already checked or not
      */
-    protected $_conditionsAlreadyChecked = false;
+    protected $conditionsChecked = false;
 
     /**
-     * @var boolean Enable the "other organization" option
+     * @var string
      */
-    protected $_enableOtherOrganization = false;
+    protected $identification = '';
 
     /**
-     * @var \CommonBundle\Form\Address\AddPrimary
+     * @var array
      */
-    private $_primaryAddressForm;
+    protected $extraInfo = array();
 
     /**
-     * @var \CommonBundle\Form\Address\Add
+     * @var MetaData|null
      */
-    private $_secondaryAddressForm;
+    protected $metaData = null;
 
     /**
-     * @param CacheStorage    $cache                   The cache instance
-     * @param EntityManager   $entityManager           The EntityManager instance
-     * @param string          $identification          The university identification
-     * @param array|null      $extraInfo               Extra information about the user
-     * @param boolean         $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int $name                    Optional name for the element
+     * @var Academic|null
      */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $identification, $extraInfo = null, $enableOtherOrganization = false, $name = null)
+    protected $academic = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->setAttribute('id', 'register_form');
+        $this->setAttribute('id', 'register_form')
+            ->setAttribute('enctype', 'multipart/form-data');
 
-        $this->_entityManager = $entityManager;
-        $this->_enableOtherOrganization = $enableOtherOrganization;
-
-        $this->setAttribute('enctype', 'multipart/form-data');
-
-        $personal = new Collection('personal');
-        $personal->setLabel('Personal');
-        $this->add($personal);
-
-        $field = new Text('first_name');
-        $field->setLabel('First Name')
-            ->setRequired()
-            ->setValue(isset($extraInfo['first_name']) ? $extraInfo['first_name'] : '');
-        $personal->add($field);
-
-        $field = new Text('last_name');
-        $field->setLabel('Last Name')
-            ->setRequired()
-            ->setValue(isset($extraInfo['last_name']) ? $extraInfo['last_name'] : '');
-        $personal->add($field);
-
-        $field = new Text('birthday');
-        $field->setLabel('Birthday')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setRequired();
-        $personal->add($field);
-
-        $field = new Select('sex');
-        $field->setLabel('Sex')
-            ->setAttribute(
-                'options',
-                array(
-                    'm' => 'M',
-                    'f' => 'F'
-                )
-            );
-        $personal->add($field);
-
-        $field = new Text('phone_number');
-        $field->setLabel('Phone Number')
-            ->setAttribute('placeholder', '+CCAAANNNNNN');
-        $personal->add($field);
-
-        $field = new Text('university_identification');
-        $field->setLabel('University Identification')
-            ->setAttribute('disabled', true)
-            ->setValue($identification);
-        $personal->add($field);
-
-        $this->_primaryAddressForm = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address');
-        $this->_primaryAddressForm->setLabel('Primary Address&mdash;Student Room or Home');
-        $this->add($this->_primaryAddressForm);
-
-        $this->_secondaryAddressForm = new AddressForm('secondary_address', 'secondary_address', false);
-        $this->_secondaryAddressForm->setLabel('Secondary Address&mdash;Home');
-        $this->add($this->_secondaryAddressForm);
-
-        $internet = new Collection('internet');
-        $internet->setLabel('Internet');
-        $this->add($internet);
+        $extra = $this->extraInfo;
 
         $universityEmail = '';
-        if (isset($extraInfo['email'])) {
-            $universityEmail = explode('@', $extraInfo['email'])[0];
+        if (isset($extra['email'])) {
+            $universityEmail = explode('@', $extra['email'])[0];
         }
 
-        $field = new Text('university_email');
-        $field->setLabel('University E-mail')
-            ->setRequired()
-            ->setValue($universityEmail);
-        $internet->add($field);
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'academic',
+            'label'    => 'Personal',
+            'elements' => array(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'value'    => isset($extra['first_name']) ? $extra['first_name'] : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'value'    => isset($extra['last_name']) ? $extra['last_name'] : '',
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'birthday',
+                    'label'      => 'Birthday',
+                    'required'   => true,
+                    'attributes' => array(
+                        'placeholder' => 'dd/mm/yyyy',
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'Date',
+                                    'options' => array(
+                                        'format' => 'd/m/Y',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'sex',
+                    'label'      => 'Sex',
+                    'attributes' => array(
+                        'options' => array(
+                            'm' => 'M',
+                            'f' => 'F',
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'phone_number',
+                    'label'      => 'Phone Number',
+                    'attributes' => array(
+                        'placeholder' => '+CCAAANNNNNN',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new PhoneNumberValidator(),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'university_identification',
+                    'label'      => 'University Identification',
+                    'value'      => $this->identification,
+                    'attributes' => array(
+                        'disabled' => true,
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'university_email',
+                    'label'      => 'University E-mail',
+                    'value'      => $universityEmail,
+                    'required'   => true,
+                    'attributes' => array(
+                        'id' => 'university_email',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new NoAtValidator(),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'     => 'text',
+                    'name'     => 'personal_email',
+                    'label'    => 'Personal E-mail',
+                    'required' => true,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'EmailAddress',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'  => 'checkbox',
+                    'name'  => 'primary_email',
+                    'label' => 'I want to receive e-mail at my personal e-mail address',
+                    'value' => true,
+                ),
+                array(
+                    'type'  => 'common_address_add-primary',
+                    'name'  => 'primary_address',
+                    'label' => 'Primary Address&mdash;Student Room or Home',
+                ),
+                array(
+                    'type'  => 'common_address_add',
+                    'name'  => 'secondary_address',
+                    'label' => 'Secondary Address&mdash;Home',
+                ),
+            ),
+        ));
 
-        $field = new Text('personal_email');
-        $field->setLabel('Personal E-mail')
-            ->setRequired();
-        $internet->add($field);
-
-        $field = new Checkbox('primary_email');
-        $field->setLabel('I want to receive e-mail at my personal e-mail address')
-            ->setValue(true);
-        $internet->add($field);
-
-        $organization = new Collection('organization_info');
-        $organization->setLabel('Student Organization')
-            ->setAttribute('id', 'organization_info');
-        $this->add($organization);
-
-        $organizations = $this->_getOrganizations();
-        $field = new Select('organization');
-        $field->setLabel('Student Organization')
-            ->setAttribute('options', $organizations);
-        $organization->add($field);
-
-        $registrationEnabled = $this->_entityManager
+        $registrationEnabled = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        $field = new Checkbox('become_member');
-        $field->setLabel('I want to become a member of the student association (&euro; { price })')
-            ->setValue(true);
-        $organization->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'organization_info',
+            'label'      => 'Student Organization',
+            'attributes' => array(
+                'id' => 'organization_info',
+            ),
+            'elements'   => array(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'organization',
+                    'label'      => 'Student Organization',
+                    'attributes' => array(
+                        'id'      => 'organization',
+                        'options' => $this->getOrganizations(),
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'required' => count($this->getOrganizations()) > 1,
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'become_member',
+                    'label'      => 'I want to become a member of the student association (&euro; { price })',
+                    'value'      => true,
+                    'attributes' => array(
+                        'id'       => 'become_member',
+                        'disabled' => 1 != $registrationEnabled,
+                    ),
+                ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'conditions',
+                    'label'      => 'I have read and agree with the terms and conditions',
+                    'attributes' => array(
+                        'id' => 'conditions',
+                    ),
+                ),
+                array(
+                    'type'  => 'checkbox',
+                    'name'  => 'receive_irreeel_at_cudi',
+                    'label' => 'I want to receive my Ir.Reëel at CuDi',
+                    'value' => true,
+                ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'bakske_by_mail',
+                    'label'      => 'I want to receive \'t Bakske by e-mail',
+                    'value'      => false,
+                    'attributes' => array(
+                        'id' => 'bakske',
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'tshirt_size',
+                    'label'      => 'T-shirt Size',
+                    'attributes' => array(
+                        'options' => MetaData::$possibleSizes,
+                    ),
+                ),
+            ),
+        ));
 
-        if ('1' != $registrationEnabled)
-            $field->setAttribute('disabled', 'disabled');
+        $this->addSubmit('Register', 'btn btn-primary', 'register');
 
-        $field = new Checkbox('conditions');
-        $field->setLabel('I have read and agree with the terms and conditions');
-        $organization->add($field);
-
-        $field = new Checkbox('irreeel');
-        $field->setLabel('I want to receive my Ir.Reëel at CuDi')
-            ->setValue(true);
-        $organization->add($field);
-
-        $field = new Checkbox('bakske');
-        $field->setLabel('I want to receive \'t Bakske by e-mail')
-            ->setValue(false);
-        $organization->add($field);
-
-        $field = new Select('tshirt_size');
-        $field->setLabel('T-shirt Size')
-            ->setAttribute(
-                'options',
-                MetaData::$possibleSizes
-            );
-        $organization->add($field);
-
-        $field = new Submit('register');
-        $field->setValue('Register')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-    }
-
-    protected function populateFromAcademic(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null)
-    {
-        $universityEmail = $academic->getUniversityEmail();
-
-        if ($universityEmail)
-            $universityEmail = explode('@', $universityEmail)[0];
-
-        $organization = $academic->getOrganization($academicYear);
-
-        $data = array(
-            'first_name' => $academic->getFirstName(),
-            'last_name' => $academic->getLastName(),
-            'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',
-            'sex' => $academic->getSex(),
-            'phone_number' => $academic->getPhoneNumber(),
-            'university_identification' => $academic->getUniversityIdentification(),
-            'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
-            'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
-            'secondary_address_address_mailbox' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getMailbox() : '',
-            'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
-            'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
-            'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
-            'university_email' => $universityEmail,
-            'personal_email' => $academic->getPersonalEmail(),
-            'primary_email' => $academic->getPersonalEmail() == $academic->getEmail(),
-            'become_member' => $metaData ? $metaData->becomeMember() : false,
-            'organization' => $organization ? $organization->getId() : 0,
-        );
-
-        if ($academic->getPrimaryAddress()) {
-            $city = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Address\City')
-                ->findOneByName($academic->getPrimaryAddress()->getCity());
-
-            if (null !== $city) {
-                $data['primary_address_address_city'] = $city->getId();
-
-                $street = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Address\Street')
-                    ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
-
-                $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             } else {
-                $data['primary_address_address_city'] = 'other';
-                $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
-                $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
-                $data['primary_address_address_street_other'] = $academic->getPrimaryAddress()->getStreet();
-            }
-            $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
-            $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
-        }
-
-        if ($metaData && $metaData->becomeMember()) {
-            if ($this->get('organization_info')->has('organization')) {
-                $this->get('organization_info')->get('organization')
+        if (null !== $this->metaData) {
+            if ($this->metaData->becomeMember()) {
+                if ($this->get('organization_info')->has('organization')) {
+                    $this->get('organization_info')->get('organization')
+                        ->setAttribute('disabled', true);
+                }
+                $this->get('organization_info')->get('become_member')
                     ->setAttribute('disabled', true);
+                $this->get('organization_info')->get('conditions')
+                    ->setValue(true)
+                    ->setAttribute('disabled', true);
+                $this->conditionsChecked = true;
             }
-            $this->get('organization_info')->get('become_member')
-                ->setAttribute('disabled', true);
-            $this->get('organization_info')->get('conditions')
-                ->setAttribute('disabled', true);
-            $this->_conditionsAlreadyChecked = true;
 
-            $data['conditions'] = true;
-            $data['irreeel'] = $metaData->receiveIrReeelAtCudi();
-            $data['bakske'] = $metaData->bakskeByMail();
-            $data['tshirt_size'] = $metaData->getTshirtSize();
-        } elseif ($metaData) {
-            $data['bakske'] = $metaData->bakskeByMail();
+            $this->bind($this->metaData);
+        } elseif (null !== $this->academic) {
+            $this->get('academic')->populateValues(
+                $this->getServiceLocator()
+                    ->get('litus.hydratormanager')
+                    ->get('CommonBundle\Hydrator\User\Person\Academic')
+                    ->extract($this->academic)
+            );
         }
-
-        $this->setData($data);
     }
 
-    private function _getOrganizations()
+    private function getOrganizations()
     {
-        $organizations = $this->_entityManager
+        $organizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $organizationOptions = $this->_enableOtherOrganization ? array("Other") : array();
+        $organizationOptions = array();
+
+        if ($this->isOtherOrganizationEnabled())
+            $organizationOptions[0] = 'Other';
+
         foreach($organizations as $organization)
             $organizationOptions[$organization->getId()] = $organization->getName();
 
         return $organizationOptions;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  bool $conditionsChecked
+     * @return self
+     */
+    public function setConditionsChecked($conditionsChecked = true)
     {
-        $inputFilter = new InputFilter();
+        $this->conditionsChecked = !!$conditionsChecked;
 
-        $inputs = $this->_secondaryAddressForm->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
+        return $this;
+    }
 
-        $inputs =$this->_primaryAddressForm->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
+    /**
+     * @param  string $identification
+     * @return self
+     */
+    public function setIdentification($identification)
+    {
+        $this->identification = $identification;
 
-        $factory = new InputFactory();
+        return $this;
+    }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'first_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
+    /**
+     * @param  array $extraInfo
+     * @return self
+     */
+    public function setExtraInfo(array $extraInfo)
+    {
+        $this->extraInfo = $extraInfo;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'last_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
+        return $this;
+    }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'birthday',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+    /**
+     * @param MetaData
+     * @return self
+     */
+    public function setMetaData(MetaData $metaData)
+    {
+        $this->metaData = $metaData;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sex',
-                    'required' => true,
-                )
-            )
-        );
+        return $this;
+    }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'phone_number',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PhoneNumberValidator(),
-                    ),
-                )
-            )
-        );
+    /**
+     * @param  Academic $academic
+     * @return self
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->academic = $academic;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'university_email',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new NoAtValidator(),
-                    ),
-                )
-            )
-        );
+        return $this;
+    }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'personal_email',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        if (sizeof($this->_getOrganizations()) > 1) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'organization',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        if (!$this->_conditionsAlreadyChecked) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'conditions',
-                        'required' => true,
-                        'validators' => array(
-                            array(
-                                'name' => 'notempty',
-                                'options' => array(
-                                    'type' => 16,
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
+    /**
+     * @return bool
+     */
+    public function isOtherOrganizationEnabled()
+    {
+        return $enableOtherOrganization = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.enable_other_organization');
     }
 }

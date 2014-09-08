@@ -18,14 +18,14 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    RuntimeException,
-    Zend\Form\FieldsetInterface,
-    Zend\Form\FormInterface,
-    Zend\InputFilter\InputFilterAwareInterface,
-    Zend\InputFilter\InputProviderInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Validator\FormAwareInterface;
+use RuntimeException;
+use Zend\Form\FieldsetInterface;
+use Zend\Form\FormInterface;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputProviderInterface;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -39,8 +39,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-    use ElementTrait;
-    use FieldsetTrait;
+    use ElementTrait, FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+        ElementTrait::setRequired as setElementRequired;
+    }
 
     /**
      * @param null|string|int $name    Optional name for the element

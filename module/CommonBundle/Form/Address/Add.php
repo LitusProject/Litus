@@ -18,79 +18,129 @@
 
 namespace CommonBundle\Form\Address;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\Validator\NotZero as NotZeroValidator,
-    CommonBundle\Entity\General\Address,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Component\Validator\NotZero as NotZeroValidator;
+use CommonBundle\Entity\General\Address;
 
 /**
  * Add Address
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Element\Collection
+class Add extends \CommonBundle\Component\Form\Fieldset
 {
-    /**
-     * @var string The form's prefix
-     */
-    private $_prefix;
-
-    /**
-     * @var boolean Whether or not the form is required
-     */
-    private $_required;
-
-    /**
-     * @param string  $prefix   The form's prefix
-     * @param string  $name     Optional name for the element
-     * @param boolean $required Whether or not the address is required
-     */
-    public function __construct($prefix = '', $name = null, $required = true)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $prefix = '' == $prefix ? '' : $prefix . '_';
-        $this->_prefix = $prefix;
-        $this->_required = $required;
+        $this->add(array(
+            'type'    => 'text',
+            'name'    => 'street',
+            'label'   => 'Street',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_street');
-        $field->setLabel('Street')
-            ->setRequired($this->_required);
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'text',
+            'name'    => 'number',
+            'label'   => 'Number',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                        ),
+                        new NotZeroValidator(),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_number');
-        $field->setLabel('Number')
-            ->setRequired($this->_required);
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'text',
+            'name'    => 'mailbox',
+            'label'   => 'Mailbox',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox');
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'text',
+            'name'    => 'postal',
+            'label'   => 'Postal Code',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_postal');
-        $field->setLabel('Postal Code')
-            ->setRequired($this->_required);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'city',
+            'label'      => 'City',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_city');
-        $field->setLabel('City')
-            ->setRequired($this->_required);
-        $this->add($field);
-
-        $field = new Select($prefix . 'address_country');
-        $field->setLabel('Country')
-            ->setAttribute('options', $this->_getCountries());
-        $this->add($field);
-
-        $this->populateValues(
-            array(
-                $prefix . 'address_country' => 'BE'
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'country',
+            'label'      => 'Country',
+            'attributes' => array(
+                'options' => $this->getCountries(),
+            ),
+            'value'      => 'BE',
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
     }
 
-    private function _getCountries()
+    public function setRequired($required = true)
+    {
+        $this->get('street')->setRequired($required);
+        $this->get('number')->setRequired($required);
+        $this->get('postal')->setRequired($required);
+        $this->get('city')->setRequired($required);
+
+        return parent::setRequired($required);
+    }
+
+    private function getCountries()
     {
         $options = array();
         foreach (Address::$countries as $key => $continent) {
@@ -101,87 +151,5 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Element\Collection
         }
 
         return $options;
-    }
-
-    public function getInputs()
-    {
-        $factory = new InputFactory();
-        $inputs = array();
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_street',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            )
-        );
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_number',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
-                    new NotZeroValidator(),
-                ),
-            )
-        );
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_mailbox',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            )
-        );
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_postal',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'digits',
-                    ),
-                ),
-            )
-        );
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_city',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            )
-        );
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_country',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            )
-        );
-
-        return $inputs;
     }
 }

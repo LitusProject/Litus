@@ -18,170 +18,116 @@
 
 namespace CommonBundle\Form\Address;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\Validator\NotZero as NotZeroValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Component\Validator\NotZero as NotZeroValidator;
 
 /**
  * Add Address
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddPrimary extends \CommonBundle\Component\OldForm\Bootstrap\Element\Collection
+class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @var CacheStorage The cache instance
-     */
-    protected $_cache = null;
-
-    /**
-     * @var string The form's prefix
-     */
-    private $_prefix;
-
-    /**
-     * @var boolean Whether or not the form is required
-     */
-    private $_required;
-
-    /**
-     * @param CacheStorage  $cache         The cache instance
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param string        $prefix
-     * @param string        $name          Optional name for the element
-     * @param boolean       $required      Whether or not the address is required
-     */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, $prefix = '', $name = null, $required = true)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_cache = $cache;
+        $this->addClass('primary-address');
 
-        $prefix = '' == $prefix ? '' : $prefix . '_';
-        $this->_prefix = $prefix;
-        $this->_required = $required;
+        list($cities, $streets) = $this->getCities();
 
-        list($cities, $streets) = $this->_getCities();
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'city',
+            'label'      => 'City',
+            'attributes' => array(
+                'options' => $cities,
+                'class'   => 'city',
+            ),
+        ));
 
-        $field = new Select($prefix . 'address_city');
-        $field->setLabel('City')
-            ->setAttribute('options', $cities)
-            ->setRequired($this->_required);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'other',
+            'attributes' => array(
+                'class' => 'other',
+            ),
+            'elements'   => array(
+                array(
+                    'type'    => 'text',
+                    'name'    => 'postal',
+                    'label'   => 'Postal Code',
+                    'options' => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'alnum',
+                                'options' => array(
+                                    'allowWhiteSpace' => true,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'    => 'text',
+                    'name'    => 'city',
+                    'label'   => 'City',
+                    'options' => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'    => 'text',
+                    'name'    => 'street',
+                    'label'   => 'Street',
+                    'options' => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text($prefix . 'address_postal_other');
-        $field->setLabel('Postal Code')
-            ->setRequired($this->_required);
-        $this->add($field);
-
-        $field = new Text($prefix . 'address_city_other');
-        $field->setLabel('City')
-            ->setRequired($this->_required);
-        $this->add($field);
-
-        $field = new Text($prefix . 'address_street_other');
-        $field->setLabel('Street')
-            ->setRequired($this->_required);
-        $this->add($field);
+        $streetSelects = array();
 
         foreach ($streets as $id => $collection) {
-            $field = new Select($prefix . 'address_street_' . $id);
-            $field->setLabel('Street')
-                ->setAttribute('class', $field->getAttribute('class') . ' ' . $prefix . 'address_street')
-                ->setAttribute('options', $collection)
-                ->setRequired($this->_required);
-            $this->add($field);
-        }
-
-        $field = new Text($prefix . 'address_number');
-        $field->setLabel('Number')
-            ->setRequired($this->_required);
-        $this->add($field);
-
-        $field = new Text($prefix . 'address_mailbox');
-        $field->setLabel('Mailbox');
-        $this->add($field);
-    }
-
-    private function _getCities()
-    {
-        if (null !== $this->_cache) {
-            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
-                return $result;
-        }
-
-        $cities = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Address\City')
-            ->findAll();
-
-        $optionsCity = array('' => '');
-        $optionsStreet = array();
-        foreach ($cities as $city) {
-            $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
-            $optionsStreet[$city->getId()] = array('' => '');
-
-            foreach ($city->getStreets() as $street) {
-                $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
-            }
-        }
-        $optionsCity['other'] = 'Other';
-
-        if (null !== $this->_cache) {
-            $this->_cache->setItem(
-                'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
-                array(
-                    $optionsCity,
-                    $optionsStreet
-                )
+            $streetSelects[] = array(
+                'type'       => 'select',
+                'name'       => $id,
+                'label'      => 'Street',
+                'attributes' => array(
+                    'class'   => 'street street-'.$id,
+                    'options' => $collection,
+                ),
             );
         }
 
-        return array($optionsCity, $optionsStreet);
-    }
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'street',
+            'elements' => $streetSelects,
+        ));
 
-    public function getInputs()
-    {
-        $factory = new InputFactory();
-        $inputs = array();
-
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_city',
-                'required' => $this->_required,
-            )
-        );
-
-        if ($this->get($this->_prefix . 'address_city')->getValue() != 'other') {
-            $inputs[] = $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_street_' . $this->get($this->_prefix . 'address_city')->getValue(),
-                    'required' => $this->_required,
-                )
-            );
-        } else {
-            $inputs[] = $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_street_other',
-                    'required' => $this->_required,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            );
-
-            $inputs[] = $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_postal_other',
-                    'required' => $this->_required,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'number',
+            'label'      => 'Number',
+            'attributes' => array(
+                'class' => 'number',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -192,50 +138,95 @@ class AddPrimary extends \CommonBundle\Component\OldForm\Bootstrap\Element\Colle
                                 'allowWhiteSpace' => true,
                             ),
                         ),
+                        new NotZeroValidator(),
                     ),
-                )
-            );
+                ),
+            ),
+        ));
 
-            $inputs[] = $factory->createInput(
-                array(
-                    'name'     => $this->_prefix . 'address_city_other',
-                    'required' => $this->_required,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'mailbox',
+            'label'      => 'Mailbox',
+            'attributes' => array(
+                'class' => 'mailbox',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                ),
+            ),
+        ));
+    }
+
+    public function setRequired($required = true)
+    {
+        $this->get('street')->setRequired($required);
+        $this->get('number')->setRequired($required);
+        $this->get('city')->setRequired($required);
+
+        $this->get('other')->setRequired($required);
+
+        return $this->setElementRequired($required);
+    }
+
+    private function getCities()
+    {
+        if (null !== $this->getCache()) {
+            if (null !== ($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
+                return $result;
+        }
+
+        $cities = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Address\City')
+            ->findAll();
+
+        $optionsCity = array('' => '');
+        $optionsStreet = array();
+        foreach ($cities as $city) {
+            $optionsCity[$city->getId()] = $city->getPostal().' '.$city->getName();
+            $optionsStreet[$city->getId()] = array('' => '');
+
+            foreach ($city->getStreets() as $street) {
+                $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
+            }
+        }
+        $optionsCity['other'] = 'Other';
+
+        if (null !== $this->getCache()) {
+            $this->getCache()->setItem(
+                'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
+                array(
+                    $optionsCity,
+                    $optionsStreet,
                 )
             );
         }
 
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_number',
-                'required' => $this->_required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'alnum',
-                        'options' => array(
-                            'allowWhiteSpace' => true,
-                        ),
-                    ),
-                    new NotZeroValidator(),
-                ),
-            )
-        );
+        return array($optionsCity, $optionsStreet);
+    }
 
-        $inputs[] = $factory->createInput(
-            array(
-                'name'     => $this->_prefix . 'address_mailbox',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            )
-        );
+    public function getInputFilterSpecification()
+    {
+        $specification = parent::getInputFilterSpecification();
 
-        return $inputs;
+        if ('' === $this->data['city']) {
+            // empty form
+            return array();
+        }
+
+        if ($this->data['city'] !== 'other') {
+            unset($specification['other']);
+
+            foreach ($specification['street'] as $city => $streetSpecification) {
+                $streetSpecification['required'] = $city === $this->data['city'];
+            }
+        } else {
+            unset($specification['street']);
+        }
+
+        return $specification;
     }
 }

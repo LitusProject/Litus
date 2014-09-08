@@ -18,8 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\User\Person;
+use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator;
+use CommonBundle\Entity\User\Person;
+use LogicException;
 
 /**
  * Academic Barcode form
@@ -31,10 +32,14 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Person
      */
-    private $_person;
+    private $person;
 
     public function init()
     {
+        if (null === $this->person) {
+            throw new LogicException('Cannot add a barcode to a null person.');
+        }
+
         parent::init();
 
         $this->add(array(
@@ -71,11 +76,11 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
 
     /**
      * @param Person
-     * @return \SecretaryBundle\Form\Admin\Registration\Barcode
+     * @return self
      */
     public function setPerson(Person $person)
     {
-        $this->_person = $person;
+        $this->person = $person;
 
         return $this;
     }
@@ -85,6 +90,6 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getPerson()
     {
-        return $this->_person;
+        return $this->person;
     }
 }

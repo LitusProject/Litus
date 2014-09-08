@@ -108,14 +108,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Organization',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->_getOrganizations(),
+                'options' => $this->getOrganizations(),
             ),
         ));
 
         $this->addSubmit('Save', 'secretary_edit');
     }
 
-    private function _getOrganizations()
+    private function getOrganizations()
     {
         $organizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')

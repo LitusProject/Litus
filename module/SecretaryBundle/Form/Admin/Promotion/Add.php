@@ -36,91 +36,104 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'value'      => true,
         ));
 
-        $academic = $this->addFieldset('Academic', 'academic');
-
-        $academic->add(array(
-            'type'       => 'hidden',
-            'name'       => 'academic_id',
-            'required'   => true,
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'academic',
+            'label'      => 'Academic',
             'attributes' => array(
-                'id'       => 'academicId',
+                'id' => 'academic'.,
             ),
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+            'elements'   => array(
+                array(
+                    'type'       => 'hidden',
+                    'name'       => 'academic_id',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id'       => 'academicId',
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'int',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'academic_name',
+                    'label'      => 'Academic',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id'           => 'academicSearch',
+                        'autocomplete' => 'off',
+                        'data-provide' => 'typeahead',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
                         ),
                     ),
                 ),
             ),
         ));
 
-        $academic->add(array(
-            'type'       => 'text',
-            'name'       => 'academic_name',
-            'label'      => 'Academic',
-            'required'   => true,
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'external',
+            'label'      => 'External',
             'attributes' => array(
-                'id'           => 'academicSearch',
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
+                'id' => 'external',
             ),
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+            'elements'   => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'external_first_name',
+                    'label'      => 'First Name',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-        ));
-
-        $external = $this->addFieldset('External', 'external');
-
-        $external->add(array(
-            'type'       => 'text',
-            'name'       => 'external_first_name',
-            'label'      => 'First Name',
-            'required'   => true,
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'external_last_name',
+                    'label'      => 'Last Name',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-        ));
-
-        $external->add(array(
-            'type'       => 'text',
-            'name'       => 'external_last_name',
-            'label'      => 'Last Name',
-            'required'   => true,
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $external->add(array(
-            'type'       => 'text',
-            'name'       => 'external_email',
-            'label'      => 'Email',
-            'required'   => true,
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
+                array(
+                    'type'       => 'text',
+                    'name'       => 'external_email',
+                    'label'      => 'Email',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'EmailAddress',
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -128,5 +141,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'add');
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specification = parent::getInputFilterSpecification();
+
+        if ($this->data['academic_add']) {
+            unset($specification['external']);
+        } else {
+            unset($specification['academic']);
+        }
+
+        return $specification;
     }
 }

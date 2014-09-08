@@ -35,7 +35,7 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Organization',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_getOrganizations(),
+                'options' => $this->getOrganizations(),
             ),
         ));
 
@@ -45,14 +45,14 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Academic Year',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_getAcademicYears(),
+                'options' => $this->getAcademicYears(),
             ),
         ));
 
         $this->addSubmit('Download', 'download');
     }
 
-    private function _getOrganizations()
+    private function getOrganizations()
     {
         $organizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
@@ -65,7 +65,7 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
         return $organizationsArray;
     }
 
-    private function _getAcademicYears()
+    private function getAcademicYears()
     {
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')

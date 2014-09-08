@@ -18,12 +18,12 @@
 
 namespace CommonBundle\Entity\User\Person;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -105,24 +105,9 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $unitMap;
 
-    /**
-     * @param string $username                 The user's username
-     * @param array  $roles                    The user's roles
-     * @param string $firstName                The user's first name
-     * @param string $lastName                 The user's last name
-     * @param string $email                    The user's e-mail address
-     * @param string $phoneNumber              The user's phone number
-     * @param string $sex                      The user's sex
-     * @param string $universityIdentification The user's university identification
-     */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
+    public function __construct()
     {
-        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
-
-        $this->setPersonalEmail($email);
-        $this->setUniversityEmail($email);
-
-        $this->universityIdentification = $universityIdentification;
+        parent::__construct();
 
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();

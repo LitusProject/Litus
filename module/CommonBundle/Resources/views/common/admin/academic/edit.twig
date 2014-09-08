@@ -30,15 +30,31 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#primary_address_address_city').change(cityChange);
+            $('.city').change(cityChange);
             cityChange();
         });
 
         function cityChange() {
-            var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.row').hide();
-            if (city != 0)
-                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.row').show();
+            var city = $('.city option:selected').val();
+
+            if (city == 0)
+                return;
+
+            if (city == 'other') {
+                $('.street').closest('.row')
+                    .hide();
+
+                $('.other').closest('.row')
+                    .show();
+            } else {
+                $('.other').closest('.row')
+                    .hide();
+
+                $('.street').closest('.row')
+                    .hide();
+                $('.street-' + city).closest('.row')
+                    .show();
+            }
         }
     </script>
 {% endblock %}

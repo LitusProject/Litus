@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
-    SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator;
+use SecretaryBundle\Entity\Registration;
+use SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Edit Registration Data form
@@ -32,12 +32,12 @@ class Edit extends Add
     /**
      * @var Registration
      */
-    private $_registration;
+    private $registration;
 
     /**
      * @var MetaData
      */
-    private $_metaData;
+    private $metaData;
 
     public function init()
     {
@@ -80,11 +80,11 @@ class Edit extends Add
 
     /**
      * @param Registration
-     * @return \SecretaryBundle\Form\Admin\Registration\Edit
+     * @return self
      */
     public function setRegistration(Registration $registration)
     {
-        $this->_registration = $registration;
+        $this->registration = $registration;
 
         return $this;
     }
@@ -94,16 +94,16 @@ class Edit extends Add
      */
     public function getRegistration()
     {
-        return $this->_registration;
+        return $this->registration;
     }
 
     /**
      * @param MetaData
-     * @return \SecretaryBundle\Form\Admin\Registration\Edit
+     * @return self
      */
     public function setMetaData(MetaData $metaData)
     {
-        $this->_metaData = $metaData;
+        $this->metaData = $metaData;
 
         return $this;
     }
@@ -113,6 +113,6 @@ class Edit extends Add
      */
     public function getMetaData()
     {
-        return $this->_metaData;
+        return $this->metaData;
     }
 }

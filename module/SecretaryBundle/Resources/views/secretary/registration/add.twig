@@ -96,64 +96,94 @@
                 {% endfor %}
             };
 
+            var $form = $('#registerForm');
+
             {% if organizations|length > 1 or enableOtherOrganization %}
                 $('#organizationSelector a').click(function (e) {
-                    e.preventDefault();
                     $('#organizationSelector').hide();
-                    $('#registerForm').show();
-                    $('#registerForm #organization').val($(this).data('id')).closest('.form-group').hide();
+                    $form
+                        .show()
+                        .find('#organization')
+                        .val($(this).data('id'))
+                        .closest('.form-group')
+                            .hide();
 
                     if ($(this).data('id') == 0) {
-                        $('#registerForm #become_member').closest('.form-group').hide();
-                        $('#registerForm #become_member').prop('checked', false);
+                        $form.find('#become_member')
+                            .closest('.form-group')
+                                .hide()
+                            .end()
+                            .prop('checked', false);
                     } else {
-                        $('#registerForm #become_member').prop('checked', true);
-                        $('#registerForm #become_member').closest('.form-group').show();
-                        $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$(this).data('id')]));
+                        $form.find('#become_member')
+                            .prop('checked', true)
+                            .closest('.form-group')
+                                .show()
+                            .end()
+                            .closest('label')
+                                .html(
+                                    $form.find('#become_member')
+                                        .closest('label')
+                                        .html()
+                                        .replace('{ price }', membershipArticles[$(this).data('id')])
+                                );
                     }
+
+                    return false;
                 });
             {% else %}
-                $('#registerForm #organization').closest('.form-group').hide();
-                $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
+                $form.find('#organization')
+                    .closest('.form-group')
+                        .hide();
+                $form.find('#become_member')
+                    .closest('label')
+                    .html(
+                        $form.find('#become_member')
+                            .closest('label')
+                            .html()
+                            .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
+                    );
             {% endif %}
 
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
             conditionsLink.click(function (e) {
-                e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
+
+                return false;
             });
 
             $('#register').click(function (e) {
-                e.preventDefault();
-
-                if (!$('#become_member').is(':checked') && $('#registerForm #organization').val() != 0) {
-                    $('#modalMemberWarning').modal();
-                    $('#modalMemberWarning .confirm').one('click', function () {
-                        $('#register_form').submit();
-                    });
+                if (!$('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                    $('#modalMemberWarning')
+                        .modal()
+                        .find('.confirm')
+                            .one('click', function () {
+                                $form.submit();
+                        });
                 } else {
-                    $('#register_form').submit();
+                    $form.submit();
                 }
+
+                return false;
             });
 
-            $('#primary_address_address_city').change(cityChange);
+            $('.primary-address .city').change(cityChange);
             $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
 
             {% if selectedOrganization %}
-                $('#organization-{{ selectedOrganization.getId() }}').click();
+                $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
             {% elseif isPost %}
-                $('#organization-0').click();
+                $('#organization > option[value="0"]').click();
             {% endif %}
 
             $('#university_email').wrap('<div class=\"input-group\" />');
             $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
 
-            $('#first_name').blur(nameChange);
-            $('#last_name').blur(nameChange);
+            $('#first_name, #last_name').blur(nameChange);
         });
 
         function nameChange() {
@@ -161,10 +191,34 @@
         }
 
         function cityChange() {
-            var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.form-group').hide();
-            if (city != 0)
-                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.form-group').show();
+            var $primaryAddress = $('.primary-address');
+
+            var city = $primaryAddress
+                .find('.city option:selected')
+                .val();
+
+            $primaryAddress
+                .find('.other')
+                    .hide()
+                .end()
+                .find('.street, .number, .mailbox')
+                    .closest('.form-group')
+                        .hide();
+
+            if (city === 'other') {
+                $primaryAddress
+                    .find('.other')
+                        .show()
+                    .end()
+                    .find('.number, .mailbox')
+                        .closest('.form-group')
+                            .show();
+            } else if (city != 0) {
+                $primaryAddress
+                    .find('.street-' + city + ', .number, .mailbox')
+                        .closest('.form-group')
+                            .show();
+            }
         }
 
         function toggleMember() {
@@ -173,7 +227,7 @@
             else
                 $('#organization_info .form-group').hide();
             $('#become_member, #conditions, #bakske').closest('.form-group').show();
-            $('#registerForm #organization').closest('.form-group').hide();
+            $form.find('#organization').closest('.form-group').hide();
         }
     </script>
 {% endblock %}
