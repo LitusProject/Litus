@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a quiz round.
@@ -75,17 +75,13 @@ class Round
     private $points;
 
     /**
-     * @param Quiz    $quiz
-     * @param string  $name
-     * @param integer $order
+     * @param Quiz $quiz
      */
-    public function __construct(Quiz $quiz, $name, $maxPoints, $order)
+    public function __construct(Quiz $quiz)
     {
         $this->quiz = $quiz;
-        $this->name = $name;
-        $this->maxPoints = $maxPoints;
-        $this->order = $order;
-        $this->points = new ArrayCollection;
+
+        $this->points = new ArrayCollection();
     }
 
     /**

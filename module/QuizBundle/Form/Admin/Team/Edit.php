@@ -18,12 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
-    Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Team,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edits a quiz team
@@ -31,56 +26,17 @@ use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
  */
 class Edit extends Add
 {
-    /**
-     * @var Team $team
-     */
-    private $_team;
-
-    /**
-     * @param EntityManager   $entityManager
-     * @param Team            $team          The quiz team to populate the form with
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, Team $team, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $team->getQuiz(), $name);
+        if (null === $this->team) {
+            throw new LogicException('Cannot edit a null team');
+        }
 
-        $this->_team = $team;
+        parent::init();
 
-        $this->remove('submit');
+        $this->remove('submit')
+            ->addSubmit('Edit', 'edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Edit')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->populateFromTeam($team);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('number');
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'number',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                        new PositiveNumberValidator(),
-                        new UniqueTeamValidator($this->_entityManager, $this->_quiz, $this->_team),
-                    )
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->bind($this->team);
     }
 }

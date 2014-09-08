@@ -18,10 +18,10 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a quiz.
@@ -90,17 +90,15 @@ class Quiz
 
     /**
      * @param Person $person
-     * @param string $name
-     * @param array  $editRoles
      */
-    public function __construct(Person $person, $name, $editRoles)
+    public function __construct(Person $person)
     {
         $this->person = $person;
-        $this->name = $name;
-        $this->editRoles = new ArrayCollection($editRoles);
         $this->timestamp = new DateTime();
-        $this->rounds = new ArrayCollection;
-        $this->teams = new ArrayCollection;
+
+        $this->editRoles = new ArrayCollection();
+        $this->rounds = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**

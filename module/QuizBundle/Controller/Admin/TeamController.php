@@ -18,10 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Team,
-    QuizBundle\Form\Admin\Team\Add as AddForm,
-    QuizBundle\Form\Admin\Team\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Team;
+use Zend\View\Model\ViewModel;
 
 /**
  * TeamController
@@ -41,10 +39,10 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             'QuizBundle\Entity\Team',
             $this->getParam('page'),
             array(
-                'quiz' => $quiz
+                'quiz' => $quiz,
             ),
             array(
-                'number' => 'ASC'
+                'number' => 'ASC',
             )
         );
 
@@ -62,18 +60,17 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         if (!($quiz = $this->_getQuiz()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $quiz);
+        $form = $this->getForm('quiz_team_add', array('quiz' => $quiz));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $team = new Team($quiz);
 
-                $team = new Team($quiz, $formData['name'], $formData['number']);
+                $form->hydrateObject($team);
+
                 $this->getEntityManager()->persist($team);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -113,18 +110,12 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         if (!($team = $this->_getTeam()))
             return new ViewModel();
 
-        $form  = new EditForm($this->getEntityManager(), $team);
+        $form = $this->getForm('quiz_team_edit', array('team' => $team));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $team->setName($formData['name'])
-                    ->setNumber($formData['number']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -136,7 +127,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
                     'quiz_admin_team',
                     array(
                         'action' => 'manage',
-                        'quizid' => $team->getQuiz()->getId()
+                        'quizid' => $team->getQuiz()->getId(),
                     )
                 );
             }
@@ -164,7 +155,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -204,7 +195,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -220,7 +211,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -282,7 +273,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

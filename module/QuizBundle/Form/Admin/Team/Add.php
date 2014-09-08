@@ -18,109 +18,93 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
-    Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Team,
-    QuizBundle\Entity\Quiz,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator;
+use LogicException;
+use QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Team;
 
 /**
  * Add a new team
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'QuizBundle\Hydrator\Team';
 
     /**
-     * @var Quiz The quiz the team will belong to
+     * @var Quiz|null The quiz the team will belong to
      */
-    protected $_quiz = null;
+    protected $quiz = null;
 
     /**
-     * @param EntityManager $entityManager
-     * @param Quiz          $quiz
-     * @var null|string|int $name Optional name for the form
+     * @var Team|null The team, if it already exists
      */
-    public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
+    protected $team = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->quiz) {
+            throw new LogicException('Quiz cannot be null in order to add teams');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_quiz = $quiz;
+        parent::init();
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('number');
-        $field->setLabel('Team Number')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param Team $team
-     */
-    public function populateFromTeam(Team $team)
-    {
-        $this->setData(
-            array(
-                'name' => $team->getName(),
-                'number' => $team->getNumber(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'number',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'number',
+            'label'    => 'Team Number',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
-                        new UniqueTeamValidator($this->_entityManager, $this->_quiz),
-                    )
-                )
-            )
-        );
+                        new PositiveNumberValidator(),
+                        new UniqueTeamValidator($this->getEntityManager(), $this->quiz, $this->team),
+                    ),
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Quiz $quiz
+     * @return self
+     */
+    public function setQuiz(Quiz $quiz)
+    {
+        $this->quiz = $quiz;
+
+        return $this;
+    }
+
+    /**
+     * @param  Team $team
+     * @return self
+     */
+    public function setTeam(Team $team)
+    {
+        $this->team = $team;
+
+        return $this->setQuiz($team->getQuiz());
     }
 }

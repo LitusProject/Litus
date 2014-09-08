@@ -18,131 +18,112 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
-    Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Round,
-    QuizBundle\Entity\Quiz,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator;
+use LogicException;
+use QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator;
+use QuizBundle\Entity\Round;
+use QuizBundle\Entity\Quiz;
 
 /**
  * Add a new round
+ *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'QuizBundle\Hydrator\Round';
 
     /**
-     * @var Quiz The quiz the round will belong to
+     * @var Quiz|null The quiz the round will belong to
      */
-    protected $_quiz = null;
+    protected $quiz = null;
 
     /**
-     * @param EntityManager $entityManager
-     * @param Quiz          $quiz
-     * @var null|string|int $name Optional name for the form
+     * @var Round|null The round, if it already exists
      */
-    public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
+    protected $round = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->quiz) {
+            throw new LogicException('Quiz cannot be null in order to add rounds');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_quiz = $quiz;
+        parent::init();
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('max_points');
-        $field->setLabel('Maximum Points')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('order');
-        $field->setLabel('Round Number')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param Round $round
-     */
-    public function populateFromRound(Round $round)
-    {
-        $this->setData(
-            array(
-                'name' => $round->getName(),
-                'max_points' => $round->getMaxPoints(),
-                'order' => $round->getOrder(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'max_points',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'max_points',
+            'label'    => 'Maximum Points',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int'),
                         new PositiveNumberValidator(),
-                    )
-                )
-            )
-        );
+                    ),
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'order',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'order',
+            'label'    => 'Round Number',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int'),
                         new PositiveNumberValidator(),
-                        new UniqueRoundValidator($this->_entityManager, $this->_quiz),
-                    )
-                )
-            )
-        );
+                        new UniqueRoundValidator($this->getEntityManager(), $this->quiz, $this->round),
+                    ),
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Quiz $quiz
+     * @return self
+     */
+    public function setQuiz(Quiz $quiz)
+    {
+        $this->quiz = $quiz;
+
+        return $this;
+    }
+
+    /**
+     * @param  Round $round
+     * @return self
+     */
+    public function setRound(Round $round)
+    {
+        $this->round = $round;
+
+        return $this->setQuiz($round->getQuiz());
     }
 }

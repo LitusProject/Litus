@@ -16,27 +16,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace QuizBundle\Form\Admin\Round;
+namespace QuizBundle\Hydrator;
 
-use LogicException;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
-/**
- * Edits a quiz round
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- */
-class Edit extends Add
+class Round extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    public function init()
+    private static $std_keys = array('name', 'max_points', 'order');
+
+    protected function doExtract($object = null)
     {
-        if (null === $this->round) {
-            throw new LogicException('Cannot edit a null round');
+        if (null === $object) {
+            return array();
         }
 
-        parent::init();
+        return $this->stdExtract($object, self::$std_keys);
+    }
 
-        $this->remove('submit')
-            ->addSubmit('Edit', 'edit');
+    protected function doHydrate(array $data, $object = null)
+    {
+        if (null === $object) {
+            throw new InvalidObjectException('Cannot create a quiz round in the hydrator');
+        }
 
-        $this->bind($this->round);
+        return $this->stdHydrate($data, $object, self::$std_keys);
     }
 }

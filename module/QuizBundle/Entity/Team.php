@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a team.
@@ -71,12 +71,10 @@ class Team
      * @param Quiz   $quiz
      * @param string $name
      */
-    public function __construct(Quiz $quiz, $name, $number)
+    public function __construct(Quiz $quiz)
     {
         $this->quiz = $quiz;
-        $this->name = $name;
-        $this->number = $number;
-        $this->points = new ArrayCollection;
+        $this->points = new ArrayCollection();
     }
 
     /**

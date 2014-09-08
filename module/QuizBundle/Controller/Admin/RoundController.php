@@ -18,10 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Round,
-    QuizBundle\Form\Admin\Round\Add as AddForm,
-    QuizBundle\Form\Admin\Round\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Round;
+use Zend\View\Model\ViewModel;
 
 /**
  * RoundController
@@ -41,10 +39,10 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             'QuizBundle\Entity\Round',
             $this->getParam('page'),
             array(
-                'quiz' => $quiz
+                'quiz' => $quiz,
             ),
             array(
-                'order' => 'ASC'
+                'order' => 'ASC',
             )
         );
 
@@ -62,18 +60,16 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($quiz = $this->_getQuiz()))
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $quiz);
+        $form = $this->getForm('quiz_round_add', array('quiz' => $quiz));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $round = new Round($quiz);
+                $form->hydrateObject($round);
 
-                $round = new Round($quiz, $formData['name'], $formData['max_points'], $formData['order']);
                 $this->getEntityManager()->persist($round);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -113,19 +109,12 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($round = $this->_getRound()))
             return new ViewModel();
 
-        $form  = new EditForm($this->getEntityManager(), $round);
+        $form = $this->getForm('quiz_round_edit', array('round' => $round));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $round->setName($formData['name'])
-                    ->setMaxPoints($formData['max_points'])
-                    ->setOrder($formData['order']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -137,7 +126,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
                     'quiz_admin_round',
                     array(
                         'action' => 'manage',
-                        'quizid' => $round->getQuiz()->getId()
+                        'quizid' => $round->getQuiz()->getId(),
                     )
                 );
             }
@@ -165,7 +154,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -188,7 +177,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
             return new ViewModel();
 
-        foreach ($data['items'] as $order=>$id) {
+        foreach ($data['items'] as $order => $id) {
             $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);
             $round->setOrder($order+1);
         }
@@ -198,7 +187,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(array(
             'result' => array(
                 'status' => 'success',
-            )
+            ),
         ));
     }
 
@@ -236,7 +225,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -252,7 +241,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -314,7 +303,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
