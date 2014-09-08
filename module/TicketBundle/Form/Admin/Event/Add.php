@@ -18,11 +18,11 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    TicketBundle\Component\Validator\Activity as ActivityValidator,
-    TicketBundle\Component\Validator\Date as DateValidator,
-    Ticketbundle\Entity\Event;
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
+use CommonBundle\Component\Validator\Price as PriceValidator;
+use TicketBundle\Component\Validator\Activity as ActivityValidator;
+use TicketBundle\Component\Validator\Date as DateValidator;
+use Ticketbundle\Entity\Event;
 
 /**
  * Add Event
@@ -35,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
+        $this->setAttribute('class', $this->getAttribute('class').' half_width');
 
         $this->add(array(
             'type'       => 'select',
@@ -135,7 +135,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required'   => true,
                     'attributes' => array(
                         'class' => 'price_non_members',
-                    )
+                    ),
                 ),
             ),
         ));
@@ -145,12 +145,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'options',
             'label'      => 'Options',
             'attributes' => array(
-                'class' => 'half_width'
+                'class' => 'half_width',
             ),
             'options'    => array(
                 'count'                  => 0,
                 'should_create_template' => true,
-                'allow_add'              => true
+                'allow_add'              => true,
                 'target_element'         => array(
                     'type' => 'TicketBundle\Form\Admin\Event\Option',
                 ),
@@ -167,7 +167,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
+            '' => '',
         );
         foreach ($events as $event)
             $eventsArray[$event->getId()] = $event->getTitle();
@@ -204,7 +204,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     new DateCompareValidator('now', 'd/m/Y H:i'),
                     new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
                 ),
-            )
+            ),
         );
 
         if (isset($this->data['generate_tickets']) && $this->data['generate_tickets']) {
@@ -220,8 +220,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         'name' => 'greaterthan',
                         'options' => array(
                             'min' => 0,
-                        )
-                    )
+                        ),
+                    ),
                 ),
             );
         } else {
@@ -263,7 +263,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator()
+                        new PriceValidator(),
                     ),
                 ),
                 array(
@@ -273,7 +273,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator()
+                        new PriceValidator(),
                     ),
                 ),
             );
