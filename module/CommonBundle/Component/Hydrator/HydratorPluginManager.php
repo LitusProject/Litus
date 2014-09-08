@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use RuntimeException,
-    Zend\ServiceManager\ServiceLocatorAwareInterface;
+use RuntimeException;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 /**
  * Manager for our hydrators
@@ -33,9 +33,13 @@ class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
         if ($this->has($name))
             return parent::get($name, $options, $usePeeringServiceManagers);
 
-        $hydratorName = $this->getHydratorName($name);
+        if (0 === strpos($name, '\\')) {
+            $name = substr($name, 1);
+        }
+
+        $hydratorName = '\\'.$this->getHydratorName($name);
         if (!class_exists($hydratorName)) {
-            throw new RuntimeException('Unknown hydrator: ' . $name);
+            throw new RuntimeException('Unknown hydrator: '.$hydratorName);
         }
 
         $this->setInvokableClass($name, $hydratorName);
