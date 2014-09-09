@@ -76,7 +76,7 @@ class Barcode
             $barcode = (int) floor($barcode / 10);
 
         if (strlen($barcode) != 12)
-            throw new \InvalidArgumentException('Invalid barcode given: ' . $algorithm);
+            throw new \InvalidArgumentException('Invalid barcode given: ' . $barcode);
 
         $this->barcode = $barcode;
     }
