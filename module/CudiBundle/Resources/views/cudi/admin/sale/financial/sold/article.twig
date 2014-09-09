@@ -17,6 +17,8 @@
         <p>Barcode: <b>{{ article.getBarcode() }}</b></p>
         <p>Purchase Price: <b>&euro; {{ (article.getPurchasePrice()/100)|number_format(2) }}</b></p>
         <p>Sell Price: <b>&euro; {{ (article.getSellPrice()/100)|number_format(2) }}</b></p>
+        <p>Article Type: <b>{{ article.getMainArticle().getType()|capitalize }}</b></p>
+        <p>&nbsp;</p>
 
         {% if organizations|length > 1 %}<h2>Total</h2>{% endif %}
         <p>Number Sold: <b>{{ article.getNumberSold(activeAcademicYear) }}</b></p>
@@ -87,7 +89,7 @@
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
             </table>
         </div>
@@ -102,7 +104,7 @@
                     <th width="80px">Number</th>
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
 
                 {% for item in paginator %}
