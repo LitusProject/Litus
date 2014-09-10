@@ -23,6 +23,7 @@ use PageBundle\Entity\Node\Page,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
