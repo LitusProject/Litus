@@ -257,6 +257,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->getRepository('CommonBundle\Entity\General\Organization')
                             ->findAll()
                     );
+
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $organization
+                    );
                 }
 
                 if (null !== $metaData) {

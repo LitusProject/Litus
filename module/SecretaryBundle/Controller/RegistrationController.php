@@ -509,6 +509,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->getRepository('CommonBundle\Entity\General\Organization')
                             ->findAll()
                     );
+
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $organization
+                    );
                 }
 
                 if (null !== $metaData) {
