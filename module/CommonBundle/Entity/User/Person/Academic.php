@@ -87,14 +87,14 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\University", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\University", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $universityStatuses;
 
     /**
      * @var ArrayCollection The user's organization mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $organizationMap;
 

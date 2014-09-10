@@ -18,17 +18,17 @@
 
 namespace CommonBundle\Component\Controller;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
-    CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Entity\General\Language,
-    Locale,
-    Zend\Http\Header\HeaderInterface,
-    Zend\Mvc\MvcEvent,
-    Zend\Paginator\Paginator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Entity\General\Language;
+use Locale;
+use Zend\Http\Header\HeaderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\Paginator\Paginator;
+use Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -64,6 +64,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->setCharset('utf-8');
+
+        $this->_initAcademicYear();
 
         $this->_initAuthenticationService();
         $this->_initControllerPlugins();
@@ -118,6 +120,20 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 'This page is accessible only through an asynchroneous request'
             );
         }
+    }
+
+    private function _initAcademicYear()
+    {
+        $this->getServiceLocator()
+            ->setService('litus.academic_year', $this->findCurrentAcademicYear());
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function findCurrentAcademicYear()
+    {
+        return $this->getCurrentAcademicYear(false);
     }
 
     private function _initAuthenticationService()

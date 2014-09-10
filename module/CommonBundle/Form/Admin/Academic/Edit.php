@@ -18,21 +18,12 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Form\Admin\Address\AddPrimary as PrimaryAddressForm,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    Doctrine\ORM\EntityManager,
-    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
-    Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use LogicException;
+use SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
 
 /**
  * Edit Academic
@@ -41,192 +32,31 @@ use CommonBundle\Component\OldForm\Admin\Element\Collection,
  */
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
-    /**
-     * @var Academic The person we're going to modify
-     */
-    private $_person = null;
+    protected $hydrator = 'CommonBundle\Hydrator\User\Person\Academic';
 
     /**
-     * @var \CommonBundle\Form\Admin\Address\AddPrimary
+     * @var Academic|null The person we're going to modify
      */
-    private $_primaryAddressForm;
+    private $person = null;
 
-    /**
-     * @var \CommonBundle\Form\Admin\Address\Add
-     */
-    private $_secondaryAddressForm;
-
-    /**
-     * @param CacheStorage    $cache         The cache instance
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param AcademicYear    $academicYear  The academic year
-     * @param Academic        $person        The person we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(CacheStorage $cache, EntityManager $entityManager, AcademicYear $academicYear, Academic $person, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $person, $name);
-
-        $this->_person = $person;
-
-        $field = new Text('birthday');
-        $field->setLabel('Birthday')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-help', 'The birthday of the user.');
-        $this->add($field);
-
-        $this->_primaryAddressForm = new PrimaryAddressForm($cache, $entityManager, 'primary_address', 'primary_address', false);
-        $this->_primaryAddressForm->setLabel('Primary Address&mdash;Student Room or Home');
-        $this->add($this->_primaryAddressForm);
-
-        $this->_secondaryAddressForm = new AddressForm('secondary_address', 'secondary_address', false);
-        $this->_secondaryAddressForm->setLabel('Secondary Address&mdash;Home');
-        $this->add($this->_secondaryAddressForm);
-
-        $collection = new Collection('organization');
-        $collection->setLabel('Organization');
-        $this->add($collection);
-
-        $field = new Select('organization_status');
-        $field->setLabel('Status')
-            ->setAttribute(
-                'options',
-                array_merge(
-                    array(
-                        '' => ''
-                    ),
-                    OrganizationStatus::$possibleStatuses
-                )
-            )
-            ->setAttribute('data-help', 'The status of the user in the organization.<br><br><ul>
-                <li><b>Member:</b> a member of the organization</li>
-                <li><b>Non-Member:</b> the person is not a member of the organization</li>
-                <li><b>Honorary Member:</b> the person has earned membership because of his contributions to the organization</li>
-                <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
-                <li><b>Praesidium:</b> a member of the board</li>
-            </ul>');
-        $collection->add($field);
-
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-            ->setAttribute('class', 'disableEnter')
-            ->setAttribute('data-help', 'The barcode used to identify the user in this organization.');
-        $collection->add($field);
-
-        $collection = new Collection('university');
-        $collection->setLabel('University');
-        $this->add($collection);
-
-        $field = new Select('university_status');
-        $field->setLabel('Status')
-            ->setAttribute(
-                'options',
-                array_merge(
-                    array(
-                        '' => ''
-                    ),
-                    UniversityStatus::$possibleStatuses
-                )
-            )
-            ->setAttribute('data-help', 'The status of the user in the university.<br><br><ul>
-                <li><b>Alumnus:</b> a graduated student</li>
-                <li><b>Assistant Professor:</b> an assistant of a professor</li>
-                <li><b>Administrative Assistant:</b> an administrative support person</li>
-                <li><b>External Student:</b> a student that does not belong to the organization\'s faculty</li>
-                <li><b>Professor:</b> a professor</li>
-                <li><b>Student:</b> a student</li>
-            </ul>');
-        $collection->add($field);
-
-        $field = new Text('university_identification');
-        $field->setLabel('Identification')
-            ->setAttribute('data-help', 'The identification used by the university for the student.');
-        $collection->add($field);
-
-        $field = new Text('university_email');
-        $field->setLabel('University E-mail')
-            ->setAttribute('data-help', 'The e-mail address given to the user by the university.');
-        $collection->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'academic_edit');
-        $this->add($field);
-
-        $this->populateFromAcademic($person, $academicYear);
-    }
-
-    protected function populateFromAcademic(Academic $academic, AcademicYear $academicYear)
-    {
-        $universityEmail = $academic->getUniversityEmail();
-
-        if ($universityEmail)
-            $universityEmail = explode('@', $universityEmail)[0];
-
-        $data = array(
-            'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',
-            'organization_status' => $academic->getOrganizationStatus($academicYear) ? $academic->getOrganizationStatus($academicYear)->getStatus() : null,
-            'barcode' => $academic->getBarcode() ? $academic->getBarcode()->getBarcode() : '',
-            'university_email' => $universityEmail,
-            'university_identification' => $academic->getUniversityIdentification(),
-            'university_status' => $academic->getUniversityStatus($academicYear) ? $academic->getUniversityStatus($academicYear)->getStatus() : null,
-            'secondary_address_address_street' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getStreet() : '',
-            'secondary_address_address_number' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getNumber() : '',
-            'secondary_address_address_mailbox' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getMailbox() : '',
-            'secondary_address_address_postal' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getPostal() : '',
-            'secondary_address_address_city' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCity() : '',
-            'secondary_address_address_country' => $academic->getSecondaryAddress() ? $academic->getSecondaryAddress()->getCountryCode() : 'BE',
-        );
-
-        if ($academic->getPrimaryAddress()) {
-            $city = $this->_entityManager
-                ->getRepository('CommonBundle\Entity\General\Address\City')
-                ->findOneByName($academic->getPrimaryAddress()->getCity());
-
-            if (null !== $city) {
-                $data['primary_address_address_city'] = $city->getId();
-
-                $street = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\General\Address\Street')
-                    ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
-
-                $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             } else {
-                $data['primary_address_address_city'] = 'other';
-                $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
-                $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
-                $data['primary_address_address_street_other'] = $academic->getPrimaryAddress()->getStreet();
-            }
-            $data['primary_address_address_number'] = $academic->getPrimaryAddress()->getNumber();
-            $data['primary_address_address_mailbox'] = $academic->getPrimaryAddress()->getMailbox();
+        if (null === $this->person) {
+            throw new LogicException('Cannot edit null Academic.');
         }
 
-        $this->setData($data);
-    }
+        parent::init();
 
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        if ($this->has('secondary_address')) {
-            $inputs = $this->_secondaryAddressForm->getInputs();
-            foreach($inputs as $input)
-                $inputFilter->add($input);
-        }
-
-        if ($this->has('primary_address')) {
-            $inputs =$this->_primaryAddressForm->getInputs();
-            foreach($inputs as $input)
-                $inputFilter->add($input);
-        }
-
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'birthday',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'birthday',
+            'label'      => 'Birthday',
+            'attributes' => array(
+                'data-help'   => 'The birthday of the user.',
+                'placeholder' => 'dd/mm/yyyy',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -238,64 +68,156 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
+        $this->add(array(
+            'type'  => 'common_address_add-primary',
+            'name'  => 'primary_address',
+            'label' => 'Primary Address&mdash;Student Room or Home',
+        ));
+
+        $this->add(array(
+            'type'  => 'common_address_add',
+            'name'  => 'secondary_address',
+            'label' => 'Secondary Address&mdash;Home',
+        ));
+
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'organization',
+            'label'    => 'Organization',
+            'elements' => array(
                 array(
-                    'name'     => 'barcode',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'type'       => 'select',
+                    'name'       => 'status',
+                    'label'      => 'Status',
+                    'attributes' => array(
+                        'data-help' => 'The status of the user in the organization.<br><br><ul>
+                                <li><b>Member:</b> a member of the organization</li>
+                                <li><b>Non-Member:</b> the person is not a member of the organization</li>
+                                <li><b>Honorary Member:</b> the person has earned membership because of his contributions to the organization</li>
+                                <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
+                                <li><b>Praesidium:</b> a member of the board</li>
+                            </ul>',
+                        'options'   => array_merge(
+                            array(
+                                '' => '',
+                            ),
+                            OrganizationStatus::$possibleStatuses
+                        ),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'barcode',
+                    'label'      => 'Barcode',
+                    'attributes' => array(
+                        'class'     => 'disableEnter',
+                        'data-help' => 'A barcode that can be used to identify the user.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'barcode',
+                                    'options' => array(
+                                        'adapter'     => 'Ean12',
+                                        'useChecksum' => false,
+                                    ),
+                                ),
+                                new BarcodeValidator($this->getEntityManager(), $this->person),
                             ),
                         ),
-                        new BarcodeValidator($this->_entityManager, $this->_person),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'university',
+            'label'    => 'University',
+            'elements' => array(
                 array(
-                    'name'     => 'university_email',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new NoAtValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'university_identification',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alnum'
+                    'type'       => 'select',
+                    'name'       => 'status',
+                    'label'      => 'Status',
+                    'attributes' => array(
+                        'data-help' => 'The status of the user in the university.<br><br><ul>
+                                <li><b>Alumnus:</b> a graduated student</li>
+                                <li><b>Assistant Professor:</b> an assistant of a professor</li>
+                                <li><b>Administrative Assistant:</b> an administrative support person</li>
+                                <li><b>External Student:</b> a student that does not belong to the organization\'s faculty</li>
+                                <li><b>Professor:</b> a professor</li>
+                                <li><b>Student:</b> a student</li>
+                            </ul>',
+                        'options'   => array_merge(
+                            array(
+                                '' => '',
+                            ),
+                            UniversityStatus::$possibleStatuses
                         ),
                     ),
-                )
-            )
-        );
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'identification',
+                    'label'      => 'Identification',
+                    'attributes' => array(
+                        'data-help' => 'The identification used by the university for the student.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'alnum',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'email',
+                    'label'      => 'University E-mail',
+                    'attributes' => array(
+                        'data-help' => 'The e-mail address given to the user by the university.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new NoAtValidator(),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'academic_edit');
+
+        $this->bind($this->person);
+    }
+
+    /**
+     * @param  Academic $academic
+     * @return self
+     */
+    public function setAcademic(Academic $academic)
+    {
+        $this->person = $academic;
+
+        return $this;
     }
 }

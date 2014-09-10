@@ -18,160 +18,78 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Component\Validator\Username as UsernameValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator;
+use CommonBundle\Component\Validator\Username as UsernameValidator;
 
 /**
  * Add Person
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-abstract class Add extends \CommonBundle\Component\OldForm\Admin\Form
+abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('username');
-        $field->setLabel('Username')
-            ->setRequired()
-            ->setAttribute('data-help', 'A unique identifier for the user (for students, this is automatically set to their university identification).');
-        $this->add($field);
-
-        $field = new Text('first_name');
-        $field->setLabel('First Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('last_name');
-        $field->setLabel('Last Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('email');
-        $field->setLabel('E-mail')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('phone_number');
-        $field->setLabel('Phone Number')
-            ->setAttribute('placeholder', '+CCAAANNNNNN');
-        $this->add($field);
-
-        $field = new Select('sex');
-        $field->setLabel('Sex')
-            ->setRequired()
-            ->setAttribute(
-                'options',
-                array(
-                    'm' => 'M',
-                    'f' => 'F'
-                )
-            );
-        $this->add($field);
-
-        $field = new Select('roles');
-        $field->setLabel('Groups')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->createRolesArray())
-            ->setAttribute('data-help', 'The roles given to a user control which resources he can access.');
-        $this->add($field);
-    }
-
-    /**
-     * Returns an array that has all the roles, so that they are available in the
-     * roles multiselect.
-     *
-     * @return array
-     */
-    protected function createRolesArray()
-    {
-        $roles = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findBy(array(), array('name' => 'ASC'));
-
-        $rolesArray = array();
-        foreach ($roles as $role) {
-            if ($role->getSystem())
-                continue;
-
-            $rolesArray[$role->getName()] = $role->getName();
-        }
-
-        if (empty($rolesArray))
-            throw new \RuntimeException('There needs to be at least one role before you can add a person');
-
-        return $rolesArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'username',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'username',
+            'label'      => 'Username',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'A unique identifier for the user (for students, this is automatically set to their university identification).',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum'
+                            'name' => 'alnum',
                         ),
-                        new UsernameValidator($this->_entityManager),
+                        new UsernameValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'first_name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'first_name',
+            'label'    => 'First Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'last_name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'last_name',
+            'label'    => 'Last Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'email',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'E-mail',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -180,34 +98,74 @@ abstract class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'EmailAddress',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'phone_number',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'phone_number',
+            'label'      => 'Phone Number',
+            'attributes' => array(
+                'placeholder' => '+CCAAANNNNNN',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new PhoneNumberValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sex',
-                    'required' => true,
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'sex',
+            'label'      => 'Sex',
+            'required'   => true,
+            'attributes' => array(
+                'options' => array(
+                    'm' => 'M',
+                    'f' => 'F',
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'roles',
+            'label'      => 'Groups',
+            'attributes' => array(
+                'data-help' => 'The roles given to a user control which resources he can access.',
+                'multiple'  => true,
+                'options'   => $this->createRolesArray(),
+            ),
+        ));
+    }
+
+    /**
+     * Returns an array that has all the roles, so that they are available in the
+     * roles multiselect.
+     *
+     * @return array
+     */
+    protected function createRolesArray($system = false)
+    {
+        $roles = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\Acl\Role')
+            ->findAll();
+
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($system !== $role->getSystem())
+                continue;
+
+            $rolesArray[$role->getName()] = $role->getName();
+        }
+
+        return $rolesArray;
     }
 }

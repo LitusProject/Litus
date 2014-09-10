@@ -18,9 +18,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\Util\AcademicYear,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.
@@ -50,14 +49,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
 
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = true)
+    protected function findCurrentAcademicYear()
     {
-        return parent::getCurrentAcademicYear(true);
+        return $this->getCurrentAcademicYear(true);
     }
 
     /**
@@ -73,7 +67,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_prof_index',
-            'redirect_route' => 'cudi_prof_index'
+            'redirect_route' => 'cudi_prof_index',
         );
     }
 
@@ -94,7 +88,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 if (false === getenv('SERVED_BY'))
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
                 if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
-                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                    throw new ShibbolethUrlException('Array key '.getenv('SERVED_BY').' does not exist');
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -106,7 +100,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         $server = $this->getRequest()->getServer();
         if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
+            $shibbolethUrl .= '%26redirect='.urlencode('https://'.$server['HTTP_HOST'].$server['REQUEST_URI']);
 
         return $shibbolethUrl;
     }

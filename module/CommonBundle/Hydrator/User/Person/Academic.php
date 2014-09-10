@@ -18,6 +18,7 @@
 
 namespace CommonBundle\Hydrator\User\Person;
 
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use CommonBundle\Entity\User\Person\Academic as AcademicEntity;
 
 class Academic extends \CommonBundle\Hydrator\User\Person
@@ -47,14 +48,57 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         $data['primary_address'] = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress')
             ->extract($object->getPrimaryAddress());
 
-        return array_merge(
+        $data = array_merge(
             $data,
             $this->stdExtract($object, self::$std_keys)
-        );;
+        );
+
+        $academicYear = $this->getCurrentAcademicYear();
+
+        $data['university'] = array(
+            'email'          => $data['university_email'],
+            'identification' => $data['university_identification'],
+            'status'         => null !== $object->getUniversityStatus($academicYear)
+                    ? $object->getUniversityStatus($academicYear)->getStatus()
+                    : null,
+        );
+
+        $data['unit_roles'] = $this->rolesToData($object->getUnitRoles());
+
+        return $data;
     }
 
     public function doHydrate(array $data, $object = null)
     {
+        $academicYear = $this->getCurrentAcademicYear();
+
+        if (isset($data['university'])) {
+            $data['university_identification'] = $data['university']['identification'];
+
+            if (isset($data['university']['email'])) {
+                $data['university_email'] = $data['university']['email'];
+            }
+
+            if ('' != $data['university']['status']) {
+                if (null !== $object->getUniversityStatus($academicYear)) {
+                    $object->getUniversityStatus($academicYear)
+                        ->setStatus($data['university']['status']);
+                } else {
+                    $object->addUniversityStatus(
+                        new UniversityStatus(
+                            $object,
+                            $data['university']['status'],
+                            $academicYear
+                        )
+                    );
+                }
+            } else {
+                $object->removeUniversityStatus(
+                    $object->getUniversityStatus($academicYear)
+                );
+            }
+        }
+
         if (null === $object) {
             $object = new AcademicEntity();
             $object->setUsername($data['university_identification']);

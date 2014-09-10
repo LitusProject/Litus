@@ -381,7 +381,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $this->metaData = $metaData;
 
-        return $this;
+        return $this->setAcademic($metaData->getAcademic());
     }
 
     /**
@@ -392,7 +392,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $this->academic = $academic;
 
-        return $this;
+        return $this->setIdentification($academic->getUniversityIdentification());
     }
 
     /**

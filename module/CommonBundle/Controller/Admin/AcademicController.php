@@ -18,16 +18,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Barcode,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    CommonBundle\Form\Admin\Academic\Add as AddForm,
-    CommonBundle\Form\Admin\Academic\Edit as EditForm,
-    DateTime,
-    Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Query;
+use Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
@@ -50,10 +43,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 'CommonBundle\Entity\User\Person\Academic',
                 $this->getParam('page'),
                 array(
-                    'canLogin' => 'true'
+                    'canLogin' => 'true',
                 ),
                 array(
-                    'username' => 'ASC'
+                    'username' => 'ASC',
                 )
             );
         }
@@ -68,69 +61,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('common_academic_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $roles = array();
-                $roles[] = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student');
-
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $academic = new Academic(
-                    $formData['username'],
-                    $roles,
-                    $formData['first_name'],
-                    $formData['last_name'],
-                    $formData['email'],
-                    $formData['phone_number'],
-                    $formData['sex'],
-                    ('' == $formData['university_identification'] ? null : $formData['university_identification'])
-                );
+                $academic = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($academic);
-
-                if ('' != $formData['organization_status']) {
-                    $academic->addOrganizationStatus(
-                        new OrganizationStatus(
-                            $academic,
-                            $formData['organization_status'],
-                            $this->getCurrentAcademicYear()
-                        )
-                    );
-                }
-
-                if ('' != $formData['barcode']) {
-                    $this->getEntityManager()->persist(
-                        new Barcode(
-                            $academic, $formData['barcode']
-                        )
-                    );
-                }
-
-                if ('' != $formData['university_status']) {
-                    $academic->addUniversityStatus(
-                        new UniversityStatus(
-                            $academic,
-                            $formData['university_status'],
-                            $this->getCurrentAcademicYear()
-                        )
-                    );
-                }
 
                 $academic->activate(
                     $this->getEntityManager(),
@@ -148,7 +87,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'common_admin_academic',
                     array(
-                        'action' => 'add'
+                        'action' => 'add',
                     )
                 );
 
@@ -168,163 +107,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         if (!($academic = $this->_getAcademic()))
             return new ViewModel();
 
-        $form = new EditForm(
-            $this->getCache(), $this->getEntityManager(), $this->getCurrentAcademicYear(), $academic
-        );
+        $form = $this->getForm('common_academic_edit', array('academic' => $academic));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $roles = array();
-                $roles[] = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student');
-
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $studentDomain = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('student_email_domain');
-
-                $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . $studentDomain;
-
-                $birthday = DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00');
-                if(!$birthday)
-                    $birthday = null;
-                $academic->setFirstName($formData['first_name'])
-                    ->setLastName($formData['last_name'])
-                    ->setEmail($formData['email'])
-                    ->setSex($formData['sex'])
-                    ->setPhoneNumber($formData['phone_number'])
-                    ->setUniversityIdentification(
-                        ('' == $formData['university_identification'] ? null : $formData['university_identification'])
-                    )
-                    ->setBirthday($birthday)
-                    ->setUniversityEmail($universityEmail)
-                    ->setRoles($roles);
-
-                if ('' != $formData['organization_status']) {
-                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
-                        $academic->getOrganizationStatus($this->getCurrentAcademicYear())
-                            ->setStatus($formData['organization_status']);
-                    } else {
-                        $academic->addOrganizationStatus(
-                            new OrganizationStatus(
-                                $academic,
-                                $formData['organization_status'],
-                                $this->getCurrentAcademicYear()
-                            )
-                        );
-                    }
-                } else {
-                    if (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
-                        $status = $academic->getOrganizationStatus($this->getCurrentAcademicYear());
-
-                        $academic->removeOrganizationStatus($status);
-                        $this->getEntityManager()->remove($status);
-                    }
-                }
-
-                if ('' != $formData['barcode']) {
-                    if (null !== $academic->getBarcode()) {
-                        if ($academic->getBarcode()->getBarcode() != $formData['barcode']) {
-                            $this->getEntityManager()->remove($academic->getBarcode());
-                            $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
-                        }
-                    } else {
-                        $this->getEntityManager()->persist(new Barcode($academic, $formData['barcode']));
-                    }
-                }
-
-                if ('' != $formData['university_status']) {
-                    if (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $academic->getUniversityStatus($this->getCurrentAcademicYear())
-                            ->setStatus($formData['university_status']);
-                    } else {
-                        $academic->addUniversityStatus(
-                            new UniversityStatus(
-                                $academic,
-                                $formData['university_status'],
-                                $this->getCurrentAcademicYear()
-                            )
-                        );
-                    }
-                } else {
-                    if ($status = $academic->getUniversityStatus($this->getCurrentAcademicYear())) {
-                        $academic->removeUniversityStatus($status);
-                        $this->getEntityManager()->remove($status);
-                    }
-                }
-
-                if ('other' != $formData['primary_address_address_city'] && '' != $formData['primary_address_address_city']) {
-                    $primaryCity = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Address\City')
-                        ->findOneById($formData['primary_address_address_city']);
-                    $primaryPostal = $primaryCity->getPostal();
-                    $primaryCity = $primaryCity->getName();
-                    $primaryStreet = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Address\Street')
-                        ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']])
-                        ->getName();
-                } else {
-                    $primaryCity = $formData['primary_address_address_city_other'];
-                    $primaryStreet = $formData['primary_address_address_street_other'];
-                    $primaryPostal = $formData['primary_address_address_postal_other'];
-                }
-
-                if (null !== $academic->getPrimaryAddress()) {
-                    $academic->getPrimaryAddress()
-                        ->setStreet($primaryStreet)
-                        ->setNumber($formData['primary_address_address_number'])
-                        ->setMailbox($formData['primary_address_address_mailbox'])
-                        ->setPostal($primaryPostal)
-                        ->setCity($primaryCity)
-                        ->setCountry('BE');
-                } else {
-                    $academic->setPrimaryAddress(
-                        new Address(
-                            $primaryStreet,
-                            $formData['primary_address_address_number'],
-                            $formData['primary_address_address_mailbox'],
-                            $primaryPostal,
-                            $primaryCity,
-                            'BE'
-                        )
-                    );
-                }
-
-                if (null !== $academic->getSecondaryAddress()) {
-                    $academic->getSecondaryAddress()
-                        ->setStreet($formData['secondary_address_address_street'])
-                        ->setNumber($formData['secondary_address_address_number'])
-                        ->setMailbox($formData['secondary_address_address_mailbox'])
-                        ->setPostal($formData['secondary_address_address_postal'])
-                        ->setCity($formData['secondary_address_address_city'])
-                        ->setCountry($formData['secondary_address_address_country']);
-                } else {
-                    $academic->setSecondaryAddress(
-                        new Address(
-                            $formData['secondary_address_address_street'],
-                            $formData['secondary_address_address_number'],
-                            $formData['primary_address_address_mailbox'],
-                            $formData['secondary_address_address_postal'],
-                            $formData['secondary_address_address_city'],
-                            $formData['secondary_address_address_country']
-                        )
-                    );
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -421,7 +209,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $item->id = $academic->getId();
             $item->name = $academic->getFullName();
             $item->universityIdentification = $identification;
-            $item->value = $academic->getFullName() . ' - ' . $identification;
+            $item->value = $academic->getFullName().' - '.$identification;
             $result[] = $item;
         }
 
@@ -502,7 +290,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -522,7 +310,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

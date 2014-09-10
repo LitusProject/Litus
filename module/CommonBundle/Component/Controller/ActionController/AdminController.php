@@ -18,10 +18,10 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Component\Util\NamedPriorityQueue,
-    Zend\Mvc\MvcEvent,
-    Zend\Validator\AbstractValidator;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Component\Util\NamedPriorityQueue;
+use Zend\Mvc\MvcEvent;
+use Zend\Validator\AbstractValidator;
 
 /**
  * We extend the CommonBundle controller.
@@ -44,7 +44,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $result->language = $this->getLanguage();
         $result->now = array(
             'iso8601' => date('c', time()),
-            'display' => date('l, F j Y, H:i', time())
+            'display' => date('l, F j Y, H:i', time()),
         );
 
         if ($this->hasAccess()->toResourceAction('cudi_admin_stock_period', 'new')) {
@@ -126,18 +126,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'controller'     => 'common_auth',
 
             'auth_route'     => 'common_admin_auth',
-            'redirect_route' => 'common_admin_index'
+            'redirect_route' => 'common_admin_index',
         );
     }
 
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = true)
+    public function findCurrentAcademicYear()
     {
-        return parent::getCurrentAcademicYear($organization);
+        return $this->getCurrentAcademicYear(true);
     }
 
     private function _addToMenu($controller, $settings, &$menu)
@@ -190,7 +185,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
             natsort($submenu['subtitle']);
             $lastSubtitle = array_pop($submenu['subtitle']);
-            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']) . ' & ' . $lastSubtitle;
+            $newSubmenu['subtitle'] = implode(', ', $submenu['subtitle']).' & '.$lastSubtitle;
 
             $active = false;
             $newSubmenuItems = new NamedPriorityQueue();

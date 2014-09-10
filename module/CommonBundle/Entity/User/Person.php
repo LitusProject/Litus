@@ -136,12 +136,12 @@ abstract class Person implements RoleAware
     private $canLogin;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\Organization", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\Organization", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $organizationStatuses;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"time" = "ASC"})
      */
     private $barcodes;
@@ -282,6 +282,13 @@ abstract class Person implements RoleAware
         return $this->_flattenRolesInheritance(
             $this->getRoles()
         );
+    }
+
+    public function getSystemRoles()
+    {
+        return array_filter($this->getFlattenedRoles(), function (Role $role) {
+            return $role->getSystem();
+        });
     }
 
     /**
@@ -451,6 +458,22 @@ abstract class Person implements RoleAware
     public function getBarcode()
     {
         return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
+    }
+
+    /**
+     * @param  Barcode $code
+     * @return self
+     */
+    public function addBarcode(Barcode $code)
+    {
+        foreach ($this->barcodes as $barcode) {
+            if ($code->getBarcode() === $barcode->getBarcode())
+                return $this;
+        }
+
+        $this->barcodes->add($code);
+
+        return $this;
     }
 
     /**

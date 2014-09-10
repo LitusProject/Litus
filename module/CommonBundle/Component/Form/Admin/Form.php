@@ -41,16 +41,4 @@ abstract class Form extends \CommonBundle\Component\Form\Form
             new Csrf('csrf')
         );
     }
-
-    /**
-     * Get the current academic year.
-     *
-     * Defaults to $organization is true, contrary to the superclass.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = true)
-    {
-        return parent::getCurrentAcademicYear($organization);
-    }
 }

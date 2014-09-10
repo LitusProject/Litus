@@ -18,13 +18,6 @@
 
 namespace CommonBundle\Form\Account;
 
-use Doctrine\ORM\EntityManager,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Entity\Organization\MetaData,
-    Zend\Cache\Storage\StorageInterface as CacheStorage;
-
 /**
  * Edit Registration
  *
@@ -32,42 +25,4 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends \SecretaryBundle\Form\Registration\Edit
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param Academic        $academic                The academic
-     * @param AcademicYear    $academicYear            The academic year
-     * @param MetaData        $metaData                The organization metadata
-     * @param CacheStorage    $cache                   The cache instance
-     * @param EntityManager   $entityManager           The EntityManager instance
-     * @param string          $identification          The university identification
-     * @param boolean         $enableOtherOrganization Enable the "other organization" option
-     * @param null|string|int $name                    Optional name for the element
-     */
-    public function __construct(Academic $academic, AcademicYear $academicYear, MetaData $metaData = null, CacheStorage $cache, EntityManager $entityManager, $identification, $enableOtherOrganization = false, $name = null)
-    {
-        parent::__construct($academic, $academicYear, $metaData, $cache, $entityManager, $identification, $enableOtherOrganization, $name);
-
-        if (
-            null !== $academic->getOrganizationStatus($academicYear)
-            && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
-        ) {
-            $this->get('organization_info')
-                ->get('become_member')
-                ->setValue(false)
-                ->setAttribute('disabled', 'disabled');
-        }
-
-        $this->remove('register');
-
-        $field = new Submit('register');
-        $field->setValue('Save')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-
-        $this->populateFromAcademic($academic, $academicYear, $metaData);
-    }
 }

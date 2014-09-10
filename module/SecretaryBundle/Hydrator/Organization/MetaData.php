@@ -39,7 +39,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             'organization_info' => $this->stdExtract($object, self::$std_keys),
         );
 
-        $data['organization_info']['receive_irreeel_at_cud'] = $object->receiveIrreeelAtCudi();
+        $data['organization_info']['receive_irreeel_at_cudi'] = $object->receiveIrreeelAtCudi();
         $data['organization_info']['become_member'] = $object->becomeMember();
         $data['organization_info']['bakske_by_mail'] = $object->bakskeByMail();
 
