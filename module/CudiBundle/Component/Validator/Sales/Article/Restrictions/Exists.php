@@ -77,6 +77,7 @@ class Exists extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+        $restriction = null;
         if ('amount' == $value) {
             $restriction = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Amount')
