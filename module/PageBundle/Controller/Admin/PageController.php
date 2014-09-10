@@ -20,6 +20,7 @@ namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Node\Page,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
 /**

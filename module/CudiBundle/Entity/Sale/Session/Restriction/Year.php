@@ -109,7 +109,6 @@ class Year extends Restriction
         $years = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
             ->getYearsByPerson($person);
 
-        $yearFound = false;
         foreach ($years as $year) {
             if ($year >= $this->startValue && $year <= $this->endValue)
                 return true;

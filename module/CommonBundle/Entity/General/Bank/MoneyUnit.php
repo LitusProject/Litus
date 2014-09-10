@@ -49,7 +49,7 @@ class MoneyUnit
      */
     public function __construct($unit)
     {
-        $this->unit = (int) $unit * 100;
+        $this->unit = (int) ($unit * 100);
     }
 
     /**

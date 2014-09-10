@@ -88,6 +88,8 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     $formData['sector']
                 );
 
+                $job->approve();
+
                 $this->getEntityManager()->persist($job);
                 $this->getEntityManager()->flush();
 
