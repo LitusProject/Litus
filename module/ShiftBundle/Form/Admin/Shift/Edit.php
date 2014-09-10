@@ -53,7 +53,7 @@ class Edit extends Add
                 ->add(array(
                     'type' => 'hidden',
                     'name' => 'end_date',
-                ))
+                ));
         }
 
         $this->remove('submit')

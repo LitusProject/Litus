@@ -61,7 +61,7 @@ class Shift extends CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $object = new ShiftEntity(
                 $this->getPerson(),
-                $this->getCurrentAcademicYear(true),
+                $this->getCurrentAcademicYear(true)
             );
         }
 

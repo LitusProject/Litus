@@ -41,7 +41,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     public function indexAction()
     {
         $eventSearchForm = $this->getForm('shift_shift_search_event', array('language' => $this->getLanguage()));
-        $unitSearchForm = $this->getForm('shift_shift_search_unit')
+        $unitSearchForm = $this->getForm('shift_shift_search_unit');
         $dateSearchForm = $this->getForm('shift_shift_search_date');
 
         if (!$this->getAuthentication()->getPersonObject()) {
