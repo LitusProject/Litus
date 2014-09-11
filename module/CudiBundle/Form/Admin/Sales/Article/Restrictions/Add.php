@@ -104,12 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function _getStudies()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        $academicYear = AcademicYear::getOrganizationYear($this->_entityManager);
 
         $studies = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
