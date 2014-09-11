@@ -35,7 +35,13 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.mail');
 
-        $form = new MailForm($this->getEntityManager());
+        $results = array();
+
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findAll();
+
+        $form = new MailForm($this->getEntityManager(), $groups);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -45,19 +51,56 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $formData = $form->getFormData($formData);
 
                 $people = array();
+                $enrollments = array();
+                $groupIds = $formData['groups'];
 
                 foreach ($formData['to'] as $to) {
+
                     $academicYear = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear')
                         ->findOneById($to);
 
-                    $people = array_merge(
-                        $people,
-                        $this->getEntityManager()
-                            ->getRepository('SecretaryBundle\Entity\Promotion')
-                            ->findAllByAcademicYear($academicYear)
-                    );
+                    if ($groupIds) {
+                        foreach ($groupIds as $groupId) {
+                            $group = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\Group')
+                                ->findOneById($groupId);
+
+                            $studies = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                                ->findAllByGroupAndAcademicYear($group, $academicYear);
+
+                            foreach ($studies as $study) {
+                                if($study->getStudy()->getPhase() == 2){
+                                    $children = $study->getStudy()->getAllChildren();
+
+                                    foreach ($children as $child) {
+                                        $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                            ->findAllByStudyAndAcademicYear($child, $academicYear)
+                                        );
+                                    }
+
+                                    $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                        ->findAllByStudyAndAcademicYear($study->getStudy(), $academicYear)
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        $people = array_merge(
+                            $people,
+                            $this->getEntityManager()
+                                ->getRepository('SecretaryBundle\Entity\Promotion')
+                                ->findAllByAcademicYear($academicYear)
+                        );
+                    }
                 }
+
+                foreach($enrollments as $enrollment)
+                        array_push($people, $enrollment->getAcademic());
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -94,9 +137,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 );
 
                 $this->redirect()->toRoute(
-                    'secretary_admin_promotion',
+                    'mail_admin_promotion',
                     array(
-                        'action' => 'manage'
+                        'action' => 'send'
                     )
                 );
 
