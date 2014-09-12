@@ -42,11 +42,16 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      * @param EntityManager   $entityManager The EntityManager instance
      * @param null|string|int $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $groups, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+
+        $groupNames = array();
+        foreach($groups as $group)
+            if(strpos($group->getName(), "Master") === 0)
+                $groupNames[$group->getId()] = $group->getName();
 
         $field = new Select('to');
         $field->setLabel('To')
@@ -54,6 +59,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('options', $this->_createPromotionsArray())
             ->setRequired();
         $this->add($field);
+
+        if (0 != count($groupNames)) {
+            $field = new Select('groups');
+            $field->setLabel('Groups')
+                ->setAttribute('multiple', true)
+                ->setAttribute('options', $groupNames);
+            $this->add($field);
+        }
 
         $field = new Text('subject');
         $field->setLabel('Subject')
