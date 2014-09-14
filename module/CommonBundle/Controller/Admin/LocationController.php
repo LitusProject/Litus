@@ -18,10 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Form\Admin\Location\Add as AddForm,
-    CommonBundle\Form\Admin\Location\Edit as EditForm,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\Location,
+use CommonBundle\Entity\General\Location,
     Zend\Http\Client,
     Zend\View\Model\ViewModel;
 
@@ -55,30 +52,15 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = $this->getForm('common_location_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $location = new Location(
-                    $formData['name'],
-                    new Address(
-                        $formData['address_street'],
-                        $formData['address_number'],
-                        $formData['address_mailbox'],
-                        $formData['address_postal'],
-                        $formData['address_city'],
-                        $formData['address_country']
-                    ),
-                    $formData['latitude'],
-                    $formData['longitude']
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-
-                $this->getEntityManager()->persist($location);
 
                 $this->getEntityManager()->flush();
 
@@ -113,29 +95,12 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         if (!($location = $this->_getLocation()))
             return new ViewModel();
 
-        $form = new EditForm($location);
+        $form = $this->getForm('common_location_edit', $location);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $location->setName($formData['name'])
-                    ->setAddress(
-                        new Address(
-                            $formData['address_street'],
-                            $formData['address_number'],
-                            $formData['address_mailbox'],
-                            $formData['address_postal'],
-                            $formData['address_city'],
-                            $formData['address_country']
-                        )
-                    )
-                    ->setLatitude($formData['latitude'])
-                    ->setLongitude($formData['longitude']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

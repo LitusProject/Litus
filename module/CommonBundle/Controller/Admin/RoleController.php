@@ -19,8 +19,6 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Form\Admin\Role\Add as AddForm,
-    CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\User\Person,
@@ -54,39 +52,15 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('common_role_add');
 
-        $roleCreated = false;
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $parents = array();
-                if (isset($formData['parents'])) {
-                    foreach ($formData['parents'] as $parent) {
-                        $parents[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($parent);
-                    }
-                }
-
-                $actions = array();
-                if (isset($formData['actions'])) {
-                    foreach ($formData['actions'] as $action) {
-                        $actions[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Action')
-                            ->findOneById($action);
-                    }
-                }
-
-                $role = new Role(
-                    $formData['name'], false, $parents, $actions
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-
-                $this->getEntityManager()->persist($role);
 
                 $this->getEntityManager()->flush();
 
@@ -111,7 +85,6 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
-                'roleCreated' => $roleCreated,
             )
         );
     }
@@ -119,7 +92,6 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     public function membersAction()
     {
         if(!($role = $this->_getRole()))
-
             return new ViewModel();
 
         $members = $this->getEntityManager()
@@ -139,35 +111,12 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         if (!($role = $this->_getRole()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $role);
+        $form = $this->getForm('common_role_edit', array('role' => $role));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $parents = array();
-                if (isset($formData['parents'])) {
-                    foreach ($formData['parents'] as $parent) {
-                        $parents[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($parent);
-                    }
-                }
-                $role->setParents($parents);
-
-                $actions = array();
-                if (isset($formData['actions'])) {
-                    foreach ($formData['actions'] as $action) {
-                        $actions[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Action')
-                            ->findOneById($action);
-                    }
-                }
-                $role->setActions($actions);
-
                 $this->getEntityManager()->flush();
 
                 $this->_updateCache();

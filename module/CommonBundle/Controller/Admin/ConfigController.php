@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Form\Admin\Config\Edit as EditForm,
-    CommonBundle\Entity\General\Config,
+use CommonBundle\Entity\General\Config,
     Zend\View\Model\ViewModel;
 
 /**
@@ -65,19 +64,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         if (!($entry = $this->_getEntry()))
             return new ViewModel();
 
-        $form = new EditForm(
-            $entry
-        );
+        $form = $this->getForm('common_config_edit', array('config' => $entry));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $entry->setValue(str_replace("\r", '', $formData['value']));
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

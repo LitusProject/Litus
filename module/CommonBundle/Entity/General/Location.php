@@ -76,17 +76,9 @@ class Location
      */
     private $active;
 
-    /**
-     * @param string  $name
-     * @param Address $address
-     */
-    public function __construct($name, Address $address, $latitude, $longitude)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->address = $address;
         $this->active = true;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
     }
 
     /**

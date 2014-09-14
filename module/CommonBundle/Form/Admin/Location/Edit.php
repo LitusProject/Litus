@@ -18,84 +18,18 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Entity\General\Location,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Location
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Form\Admin\Location\Add
+class Edit extends Add
 {
-    /**
-     * @param Location        $location The location we're going to modify
-     * @param null|string|int $name     Optional name for the element
-     */
-    public function __construct(Location $location, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->remove('add');
-
-        $field = new Submit('edit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'location_edit');
-        $this->add($field);
-
-        $this->_populateFromLocation($location);
-    }
-
-    private function _populateFromLocation(Location $location)
-    {
-        $data = array(
-            'name' => $location->getName(),
-            'address_street' => $location->getAddress()->getStreet(),
-            'address_number' => $location->getAddress()->getNumber(),
-            'address_mailbox' => $location->getAddress()->getMailbox(),
-            'address_postal' => $location->getAddress()->getPostal(),
-            'address_city' => $location->getAddress()->getCity(),
-            'address_country' => $location->getAddress()->getCountryCode(),
-            'latitude' => $location->getLatitude(),
-            'longitude' => $location->getLongitude(),
-        );
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'latitude',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'longitude',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->remove('add')
+            ->addSubmit('Save', 'location_edit', 'edit');
     }
 }

@@ -18,86 +18,26 @@
 
 namespace CommonBundle\Form\Admin\Role;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Entity\Acl\Role,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Role
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Form\Admin\Role\Add
+class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Role            $role          The role we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Role $role, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->role) {
+            throw new LogicException('Cannot edit a null role');
+        }
+
+        parent::init();
 
         $this->remove('name');
 
-        $field = new Select('parents');
-        $field->setLabel('Parents')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->createParentsArray($role->getName()));
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'role_edit');
-        $this->add($field);
-
-        $this->setData(
-            array(
-                'name' => $role->getName(),
-                'parents' => $this->_createParentsPopulationArray($role->getParents()),
-                'actions' => $this->_createActionsPopulationArray($role->getActions())
-            )
-        );
-    }
-
-    /**
-     * Returns an array that is in the right format to populate the parents field.
-     *
-     * @param  array $parents The role's parents
-     * @return array
-     */
-    private function _createParentsPopulationArray(array $parents)
-    {
-        $parentsArray = array();
-        foreach ($parents as $parent) {
-            $parentsArray[] = $parent->getName();
-        }
-
-        return $parentsArray;
-    }
-
-    /**
-     * Returns an array that is in the right format to populate the actions field.
-     *
-     * @param  array $actions The role's actions
-     * @return array
-     */
-    private function _createActionsPopulationArray(array $actions)
-    {
-        $actionsArray = array();
-        foreach ($actions as $action) {
-            $actionsArray[] = $action->getId();
-        }
-
-        return $actionsArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $inputFilter->remove('name');
-
-        return $inputFilter;
+        $this->remove('submit')
+            ->addSubmit('Save', 'role_edit');
     }
 }

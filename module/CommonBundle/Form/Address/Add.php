@@ -33,11 +33,16 @@ class Add extends \CommonBundle\Component\Form\Fieldset
     {
         parent::init();
 
+        $this->addClass('address');
+
         $this->add(array(
-            'type'    => 'text',
-            'name'    => 'street',
-            'label'   => 'Street',
-            'options' => array(
+            'type'       => 'text',
+            'name'       => 'street',
+            'label'      => 'Street',
+            'attributes' => array(
+                'class' => 'street',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -47,10 +52,13 @@ class Add extends \CommonBundle\Component\Form\Fieldset
         ));
 
         $this->add(array(
-            'type'    => 'text',
-            'name'    => 'number',
-            'label'   => 'Number',
-            'options' => array(
+            'type'       => 'text',
+            'name'       => 'number',
+            'label'      => 'Number',
+            'attributes' => array(
+                'class' => 'number',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -69,10 +77,13 @@ class Add extends \CommonBundle\Component\Form\Fieldset
         ));
 
         $this->add(array(
-            'type'    => 'text',
-            'name'    => 'mailbox',
-            'label'   => 'Mailbox',
-            'options' => array(
+            'type'       => 'text',
+            'name'       => 'mailbox',
+            'label'      => 'Mailbox',
+            'attributes' => array(
+                'class' => 'mailbox',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -82,10 +93,13 @@ class Add extends \CommonBundle\Component\Form\Fieldset
         ));
 
         $this->add(array(
-            'type'    => 'text',
-            'name'    => 'postal',
-            'label'   => 'Postal Code',
-            'options' => array(
+            'type'       => 'text',
+            'name'       => 'postal',
+            'label'      => 'Postal Code',
+            'attributes' => array(
+                'class' => 'postal',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -103,7 +117,10 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'type'       => 'text',
             'name'       => 'city',
             'label'      => 'City',
-            'options' => array(
+            'attributes' => array(
+                'class' => 'city',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -117,6 +134,7 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'name'       => 'country',
             'label'      => 'Country',
             'attributes' => array(
+                'class'   => 'country',
                 'options' => $this->getCountries(),
             ),
             'value'      => 'BE',

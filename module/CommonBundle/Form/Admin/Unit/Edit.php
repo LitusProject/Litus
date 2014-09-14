@@ -18,10 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Entity\General\Organization\Unit,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Unit
@@ -30,55 +27,15 @@ use CommonBundle\Component\OldForm\Admin\Element\Select,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Unit            $unit          The unit we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Unit $unit, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        $this->remove('submit');
-
-        $field = new Select('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('options', $this->createUnitsArray($unit->getId()));
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'unit_edit');
-        $this->add($field);
-
-        $this->_populateFromUnit($unit);
-    }
-
-    private function _populateFromUnit(Unit $unit)
-    {
-        $data = array(
-            'name' => $unit->getName(),
-            'mail' => $unit->getMail(),
-            'organization' => $unit->getOrganization()->getId(),
-            'parent' => null === $unit->getParent() ? '' : $unit->getParent()->getId(),
-            'roles' => $this->_createRolesPopulationArray($unit->getRoles(false)),
-            'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles(false)),
-            'displayed' => $unit->getDisplayed()
-        );
-
-        $this->setData($data);
-    }
-
-    private function _createRolesPopulationArray(array $roles)
-    {
-        $rolesArray = array();
-        foreach ($roles as $role) {
-            if ($role->getSystem())
-                continue;
-
-            $rolesArray[] = $role->getName();
+        if (null === $this->unit) {
+            throw new LogicException('Cannot edit a null unit');
         }
 
-        return $rolesArray;
+        parent::init();
+
+        $this->remove('submit')
+            ->addSubmit('Save', 'unit_edit');
     }
 }

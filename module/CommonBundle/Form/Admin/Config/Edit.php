@@ -18,12 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Config;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Entity\General\Config,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Entity\General\Config,
+    LogicException;
 
 /**
  * Edit Configuration
@@ -31,65 +27,63 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends \CommonBundle\Component\OldForm\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'CommonBundle\Hydrator\General\Config';
+
     /**
-     * @param Config $entry The configuration entry we are editing
-     * @param mixed  $opts  The form's options
+     * @var Config|null The config to edit.
      */
-    public function __construct(Config $entry, $opts = null)
+    private $config;
+
+    public function init()
     {
-        parent::__construct($opts);
-
-        $field = new Text('key');
-        $field->setLabel('Key')
-            ->setAttribute('disabled', 'disabled');
-        $this->add($field);
-
-        if (strlen($entry->getValue()) > 40) {
-            $field = new Textarea('value');
-            $field->setLabel('Value')
-                ->setAttribute('id', 'config_value')
-                ->setRequired();
-            $this->add($field);
-        } else {
-            $field = new Text('value');
-            $field->setLabel('Value')
-                ->setAttribute('id', 'config_value')
-                ->setRequired();
-            $this->add($field);
+        if (null === $this->config) {
+            throw new LogicException('Cannot edit a null config');
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'config_edit');
-        $this->add($field);
+        parent::init();
 
-        $this->setData(
-            array(
-                'key' => $entry->getKey(),
-                'value' => $entry->getValue()
-            )
-        );
-    }
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'key',
+            'label'      => 'Key',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'value',
-                    'required' => true,
+        $this->add(array(
+            'type'       => strlen($this->config->getValue()) > 40 ? 'textarea' : 'text',
+            'name'       => 'value',
+            'label'      => 'Value',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'config_value',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
+                        array('name' => 'stripcarriagereturn'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'config_edit');
+
+        $this->bind($this->config);
+    }
+
+    /**
+     * @param Config $config The config to edit
+     * @return self
+     */
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+
+        return $this;
     }
 }

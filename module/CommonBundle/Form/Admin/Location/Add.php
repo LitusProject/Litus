@@ -18,85 +18,79 @@
 
 namespace CommonBundle\Form\Admin\Location;
 
-use CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
-
 /**
  * Add Location
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'CommonBundle\Hydrator\General\Location';
 
-    /**
-     * @var \CommonBundle\Form\Admin\Address\Add
-     */
-    private $_addressForm;
-
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $this->_addressForm = new AddressForm('', 'address');
-        $this->_addressForm->setLabel('Address');
-        $this->add($this->_addressForm);
-
-        $geographical = new Collection('greographical');
-        $geographical->setLabel('Geographical');
-        $this->add($geographical);
-
-        $field = new Text('latitude');
-        $field->setLabel('Latitude')
-            ->setRequired();
-        $geographical->add($field);
-
-        $field = new Text('longitude');
-        $field->setLabel('Longitude')
-            ->setRequired();
-        $geographical->add($field);
-
-        $field = new Submit('add');
-        $field->setValue('Add')
-            ->setAttribute('class', 'location_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-
-        $inputs = $this->_addressForm->getInputs();
-        foreach($inputs as $input)
-            $inputFilter->add($input);
-
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                    'validators' => array(),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'common_address_add',
+            'name'       => 'address',
+            'label'      => 'Address',
+        ));
+
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'geographical',
+            'label'    => 'Geographical',
+            'elements' => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'latitude',
+                    'label'      => 'Latitude',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class' => 'latitude',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'longitude',
+                    'label'      => 'Longitude',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class' => 'longitude',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'location_add', 'add');
     }
 }

@@ -21,9 +21,6 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap,
-    CommonBundle\Form\Admin\Unit\Add as AddForm,
-    CommonBundle\Form\Admin\Unit\Edit as EditForm,
-    CommonBundle\Form\Admin\Unit\Member as MemberForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -56,61 +53,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('common_unit_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if (isset($formData['organization'])) {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
-                } else {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOne();
-                }
-
-                $parent = null;
-                if ('' != $formData['parent']) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['parent']);
-                }
-
-                $roles = array();
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $coordinatorRoles = array();
-                if (isset($formData['coordinatorRoles'])) {
-                    foreach ($formData['coordinatorRoles'] as $coordinatorRole) {
-                        $coordinatorRoles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($coordinatorRole);
-                    }
-                }
-
-                $unit = new Unit(
-                    $formData['name'],
-                    $formData['mail'],
-                    $organization,
-                    $roles,
-                    $coordinatorRoles,
-                    $formData['displayed'],
-                    $parent
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-
-                $this->getEntityManager()->persist($unit);
 
                 $this->getEntityManager()->flush();
 
@@ -143,14 +94,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
             return new ViewModel();
 
-        $form = new MemberForm($this->getEntityManager());
+        $form = $this->getForm('common_unit_member');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if (!isset($formData['person_id']) || $formData['person_id'] == '') {
                     $academic = $this->getEntityManager()
@@ -219,58 +169,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         if (!($unit = $this->_getUnit()))
             return new ViewModel();
 
-        $form = new EditForm($this->getEntityManager(), $unit);
+        $form = $this->getForm('common_unit_edit', array('unit' => $unit));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if (isset($formData['organization'])) {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
-                } else {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOne();
-                }
-
-                $roles = array();
-                if (isset($formData['roles'])) {
-                    foreach ($formData['roles'] as $role) {
-                        $roles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($role);
-                    }
-                }
-
-                $parent = null;
-                if ('' != $formData['parent']) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                        ->findOneById($formData['parent']);
-                }
-
-                $coordinatorRoles = array();
-                if (isset($formData['coordinatorRoles'])) {
-                    foreach ($formData['coordinatorRoles'] as $coordinatorRole) {
-                        $coordinatorRoles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($coordinatorRole);
-                    }
-                }
-
-                $unit->setName($formData['name'])
-                    ->setMail($formData['mail'])
-                    ->setOrganization($organization)
-                    ->setParent($parent)
-                    ->setRoles($roles)
-                    ->setCoordinatorRoles($coordinatorRoles)
-                    ->setDisplayed($formData['displayed']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
