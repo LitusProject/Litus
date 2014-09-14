@@ -26,7 +26,7 @@ use CommonBundle\Component\Validator\Academic as AcademicValidator;
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Member extends \CommonBundle\Component\OldForm\Admin\Form
+class Member extends \CommonBundle\Component\Form\Admin\Form
 {
     public function init()
     {

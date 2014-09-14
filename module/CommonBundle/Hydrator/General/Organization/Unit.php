@@ -4,7 +4,7 @@ namespace CommonBundle\Hydrator\General\Organization;
 
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 
-class Unit extends CommonBundle\Component\Hydrator\Hydrator
+class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array('name', 'mail', 'displayed');
 
