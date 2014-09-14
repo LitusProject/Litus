@@ -245,17 +245,17 @@ VTK Cudi
         'key'         => 'cudi.sell_prices',
         'value'       => serialize(
             array(
-                'binding_glued'     => 83,
-                'binding_stapled'   => 7,
-                'binding_none'      => 20,
-                'recto_bw'          => 2,
-                'recto_verso_bw'    => 2,
-                'recto_color'       => 7,
-                'recto_verso_color' => 7,
+                'binding_glued'     => 83000,
+                'binding_stapled'   => 7000,
+                'binding_none'      => 20000,
+                'recto_bw'          => 2000,
+                'recto_verso_bw'    => 2000,
+                'recto_color'       => 7000,
+                'recto_verso_color' => 7000,
                 'hardcover'         => 0,
             )
         ),
-        'description' => 'The purchase prices of an internal article (multiplied by 100)',
+        'description' => 'The purchase prices of an internal article (multiplied by 100000)',
     ),
     array(
         'key'         => 'cudi.front_address_name',
