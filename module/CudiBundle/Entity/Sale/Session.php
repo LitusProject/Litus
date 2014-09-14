@@ -305,12 +305,6 @@ class Session
      */
     public function getAcademicYear()
     {
-        $start = AcademicYear::getStartOfAcademicYear($this->getOpenDate());
-
-        $start->setTime(0, 0);
-
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($start);
+        return AcademicYear::getUniversityYear($entityManager, $this->getOpenDate());
     }
 }

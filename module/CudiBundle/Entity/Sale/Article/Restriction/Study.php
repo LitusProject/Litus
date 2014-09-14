@@ -101,12 +101,7 @@ class Study extends Restriction
      */
     public function canBook(Person $person, EntityManager $entityManager)
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        $academicYear = AcademicYear::getUniversityYear($entityManager);
 
         $studies = $entityManager
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')

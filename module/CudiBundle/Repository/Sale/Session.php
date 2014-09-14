@@ -148,9 +148,7 @@ class Session extends EntityRepository
     public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByUniversityStart(AcademicYearUtil::getStartOfAcademicYear($startDate));
+            $academicYear = AcademicYearUtil::getUniversityYear($entityManager, $startDate);
 
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
@@ -271,9 +269,7 @@ class Session extends EntityRepository
     public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByUniversityStart(AcademicYearUtil::getStartOfAcademicYear($startDate));
+            $academicYear = AcademicYearUtil::getUniversityYear($entityManager, $startDate);
 
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
