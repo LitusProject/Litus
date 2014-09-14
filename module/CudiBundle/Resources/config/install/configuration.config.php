@@ -255,7 +255,7 @@ VTK Cudi
                 'hardcover'         => 0,
             )
         ),
-        'description' => 'The purchase prices of an internal article (multiplied by 100)',
+        'description' => 'The purchase prices of an internal article (multiplied by 100000)',
     ),
     array(
         'key'         => 'cudi.front_address_name',
