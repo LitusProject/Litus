@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
                 'sell_price' => number_format($article->getSellPrice()/100, 2),
-                'barcode' => $article->getBarcode(),
+                'barcode' => str_pad($article->getBarcode(), 12, '0', STR_PAD_LEFT),
                 'supplier' => $article->getSupplier()->getId(),
                 'bookable' => $article->isBookable(),
                 'unbookable' => $article->isUnbookable(),
