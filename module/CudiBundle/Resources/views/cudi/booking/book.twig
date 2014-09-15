@@ -47,9 +47,10 @@
                             <tr>
                                 <th>{{ translate('Title') }}</th>
                                 <th class="hidden-xs">{{ translate('Authors') }}</th>
-                                <th>{{ translate('Price / Piece') }}</th>
-                                <th class="hidden-xs">{{ translate('Remarks') }}</th>
-                                <th></th>
+                                <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
+                                <th style="min-width: 100px"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -318,6 +319,7 @@
                                             $('<td>').html(this.title),
                                             $('<td>', {'class': 'hidden-xs'}).html(this.authors),
                                             price = $('<td>'),
+                                            comments = $('<td>', {'class': 'hidden-xs'}),
                                             comments = $('<td>', {'class': 'hidden-xs'}),
                                             book = $('<td>', {'style': 'text-align: center;'})
                                         )
