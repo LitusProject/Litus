@@ -180,8 +180,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getCurrentAcademicYear();
         $now = new DateTime();
-        if ($now < $academicYear->getUniversityStartDate() && $now > $academicYear->getStartDate())
-            $searchResults = array();
 
         if (!isset($resultString))
             $resultString = 'Results';
