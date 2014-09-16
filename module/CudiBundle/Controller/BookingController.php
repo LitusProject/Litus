@@ -235,7 +235,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             continue;
 
                         foreach ($saleArticle->getRestrictions() as $restriction) {
-                            if ($restriction->getRawType() == 'amount') {
+                            if ($restriction->getType() == 'amount') {
                                 $amount = sizeof(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
