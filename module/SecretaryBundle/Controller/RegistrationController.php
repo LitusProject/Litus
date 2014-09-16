@@ -271,12 +271,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['become_member']
                         );
 
-<<<<<<< HEAD
-                        $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
-=======
                         if ($selectedOrganization)
-                            $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
->>>>>>> master
+                            $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         $metaData = new MetaData(
                             $academic,
