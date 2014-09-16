@@ -391,6 +391,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'form' => $form,
+                'metaData' => $metaData,
+                'membershipArticles' => $membershipArticles,
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
                 'membershipArticles' => $membershipArticles,
