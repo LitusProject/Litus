@@ -88,14 +88,24 @@
             toggleMember();
             cityChange();
 
-            $('#register_form #organization').closest('.form-group').hide();
-            if ($('#register_form #organization').val() == 0) {
+            {% if metaData.becomeMember() %}
+                $('#register_form #organization').closest('.form-group').hide();
                 $('#register_form #become_member').closest('.form-group').hide();
                 $('#register_form #become_member').prop('checked', false);
-            } else {
+            {% else %}
+                $('#register_form #organization').closest('.form-group').show();
                 $('#register_form #become_member').prop('checked', true);
                 $('#register_form #become_member').closest('.form-group').show();
-                $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
+                $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', '<span class="price">' + 0 + '</span>'));
+                $('#register_form #organization').change(function () {
+                    $('#register_form #become_member').closest('label').find('.price').html(membershipArticles[$('#register_form #organization').val()]);
+                });
+            {% endif %}
+
+            if ($('#register_form #organization').val() == 0) {
+
+            } else {
+
             }
 
             $('#university_email').wrap('<div class=\"input-group\" />');
