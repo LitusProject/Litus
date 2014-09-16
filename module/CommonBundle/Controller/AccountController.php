@@ -309,7 +309,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember()) {
+                    if ($metaData->becomeMember() && null !== $organization) {
                         $this->_bookRegistrationArticles($academic, $organization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
