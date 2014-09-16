@@ -75,27 +75,6 @@ class Member extends Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        $bookings = $entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllOpenByPerson($person);
-
-        $membershipArticle = unserialize(
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.membership_article')
-        );
-
-        $membershipBooked = false;
-        foreach ($bookings as $booking) {
-            // TODO don't use all membership articles, only the one of the right organization
-            // TODO on cancellation of membership: remove all bookings that can no longer be booked
-
-            if (in_array($booking->getSaleArticle()->getId(), $membershipArticle)) {
-                $membershipBooked = true;
-                break;
-            }
-        }
-
-        return $this->value === ($person->isMember($academicYear) || $membershipBooked);
+        return $this->value === $person->isMember($academicYear);
     }
 }
