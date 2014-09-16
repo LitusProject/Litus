@@ -88,7 +88,7 @@ class Member extends Restriction
         $organization = $person->getOrganization($academicYear);
 
         $membershipBooked = false;
-        if (isset($membershipArticle[$organization->getId()])) {
+        if (null !== $organization && isset($membershipArticle[$organization->getId()])) {
             foreach ($bookings as $booking) {
                 // TODO on cancellation of membership: remove all bookings that can no longer be booked
 
