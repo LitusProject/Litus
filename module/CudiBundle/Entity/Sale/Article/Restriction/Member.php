@@ -46,7 +46,7 @@ class Member extends Restriction
     {
         parent::__construct($article);
 
-        $this->value = $value;
+        $this->value = !!$value;
     }
 
     /**
@@ -75,6 +75,6 @@ class Member extends Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
+        return $this->value === $person->isMember($academicYear);
     }
 }
