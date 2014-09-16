@@ -22,7 +22,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Entity\Organization\MetaData;
+    SecretaryBundle\Entity\Organization\MetaData,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Registration Data form
