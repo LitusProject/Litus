@@ -89,12 +89,12 @@ class OpeningHour extends EntityRepository
        return $resultSet;
    }
 
-    public function findCommingWeekQuery()
+    public function findCommingIntervalQuery(DateInterval $interval)
     {
         $start = new DateTime();
 
         $end = clone $start;
-        $end->add(new DateInterval('P7D'));
+        $end->add($interval);
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('o')
