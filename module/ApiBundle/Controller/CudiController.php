@@ -22,6 +22,7 @@ use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\QueueItem,
+    DateInterval,
     Zend\View\Model\ViewModel;
 
 /**
@@ -284,9 +285,15 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('api.cudi_opening_hour_interval')
+        );
+
         $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findCurrentWeek();
+            ->findCommingInterval($interval);
 
         $result = array();
         foreach ($openingHours as $openingHour) {
