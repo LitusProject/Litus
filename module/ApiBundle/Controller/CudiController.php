@@ -286,7 +286,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findCurrentWeek();
+            ->findCommingWeek();
 
         $result = array();
         foreach ($openingHours as $openingHour) {
