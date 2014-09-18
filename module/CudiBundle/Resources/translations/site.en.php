@@ -71,4 +71,9 @@ return array(
     'Keep Me Updated' => 'Keep Me Updated',
     'You won\'t receive an e-mail when the catalog is updated.' => 'You won\'t receive an e-mail when the catalog is updated.',
     'Don\'t Keep Me Updated' => 'Don\'t Keep Me Updated',
+
+    'Color' => 'Color',
+    'Status' => 'Status',
+    'Booked' => 'Booked',
+    'Buyed' => 'Buyed',
 );
