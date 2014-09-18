@@ -46,7 +46,7 @@ class Member extends Restriction
     {
         parent::__construct($article);
 
-        $this->value = $value;
+        $this->value = !!$value;
     }
 
     /**
@@ -75,6 +75,30 @@ class Member extends Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        return ($this->value && $person->isMember($academicYear)) || (!$this->value && !$person->isMember($academicYear));
+        $bookings = $entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllOpenByPerson($person);
+
+        $membershipArticle = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
+        $organization = $person->getOrganization($academicYear);
+
+        $membershipBooked = false;
+        if (null !== $organization && isset($membershipArticle[$organization->getId()])) {
+            foreach ($bookings as $booking) {
+                // TODO on cancellation of membership: remove all bookings that can no longer be booked
+
+                if ($booking->getArticle()->getId() == $membershipArticle[$organization->getId()]) {
+                    $membershipBooked = true;
+                    break;
+                }
+            }
+        }
+
+        return $this->value === ($person->isMember($academicYear) || $membershipBooked);
     }
 }
