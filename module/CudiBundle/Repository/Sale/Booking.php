@@ -131,8 +131,8 @@ class Booking extends EntityRepository
                 )
             )
             ->setParameter('person', $person->getId())
-            ->setParameter('startDate', $academicYear->getUniversityStartDate())
-            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->setParameter('startDate', $academicYear->getStartDate())
+            ->setParameter('endDate', $academicYear->getEndDate())
             ->orderBy('b.bookDate', 'DESC')
             ->getQuery();
 
@@ -176,8 +176,8 @@ class Booking extends EntityRepository
                 )
             )
             ->setParameter('article', $article->getId())
-            ->setParameter('startDate', $academicYear->getUniversityStartDate())
-            ->setParameter('endDate', $academicYear->getUniversityEndDate())
+            ->setParameter('startDate', $academicYear->getStartDate())
+            ->setParameter('endDate', $academicYear->getEndDate())
             ->orderBy('b.bookDate', 'DESC')
             ->getQuery();
 
