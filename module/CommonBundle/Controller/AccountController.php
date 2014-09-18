@@ -344,7 +344,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember()) {
+                    if ($metaData->becomeMember() && null !== $organization) {
                         $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
@@ -395,6 +395,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'form' => $form,
+                'metaData' => $metaData,
+                'membershipArticles' => $membershipArticles,
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
                 'membershipArticles' => $membershipArticles,

@@ -972,9 +972,6 @@ class Booking extends EntityRepository
 
         $available = $article->getStockValue() - $period->getNbAssigned($article);
 
-        if ($available <= 0)
-            continue;
-
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllBookedByArticleAndPeriod($article, $period);

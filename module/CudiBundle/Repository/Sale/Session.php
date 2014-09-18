@@ -148,7 +148,7 @@ class Session extends EntityRepository
     public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = AcademicYearUtil::getUniversityYear($entityManager, $startDate);
+            $academicYear = AcademicYearUtil::getUniversityYear($this->_em, $startDate);
 
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
@@ -269,7 +269,7 @@ class Session extends EntityRepository
     public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = AcademicYearUtil::getUniversityYear($entityManager, $startDate);
+            $academicYear = AcademicYearUtil::getUniversityYear($this->_em, $startDate);
 
             $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
