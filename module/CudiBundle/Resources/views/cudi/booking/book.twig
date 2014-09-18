@@ -103,7 +103,7 @@
                         </tr>
 
                         {% for map in subjectArticle['articles'] %}
-                            <tr {% if map['sold'] > 0 %}class="success"{% endif %}>
+                            <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
                                 <td>{{ map['article'].getMainArticle().getTitle() }}</td>
                                 <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
                                 <td>
@@ -166,15 +166,36 @@
 
                 </table>
 
-                <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                <div>
+                    <a class="btn btn-default" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
 
-                {% if form.get('submit') %}
-                    {{ formElement(form.get('submit')) }}
-                {% endif %}
+                    {% if form.get('submit') %}
+                        {{ formElement(form.get('submit')) }}
+                    {% endif %}
+                </div>
 
             {{ form().closeTag() }}
 
             {% endautoescape %}
+
+            <table class="table" style="width:16.6666%;margin: 0 auto;">
+                <thead>
+                    <tr>
+                        <th>{{ translate("Color") }}</th>
+                        <th>{{ translate("Status") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="warning" style="width:40px">&nbsp;</td>
+                        <td>{{ translate("Booked") }}</td>
+                    </tr>
+                    <tr>
+                        <td class="success" style="width:20px">&nbsp;</td>
+                        <td>{{ translate("Buyed") }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     {% endif %}
 {% endblock %}
@@ -315,7 +336,7 @@
                                 );
                                 $(e).each(function () {
                                     tbody.append(
-                                        $('<tr>', {'class': this.sold > 0 ? 'success': ''}).append(
+                                        $('<tr>', {'class': (this.booked > 0 ? 'warning ': '') + (this.sold > 0 ? 'success': '')}).append(
                                             $('<td>').html(this.title),
                                             $('<td>', {'class': 'hidden-xs'}).html(this.authors),
                                             price = $('<td>'),
