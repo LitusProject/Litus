@@ -445,4 +445,9 @@ VTK Cudi
         'value'       => '0'
         'description' => 'Print collect ticket on sign-in instead of sign-in ticket.'
     ),
+    array(
+        'key'         => 'cudi.signing_printer',
+        'value'       => 'signin'
+        'description' => 'Printer used to print sign-in tickets.'
+    ),
 );
