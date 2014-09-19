@@ -254,6 +254,9 @@ class Article
      */
     public function setBarcode($barcode)
     {
+        if ('' == $barcode)
+            return $this;
+
         $main = null;
         $found = null;
         foreach ($this->barcodes as $object) {
