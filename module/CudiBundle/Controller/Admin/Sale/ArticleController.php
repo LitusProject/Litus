@@ -237,10 +237,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
 
-                if ('' == $formData['barcode']) {
-                    foreach ($saleArticle->getBarcodes() as $barcode) {
+                $barcodeCheck = $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_sale_article_barcode_check');
+
+                if ('' == $formData['barcode'] && !$barcodeCheck) {
+                    foreach ($saleArticle->getBarcodes() as $barcode)
                         $this->getEntityManager()->remove($barcode);
-                    }
                 } else {
                     $saleArticle->setBarcode($formData['barcode']);
                 }
