@@ -447,7 +447,7 @@ VTK Cudi
     ),
     array(
         'key'         => 'cudi.signing_printer',
-        'value'       => 'signin'
-        'description' => 'Printer used to print sign-in tickets.'
+        'value'       => 'signin',
+        'description' => 'Printer used to print sign-in tickets.',
     ),
 );
