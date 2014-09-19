@@ -442,8 +442,8 @@ VTK Cudi
     ),
     array(
         'key'         => 'cudi.print_collect_as_signin',
-        'value'       => '0'
-        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.'
+        'value'       => '0',
+        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.',
     ),
     array(
         'key'         => 'cudi.signing_printer',
