@@ -182,22 +182,20 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $articles = array();
         foreach ($commonArticles as $commonArticle) {
-            if ($commonArticle->isBookable()) {
-                $comments = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Comment\Comment')
-                    ->findAllSiteByArticle($commonArticle->getMainArticle());
+            $comments = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Comment\Comment')
+                ->findAllSiteByArticle($commonArticle->getMainArticle());
 
-                $articles[] = array(
-                    'article' => $commonArticle,
-                    'comments' => $comments,
-                    'mandatory' => false,
-                    'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
-                    'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
-                    'bookable' => $commonArticle->isBookable()
-                        && $commonArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
-                        && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
-                );
-            }
+            $articles[] = array(
+                'article' => $commonArticle,
+                'comments' => $comments,
+                'mandatory' => false,
+                'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
+                'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
+                'bookable' => $commonArticle->isBookable()
+                    && $commonArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
+                    && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
+            );
         }
 
         $result[] = array(
