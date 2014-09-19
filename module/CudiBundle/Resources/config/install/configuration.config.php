@@ -450,4 +450,9 @@ VTK Cudi
         'value'       => 'signin',
         'description' => 'Printer used to print sign-in tickets.',
     ),
+    array(
+        'key'         => 'cudi.enable_sale_article_barcode_check',
+        'value'       => '1',
+        'description' => 'Enable the barcode checks for sale articles.',
+    ),
 );

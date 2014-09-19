@@ -74,5 +74,5 @@ return array(
     'Color' => 'Kleur',
     'Status' => 'Status',
     'Booked' => 'Gereserveerd',
-    'Buyed' => 'Aangekocht',
+    'Bought' => 'Aangekocht',
 );

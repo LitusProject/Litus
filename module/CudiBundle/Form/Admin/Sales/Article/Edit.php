@@ -72,28 +72,34 @@ class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
         $inputFilter = parent::getInputFilter();
         $factory = new InputFactory();
 
-        $inputFilter->remove('barcode');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
-                            ),
+        $barcodeCheck = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_sale_article_barcode_check');
+
+        if ($barcodeCheck) {
+            $inputFilter->remove('barcode');
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'barcode',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        new UniqueBarcodeValidator($this->_entityManager, $this->_article),
-                    ),
+                        'validators' => array(
+                            array(
+                                'name' => 'barcode',
+                                'options' => array(
+                                    'adapter'     => 'Ean12',
+                                    'useChecksum' => false,
+                                ),
+                            ),
+                            new UniqueBarcodeValidator($this->_entityManager, $this->_article),
+                        ),
+                    )
                 )
-            )
-        );
+            );
+        }
 
         return $inputFilter;
     }
