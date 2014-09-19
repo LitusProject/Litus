@@ -75,5 +75,5 @@ return array(
     'Color' => 'Color',
     'Status' => 'Status',
     'Booked' => 'Booked',
-    'Buyed' => 'Buyed',
+    'Buyed' => 'Bought',
 );
