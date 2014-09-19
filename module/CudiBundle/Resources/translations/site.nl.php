@@ -70,4 +70,9 @@ return array(
     'Keep Me Updated' => 'Verwittig Me',
     'You won\'t receive an e-mail when the catalog is updated.' => 'Er wordt geen e-mail verstuurd wanneer de catalogus aangepast wordt.',
     'Don\'t Keep Me Updated' => 'Verwittig Me Niet',
+
+    'Color' => 'Kleur',
+    'Status' => 'Status',
+    'Booked' => 'Gereserveerd',
+    'Buyed' => 'Aangekocht',
 );
