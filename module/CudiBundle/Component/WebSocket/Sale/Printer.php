@@ -36,6 +36,13 @@ class Printer
         if (!($academic instanceof Academic))
             return;
 
+        $printCollect = (int) $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.print_collect_as_signin');
+        if (1 === $printCollect) {
+            return self::collectTicket($entityManager, $printer, $queueItem, $bookings);
+        }
+
         $articles = array();
         $totalPrice = 0;
         foreach ($bookings as $booking) {

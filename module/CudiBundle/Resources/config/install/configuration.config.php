@@ -440,4 +440,9 @@ VTK Cudi
         'value'       => '0',
         'description' => 'Enable bookings only for members (this will add a member restriction to all sale articles)',
     ),
+    array(
+        'key'         => 'cudi.print_collect_as_signin',
+        'value'       => '0'
+        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.'
+    ),
 );
