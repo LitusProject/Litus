@@ -237,7 +237,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
 
-                $barcodeCheck = $this->_entityManager
+                $barcodeCheck = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_sale_article_barcode_check');
 
