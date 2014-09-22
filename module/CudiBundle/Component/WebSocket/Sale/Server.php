@@ -324,7 +324,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
             Printer::signInTicket(
                 $this->_entityManager,
-                'signin',
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.signing_printer'),
                 $item,
                 $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')

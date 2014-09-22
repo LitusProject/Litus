@@ -440,4 +440,19 @@ VTK Cudi
         'value'       => '0',
         'description' => 'Enable bookings only for members (this will add a member restriction to all sale articles)',
     ),
+    array(
+        'key'         => 'cudi.print_collect_as_signin',
+        'value'       => '0',
+        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.',
+    ),
+    array(
+        'key'         => 'cudi.signing_printer',
+        'value'       => 'signin',
+        'description' => 'Printer used to print sign-in tickets.',
+    ),
+    array(
+        'key'         => 'cudi.enable_sale_article_barcode_check',
+        'value'       => '1',
+        'description' => 'Enable the barcode checks for sale articles.',
+    ),
 );

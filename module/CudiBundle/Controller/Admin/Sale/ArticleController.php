@@ -141,33 +141,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $article->setEntityManager($this->getEntityManager());
 
-        $currentAcademicYear = $this->getCurrentAcademicYear();
-        $previousAcademicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByStart(
-                new DateTime(
-                    str_replace(
-                        '{{ year }}',
-                        $currentAcademicYear->getStartDate()->format('Y') - 1,
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('start_organization_year')
-                    )
-                )
-            );
-
-        if (null !== $article->getSaleArticle($previousAcademicYear)) {
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'activate',
-                    'id' => $article->getSaleArticle($previousAcademicYear)->getId(),
-                )
-            );
-
-            return new ViewModel();
-        }
-
         $form = new AddForm($this->getEntityManager());
 
         $precalculatedSellPrice = ($article instanceof InternalArticle) ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
@@ -211,7 +184,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_article',
                     array(
-                        'action' => 'manage'
+                        'action' => 'edit',
+                        'id' => $saleArticle->getId(),
                     )
                 );
 
@@ -255,14 +229,24 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getRepository('CudiBundle\Entity\Supplier')
                     ->findOneById($formData['supplier']);
 
-                $saleArticle->setBarcode($formData['barcode'])
-                    ->setPurchasePrice($formData['purchase_price'])
+                $saleArticle->setPurchasePrice($formData['purchase_price'])
                     ->setSellPrice($formData['sell_price'])
                     ->setIsBookable(isset($formData['bookable']) && $formData['bookable'])
                     ->setIsUnbookable(isset($formData['unbookable']) && $formData['unbookable'])
                     ->setIsSellable($formData['sellable'])
                     ->setSupplier($supplier)
                     ->setCanExpire($formData['can_expire']);
+
+                $barcodeCheck = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_sale_article_barcode_check');
+
+                if ('' == $formData['barcode'] && !$barcodeCheck) {
+                    foreach ($saleArticle->getBarcodes() as $barcode)
+                        $this->getEntityManager()->remove($barcode);
+                } else {
+                    $saleArticle->setBarcode($formData['barcode']);
+                }
 
                 if ($mainArticle instanceof InternalArticle) {
                     $cachePath = $this->getEntityManager()
