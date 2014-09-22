@@ -5,6 +5,7 @@
         articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
+        barcodeLength: 12,
 
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
@@ -380,19 +381,31 @@
         settings.conclude($this.data('data').id, articles);
     }
 
+    function _barcodeEquals(length, one, two) {
+        one = '' + one;
+        two = '' + two;
+
+        length = Math.min(one.length, length);
+
+        return one.length === two.length && one.substring(0, length) === two.substring(0, length);
+    }
+
     function _gotBarcode($this, barcode) {
         var settings = $this.data('saleInterfaceSettings');
 
         var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
-            if ($(this).data('info').barcode == barcode) {
-                $(this).find('.addArticle').click();
+            var $this = $(this);
+            var length = settings.barcodeLength;
+
+            if (_barcodeEquals(length, $this.data('info').barcode, barcode)) {
+                $this.find('.addArticle').click();
                 found = true;
             }
-            var row = $(this);
-            $($(this).data('info').barcodes).each(function () {
-                if (this == barcode) {
-                    row.find('.addArticle').click();
+
+            $($this.data('info').barcodes).each(function () {
+                if (_barcodeEquals(length, this, barcode)) {
+                    $this.find('.addArticle').click();
                     found = true;
                     return false;
                 }
