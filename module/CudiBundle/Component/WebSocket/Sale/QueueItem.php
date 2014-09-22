@@ -310,6 +310,14 @@ class QueueItem
                     $registration = $this->_entityManager
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                    if (null === $registration) {
+                        $registration = new Registration(
+                            $booking->getPerson(),
+                            $this->_getCurrentAcademicYear()
+                        );
+                        $this->_entityManager->persist($registration);
+                    }
                     $registration->setPayed();
                 } catch (\Exception $e) {
                     // Suppress all errors
