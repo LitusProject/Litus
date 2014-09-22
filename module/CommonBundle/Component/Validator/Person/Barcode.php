@@ -71,12 +71,6 @@ class Barcode extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (! is_numeric($value)) {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
         if (null === $this->_person)
             return true;
 

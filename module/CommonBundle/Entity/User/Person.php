@@ -144,7 +144,7 @@ abstract class Person implements RoleAware
 
     /**
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person")
-     * @ORM\OrderBy({"time" = "ASC"})
+     * @ORM\OrderBy({"creationTime" = "ASC"})
      */
     private $barcodes;
 
