@@ -18,85 +18,38 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    LogisticsBundle\Component\Validator\LeaseValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+use CommonBundle\Component\Validator\Price as PriceValidator,
+    LogisticsBundle\Component\Validator\LeaseValidator;
 
 /**
  * The form used to add a new Lease.
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class AddLease extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param string        $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'item',
+            'label'      => 'Item',
+            'attributes' => array(
+                'autocomplete' => false,
+                'class'        => 'js-item-search',
+            ),
+        ));
 
-        $field = new Text('item');
-        $field->setLabel('Item')
-            ->setAttribute('class', $field->getAttribute('class') . ' js-item-search')
-            ->setAttribute('autocomplete', false);
-        $this->add($field);
-
-        $field = new Hidden('barcode');
-        $field->setAttribute('class', 'js-item-barcode');
-        $this->add($field);
-
-        $field = new Text('leased_amount');
-        $field->setLabel('Amount')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('leased_to');
-        $field->setLabel('Leased To')
-            ->setAttribute('autocomplete', false)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('leased_pawn');
-        $field->setLabel('Received Pawn')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('comment');
-        $field->setLabel('Comment')
-            ->setAttribute('rows', 3);
-        $this->add($field);
-
-        $field = new Submit('lease');
-        $field->setValue('Lease')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'barcode',
+            'attributes' => array(
+                'class' => 'js-item-barcode',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -109,67 +62,79 @@ class AddLease extends \CommonBundle\Component\OldForm\Bootstrap\Form
                                 'useChecksum' => false,
                             ),
                         ),
-                        new LeaseValidator($this->_entityManager),
+                        new LeaseValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'leased_amount',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'leased_amount',
+            'label'    => 'Amount',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'Digits'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'leased_to',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'leased_to',
+            'label'      => 'Leased To',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => false,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'leased_pawn',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'leased_pawn',
+            'label'    => 'Received Pawn',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new PriceValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'comment',
+            'label'      => 'Comment',
+            'attributes' => array(
+                'rows' => 3,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
-
+        $this->addSubmit('Lease', 'btn btn-primary', 'lease');
     }
 }

@@ -92,21 +92,13 @@ class Reservation
     private $endDate;
 
     /**
-     * @param DateTime           $startDate
-     * @param DateTime           $endDate
-     * @param string             $reason
      * @param ReservableResource $resource
-     * @param string             $additionalInfo
      * @param Person             $creator
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, $reason, ReservableResource $resource, $additionalInfo, Person $creator)
+    public function __construct(ReservableResource $resource, Person $creator)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->reason = $reason;
-        $this->resource = $resource;
-        $this->additionalInfo = $additionalInfo;
         $this->creator = $creator;
+        $this->resource = $resource;
     }
 
     /**

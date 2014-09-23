@@ -51,18 +51,13 @@ class PianoReservation extends Reservation
     private $confirmed;
 
     /**
-     * @param DateTime           $startDate
-     * @param DateTime           $endDate
      * @param ReservableResource $resource
-     * @param string             $additionalInfo
      * @param Person             $creator
-     * @param Person             $player
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, ReservableResource $resource, $additionalInfo, Person $creator, Person $player)
+    public function __construct(ReservableResource $resource, Person $creator)
     {
-        parent::__construct($startDate, $endDate, '', $resource, $additionalInfo, $creator);
+        parent::__construct($resource, $creator);
 
-        $this->player = $player;
         $this->confirmed = false;
     }
 

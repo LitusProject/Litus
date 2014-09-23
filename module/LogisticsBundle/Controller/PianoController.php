@@ -22,7 +22,6 @@ use DateInterval,
     DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
-    LogisticsBundle\Form\PianoReservation\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -36,7 +35,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         if (!$this->getAuthentication()->isAuthenticated())
             return new ViewModel();
 
-        $form = new AddForm($this->getEntityManager(), $this->getLanguage());
+        $form = $this->getForm('logistics_piano-reservation_add');
 
         $reservations = array();
         if ($this->getAuthentication()->isAuthenticated()) {

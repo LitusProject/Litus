@@ -26,7 +26,7 @@ use DateTime;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DateCompare extends \Zend\Validator\AbstractValidator
+class DateCompare extends AbstractValidator
 {
     /**
      * @var string The error codes
@@ -87,17 +87,9 @@ class DateCompare extends \Zend\Validator\AbstractValidator
         if (null === $value || '' == $value)
             return true;
 
-        if (($context !== null) && isset($context) && array_key_exists($this->_endDate, $context)) {
-            $endDate = $context[$this->_endDate];
-        } elseif ('now' == $this->_endDate) {
+        if ('now' == $this->_endDate) {
             $endDate = 'now';
-        } else {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
-        if ($endDate === null) {
+        } elseif (null === $endDate = self::getFormValue($context, $this->_endDate)) {
             $this->error(self::NOT_VALID);
 
             return false;
