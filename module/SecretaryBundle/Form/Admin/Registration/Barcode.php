@@ -63,7 +63,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                 'options',
                 BarcodeEntity::$possibleTypes
             )
-            ->setValue($person->getBarcode()->getType());
+            ->setValue($person->getBarcode());
         $this->add($field);
 
         $field = new Text('barcode');
