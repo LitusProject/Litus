@@ -61,6 +61,15 @@ return array(
     'Reward' => 'Beloning',
     'Coins' => 'bonnetjes',
     'on the event' => 'op het evenement',
+
+    'Sunday' => 'Zondag',
+    'Monday' => 'Maandag',
+    'Tuesday' => 'Dinsdag',
+    'Wednesday' => 'Woensdag',
+    'Thursday' => 'Donderdag',
+    'Friday' => 'Vrijdag',
+    'Saturday' => 'Zaterdag',
+
     'You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.' => 'Je hebt momenteel <span class="label label-info">%unPayedShifts%</span> onbetaalde shift(en). Je can je beloning komen halen bij de vice-praeses op \'blok 6\'. Deze beloning zal vervallen op het einde van dit academiejaar.',
     'You haven\'t done any shifts this year yet. Sign up for a shift, have fun with the others while working and get some coins in return!' => 'Je hebt momenteel nog geen shiften gedaan dit jaar. Schrijf je in voor een shift, have fun tijdens de shift, leer nieuwe mensen kennen en krijg bonnetjes als beloning!',
     'You have done your last shift on %lastShift%.' => 'Je hebt je laatste shift gedaan op %lastShift%.'
