@@ -305,6 +305,6 @@ class Session
      */
     public function getAcademicYear()
     {
-        return AcademicYear::getUniversityYear($entityManager, $this->getOpenDate());
+        return AcademicYear::getUniversityYear($this->_entityManager, $this->getOpenDate());
     }
 }
