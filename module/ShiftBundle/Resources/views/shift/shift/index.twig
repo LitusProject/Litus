@@ -281,7 +281,7 @@
     <div class="panel-group" id="shifts-{{ accordionName }}">
         {% for shift in shifts %}
             {% if previousShift.getStartDate().format('Ymd') < shift.getStartDate().format('Ymd') %}
-                <h3>{{translate('Shifts on')}} {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
+                <h3>{{translate('Shifts on')}} {{ translate(shift.getStartDate().format('l')) }}  {{ dateLocalized(shift.getStartDate(), 'd/M/y') }}</h3>
             {% endif %}
 
             {% set previousShift = shift %}
