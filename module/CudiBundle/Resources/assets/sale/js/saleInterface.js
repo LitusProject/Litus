@@ -1,3 +1,42 @@
+// Polyfill for ECMAScript 6 String.prototype.repeat function
+(function () {
+    if (!String.prototype.repeat) {
+        String.prototype.repeat = function (count) {
+            "use strict";
+            if (this == null)
+                throw new TypeError("can't convert " + this + " to object");
+
+            var str = "" + this;
+            count = +count;
+
+            if (count != count)
+                count = 0;
+            if (count < 0)
+                throw new RangeError("repeat count must be non-negative");
+            if (count == Infinity)
+                throw new RangeError("repeat count must be less than infinity");
+            count = Math.floor(count);
+            if (str.length == 0 || count == 0)
+                return "";
+            // Ensuring count is a 31-bit integer allows us to heavily optimize the
+            // main part. But anyway, most current (august 2014) browsers can't handle
+            // strings 1 << 28 chars or longer, so :
+            if (str.length * count >= 1 << 28)
+                throw new RangeError("repeat count must not overflow maximum string size");
+            var rpt = "";
+            for (;;) {
+                if ((count & 1) == 1)
+                    rpt += str;
+                count >>>= 1;
+                if (count == 0)
+                    break;
+                str += str;
+            }
+            return rpt;
+        }
+    }
+})();
+
 (function ($) {
     var defaults = {
         isSell: true,
@@ -5,6 +44,7 @@
         articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0}],
         lightVersion: false,
+        barcodeLength: 12,
 
         tCurrentCustomer: 'Current Customer',
         tComments: 'Comments',
@@ -118,9 +158,9 @@
                         )
                     ),
                     $('<div>', {'class': 'col-md-12'}).append(
-                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 118}).append(
+                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 116}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
-                            settings.tAddArticle + ' - F7'
+                            settings.tAddArticle + ' - F5'
                         )
                     )
                 ),
@@ -380,19 +420,45 @@
         settings.conclude($this.data('data').id, articles);
     }
 
+    function _barcodeEquals(length, one, two) {
+        one = ['' + one];
+        two = ['' + two];
+
+        if (one[0].length < length) {
+            one[0] = '0'.repeat(length - one[0].length) + one[0];
+            one[1] = '0' + one[0];
+        }
+
+        if (two[0].length < length) {
+            two[0] = '0'.repeat(length - two[0].length) + two[0];
+            two[1] = '0' + two[0];
+        }
+
+        var found = false;
+
+        return one.some(function (o) {
+            return two.some(function (t) {
+                return o.substring(0, length) === t.substring(0, length);
+            });
+        });
+    }
+
     function _gotBarcode($this, barcode) {
         var settings = $this.data('saleInterfaceSettings');
 
         var found = false;
         $this.find('tbody tr:not(.inactive)').each(function () {
-            if ($(this).data('info').barcode == barcode) {
-                $(this).find('.addArticle').click();
+            var $this = $(this);
+            var length = settings.barcodeLength;
+
+            if (_barcodeEquals(length, $this.data('info').barcode, barcode)) {
+                $this.find('.addArticle').click();
                 found = true;
             }
-            var row = $(this);
-            $($(this).data('info').barcodes).each(function () {
-                if (this == barcode) {
-                    row.find('.addArticle').click();
+
+            $($this.data('info').barcodes).each(function () {
+                if (_barcodeEquals(length, this, barcode)) {
+                    $this.find('.addArticle').click();
                     found = true;
                     return false;
                 }
