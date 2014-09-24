@@ -158,9 +158,9 @@
                         )
                     ),
                     $('<div>', {'class': 'col-md-12'}).append(
-                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 118}).append(
+                        addArticle = $('<button>', {'class': 'btn btn-info pull-right', 'data-key': 116}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-plus-sign'}),
-                            settings.tAddArticle + ' - F7'
+                            settings.tAddArticle + ' - F5'
                         )
                     )
                 ),
