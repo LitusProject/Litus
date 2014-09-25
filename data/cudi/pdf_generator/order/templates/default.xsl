@@ -107,9 +107,10 @@
                                 </fo:block>
                                 <fo:table table-layout="fixed" width="100%" font-size="8pt" border-style="solid" border-width="0.5mm" border-color="black">
                                     <fo:table-column column-width="15%"/>
-                                    <fo:table-column column-width="52%"/>
+                                    <fo:table-column column-width="46%"/>
                                     <fo:table-column column-width="6%"/>
                                     <fo:table-column column-width="11%"/>
+                                    <fo:table-column column-width="6%"/>
                                     <fo:table-column column-width="8%"/>
                                     <fo:table-column column-width="8%"/>
 
@@ -126,6 +127,9 @@
                                             </fo:table-cell>
                                             <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
                                                 <fo:block text-align="left" font-weight="bold"><xsl:call-template name="binding"/></fo:block>
+                                            </fo:table-cell>
+                                            <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
+                                                <fo:block text-align="center" font-weight="bold"><xsl:call-template name="colored"/></fo:block>
                                             </fo:table-cell>
                                             <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
                                                 <fo:block text-align="center" font-weight="bold"><xsl:call-template name="nb_pages"/></fo:block>
@@ -302,6 +306,18 @@
             </fo:table-cell>
             <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
                 <fo:block text-align="left"><xsl:apply-templates select="binding"/></fo:block>
+            </fo:table-cell>
+            <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
+                <fo:block text-align="center" font-family="Arial">
+                    <xsl:choose>
+                        <xsl:when test="colored=1">
+                            <xsl:call-template name="printCheckedBox"/>
+                        </xsl:when>
+                        <xsl:when test="colored!=1">
+                            <xsl:call-template name="printBox"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </fo:block>
             </fo:table-cell>
             <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm" border-color="black">
                 <fo:block text-align="center"><xsl:apply-templates select="nb_pages"/></fo:block>
