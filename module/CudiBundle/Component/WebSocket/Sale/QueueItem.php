@@ -298,14 +298,22 @@ class QueueItem
 
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 try {
-                    $booking->getPerson()
-                        ->addOrganizationStatus(
-                            new OrganizationStatus(
-                                $booking->getPerson(),
-                                'member',
-                                $this->_getCurrentAcademicYear()
-                            )
-                        );
+                    $status = $booking->getPerson()
+                        ->getOrganizationStatus($this->_getCurrentAcademicYear());
+                    if (null === $status) {
+                        $booking->getPerson()
+                            ->addOrganizationStatus(
+                                new OrganizationStatus(
+                                    $booking->getPerson(),
+                                    'member',
+                                    $this->_getCurrentAcademicYear()
+                                )
+                            );
+                    } else {
+                        if ('non_member' === $status->getStatus()) {
+                            $status->setStatus('member');
+                        }
+                    }
 
                     $registration = $this->_entityManager
                         ->getRepository('SecretaryBundle\Entity\Registration')
@@ -321,6 +329,7 @@ class QueueItem
                     $registration->setPayed();
                 } catch (\Exception $e) {
                     // Suppress all errors
+                    // TODO WHYYYYYYY?
                 }
             }
         }
