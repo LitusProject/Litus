@@ -595,7 +595,10 @@
             if ($(this).data('info').barcode == barcode) {
                 switch ($(this).data('info').status) {
                     case 'collecting':
-                        $(this).find('.stopCollecting').click();
+                        if ($(this).find('.startScanning').is(':visible'))
+                            $(this).find('.startScanning').click();
+                        else
+                            $(this).find('.stopCollecting').click();
                         break;
                     case 'collected':
                         $(this).find('.startSale').click();

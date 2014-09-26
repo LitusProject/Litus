@@ -125,6 +125,11 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0'
                         ),
                         new Object(
+                            'colored',
+                            null,
+                            $item->getArticle()->getMainArticle()->isColored() ? '1' : '0'
+                        ),
+                        new Object(
                             'binding',
                             null,
                             $item->getArticle()->getMainArticle()->getBinding()->getName()
