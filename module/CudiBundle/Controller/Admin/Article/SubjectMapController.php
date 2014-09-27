@@ -49,15 +49,9 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if ($formData['subject_id'] == '') {
-                    $subject = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Subject')
-                        ->findOneByCode($formData['subject']);
-                } else {
-                    $subject = $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Subject')
-                        ->findOneById($formData['subject_id']);
-                }
+                $subject = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Subject')
+                    ->findOneById($formData['subject_id']);
 
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
