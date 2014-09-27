@@ -64,4 +64,36 @@ class Barcode extends EntityRepository
 
         return null !== $ean12Result ? $ean12Result : $qrResult;
     }
+
+    public function findAllByBarcode($barcode)
+    {
+        $ean12Result = array();
+        if (is_numeric($barcode)) {
+            $eanBarcode = $barcode;
+            if (strlen($barcode) == 13)
+                $eanBarcode = floor($barcode / 10);
+
+            $query = $this->_em->createQueryBuilder();
+            $ean12Result = $query->select('b')
+                ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
+                ->where(
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+                )
+                ->setParameter('barcode', strtolower($eanBarcode) . '%')
+                ->getQuery()
+                ->getResult();
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $qrResult = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
+            ->where(
+                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+            )
+            ->setParameter('barcode', strtolower($barcode) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return array_merge($qrResult, $ean12Result);
+    }
 }
