@@ -103,7 +103,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $booking = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findOneSoldByArticleAndPerson($article, $person);
+                    ->findOneSoldByArticleAndPerson($article, $person, false);
 
                 if ($booking->getNumber() > 1) {
                     $remainder = new Booking(
