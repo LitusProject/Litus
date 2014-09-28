@@ -238,7 +238,9 @@ class QueueItem
             }
 
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
-                try {
+                $status = $booking->getPerson()
+                    ->getOrganizationStatus($this->_getCurrentAcademicYear());
+                if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
@@ -247,22 +249,24 @@ class QueueItem
                                 $this->_getCurrentAcademicYear()
                             )
                         );
-
-                    $registration = $this->_entityManager
-                        ->getRepository('SecretaryBundle\Entity\Registration')
-                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
-
-                    if (null === $registration) {
-                        $registration = new Registration(
-                            $booking->getPerson(),
-                            $this->_getCurrentAcademicYear()
-                        );
-                        $this->_entityManager->persist($registration);
+                } else {
+                    if ('non_member' === $status->getStatus()) {
+                        $status->setStatus('member');
                     }
-                    $registration->setPayed();
-                } catch (\Exception $e) {
-                    // Suppress all errors
                 }
+
+                $registration = $this->_entityManager
+                    ->getRepository('SecretaryBundle\Entity\Registration')
+                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                if (null === $registration) {
+                    $registration = new Registration(
+                        $booking->getPerson(),
+                        $this->_getCurrentAcademicYear()
+                    );
+                    $this->_entityManager->persist($registration);
+                }
+                $registration->setPayed()
             }
         }
 
@@ -297,40 +301,35 @@ class QueueItem
             }
 
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
-                try {
-                    $status = $booking->getPerson()
-                        ->getOrganizationStatus($this->_getCurrentAcademicYear());
-                    if (null === $status) {
-                        $booking->getPerson()
-                            ->addOrganizationStatus(
-                                new OrganizationStatus(
-                                    $booking->getPerson(),
-                                    'member',
-                                    $this->_getCurrentAcademicYear()
-                                )
-                            );
-                    } else {
-                        if ('non_member' === $status->getStatus()) {
-                            $status->setStatus('member');
-                        }
-                    }
-
-                    $registration = $this->_entityManager
-                        ->getRepository('SecretaryBundle\Entity\Registration')
-                        ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
-
-                    if (null === $registration) {
-                        $registration = new Registration(
-                            $booking->getPerson(),
-                            $this->_getCurrentAcademicYear()
+                $status = $booking->getPerson()
+                    ->getOrganizationStatus($this->_getCurrentAcademicYear());
+                if (null === $status) {
+                    $booking->getPerson()
+                        ->addOrganizationStatus(
+                            new OrganizationStatus(
+                                $booking->getPerson(),
+                                'member',
+                                $this->_getCurrentAcademicYear()
+                            )
                         );
-                        $this->_entityManager->persist($registration);
+                } else {
+                    if ('non_member' === $status->getStatus()) {
+                        $status->setStatus('member');
                     }
-                    $registration->setPayed();
-                } catch (\Exception $e) {
-                    // Suppress all errors
-                    // TODO WHYYYYYYY?
                 }
+
+                $registration = $this->_entityManager
+                    ->getRepository('SecretaryBundle\Entity\Registration')
+                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+
+                if (null === $registration) {
+                    $registration = new Registration(
+                        $booking->getPerson(),
+                        $this->_getCurrentAcademicYear()
+                    );
+                    $this->_entityManager->persist($registration);
+                }
+                $registration->setPayed();
             }
         }
 

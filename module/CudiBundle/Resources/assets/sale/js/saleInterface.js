@@ -63,6 +63,7 @@
         tRemove: 'Remove',
         tAddArticle: 'Add Article',
         tBarcode: 'Barcode',
+        tPrintNext: 'Print Next',
         tErrorTitle: 'Error',
         tErrorExtraArticle: 'An error occurred while adding the article.',
 
@@ -72,6 +73,7 @@
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
         addArticle: function (id, articleId) {},
+        printNextInQueue: function () {},
     };
 
     var firstAction = true;
@@ -142,6 +144,10 @@
                             editComment = $('<button>', {'class': 'btn btn-info'}).append(
                                 $('<i>', {'class': 'glyphicon glyphicon-comment'}),
                                 settings.tComments
+                            ),
+                            printNextInQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 118}).append(
+                                $('<i>', {'class': 'glyphicon glyphicon-print'}),
+                                settings.tPrintNext + ' - F7'
                             ),
                             showQueue = $('<button>', {'class': 'btn btn-primary', 'data-key': 119}).append(
                                 $('<i>', {'class': 'glyphicon glyphicon-eye-open'}),
@@ -219,6 +225,10 @@
 
         editComment.click(function () {
             _editComment($this);
+        });
+
+        printNextInQueue.click(function () {
+            settings.printNextInQueue();
         });
 
         showQueue.click(function () {
