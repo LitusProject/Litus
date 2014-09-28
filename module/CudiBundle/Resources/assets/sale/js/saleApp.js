@@ -111,6 +111,9 @@ var currentView = 'selectPaydesk';
                     })
                 });
             },
+            printNextInQueue: function () {
+                queue.queue('printNextInQueue');
+            },
         });
 
         sale = $this.sale({
@@ -167,6 +170,9 @@ var currentView = 'selectPaydesk';
                         'articleId': articleId,
                     })
                 });
+            },
+            printNextInQueue: function () {
+                queue.queue('printNextInQueue');
             },
         });
 
