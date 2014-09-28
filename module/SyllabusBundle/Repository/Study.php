@@ -128,6 +128,9 @@ class Study extends EntityRepository
 
     public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
     {
+        if ('' == $title)
+            return array();
+
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')

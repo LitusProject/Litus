@@ -603,7 +603,7 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneSoldByArticleAndPerson(ArticleEntity $article, Person $person)
+    public function findOneSoldByArticleAndPerson(ArticleEntity $article, Person $person, $limitByPeriod = true)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -617,15 +617,17 @@ class Booking extends EntityRepository
                     $query->expr()->eq('b.person', ':person'),
                     $query->expr()->eq('b.article', ':article'),
                     $query->expr()->eq('b.status', '\'sold\''),
-                    $query->expr()->gte('b.bookDate', ':startDate'),
-                    $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
+                    !$limitByPeriod ? '1=1' : $query->expr()->gte('b.bookDate', ':startDate'),
+                    $period->isOpen() && !$limitByPeriod ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
             ->setParameter(':person', $person->getId())
-            ->setParameter(':article', $article->getId())
-            ->setParameter('startDate', $period->getStartDate());
+            ->setParameter(':article', $article->getId());
 
-        if (!$period->isOpen())
+        if ($limitByPeriod)
+            $query->setParameter('startDate', $period->getStartDate());
+
+        if (!$period->isOpen() && $limitByPeriod)
             $query->setParameter('endDate', $period->getEndDate());
 
         $resultSet = $query->setMaxResults(1)

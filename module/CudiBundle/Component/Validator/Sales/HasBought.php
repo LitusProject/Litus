@@ -16,29 +16,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace TicketBundle\Component\Validator;
+namespace CudiBundle\Component\Validator\Sales;
 
-use Doctrine\ORM\EntityManager,
-    TicketBundle\Entity\Event;
+use Doctrine\ORM\EntityManager;
 
 /**
- * Check the activity has already a ticket system
+ * Check if user has bought an aritcle
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activity extends \Zend\Validator\AbstractValidator
+class HasBought extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
     /**
-     * @var EntityManager
+     * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
-
-    /**
-     * @var Event|null
-     */
-    private $_event;
+    private $_entityManager = null;
 
     /**
      * Error messages
@@ -46,26 +40,26 @@ class Activity extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The activity has already a ticket system'
+        self::NOT_VALID => 'The article was never bought by this user'
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Create a new HasBought validator.
      *
-     * @param EntityManager $entityManager
-     * @param Event|null    $event         The event
+     * @param EntityManager $entityManager The EntityManager instance
      * @param mixed         $opts          The validator's options
      */
-    public function __construct(EntityManager $entityManager, Event $event = null, $opts = null)
+    public function __construct(EntityManager $entityManager, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-        $this->_event = $event;
     }
 
+
     /**
-     * Returns true if these does not exceed max
+     * Returns true if and only if a field name has been set, the field name is available in the
+     * context, and the value of that field is valid.
      *
      * @param  string  $value   The value of the field that will be validated
      * @param  array   $context The context of the field that will be validated
@@ -75,18 +69,19 @@ class Activity extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $activity = $this->_entityManager
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($value);
+        $person = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($context['person_id']);
 
-        $event = $this->_entityManager
-            ->getRepository('TicketBundle\Entity\Event')
-            ->findOneByActivity($activity);
+        $article = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($context['article_id']);
 
-        if (null === $event)
-            return true;
+        $booking = $this->_entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneSoldByArticleAndPerson($article, $person, false);
 
-        if ($event->getId() == $this->_event->getId())
+        if (null !== $booking)
             return true;
 
         $this->error(self::NOT_VALID);
