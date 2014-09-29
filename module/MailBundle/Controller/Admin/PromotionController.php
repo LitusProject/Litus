@@ -39,11 +39,57 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $people = $this->_getPeople($formData['to']);
+                $people = array();
+                $enrollments = array();
+                $groupIds = $formData['groups'];
 
-                $from = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.mail');
+                foreach ($formData['to'] as $to) {
+
+                    $academicYear = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                        ->findOneById($to);
+
+                    if ($groupIds) {
+                        foreach ($groupIds as $groupId) {
+                            $group = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\Group')
+                                ->findOneById($groupId);
+
+                            $studies = $this->getEntityManager()
+                                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                                ->findAllByGroupAndAcademicYear($group, $academicYear);
+
+                            foreach ($studies as $study) {
+                                if($study->getStudy()->getPhase() == 2){
+                                    $children = $study->getStudy()->getAllChildren();
+
+                                    foreach ($children as $child) {
+                                        $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                            ->findAllByStudyAndAcademicYear($child, $academicYear)
+                                        );
+                                    }
+
+                                    $enrollments = array_merge($enrollments, $this->getEntityManager()
+                                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+                                        ->findAllByStudyAndAcademicYear($study->getStudy(), $academicYear)
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        $people = array_merge(
+                            $people,
+                            $this->getEntityManager()
+                                ->getRepository('SecretaryBundle\Entity\Promotion')
+                                ->findAllByAcademicYear($academicYear)
+                        );
+                    }
+                }
+
+                foreach($enrollments as $enrollment)
+                        array_push($people, $enrollment->getAcademic());
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -57,9 +103,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress()) {
+                    if (null !== $person->getPersonalEmail()) {
                         $i++;
-                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
+                        $mail->addBcc($person->getPersonalEmail(), $person->getFullName());
                     }
 
                     if ($i == 500) {

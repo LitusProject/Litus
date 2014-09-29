@@ -245,17 +245,17 @@ VTK Cudi
         'key'         => 'cudi.sell_prices',
         'value'       => serialize(
             array(
-                'binding_glued'     => 83,
-                'binding_stapled'   => 7,
-                'binding_none'      => 20,
-                'recto_bw'          => 2,
-                'recto_verso_bw'    => 2,
-                'recto_color'       => 7,
-                'recto_verso_color' => 7,
+                'binding_glued'     => 83000,
+                'binding_stapled'   => 7000,
+                'binding_none'      => 20000,
+                'recto_bw'          => 2000,
+                'recto_verso_bw'    => 2000,
+                'recto_color'       => 7000,
+                'recto_verso_color' => 7000,
                 'hardcover'         => 0,
             )
         ),
-        'description' => 'The purchase prices of an internal article (multiplied by 100)',
+        'description' => 'The purchase prices of an internal article (multiplied by 100000)',
     ),
     array(
         'key'         => 'cudi.front_address_name',
@@ -439,5 +439,20 @@ VTK Cudi
         'key'         => 'cudi.booking_only_member',
         'value'       => '0',
         'description' => 'Enable bookings only for members (this will add a member restriction to all sale articles)',
+    ),
+    array(
+        'key'         => 'cudi.print_collect_as_signin',
+        'value'       => '0',
+        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.',
+    ),
+    array(
+        'key'         => 'cudi.signing_printer',
+        'value'       => 'signin',
+        'description' => 'Printer used to print sign-in tickets.',
+    ),
+    array(
+        'key'         => 'cudi.enable_sale_article_barcode_check',
+        'value'       => '1',
+        'description' => 'Enable the barcode checks for sale articles.',
     ),
 );

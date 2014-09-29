@@ -78,39 +78,23 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        if (isset($this->data['subject_id']) && $this->data['subject_id'] == '') {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'subject_id',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
                         ),
-                        'validators' => array(
-                            new SubjectValidator($this->_entityManager),
-                        ),
-                    )
+                    ),
                 )
-            );
-        } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject_id',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
+            )
+        );
+
 
         return $inputFilter;
     }

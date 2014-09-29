@@ -160,40 +160,15 @@ class Registration extends EntityRepository
         if (!is_numeric($barcode))
             return array();
 
-        $ids = array(0);
-        if ($organization !== null) {
-            $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('a.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'a')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.organization', ':organization'),
-                        $query->expr()->eq('m.academicYear', ':academicYear')
-                    )
-                )
-                ->setParameter('organization', $organization)
-                ->setParameter('academicYear', $academicYear)
-                ->getQuery()
-                ->getResult();
-
-            foreach ($resultSet as $result) {
-                $ids[] = $result['id'];
-            }
+        if (null === $organization) {
+            $resultSet = $this->_em
+                ->getRepository('CommonBundle\Entity\User\Barcode')
+                ->findAllByBarcode($barcode);
+        } else {
+            $resultSet = $this->_em
+                ->getRepository('CommonBundle\Entity\User\Barcode')
+                ->findAllByBarcodeAndOrganization($barcode, $academicYear, $organization);
         }
-
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
-            ->from('CommonBundle\Entity\User\Barcode', 'b')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
-                    $organization == null ? '1=1' : $query->expr()->in('b.person', $ids)
-                )
-            )
-            ->setParameter('barcode', '%'.$barcode.'%')
-            ->getQuery()
-            ->getResult();
 
         $ids = array(0);
         foreach ($resultSet as $result) {

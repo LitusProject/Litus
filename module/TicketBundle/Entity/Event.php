@@ -24,7 +24,7 @@ use CalendarBundle\Entity\Node\Event as CalendarEvent,
     DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
-    \Doctrine\Common\Collection\ArrayCollection;
+    Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")

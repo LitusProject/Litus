@@ -412,39 +412,22 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         }
 
         if (isset($this->data['type']) && $this->data['type'] !== 'common' && isset($this->data['subject_id'])) {
-            if ('' == $this->data['subject_id'] && $this->has('subject')) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
                             ),
-                            'validators' => array(
-                                new SubjectValidator($this->_entityManager),
-                            ),
-                        )
+                        ),
                     )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject_id',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
-                    )
-                );
-            }
+                )
+            );
         }
 
         return $inputFilter;

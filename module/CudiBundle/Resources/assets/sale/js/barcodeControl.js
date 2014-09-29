@@ -72,7 +72,7 @@
         if (undefined == $this.data('barcodeControl'))
             return;
 
-        value = ($this.data('barcodeControl').buffer * 10 + value).toString();
+        value = $this.data('barcodeControl').buffer + value;
         $this.data('barcodeControl').buffer = value.substr(Math.max(0, value.length - $this.data('barcodeControlSettings').barcodeLength - 1));
 
         if ($this.data('barcodeControl').timer)
@@ -97,13 +97,18 @@
     }
 
     function _complete($this) {
-        if (undefined == $this.data('barcodeControlSettings'))
+        if (undefined == $this.data('barcodeControlSettings')) {
             return;
+        }
 
-        if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength)
-            $this.data('barcodeControlSettings').onBarcode(_read($this));
-        else if (_read($this).length == $this.data('barcodeControlSettings').barcodeLength + 1)
-            $this.data('barcodeControlSettings').onBarcode(_read($this).toString().substr(0, $this.data('barcodeControlSettings').barcodeLength));
+        var expectedLength = $this.data('barcodeControlSettings').barcodeLength,
+            enteredCode = _read($this);
+
+        if (enteredCode.length <= expectedLength) {
+            $this.data('barcodeControlSettings').onBarcode(enteredCode);
+        } else if (enteredCode.length == expectedLength + 1) {
+            $this.data('barcodeControlSettings').onBarcode(enteredCode.substring(0, expectedLength));
+        }
 
         _clear($this);
     }

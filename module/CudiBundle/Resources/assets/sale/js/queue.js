@@ -80,6 +80,10 @@
         addPersonError : function (error) {
             _addPersonError($(this), error);
             return this;
+        },
+        printNextInQueue : function () {
+            _printNextInQueue($(this));
+            return this;
         }
     };
 
@@ -203,18 +207,7 @@
         });
 
         printNext.click(function () {
-            $this.find('tbody tr').each(function () {
-                if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
-                    settings.sendToSocket(
-                        JSON.stringify({
-                            'command': 'action',
-                            'action': 'startCollectingBulk',
-                            'id': $(this).data('info').id,
-                        })
-                    );
-                    return false;
-                }
-            });
+            _printNextInQueue($this);
         });
 
         undoLastSale.click(function () {
@@ -595,7 +588,10 @@
             if ($(this).data('info').barcode == barcode) {
                 switch ($(this).data('info').status) {
                     case 'collecting':
-                        $(this).find('.stopCollecting').click();
+                        if ($(this).find('.startScanning').is(':visible'))
+                            $(this).find('.startScanning').click();
+                        else
+                            $(this).find('.stopCollecting').click();
                         break;
                     case 'collected':
                         $(this).find('.startSale').click();
@@ -619,5 +615,27 @@
         setTimeout(function () {
             $this.find('.modal-body .flashmessage').remove();
         }, 2000);
+    }
+
+    function _printNextInQueue($this) {
+        var settings = $this.data('queueSettings');
+
+        $this.find('tbody tr').each(function () {
+            if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
+                settings.sendToSocket(
+                    JSON.stringify({
+                        'command': 'action',
+                        'action': 'startCollectingBulk',
+                        'id': $(this).data('info').id,
+                    })
+                );
+                console.log(JSON.stringify({
+                    'command': 'action',
+                    'action': 'startCollectingBulk',
+                    'id': $(this).data('info').id,
+                }));
+                return false;
+            }
+        });
     }
 })(jQuery);

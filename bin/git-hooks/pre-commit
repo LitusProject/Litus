@@ -1,0 +1,113 @@
+#!/bin/sh
+#
+# A pre-commit git hook for the Litus Project.
+#
+# The hook can be controlled using a .git-hooks file in the project root:
+# - PHP_VALID=1 # or 0, enables or disables checking of the php code is valid, enabled by default
+# - PHP_CS=1 # or 0, enables or disables php-cs-fixer, enabled by default if php-cs-fixer is available
+# - STD_WHITESPACE=1 # or 0, enables or disables git whitespace checking, enabled by default
+#
+# @license AGPLv3
+# @author Bram Gotink <bram.gotink@litus.cc>
+
+# Initialization
+#
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# Redirect output to stderr.
+exec 1>&2
+
+# Fail on error
+set -e
+
+# Default configuration
+PHP_VALID=1
+PHP_CS=1
+STD_WHITESPACE=1
+
+# Source configuration
+if [ -f ./.git-hooks ]
+then
+    source ./.git-hooks
+fi
+
+# Check 1 (always check this): only allow ASCII filenames
+#
+
+# If you want to allow non-ASCII filenames set this variable to true.
+allownonascii=$(git config --bool hooks.allownonascii || echo '0')
+
+# Cross platform projects tend to avoid non-ASCII filenames; prevent
+# them from being added to the repository. We exploit the fact that the
+# printable range starts at the space character and ends with tilde.
+if [ "$allownonascii" != "true" ] &&
+    # Note that the use of brackets around a tr range is ok here, (it's
+    # even required, for portability to Solaris 10's /usr/bin/tr), since
+    # the square bracket bytes happen to fall in the designated range.
+    test $(git diff --cached --name-only --diff-filter=A -z $against |
+      LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+then
+    cat <<\EOF
+Error: Attempt to add a non-ASCII file name.
+
+This can cause problems if you want to work with people on other platforms.
+
+To be portable it is advisable to rename the file.
+
+If you know what you are doing you can disable this check using:
+
+  git config hooks.allownonascii true
+EOF
+    exit 1
+fi
+
+# Check 2: check php consistency before running php-cs-fixer
+#
+
+check_php() {
+    for file in $(git diff --cached --name-only --diff-filter=ACMR $against)
+    do
+        if echo "$file" | grep -q -E '\.php$'
+        then
+            php -l "$file" || return $?
+        fi
+    done
+}
+
+if [ $PHP_VALID -eq 1 ]
+then
+    check_php || exit $?
+fi
+
+# Check 3: run php-cs-fixer
+#
+
+if [ $PHP_CS -eq 1 ] && [ -f vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh ]
+then
+    vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh
+
+    # Check PHP validity again, to make sure php-cs-fixer hasn't broken stuff
+    if [ $PHP_VALID -eq 1 ]
+    then
+        if ! check_php
+        then
+            echo "Php-cs-fixer seems to have broken code."
+            exit 1
+        fi
+    fi
+fi
+
+# Check 4: If there are whitespace errors, print the offending file names and fail.
+#
+
+if [ $STD_WHITESPACE -eq 1 ]
+then
+    git diff-index --check --cached $against --
+fi

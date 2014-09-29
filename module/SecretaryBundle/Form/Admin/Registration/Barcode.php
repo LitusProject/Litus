@@ -43,6 +43,16 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'attributes' => array(
+                'options' => BarcodeEntity::$possibleTypes,
+            ),
+            'value'      => $person->getBarcode(),
+        ));
+
+        $this->add(array(
             'type'       => 'text',
             'name'       => 'barcode',
             'label'      => 'Barcode',
@@ -58,13 +68,6 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
-                            ),
-                        ),
                         new BarcodeValidator($this->getEntityManager(), $this->getPerson()),
                     ),
                 ),

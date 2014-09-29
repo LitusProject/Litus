@@ -18,14 +18,20 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Entity\User\Barcode;
-use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
-use SecretaryBundle\Entity\Organization\MetaData;
-use SecretaryBundle\Entity\Registration;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\User\Barcode\Ean12,
+    CommonBundle\Entity\User\Barcode\Qr,
+    CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
+    SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Registration,
+    SecretaryBundle\Form\Admin\Registration\Add as AddForm,
+    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
+    SecretaryBundle\Form\Admin\Registration\Edit as EditForm,
+    Zend\Validator\Barcode\Ean12 as Ean12Validator,
+    Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController
@@ -92,10 +98,22 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 if (null !== $registration->getAcademic()->getBarcode()) {
                     if ($registration->getAcademic()->getBarcode()->getBarcode() != $formData['barcode']) {
                         $this->getEntityManager()->remove($registration->getAcademic()->getBarcode());
-                        $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                        $this->getEntityManager()->persist(
+                            $this->_createBarcode(
+                                $formData['type'],
+                                $registration->getAcademic(),
+                                $formData['barcode']
+                            )
+                        );
                     }
                 } else {
-                    $this->getEntityManager()->persist(new Barcode($registration->getAcademic(), $formData['barcode']));
+                    $this->getEntityManager()->persist(
+                        $this->_createBarcode(
+                            $formData['type'],
+                            $registration->getAcademic(),
+                            $formData['barcode']
+                        )
+                    );
                 }
 
                 $this->getEntityManager()->flush();
@@ -568,5 +586,23 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->setCancelled(true);
 
         RegistrationArticles::cancel($this->getEntityManager(), $academic, $registration->getAcademicYear());
+    }
+
+    private function _createBarcode($type, Person $person, $barcode)
+    {
+        switch ($type) {
+            case 'ean12':
+                $validator = new Ean12Validator();
+                if (!$validator->isValid($barcode))
+                    throw new \InvalidArgumentException('The given barcode was not a valid EAN-12 code');
+
+                return new Ean12($person, $barcode);
+                break;
+            case 'qr':
+                return new Qr($person, $barcode);
+                break;
+            default:
+                return null;
+        }
     }
 }

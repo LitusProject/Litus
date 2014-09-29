@@ -21,6 +21,7 @@ namespace CudiBundle\Form\Sale\Sale;
 use CommonBundle\Component\Form\Bootstrap\Element\Reset,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
+    CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Hidden,
     Zend\InputFilter\InputFilter,
@@ -144,6 +145,9 @@ class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        new HasBoughtValidator($this->_entityManager),
+                    )
                 )
             )
         );

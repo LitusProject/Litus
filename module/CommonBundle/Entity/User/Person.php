@@ -142,7 +142,7 @@ abstract class Person implements RoleAware
 
     /**
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"time" = "ASC"})
+     * @ORM\OrderBy({"creationTime" = "ASC"})
      */
     private $barcodes;
 
@@ -605,7 +605,7 @@ abstract class Person implements RoleAware
     public function isMember(AcademicYearEntity $academicYear)
     {
         if (null !== $this->getOrganizationStatus($academicYear)) {
-            if ($this->getOrganizationStatus($academicYear) == 'non_member')
+            if ($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member')
                 return false;
 
             return true;

@@ -430,7 +430,7 @@ class Internal extends \CudiBundle\Entity\Article
             $total += $prices['hardcover'];
         }
 
-        return $total;
+        return $total / 1000;
     }
 
     /**

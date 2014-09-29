@@ -59,6 +59,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function addAction()
     {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $this->redirect()->toRoute(
+                'secretary_registration',
+                array(
+                    'action' => 'edit',
+                )
+            );
+        }
+
         if (null !== $this->getParam('identification')) {
             if ('u' == substr($this->getParam('identification'), 0, 1)) {
                 $this->flashMessenger()->warn(
@@ -214,7 +223,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($organizationData['become_member']) {
-                        $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        if ($selectedOrganization)
+                            $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     }
 
                     $academic->activate(
@@ -322,6 +332,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
+        $organizations = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization')
+            ->findAll();
+
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
@@ -424,6 +438,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->getRepository('CommonBundle\Entity\General\Organization')
                             ->findAll()
                     );
+
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $organization
+                    );
                 }
 
                 $tshirts = unserialize(
@@ -508,6 +528,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'termsAndConditions' => $termsAndConditions,
                 'studentDomain' => $studentDomain,
                 'membershipArticles' => $membershipArticles,
+                'organizations' => $organizations,
+                'enableOtherOrganization' => $enableOtherOrganization,
             )
         );
     }

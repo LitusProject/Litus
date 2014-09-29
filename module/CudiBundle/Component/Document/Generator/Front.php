@@ -260,7 +260,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'barcode',
                         null,
-                        substr((string) $this->_article->getBarcode(), 0, 12)
+                        substr((string) str_pad($this->_article->getBarcode(), 12, '0', STR_PAD_LEFT), 0, 12)
                     ),
                 )
             )

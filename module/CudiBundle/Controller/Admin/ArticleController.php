@@ -457,8 +457,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $article->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
+        $previous->setEntityManager($this->getEntityManager());
+
         $history = new History($article, $previous);
         $this->getEntityManager()->persist($history);
+
+        $saleArticle = $previous->getSaleArticle();
+        $saleArticle->setMainArticle($article);
 
         $completeHistory = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\History')
@@ -550,8 +555,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $article->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
+        $previous->setEntityManager($this->getEntityManager());
+
         $history = new History($article, $previous);
         $this->getEntityManager()->persist($history);
+
+        $saleArticle = $previous->getSaleArticle();
+        $saleArticle->setMainArticle($article);
 
         $completeHistory = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\History')

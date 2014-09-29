@@ -148,7 +148,7 @@ class Template
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = (int) (str_replace(',', '.', $value) * 100);
 
         return $this;
     }

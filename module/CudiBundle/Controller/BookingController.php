@@ -235,7 +235,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             continue;
 
                         foreach ($saleArticle->getRestrictions() as $restriction) {
-                            if ($restriction->getRawType() == 'amount') {
+                            if ($restriction->getType() == 'amount') {
                                 $amount = sizeof(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -329,15 +329,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function searchAction()
     {
-        $articles = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByTitleOrAuthorAndAcademicYear($this->getParam('id'), $this->getCurrentAcademicYear());
+        $this->initAjax();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($articles, $numResults);
+        $articles = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findAllByTitleOrAuthorAndAcademicYearQuery($this->getParam('id'), $this->getCurrentAcademicYear())
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -417,6 +419,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
     public function bookSearchAction()
     {
+        $this->initAjax();
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
