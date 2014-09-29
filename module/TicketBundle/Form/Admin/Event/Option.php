@@ -47,11 +47,13 @@ class Option extends Fieldset implements InputFilterProviderInterface
         $this->add($field);
 
         $field = new Text('price_members');
-        $field->setLabel('Price Members');
+        $field->setLabel('Price Members')
+            ->setRequired(true);
         $this->add($field);
 
         $field = new Text('price_non_members');
         $field->setLabel('Price Non Members')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
         $this->add($field);
     }
