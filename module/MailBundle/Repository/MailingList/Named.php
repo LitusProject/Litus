@@ -18,8 +18,8 @@
 
 namespace MailBundle\Repository\MailingList;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person\Academic;
 
 /**
  * Named

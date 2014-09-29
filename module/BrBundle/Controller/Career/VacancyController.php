@@ -109,7 +109,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -129,7 +129,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -142,8 +142,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }

@@ -53,16 +53,19 @@ EOT
             $parent = $action->getResource()->getParent()->getName();
             $resource = $action->getResource()->getName();
             $actionName = $action->getName();
-            if (isset($allActions[$parent][$resource]) && in_array($actionName, $allActions[$parent][$resource]))
+            if (isset($allActions[$parent][$resource]) && in_array($actionName, $allActions[$parent][$resource])) {
                 continue;
+            }
 
             $this->writeln('Removing action <comment>' . $parent . '.' . $resource . '.' . $actionName . '</comment>.');
 
-            foreach($roles as $role)
+            foreach ($roles as $role) {
                 $role->removeAction($action);
+            }
 
-            if ($this->getOption('flush'))
+            if ($this->getOption('flush')) {
                 $this->getEntityManager()->flush();
+            }
 
             $this->getEntityManager()->remove($action);
             $removedEntities = true;
@@ -74,13 +77,15 @@ EOT
 
         foreach ($currentResources as $resource) {
             if ($resource->getParent()) {
-                if (isset($allActions[$resource->getParent()->getName()][$resource->getName()]))
+                if (isset($allActions[$resource->getParent()->getName()][$resource->getName()])) {
                     continue;
+                }
 
                 $this->writeln('Removing resource <comment>' . $resource->getParent()->getName() . '.' . $resource->getName() . '</comment>.');
             } else {
-                if (isset($allActions[$resource->getName()]))
+                if (isset($allActions[$resource->getName()])) {
                     continue;
+                }
 
                 $this->writeln('Removing resource <comment>' . $resource->getName() . '</comment>.');
             }
@@ -123,8 +128,9 @@ EOT
         $acl = array();
         $modules = $this->_getModules();
 
-        foreach($modules as $module)
+        foreach ($modules as $module) {
             $acl = array_merge($acl, $this->_getAclConfiguration($module));
+        }
 
         return $acl;
     }
@@ -135,8 +141,9 @@ EOT
         $configuration = $configuration['litus']['install'];
         $configuration = array_change_key_case($configuration);
 
-        if (isset($configuration[strtolower($module)]['acl']))
+        if (isset($configuration[strtolower($module)]['acl'])) {
             return include $configuration[strtolower($module)]['acl'];
+        }
 
         return array();
     }

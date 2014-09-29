@@ -20,13 +20,13 @@ namespace QuizBundle\Form\Admin\Round;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
     Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Round,
+    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
     QuizBundle\Entity\Quiz,
-    Zend\InputFilter\InputFilter,
+    QuizBundle\Entity\Round,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a new round
@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         new PositiveNumberValidator(),
-                    )
+                    ),
                 )
             )
         );
@@ -138,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'int'),
                         new PositiveNumberValidator(),
                         new UniqueRoundValidator($this->_entityManager, $this->_quiz),
-                    )
+                    ),
                 )
             )
         );

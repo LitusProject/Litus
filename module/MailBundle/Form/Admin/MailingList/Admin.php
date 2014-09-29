@@ -23,9 +23,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Admin
@@ -91,7 +91,7 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => false,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )
@@ -111,7 +111,7 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => true,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )

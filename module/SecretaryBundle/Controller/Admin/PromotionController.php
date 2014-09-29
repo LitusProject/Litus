@@ -38,8 +38,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         if (null !== $this->getParam('field')) {
             $paginator = $this->paginator()->createFromArray(
@@ -73,8 +74,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $promotions = $this->_search($academicYear);
 
@@ -108,8 +110,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
 
@@ -211,8 +214,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($promotion = $this->_getPromotion()))
+        if (!($promotion = $this->_getPromotion())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($promotion);
         $this->getEntityManager()->flush();
@@ -226,15 +230,17 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $promotions = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Promotion')
             ->findAllByAcademicYear($academicYear);
 
-        foreach($promotions as $promotion)
+        foreach ($promotions as $promotion) {
             $this->getEntityManager()->remove($promotion);
+        }
 
         $studyMappings = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
@@ -243,19 +249,22 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         $academics = array();
 
         foreach ($studyMappings as $mapping) {
-            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2)
+            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2) {
                 continue;
+            }
 
             $enrollments = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                 ->findAllByStudyAndAcademicYear($mapping->getStudy(), $academicYear);
 
-            foreach($enrollments as $enrollment)
+            foreach ($enrollments as $enrollment) {
                 $academics[$enrollment->getAcademic()->getId()] = $enrollment->getAcademic();
+            }
         }
 
-        foreach($academics as $academic)
+        foreach ($academics as $academic) {
             $this->getEntityManager()->persist(new Academic($academicYear, $academic));
+        }
 
         $this->getEntityManager()->flush();
 
@@ -292,8 +301,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     protected function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -305,7 +315,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'secretary_admin_promotion',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -326,7 +336,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'secretary_admin_promotion',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -346,7 +356,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'secretary_admin_promotion',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

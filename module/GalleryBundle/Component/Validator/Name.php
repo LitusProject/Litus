@@ -46,7 +46,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The album title already exists'
+        self::NOT_VALID => 'The album title already exists',
     );
 
     /**
@@ -82,8 +82,9 @@ class Name extends \Zend\Validator\AbstractValidator
                 ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->_album && $album == $this->_album))
+            if (null === $album || ($this->_album && $album == $this->_album)) {
                 return true;
+            }
 
             $this->error(self::NOT_VALID);
         }

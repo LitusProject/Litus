@@ -81,11 +81,13 @@ class Corporate extends \CommonBundle\Entity\User\Person
      */
     public function addCorporateStatus(CorporateStatus $corporateStatus)
     {
-        if (null === $corporateStatus)
+        if (null === $corporateStatus) {
             throw new \InvalidArgumentException('Invalid status');
+        }
 
-        if (!$this->canHaveCorporateStatus())
+        if (!$this->canHaveCorporateStatus()) {
             throw \RuntimeException('The corporate status cannot be set');
+        }
 
         $this->corporateStatuses->add($corporateStatus);
 
@@ -101,8 +103,9 @@ class Corporate extends \CommonBundle\Entity\User\Person
     public function canHaveCorporateStatus()
     {
         foreach ($this->corporateStatuses as $corporateStatus) {
-            if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear())
+            if (AcademicYear::getShortAcademicYear() == $corporateStatus->getYear()) {
                 return false;
+            }
         }
 
         return true;

@@ -82,8 +82,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         if ($this->_validateKey() || $this->_validateOAuth()) {
-            if ('development' != getenv('APPLICATION_ENV'))
+            if ('development' != getenv('APPLICATION_ENV')) {
                 $this->hasAccess()->setDriver($this->_hasAccessDriver);
+            }
 
             if (
                 !$this->hasAccess()->toResourceAction(
@@ -126,18 +127,19 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        if (!$this->_isAuthorizeAction())
+        if (!$this->_isAuthorizeAction()) {
             $this->initJson();
+        }
 
         $this->getResponse()->setStatusCode($code);
 
         $error = array(
-            'message' => $message
+            'message' => $message,
         );
 
         return new ViewModel(
             array(
-                'error' => (object) $error
+                'error' => (object) $error,
             )
         );
     }
@@ -160,8 +162,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                         ->getConfigValue('fallback_language')
                 );
 
-            if (null !== $fallbackLanguage)
+            if (null !== $fallbackLanguage) {
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
+            }
         } catch (\Exception $e) {
             throw new RuntimeException('Unable to initialize fallback language.');
         }
@@ -212,8 +215,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $headers = $this->getResponse()->getHeaders();
 
         $contentType = $headers->get('Content-Type');
-        if ($contentType instanceof HeaderInterface)
+        if ($contentType instanceof HeaderInterface) {
             $headers->removeHeader($contentType);
+        }
 
         $headers->addHeaders(
             array_merge(
@@ -349,8 +353,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function getCache()
     {
-        if ($this->getServiceLocator()->has('cache'))
+        if ($this->getServiceLocator()->has('cache')) {
             return $this->getServiceLocator()->get('cache');
+        }
 
         return null;
     }
@@ -362,8 +367,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getCurrentAcademicYear($organization = false)
     {
-        if ($organization)
+        if ($organization) {
             return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
     }
@@ -398,12 +404,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
-        if ($this->_isOAuthAction())
+        if ($this->_isOAuthAction()) {
             $field = 'client_id';
+        }
 
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost())
+        if (null === $code && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
+        }
 
         $key = $this->getEntityManager()
             ->getRepository('ApiBundle\Entity\Key')
@@ -421,8 +429,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     protected function getAccessToken($field = 'access_token')
     {
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost())
+        if (null === $code && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
+        }
 
         $accessToken = $this->getDocumentManager()
             ->getRepository('ApiBundle\Document\Token\Access')
@@ -444,8 +453,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->findOneByAbbrev($this->getRequest()->getPost('language'));
         }
 
-        if (null !== $this->_language)
+        if (null !== $this->_language) {
             return $this->_language;
+        }
 
         if ($this->getParam('language')) {
             $language = $this->getEntityManager()
@@ -524,8 +534,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateKey()
     {
-        if ('development' == getenv('APPLICATION_ENV'))
+        if ('development' == getenv('APPLICATION_ENV')) {
             return true;
+        }
 
         if ($this->_isAuthorizeAction()) {
             $this->_hasAccessDriver = new HasAccessDriver(
@@ -538,15 +549,17 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $key = $this->getKey();
-        if (null === $key)
+        if (null === $key) {
             return false;
+        }
 
         $validateKey = $key->validate(
             $this->getRequest()->getServer('HTTP_X_FORWARDED_FOR', $this->getRequest()->getServer('REMOTE_ADDR'))
         );
 
-        if (!$validateKey)
+        if (!$validateKey) {
             return false;
+        }
 
         $this->_hasAccessDriver = new HasAccessDriver(
             $this->_getAcl(),
@@ -564,8 +577,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function _validateOAuth()
     {
-        if ('development' == getenv('APPLICATION_ENV'))
+        if ('development' == getenv('APPLICATION_ENV')) {
             return true;
+        }
 
         if ($this->_isAuthorizeAction()) {
             $this->_hasAccessDriver = new HasAccessDriver(
@@ -578,8 +592,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $accessToken = $this->getAccessToken();
-        if (null === $accessToken)
+        if (null === $accessToken) {
             return false;
+        }
 
         $this->_hasAccessDriver = new HasAccessDriver(
             $this->_getAcl(),

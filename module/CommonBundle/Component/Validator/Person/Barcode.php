@@ -41,7 +41,7 @@ class Barcode extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The academic barcode already exists'
+        self::NOT_VALID => 'The academic barcode already exists',
     );
 
     /**
@@ -71,15 +71,17 @@ class Barcode extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $this->_person)
+        if (null === $this->_person) {
             return true;
+        }
 
         $barcode = $this->_entityManager
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || ($this->_person && $barcode->getPerson() == $this->_person))
+        if (null === $barcode || ($this->_person && $barcode->getPerson() == $this->_person)) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

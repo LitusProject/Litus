@@ -22,8 +22,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Node\Page,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit a page.
@@ -81,8 +81,9 @@ class Edit extends Add
         $data['category'] = $page->getCategory()->getId();
 
         $data['edit_roles'] = array();
-        foreach ($page->getEditRoles() as $role)
+        foreach ($page->getEditRoles() as $role) {
             $data['edit_roles'][] = $role->getName();
+        }
 
         $data['parent_' . $page->getCategory()->getId()] = null !== $page->getParent() ? $page->getParent()->getId() : '';
 

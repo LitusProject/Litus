@@ -252,10 +252,10 @@ class Runner
             ->findBy(
                 array(
                     'runner' => $this->id,
-                    'academicYear' => $academicYear
+                    'academicYear' => $academicYear,
                 ),
                 array(
-                    'registrationTime' => 'ASC'
+                    'registrationTime' => 'ASC',
                 )
             );
     }

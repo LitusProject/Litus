@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * AcademicYearMap
@@ -46,8 +46,9 @@ class AcademicYearMap extends EntityRepository
         $title = strtolower($title);
 
         foreach ($resultSet as $mapping) {
-            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false)
+            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false) {
                 $result[] = $mapping;
+            }
         }
 
         return $result;

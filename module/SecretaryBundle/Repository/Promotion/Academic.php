@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Repository\Promotion;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic as AcademicPerson,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic as AcademicPerson;
 
 /**
  * Academic

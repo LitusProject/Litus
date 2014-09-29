@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -73,7 +73,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }

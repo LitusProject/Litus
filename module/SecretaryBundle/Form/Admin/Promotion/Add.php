@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Promotion form
@@ -123,7 +123,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-         $inputFilter->add(
+        $inputFilter->add(
             $factory->createInput(
                 array(
                     'name' => 'external_first_name',

@@ -45,8 +45,9 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
 
     private function _getSlug()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('name')) {
             return null;
+        }
 
         return $this->getDocumentManager()
             ->getRepository('OnBundle\Document\Slug')

@@ -19,10 +19,10 @@
 return array(
     'bannerbundle' => array(
         'banner' => array(
-            'view'
+            'view',
         ),
         'banner_admin_banner' => array(
-            'add', 'delete', 'edit', 'manage', 'upload'
+            'add', 'delete', 'edit', 'manage', 'upload',
         ),
     ),
 );

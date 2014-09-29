@@ -19,11 +19,11 @@
 namespace QuizBundle\Form\Admin\Team;
 
 use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
+    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     QuizBundle\Entity\Team,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edits a quiz team
@@ -76,7 +76,7 @@ class Edit extends Add
                         array('name' => 'int'),
                         new PositiveNumberValidator(),
                         new UniqueTeamValidator($this->_entityManager, $this->_quiz, $this->_team),
-                    )
+                    ),
                 )
             )
         );

@@ -50,7 +50,7 @@ EOT
             $options = array(
                 'http' => array(
                     'timeout' => 0.5,
-                )
+                ),
             );
 
             $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));

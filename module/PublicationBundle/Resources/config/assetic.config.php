@@ -71,7 +71,7 @@ return array(
     'collections' => array(
         'archive_css' => array(
             'assets' => array(
-                'archive/less/archive.less'
+                'archive/less/archive.less',
             ),
             'filters' => array('less'),
             'options' => array(

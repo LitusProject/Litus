@@ -64,7 +64,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             'controller'     => 'common_index',
 
             'auth_route'     => 'logistics_index',
-            'redirect_route' => 'logistics_index'
+            'redirect_route' => 'logistics_index',
         );
     }
 
@@ -82,8 +82,9 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $shibbolethUrl .= '?source=logistics';
 
         $server = $this->getRequest()->getServer();
-        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI'])) {
             $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
+        }
 
         return $shibbolethUrl;
     }

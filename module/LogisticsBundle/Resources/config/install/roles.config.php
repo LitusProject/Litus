@@ -23,13 +23,13 @@ return array(
         ),
         'actions' => array(
             'logistics_index' => array(
-                'fetch', 'index'
+                'fetch', 'index',
             ),
             'logistics_auth' => array(
                 'login', 'logout', 'shibboleth',
             ),
             'logistics_piano' => array(
-                'index'
+                'index',
             ),
         ),
     ),

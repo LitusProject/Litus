@@ -18,15 +18,15 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Entity\User\Barcode as BarcodeEntity,
-    CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
+    CommonBundle\Entity\User\Barcode as BarcodeEntity,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Academic Barcode form

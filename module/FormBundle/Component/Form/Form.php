@@ -23,9 +23,9 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Entry as FieldEntry,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormSpecification,
     FormBundle\Entity\Node\GuestInfo,
-    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\PhpEnvironment\Request,
@@ -87,16 +87,18 @@ class Form
                     $removed = true;
 
                     if (isset($fieldEntry)) {
-                        if (file_exists($filePath . '/' . $fieldEntry->getValue()))
+                        if (file_exists($filePath . '/' . $fieldEntry->getValue())) {
                             unlink($filePath . '/' . $fieldEntry->getValue());
+                        }
 
                         $entityManager->remove($fieldEntry);
                     }
                 } elseif (!isset($formData['field-' . $field->getId()])) {
                     $upload = new FileUpload();
                     $inputFilter = $form->getInputFilter()->get('field-' . $field->getId());
-                    if ($inputFilter instanceof InputInterface)
+                    if ($inputFilter instanceof InputInterface) {
                         $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+                    }
 
                     if ($upload->isValid('field-' . $field->getId())) {
                         if (null === $fieldEntry || $fieldEntry->getValue() == '') {
@@ -105,8 +107,9 @@ class Form
                             } while (file_exists($filePath . '/' . $fileName));
                         } else {
                             $fileName = $fieldEntry->getValue();
-                            if (file_exists($filePath . '/' . $fileName))
+                            if (file_exists($filePath . '/' . $fileName)) {
                                 unlink($filePath . '/' . $fileName);
+                            }
                         }
 
                         $readableValue = basename($upload->getFileName('field-' . $field->getId()));
@@ -119,8 +122,9 @@ class Form
 
                     $errors = $upload->getMessages();
 
-                    if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile']))
+                    if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile'])) {
                         unset($errors['fileUploadErrorNoFile']);
+                    }
 
                     if (sizeof($errors) > 0) {
                         $form->setMessages(array('field-' . $field->getId() => $errors));
@@ -153,7 +157,7 @@ class Form
                     array(
                         'action' => 'login',
                         'id' => $formSpecification->getId(),
-                        'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : ''
+                        'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : '',
                     )
                 );
                 $mailAddress = $formSpecification->getMail()->getFrom();
@@ -164,11 +168,13 @@ class Form
                     ->setSubject($formSpecification->getMail()->getSubject())
                     ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
-                if ($formSpecification->getMail()->getBcc())
+                if ($formSpecification->getMail()->getBcc()) {
                     $mail->addBcc($mailAddress);
+                }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $mailTransport->send($mail);
+                }
             }
         }
 

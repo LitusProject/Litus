@@ -20,8 +20,8 @@ namespace CommonBundle\Form\Account;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Password,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Account activate form.

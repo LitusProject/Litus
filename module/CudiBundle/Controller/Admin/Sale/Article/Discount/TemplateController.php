@@ -113,8 +113,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($template = $this->_getTemplate()))
+        if (!($template = $this->_getTemplate())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($template);
         $this->getEntityManager()->flush();
@@ -128,8 +129,9 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($template = $this->_getTemplate()))
+        if (!($template = $this->_getTemplate())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $template);
 
@@ -166,7 +168,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_article_discount_template',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -195,7 +197,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article_discount_template',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -215,7 +217,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article_discount_template',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

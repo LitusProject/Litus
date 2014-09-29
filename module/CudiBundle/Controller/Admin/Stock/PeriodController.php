@@ -63,16 +63,18 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBooked($previous);
 
-            foreach($bookings as $booking)
+            foreach ($bookings as $booking) {
                 $booking->setStatus('booked', $this->getEntityManager());
+            }
 
             $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllAssigned($previous);
 
             foreach ($bookings as $booking) {
-                if ($booking->getArticle()->canExpire())
+                if ($booking->getArticle()->canExpire()) {
                     continue;
+                }
 
                 $booking->setStatus('booked', $this->getEntityManager());
                 $booking->setStatus('assigned', $this->getEntityManager());
@@ -103,7 +105,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'cudi_admin_stock_period',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -112,8 +114,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->_getPeriod()))
+        if (!($period = $this->_getPeriod())) {
             return new ViewModel();
+        }
 
         $period->setEntityManager($this->getEntityManager());
 
@@ -135,8 +138,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->_getPeriod()))
+        if (!($period = $this->_getPeriod())) {
             return new ViewModel();
+        }
 
         $period->setEntityManager($this->getEntityManager());
 
@@ -194,7 +198,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_period',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -214,7 +218,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_period',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

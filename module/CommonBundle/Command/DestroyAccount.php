@@ -94,8 +94,9 @@ EOT
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path');
 
-                if (file_exists($filePath . '/' . $person->getPhotoPath()))
+                if (file_exists($filePath . '/' . $person->getPhotoPath())) {
                     unlink($filePath . '/' . $person->getPhotoPath());
+                }
 
                 $person->setPhotoPath('');
 

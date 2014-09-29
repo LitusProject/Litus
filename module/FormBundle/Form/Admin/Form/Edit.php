@@ -100,8 +100,9 @@ class Edit extends Add
             if ($form->hasMail()) {
                 $data['mail_subject_' . $language->getAbbrev()] = $form->getMail()->getSubject($language, false);
 
-                if ($form->getMail()->getContent($language, false) != '')
+                if ($form->getMail()->getContent($language, false) != '') {
                     $data['mail_body_' . $language->getAbbrev()] = $form->getMail()->getContent($language, false);
+                }
             }
         }
 
@@ -116,8 +117,9 @@ class Edit extends Add
                 foreach ($this->getLanguages() as $language) {
                     $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
 
-                    if ($form->getReminderMail()->getContent($language, false) != '')
+                    if ($form->getReminderMail()->getContent($language, false) != '') {
                         $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
+                    }
                 }
             }
         }

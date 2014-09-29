@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Stock\Order;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Stock\Period;
 
 /**
  * Virtual
@@ -45,14 +45,16 @@ class Virtual extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -72,8 +74,9 @@ class Virtual extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 

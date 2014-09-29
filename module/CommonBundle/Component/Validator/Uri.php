@@ -31,7 +31,7 @@ class Uri extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The uri is not valid'
+        self::NOT_VALID => 'The uri is not valid',
     );
 
     /**
@@ -47,8 +47,9 @@ class Uri extends \Zend\Validator\AbstractValidator
 
         $valid = \Zend\Uri\Uri::validateHost($value);
 
-        if ($valid)
+        if ($valid) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

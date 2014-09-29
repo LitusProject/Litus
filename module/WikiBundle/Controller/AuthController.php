@@ -18,8 +18,8 @@
 
 namespace WikiBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     WikiBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -85,7 +85,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                     $this->redirect()->toRoute(
                         'wiki_auth',
                         array(
-                            'action' => 'login'
+                            'action' => 'login',
                         )
                     );
 
@@ -96,7 +96,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }
@@ -168,7 +168,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                         $this->redirect()->toRoute(
                             'wiki_auth',
                             array(
-                                'action' => 'login'
+                                'action' => 'login',
                             )
                         );
 
@@ -186,9 +186,9 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
     protected function redirectAfterAuthentication()
     {
         if (!$this->getAuthentication()->isAuthenticated()
-            || !$this->getAuthentication()->isExternallyAuthenticated())
-
-                return null;
+            || !$this->getAuthentication()->isExternallyAuthenticated()) {
+            return null;
+        }
 
         if (null !== $this->getParam('redirect')) {
             return $this->redirect()->toUrl(

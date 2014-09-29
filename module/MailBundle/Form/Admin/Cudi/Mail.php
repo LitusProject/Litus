@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -105,7 +105,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                             'options' => array(
                                 'haystack' => array(1, 2),
                             ),
-                        )
+                        ),
                     ),
                 )
             )

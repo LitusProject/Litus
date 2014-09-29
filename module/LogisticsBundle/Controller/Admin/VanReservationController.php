@@ -18,12 +18,12 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
-    DateTime,
+use DateTime,
     LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation,
+    LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
+    LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -155,8 +155,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function editAction()
     {
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $form = new EditForm(
             $this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation
@@ -219,8 +220,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();
@@ -236,8 +238,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $person = $this->getAuthentication()->getPersonObject();
         $driver = $this->getEntityManager()
@@ -261,8 +264,9 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $reservation->setDriver(null);
         $this->getEntityManager()->flush();

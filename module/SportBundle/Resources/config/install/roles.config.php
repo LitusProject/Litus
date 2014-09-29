@@ -23,10 +23,10 @@ return array(
         ),
         'actions' => array(
             'sport_run_group' => array(
-                'add', 'getName'
+                'add', 'getName',
             ),
             'sport_run_index' => array(
-                'index'
+                'index',
             ),
         ),
     ),

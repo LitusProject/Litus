@@ -18,8 +18,8 @@
 
 namespace BrBundle\Test\Component\ContractParserTest;
 
-use BrBundle\Component\ContractParser\Parser,
-    BrBundle\Component\ContractParser\IllegalFormatException,
+use BrBundle\Component\ContractParser\IllegalFormatException,
+    BrBundle\Component\ContractParser\Parser,
     PHPUnit_Framework_TestCase;
 
 class ParserTest extends PHPUnit_Framework_TestCase
@@ -48,24 +48,24 @@ class ParserTest extends PHPUnit_Framework_TestCase
     public function testTwoLiner()
     {
         $this->parserTester(
-                "*  Two\n".
+                "*  Two\n" .
                 "*  Liner",
 
                 "<entries>" .
-                "<entry>Two</entry>".
-                "<entry>Liner</entry>".
+                "<entry>Two</entry>" .
+                "<entry>Liner</entry>" .
                 "</entries>");
     }
 
     public function testClearTrailingSpaces()
     {
         $this->parserTester(
-                "*  Two    \n".
+                "*  Two    \n" .
                 "*  Liner",
 
                 "<entries>" .
-                "<entry>Two</entry>".
-                "<entry>Liner</entry>".
+                "<entry>Two</entry>" .
+                "<entry>Liner</entry>" .
                 "</entries>");
     }
 
@@ -77,9 +77,9 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testTwoLevels1()
     {
-        $t =    "* One\n".
+        $t =    "* One\n" .
                 "  * One Point One";
-        $x =    "<entries><entry>One<entries><entry>One Point One".
+        $x =    "<entries><entry>One<entries><entry>One Point One" .
                 "</entry></entries></entry></entries>";
 
         $this->parserTester($t, $x);
@@ -90,7 +90,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $t =   "*  \n" .
                "  One\n" .
                "  * One Point One";
-        $x =   "<entries><entry>One<entries><entry>One Point One".
+        $x =   "<entries><entry>One<entries><entry>One Point One" .
                "</entry></entries></entry></entries>";
 
         $this->parserTester($t, $x);

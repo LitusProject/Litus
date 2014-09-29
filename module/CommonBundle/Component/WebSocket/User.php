@@ -64,8 +64,9 @@ class User
      */
     public function doHandshake($data)
     {
-        if ($this->hasHandshaked())
+        if ($this->hasHandshaked()) {
             return;
+        }
 
         $requestHeaders = array();
 
@@ -86,8 +87,9 @@ class User
             . "Sec-WebSocket-Accept: " . $key . "\r\n"
             . "\r\n";
 
-        if ($this->write($response))
+        if ($this->write($response)) {
             $this->_handshaked = true;
+        }
     }
 
     /**

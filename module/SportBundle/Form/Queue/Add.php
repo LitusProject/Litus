@@ -19,12 +19,12 @@
 namespace SportBundle\Form\Queue;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a runner to the queue.
@@ -89,8 +89,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAll();
 
         $array = array('0' => '');
-        foreach($departments as $department)
+        foreach ($departments as $department) {
             $array[$department->getId()] = $department->getName();
+        }
 
         return $array;
     }

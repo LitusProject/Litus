@@ -35,7 +35,7 @@ class Corporate
      * @var array All the possible status values allowed
      */
     private static $_possibleStatuses = array(
-        'correspondence', 'signatory'
+        'correspondence', 'signatory',
     );
 
     /**
@@ -78,8 +78,9 @@ class Corporate
      */
     public function __construct(CorporatePerson $person, $status)
     {
-        if (!self::isValidPerson($person))
+        if (!self::isValidPerson($person)) {
             throw new \InvalidArgumentException('Invalid person');
+        }
 
         $this->person = $person;
 
@@ -129,8 +130,9 @@ class Corporate
      */
     public function setStatus($status)
     {
-        if (self::isValidStatus($status))
+        if (self::isValidStatus($status)) {
             $this->status = $status;
+        }
 
         return $this;
     }

@@ -73,7 +73,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_prof_index',
-            'redirect_route' => 'cudi_prof_index'
+            'redirect_route' => 'cudi_prof_index',
         );
     }
 
@@ -91,10 +91,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                }
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
                     throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -105,8 +107,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl .= '?source=prof';
 
         $server = $this->getRequest()->getServer();
-        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI'])) {
             $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
+        }
 
         return $shibbolethUrl;
     }

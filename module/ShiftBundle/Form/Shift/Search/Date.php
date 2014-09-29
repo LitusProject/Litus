@@ -21,8 +21,8 @@ namespace ShiftBundle\Form\Shift\Search;
 use CommonBundle\Component\Form\Bootstrap\Element\Text,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Search Date

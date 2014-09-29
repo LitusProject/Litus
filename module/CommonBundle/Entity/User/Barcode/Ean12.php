@@ -46,11 +46,13 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     {
         parent::__construct($person);
 
-        if (strlen($barcode) == 13)
+        if (strlen($barcode) == 13) {
             $barcode = (int) floor($barcode / 10);
+        }
 
-        if (strlen($barcode) != 12)
+        if (strlen($barcode) != 12) {
             throw new \InvalidArgumentException('Invalid EAN12 barcode given: ' . $barcode);
+        }
 
         $this->barcode = $barcode;
     }

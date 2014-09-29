@@ -99,8 +99,8 @@ class Quiz
         $this->name = $name;
         $this->editRoles = new ArrayCollection($editRoles);
         $this->timestamp = new DateTime();
-        $this->rounds = new ArrayCollection;
-        $this->teams = new ArrayCollection;
+        $this->rounds = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**
@@ -173,12 +173,14 @@ class Quiz
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person)
+        if (null === $person) {
             return false;
+        }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor') {
                 return true;
+            }
         }
 
         return false;

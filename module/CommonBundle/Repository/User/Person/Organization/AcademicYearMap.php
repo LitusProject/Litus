@@ -18,10 +18,10 @@
 
 namespace CommonBundle\Repository\User\Person\Organization;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CommonBundle\Entity\User\Person\Academic;
 
 /**
  * AcademicYearMap
@@ -64,8 +64,9 @@ class AcademicYearMap extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear);
 
-        if (null !== $organization)
+        if (null !== $organization) {
             $query->setParameter('organization', $organization);
+        }
 
         return $query->getQuery();
     }

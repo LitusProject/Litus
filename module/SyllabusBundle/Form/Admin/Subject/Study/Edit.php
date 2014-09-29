@@ -19,8 +19,8 @@
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
 use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Subject,
     Zend\Form\Element\Submit;
 
 /**

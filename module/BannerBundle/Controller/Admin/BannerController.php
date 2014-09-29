@@ -18,10 +18,10 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use DateTime,
-    BannerBundle\Entity\Node\Banner,
+use BannerBundle\Entity\Node\Banner,
     BannerBundle\Form\Admin\Banner\Add as AddForm,
     BannerBundle\Form\Admin\Banner\Edit as EditForm,
+    DateTime,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
@@ -72,8 +72,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($banner = $this->_getBanner()))
+        if (!($banner = $this->_getBanner())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $banner);
         $form->setAttribute(
@@ -102,8 +103,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         if (!($banner = $this->_getBanner(false))) {
             $form = new AddForm($this->getEntityManager());
@@ -160,8 +162,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -170,8 +173,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     }
                 }
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $formErrors['file'] = $upload->getMessages();
+                }
 
                 return new ViewModel(
                     array(
@@ -234,8 +238,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -260,8 +265,9 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($banner = $this->_getBanner()))
+        if (!($banner = $this->_getBanner())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($banner);
 
@@ -270,7 +276,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -291,7 +297,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'banner_admin_banner',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
             }
@@ -313,7 +319,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'banner_admin_banner',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
             }

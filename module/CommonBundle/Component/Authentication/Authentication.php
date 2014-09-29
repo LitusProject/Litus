@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
-    CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
+use CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService,
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
 
 /**
  * Authentication
@@ -68,8 +68,9 @@ class Authentication
      */
     public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)
     {
-        if (isset($this->_result) && $identity == '')
+        if (isset($this->_result) && $identity == '') {
             return;
+        }
 
         if ('' != $identity) {
             $this->_adapter
@@ -100,13 +101,15 @@ class Authentication
      */
     public function isAuthenticated()
     {
-        if (isset($this->_result))
+        if (isset($this->_result)) {
             return $this->_result->isValid();
+        }
 
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (!isset($this->_result)) {
             return false;
+        }
 
         return $this->_result->isValid();
     }
@@ -118,8 +121,9 @@ class Authentication
      */
     public function isExternallyAuthenticated()
     {
-        if (!$this->isAuthenticated())
+        if (!$this->isAuthenticated()) {
             return false;
+        }
 
         return $this->_service->isExternallyVisible();
     }
@@ -133,8 +137,9 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (!isset($this->_result)) {
             return null;
+        }
 
         return $this->_result->getPersonObject();
     }
@@ -148,8 +153,9 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result))
+        if (!isset($this->_result)) {
             return null;
+        }
 
         return $this->_result->getSessionObject();
     }

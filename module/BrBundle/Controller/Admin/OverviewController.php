@@ -46,15 +46,16 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'array' => $array,
-                'totals'=> $totals,
+                'totals' => $totals,
             )
         );
     }
 
     public function personviewAction()
     {
-        if (!($person = $this->_getAuthor()))
+        if (!($person = $this->_getAuthor())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -74,8 +75,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyviewAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -206,11 +208,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             'amount' => $contractNmbr,
             'contract' => $totalContracted,
             'paid' => $totalPaid,
-            'signed' => $totalSigned
+            'signed' => $totalSigned,
         );
 
         return [$collection, $totals];
-
     }
 
     private function _getAuthor()
@@ -224,7 +225,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'br_admin_overview',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -244,7 +245,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'br_admin_overview',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -265,7 +266,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'br_admin_overview',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -285,7 +286,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'br_admin_overview',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

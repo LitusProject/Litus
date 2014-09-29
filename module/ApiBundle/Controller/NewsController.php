@@ -48,8 +48,9 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findApi($maxAge);
 
         $summaryLength = $this->getRequest()->getPost('summary_length');
-        if (!is_numeric($summaryLength) || $summaryLength <= 0)
+        if (!is_numeric($summaryLength) || $summaryLength <= 0) {
             $summaryLength = 200;
+        }
 
         $result = array();
         foreach ($items as $item) {
@@ -63,13 +64,13 @@ class NewsController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
                 'message' => trim(strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage())))),
                 'summary' => $summary,
-                'title' => $item->getTitle($this->getLanguage())
+                'title' => $item->getTitle($this->getLanguage()),
             );
         }
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }

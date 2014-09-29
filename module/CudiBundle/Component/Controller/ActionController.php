@@ -33,8 +33,9 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
 
         return AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
     }
@@ -59,7 +60,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_stock_period',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

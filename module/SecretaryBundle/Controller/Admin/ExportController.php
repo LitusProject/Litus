@@ -99,8 +99,9 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
                 ->getRepository('SecretaryBundle\Entity\Registration')
                 ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-            if (null === $registration || !$registration->hasPayed())
+            if (null === $registration || !$registration->hasPayed()) {
                 continue;
+            }
 
             $primaryAddress = $academic->getPrimaryAddress();
             $secondaryAddress = $academic->getSecondaryAddress();

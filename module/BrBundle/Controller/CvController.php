@@ -55,13 +55,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         }
 
         $messages = $this->_getBadAccountMessage($person);
-            if ($messages !== null && !empty($messages)) {
-                return new ViewModel(
+        if ($messages !== null && !empty($messages)) {
+            return new ViewModel(
                     array(
                         'messages' => $messages,
                     )
                 );
-            }
+        }
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
@@ -143,8 +143,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i])
+                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
                         continue;
+                    }
 
                     $language = new CvLanguage($entry, $formData['lang_name' . $i],
                         $formData['lang_written' . $i],
@@ -177,7 +178,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 'languageError' => $languageError,
                 'oral_skills' => CvLanguage::$ORAL_SKILLS,
                 'written_skills' => CvLanguage::$WRITTEN_SKILLS,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -299,8 +300,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 }
 
                 for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i])
+                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
                         continue;
+                    }
 
                     $language = new CvLanguage($entry, $formData['lang_name' . $i],
                         $formData['lang_written' . $i],
@@ -321,8 +323,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
                 return new ViewModel();
             } else {
-                if (!$form->isValidLanguages($formData))
+                if (!$form->isValidLanguages($formData)) {
                     $languageError = 'The number of languages must be between 1 and 5';
+                }
             }
         } else {
             $form->populateFromEntry($entry);
@@ -334,7 +337,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 'languageError' => $languageError,
                 'oral_skills' => CvLanguage::$ORAL_SKILLS,
                 'written_skills' => CvLanguage::$WRITTEN_SKILLS,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )

@@ -22,8 +22,8 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Fieldset;
+    Zend\Form\Fieldset,
+    Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Add Option
@@ -72,7 +72,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                 'validators' => array(
                     array(
                         'name' => 'int',
-                    )
+                    ),
                 ),
             ),
             array(
@@ -89,7 +89,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
             array(
@@ -99,7 +99,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
         );

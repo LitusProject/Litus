@@ -22,8 +22,8 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person,
-    DateTime,
     DateInterval,
+    DateTime,
     Doctrine\ORM\EntityManager,
     SportBundle\Entity\Lap,
     SportBundle\Entity\Runner;
@@ -80,13 +80,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $command = json_decode($data);
 
-        if (null == $command)
+        if (null == $command) {
             return;
+        }
 
         switch ($command->command) {
             case 'action':
-                if ($this->isAuthenticated($user->getSocket()))
+                if ($this->isAuthenticated($user->getSocket())) {
                     $this->_gotAction($user, $command);
+                }
                 break;
             case 'initialize':
                 if (!isset($command->key) || $command->key != $key) {
@@ -191,9 +193,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueToAll()
     {
-        $queue= $this->_getJsonQueue();
-        foreach($this->getUsers() as $user)
+        $queue = $this->_getJsonQueue();
+        foreach ($this->getUsers() as $user) {
             $this->sendQueue($user, $queue);
+        }
     }
 
     /**
@@ -243,8 +246,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             $runner->setRunnerIdentification($data->universityIdentification);
         } else {
-            if (null === $runner->getDepartment())
+            if (null === $runner->getDepartment()) {
                 $runner->setDepartment($department);
+            }
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -272,16 +276,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Lap')
                 ->findPrevious($this->_getAcademicYear(), 5)
         );
-        foreach($previousLaps as $lap)
+        foreach ($previousLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'previous');
+        }
 
         $laps[] = $this->_jsonLap($this->_getCurrentLap(), 'current');
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext($this->_getAcademicYear(), 15);
-        foreach($nextLaps as $lap)
+        foreach ($nextLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'next');
+        }
 
         $data = (object) array(
             'laps' => (object) array(
@@ -306,8 +312,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _jsonLap(Lap $lap = null, $state)
     {
-        if (null === $lap)
+        if (null === $lap) {
             return null;
+        }
 
         $lap->setEntityManager($this->_entityManager);
 
@@ -338,11 +345,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _startLap()
     {
-        if (null !== $this->_getCurrentLap())
+        if (null !== $this->_getCurrentLap()) {
             $this->_getCurrentLap()->stop();
+        }
 
-        if (null !== $this->_getNextLap())
+        if (null !== $this->_getNextLap()) {
             $this->_getNextLap()->start();
+        }
 
         $this->_entityManager->flush();
     }
@@ -377,8 +386,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
 
         $resultPage = null;
-        if (false !== $fileContents)
+        if (false !== $fileContents) {
             $resultPage = (array) json_decode($fileContents);
+        }
 
         if (null !== $resultPage) {
             $teamId = $this->_entityManager
@@ -453,8 +463,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findAll();
 
         $total = 0;
-        foreach ($laps as $lap)
+        foreach ($laps as $lap) {
             $total += $this->_convertDateIntervalToSeconds($lap->getLapTime());
+        }
         $average = $total / count($laps);
 
         return floor($average / 60) . ':' . ($average % 60 < 10 ? '0' . $average % 60 : $average % 60);

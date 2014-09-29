@@ -77,8 +77,9 @@ class Credential
      */
     public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
     {
-        if (!in_array($algorithm, hash_algos()))
+        if (!in_array($algorithm, hash_algos())) {
             throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
+        }
 
         $this->algorithm = $algorithm;
         $this->salt = bin2hex(openssl_random_pseudo_bytes(16));
@@ -104,8 +105,9 @@ class Credential
     private function _hash($credential)
     {
         $hash = hash_hmac($this->algorithm, $credential, $this->salt);
-        for ($i = 0; $i < $this->iterations; $i++)
+        for ($i = 0; $i < $this->iterations; $i++) {
             $hash = hash_hmac($this->algorithm, $hash, $this->salt);
+        }
 
         return $hash;
     }
@@ -139,8 +141,9 @@ class Credential
      */
     public function update($credential)
     {
-        if (!$this->shouldUpdate() || !$this->validateCredential($credential))
+        if (!$this->shouldUpdate() || !$this->validateCredential($credential)) {
             return;
+        }
 
         $this->algorithm = self::DEFAULT_ALGORITHM;
         $this->iterations = self::DEFAULT_NB_ITERATIONS;

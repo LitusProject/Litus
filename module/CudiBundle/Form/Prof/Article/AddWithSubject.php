@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use SyllabusBundle\Entity\Subject,
-    Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Add With Subject

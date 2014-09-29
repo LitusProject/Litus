@@ -20,8 +20,8 @@ namespace ShiftBundle\Form\Shift\Search;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Search Unit
@@ -59,10 +59,11 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllActiveAndDisplayed();
 
         $unitsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($units as $unit)
+        foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
+        }
 
         return $unitsArray;
     }

@@ -31,8 +31,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle()))
+        if (!($article = $this->_getSaleArticle())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($article, $this->getEntityManager());
 
@@ -112,8 +113,9 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->_getDiscount()))
+        if (!($discount = $this->_getDiscount())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($discount);
         $this->getEntityManager()->flush();
@@ -139,7 +141,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -159,7 +161,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -180,7 +182,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -200,7 +202,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

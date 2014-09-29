@@ -21,8 +21,8 @@ namespace ShiftBundle\Entity\Shift;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     DateTime,
-    IllegalArgumentException,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    IllegalArgumentException;
 
 /**
  * This entity stores a responsible for a shift.
@@ -65,8 +65,9 @@ class Responsible
     {
         $this->signupTime = new DateTime();
 
-        if (!$person->isPraesidium($academicYear))
+        if (!$person->isPraesidium($academicYear)) {
             throw new InvalidArgumentException('The given person cannot be a responsible');
+        }
 
         $this->person = $person;
     }

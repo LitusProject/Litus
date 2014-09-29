@@ -53,11 +53,13 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -82,8 +84,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -152,8 +155,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($retour = $this->_getRetour()))
+        if (!($retour = $this->_getRetour())) {
             return new ViewModel();
+        }
 
         $retour->getArticle()->addStockValue(-$retour->getNumber());
         $this->getEntityManager()->remove($retour);
@@ -177,7 +181,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_retour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -197,7 +201,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_retour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -218,7 +222,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_retour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -238,7 +242,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_retour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

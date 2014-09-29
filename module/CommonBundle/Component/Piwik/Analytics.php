@@ -66,14 +66,16 @@ class Analytics
         $parameters = array(
             'method' => 'VisitsSummary.getUniqueVisitors',
             'date'   => $date,
-            'period' => $period
+            'period' => $period,
         );
 
-        if (null === ($data = $this->_getData($parameters)))
+        if (null === ($data = $this->_getData($parameters))) {
             return null;
+        }
 
-        if (count($data) == 1)
+        if (count($data) == 1) {
             return $data['value'];
+        }
 
         return $data;
     }
@@ -88,19 +90,19 @@ class Analytics
     {
         $parameters = array(
             'method'      => 'Live.getCounters',
-            'lastMinutes' => $lastMinutes
+            'lastMinutes' => $lastMinutes,
         );
 
         if (null === ($data = $this->_getData($parameters))) {
             return array(
                 'visits'  => 'N/A',
-                'actions' => 'N/A'
+                'actions' => 'N/A',
             );
         }
 
         return array(
             'visits'  => $data[0]->visits,
-            'actions' => $data[0]->actions
+            'actions' => $data[0]->actions,
         );
     }
 
@@ -116,7 +118,7 @@ class Analytics
             $client = new Client(
                 $this->_url,
                 array(
-                    'timeout' => 5
+                    'timeout' => 5,
                 )
             );
 
@@ -126,7 +128,7 @@ class Analytics
                         'module'     => 'API',
                         'format'     => 'json',
                         'token_auth' => $this->_tokenAuth,
-                        'idSite'     => $this->_idSite
+                        'idSite'     => $this->_idSite,
                     ),
                     $parameters
                 )

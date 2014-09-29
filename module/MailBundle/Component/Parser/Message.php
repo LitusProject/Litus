@@ -77,8 +77,9 @@ class Message
         $headers = $this->_getPartHeaders($this->_parts[1]);
 
         $header = '';
-        if (isset($headers[$name]))
+        if (isset($headers[$name])) {
             $header = $headers[$name];
+        }
 
         return $header;
     }
@@ -102,7 +103,7 @@ class Message
     {
         $bodyTypes = array(
             'text' => 'text/plain',
-            'html' => 'text/html'
+            'html' => 'text/html',
         );
 
         $body = array();
@@ -116,7 +117,7 @@ class Message
 
                 $body[] = array(
                     'type' => array_search($this->_getPartContentType($part), $bodyTypes),
-                    'content' => $content
+                    'content' => $content,
                 );
             }
         }
@@ -133,11 +134,11 @@ class Message
     {
         $contentDispositions = array(
             'attachment',
-            'inline'
+            'inline',
         );
 
         $headers = array(
-            'content-id'
+            'content-id',
         );
 
         $attachments = array();
@@ -165,8 +166,9 @@ class Message
                         );
 
                         $filename = $this->_getPartHeaders($part)[$header];
-                        if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>')
+                        if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>') {
                             $filename = substr($filename, 1, (strlen($filename) - 2));
+                        }
 
                         $attachment = new Attachment(
                             $filename,
@@ -177,8 +179,9 @@ class Message
                 }
             }
 
-            if (null !== $attachment)
+            if (null !== $attachment) {
                 $attachments[] = $attachment;
+            }
         }
 
         return $attachments;
@@ -203,8 +206,9 @@ class Message
     private function _getPartHeaders($part)
     {
         $headers = array();
-        if (isset($part['headers']))
+        if (isset($part['headers'])) {
             $headers = $part['headers'];
+        }
 
         return $headers;
     }
@@ -220,8 +224,9 @@ class Message
         $contentType = '';
         if (isset($part['content-type'])) {
             $contentType = $part['content-type'];
-            if (false !== strpos($contentType, ';'))
+            if (false !== strpos($contentType, ';')) {
                 $contentType = substr($contentType, 0, strpos($contentType, ';'));
+            }
         }
 
         return $contentType;
@@ -236,8 +241,9 @@ class Message
     private function _getPartContentDisposition($part)
     {
         $contentDisposition = '';
-        if (isset($part['content-disposition']))
+        if (isset($part['content-disposition'])) {
             $contentDisposition = $part['content-disposition'];
+        }
 
         return $contentDisposition;
     }
@@ -269,7 +275,7 @@ class Message
         if (strtolower($encodingType) == 'base64') {
             return base64_decode($encodedString);
         } elseif (strtolower($encodingType) == 'quoted-printable') {
-             return quoted_printable_decode($encodedString);
+            return quoted_printable_decode($encodedString);
         } else {
             return $encodedString;
         }

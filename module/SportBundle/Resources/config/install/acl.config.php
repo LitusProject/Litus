@@ -19,19 +19,19 @@
 return array(
     'sportbundle' => array(
         'sport_admin_run' => array(
-            'edit', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'pasta', 'queue', 'update'
+            'edit', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'pasta', 'queue', 'update',
         ),
         'sport_run_group' => array(
-            'add', 'getName'
+            'add', 'getName',
         ),
         'sport_run_index' => array(
-            'index'
+            'index',
         ),
         'sport_run_queue' => array(
-            'index', 'getName'
+            'index', 'getName',
         ),
         'sport_run_screen' => array(
-            'index'
+            'index',
         ),
     ),
 );

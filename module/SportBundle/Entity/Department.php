@@ -146,8 +146,9 @@ class Department
             $member->setEntityManager($this->_entityManager);
 
             foreach ($member->getLaps($academicYear) as $lap) {
-                if (null === $lap->getEndTime())
+                if (null === $lap->getEndTime()) {
                     continue;
+                }
 
                 $lap->setEntityManager($this->_entityManager);
 
@@ -158,8 +159,9 @@ class Department
 
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
-                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
                         $points += $lap->getPoints();
+                    }
                 }
             }
         }

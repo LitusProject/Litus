@@ -18,8 +18,8 @@
 
 namespace PublicationBundle\Repository\Edition;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**

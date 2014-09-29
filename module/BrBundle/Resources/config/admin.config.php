@@ -43,7 +43,7 @@ return array(
                 ),
                 'br_admin_order'    => array(
                     'title' => 'Orders',
-                    'help'  => 'Manage the orders of each company.  Orders can be added or deleted.  Creating an order instantly creates a contract that can be signed.  A the order of a signed contract cannot be removed.'
+                    'help'  => 'Manage the orders of each company.  Orders can be added or deleted.  Creating an order instantly creates a contract that can be signed.  A the order of a signed contract cannot be removed.',
                 ),
                 'br_admin_overview' => array(
                     'title'  => 'Overview',
@@ -52,11 +52,11 @@ return array(
                 ),
                 'br_admin_product'  => array(
                     'title' => 'Products',
-                    'help'  => 'Here you can manage all the products VTK has to offer to every company.'
+                    'help'  => 'Here you can manage all the products VTK has to offer to every company.',
                 ),
                 'br_admin_request'  => array(
                     'title' => 'Requests',
-                    'help'  => 'Here you can manage all requests that are made by the companies.'
+                    'help'  => 'Here you can manage all requests that are made by the companies.',
                 ),
             ),
         ),

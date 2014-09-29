@@ -53,8 +53,9 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
                 $criteria = array('academicYear' => $academicYear->getId());
 
-                if ($formData['only_cudi'])
+                if ($formData['only_cudi']) {
                     $criteria['irreeelAtCudi'] = true;
+                }
 
                 $people = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
@@ -64,8 +65,9 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                     $registration = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Registration')
                         ->findOneByAcademic($person->getAcademic());
-                    if (null === $registration)
+                    if (null === $registration) {
                         continue;
+                    }
 
                     if ($person->getAcademic()->isMember($academicYear) && $registration->hasPayed()) {
                         $booking = $this->getEntityManager()
@@ -81,8 +83,9 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                             $booking = new Booking($this->getEntityManager(), $person->getAcademic(), $article, 'assigned', 1, true);
                             $this->getEntityManager()->persist($booking);
 
-                            if (!$formData['test'] && $formData['send_mail'])
+                            if (!$formData['test'] && $formData['send_mail']) {
                                 BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
+                            }
                         } elseif ($booking->getStatus() == 'booked') {
                             $number++;
                             $booking->setStatus('assigned', $this->getEntityManager());

@@ -59,12 +59,14 @@ class Edit extends Add
     private function _populateFromRule(Rule $rule)
     {
         $startTime = null;
-        if ('' != $rule->getStartTime())
+        if ('' != $rule->getStartTime()) {
             $startTime = substr($rule->getStartTime(), 0, 2) . ':' . substr($rule->getStartTime(), 2);
+        }
 
         $endTime = null;
-        if ('' != $rule->getEndTime())
+        if ('' != $rule->getEndTime()) {
             $startTime = substr($rule->getEndTime(), 0, 2) . ':' . substr($rule->getEndTime(), 2);
+        }
 
         $data = array(
             'start_date' => $rule->getStartDate()->format('d/m/Y H:i'),

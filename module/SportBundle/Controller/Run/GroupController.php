@@ -33,7 +33,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
     public function addAction()
     {
         $allMembers = array(
-            'one', 'two', 'three', 'four', 'five'
+            'one', 'two', 'three', 'four', 'five',
         );
 
         $form = new AddForm($this->getEntityManager(), $allMembers);
@@ -63,8 +63,9 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                 foreach ($allMembers as $memberNb) {
                     if ('' != $formData['university_identification_' . $memberNb]) {
                         if ('' == $formData['first_name_' . $memberNb] && '' == $formData['last_name_' . $memberNb]) {
-                            if (true === $createGroup)
+                            if (true === $createGroup) {
                                 $createGroup = false;
+                            }
                         }
                     } else {
                         $memberNbKey = array_keys($allMembers, $memberNb);
@@ -80,7 +81,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         $formData['group_name'],
                         array(
                             $formData['happy_hour_one'],
-                            $formData['happy_hour_two']
+                            $formData['happy_hour_two'],
                         )
                     );
 
@@ -116,7 +117,6 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                                 $groupMembers[] = $repositoryCheck;
                             }
                         }
-
                     }
 
                     if (0 != count($groupMembers)) {
@@ -132,7 +132,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         $this->redirect()->toRoute(
                             'sport_run_index',
                             array(
-                                'action' => 'index'
+                                'action' => 'index',
                             )
                         );
                     }
@@ -142,7 +142,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }
@@ -162,8 +162,8 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         'result' => (object) array(
                             'status' => 'success',
                             'firstName' => $academic->getFirstName(),
-                            'lastName' => $academic->getLastName()
-                        )
+                            'lastName' => $academic->getLastName(),
+                        ),
                     )
                 );
             }

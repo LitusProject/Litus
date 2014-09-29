@@ -84,8 +84,9 @@ class DateCompare extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $value || '' == $value)
+        if (null === $value || '' == $value) {
             return true;
+        }
 
         if (($context !== null) && isset($context) && array_key_exists($this->_endDate, $context)) {
             $endDate = $context[$this->_endDate];

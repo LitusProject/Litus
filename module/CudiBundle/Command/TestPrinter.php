@@ -44,11 +44,13 @@ EOT
 
     protected function executeCommand()
     {
-        if (false === ($printer = $this->_getPrinter()))
+        if (false === ($printer = $this->_getPrinter())) {
             return 1;
+        }
 
-        if (false === ($ticket = $this->_getTicket()))
+        if (false === ($ticket = $this->_getTicket())) {
             return 2;
+        }
 
         $this->_send($printer, $ticket);
     }
@@ -68,13 +70,15 @@ EOT
 
         $printer = $this->getArgument('printer');
 
-        if (isset($printers[$printer]))
+        if (isset($printers[$printer])) {
             return $printers[$printer];
+        }
 
         $this->writeln('<error>Error:</error> Invalid printer name: ' . $printer);
         $this->writeln('Possible printers:');
-        foreach($printers as $key => $printer)
+        foreach ($printers as $key => $printer) {
             $this->writeln('    -> ' . $key . ':' . $printer);
+        }
 
         return false;
     }
@@ -125,7 +129,7 @@ EOT
                     'barcode' => '54321',
                     'number' => '2',
                 ),
-            )
+            ),
         );
 
         $data = json_encode(

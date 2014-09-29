@@ -20,14 +20,14 @@ namespace SecretaryBundle\Form\Admin\Registration;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    SecretaryBundle\Entity\Registration,
     SecretaryBundle\Entity\Organization\MetaData,
-    Zend\InputFilter\InputFilter,
+    SecretaryBundle\Entity\Registration,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Registration
@@ -102,8 +102,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $organizationOptions = array();
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationOptions;
     }

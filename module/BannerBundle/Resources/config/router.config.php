@@ -52,6 +52,6 @@ return array(
     'controllers' => array(
         'banner_admin_banner' => 'BannerBundle\Controller\Admin\BannerController',
 
-        'banner'              => 'BannerBundle\Controller\BannerController'
+        'banner'              => 'BannerBundle\Controller\BannerController',
     ),
 );

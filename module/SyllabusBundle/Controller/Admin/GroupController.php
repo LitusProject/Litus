@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\StudyGroupMap,
@@ -37,8 +37,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'SyllabusBundle\Entity\Group',
@@ -48,8 +49,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
 
-        foreach($paginator as $group)
+        foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -67,8 +69,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -117,11 +120,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $group);
 
@@ -175,11 +180,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function studiesAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $form = new StudyForm();
 
@@ -250,8 +257,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $group->setRemoved();
         $this->getEntityManager()->flush();
@@ -267,8 +275,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
@@ -282,13 +291,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        if(!($academicYear = $this->_getAcademicYear()))
-
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if(!($group = $this->_getGroup()))
-
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $mappings = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -327,7 +336,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     'study'                           => $study->getFullTitle(),
                 );
             }
-
         }
 
         $header = array(
@@ -354,7 +362,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getResponse()->getHeaders()
             ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="'.$group->getName().'_'.$academicYear->getCode().'.csv"',
+            'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
             'Content-Type' => 'text/csv',
         ));
 
@@ -368,8 +376,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -381,7 +390,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -402,7 +411,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -422,7 +431,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -445,7 +454,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -465,7 +474,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

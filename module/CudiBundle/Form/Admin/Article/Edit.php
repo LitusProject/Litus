@@ -66,8 +66,9 @@ class Edit extends \CudiBundle\Form\Admin\Article\Add
     {
         $inputFilter = parent::getInputFilter();
 
-        if ($this->_article->getType() == 'common')
+        if ($this->_article->getType() == 'common') {
             $inputFilter->remove('type');
+        }
 
         $inputFilter->remove('subject');
         $inputFilter->remove('subject_id');

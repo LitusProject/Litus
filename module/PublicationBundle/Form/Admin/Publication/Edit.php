@@ -19,10 +19,10 @@
 namespace PublicationBundle\Form\Admin\Publication;
 
 use Doctrine\ORM\EntityManager,
-    PublicationBundle\Entity\Publication,
     PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    PublicationBundle\Entity\Publication,
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * This form allows the user to edit the Publication.
@@ -82,7 +82,7 @@ class Edit extends \PublicationBundle\Form\Admin\Publication\Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_publication->getId())
+                        new TitleValidator($this->_entityManager, $this->_publication->getId()),
                     ),
                 )
             )

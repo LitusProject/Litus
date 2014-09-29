@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person;
 
 /**
  * Article
@@ -58,7 +58,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isProf', 'false')
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->orderBy('a.title', 'ASC')
             ->getQuery();
 
@@ -77,7 +77,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isProf', 'false')
                 )
             )
-            ->setParameter('author', '%'.strtolower($author).'%')
+            ->setParameter('author', '%' . strtolower($author) . '%')
             ->orderBy('a.title', 'ASC')
             ->getQuery();
 
@@ -96,7 +96,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isProf', 'false')
                 )
             )
-            ->setParameter('isbn', '%'.strtolower($isbn).'%')
+            ->setParameter('isbn', '%' . strtolower($isbn) . '%')
             ->orderBy('a.title', 'ASC')
             ->getQuery();
 
@@ -115,7 +115,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('a.isProf', 'false')
                 )
             )
-            ->setParameter('publisher', '%'.strtolower($publisher).'%')
+            ->setParameter('publisher', '%' . strtolower($publisher) . '%')
             ->orderBy('a.title', 'ASC')
             ->getQuery();
 
@@ -138,8 +138,9 @@ class Article extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($subjects as $subject)
+        foreach ($subjects as $subject) {
             $ids[] = $subject['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a.id')
@@ -156,8 +157,9 @@ class Article extends EntityRepository
             ->getResult();
 
         $articles = array(0);
-        foreach($resultSet as $mapping)
+        foreach ($resultSet as $mapping) {
             $articles[] = $mapping->getArticle()->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -197,8 +199,9 @@ class Article extends EntityRepository
 
         $articles = array();
         foreach ($resultSet as $article) {
-            if (!$article->isInternal() || $article->isOfficial())
+            if (!$article->isInternal() || $article->isOfficial()) {
                 $articles[] = $article;
+            }
         }
 
         return $articles;
@@ -211,8 +214,9 @@ class Article extends EntityRepository
             ->findByProf($person);
 
         $ids = array(0);
-        foreach($subjects as $subject)
+        foreach ($subjects as $subject) {
             $ids[] = $subject->getSubject()->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -272,8 +276,9 @@ class Article extends EntityRepository
 
         $ids = array(0);
         foreach ($removed as $remove) {
-            if (!$remove->isRefused())
+            if (!$remove->isRefused()) {
                 $ids[] = $remove->getEntityId();
+            }
         }
 
         return $ids;
@@ -286,8 +291,9 @@ class Article extends EntityRepository
             ->findByProf($person);
 
         $subjectIds = array(0);
-        foreach($subjects as $subject)
+        foreach ($subjects as $subject) {
             $subjectIds[] = $subject->getSubject()->getId();
+        }
 
         $articleIds = array_merge(
             $this->_getCurrentArticleIdsByProf($person),
@@ -313,19 +319,22 @@ class Article extends EntityRepository
             ->getOneOrNullResult();
 
         if ($resultSet) {
-            if (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial())
+            if (!$resultSet->getArticle()->isInternal() || $resultSet->getArticle()->isOfficial()) {
                 return $resultSet->getArticle();
+            }
         }
 
         $actions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
             ->findAllByEntityAndEntityIdAndPerson('article', $id, $person);
 
-        if (isset($actions[0]))
+        if (isset($actions[0])) {
             return $actions[0]->setEntityManager($this->_em)
                 ->getEntity();
+        }
 
-        if ($resultSet)
+        if ($resultSet) {
             return $resultSet->getArticle();
+        }
     }
 }

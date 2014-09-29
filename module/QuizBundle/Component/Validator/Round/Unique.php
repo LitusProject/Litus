@@ -52,7 +52,7 @@ class Unique extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The round number already exists'
+        self::NOT_VALID => 'The round number already exists',
     );
 
     /**
@@ -85,13 +85,14 @@ class Unique extends \Zend\Validator\AbstractValidator
             ->getRepository('QuizBundle\Entity\Round')
             ->findBy(
                 array(
-                    'quiz'=>$this->_quiz->getId(),
-                    'order'=>$value
+                    'quiz' => $this->_quiz->getId(),
+                    'order' => $value,
                 )
             );
 
-        if (count($rounds) == 0 || $rounds[0] == $this->_round)
+        if (count($rounds) == 0 || $rounds[0] == $this->_round) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

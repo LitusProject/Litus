@@ -130,13 +130,13 @@ class Event extends \CommonBundle\Component\Document\Generator\Pdf
                 'event',
                 array(
                     'name' => $this->_event->getActivity()->getTitle(),
-                    'date' => $now->format('d F Y')
+                    'date' => $now->format('d F Y'),
                 ),
                 array(
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $organization_short_name
+                            'short_name' => $organization_short_name,
                         ),
                         array(
                             new Object(
@@ -148,7 +148,7 @@ class Event extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 null,
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(

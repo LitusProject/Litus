@@ -18,9 +18,9 @@
 
 namespace MailBundle\Command;
 
-use Symfony\Component\Console\Input\InputArgument,
-    MailBundle\Entity\Alias\Academic as AcademicAlias,
-    MailBundle\Entity\Alias\External as ExternalAlias;
+use MailBundle\Entity\Alias\Academic as AcademicAlias,
+    MailBundle\Entity\Alias\External as ExternalAlias,
+    Symfony\Component\Console\Input\InputArgument;
 
 /**
  * ImportAliases
@@ -48,8 +48,9 @@ EOT
     protected function executeCommand()
     {
         $files = $this->getArgument('file');
-        if (!is_array($files))
+        if (!is_array($files)) {
             $files = array($files);
+        }
 
         // get PWD of shell that called public/index.php
         // the PWD of php itself is changed in said file

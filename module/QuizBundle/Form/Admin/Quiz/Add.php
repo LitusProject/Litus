@@ -18,13 +18,13 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     QuizBundle\Entity\Quiz,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a new quiz
@@ -102,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function populateFromQuiz(Quiz $quiz)
     {
         $data = array(
-            'name' => $quiz->getName()
+            'name' => $quiz->getName(),
         );
 
         $this->setData($data);
@@ -116,12 +116,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can add a quiz');
+        }
 
         return $rolesArray;
     }

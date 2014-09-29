@@ -44,5 +44,6 @@ $modules = array(
 
 removeAclAction($connection, 'all_install', 'index');
 
-foreach ($modules as $module)
+foreach ($modules as $module) {
     removeAclAction($connection, $module . '_install', 'index');
+}

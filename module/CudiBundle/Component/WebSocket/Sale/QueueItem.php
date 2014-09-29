@@ -141,7 +141,7 @@ class QueueItem
                         'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
-                )
+                ),
             )
         );
     }
@@ -172,7 +172,7 @@ class QueueItem
                         'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->_getArticles(),
-                )
+                ),
             )
         );
     }
@@ -209,8 +209,9 @@ class QueueItem
         $soldArticles = array();
 
         foreach ($bookings as $booking) {
-            if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0 || !$booking->getArticle()->isSellable())
+            if (!isset($articles->{$booking->getArticle()->getId()}) || $articles->{$booking->getArticle()->getId()} == 0 || !$booking->getArticle()->isSellable()) {
                 continue;
+            }
 
             if ($articles->{$booking->getArticle()->getId()} < $booking->getNumber()) {
                 $remainder = new Booking(
@@ -271,15 +272,17 @@ class QueueItem
         }
 
         foreach ($articles as $id => $number) {
-            if ($number <= 0)
+            if ($number <= 0) {
                 continue;
+            }
 
             $article = $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
 
-            if (!$article->isSellable())
+            if (!$article->isSellable()) {
                 continue;
+            }
 
             $booking = new Booking(
                 $this->_entityManager,
@@ -340,10 +343,12 @@ class QueueItem
                 $bestDiscount = null;
                 foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager))
+                        if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                             continue;
-                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager))
+                        }
+                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager)) {
                             continue;
+                        }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
                         if ($newPrice < $price) {
                             $price = $newPrice;
@@ -372,8 +377,9 @@ class QueueItem
         $hasAccoCard = false;
         foreach ($discounts as $discount) {
             $hasAccoCard = ($discount == 'acco');
-            if ($hasAccoCard)
+            if ($hasAccoCard) {
                 break;
+            }
         }
         $acco = $this->_entityManager
             ->getRepository('CudiBundle\Entity\User\Person\Sale\Acco')
@@ -404,8 +410,9 @@ class QueueItem
         $bookedArticles = array();
         foreach ($bookings as $booking) {
             $barcodes = array();
-            foreach($booking->getArticle()->getBarcodes() as $barcode)
+            foreach ($booking->getArticle()->getBarcodes() as $barcode) {
                 $barcodes[] = $barcode->getBarcode();
+            }
 
             $bookedArticles[] = $booking->getArticle()->getId();
 
@@ -449,8 +456,9 @@ class QueueItem
                     ->findOneById($id);
 
                 $barcodes = array();
-                foreach($article->getBarcodes() as $barcode)
+                foreach ($article->getBarcodes() as $barcode) {
                     $barcodes[] = $barcode->getBarcode();
+                }
 
                 $result = array(
                     'id' => 0,

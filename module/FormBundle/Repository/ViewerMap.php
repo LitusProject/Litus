@@ -86,8 +86,9 @@ class ViewerMap extends EntityRepository
     public function findAllByGroupAndPersonQuery(Group $group, Person $person)
     {
         $forms = array(0);
-        foreach($group->getForms() as $form)
+        foreach ($group->getForms() as $form) {
             $forms[] = $form->getForm()->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('n')
@@ -118,8 +119,9 @@ class ViewerMap extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($forms as $form)
+        foreach ($forms as $form) {
             $ids[] = $form['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $mappings = $query->select('m')
@@ -133,16 +135,18 @@ class ViewerMap extends EntityRepository
             ->getResult();
 
         $groups = array();
-        foreach($mappings as $mapping)
+        foreach ($mappings as $mapping) {
             $groups[$mapping->getGroup()->getId()] = $mapping->getGroup();
+        }
 
         return $groups;
     }
 
     public function findOneByPersonAndGroup(Person $person, Group $group)
     {
-        if (sizeof($group->getForms()) == 0)
+        if (sizeof($group->getForms()) == 0) {
             return null;
+        }
 
         return $this->findOneByPersonAndForm($person, $group->getForms()[0]->getForm());
     }

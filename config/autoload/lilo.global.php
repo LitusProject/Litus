@@ -39,7 +39,7 @@ if ('development' != getenv('APPLICATION_ENV')) {
                     return new \CommonBundle\Component\Lilo\Connection\Http(
                         $liloConfig['host'], $liloConfig['secure'], $liloConfig['secretKey']
                     );
-                }
+                },
             ),
         ),
     );

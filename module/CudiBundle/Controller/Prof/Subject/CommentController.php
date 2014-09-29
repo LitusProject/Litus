@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Entity\Subject\Reply,
-    CudiBundle\Form\Prof\Comment\Add as AddCommentForm,
+use CudiBundle\Form\Prof\Comment\Add as AddCommentForm,
     CudiBundle\Form\Prof\Comment\Reply as AddReplyForm,
+    SyllabusBundle\Entity\Subject\Comment,
+    SyllabusBundle\Entity\Subject\Reply,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,8 +33,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
         $comments = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
@@ -132,12 +133,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($comment = $this->_getComment()))
+        if (!($comment = $this->_getComment())) {
             return new ViewModel();
+        }
 
         if ($comment->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
-                'result' => (object) array("status" => "error")
+                'result' => (object) array("status" => "error"),
             );
         }
 
@@ -158,8 +160,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         if (null === $id) {
             $this->flashMessenger()->error(

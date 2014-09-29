@@ -18,8 +18,8 @@
 
 namespace BrBundle\Component\Validator\Logo;
 
-use Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Company;
+use BrBundle\Entity\Company,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given company against the database to check whether the logo type
@@ -45,7 +45,7 @@ class Type extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The logo type already exists for this company'
+        self::NOT_VALID => 'The logo type already exists for this company',
     );
 
     /**
@@ -76,8 +76,9 @@ class Type extends \Zend\Validator\AbstractValidator
             ->getRepository('BrBundle\Entity\Company\Logo')
             ->findOneByTypeAndCompany($value, $this->_company);
 
-        if (null === $logo)
+        if (null === $logo) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

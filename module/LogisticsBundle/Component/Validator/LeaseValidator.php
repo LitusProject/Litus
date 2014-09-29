@@ -110,6 +110,5 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
 
                 return true;
         }
-
     }
 }

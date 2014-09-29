@@ -62,8 +62,9 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
             foreach ($members as $member) {
-                if (!isset($extra[$member->getAcademic()->getId()]))
+                if (!isset($extra[$member->getAcademic()->getId()])) {
                     $extra[$member->getAcademic()->getId()] = array();
+                }
 
                 $extra[$member->getAcademic()->getId()][] = $unit;
             }
@@ -75,7 +76,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 'extraUnits' => $extra,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -88,8 +89,9 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
+        }
 
         return AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
     }

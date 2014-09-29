@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Form\Admin\Config\Edit as EditForm,
-    CommonBundle\Entity\General\Config,
+use CommonBundle\Entity\General\Config,
+    CommonBundle\Form\Admin\Config\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,12 +41,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $explodedKey = explode(Config::$separator, $entry->getKey());
                 $formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
                     'value' => $entry->getValue(),
-                    'fullKey' => $entry->getKey()
+                    'fullKey' => $entry->getKey(),
                 );
             } else {
                 $formattedValues[0][$entry->getKey()] = array(
                     'value' => $entry->getValue(),
-                    'fullKey' => $entry->getKey()
+                    'fullKey' => $entry->getKey(),
                 );
             }
         }
@@ -62,8 +62,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $form = new EditForm(
             $entry
@@ -88,7 +89,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'common_admin_config',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -118,7 +119,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'common_admin_config',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -138,7 +139,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'common_admin_config',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
