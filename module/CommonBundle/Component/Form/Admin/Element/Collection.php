@@ -60,7 +60,7 @@ class Collection extends \Zend\Form\Element\Collection
         foreach ($this->byName as $elementOrFieldset) {
             // Recursively prepare elements
             if ($elementOrFieldset instanceof ElementPrepareAwareInterface) {
-                $elementOrFieldset->prepareElement($form);
+                // $elementOrFieldset->prepareElement($form);
             }
         }
 
