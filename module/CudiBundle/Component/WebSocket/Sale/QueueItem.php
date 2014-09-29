@@ -266,7 +266,7 @@ class QueueItem
                     );
                     $this->_entityManager->persist($registration);
                 }
-                $registration->setPayed()
+                $registration->setPayed();
             }
         }
 
