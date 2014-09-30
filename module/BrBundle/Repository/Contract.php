@@ -18,8 +18,8 @@
 
 namespace BrBundle\Repository;
 
-use BrBundle\Entity\Company as CompanyEntity,
-    BrBundle\Entity\Collaborator as CollaboratorEntity,
+use BrBundle\Entity\Collaborator as CollaboratorEntity,
+    BrBundle\Entity\Company as CompanyEntity,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
@@ -152,9 +152,10 @@ class Contract extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if($result == '')
-
+        if ($result == '') {
             return 0;
+        }
+
         return $result;
     }
 
@@ -234,9 +235,10 @@ class Contract extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if($result == '')
-
+        if ($result == '') {
             return 0;
+        }
+
         return $result;
     }
 

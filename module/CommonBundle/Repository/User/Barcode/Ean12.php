@@ -28,13 +28,16 @@ class Ean12 extends \CommonBundle\Repository\User\Barcode
 {
     public function findOneByBarcode($barcode)
     {
-        if (!is_numeric($barcode))
+        if (!is_numeric($barcode)) {
             return null;
+        }
 
-        if (strlen($barcode) == 13)
+        if (strlen($barcode) == 13) {
             $barcode = floor($barcode / 10);
-        if (strlen($barcode) > 12)
+        }
+        if (strlen($barcode) > 12) {
             return null;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')

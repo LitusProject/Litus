@@ -41,15 +41,17 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     private function _getLink()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('id')) {
             return;
+        }
 
         $link = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Link')
             ->findOneById($this->getParam('id'));
 
-        if (null === $link)
+        if (null === $link) {
             return;
+        }
 
         return $link;
     }

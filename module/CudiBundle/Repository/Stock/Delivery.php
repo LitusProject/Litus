@@ -18,12 +18,12 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
     CudiBundle\Entity\Supplier,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    DateTime;
 
 /**
  * Delivery
@@ -50,8 +50,9 @@ class Delivery extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('o.timestamp', 'DESC');
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -72,8 +73,9 @@ class Delivery extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('o.timestamp', 'DESC');
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -98,8 +100,9 @@ class Delivery extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -123,8 +126,9 @@ class Delivery extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -151,8 +155,9 @@ class Delivery extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -178,8 +183,9 @@ class Delivery extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -217,7 +223,7 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('d.timestamp', 'DESC')
@@ -240,7 +246,7 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('d.timestamp', 'DESC')
@@ -307,7 +313,7 @@ class Delivery extends EntityRepository
                     $query->expr()->lt('d.timestamp', ':end')
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->setParameter('supplier', $supplier)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())

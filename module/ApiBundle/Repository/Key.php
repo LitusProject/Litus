@@ -18,8 +18,8 @@
 
 namespace ApiBundle\Repository;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Key

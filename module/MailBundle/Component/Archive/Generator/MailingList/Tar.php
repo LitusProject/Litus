@@ -71,8 +71,9 @@ class Tar
                 ->findByList($list);
 
             $entriesString = '';
-            foreach ($entries as $entry)
+            foreach ($entries as $entry) {
                 $entriesString .= $entry->getEmailAddress() . PHP_EOL;
+            }
 
             $tar->addString($list->getName(), $entriesString);
         }

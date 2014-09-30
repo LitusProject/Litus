@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Entity\User\Person as PersonEntity,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person as PersonEntity,
+    DateTime;
 
 /**
  * Session

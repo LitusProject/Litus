@@ -18,12 +18,12 @@
 
 namespace ShiftBundle\Repository;
 
-use DateTime,
-    CalendarBundle\Entity\Node\Event,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit as UnitEntity,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    DateTime;
 
 /**
  * Shift
@@ -163,8 +163,9 @@ class Shift extends EntityRepository
             ->getResult();
 
         $shifts = array();
-        foreach($responsibleResultSet as $result)
+        foreach ($responsibleResultSet as $result) {
             $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $volunteerResultSet = $query->select('s')
@@ -182,8 +183,9 @@ class Shift extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        foreach($volunteerResultSet as $result)
+        foreach ($volunteerResultSet as $result) {
             $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+        }
 
         ksort($shifts);
 
@@ -234,8 +236,9 @@ class Shift extends EntityRepository
             ->setParameter('now', new DateTime())
             ->setParameter('person', $person);
 
-        if (null !== $academicYear)
+        if (null !== $academicYear) {
             $query->setParameter('academicYear', $academicYear);
+        }
 
         return $query->getQuery();
     }
@@ -266,8 +269,9 @@ class Shift extends EntityRepository
             ->setParameter('now', new DateTime())
             ->setParameter('person', $person);
 
-        if (null !== $academicYear)
+        if (null !== $academicYear) {
             $query->setParameter('academicYear', $academicYear);
+        }
 
         return $query->getQuery();
     }

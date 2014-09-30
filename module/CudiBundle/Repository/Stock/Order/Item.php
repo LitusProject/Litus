@@ -18,13 +18,13 @@
 
 namespace CudiBundle\Repository\Stock\Order;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Order\Order as OrderEntity,
+    CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Supplier,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    DateTime;
 
 /**
  * Item
@@ -73,8 +73,9 @@ class Item extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -102,8 +103,9 @@ class Item extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -130,8 +132,9 @@ class Item extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -154,8 +157,9 @@ class Item extends EntityRepository
             ->orderBy('o.dateOrdered', 'DESC')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -183,11 +187,12 @@ class Item extends EntityRepository
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -214,11 +219,12 @@ class Item extends EntityRepository
                 )
             )
             ->orderBy('o.dateOrdered', 'DESC')
-            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -300,7 +306,7 @@ class Item extends EntityRepository
                     $query->expr()->lt('o.dateOrdered', ':end')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('o.dateOrdered', 'DESC')
@@ -325,7 +331,7 @@ class Item extends EntityRepository
                     $query->expr()->lt('o.dateOrdered', ':end')
                 )
             )
-            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('o.dateOrdered', 'DESC')
@@ -374,7 +380,7 @@ class Item extends EntityRepository
                     $query->expr()->lt('o.dateOrdered', ':end')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('order', $order)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
@@ -424,7 +430,7 @@ class Item extends EntityRepository
                     $query->expr()->lt('o.dateOrdered', ':end')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('supplier', $supplier)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())

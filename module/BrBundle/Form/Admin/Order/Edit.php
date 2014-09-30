@@ -21,9 +21,9 @@ namespace BrBundle\Form\Admin\Order;
 use BrBundle\Entity\Product\Order,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Edit an order.

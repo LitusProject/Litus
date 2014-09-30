@@ -19,8 +19,8 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Cv\Util,
-    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Entity\General\AcademicYear,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -93,7 +93,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 'academicYear' => $academicYear,
                 'studies' => $result,
                 'onlyArchive' => $onlyArchive,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -161,7 +161,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             array(
                 'academicYear' => $academicYear,
                 'entries' => $entries,
-                'profilePath' =>$this->getEntityManager()
+                'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'onlyArchive' => $onlyArchive,
@@ -211,19 +211,22 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
         $filters = array();
 
-        if (null !== $this->getParam('string'))
+        if (null !== $this->getParam('string')) {
             $filters['string'] = $this->getParam('string');
+        }
 
         if (null !== $this->getParam('min') || null !== $this->getParam('max')) {
             $filters['grade'] = array();
-            if (null !== $this->getParam('min'))
+            if (null !== $this->getParam('min')) {
                 $filters['grade']['min'] = $this->getParam('min');
-            else
+            } else {
                 $filters['grade']['min'] = 0;
-            if (null !== $this->getParam('max'))
+            }
+            if (null !== $this->getParam('max')) {
                 $filters['grade']['max'] = $this->getParam('max');
-            else
+            } else {
                 $filters['grade']['max'] = 100;
+            }
         }
 
         $filtered = $this->_doFilter($this->_getList($academicYear), $filters);
@@ -323,7 +326,6 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     private function _doFilter($entries, $filters)
     {
-
         if (isset($filters['string'])) {
             $entries = $this->_filterString($entries, $filters['string']);
         }
@@ -347,8 +349,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     break;
                 }
             }
-            if ($matches)
+            if ($matches) {
                 $result[] = $entry;
+            }
         }
 
         return $result;

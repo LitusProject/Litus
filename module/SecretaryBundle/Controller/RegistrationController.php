@@ -18,8 +18,8 @@
 
 namespace SecretaryBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
@@ -56,8 +56,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if (!$enableRegistration)
+        if (!$enableRegistration) {
             return $this->notFoundAction();
+        }
 
         return $result;
     }
@@ -204,7 +205,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneByName('guest'),
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('student')
+                            ->findOneByName('student'),
                     );
 
                     $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
@@ -274,8 +275,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             $formData['tshirt_size']
                         );
 
-                        if ($selectedOrganization)
+                        if ($selectedOrganization) {
                             $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        }
                     } else {
                         $metaData = new MetaData(
                             $academic,
@@ -435,10 +437,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $formData['university_identification'] = $this->getParam('identification');
-            if ($metaData && $metaData->becomeMember())
+            if ($metaData && $metaData->becomeMember()) {
                 $formData['become_member'] = true;
-            else
+            } else {
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
+            }
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -556,8 +559,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking)
+                            if (null !== $booking) {
                                 $this->getEntityManager()->remove($booking);
+                            }
                         }
                         $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
                     } else {
@@ -623,8 +627,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking)
+                            if (null !== $booking) {
                                 $this->getEntityManager()->remove($booking);
+                            }
                         }
                     }
                 }
@@ -779,7 +784,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
             );
         }
 
@@ -788,8 +793,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
-        foreach($subjects as $enrollment)
+        foreach ($subjects as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
+        }
 
         return new ViewModel(
             array(
@@ -813,8 +819,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code)
+        if (null !== $code) {
             return true;
+        }
 
         return false;
     }
@@ -827,10 +834,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                }
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
                     throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -838,8 +847,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             // No load balancer active
         }
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
+        if ('%2F' != substr($shibbolethUrl, 0, -3)) {
             $shibbolethUrl .= '%2F';
+        }
 
         return $shibbolethUrl . '?source=register';
     }

@@ -35,10 +35,10 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
     SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
-    Zend\Http\Headers,
     Zend\Ldap\Attribute,
     Zend\Ldap\Ldap,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\Headers,
     Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
@@ -78,7 +78,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear())
+                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
             );
         }
 
@@ -87,8 +87,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
 
         $subjectIds = array();
-        foreach($subjects as $enrollment)
+        foreach ($subjects as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
+        }
 
         $profileForm = new ProfileForm();
         $profileForm->setAttribute(
@@ -177,10 +178,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $formData = $this->getRequest()->getPost();
 
             $formData['university_identification'] = $this->getParam('identification');
-            if ($metaData && $metaData->becomeMember())
+            if ($metaData && $metaData->becomeMember()) {
                 $formData['become_member'] = true;
-            else
+            } else {
                 $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
+            }
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -288,8 +290,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if ($booking !== null)
+                            if ($booking !== null) {
                                 $this->getEntityManager()->remove($booking);
+                            }
                         }
                         $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
                     } else {
@@ -356,8 +359,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking)
+                            if (null !== $booking) {
                                 $this->getEntityManager()->remove($booking);
+                            }
                         }
                     }
                 }
@@ -497,8 +501,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return new ViewModel();
+        }
 
         $form = new ActivateForm();
 
@@ -538,7 +543,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         );
     }
 
-    public function fileServerAction() {
+    public function fileServerAction()
+    {
         if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->addMessage(
                 new FlashMessage(
@@ -775,7 +781,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'data' => $pass->getContent()
+                'data' => $pass->getContent(),
             )
         );
     }
@@ -786,8 +792,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('profile');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -848,8 +855,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -858,15 +866,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
                 }
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $formErrors['profile'] = $upload->getMessages();
+                }
 
                 return new ViewModel(
                     array(
                         'result' => array(
                             'status' => 'error',
                             'form' => array(
-                                'errors' => $formErrors
+                                'errors' => $formErrors,
                             ),
                         ),
                     )

@@ -18,12 +18,12 @@
 
 namespace BrBundle\Entity\Cv;
 
-use DateTime,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\User\Person\Academic,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
     SyllabusBundle\Entity\Study;
 
 /**
@@ -1044,5 +1044,4 @@ class Entry
 
         return $this;
     }
-
 }

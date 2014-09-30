@@ -19,11 +19,11 @@
 namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Event,
+    CalendarBundle\Entity\Node\Event as CommonEvent,
+    CalendarBundle\Entity\Node\Translation,
     CalendarBundle\Form\Admin\Event\Add as AddForm,
     CalendarBundle\Form\Admin\Event\Edit as EditForm,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
-    CalendarBundle\Entity\Node\Event as CommonEvent,
-    CalendarBundle\Entity\Node\Translation,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Imagick,
@@ -40,8 +40,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -61,8 +62,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -136,8 +138,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $event->getEvent());
 
@@ -215,8 +218,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($event);
         $this->getEntityManager()->flush();
@@ -230,8 +234,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editPosterAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new PosterForm();
         $form->setAttribute(
@@ -255,8 +260,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function uploadAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new PosterForm();
 
@@ -267,8 +273,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
             $upload = new FileTransfer();
             $inputFilter = $form->getInputFilter()->get('poster');
-            if ($inputFilter instanceof InputInterface)
+            if ($inputFilter instanceof InputInterface) {
                 $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+            }
 
             if ($upload->isValid()) {
                 $upload->receive();
@@ -300,21 +307,22 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         'info' => array(
                             'info' => array(
                                 'name' => $fileName,
-                            )
-                        )
+                            ),
+                        ),
                     )
                 );
             } else {
                 $formErrors = array();
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $formErrors['poster'] = $upload->getMessages();
+                }
 
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors
+                            'errors' => $formErrors,
                         ),
                     )
                 );
@@ -342,7 +350,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -362,7 +370,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -386,7 +394,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -406,7 +414,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

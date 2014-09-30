@@ -109,13 +109,16 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
 
         $items = array();
         foreach ($stock as $item) {
-            if ($this->_articles == 'external' && $item->getMainArticle()->isInternal())
+            if ($this->_articles == 'external' && $item->getMainArticle()->isInternal()) {
                 continue;
-            if ($this->_articles == 'internal' && !$item->getMainArticle()->isInternal())
+            }
+            if ($this->_articles == 'internal' && !$item->getMainArticle()->isInternal()) {
                 continue;
+            }
 
-            if ($item->getStockValue() <= 0 && $this->_onlyInStock)
+            if ($item->getStockValue() <= 0 && $this->_onlyInStock) {
                 continue;
+            }
 
             $items[] = new Object(
                 'item',
@@ -145,7 +148,7 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
                         'amount',
                         null,
                         (string) $item->getStockValue()
-                    )
+                    ),
                 )
             );
         }
@@ -156,13 +159,13 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'stock',
                 array(
-                    'date' => $now->format('d F Y')
+                    'date' => $now->format('d F Y'),
                 ),
                 array(
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $organization_short_name
+                            'short_name' => $organization_short_name,
                         ),
                         array(
                             new Object(
@@ -174,13 +177,13 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 null,
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(
                         'cudi',
                         array(
-                            'name' => $cudi_name
+                            'name' => $cudi_name,
                         ),
                         array(
                              new Object(

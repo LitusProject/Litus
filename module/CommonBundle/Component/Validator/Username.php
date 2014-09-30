@@ -39,7 +39,7 @@ class Username extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The username already exists'
+        self::NOT_VALID => 'The username already exists',
     );
 
     /**
@@ -68,8 +68,9 @@ class Username extends \Zend\Validator\AbstractValidator
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneByUsername($value);
 
-        if (null === $person)
+        if (null === $person) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

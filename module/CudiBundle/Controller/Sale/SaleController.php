@@ -159,8 +159,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
-            if (!isset($data['person']) || !isset($data['article']))
+            if (!isset($data['person']) || !isset($data['article'])) {
                 return new ViewModel();
+            }
 
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')

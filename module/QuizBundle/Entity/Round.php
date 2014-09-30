@@ -85,7 +85,7 @@ class Round
         $this->name = $name;
         $this->maxPoints = $maxPoints;
         $this->order = $order;
-        $this->points = new ArrayCollection;
+        $this->points = new ArrayCollection();
     }
 
     /**

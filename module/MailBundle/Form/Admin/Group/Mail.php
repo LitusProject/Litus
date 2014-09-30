@@ -21,9 +21,9 @@ namespace MailBundle\Form\Admin\Group;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter,
     Zend\Validator\EmailAddress as EmailAddressValidator;
 
 /**

@@ -46,8 +46,10 @@ class OrderEntry extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        if (isset($resultSet[0]))
+        if (isset($resultSet[0])) {
             return $resultSet[0];
+        }
+
         return null;
     }
 }

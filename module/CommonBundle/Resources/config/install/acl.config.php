@@ -19,52 +19,52 @@
 return array(
     'commonbundle' => array(
         'common_admin_academic' => array(
-            'activate', 'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+            'activate', 'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
         ),
         'common_admin_auth' => array(
-            'authenticate', 'login', 'logout', 'shibboleth'
+            'authenticate', 'login', 'logout', 'shibboleth',
         ),
         'common_admin_cache' => array(
-            'manage', 'flush'
+            'manage', 'flush',
         ),
         'common_admin_config' => array(
-            'edit', 'manage'
+            'edit', 'manage',
         ),
         'common_admin_index' => array(
-            'index'
+            'index',
         ),
         'common_admin_location' => array(
-            'add', 'edit', 'delete', 'geocoding', 'manage'
+            'add', 'edit', 'delete', 'geocoding', 'manage',
         ),
         'common_admin_person' => array(
-            'typeahead'
+            'typeahead',
         ),
         'common_admin_role' => array(
-            'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune'
+            'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune',
         ),
         'common_admin_session' => array(
-            'expire'
+            'expire',
         ),
         'common_admin_unit' => array(
-            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune'
+            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune',
         ),
         'common_account' => array(
             'activate', 'edit', 'index', 'fileServer', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
         ),
         'common_session' => array(
-            'manage', 'expire'
+            'manage', 'expire',
         ),
         'common_auth' => array(
-            'login', 'logout', 'shibboleth'
+            'login', 'logout', 'shibboleth',
         ),
         'common_index' => array(
-            'index'
+            'index',
         ),
         'common_robots' => array(
-            'index'
+            'index',
         ),
         'common_praesidium' => array(
-            'overview'
+            'overview',
         ),
     ),
 );

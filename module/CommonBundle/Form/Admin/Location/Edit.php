@@ -19,8 +19,8 @@
 namespace CommonBundle\Form\Admin\Location;
 
 use CommonBundle\Entity\General\Location,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Location

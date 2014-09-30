@@ -18,13 +18,13 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\Bank\CashRegister,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Bank\CashRegister,
     CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Session as SessionEntity,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    DateTime;
 
 /**
  * Session
@@ -134,8 +134,9 @@ class Session extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null === $resultSet)
+        if (null === $resultSet) {
             $resultSet = 0;
+        }
 
         return $resultSet;
     }
@@ -217,8 +218,9 @@ class Session extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null === $resultSet)
+        if (null === $resultSet) {
             $resultSet = 0;
+        }
 
         return $resultSet;
     }
@@ -255,8 +257,9 @@ class Session extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null === $resultSet)
+        if (null === $resultSet) {
             $resultSet = 0;
+        }
 
         return $resultSet;
     }
@@ -306,8 +309,9 @@ class Session extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null === $resultSet)
+        if (null === $resultSet) {
             $resultSet = 0;
+        }
 
         return $resultSet;
     }

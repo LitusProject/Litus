@@ -48,7 +48,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     'active' => true,
                 ),
                 array(
-                    'name'=> 'ASC',
+                    'name' => 'ASC',
                 )
             );
         } else {
@@ -142,7 +142,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'br_admin_company',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -159,8 +159,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $company);
 
@@ -191,10 +192,11 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
 
                     foreach ($formData['cvbook'] as $yearId) {
-                        if (strpos($yearId, 'archive-') === 0)
+                        if (strpos($yearId, 'archive-') === 0) {
                             $archiveYears[] = substr($yearId, strlen('archive-'));
-                        else
+                        } else {
                             $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
+                        }
                     }
                 }
 
@@ -207,8 +209,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $repository = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear');
 
-                    foreach ($yearIds as $yearId)
+                    foreach ($yearIds as $yearId) {
                         $years[] = $repository->findOneById($yearId);
+                    }
                 }
 
                 $company->getPage()
@@ -226,7 +229,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'br_admin_company',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -246,8 +249,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $company->deactivate();
         $this->getEntityManager()->flush();
@@ -266,8 +270,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
             $upload = new FileUpload();
 
-            if ('image' == $formData['type'])
+            if ('image' == $formData['type']) {
                 $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
+            }
 
             if ($upload->isValid()) {
                 $filePath = $this->getEntityManager()
@@ -292,7 +297,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     array(
                         'result' => array(
                             'name' => $url,
-                        )
+                        ),
                     )
                 );
             }
@@ -303,8 +308,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editLogoAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $form = new LogoForm();
 
@@ -318,8 +324,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
             $upload = new FileUpload();
             $inputFilter = $form->getInputFilter()->get('logo');
-            if ($inputFilter instanceof InputInterface)
+            if ($inputFilter instanceof InputInterface) {
                 $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+            }
 
             if ($form->isValid() && $upload->isValid()) {
                 $upload->receive();
@@ -357,8 +364,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             } else {
                 $errors = $form->getMessages();
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $errors['logo'] = $upload->getMessages();
+                }
 
                 $form->setMessages($errors);
             }
@@ -405,8 +413,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $contacts = $company->getContacts();
 
@@ -449,7 +458,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -469,7 +478,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -490,7 +499,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -510,7 +519,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -38,8 +38,9 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
                 $this->getParam('page')
             );
 
-            foreach($paginator as $action)
+            foreach ($paginator as $action) {
                 $action->setEntityManager($this->getEntityManager());
+            }
 
             $recentConversations = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')

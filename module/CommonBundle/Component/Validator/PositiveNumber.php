@@ -38,7 +38,7 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
      */
     protected $messageTemplates = array(
         self::NOT_POSITIVE => 'The value may not be negative',
-        self::NOT_STRICT_POSITIVE => 'The value may not be negative or zero'
+        self::NOT_STRICT_POSITIVE => 'The value may not be negative or zero',
     );
 
     /**
@@ -63,13 +63,15 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         $intVal = intval(trim($value), 10);
-        if ($intVal > 0)
+        if ($intVal > 0) {
             return true;
+        }
 
-        if ($this->_strict && $intVal == 0)
+        if ($this->_strict && $intVal == 0) {
             $this->error (self::NOT_STRICT_POSITIVE);
-        else
+        } else {
             $this->error (self::NOT_POSITIVE);
+        }
 
         return false;
     }

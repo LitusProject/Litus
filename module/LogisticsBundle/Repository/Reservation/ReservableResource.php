@@ -53,5 +53,4 @@ class ReservableResource extends EntityRepository
 
         return $resultSet;
     }
-
 }

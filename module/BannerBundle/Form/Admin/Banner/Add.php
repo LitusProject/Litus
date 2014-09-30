@@ -18,15 +18,15 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
+use BannerBundle\Entity\Node\Banner,
+    CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
+    CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
-    BannerBundle\Entity\Node\Banner,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Banner
@@ -37,7 +37,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
     const BANNER_WIDTH = 940;
     const BANNER_HEIGHT = 100;
     const BANNER_FILESIZE = '10MB';
@@ -198,7 +197,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'maxwidth'  => self::BANNER_WIDTH,
                                 'minheight' => self::BANNER_HEIGHT,
                                 'maxheight' => self::BANNER_HEIGHT,
-                            )
+                            ),
                         ),
                     ),
                 )

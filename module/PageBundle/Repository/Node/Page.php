@@ -56,8 +56,9 @@ class Page extends EntityRepository
 
     public function findOneByNameAndParent($name, $parentName)
     {
-        if (null === $parentName)
+        if (null === $parentName) {
             return $this->findOneByName($name, null);
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -95,8 +96,9 @@ class Page extends EntityRepository
             )
             ->setParameter('name', $name);
 
-        if (null !== $parent)
+        if (null !== $parent) {
             $query->setParameter('parent', $parent);
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
@@ -119,8 +121,9 @@ class Page extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($translations as $translation)
+        foreach ($translations as $translation) {
             $ids[] = $translation['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')

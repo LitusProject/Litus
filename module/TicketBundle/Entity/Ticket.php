@@ -20,8 +20,8 @@ namespace TicketBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
     DateTime,
-    InvalidArgumentException,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")
@@ -131,8 +131,9 @@ class Ticket
      */
     public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
     {
-        if (!self::isValidTicketStatus($status))
+        if (!self::isValidTicketStatus($status)) {
             throw new InvalidArgumentException('The TicketStatus is not valid.');
+        }
 
         $this->event = $event;
         $this->status = $status;
@@ -191,8 +192,9 @@ class Ticket
      */
     public function setStatus($status)
     {
-        if (!self::isValidTicketStatus($status))
+        if (!self::isValidTicketStatus($status)) {
             throw new InvalidArgumentException('The TicketStatus is not valid.');
+        }
 
         if ($status == 'empty') {
             $this->person = null;
@@ -200,8 +202,9 @@ class Ticket
             $this->bookDate = null;
             $this->soldDate = null;
         } elseif ($status == 'sold') {
-            if ($this->bookDate == null)
+            if ($this->bookDate == null) {
                 $this->bookDate = new DateTime();
+            }
             $this->soldDate = new DateTime();
         } elseif ($status == 'booked') {
             $this->bookDate = new DateTime();
@@ -256,11 +259,13 @@ class Ticket
      */
     public function getFullName()
     {
-        if (null !== $this->person)
+        if (null !== $this->person) {
             return $this->person->getFullName();
+        }
 
-        if (null !== $this->guestInfo)
+        if (null !== $this->guestInfo) {
             return $this->guestInfo->getfullName();
+        }
 
         return '';
     }

@@ -109,8 +109,9 @@ class TmpFile
             $this->fileHandle = null;
 
             fclose($fileHandle);
-            if (file_exists($this->_filename))
+            if (file_exists($this->_filename)) {
                 unlink($this->_filename);
+            }
         }
     }
 

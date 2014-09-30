@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
@@ -26,10 +27,9 @@ use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article as ArticleEntity,
     CudiBundle\Entity\Sale\Booking as BookingEntity,
     CudiBundle\Entity\Stock\Period,
-    DateTime,
     DateInterval,
+    DateTime,
     Exception,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     Zend\Mail\Transport\TransportInterface;
 
 /**
@@ -57,8 +57,9 @@ class Booking extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -85,8 +86,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article)
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -109,8 +111,9 @@ class Booking extends EntityRepository
             ->setParameter('person', $person->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -154,8 +157,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -201,8 +205,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article)
             ->setParameter('startDate', $period->getStartDate());
 
-            if (!$period->isOpen())
-                $query->setParameter('endDate', $period->getEndDate());
+        if (!$period->isOpen()) {
+            $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -229,8 +234,9 @@ class Booking extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -284,12 +290,13 @@ class Booking extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($person).'%')
+            ->setParameter('name', '%' . strtolower($person) . '%')
             ->setParameter('type', $type)
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -329,12 +336,13 @@ class Booking extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('type', $type)
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -372,12 +380,13 @@ class Booking extends EntityRepository
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
-            ->setParameter('status', '%'.strtolower($status).'%')
+            ->setParameter('status', '%' . strtolower($status) . '%')
             ->setParameter('type', $type)
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -405,8 +414,9 @@ class Booking extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -434,8 +444,9 @@ class Booking extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -463,8 +474,9 @@ class Booking extends EntityRepository
             )
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'DESC')
             ->getQuery();
@@ -488,8 +500,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->orderBy('b.bookDate', 'ASC')
             ->getQuery();
@@ -517,8 +530,9 @@ class Booking extends EntityRepository
             ->setParameter(':person', $person->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -557,8 +571,9 @@ class Booking extends EntityRepository
             ->setParameter(':article', $article->getId())
             ->setParameter('startDate', $start);
 
-        if (null !== $end)
+        if (null !== $end) {
             $query->setParameter('endDate', $end);
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
@@ -593,8 +608,9 @@ class Booking extends EntityRepository
             ->setParameter(':article', $article->getId())
             ->setParameter('startDate', $start);
 
-        if (null !== $end)
+        if (null !== $end) {
             $query->setParameter('endDate', $end);
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
@@ -624,11 +640,13 @@ class Booking extends EntityRepository
             ->setParameter(':person', $person->getId())
             ->setParameter(':article', $article->getId());
 
-        if ($limitByPeriod)
+        if ($limitByPeriod) {
             $query->setParameter('startDate', $period->getStartDate());
+        }
 
-        if (!$period->isOpen() && $limitByPeriod)
+        if (!$period->isOpen() && $limitByPeriod) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
@@ -673,8 +691,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $start);
 
-        if (null !== $end)
+        if (null !== $end) {
             $query->setParameter('endDate', $end);
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()
@@ -710,8 +729,9 @@ class Booking extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('startDate', $start);
 
-        if (null !== $end)
+        if (null !== $end) {
             $query->setParameter('endDate', $end);
+        }
 
         $resultSet = $query->getQuery()
             ->getResult();
@@ -748,8 +768,9 @@ class Booking extends EntityRepository
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        if ($period === null)
+        if ($period === null) {
             throw new Exception("There is no active stock period!");
+        }
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('b')
@@ -767,8 +788,9 @@ class Booking extends EntityRepository
             ->setParameter(':person', $person->getId())
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -866,8 +888,9 @@ class Booking extends EntityRepository
         $idsCancelled = array();
 
         foreach ($bookings as $booking) {
-            if (in_array($booking->getArticle()->getId(), $excluded))
+            if (in_array($booking->getArticle()->getId(), $excluded)) {
                 continue;
+            }
             $booking->setStatus('canceled', $this->getEntityManager());
             $idsCancelled[] = $booking->getId();
             $counter++;
@@ -878,15 +901,17 @@ class Booking extends EntityRepository
             ->findAllAssigned();
 
         foreach ($bookings as $booking) {
-            if (in_array($booking->getArticle()->getId(), $excluded))
+            if (in_array($booking->getArticle()->getId(), $excluded)) {
                 continue;
+            }
             $booking->setStatus('canceled', $this->getEntityManager());
             $idsCancelled[] = $booking->getId();
             $counter++;
         }
 
-        if ($counter > 0)
+        if ($counter > 0) {
             $this->getEntityManager()->persist(new LogCancellations($person, $idsCancelled));
+        }
 
         $this->getEntityManager()->flush();
 
@@ -913,16 +938,18 @@ class Booking extends EntityRepository
         foreach ($articles as $article) {
             $available = $article->getStockValue() - $period->getNbAssigned($article);
 
-            if ($available <= 0)
+            if ($available <= 0) {
                 continue;
+            }
 
             $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllBookedByArticleAndPeriod($article, $period);
 
             foreach ($bookings as $booking) {
-                if ($available <= 0)
+                if ($available <= 0) {
                     break;
+                }
 
                 $counter++;
 
@@ -943,20 +970,23 @@ class Booking extends EntityRepository
                 $idsAssigned[] = $booking->getId();
                 $available -= $booking->getNumber();
 
-                if (!isset($persons[$booking->getPerson()->getId()]))
+                if (!isset($persons[$booking->getPerson()->getId()])) {
                     $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+                }
 
                 $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
             }
         }
 
-        if ($counter > 0)
+        if ($counter > 0) {
             $this->getEntityManager()->persist(new LogAssignments($person, $idsAssigned));
+        }
 
         $this->getEntityManager()->flush();
 
-        foreach($persons as $person)
+        foreach ($persons as $person) {
             BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+        }
 
         return $counter;
     }
@@ -979,8 +1009,9 @@ class Booking extends EntityRepository
             ->findAllBookedByArticleAndPeriod($article, $period);
 
         foreach ($bookings as $booking) {
-            if ($available <= 0)
+            if ($available <= 0) {
                 break;
+            }
 
             $counter++;
 
@@ -1000,16 +1031,18 @@ class Booking extends EntityRepository
             $booking->setStatus('assigned', $this->getEntityManager());
             $available -= $booking->getNumber();
 
-            if (!isset($persons[$booking->getPerson()->getId()]))
+            if (!isset($persons[$booking->getPerson()->getId()])) {
                 $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+            }
 
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
         $this->getEntityManager()->flush();
 
-        foreach($persons as $person)
+        foreach ($persons as $person) {
             BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+        }
 
         return $counter;
     }
@@ -1031,18 +1064,20 @@ class Booking extends EntityRepository
 
         $persons = array();
         foreach ($bookings as $booking) {
-               $booking->setStatus('expired', $this->getEntityManager());
+            $booking->setStatus('expired', $this->getEntityManager());
 
-               if (!isset($persons[$booking->getPerson()->getId()]))
-                    $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+            if (!isset($persons[$booking->getPerson()->getId()])) {
+                $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+            }
 
-                $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
+            $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
 
         $this->getEntityManager()->flush();
 
-        foreach($persons as $person)
+        foreach ($persons as $person) {
             BookingMail::sendExpireMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+        }
 
         return sizeof($bookings);
     }

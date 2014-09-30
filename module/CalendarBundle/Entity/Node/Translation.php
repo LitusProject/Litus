@@ -85,7 +85,7 @@ class Translation
      */
     public function __construct(Event $event, Language $language, $location, $title, $content)
     {
-        $this->event= $event;
+        $this->event = $event;
         $this->language = $language;
         $this->location = $location;
         $this->title = $title;

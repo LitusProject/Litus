@@ -19,16 +19,16 @@
 namespace PublicationBundle\Form\Admin\Edition\Html;
 
 use CommonBundle\Component\Form\Admin\Element\File,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Edition\Html as TitleValidator,
     PublicationBundle\Entity\Publication,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Publication
@@ -132,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear)
+                        new TitleValidator($this->_entityManager, $this->_publication, $this->_academicYear),
                     ),
                 )
             )

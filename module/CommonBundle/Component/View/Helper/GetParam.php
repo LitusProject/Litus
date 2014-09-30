@@ -50,8 +50,9 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($key, $default = null)
     {
-        if (null === $this->_routeMatch)
+        if (null === $this->_routeMatch) {
             throw new Exception\RuntimeException('No matched route was provided');
+        }
 
         return $this->_routeMatch->getParam($key, $default);
     }

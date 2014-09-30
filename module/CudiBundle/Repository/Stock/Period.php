@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period as PeriodEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Stock\Period as PeriodEntity;
 
 /**
  * Period
@@ -38,7 +38,7 @@ class Period extends EntityRepository
             ->orderBy('p.startDate', 'DESC')
             ->getQuery();
 
-       return $resultSet;
+        return $resultSet;
     }
 
     public function findOneActive()
@@ -75,15 +75,17 @@ class Period extends EntityRepository
             ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getResult();
 
         $articles = array(0);
-        foreach ($resultSet as $item)
+        foreach ($resultSet as $item) {
             $articles[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $query->select('a.id')
@@ -98,14 +100,16 @@ class Period extends EntityRepository
             ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getResult();
 
-        foreach ($resultSet as $item)
+        foreach ($resultSet as $item) {
             $articles[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $query->select('a.id')
@@ -120,14 +124,16 @@ class Period extends EntityRepository
             ->groupBy('a.id')
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getResult();
 
-        foreach ($resultSet as $item)
+        foreach ($resultSet as $item) {
             $articles[$item['id']] = $item['id'];
+        }
 
         return $articles;
     }
@@ -149,8 +155,9 @@ class Period extends EntityRepository
             $articles = array();
             $nbResults = count($resultSet);
             for ($i = 0; $i < $nbResults; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0) {
                     $articles[] = $resultSet[$i];
+                }
             }
 
             return $articles;
@@ -171,7 +178,7 @@ class Period extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':title')
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->getQuery()
             ->getResult();
 
@@ -179,8 +186,9 @@ class Period extends EntityRepository
             $articles = array();
             $nbResults = count($resultSet);
             for ($i = 0; $i < $nbResults; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0) {
                     $articles[] = $resultSet[$i];
+                }
             }
 
             return $articles;
@@ -191,8 +199,9 @@ class Period extends EntityRepository
 
     public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode, $notDelivered = false)
     {
-        if (!is_numeric($barcode))
+        if (!is_numeric($barcode)) {
             return array();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('b')
@@ -205,14 +214,15 @@ class Period extends EntityRepository
                     $query->expr()->in('a.id', $this->_findAllArticleIds($period))
                 )
             )
-            ->setParameter('barcode', '%'.$barcode.'%')
+            ->setParameter('barcode', '%' . $barcode . '%')
             ->getQuery()
             ->getResult();
 
         $articles = array();
         foreach ($resultSet as $barcode) {
-            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($barcode->getArticle()) - $period->getNbDelivered($barcode->getArticle()) <= 0)
+            if ($notDelivered && $period->getNbOrdered($barcode->getArticle()) + $period->getNbVirtualOrdered($barcode->getArticle()) - $period->getNbDelivered($barcode->getArticle()) <= 0) {
                 continue;
+            }
             $articles[$barcode->getArticle()->getId()] = $barcode->getArticle();
         }
 
@@ -231,7 +241,7 @@ class Period extends EntityRepository
                     $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
                 )
             )
-            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->getQuery()
             ->getResult();
 
@@ -239,8 +249,9 @@ class Period extends EntityRepository
             $articles = array();
             $nbResults = count($resultSet);
             for ($i = 0; $i < $nbResults; $i++) {
-                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0)
+                if ($period->getNbOrdered($resultSet[$i]) + $period->getNbVirtualOrdered($resultSet[$i]) - $period->getNbDelivered($resultSet[$i]) > 0) {
                     $articles[] = $resultSet[$i];
+                }
             }
 
             return $articles;
@@ -264,14 +275,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $delivered = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null === $delivered)
+        if (null === $delivered) {
             $delivered = 0;
+        }
 
         return $delivered;
     }
@@ -297,14 +310,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }
@@ -324,14 +339,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }
@@ -351,14 +368,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }
@@ -379,14 +398,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }
@@ -407,14 +428,16 @@ class Period extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->setParameter('article', $article->getId());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }
@@ -435,8 +458,9 @@ class Period extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null !== $resultSet)
+        if (null !== $resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }

@@ -95,8 +95,9 @@ class Name extends Restriction
      */
     public function canSignIn(EntityManager $entityManager, Person $person)
     {
-        if (strtolower(substr($person->getLastName(), 0, strlen($this->startValue))) < $this->startValue || strtolower(substr($person->getLastName(), 0, strlen($this->endValue))) > $this->endValue)
+        if (strtolower(substr($person->getLastName(), 0, strlen($this->startValue))) < $this->startValue || strtolower(substr($person->getLastName(), 0, strlen($this->endValue))) > $this->endValue) {
             return false;
+        }
 
         return true;
     }

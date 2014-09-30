@@ -98,8 +98,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $date = $this->getParam('name');
         $first = DateTime::createFromFormat('d-m-Y H:i', '1-' . $date . ' 0:00');
 
-        if (!$first)
+        if (!$first) {
             return $this->notFoundAction();
+        }
 
         $last = clone $first;
         $last->add(new DateInterval('P1M'));
@@ -142,7 +143,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $calendarItems[$date] = (object) array(
                     'day' => ucfirst($event->getStartDate()->format('d')),
                     'month' => $monthFormatter->format($event->getStartDate()),
-                    'events' => array()
+                    'events' => array(),
                 );
             }
 
@@ -187,7 +188,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 'result' => (object) array(
                     'month' => ucfirst($formatter->format($first)),
                     'days' => $calendarItems,
-                )
+                ),
             )
         );
     }
@@ -241,8 +242,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $result .= 'BEGIN:VEVENT' . PHP_EOL;
             $result .= 'SUMMARY:' . $event->getTitle($this->getLanguage()) . PHP_EOL;
             $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
-            if (null !== $event->getEndDate())
+            if (null !== $event->getEndDate()) {
                 $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
+            }
             $result .= 'TRANSP:OPAQUE' . PHP_EOL;
             $result .= 'LOCATION:' . $event->getLocation($this->getLanguage()) . PHP_EOL;
             $result .= 'URL:' . (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $this->getRequest()->getServer('HTTP_HOST') . $this->url()->fromRoute(
@@ -271,15 +273,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function _getEvent()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('name')) {
             return;
+        }
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneByName($this->getParam('name'));
 
-        if (null === $event)
+        if (null === $event) {
             return;
+        }
 
         return $event;
     }
@@ -289,15 +293,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function _getEventByPoster()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('name')) {
             return;
+        }
 
         $event = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneByPoster($this->getParam('name'));
 
-        if (null === $event)
+        if (null === $event) {
             return;
+        }
 
         return $event;
     }

@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter,
     Zend\Validator\Hostname as HostnameValidator;
 
 /**
@@ -85,14 +85,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can add a person');
+        }
 
         return $rolesArray;
     }
@@ -114,8 +116,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'Hostname',
                             'options' => array(
-                                'allow' => HostnameValidator::ALLOW_ALL
-                            )
+                                'allow' => HostnameValidator::ALLOW_ALL,
+                            ),
                         ),
                     ),
                 )

@@ -23,7 +23,7 @@ return array(
         ),
         'actions' => array(
             'on_redirect' => array(
-                'index'
+                'index',
             ),
         ),
     ),

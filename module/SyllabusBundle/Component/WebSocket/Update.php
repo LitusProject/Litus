@@ -164,7 +164,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                     'status' => (object) array(
                         'type' => $type,
                         'extra' => substr(trim($extra), 0, 74),
-                    )
+                    ),
                 )
             )
         );

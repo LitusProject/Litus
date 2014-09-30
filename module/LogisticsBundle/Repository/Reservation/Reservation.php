@@ -91,5 +91,4 @@ class Reservation extends EntityRepository
 
         return $resultSet;
     }
-
 }

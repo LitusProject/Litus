@@ -76,7 +76,6 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
         $this->_person = $person;
     }
 
-
     /**
      * Returns true if these does not exceed max
      *

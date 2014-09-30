@@ -33,13 +33,14 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === ($person = $this->_getPerson()))
+        if (null === ($person = $this->_getPerson())) {
             return $this->error(500, 'The person was not found');
+        }
 
         $result = array(
             'username' => $person->getUsername(),
             'full_name' => $person->getFullName(),
-            'email' => $person->getEmail()
+            'email' => $person->getEmail(),
         );
 
         $academic = $this->getEntityManager()
@@ -57,7 +58,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
@@ -67,8 +68,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function _getPerson()
     {
-        if (null !== $this->getAccessToken())
+        if (null !== $this->getAccessToken()) {
             return $this->getAccessToken()->getPerson($this->getEntityManager());
+        }
 
         if (null !== $this->getRequest()->getPost('session')) {
             $session = $this->getEntityManager()

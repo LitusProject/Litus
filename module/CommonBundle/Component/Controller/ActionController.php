@@ -67,8 +67,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_initFallbackLanguage();
         $this->_initViewHelpers();
 
-        if (null !== $this->initAuthentication())
+        if (null !== $this->initAuthentication()) {
             return new ViewModel();
+        }
 
         $this->initLocalization();
 
@@ -79,8 +80,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
 
         $authenticatedPerson = null;
-        if ($this->getAuthentication()->isAuthenticated())
+        if ($this->getAuthentication()->isAuthenticated()) {
             $authenticatedPerson = $this->getAuthentication()->getPersonObject();
+        }
 
         $result = parent::onDispatch($e);
 
@@ -220,8 +222,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $headers = $this->getResponse()->getHeaders();
 
         $contentType = $headers->get('Content-Type');
-        if ($contentType instanceof HeaderInterface)
+        if ($contentType instanceof HeaderInterface) {
             $headers->removeHeader($contentType);
+        }
 
         $headers->addHeaders(
             array_merge(
@@ -357,8 +360,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     public function getCache()
     {
-        if ($this->getServiceLocator()->has('cache'))
+        if ($this->getServiceLocator()->has('cache')) {
             return $this->getServiceLocator()->get('cache');
+        }
 
         return null;
     }
@@ -370,8 +374,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getCurrentAcademicYear($organization = false)
     {
-        if ($organization)
+        if ($organization) {
             return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
     }
@@ -405,8 +410,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language)
+        if (null !== $this->_language) {
             return $this->_language;
+        }
 
         if ($this->getParam('language')) {
             $language = $this->getEntityManager()

@@ -51,8 +51,9 @@ class HasAccess extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function toResourceAction($resource, $action)
     {
-        if (null === $this->_driver)
+        if (null === $this->_driver) {
             throw new Exception\RuntimeException('No driver object was provided');
+        }
 
         $driver = $this->_driver;
 

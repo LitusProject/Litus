@@ -1,6 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 cd $(dirname "$0");
 cd ..;
 
-vendor/bin/php-cs-fixer fix . || exit $?
+VERBOSE=''
+if [[ "x$1" =~ x(-v|--verbose) ]]; then
+    VERBOSE=-vvv
+fi
+
+vendor/bin/php-cs-fixer fix $VERBOSE . || exit $?

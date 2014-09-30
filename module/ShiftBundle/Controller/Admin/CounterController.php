@@ -41,7 +41,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears
+                'academicYears' => $academicYears,
             )
         );
     }
@@ -63,23 +63,26 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllActive();
 
         $unitsArray = array();
-        foreach ($units as $unit)
+        foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
+        }
 
         $now = new DateTime();
         $result = array();
         foreach ($shifts as $shift) {
-            if (!array_key_exists($shift->getUnit()->getId(), $unitsArray))
+            if (!array_key_exists($shift->getUnit()->getId(), $unitsArray)) {
                 continue;
+            }
 
-            if ($shift->getStartDate() > $now)
+            if ($shift->getStartDate() > $now) {
                 continue;
+            }
 
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
                         'name' => $responsible->getPerson()->getFullName(),
-                        'count' => 1
+                        'count' => 1,
                     );
                 } else {
                     $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()]['count']++;
@@ -90,7 +93,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 if (!isset($result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
                         'name' => $volunteer->getPerson()->getFullName(),
-                        'count' => 1
+                        'count' => 1,
                     );
                 } else {
                     $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()]['count']++;
@@ -103,15 +106,16 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'result' => $result,
-                'units' => $unitsArray
+                'units' => $unitsArray,
             )
         );
     }
 
     public function viewAction()
     {
-        if (!($person = $this->_getPerson()))
+        if (!($person = $this->_getPerson())) {
             return new ViewModel();
+        }
 
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -124,8 +128,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         $payed = array();
         foreach ($asVolunteer as $shift) {
             foreach ($shift->getVolunteers() as $volunteer) {
-                if ($volunteer->getPerson() == $person)
+                if ($volunteer->getPerson() == $person) {
                     $payed[$shift->getId()] = $volunteer->isPayed();
+                }
             }
         }
 
@@ -134,7 +139,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
                 'person' => $person->getId(),
                 'asResponsible' => $asResponsible,
                 'asVolunteer' => $asVolunteer,
-                'payed' => $payed
+                'payed' => $payed,
             )
         );
     }
@@ -147,15 +152,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift)
+        if (null === $shift) {
             return new ViewModel();
+        }
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person)
+        if (null === $person) {
             return new ViewModel();
+        }
 
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
@@ -170,7 +177,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -184,15 +191,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift)
+        if (null === $shift) {
             return new ViewModel();
+        }
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person)
+        if (null === $person) {
             return new ViewModel();
+        }
 
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
@@ -208,7 +217,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -284,8 +293,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person)
+        if (null === $person) {
             return new ViewModel();
+        }
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -304,7 +314,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -313,8 +323,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -326,7 +337,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -347,7 +358,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -367,7 +378,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 

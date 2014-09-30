@@ -40,7 +40,7 @@ class HasBought extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The article was never bought by this user'
+        self::NOT_VALID => 'The article was never bought by this user',
     );
 
     /**
@@ -55,7 +55,6 @@ class HasBought extends \Zend\Validator\AbstractValidator
 
         $this->_entityManager = $entityManager;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -81,8 +80,9 @@ class HasBought extends \Zend\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneSoldByArticleAndPerson($article, $person, false);
 
-        if (null !== $booking)
+        if (null !== $booking) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

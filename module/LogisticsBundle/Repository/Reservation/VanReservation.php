@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * VanReservation

@@ -46,33 +46,35 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
                 'startDate' => $item->getStartDate()->format('c'),
                 'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
                 'poster' => $item->getPoster(),
-                'location' => $item->getLocation()
+                'location' => $item->getLocation(),
             );
         }
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
 
     public function posterAction()
     {
-        if (null === ($poster = $this->_getPoster()))
+        if (null === ($poster = $this->_getPoster())) {
             return $this->error(404, 'No poster key was provided with the request');
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('calendar.poster_path') . '/';
 
-        if (!file_exists($filePath . $poster))
+        if (!file_exists($filePath . $poster)) {
             return $this->error(500, 'The poster file does not exist');
+        }
 
         if (!file_exists($filePath . $poster . '_thumb')) {
             $image = new Imagick($filePath . $poster);
             $image->scaleImage(1136, 1136, true);
-            $image->writeImage($filePath . $poster. '_thumb');
+            $image->writeImage($filePath . $poster . '_thumb');
         }
 
         $handle = fopen($filePath . $poster . '_thumb', 'r');
@@ -81,12 +83,12 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
         $result = array(
             'mime_type' => mime_content_type($filePath . $poster),
-            'data' => $data
+            'data' => $data,
         );
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
@@ -96,8 +98,9 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
      */
     private function _getPoster()
     {
-        if (null !== $this->getRequest()->getQuery('poster'))
+        if (null !== $this->getRequest()->getQuery('poster')) {
             return $this->getRequest()->getQuery('poster');
+        }
 
         return null;
     }

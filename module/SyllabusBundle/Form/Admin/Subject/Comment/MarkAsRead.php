@@ -38,7 +38,7 @@ class MarkAsRead extends \CommonBundle\Component\Form\Admin\Form
         $this->setAttribute('class', '');
 
         $field = new Submit('mark_as_read');
-        $field->setValue($comment->isRead() ? 'Mark As Unread': 'Mark As Read')
+        $field->setValue($comment->isRead() ? 'Mark As Unread' : 'Mark As Read')
             ->setAttribute('class', 'sign');
         $this->add($field);
     }

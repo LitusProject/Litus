@@ -18,18 +18,18 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use BrBundle\Component\Validator\ProductName as ProductNameValidator,
+    BrBundle\Entity\Company,
+    BrBundle\Entity\Product\Order,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CommonBundle\Entity\General\AcademicYear,
-    BrBundle\Entity\Company,
-    BrBundle\Entity\Product\Order,
-    BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a product.
@@ -80,11 +80,13 @@ class AddProduct extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $productArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($products as $product)
-            if(! in_array($product, $currentProducts) && $product->isOld() == false)
+        foreach ($products as $product) {
+            if (! in_array($product, $currentProducts) && $product->isOld() == false) {
                 $productArray[$product->getId()] = $product->getName();
+            }
+        }
 
         return $productArray;
     }

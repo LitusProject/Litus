@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Log\Article\SubjectMap;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Added

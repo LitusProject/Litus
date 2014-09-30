@@ -20,12 +20,12 @@ namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\User\Person\Academic,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
+    LogisticsBundle\Entity\Reservation\PianoReservation,
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * This form allows the user to edit the reservation.
@@ -108,5 +108,4 @@ class Edit extends Add
 
         return $inputFilter;
     }
-
 }

@@ -95,8 +95,9 @@ class Comment
 
         $entityManager->persist(new Mapping($article, $this));
 
-        if (!self::isValidCommentType($type))
+        if (!self::isValidCommentType($type)) {
             throw new InvalidArgumentException('The comment type is not valid.');
+        }
         $this->type = $type;
     }
 

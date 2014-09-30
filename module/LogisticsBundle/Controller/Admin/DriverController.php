@@ -116,8 +116,9 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($driver = $this->_getDriver()))
+        if (!($driver = $this->_getDriver())) {
             return new ViewModel();
+        }
 
         $form = new Edit($this->getEntityManager(), $driver);
 
@@ -149,7 +150,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'logistics_admin_driver',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -168,8 +169,9 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($driver = $this->_getDriver()))
+        if (!($driver = $this->_getDriver())) {
             return new ViewModel();
+        }
 
         $driver->setRemoved(true);
         $this->getEntityManager()->flush();
@@ -195,7 +197,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'logistics_admin_driver',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -215,7 +217,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'logistics_admin_driver',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -107,7 +107,7 @@ The opening hours of Cudi are:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Nieuwe Toewijzingen',
@@ -125,11 +125,11 @@ De openingsuren van cudi zijn:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is assigned'
+        'description' => 'The mail sent when a booking is assigned',
     ),
     array(
         'key'         => 'cudi.booking_expire_warning_mail',
@@ -151,7 +151,7 @@ The opening hours of Cudi are:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Waarschuwing Vervallen Toewijzingen',
@@ -169,11 +169,11 @@ De openingsuren van cudi zijn:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is about to expire'
+        'description' => 'The mail sent when a booking is about to expire',
     ),
     array(
         'key'         => 'cudi.booking_expire_mail',
@@ -188,7 +188,7 @@ The following bookings have expired:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Vervallen Toewijzingen',
@@ -199,11 +199,11 @@ De volgende reservaties zijn vervallen:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is expired'
+        'description' => 'The mail sent when a booking is expired',
     ),
     array(
         'key'         => 'cudi.queue_item_barcode_prefix',
@@ -386,7 +386,7 @@ The catalog of our cudi has been updated:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Catalogus Aanpassingen',
@@ -397,7 +397,7 @@ De catalogus van onze cudi is aangepast:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),

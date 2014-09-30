@@ -179,8 +179,9 @@ class Subject
     public function getNbEnrollment(AcademicYear $academicYear)
     {
         foreach ($this->enrollments as $enrollment) {
-            if ($enrollment->getAcademicYear() == $academicYear)
+            if ($enrollment->getAcademicYear() == $academicYear) {
                 return $enrollment->getNumber();
+            }
         }
 
         return 0;
@@ -193,8 +194,9 @@ class Subject
     public function getEnrollment(AcademicYear $academicYear)
     {
         foreach ($this->enrollments as $enrollment) {
-            if ($enrollment->getAcademicYear() == $academicYear)
+            if ($enrollment->getAcademicYear() == $academicYear) {
                 return $enrollment;
+            }
         }
 
         return null;

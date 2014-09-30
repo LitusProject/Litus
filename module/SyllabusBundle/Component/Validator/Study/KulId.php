@@ -46,7 +46,7 @@ class KulId extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The study id already exists'
+        self::NOT_VALID => 'The study id already exists',
     );
 
     /**
@@ -64,7 +64,6 @@ class KulId extends \Zend\Validator\AbstractValidator
         $this->_exclude = $exclude;
     }
 
-
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
@@ -81,8 +80,9 @@ class KulId extends \Zend\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByKulId($value);
 
-        if (null === $study || ($this->_exclude !== null && $study->getId() == $this->_exclude->getId()))
+        if (null === $study || ($this->_exclude !== null && $study->getId() == $this->_exclude->getId())) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

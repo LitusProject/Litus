@@ -18,8 +18,8 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Contract as ContractEntity,
-    BrBundle\Component\ContractParser\Parser as BulletParser,
+use BrBundle\Component\ContractParser\Parser as BulletParser,
+    BrBundle\Entity\Contract as ContractEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -111,7 +111,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                 'contract',
                 array(
                     'location' => $location,
-                    'date' => $date
+                    'date' => $date,
                 ),
                 array(
                     new XmlObject('title', null, $title),
@@ -119,11 +119,11 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         'our_union',
                         array(
                              'short_name' => $unionNameShort,
-                             'contact_person' => $ourContactPerson
+                             'contact_person' => $ourContactPerson,
                         ),
                         array(
                             new XmlObject('name', null, $brName),
-                            new XmlObject('logo', null, $logo)
+                            new XmlObject('logo', null, $logo),
                         )
                     ),
                     new XmlObject(
@@ -166,9 +166,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                         'country',
                                         null,
                                         $this->_translator->translate($company->getAddress()->getCountry())
-                                    )
+                                    ),
                                 )
-                            )
+                            ),
                         )
                     ),
                     new XmlObject(
@@ -209,15 +209,15 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                         'country',
                                         null,
                                         $unionAddressArray['country']
-                                    )
+                                    ),
                                 )
-                            )
+                            ),
                         )
                     ),
                     $entry_s,
                     new XmlObject('sub_entries', null, $sub_entries),
                     new XmlObject('footer'),
-                    new XmlObject('sale_conditions_nl')
+                    new XmlObject('sale_conditions_nl'),
                 )
             )
         );

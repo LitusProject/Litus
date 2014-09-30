@@ -19,11 +19,11 @@
 namespace FormBundle\Controller;
 
 use DateTime,
-    FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
+    FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\GuestInfo,
     FormBundle\Entity\Node\Group,
+    FormBundle\Entity\Node\GuestInfo,
     FormBundle\Form\SpecifiedForm\Add as AddForm,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as EditForm,
@@ -40,8 +40,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function indexAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return $this->notFoundAction();
+        }
 
         if ($formSpecification->getType() == 'doodle') {
             $this->redirect()->toRoute(
@@ -164,8 +165,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        if (isset($guestInfo))
+        if (isset($guestInfo)) {
             $form->populateFromGuestInfo($guestInfo);
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost()->toArray();
@@ -217,8 +219,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return $this->notFoundAction();
+        }
 
         $entry->getForm()->setEntityManager($this->getEntityManager());
 
@@ -262,8 +265,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function doodleAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return $this->notFoundAction();
+        }
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -352,8 +356,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
-        if (isset($guestInfo))
+        if (isset($guestInfo)) {
             $form->populateFromGuestInfo($guestInfo);
+        }
 
         if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
@@ -390,8 +395,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function saveDoodleAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return $this->notFoundAction();
+        }
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -457,8 +463,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
-        if (isset($guestInfo))
+        if (isset($guestInfo)) {
             $form->populateFromGuestInfo($guestInfo);
+        }
 
         if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
@@ -478,8 +485,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -493,7 +501,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         'result' => (object) array(
                             'status' => 'error',
                             'errors' => $formErrors,
-                        )
+                        ),
                     )
                 );
             }
@@ -508,8 +516,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return $this->notFoundAction();
+        }
 
         $entry->getForm()->setEntityManager($this->getEntityManager());
 
@@ -617,17 +626,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function loginAction()
     {
-        if (!($form = $this->_getForm()) || null === $this->getParam('key') || $this->getAuthentication()->isAuthenticated())
+        if (!($form = $this->_getForm()) || null === $this->getParam('key') || $this->getAuthentication()->isAuthenticated()) {
             return $this->notFoundAction();
+        }
 
         $guestInfo = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\GuestInfo')
             ->findOneByFormAndSessionId($form, $this->getParam('key'));
 
-        if (null !== $guestInfo)
+        if (null !== $guestInfo) {
             $guestInfo->renew($this->getRequest());
-        else
+        } else {
             return $this->notFoundAction();
+        }
 
         $this->redirect()->toRoute(
             'form_view',
@@ -736,8 +747,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($form);
 
-        if (null !== $mapping)
+        if (null !== $mapping) {
             return $mapping->getGroup();
+        }
     }
 
     private function _progressBarInfo(Group $group, Form $form)
@@ -774,14 +786,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
-                        if ($data['first_uncompleted_id'] == 0)
+                        if ($data['first_uncompleted_id'] == 0) {
                             $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
+                        }
                     }
                 } else {
-                    if (sizeof($formEntry) > 0 && null === $draftVersion)
+                    if (sizeof($formEntry) > 0 && null === $draftVersion) {
                         $data['completed_after_current']++;
-                    if ($data['next_form'] == 0)
+                    }
+                    if ($data['next_form'] == 0) {
                         $data['next_form'] = $groupForm->getForm()->getId();
+                    }
                 }
             }
         } else {
@@ -816,14 +831,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                         $data['completed_before_current']++;
                     } else {
                         $data['uncompleted_before_current']++;
-                        if ($data['first_uncompleted_id'] == 0)
+                        if ($data['first_uncompleted_id'] == 0) {
                             $data['first_uncompleted_id'] = $groupForm->getForm()->getId();
+                        }
                     }
                 } else {
-                    if (sizeof($formEntry) > 0 && !isset($draftVersion))
+                    if (sizeof($formEntry) > 0 && !isset($draftVersion)) {
                         $data['completed_after_current']++;
-                    if ($data['next_form'] == 0)
+                    }
+                    if ($data['next_form'] == 0) {
                         $data['next_form'] = $groupForm->getForm()->getId();
+                    }
                 }
             }
         }

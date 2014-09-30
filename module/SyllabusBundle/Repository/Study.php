@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
@@ -42,8 +42,9 @@ class Study extends EntityRepository
 
     public function findOneByTitlePhaseAndLanguage($title, $phase, $language)
     {
-        if (! is_numeric($phase))
+        if (! is_numeric($phase)) {
             return null;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -67,8 +68,9 @@ class Study extends EntityRepository
 
     public function findOneByTitlePhaseLanguageAndParent($title, $phase, $language, StudyEntity $parent)
     {
-        if (! is_numeric($phase))
+        if (! is_numeric($phase)) {
             return null;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -106,8 +108,9 @@ class Study extends EntityRepository
         $ids = array(0);
         foreach ($resultSet as $result) {
             $ids[$result->getStudy()->getId()] = $result->getStudy()->getId();
-            foreach($result->getStudy()->getParents() as $parent)
+            foreach ($result->getStudy()->getParents() as $parent) {
                 $ids[$parent->getId()] = $parent->getId();
+            }
         }
 
         $query = $this->_em->createQueryBuilder();
@@ -128,8 +131,9 @@ class Study extends EntityRepository
 
     public function findAllByTitleAndAcademicYearTypeAhead($title, AcademicYear $academicYear)
     {
-        if ('' == $title)
+        if ('' == $title) {
             return array();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -146,8 +150,9 @@ class Study extends EntityRepository
         $title = strtolower($title);
 
         foreach ($resultSet as $mapping) {
-            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false)
+            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), $title) !== false) {
                 $result[] = $mapping->getStudy();
+            }
         }
 
         return $result;
@@ -155,8 +160,9 @@ class Study extends EntityRepository
 
     public function findOneByKulId($kulId)
     {
-        if (! is_numeric($kulId))
+        if (! is_numeric($kulId)) {
             return null;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')

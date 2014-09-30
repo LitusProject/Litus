@@ -62,7 +62,7 @@ class Edit extends Add
     {
         $data = array(
             'name' => $slug->getName(),
-            'url' => $slug->getUrl()
+            'url' => $slug->getUrl(),
         );
 
         $this->setData($data);

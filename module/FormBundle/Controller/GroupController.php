@@ -31,8 +31,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return $this->notFoundAction();
+        }
 
         $now = new DateTime();
         if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {

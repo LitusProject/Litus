@@ -22,8 +22,8 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CudiBundle\Entity\Sale\Article,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Update Stock
@@ -58,7 +58,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setData(
             array(
-                'number' => $article->getStockValue()
+                'number' => $article->getStockValue(),
             )
         );
     }

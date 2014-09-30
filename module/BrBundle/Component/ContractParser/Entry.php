@@ -52,24 +52,27 @@ class Entry implements Node
         $indent = $this->nbSpacesLeadingLine($text);
         $rest = substr($text, $indent);
 
-        if (strlen($rest) == 0)
+        if (strlen($rest) == 0) {
             return;
+        }
 
         $this->handleLine($indent, $rest);
     }
 
     public function handleLine($indent, $text)
     {
-        if ($this->indent == -1)
+        if ($this->indent == -1) {
             $this->indent = $indent;
-        elseif ($indent < $this->indent)
+        } elseif ($indent < $this->indent) {
             throw new IllegalFormatException('Illegal Indent');
+        }
 
         if ($indent == $this->indent) {
-            if ('*' == $text[0])
+            if ('*' == $text[0]) {
                 $this->parseEntry($text);
-            else
+            } else {
                 $this->parseText($text);
+            }
         } else {
             $this->state->passOn($indent-$this->indent, $text);
         }
@@ -91,8 +94,9 @@ class Entry implements Node
     {
         $l = strlen($line);
         for ($i = 0 ; $i < $l ; $i++) {
-            if (' ' != $line[$i])
+            if (' ' != $line[$i]) {
                 break;
+            }
         }
 
         return $i;

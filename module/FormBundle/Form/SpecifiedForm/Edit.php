@@ -20,12 +20,12 @@ namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Entry,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Node\Entry,
+    FormBundle\Entity\Node\Form,
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Specifield Form Edit
@@ -67,7 +67,7 @@ class Edit extends Add
         foreach ($entry->getFieldEntries() as $fieldEntry) {
             $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
             if ($fieldEntry->getField() instanceof FileField) {
-                $this->get('field-' .$fieldEntry->getField()->getId())
+                $this->get('field-' . $fieldEntry->getField()->getId())
                     ->setAttribute('data-file', $fieldEntry->getValue())
                     ->setAttribute('data-name', $fieldEntry->getReadableValue());
             }

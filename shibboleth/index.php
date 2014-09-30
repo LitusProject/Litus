@@ -25,8 +25,9 @@ chdir(dirname(__DIR__));
 
 include 'init_autoloader.php';
 
-if (false === getenv('ORGANIZATION'))
-putenv('ORGANIZATION=Litus');
+if (false === getenv('ORGANIZATION')) {
+    putenv('ORGANIZATION=Litus');
+}
 
 $application = Zend\Mvc\Application::init(include 'config/application.config.php');
 $em = $application->getServiceManager()->get('doctrine.entitymanager.orm_default');
@@ -46,8 +47,9 @@ if (isset($_SERVER[$shibbolethPersonKey], $_SERVER[$shibbolethSessionKey])) {
             ->getConfigValue('shibboleth_extra_info')
         );
     $extraInfo = array();
-    foreach($shibbolethExtraInfoKeys as $key => $value)
+    foreach ($shibbolethExtraInfoKeys as $key => $value) {
         $extraInfo[$key] = isset($_SERVER[$value]) ? $_SERVER[$value] : '';
+    }
 
     if (null === $code) {
         $code = new CommonBundle\Entity\User\Shibboleth\Code(
@@ -67,8 +69,9 @@ $shibbolethHandler = $em->getRepository('CommonBundle\Entity\General\Config')
     ->getConfigValue('shibboleth_code_handler_url');
 $shibbolethHandler = unserialize($shibbolethHandler)[$_GET['source']];
 
-if ('/' == substr($shibbolethHandler, -1))
+if ('/' == substr($shibbolethHandler, -1)) {
     $shibbolethHandler = substr($shibbolethHandler, 0, -1);
+}
 
 http_response_code(307);
 header(

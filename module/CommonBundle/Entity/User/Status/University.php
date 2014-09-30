@@ -86,8 +86,9 @@ class University
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
     {
-        if (!self::isValidPerson($person, $academicYear))
+        if (!self::isValidPerson($person, $academicYear)) {
             throw new InvalidArgumentException('Invalid person');
+        }
 
         $this->person = $person;
 
@@ -138,8 +139,9 @@ class University
      */
     public function setStatus($status)
     {
-        if (self::isValidStatus($status))
+        if (self::isValidStatus($status)) {
             $this->status = $status;
+        }
 
         return $this;
     }

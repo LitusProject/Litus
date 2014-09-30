@@ -18,8 +18,8 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Lap
@@ -107,8 +107,9 @@ class Lap extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        if (1 == $nbResults)
+        if (1 == $nbResults) {
             return isset($resultSet[0]) ? $resultSet[0] : null;
+        }
 
         return $resultSet;
     }

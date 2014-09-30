@@ -18,13 +18,13 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
+    CommonBundle\Entity\General\Bank\CashRegister,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Sale Session content
@@ -96,10 +96,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function populateFromCashRegister(CashRegister $cashRegister)
     {
         $data = array();
-        foreach($cashRegister->getBankDeviceAmounts() as $amount)
+        foreach ($cashRegister->getBankDeviceAmounts() as $amount) {
             $data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
-        foreach($cashRegister->getMoneyUnitAmounts() as $amount)
+        }
+        foreach ($cashRegister->getMoneyUnitAmounts() as $amount) {
             $data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
+        }
 
         $this->setData($data);
     }

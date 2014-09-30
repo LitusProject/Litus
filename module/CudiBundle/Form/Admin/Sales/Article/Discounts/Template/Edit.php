@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
-use Doctrine\ORM\EntityManager,
-    Cudibundle\Entity\Sale\Article\Discount\Template,
+use Cudibundle\Entity\Sale\Article\Discount\Template,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**
@@ -56,7 +56,7 @@ class Edit extends Add
             'rounding' => $template->getRounding(),
             'apply_once' => $template->applyOnce(),
             'organization' => $template->getOrganization(),
-            'type' => $template->getType()
+            'type' => $template->getType(),
         );
 
         $this->setData($data);

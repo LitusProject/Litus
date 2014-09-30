@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -49,9 +49,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->_entityManager = $entityManager;
 
         $groupNames = array();
-        foreach($groups as $group)
-            if(strpos($group->getName(), "Master") === 0)
+        foreach ($groups as $group) {
+            if (strpos($group->getName(), "Master") === 0) {
                 $groupNames[$group->getId()] = $group->getName();
+            }
+        }
 
         $field = new Select('to');
         $field->setLabel('To')
@@ -93,8 +95,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $promotionsArray = array();
-        foreach ($academicYears as $academicYear)
+        foreach ($academicYears as $academicYear) {
             $promotionsArray[$academicYear->getId()] = $academicYear->getCode();
+        }
 
         return $promotionsArray;
     }

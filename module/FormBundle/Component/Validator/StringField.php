@@ -71,7 +71,6 @@ class StringField extends \Zend\Validator\AbstractValidator
         if ($this->_multiline) {
             if ( ($this->_isSpecified($this->_lines) && !$this->_isSpecified($value)) ||
                 (!$this->_isSpecified($this->_lines) && $this->_isSpecified($value)) ) {
-
                 $this->error(self::ML_BOTH);
 
                 return false;

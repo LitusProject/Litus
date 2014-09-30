@@ -23,9 +23,9 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
     SyllabusBundle\Entity\Study,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Study

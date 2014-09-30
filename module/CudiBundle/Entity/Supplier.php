@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -104,8 +104,9 @@ class Supplier
      */
     public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
     {
-        if (!self::isValidTemplate($template))
+        if (!self::isValidTemplate($template)) {
             throw new \InvalidArgumentException('The template is not valid.');
+        }
 
         $this->setName($name)
             ->setPhoneNumber($phoneNumber)
@@ -227,8 +228,9 @@ class Supplier
      */
     public function setTemplate($template)
     {
-        if (!self::isValidTemplate($template))
+        if (!self::isValidTemplate($template)) {
             throw new \InvalidArgumentException('The template is not valid.');
+        }
 
         $this->template = $template;
 

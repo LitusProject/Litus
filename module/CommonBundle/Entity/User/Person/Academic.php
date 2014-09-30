@@ -234,8 +234,9 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getUniversityStatus(AcademicYearEntity $academicYear)
     {
         foreach ($this->universityStatuses as $status) {
-            if ($status->getAcademicYear() == $academicYear)
+            if ($status->getAcademicYear() == $academicYear) {
                 return $status;
+            }
         }
 
         return null;
@@ -250,8 +251,9 @@ class Academic extends \CommonBundle\Entity\User\Person
         if ($this->universityStatuses->count() >= 1) {
             if ($this->universityStatuses->exists(
                 function ($key, $value) use ($academicYear) {
-                    if ($value->getAcademicYear() == $academicYear)
+                    if ($value->getAcademicYear() == $academicYear) {
                         return true;
+                    }
                 }
             )) {
                 return false;
@@ -326,8 +328,9 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getOrganization(AcademicYearEntity $academicYear)
     {
         foreach ($this->organizationMap as $map) {
-            if ($map->getAcademicYear() == $academicYear)
+            if ($map->getAcademicYear() == $academicYear) {
                 return $map->getOrganization();
+            }
         }
 
         return null;
@@ -340,8 +343,9 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getUnit(AcademicYearEntity $academicYear)
     {
         foreach ($this->unitMap as $map) {
-            if ($map->getAcademicYear() == $academicYear)
+            if ($map->getAcademicYear() == $academicYear) {
                 return $map->getUnit();
+            }
         }
 
         return null;
@@ -371,11 +375,13 @@ class Academic extends \CommonBundle\Entity\User\Person
 
         $unitMaps = array();
         foreach ($this->unitMap as $map) {
-            if ($map->getAcademicYear()->getStartDate() > $now)
+            if ($map->getAcademicYear()->getStartDate() > $now) {
                 continue;
+            }
 
-            if ($map->getAcademicYear()->getEndDate() < $now)
+            if ($map->getAcademicYear()->getEndDate() < $now) {
                 continue;
+            }
 
             $unitMaps[] = $map;
         }

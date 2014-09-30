@@ -68,8 +68,9 @@ class Edit extends Add
     {
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[] = $role->getName();
         }

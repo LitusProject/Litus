@@ -38,8 +38,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         $submenu = $this->_buildSubmenu($page);
         $parent = $page->getParent();
-        if (empty($submenu) && null !== $parent)
+        if (empty($submenu) && null !== $parent) {
             $submenu = $this->_buildSubmenu($parent);
+        }
 
         return new ViewModel(
             array(
@@ -83,8 +84,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _getPage()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('name')) {
             return;
+        }
 
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
@@ -92,8 +94,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 $this->getParam('name'), $this->getParam('parent')
             );
 
-        if (null === $page)
+        if (null === $page) {
             return;
+        }
 
         return $page;
     }

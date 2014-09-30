@@ -22,25 +22,25 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    Doctrine\ORM\EntityManager,
     FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Component\Validator\StringField as StringFieldValidator,
+    FormBundle\Entity\Field,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Form\Doodle,
-    FormBundle\Entity\Field,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Field
@@ -243,8 +243,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setAttribute('class', 'field_add');
         $this->add($field);
 
-        if(null !== $lastField)
+        if (null !== $lastField) {
             $this->populateFromField($lastField, true);
+        }
     }
 
     public function populateFromField(Field $field, $repeat = false)
@@ -269,8 +270,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         if ($field instanceof StringField) {
             $data['charsperline'] = $field->getLineLength();
             $data['multiline'] = $field->isMultiLine();
-            if ($field->isMultiLine())
+            if ($field->isMultiLine()) {
                 $data['lines'] = $field->getLines();
+            }
         } elseif ($field instanceof FileField) {
             $data['max_size'] = $field->getMaxSize();
         } elseif ($field instanceof TimeSlotField) {
@@ -312,8 +314,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $options = array(0 => 'Always');
         foreach ($this->_form->getFields() as $field) {
-            if (null !== $this->_field && $field->getId() == $this->_field->getId())
+            if (null !== $this->_field && $field->getId() == $this->_field->getId()) {
                 continue;
+            }
 
             if ($field instanceof StringField) {
                 $options[] = array(
@@ -321,7 +324,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'value' => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'string',
-                    )
+                    ),
                 );
             } elseif ($field instanceof DropdownField) {
                 $options[] = array(
@@ -330,7 +333,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'data-type' => 'dropdown',
                         'data-values' => $field->getOptions(),
-                    )
+                    ),
                 );
             } elseif ($field instanceof CheckboxField) {
                 $options[] = array(
@@ -338,7 +341,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'value' => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'checkbox',
-                    )
+                    ),
                 );
             } elseif ($field instanceof FileField) {
                 $options[] = array(
@@ -346,7 +349,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'value' => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'file',
-                    )
+                    ),
                 );
             }
         }
@@ -392,7 +395,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits'
+                            'name' => 'digits',
                         ),
                         new StringFieldValidator(
                             isset($this->data['multiline']) ? $this->data['multiline'] : null,
@@ -413,7 +416,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits'
+                            'name' => 'digits',
                         ),
                     ),
                 )
@@ -430,7 +433,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits'
+                            'name' => 'digits',
                         ),
                     ),
                 )

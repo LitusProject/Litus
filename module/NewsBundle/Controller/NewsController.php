@@ -48,8 +48,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews()))
+        if (!($news = $this->_getNews())) {
             return $this->notFoundAction();
+        }
 
         return new ViewModel(
             array(
@@ -69,10 +70,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         $config = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
         $descriptions = unserialize($config->getConfigValue('news.rss_description'));
-        if (isset($descriptions[$this->getLanguage()->getAbbrev()]))
+        if (isset($descriptions[$this->getLanguage()->getAbbrev()])) {
             $description = $descriptions[$this->getLanguage()->getAbbrev()];
-        else
+        } else {
             $description = $descriptions[\Locale::getDefault()];
+        }
 
         $serverName = 'http://' . str_replace(',', '', $this->getRequest()->getServer('SERVER_NAME'));
 
@@ -204,15 +206,17 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function _getNews()
     {
-        if (null === $this->getParam('name'))
+        if (null === $this->getParam('name')) {
             return;
+        }
 
         $news = $this->getEntityManager()
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findOneByName($this->getParam('name'));
 
-        if (null === $news)
+        if (null === $news) {
             return;
+        }
 
         return $news;
     }

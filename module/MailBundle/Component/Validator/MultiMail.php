@@ -33,7 +33,7 @@ class MultiMail extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The email addresses should be valid and separated by commas or whitespaces.'
+        self::NOT_VALID => 'The email addresses should be valid and separated by commas or whitespaces.',
     );
 
     /**

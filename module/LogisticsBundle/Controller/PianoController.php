@@ -33,8 +33,9 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        if (!$this->getAuthentication()->isAuthenticated())
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $this->getLanguage());
 
@@ -162,8 +163,9 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     )
                     ->setSubject($subject);
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();

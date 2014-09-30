@@ -45,7 +45,7 @@ class Title extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'There already exists a page with this title and the same parent'
+        self::NOT_VALID => 'There already exists a page with this title and the same parent',
     );
 
     /**
@@ -87,8 +87,9 @@ class Title extends \Zend\Validator\AbstractValidator
                 Url::createSlug($value), Url::createSlug($parentName)
             );
 
-        if (null === $page || $page->getName() == $this->_exclude)
+        if (null === $page || $page->getName() == $this->_exclude) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

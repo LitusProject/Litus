@@ -18,17 +18,17 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
     Zend\Form\Element\Hidden,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Ticket
@@ -270,7 +270,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->_entityManager, $this->_event),
-                            )
+                            ),
                         )
                     )
                 );
@@ -283,7 +283,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                )
+                                ),
                             )
                         )
                     );
@@ -297,7 +297,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                )
+                                ),
                             )
                         )
                     );
@@ -310,7 +310,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'required' => true,
                                     'validators' => array(
                                         new NumberTicketsValidator($this->_entityManager, $this->_event),
-                                    )
+                                    ),
                                 )
                             )
                         );

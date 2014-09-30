@@ -31,7 +31,6 @@ use BrBundle\Entity\Product,
  */
 class OrderEntry
 {
-
     /**
      * @var int A generated ID
      *

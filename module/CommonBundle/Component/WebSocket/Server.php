@@ -65,22 +65,26 @@ abstract class Server
         $fileName = substr($this->_file, strlen('unix://'));
 
         if ($isFile) {
-            if (file_exists($fileName))
+            if (file_exists($fileName)) {
                 unlink($fileName);
+            }
 
-            if (!file_exists(dirname($fileName)))
+            if (!file_exists(dirname($fileName))) {
                 mkdir(dirname($fileName));
+            }
         }
 
         $this->_master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
 
-        if ($isFile)
+        if ($isFile) {
             chmod($fileName, 0777);
+        }
 
         $this->_sockets[] = $this->_master;
 
-        if ($this->_master == false)
+        if ($this->_master == false) {
             throw new Exception('Socket could not be created: ' . $err);
+        }
     }
 
     /**
@@ -112,8 +116,9 @@ abstract class Server
                             $this->_processFrame($user, $buffer);
                         } else {
                             $user->doHandShake($buffer);
-                            if ($user->hasHandshaked())
+                            if ($user->hasHandshaked()) {
                                 $this->onConnect($user);
+                            }
                         }
                     }
                 }
@@ -128,8 +133,9 @@ abstract class Server
      */
     private function _addUserSocket($socket)
     {
-        if (!$socket)
+        if (!$socket) {
             return;
+        }
         $this->_users[] = new User($socket);
         $this->_sockets[] = $socket;
     }
@@ -163,8 +169,9 @@ abstract class Server
     public function getUserBySocket($socket)
     {
         foreach ($this->_users as $user) {
-            if ($user->getSocket() == $socket)
+            if ($user->getSocket() == $socket) {
                 return $user;
+            }
         }
     }
 
@@ -182,14 +189,16 @@ abstract class Server
             }
         }
 
-        if (isset($this->_authenticated[(int) $socket]))
+        if (isset($this->_authenticated[(int) $socket])) {
             unset($this->_authenticated[(int) $socket]);
+        }
 
         @socket_close($socket);
 
         foreach ($this->_sockets as $key => $value) {
-            if ($value == $socket)
+            if ($value == $socket) {
                 unset($this->_sockets[$key]);
+            }
         }
     }
 
@@ -226,8 +235,9 @@ abstract class Server
         } elseif ($f->getIsFin() && $f->getOpcode() == 0) {
             $user->appendBuffer($f);
 
-            if ($buffer = $user->getBuffer())
+            if ($buffer = $user->getBuffer()) {
                 $this->handleDataFrame($user, $buffer);
+            }
 
             $user->clearBuffer();
         }
@@ -244,8 +254,9 @@ abstract class Server
         $len = strlen($frame->getData());
 
         if ($frame->getOpcode() == self::OP_CLOSE) {
-            if ($len !== 0 && $len === 1)
+            if ($len !== 0 && $len === 1) {
                 return;
+            }
 
             $statusCode = false;
             $reason = '';
@@ -286,13 +297,15 @@ abstract class Server
      */
     public function sendText($user, $text)
     {
-        if (!$this->isAuthenticated($user->getSocket()))
+        if (!$this->isAuthenticated($user->getSocket())) {
             return;
+        }
 
         $len = strlen($text);
 
-        if ($len > 0xffff)
+        if ($len > 0xffff) {
             return;
+        }
 
         $header = chr(0x81);
 
@@ -314,8 +327,9 @@ abstract class Server
     {
         $len = strlen($text);
 
-        if ($len > 0xffff)
+        if ($len > 0xffff) {
             return;
+        }
 
         $header = chr(0x81);
 
@@ -326,8 +340,9 @@ abstract class Server
         }
 
         foreach ($this->_users as $user) {
-            if ($this->isAuthenticated($user->getSocket()))
+            if ($this->isAuthenticated($user->getSocket())) {
                 $user->write($header . $text);
+            }
         }
     }
 

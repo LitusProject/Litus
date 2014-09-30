@@ -107,8 +107,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getFormData($formData)
     {
         foreach ($this->getData() as $key => $value) {
-            if (null !== $value)
+            if (null !== $value) {
                 $formData->{$key} = $value;
+            }
         }
 
         return $formData;

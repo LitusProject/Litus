@@ -18,16 +18,16 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     NewsBundle\Entity\Node\News,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add News
@@ -105,8 +105,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $factory = new InputFactory();
 
         foreach ($this->getLanguages() as $language) {
-            if ($language->getAbbrev() !== \Locale::getDefault())
+            if ($language->getAbbrev() !== \Locale::getDefault()) {
                 continue;
+            }
 
             $inputFilter->add(
                 $factory->createInput(
@@ -147,8 +148,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
-                        )
-                    )
+                        ),
+                    ),
                 )
             )
         );

@@ -20,8 +20,8 @@ namespace CudiBundle\Form\Admin\Stock;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Bulk Update the Stock

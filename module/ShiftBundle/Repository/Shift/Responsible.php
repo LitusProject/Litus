@@ -28,5 +28,4 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Responsible extends EntityRepository
 {
-
 }

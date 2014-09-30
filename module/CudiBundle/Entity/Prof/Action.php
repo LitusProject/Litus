@@ -146,18 +146,19 @@ class Action
      */
     public function getEntity()
     {
-        if ('article' == $this->entity)
+        if ('article' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->entityId);
-        elseif ('file' == $this->entity)
+        } elseif ('file' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->entityId);
-        elseif ('mapping' == $this->entity)
+        } elseif ('mapping' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->entityId);
+        }
     }
 
     /**
@@ -185,18 +186,19 @@ class Action
      */
     public function getPreviousEntity()
     {
-        if ('article' == $this->entity)
+        if ('article' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->previousId);
-        elseif ('file' == $this->entity)
+        } elseif ('file' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->previousId);
-        elseif ('mapping' == $this->entity)
+        } elseif ('mapping' == $this->entity) {
             return $this->_entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->previousId);
+        }
     }
 
     /**

@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Entity\Acl\Role,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\Acl\Role;
 
 /**
  * Person
@@ -100,15 +100,17 @@ class Person extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet)
+        if ($resultSet) {
             return $resultSet;
+        }
 
         $barcode = $this->_em
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($username);
 
-        if ($barcode)
+        if ($barcode) {
             return $barcode->getPerson();
+        }
 
         return null;
     }

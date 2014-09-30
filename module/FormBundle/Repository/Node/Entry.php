@@ -188,8 +188,9 @@ class Entry extends EntityRepository
 
     public function findCompletedByGroup(GroupEntity $group)
     {
-        if (sizeof($group->getForms()) == 0)
+        if (sizeof($group->getForms()) == 0) {
             return array();
+        }
 
         $startEntries = $this->findAllByForm($group->getForms()[0]->getForm());
 
@@ -201,10 +202,12 @@ class Entry extends EntityRepository
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $entries = array();
         foreach ($endEntries as $entry) {
-            if ($entry->isDraft())
+            if ($entry->isDraft()) {
                 continue;
-            if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]))
+            }
+            if (isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()])) {
                 $entries[] = $entry;
+            }
         }
 
         return $entries;
@@ -212,8 +215,9 @@ class Entry extends EntityRepository
 
     public function findNotCompletedByGroup(GroupEntity $group)
     {
-        if (sizeof($group->getForms()) == 0)
+        if (sizeof($group->getForms()) == 0) {
             return array();
+        }
 
         $endEntries = $this->findAllByForm($group->getForms()[sizeof($group->getForms())-1]->getForm());
         $tmpEntries = array();
@@ -226,8 +230,9 @@ class Entry extends EntityRepository
         $entries = array();
         foreach ($startEntries as $entry) {
             if (!isset($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]) ||
-                    ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft()))
+                    ($tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()]->isDraft())) {
                 $entries[] = $entry;
+            }
         }
 
         return $entries;

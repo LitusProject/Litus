@@ -20,8 +20,8 @@ namespace CommonBundle\Component\Console\Command;
 
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
+    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Config,
     RuntimeException;
 
@@ -142,8 +142,10 @@ EOT
 
     private static function _loadConfig($config)
     {
-        if (is_array($config))
+        if (is_array($config)) {
             return $config;
+        }
+
         return require $config;
     }
 
@@ -166,8 +168,9 @@ EOT
                     $entry = new Config($item['key'], $item['value']);
                     $entry->setDescription($item['description']);
 
-                    if (isset($item['published']))
+                    if (isset($item['published'])) {
                         $entry->setPublished($item['published']);
+                    }
 
                     $this->getEntityManager()->persist($entry);
                 } else {
@@ -177,8 +180,9 @@ EOT
                 $entry = new Config($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
 
-                if (isset($item['published']))
+                if (isset($item['published'])) {
                     $entry->setPublished($item['published']);
+                }
 
                 $this->getEntityManager()->persist($entry);
             }
@@ -228,8 +232,9 @@ EOT
                         ->getRepository('CommonBundle\Entity\Acl\Action')
                         ->findOneBy(array('name' => $action, 'resource' => $resource));
 
-                    if (!in_array($action, $role->getActions()))
+                    if (!in_array($action, $role->getActions())) {
                         $role->addAction($action);
+                    }
                 }
             }
 

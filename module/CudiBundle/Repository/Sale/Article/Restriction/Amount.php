@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Sale\Article\Restriction;
 
-use CudiBundle\Entity\Sale\Article,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Article;
 
 /**
  * Amount

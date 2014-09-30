@@ -21,11 +21,11 @@ namespace LogisticsBundle\Form\Admin\VanReservation;
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
+    Doctrine\ORM\EntityManager,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * This form allows the user to edit the reservation.
@@ -105,7 +105,7 @@ class Edit extends Add
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId())
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId()),
                     ),
                 )
             )
@@ -113,5 +113,4 @@ class Edit extends Add
 
         return $inputFilter;
     }
-
 }

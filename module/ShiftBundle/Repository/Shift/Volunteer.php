@@ -18,8 +18,8 @@
 
 namespace ShiftBundle\Repository\Shift;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     ShiftBundle\Entity\Shift;
 
 /**
