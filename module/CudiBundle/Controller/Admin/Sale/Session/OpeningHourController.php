@@ -113,7 +113,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_session_openinghour',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -130,8 +130,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function editAction()
     {
-        if (!($openingHour = $this->_getOpeningHour()))
+        if (!($openingHour = $this->_getOpeningHour())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($openingHour, $this->getEntityManager());
 
@@ -180,7 +181,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                 $this->redirect()->toRoute(
                     'cudi_admin_sales_session_openinghour',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -199,8 +200,9 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($openingHour = $this->_getOpeningHour()))
+        if (!($openingHour = $this->_getOpeningHour())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($openingHour);
         $this->getEntityManager()->flush();
@@ -223,7 +225,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session_openinghour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -243,7 +245,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session_openinghour',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

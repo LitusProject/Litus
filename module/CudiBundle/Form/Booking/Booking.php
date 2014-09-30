@@ -20,9 +20,9 @@ namespace CudiBundle\Form\Booking;
 
 use CommonBundle\Component\OldForm\Admin\Element\Hidden,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Book textbooks

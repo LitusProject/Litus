@@ -36,7 +36,7 @@ class Item extends EntityRepository
             ->where(
                 $query->expr()->like($query->expr()->lower('i.name'), ':name')
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setMaxResults(20)
             ->getQuery();
 

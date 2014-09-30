@@ -263,7 +263,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Description',
             'required'   => true,
             'attributes' => array(
-                'rows' => 5
+                'rows' => 5,
             ),
             'options'    => array(
                 'input' => array(
@@ -295,12 +295,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
-        if (empty($units))
+        if (empty($units)) {
             throw new RuntimeException('There needs to be at least one unit before you can add a shift');
+        }
 
         $unitsArray = array();
-        foreach ($units as $unit)
+        foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
+        }
 
         return $unitsArray;
     }
@@ -312,10 +314,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($events as $event)
+        foreach ($events as $event) {
             $eventsArray[$event->getId()] = $event->getTitle();
+        }
 
         return $eventsArray;
     }
@@ -326,12 +329,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Location')
             ->findAllActive();
 
-        if (empty($locations))
+        if (empty($locations)) {
             throw new RuntimeException('There needs to be at least one location before you can add a shift');
+        }
 
         $locationsArray = array();
-        foreach ($locations as $location)
+        foreach ($locations as $location) {
             $locationsArray[$location->getId()] = $location->getName();
+        }
 
         return $locationsArray;
     }
@@ -344,12 +349,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new RuntimeException('There needs to be at least one role before you can add a page');
+        }
 
         return $rolesArray;
     }

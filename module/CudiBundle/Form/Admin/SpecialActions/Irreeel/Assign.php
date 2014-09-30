@@ -21,9 +21,9 @@ namespace CudiBundle\Form\Admin\SpecialActions\Irreeel;
 use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Admin\Element\Text,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Assign Ir.Reëel

@@ -39,8 +39,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $startDate = self::_loadDate($data['start_date']);
 
-        if (null === $startDate)
+        if (null === $startDate) {
             throw new InvalidDateException();
+        }
 
         $object->setStartDate($startDate)
             ->setEndDate(self::_loadDate($data['end_date']));
@@ -82,8 +83,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data = array();
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        if (null !== $object->getEndDate())
+        if (null !== $object->getEndDate()) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        }
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language, false);

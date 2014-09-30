@@ -101,12 +101,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $optionsArray = array();
         for ($i = 0; $i < 6; $i++) {
             $startInterval = ($startTime + 2 * $i) % 24;
-            if ($startInterval < 10)
+            if ($startInterval < 10) {
                 $startInterval = 0 . $startInterval;
+            }
 
             $endInterval = ($startTime + 2 * ($i + 1)) % 24;
-            if ($endInterval < 10)
+            if ($endInterval < 10) {
                 $endInterval = 0 . $endInterval;
+            }
 
             $optionKey = $startInterval . $endInterval;
             $optionValue = $startInterval . ':00 - ' . $endInterval . ':00';
@@ -127,11 +129,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         foreach ($groups as $group) {
             $happyHours = $group->getHappyHours();
 
-            if (isset($returnArray[$happyHours[0]]))
+            if (isset($returnArray[$happyHours[0]])) {
                 unset($returnArray[$happyHours[0]]);
+            }
 
-            if (isset($returnArray[$happyHours[1]]))
+            if (isset($returnArray[$happyHours[1]])) {
                 unset($returnArray[$happyHours[1]]);
+            }
         }
 
         return $returnArray;
@@ -196,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->getDepartments(),
                     ),
-                )
+                ),
             ),
         ));
     }
@@ -208,8 +212,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAll();
 
         $array = array('0' => '');
-        foreach($departments as $department)
+        foreach ($departments as $department) {
             $array[$department->getId()] = $department->getName();
+        }
 
         return $array;
     }

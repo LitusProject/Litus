@@ -38,7 +38,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Item',
             'attributes' => array(
                 'autocomplete' => false,
-                'class'        =. 'js-item-search',
+                'class'        => 'js-item-search',
             ),
         ));
 

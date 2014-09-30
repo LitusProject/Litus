@@ -33,8 +33,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession())) {
             return new ViewModel();
+        }
 
         $restrictions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
@@ -99,8 +100,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction()))
+        if (!($restriction = $this->_getRestriction())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($restriction);
         $this->getEntityManager()->flush();
@@ -123,7 +125,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -143,7 +145,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -164,7 +166,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -184,7 +186,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_session',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

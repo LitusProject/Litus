@@ -35,11 +35,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $tickets = $this->_search($event);
+        }
 
         if (!isset($tickets)) {
             $tickets = $this->getEntityManager()
@@ -63,8 +65,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $file = new CsvFile();
 
@@ -84,7 +87,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     $ticket->getNumber(),
                     $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '',
                     $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '',
-                    $ticket->isMember() ? '1' : '0'
+                    $ticket->isMember() ? '1' : '0',
                 )
             );
         }
@@ -105,8 +108,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $file = new TmpFile();
         $document = new EventGenerator($this->getEntityManager(), $event, $file);
@@ -133,8 +137,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $tickets = $this->_search($event);
 
@@ -194,7 +199,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -214,7 +219,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -235,7 +240,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -255,7 +260,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

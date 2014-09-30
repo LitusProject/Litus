@@ -41,10 +41,11 @@ trait ElementTrait
         $this->setAttribute('required', $flag);
 
         $labelAttributes = $this->getLabelAttributes() ?: array();
-        if (isset($labelAttributes['class']))
+        if (isset($labelAttributes['class'])) {
             $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
-        else
+        } else {
             $labelAttributes['class'] = ($flag ? 'required' : 'optional');
+        }
         $this->setLabelAttributes($labelAttributes);
 
         $this->_required = $flag;
@@ -66,10 +67,11 @@ trait ElementTrait
      */
     public function addClass($class)
     {
-        if ($this->hasAttribute('class'))
+        if ($this->hasAttribute('class')) {
             $this->setAttribute('class', $this->getAttribute('class') . ' ' . $class);
-        else
+        } else {
             $this->setAttribute('class', $class);
+        }
 
         return $this;
     }
@@ -111,8 +113,9 @@ trait ElementTrait
 
         $config = $this->getOption('input');
 
-        if (!array_key_exists('required', $config))
+        if (!array_key_exists('required', $config)) {
             $config['required'] = $this->isRequired();
+        }
 
         $config['name'] = $this->getName();
 

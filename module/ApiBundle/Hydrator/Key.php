@@ -52,7 +52,9 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
         if (isset($data['roles'])) {
             foreach ($data['roles'] as $role) {
-                if ('student' == $role) continue;
+                if ('student' == $role) {
+                    continue;
+                }
                 $roles[] = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\Acl\Role')
                     ->findOneByName($role);
@@ -74,8 +76,9 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
         $roles = array();
         foreach ($object->getRoles() as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $roles[] = $role->getName();
         }

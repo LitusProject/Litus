@@ -75,8 +75,9 @@ trait ServiceLocatorAwareTrait
                 ->get('litus.academic_year');
         }
 
-        if ($organization)
+        if ($organization) {
             return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
     }

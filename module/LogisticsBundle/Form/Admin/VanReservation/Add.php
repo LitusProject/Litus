@@ -22,15 +22,15 @@ use CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Doctrine\ORM\EntityManager,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\EntityManager,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Reservation.
@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAllByYear($currentYear);
 
         $driversArray = array(
-            -1 => ''
+            -1 => '',
         );
         foreach ($drivers as $driver) {
             $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
@@ -164,7 +164,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager)
+                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager),
                     ),
                 )
             )
@@ -222,7 +222,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                                     array(
                                         'byId' => false,
                                     )
-                                )
+                                ),
                             ),
                         )
                     )
@@ -242,7 +242,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                                     array(
                                         'byId' => true,
                                     )
-                                )
+                                ),
                             ),
                         )
                     )
@@ -251,6 +251,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         }
 
         return $inputFilter;
-
     }
 }

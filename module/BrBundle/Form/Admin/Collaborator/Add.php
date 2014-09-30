@@ -18,17 +18,17 @@
 
 namespace BrBundle\Form\Admin\Collaborator;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
+use BrBundle\Component\Validator\ProductName as ProductNameValidator,
+    BrBundle\Entity\Collaborator,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    BrBundle\Entity\Collaborator,
-    BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a collaborator.
@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $formData = array(
             'person_name'  => $collaborator->getPerson()->getFullName(),
             'person_id' => $collaborator->getPerson()->getId(),
-            'number' => $collaborator->getNumber()
+            'number' => $collaborator->getNumber(),
         );
 
         $this->setData($formData);

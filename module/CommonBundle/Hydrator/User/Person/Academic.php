@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Hydrator\User\Person;
 
-use CommonBundle\Entity\User\Status\University as UniversityStatus;
-use CommonBundle\Entity\User\Person\Academic as AcademicEntity;
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
+    CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
@@ -117,7 +117,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
 
-        $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $data['university_email'])).$studentDomain;
+        $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $data['university_email'])) . $studentDomain;
 
         if (isset($data['primary_email'])) {
             if ($data['primary_email']) {

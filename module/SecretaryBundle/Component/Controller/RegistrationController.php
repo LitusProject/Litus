@@ -18,15 +18,15 @@
 
 namespace SecretaryBundle\Component\Controller;
 
-use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\General\Organization;
-use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
-use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
-use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
-use SecretaryBundle\Entity\Syllabus\SubjectEnrollment;
-use SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
+    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
+    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
+    SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm,
+    Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -44,8 +44,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
         $studyIds = array();
-        foreach($enrollments as $enrollment)
+        foreach ($enrollments as $enrollment) {
             $studyIds[] = $enrollment->getStudy()->getId();
+        }
 
         return new ViewModel(
             array(
@@ -61,22 +62,25 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
-        foreach($enrollments as $enrollment)
+        foreach ($enrollments as $enrollment) {
             $this->getEntityManager()->remove($enrollment);
+        }
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
-        foreach($enrollments as $enrollment)
+        foreach ($enrollments as $enrollment) {
             $this->getEntityManager()->remove($enrollment);
+        }
 
         $studies = array();
 
         if (!empty($data['studies'])) {
             foreach ($data['studies'] as $id) {
-                if (isset($studies[$id]))
+                if (isset($studies[$id])) {
                     continue;
+                }
 
                 $studies[$id] = true;
 
@@ -90,8 +94,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->findAllByStudyAndAcademicYear($study, $academicYear);
 
                 foreach ($subjects as $subject) {
-                    if ($subject->isMandatory())
+                    if ($subject->isMandatory()) {
                         $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
+                    }
                 }
             }
         }
@@ -164,8 +169,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'enrollment' => $enrollment,
                 'subjects' => $subjects,
             );
-            foreach($subjects as $subject)
+            foreach ($subjects as $subject) {
                 $studySubjects[] = $subject->getSubject()->getId();
+            }
         }
 
         $enrollments = $this->getEntityManager()
@@ -177,8 +183,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach ($enrollments as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
 
-            if (!in_array($enrollment->getSubject()->getId(), $studySubjects))
+            if (!in_array($enrollment->getSubject()->getId(), $studySubjects)) {
                 $otherSubjects[] = $enrollment->getSubject();
+            }
         }
 
         return new ViewModel(
@@ -198,15 +205,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
 
-        foreach($enrollments as $enrollment)
+        foreach ($enrollments as $enrollment) {
             $this->getEntityManager()->remove($enrollment);
+        }
 
         $subjects = array();
 
         if (!empty($data['subjects'])) {
             foreach ($data['subjects'] as $id) {
-                if (isset($subjects[$id]))
+                if (isset($subjects[$id])) {
                     continue;
+                }
 
                 $subjects[$id] = true;
 
@@ -235,7 +244,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
 
-        return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)).$studentDomain;
+        return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
     }
 
     protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)

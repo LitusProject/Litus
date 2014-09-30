@@ -86,7 +86,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'ticket_admin_event',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -103,8 +103,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('ticket_event_edit', array('event' => $event));
 
@@ -143,8 +144,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $event->setActive(false);
         $this->getEntityManager()->flush();
@@ -170,7 +172,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -190,7 +192,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -20,9 +20,9 @@ namespace MailBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\AcademicYear,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -67,8 +67,9 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     $mail->addBcc($volunteer->getEmail(), $volunteer->getFullName());
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -78,7 +79,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 $this->redirect()->toRoute(
                     'mail_admin_volunteer',
                     array(
-                        'action' => 'send'
+                        'action' => 'send',
                     )
                 );
 
@@ -120,8 +121,9 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneById($volunteer['id']);
 
-            if (!$person->isPraesidium($academicYear))
+            if (!$person->isPraesidium($academicYear)) {
                 $list[] = $person;
+            }
         }
 
         return $list;

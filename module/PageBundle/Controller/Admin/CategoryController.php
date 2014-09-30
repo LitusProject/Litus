@@ -34,7 +34,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             'PageBundle\Entity\Category',
             $this->getParam('page'),
             array(
-                'active' => true
+                'active' => true,
             )
         );
 
@@ -68,7 +68,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'page_admin_category',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -85,8 +85,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($category = $this->_getCategory()))
+        if (!($category = $this->_getCategory())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('page_category_edit', $category);
 
@@ -105,7 +106,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'page_admin_category',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -124,8 +125,9 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($category = $this->_getCategory()))
+        if (!($category = $this->_getCategory())) {
             return new ViewModel();
+        }
 
         $category->deactivate();
 
@@ -134,8 +136,8 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
-                )
+                    'status' => 'success',
+                ),
             )
         );
     }
@@ -151,7 +153,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'page_admin_category',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -171,7 +173,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'page_admin_category',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

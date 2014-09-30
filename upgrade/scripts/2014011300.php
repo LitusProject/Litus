@@ -21,8 +21,9 @@ removeAclAction($connection, 'common_account', 'photo');
 removeAclAction($connection, 'br_corporate_cv', 'cvPhoto');
 
 foreach (new DirectoryIterator('data/common/profile') as $fileInfo) {
-    if($fileInfo->isDot() || $fileInfo->getFilename() == 'README.md')
+    if ($fileInfo->isDot() || $fileInfo->getFilename() == 'README.md') {
         continue;
+    }
 
     rename('data/common/profile/' . $fileInfo->getFilename(), 'public/_common/profile/' . $fileInfo->getFilename());
 }
@@ -33,10 +34,11 @@ if (!function_exists("rrmdir")) {
     function rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
-            if(is_dir($file))
+            if (is_dir($file)) {
                 rrmdir($file);
-            else
+            } else {
                 unlink($file);
+            }
         }
         rmdir($dir);
     }

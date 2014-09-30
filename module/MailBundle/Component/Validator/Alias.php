@@ -43,7 +43,7 @@ class Alias extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'An alias with this name already exists'
+        self::NOT_VALID => 'An alias with this name already exists',
     );
 
     /**
@@ -74,8 +74,9 @@ class Alias extends \Zend\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\Alias')
             ->findOneByName($value);
 
-        if (null === $alias || ($this->_alias && $alias == $this->_alias))
+        if (null === $alias || ($this->_alias && $alias == $this->_alias)) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

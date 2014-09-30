@@ -44,7 +44,7 @@ class AdminRole extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This role already has admin rights on this list!'
+        self::NOT_VALID => 'This role already has admin rights on this list!',
     );
 
     /**
@@ -76,12 +76,13 @@ class AdminRole extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'role' => $context['role']
+                    'role' => $context['role'],
                 )
             );
 
-        if (null === $adminRole)
+        if (null === $adminRole) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

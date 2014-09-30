@@ -18,11 +18,11 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator;
-use LogicException;
-use QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator;
-use QuizBundle\Entity\Round;
-use QuizBundle\Entity\Quiz;
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    LogicException,
+    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
+    QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Round;
 
 /**
  * Add a new round

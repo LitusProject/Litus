@@ -51,8 +51,8 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         new AdminRoleValidator($this->getEntityManager(), $this->getList()),
                     ),
-                )
-            )
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -79,12 +79,14 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can map a role');
+        }
 
         return $rolesArray;
     }

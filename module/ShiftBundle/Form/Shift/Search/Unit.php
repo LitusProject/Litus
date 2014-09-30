@@ -57,10 +57,11 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllActiveAndDisplayed();
 
         $unitsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($units as $unit)
+        foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
+        }
 
         return $unitsArray;
     }

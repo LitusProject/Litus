@@ -60,8 +60,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getJob()))
+        if (!($oldJob = $this->_getJob())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($oldJob);
 
@@ -182,8 +183,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        if (!($internship = $this->_getInternship()))
+        if (!($internship = $this->_getInternship())) {
             return new ViewModel();
+        }
 
         $contact = $this->getAuthentication()->getPersonObject();
 
@@ -210,7 +212,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $this->redirect()->toRoute(
                 'br_corporate_internship',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -230,7 +232,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $this->redirect()->toRoute(
                 'br_corporate_internship',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -243,8 +245,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }

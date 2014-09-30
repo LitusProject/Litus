@@ -65,8 +65,8 @@ class QueueController extends \SportBundle\Component\Controller\RunController
                         'result' => (object) array(
                             'status' => 'success',
                             'firstName' => $runner->getFirstName(),
-                            'lastName' => $runner->getLastName()
-                        )
+                            'lastName' => $runner->getLastName(),
+                        ),
                     )
                 );
             }

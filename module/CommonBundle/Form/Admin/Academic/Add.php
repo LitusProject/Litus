@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator;
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 /**
  * Add Academic

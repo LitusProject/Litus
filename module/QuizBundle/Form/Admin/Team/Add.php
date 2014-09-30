@@ -18,11 +18,11 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator;
-use LogicException;
-use QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator;
-use QuizBundle\Entity\Quiz;
-use QuizBundle\Entity\Team;
+use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
+    LogicException,
+    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
+    QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Team;
 
 /**
  * Add a new team

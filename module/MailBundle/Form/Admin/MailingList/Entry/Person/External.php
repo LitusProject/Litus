@@ -79,8 +79,8 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'emailaddress'),
-                        new ExternalEntryValidator($this->getEntityManager(), $this->getList())
-                    )
+                        new ExternalEntryValidator($this->getEntityManager(), $this->getList()),
+                    ),
                 ),
             ),
         ));

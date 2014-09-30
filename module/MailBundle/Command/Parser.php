@@ -18,9 +18,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Document\Message,
-    MailBundle\Document\Message\Attachment,
-    MailBundle\Component\Parser\Message as MessageParser;
+use MailBundle\Component\Parser\Message as MessageParser,
+    MailBundle\Document\Message,
+    MailBundle\Document\Message\Attachment;
 
 /**
  * Parser
@@ -60,10 +60,11 @@ EOT
 
     protected function executeCommand()
     {
-        if ($this->getServiceLocator()->has('lilo'))
+        if ($this->getServiceLocator()->has('lilo')) {
             $this->_lilo = $this->getServiceLocator()->get('lilo');
-        else
+        } else {
             $this->_lilo = null;
+        }
 
         $mail = $this->_readMail();
         $this->_parseMessage($mail);
@@ -102,7 +103,7 @@ EOT
             serialize(
                 array(
                     'MailBundle',
-                    'parser.php'
+                    'parser.php',
                 )
             )
         );

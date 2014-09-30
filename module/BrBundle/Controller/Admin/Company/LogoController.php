@@ -35,8 +35,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Company\Logo',
@@ -62,8 +63,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $company);
 
@@ -73,8 +75,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
             $upload = new FileTransfer();
             $inputFilter = $form->getInputFilter()->get('logo');
-            if ($inputFilter instanceof InputInterface)
+            if ($inputFilter instanceof InputInterface) {
                 $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+            }
 
             if ($form->isValid() && $upload->isValid()) {
                 $formData = $form->getFormData($formData);
@@ -99,16 +102,18 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                 $nbPixels = 0;
                 foreach ($iterator as $pixels) {
                     foreach ($pixels as $pixel) {
-                        if ($pixel->getColor()['a'] == 1)
+                        if ($pixel->getColor()['a'] == 1) {
                             continue;
+                        }
 
                         $pixel_color = $pixel->getColor(true);
                         $nbPixels++;
                         $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
                     }
                 }
-                if ($nbPixels != 0 && $color/$nbPixels < 0.5)
+                if ($nbPixels != 0 && $color/$nbPixels < 0.5) {
                     $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
+                }
 
                 $all = new Imagick();
                 $all->addImage($image);
@@ -144,8 +149,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             } else {
                 $errors = $form->getMessages();
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $errors['logo'] = $upload->getMessages();
+                }
 
                 $form->setMessages($errors);
             }
@@ -163,15 +169,17 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($logo = $this->_getLogo()))
+        if (!($logo = $this->_getLogo())) {
             return new ViewModel();
+        }
 
         $filePath = 'public/' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path') . '/';
 
-        if (file_exists($filePath . $logo->getPath()))
+        if (file_exists($filePath . $logo->getPath())) {
             unlink($filePath . $logo->getPath());
+        }
 
         $this->getEntityManager()->remove($logo);
         $this->getEntityManager()->flush();
@@ -194,7 +202,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -214,7 +222,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -235,7 +243,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -255,7 +263,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -68,12 +68,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new RuntimeException('There needs to be at least one role before you can add a quiz');
+        }
 
         return $rolesArray;
     }

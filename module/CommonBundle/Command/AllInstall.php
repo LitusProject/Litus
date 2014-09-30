@@ -47,26 +47,29 @@ EOT
 
     protected function executeCommand()
     {
-        foreach ($this->getModules() as $module)
+        foreach ($this->getModules() as $module) {
             $this->installModule($module);
+        }
 
         $this->writeln('Installation completed successfully!');
     }
 
     protected function getLogName()
     {
-        if ($this->currentModule !== null)
+        if ($this->currentModule !== null) {
             return $this->currentModule;
+        }
 
         return 'AllInstall';
     }
 
     protected function getLogNameTag()
     {
-        if ($this->currentModule !== null)
+        if ($this->currentModule !== null) {
             return 'fg=blue';
-
-        else return parent::getLogNameTag();
+        } else {
+            return parent::getLogNameTag();
+        }
     }
 
     private function getModules()

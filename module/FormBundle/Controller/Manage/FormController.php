@@ -18,12 +18,12 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     DateTime,
-    FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Component\Form\Doodle as DoodleHelper,
+    FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Form\Manage\Mail\Send as MailForm,
     FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
     FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
@@ -42,16 +42,18 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
         $viewerMaps = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findAllByPerson($person);
 
         $forms = array();
-        foreach ($viewerMaps as $viewerMap)
+        foreach ($viewerMaps as $viewerMap) {
             $forms[] = $viewerMap->getForm();
+        }
 
         return new ViewModel(
             array(
@@ -62,12 +64,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if(!($form = $this->_getForm()))
-
+        if (!($form = $this->_getForm())) {
             return new ViewModel();
+        }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -82,7 +85,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -114,12 +117,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function addAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if(!($formSpecification = $this->_getForm()))
-
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if ($formSpecification->getType() == 'doodle') {
             $this->redirect()->toRoute(
@@ -206,11 +210,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if (!($formEntry = $this->_getEntry()))
+        if (!($formEntry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $formSpecification = $formEntry->getForm();
 
@@ -296,9 +302,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if(!($formSpecification = $this->_getForm()))
-
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if ($formSpecification->getType() == 'form') {
             $this->redirect()->toRoute(
@@ -355,11 +361,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if (!($formEntry = $this->_getEntry()))
+        if (!($formEntry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $formSpecification = $formEntry->getForm();
         $formSpecification->setEntityManager($this->getEntityManager());
@@ -441,11 +449,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if (!($formEntry = $this->_getEntry()))
+        if (!($formEntry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $formSpecification = $formEntry->getForm();
 
@@ -483,12 +493,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if(!($form = $this->_getForm()))
-
+        if (!($form = $this->_getForm())) {
             return new ViewModel();
+        }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -503,7 +514,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -527,8 +538,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $results = array();
             foreach ($entries as $entry) {
                 $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-                if ($viewerMap->isMail())
+                if ($viewerMap->isMail()) {
                     $result[] = $entry->getPersonInfo()->getEmail();
+                }
 
                 $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
                 foreach ($entry->getFieldEntries() as $fieldEntry) {
@@ -555,17 +567,19 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $results = array();
             foreach ($entries as $entry) {
                 $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-                if ($viewerMap->isMail())
+                if ($viewerMap->isMail()) {
                     $result[] = $entry->getPersonInfo()->getEmail();
+                }
 
                 foreach ($fields as $field) {
                     $fieldEntry = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\Entry')
                         ->findOneByFormEntryAndField($entry, $field);
-                    if ($fieldEntry)
+                    if ($fieldEntry) {
                         $result[] = $fieldEntry->getValueString($language);
-                    else
+                    } else {
                         $result[] = '';
+                    }
                 }
                 $results[] = $result;
             }
@@ -615,8 +629,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadFilesAction()
     {
-        if (!($field = $this->_getField()) || $field->getType() != 'file')
+        if (!($field = $this->_getField()) || $field->getType() != 'file') {
             return new ViewModel();
+        }
 
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
@@ -673,7 +688,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -693,7 +708,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -716,7 +731,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -736,7 +751,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -757,7 +772,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -777,7 +792,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 

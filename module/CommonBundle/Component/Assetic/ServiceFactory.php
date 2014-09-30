@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\Assetic;
 
-use Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator,
-    Zend\ServiceManager\ServiceManager,
-    Zend\ServiceManager\Config;
+use Zend\ServiceManager\Config,
+    Zend\ServiceManager\ServiceLocatorInterface as ServiceLocator,
+    Zend\ServiceManager\ServiceManager;
 
 class ServiceFactory extends \AsseticBundle\ServiceFactory
 {

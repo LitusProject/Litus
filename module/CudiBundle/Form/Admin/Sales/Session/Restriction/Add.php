@@ -28,8 +28,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Select,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Sale Session content
@@ -124,8 +124,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAllParentsByAcademicYear($academicYear);
 
         $options = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         return $options;
     }
@@ -144,7 +145,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ExistsValidator($this->_entityManager, $this->_session)
+                        new ExistsValidator($this->_entityManager, $this->_session),
                     ),
                 )
             )
@@ -172,7 +173,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new ValuesValidator('start_value_name')
+                            new ValuesValidator('start_value_name'),
                         ),
                     )
                 )
@@ -199,7 +200,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new ValuesValidator('start_value_year')
+                            new ValuesValidator('start_value_year'),
                         ),
                     )
                 )

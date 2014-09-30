@@ -45,7 +45,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'There already exists a group with this name'
+        self::NOT_VALID => 'There already exists a group with this name',
     );
 
     /**
@@ -76,8 +76,9 @@ class Name extends \Zend\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findOneByName($value);
 
-        if (null === $group || ($this->_exclude !== null && $group->getId() == $this->_exclude->getId()))
+        if (null === $group || ($this->_exclude !== null && $group->getId() == $this->_exclude->getId())) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

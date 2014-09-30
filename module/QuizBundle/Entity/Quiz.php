@@ -18,10 +18,10 @@
 
 namespace QuizBundle\Entity;
 
-use CommonBundle\Entity\User\Person;
-use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person,
+    DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a quiz.
@@ -171,12 +171,14 @@ class Quiz
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person)
+        if (null === $person) {
             return false;
+        }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor') {
                 return true;
+            }
         }
 
         return false;

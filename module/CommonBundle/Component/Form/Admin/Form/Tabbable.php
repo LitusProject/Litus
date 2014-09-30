@@ -42,8 +42,9 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
         $languages = $this->getLanguages();
         $prefix = $this->getPrefix();
 
-        if (count($languages) === 0)
+        if (count($languages) === 0) {
             throw new RuntimeException('No languages found!');
+        }
 
         if (count($languages) === 1) {
             $this->initBeforeTabs();
@@ -133,8 +134,10 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 
     public function getPrefix()
     {
-        if (null === $this->prefix || '' == $this->prefix)
+        if (null === $this->prefix || '' == $this->prefix) {
             return '';
+        }
+
         return $this->prefix . '_';
     }
 

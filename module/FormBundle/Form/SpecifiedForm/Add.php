@@ -19,25 +19,25 @@
 namespace FormBundle\Form\SpecifiedForm;
 
 use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\File,
     CommonBundle\Component\OldForm\Bootstrap\Element\Select,
     CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
-    CommonBundle\Component\OldForm\Bootstrap\Element\File,
     CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
+    Doctrine\ORM\EntityManager,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Node\Entry,
+    FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\GuestInfo,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Specifield Form Add
@@ -89,7 +89,6 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 
         foreach ($fields as $fieldSpecification) {
             if ($fieldSpecification instanceof StringField) {
-
                 if ($fieldSpecification->isMultiLine()) {
                     $field = new Textarea('field-' . $fieldSpecification->getId());
                     $field->setAttribute('rows', 3);
@@ -106,7 +105,6 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                         ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
                         ->setAttribute('data-linecount', $fieldSpecification->getLines());
                 }
-
             } elseif ($fieldSpecification instanceof DropdownField) {
                 $field = new Select('field-' . $fieldSpecification->getId());
                 $field->setLabel($fieldSpecification->getLabel($language))
@@ -188,7 +186,6 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 
         foreach ($this->_form->getFields() as $fieldSpecification) {
             if ($fieldSpecification instanceof StringField) {
-
                 $validators = array();
                 if ($fieldSpecification->hasLengthSpecification()) {
                     $validators[] = new LengthValidator(

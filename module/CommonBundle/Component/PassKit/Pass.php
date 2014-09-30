@@ -87,8 +87,9 @@ abstract class Pass
         $pass->addFromString('manifest.json', $this->_manifest->getContent());
         $pass->addFromString('pass.json', $this->getJson());
 
-        foreach ($this->_getImages() as $image)
+        foreach ($this->_getImages() as $image) {
             $pass->addFile($image, basename($image));
+        }
 
         $languages = array_keys($this->_languages);
         for ($i = 0; isset($languages[$i]); $i++) {
@@ -133,8 +134,9 @@ abstract class Pass
      */
     protected function getSerialNumber()
     {
-        if ('' == $this->_serialNumber)
+        if ('' == $this->_serialNumber) {
             $this->_serialNumber = uniqid();
+        }
 
         return $this->_serialNumber;
     }
@@ -147,15 +149,17 @@ abstract class Pass
     private function _createManifest()
     {
         $hashes = array(
-            'pass.json' => sha1($this->getJson())
+            'pass.json' => sha1($this->getJson()),
         );
 
-        foreach ($this->_getImages() as $image)
+        foreach ($this->_getImages() as $image) {
             $hashes[strtolower(basename($image))] = sha1(file_get_contents($image));
+        }
 
         $languages = array_keys($this->_languages);
-        for ($i = 0; isset($languages[$i]); $i++)
+        for ($i = 0; isset($languages[$i]); $i++) {
             $hashes[$languages[$i] . '.lproj/pass.strings'] = sha1($this->_createLanguage($languages[$i]));
+        }
 
         $this->_manifest->appendContent(json_encode($hashes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
@@ -195,8 +199,9 @@ abstract class Pass
     private function _createLanguage($name)
     {
         $strings = '';
-        foreach ($this->_languages[$name] as $key => $value)
+        foreach ($this->_languages[$name] as $key => $value) {
             $strings .= '"' . $key . '" = "' . $value . '";' . PHP_EOL;
+        }
 
         return $strings;
     }
@@ -225,8 +230,9 @@ abstract class Pass
 
         $images = array();
         foreach ($directory as $splFileInfo) {
-            if (!$splFileInfo->isDir() && !$splFileInfo->isDot())
+            if (!$splFileInfo->isDir() && !$splFileInfo->isDot()) {
                 $images[] = $splFileInfo->getRealPath();
+            }
         }
 
         return $images;

@@ -95,5 +95,4 @@ class ContractHistory
     {
         return $this->version;
     }
-
 }

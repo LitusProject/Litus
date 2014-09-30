@@ -167,7 +167,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'notempty',
                             'options' => array(
                                 'type' => 'null',
-                            )
+                            ),
                         ),
                         new ProxyValidator(
                             new NotEmptyValidator(),
@@ -202,7 +202,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'notempty',
                             'options' => array(
                                 'type' => 'null',
-                            )
+                            ),
                         ),
                         new ProxyValidator(
                             new NotEmptyValidator(),
@@ -265,8 +265,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAllParentsByAcademicYear($this->_academicYear);
 
         $studyNames = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         return $studyNames;
     }
@@ -278,8 +279,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $groupNames = array();
-        foreach($groups as $group)
+        foreach ($groups as $group) {
             $groupNames[$group->getId()] = $group->getName();
+        }
 
         return $groupNames;
     }
@@ -291,10 +293,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll(array(), array('creationTime' => 'DESC'));
 
         $storedMessagesTitles = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($storedMessages as $storedMessage)
+        foreach ($storedMessages as $storedMessage) {
             $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
+        }
 
         return $storedMessagesTitles;
     }

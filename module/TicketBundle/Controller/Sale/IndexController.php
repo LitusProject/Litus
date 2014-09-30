@@ -124,8 +124,9 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                 $formErrors = array();
 
                 foreach ($form->getElements() as $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -136,8 +137,9 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
                 foreach ($form->getFieldSets() as $fieldset) {
                     foreach ($fieldset->getElements() as $subElement) {
-                        if (!isset($errors[$fieldset->getName()][$subElement->getName()]))
+                        if (!isset($errors[$fieldset->getName()][$subElement->getName()])) {
                             continue;
+                        }
 
                         $formErrors[$subElement->getAttribute('id')] = array();
 
@@ -151,7 +153,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors
+                            'errors' => $formErrors,
                         ),
                     )
                 );

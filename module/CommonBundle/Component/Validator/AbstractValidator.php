@@ -24,8 +24,8 @@ namespace CommonBundle\Component\Validator;
 class AbstractValidator extends \Zend\Validator\AbstractValidator
 {
     /**
-     * @param array|null $context
-     * @param string|array $path
+     * @param  array|null   $context
+     * @param  string|array $path
      * @return mixed|false
      */
     protected static function getFormValue($context = null, $path)

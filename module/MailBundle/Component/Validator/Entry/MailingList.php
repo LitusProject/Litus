@@ -44,7 +44,7 @@ class MailingList extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This list already has been subscribed to this list!'
+        self::NOT_VALID => 'This list already has been subscribed to this list!',
     );
 
     /**
@@ -80,12 +80,13 @@ class MailingList extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'entry' => $list
+                    'entry' => $list,
                 )
             );
 
-        if (null === $entry)
+        if (null === $entry) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

@@ -45,22 +45,25 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findByParent($object->getId());
 
-            foreach ($orphanedPages as $orphanedPage)
+            foreach ($orphanedPages as $orphanedPage) {
                 $orphanedPage->setParent($newPage);
+            }
 
             $orphanedCategories = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Category')
                     ->findByParent($object->getId());
 
-            foreach ($orphanedCategories as $orphanedCategory)
+            foreach ($orphanedCategories as $orphanedCategory) {
                 $orphanedCategory->setParent($newPage);
+            }
 
             $orphanedLinks = $this->getEntityManager()
                     ->getRepository('PageBundle\Entity\Link')
                     ->findByParent($object->getId());
 
-            foreach ($orphanedLinks as $orphanedLink)
+            foreach ($orphanedLinks as $orphanedLink) {
                 $orphanedLink->setParent($newPage);
+            }
         }
 
         $category = $this->getEntityManager()
@@ -131,8 +134,9 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         $data['category'] = $object->getCategory()->getId();
 
         $data['edit_roles'] = array();
-        foreach ($object->getEditRoles() as $role)
+        foreach ($object->getEditRoles() as $role) {
             $data['edit_roles'][] = $role->getName();
+        }
 
         $data['parent_' . $object->getCategory()->getId()] = null !== $object->getParent() ? $object->getParent()->getId() : '';
 

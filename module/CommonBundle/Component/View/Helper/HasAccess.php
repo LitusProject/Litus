@@ -51,8 +51,9 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($resource, $action)
     {
-        if (null === $this->_driver)
+        if (null === $this->_driver) {
             throw new Exception\RuntimeException('No driver object was provided');
+        }
 
         $driver = $this->_driver;
 

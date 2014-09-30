@@ -21,12 +21,12 @@ namespace LogisticsBundle\Form\Admin\Driver;
 use CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
+    Doctrine\ORM\EntityManager,
     LogisticsBundle\Component\Validator\Driver as DriverValidator,
     LogisticsBundle\Entity\Driver,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Driver
@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                                 array(
                                     'byId' => false,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )
@@ -146,7 +146,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                                 array(
                                     'byId' => true,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )

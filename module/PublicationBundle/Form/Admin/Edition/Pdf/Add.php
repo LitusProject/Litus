@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->getEntityManager(), $this->publication, $this->getCurrentAcademicYear(true))
+                        new TitleValidator($this->getEntityManager(), $this->publication, $this->getCurrentAcademicYear(true)),
                     ),
                 ),
             ),

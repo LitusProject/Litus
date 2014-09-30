@@ -33,11 +33,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $mappings = $this->_search($academicYear);
+        }
 
         if (!isset($mappings)) {
             $mappings = $this->getEntityManager()
@@ -66,8 +68,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('syllabus_study_add');
 
@@ -115,14 +118,17 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($study = $this->_getStudy()))
+        if (!($study = $this->_getStudy())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $mappings = $this->_searchSubject($study, $academicYear);
+        }
 
         if (!isset($mappings)) {
             $mappings = $this->getEntityManager()
@@ -173,8 +179,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
@@ -190,8 +197,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $mappings = $this->_search($academicYear);
 
@@ -222,11 +230,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudy()))
+        if (!($study = $this->_getStudy())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $subjects = $this->_searchSubject($study, $academicYear);
 
@@ -258,8 +268,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return;
+        }
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
@@ -317,7 +328,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -337,7 +348,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -358,7 +369,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -378,7 +389,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -391,8 +402,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -404,7 +416,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

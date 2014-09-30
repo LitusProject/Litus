@@ -19,17 +19,17 @@
 namespace CudiBundle\Form\Admin\Sales\Article\Restrictions;
 
 use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Hidden,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Restrictions\Exists as RestrictionValidator,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Restriction,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Restriction
@@ -111,8 +111,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAllParentsByAcademicYear($academicYear);
 
         $options = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         return $options;
     }

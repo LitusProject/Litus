@@ -18,10 +18,10 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator;
-use SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
-use SecretaryBundle\Entity\Organization\MetaData;
+use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CommonBundle\Entity\User\Person\Academic,
+    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
+    SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Add Registration
@@ -331,11 +331,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $organizationOptions = array();
 
-        if ($this->isOtherOrganizationEnabled())
+        if ($this->isOtherOrganizationEnabled()) {
             $organizationOptions[0] = 'Other';
+        }
 
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationOptions;
     }

@@ -21,8 +21,8 @@ namespace CudiBundle\Form\Admin\Sales\Financial;
 use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Search financial for period

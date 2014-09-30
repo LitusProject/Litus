@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Team;
-use Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Team,
+    Zend\View\Model\ViewModel;
 
 /**
  * TeamController
@@ -32,8 +32,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'QuizBundle\Entity\Team',
@@ -57,8 +58,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('quiz_team_add', array('quiz' => $quiz));
 
@@ -107,8 +109,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($team = $this->_getTeam()))
+        if (!($team = $this->_getTeam())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('quiz_team_edit', array('team' => $team));
 
@@ -145,8 +148,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam()))
+        if (!($team = $this->_getTeam())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($team);
 

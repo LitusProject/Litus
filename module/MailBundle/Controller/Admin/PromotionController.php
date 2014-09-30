@@ -44,7 +44,6 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $groupIds = $formData['groups'];
 
                 foreach ($formData['to'] as $to) {
-
                     $academicYear = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear')
                         ->findOneById($to);
@@ -60,7 +59,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 ->findAllByGroupAndAcademicYear($group, $academicYear);
 
                             foreach ($studies as $study) {
-                                if($study->getStudy()->getPhase() == 2){
+                                if ($study->getStudy()->getPhase() == 2) {
                                     $children = $study->getStudy()->getAllChildren();
 
                                     foreach ($children as $child) {
@@ -77,8 +76,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 }
                             }
                         }
-                    }
-                    else {
+                    } else {
                         $people = array_merge(
                             $people,
                             $this->getEntityManager()
@@ -88,8 +86,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     }
                 }
 
-                foreach($enrollments as $enrollment)
-                        array_push($people, $enrollment->getAcademic());
+                foreach ($enrollments as $enrollment) {
+                    array_push($people, $enrollment->getAcademic());
+                }
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -110,15 +109,17 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                     if ($i == 500) {
                         $i = 0;
-                        if ('development' != getenv('APPLICATION_ENV'))
+                        if ('development' != getenv('APPLICATION_ENV')) {
                             $this->getMailTransport()->send($mail);
+                        }
 
                         $mail->setBcc(array());
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -128,7 +129,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $this->redirect()->toRoute(
                     'mail_admin_promotion',
                     array(
-                        'action' => 'send'
+                        'action' => 'send',
                     )
                 );
 

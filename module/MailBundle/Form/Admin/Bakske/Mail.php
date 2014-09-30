@@ -81,12 +81,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->getAcademicYear());
 
-        if (empty($editions))
+        if (empty($editions)) {
             throw new \RuntimeException('There needs to be at least one edition before you can mail it');
+        }
 
         $editionsArray = array();
-        foreach ($editions as $edition)
+        foreach ($editions as $edition) {
             $editionsArray[$edition->getId()] = $edition->getTitle();
+        }
 
         return $editionsArray;
     }

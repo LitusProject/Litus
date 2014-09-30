@@ -44,8 +44,9 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
         $startDate = self::_loadDate($data['start_date']);
         $endDate = self::_loadDate($data['end_date']);
 
-        if (null === $startDate || null === $endDate)
+        if (null === $startDate || null === $endDate) {
             throw new InvalidDateException();
+        }
 
         $object->setStartDate($startDate)
             ->setEndDate($endDate);

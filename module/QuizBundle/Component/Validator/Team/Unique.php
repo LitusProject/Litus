@@ -52,7 +52,7 @@ class Unique extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The team number already exists'
+        self::NOT_VALID => 'The team number already exists',
     );
 
     /**
@@ -84,13 +84,14 @@ class Unique extends \Zend\Validator\AbstractValidator
         $teams = $this->_entityManager->getRepository('QuizBundle\Entity\Team')
             ->findBy(
                 array(
-                    'quiz'=>$this->_quiz->getId(),
-                    'number'=>$value
+                    'quiz' => $this->_quiz->getId(),
+                    'number' => $value,
                 )
             );
 
-        if (count($teams) == 0 || $teams[0] == $this->_team)
+        if (count($teams) == 0 || $teams[0] == $this->_team) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

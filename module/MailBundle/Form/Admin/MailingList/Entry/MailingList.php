@@ -87,8 +87,9 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
         if (!$editor) {
             $listsArray = array();
             foreach ($lists as $list) {
-                if ($list->canBeEditedBy($this->getPerson()))
+                if ($list->canBeEditedBy($this->getPerson())) {
                     $listsArray[] = $list;
+                }
             }
         } else {
             $listsArray = $lists;
@@ -100,16 +101,18 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 ->findBy(
                     array(
                         'list' => $this->getList(),
-                        'entry' => $value
+                        'entry' => $value,
                     )
                 );
-            if ($value === $this->getList() || count($lists) > 0)
+            if ($value === $this->getList() || count($lists) > 0) {
                 unset($listsArray[$key]);
+            }
         }
 
         $lists = array();
-        foreach ($listsArray as $list)
+        foreach ($listsArray as $list) {
             $lists[$list->getId()] = $list->getName();
+        }
 
         return $lists;
     }

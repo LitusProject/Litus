@@ -18,16 +18,16 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+use CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add opening hour

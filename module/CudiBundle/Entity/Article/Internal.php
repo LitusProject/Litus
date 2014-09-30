@@ -415,15 +415,17 @@ class Internal extends \CudiBundle\Entity\Article
                 break;
         }
         if ($this->rectoVerso) {
-            if ($this->nbColored > 0)
+            if ($this->nbColored > 0) {
                 $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            else
+            } else {
                 $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+            }
         } else {
-            if ($this->nbColored > 0)
+            if ($this->nbColored > 0) {
                 $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            else
+            } else {
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+            }
         }
 
         if ($this->hardcovered) {
@@ -458,15 +460,17 @@ class Internal extends \CudiBundle\Entity\Article
                 break;
         }
         if ($this->rectoVerso) {
-            if ($this->nbColored > 0)
+            if ($this->nbColored > 0) {
                 $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            else
+            } else {
                 $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+            }
         } else {
-            if ($this->nbColored > 0)
+            if ($this->nbColored > 0) {
                 $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            else
+            } else {
                 $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
+            }
         }
 
         if ($this->hardcovered) {

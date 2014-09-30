@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Sale\Queue;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Button,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Button,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
     CommonBundle\Component\OldForm\Bootstrap\Element\Text;
 
 /**

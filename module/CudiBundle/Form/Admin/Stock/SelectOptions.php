@@ -18,11 +18,11 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\OldForm\Admin\Element\Radio,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Radio,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Stock Select options

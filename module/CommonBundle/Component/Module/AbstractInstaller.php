@@ -23,8 +23,8 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\Acl\Resource,
+    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Config as ConfigEntity,
     Exception,
     LogicException,
@@ -112,8 +112,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     protected function write($string, $raw = false)
     {
-        if ($this->command !== null)
+        if ($this->command !== null) {
             $this->command->write($string, $raw);
+        }
     }
 
     /**
@@ -123,8 +124,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     protected function writeln($string, $raw = false)
     {
-        if ($this->command !== null)
+        if ($this->command !== null) {
             $this->command->writeln($string, $raw);
+        }
     }
 
     /**
@@ -163,8 +165,10 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     private static function loadConfig($config)
     {
-        if (is_array($config))
+        if (is_array($config)) {
             return $config;
+        }
+
         return require $config;
     }
 
@@ -187,8 +191,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                     $entry = new ConfigEntity($item['key'], $item['value']);
                     $entry->setDescription($item['description']);
 
-                    if (isset($item['published']))
+                    if (isset($item['published'])) {
                         $entry->setPublished($item['published']);
+                    }
 
                     $this->getEntityManager()->persist($entry);
                 } else {
@@ -198,8 +203,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                 $entry = new ConfigEntity($item['key'], $item['value']);
                 $entry->setDescription($item['description']);
 
-                if (isset($item['published']))
+                if (isset($item['published'])) {
                     $entry->setPublished($item['published']);
+                }
 
                 $this->getEntityManager()->persist($entry);
             }
@@ -249,8 +255,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
                         ->getRepository('CommonBundle\Entity\Acl\Action')
                         ->findOneBy(array('name' => $action, 'resource' => $resource));
 
-                    if (!in_array($action, $role->getActions()))
+                    if (!in_array($action, $role->getActions())) {
                         $role->addAction($action);
+                    }
                 }
             }
 

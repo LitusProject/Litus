@@ -18,11 +18,11 @@
 
 namespace NotificationBundle\Hydrator\Node;
 
-use NotificationBundle\Entity\Node\Notification as NotificationEntity,
-    NotificationBundle\Entity\Node\Translation as TranslationEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    DateTime;
+    DateTime,
+    NotificationBundle\Entity\Node\Notification as NotificationEntity,
+    NotificationBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts notification data.
@@ -46,8 +46,9 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
         $startDate = self::_loadDate($data['start_date']);
         $endDate = self::_loadDate($data['end_date']);
 
-        if (null === $startDate || null === $endDate)
+        if (null === $startDate || null === $endDate) {
             throw new InvalidDateException();
+        }
 
         $object->setEndDate($endDate)
             ->setStartDate($startDate)
@@ -84,8 +85,9 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$std_keys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        if (null !== $object->getEndDate())
+        if (null !== $object->getEndDate()) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        }
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['content'] = $object->getContent($language, false);

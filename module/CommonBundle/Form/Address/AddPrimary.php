@@ -107,7 +107,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'name'       => $id,
                 'label'      => 'Street',
                 'attributes' => array(
-                    'class'   => 'street street-'.$id,
+                    'class'   => 'street street-' . $id,
                     'options' => $collection,
                 ),
             );
@@ -175,8 +175,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     private function getCities()
     {
         if (null !== $this->getCache()) {
-            if (null !== ($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
+            if (null !== ($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
                 return $result;
+            }
         }
 
         $cities = $this->getEntityManager()
@@ -186,7 +187,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         $optionsCity = array('' => '');
         $optionsStreet = array();
         foreach ($cities as $city) {
-            $optionsCity[$city->getId()] = $city->getPostal().' '.$city->getName();
+            $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
             $optionsStreet[$city->getId()] = array('' => '');
 
             foreach ($city->getStreets() as $street) {

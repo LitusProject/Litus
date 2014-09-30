@@ -20,8 +20,8 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
-    CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
+    CudiBundle\Entity\Sale\Session,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -87,7 +87,7 @@ class Queue
                     'signed_in' => $this->_createJsonQueue(
                         $repository->findAllByStatus($session, 'signed_in')
                     ),
-                )
+                ),
             )
         );
     }
@@ -99,8 +99,9 @@ class Queue
      */
     public function getJsonQueueItem($id)
     {
-        if (null == $id)
+        if (null == $id) {
             return;
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -129,7 +130,7 @@ class Queue
 
         return json_encode(
             (object) array(
-                'item' => $result
+                'item' => $result,
             )
         );
     }
@@ -155,7 +156,7 @@ class Queue
                     ),
                     0,
                     $numItems
-                )
+                ),
             )
         );
     }
@@ -251,8 +252,9 @@ class Queue
             ->findOneById($id);
 
         $item->setStatus('collecting');
-        if ($bulk)
+        if ($bulk) {
             $item->setCollectPrinted(true);
+        }
 
         $this->_entityManager->flush();
 
@@ -290,8 +292,9 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles)
+        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles) {
             return;
+        }
 
         $this->_queueItems[$id]->setCollectedArticles($articles);
     }
@@ -324,15 +327,17 @@ class Queue
         $paydesk = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findOneByCode($user->getExtraData('paydesk'));
-        if (null !== $paydesk)
+        if (null !== $paydesk) {
             $item->setPayDesk($paydesk);
+        }
 
         $this->_entityManager->flush();
 
-        if (!isset($this->_queueItems[$id]))
+        if (!isset($this->_queueItems[$id])) {
             $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
-        else
+        } else {
             $this->_queueItems[$id]->setUser($user);
+        }
 
         return $this->_queueItems[$id]->getSaleInfo();
     }
@@ -359,8 +364,9 @@ class Queue
      */
     public function concludeSale($id, $articles, $discounts, $payMethod)
     {
-        if (!isset($this->_queueItems[$id]))
+        if (!isset($this->_queueItems[$id])) {
             return;
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -368,8 +374,9 @@ class Queue
 
         $saleItems = $this->_queueItems[$id]->conclude($articles, $discounts);
 
-        if (isset($this->_queueItems[$id]))
+        if (isset($this->_queueItems[$id])) {
             unset($this->_queueItems[$id]);
+        }
 
         $item->setStatus('sold')
             ->setPayMethod($payMethod);
@@ -384,8 +391,9 @@ class Queue
      */
     public function setHold($id)
     {
-        if (isset($this->_queueItems[$id]))
+        if (isset($this->_queueItems[$id])) {
             unset($this->_queueItems[$id]);
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -400,8 +408,9 @@ class Queue
      */
     public function setUnhold($id)
     {
-        if (isset($this->_queueItems[$id]))
+        if (isset($this->_queueItems[$id])) {
             unset($this->_queueItems[$id]);
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -471,8 +480,9 @@ class Queue
         }
 
         $barcodes = array();
-        foreach($article->getBarcodes() as $barcode)
+        foreach ($article->getBarcodes() as $barcode) {
             $barcodes[] = $barcode->getBarcode();
+        }
 
         $result = array(
             'id' => 0,
@@ -544,8 +554,9 @@ class Queue
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByPersonAndArticle($item->getPerson(), $article['article']);
 
-                if (!isset($booking))
+                if (!isset($booking)) {
                     break;
+                }
 
                 if ($booking->getNumber() > $article['number']) {
                     $remainder = new Booking(

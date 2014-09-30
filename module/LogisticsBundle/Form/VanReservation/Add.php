@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Form\VanReservation;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
+use CommonBundle\Component\Validator\Academic as AcademicValidator,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation;
 
@@ -146,7 +146,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Additional Info',
             'attributes' => array(
                 'class' => 'additional',
-                'style' => 'height: 80px; resize: none;'
+                'style' => 'height: 80px; resize: none;',
             ),
             'options'    => array(
                 'input' => array(
@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add');
+        $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
     }
 
@@ -197,7 +197,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllByYear($this->getCurrentAcademicYear());
 
         $driversArray = array(
-            -1 => ''
+            -1 => '',
         );
         foreach ($drivers as $driver) {
             $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();

@@ -23,7 +23,7 @@ return array(
         ),
         'actions' => array(
             'api_oauth' => array(
-                'authorize', 'shibboleth'
+                'authorize', 'shibboleth',
             ),
         ),
     ),
@@ -33,10 +33,10 @@ return array(
         ),
         'actions' => array(
             'api_cudi' => array(
-                'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'signIn', 'signInStatus'
+                'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'signIn', 'signInStatus',
             ),
             'api_shift' => array(
-                'active', 'responsible', 'volunteer', 'signOut'
+                'active', 'responsible', 'volunteer', 'signOut',
             ),
         ),
     ),

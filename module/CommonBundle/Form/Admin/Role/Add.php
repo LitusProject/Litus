@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param Role $role The role to edit, if any
+     * @param  Role $role The role to edit, if any
      * @return self
      */
     public function setRole(Role $role)
@@ -111,8 +111,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $parents = array();
         foreach ($roles as $role) {
-            if ($role->getName() != $exclude)
+            if ($role->getName() != $exclude) {
                 $parents[$role->getName()] = $role->getName();
+            }
         }
 
         return $parents;
@@ -137,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $childActions = $resourceChild->getActions($this->getEntityManager());
                 $actions[$resourceChild->getName()] = array(
                     'label' => $resourceChild->getName(),
-                    'options' => array()
+                    'options' => array(),
                 );
                 foreach ($childActions as $childAction) {
                     $actions[$resourceChild->getName()]['options'][$childAction->getId()] = $childAction->getName();

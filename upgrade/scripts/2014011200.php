@@ -28,8 +28,9 @@ $result = pg_query($connection, 'SELECT E.title AS title, PUB.title AS pubtitle,
     INNER JOIN publications.publications AS PUB ON PUB.id = E.publication');
 
 $pdfDir = 'public/_publications/pdf';
-if (!file_exists($pdfDir))
+if (!file_exists($pdfDir)) {
     mkdir($pdfDir, 0775, true);
+}
 
 while ($edition = pg_fetch_object($result)) {
     $startAcademicYear = new DateTime($edition->start);
@@ -56,8 +57,9 @@ $result = pg_query($connection, 'SELECT P.html AS html, E.title AS title, PUB.ti
     INNER JOIN publications.publications AS PUB ON PUB.id = E.publication');
 
 $htmlDir = 'public/_publications/html';
-if (!file_exists($htmlDir))
+if (!file_exists($htmlDir)) {
     mkdir($htmlDir, 0775, true);
+}
 
 while ($edition = pg_fetch_object($result)) {
     $startAcademicYear = new DateTime($edition->start);
@@ -115,10 +117,11 @@ if (!function_exists("rrmdir")) {
     function rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
-            if(is_dir($file))
+            if (is_dir($file)) {
                 rrmdir($file);
-            else
+            } else {
                 unlink($file);
+            }
         }
         rmdir($dir);
     }

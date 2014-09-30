@@ -19,14 +19,14 @@
 namespace CudiBundle\Controller\Admin;
 
 use CudiBundle\Entity\Article\External,
-    CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\History,
+    CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Comment\Mapping as CommentMapping,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
     CudiBundle\Form\Admin\Article\Add as AddForm,
-    CudiBundle\Form\Admin\Article\Edit as EditForm,
     CudiBundle\Form\Admin\Article\Duplicate as DuplicateForm,
+    CudiBundle\Form\Admin\Article\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,8 +40,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYear();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $articles = $this->_search();
+        }
 
         if (!isset($articles)) {
             $articles = $this->getEntityManager()
@@ -54,8 +55,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        foreach($paginator as $item)
+        foreach ($paginator as $item) {
             $item->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -113,7 +115,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
@@ -177,8 +179,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $article);
 
@@ -196,7 +199,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
                     ->setYearPublished($formData['year_published'])
-                    ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
+                    ->setISBN($formData['isbn'] != '' ? $formData['isbn'] : null)
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
                     ->setIsSameAsPreviousYear($formData['same_as_previous_year'])
@@ -263,8 +266,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $article->setIsHistory(true);
         $this->getEntityManager()->flush();
@@ -278,8 +282,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $history = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\History')
@@ -334,8 +339,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYear();
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $form = new DuplicateForm($this->getEntityManager(), $article);
 
@@ -360,7 +366,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $article->getType(),
                         $formData['downloadable'],
@@ -381,7 +387,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $article->getType(),
                         $formData['downloadable'],
@@ -428,8 +434,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToExternalAction()
     {
-        if (!($previous = $this->_getArticle()))
+        if (!($previous = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         if (!$previous->isInternal()) {
             $this->redirect()->toRoute(
@@ -469,15 +476,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\History')
             ->findByArticle($previous);
 
-        foreach($completeHistory as $item)
+        foreach ($completeHistory as $item) {
             $item->setArticle($article);
+        }
 
         $comments = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comment\Comment')
             ->findAllByArticle($previous);
 
-        foreach($comments as $comment)
+        foreach ($comments as $comment) {
             $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+        }
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
@@ -509,8 +518,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToInternalAction()
     {
-        if (!($previous = $this->_getArticle()))
+        if (!($previous = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         if ($previous->isInternal()) {
             $this->redirect()->toRoute(
@@ -567,15 +577,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\History')
             ->findByArticle($previous);
 
-        foreach($completeHistory as $item)
+        foreach ($completeHistory as $item) {
             $item->setArticle($article);
+        }
 
         $comments = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comment\Comment')
             ->findAllByArticle($previous);
 
-        foreach($comments as $comment)
+        foreach ($comments as $comment) {
             $this->getEntityManager()->persist(new CommentMapping($article, $comment));
+        }
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
@@ -608,11 +620,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     private function _search()
     {
         switch ($this->getParam('field')) {
-            case 'title':
+            case 'title' :
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByTitleQuery($this->getParam('string'));
-            case 'author':
+            case 'author' :
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByAuthorQuery($this->getParam('string'));
@@ -642,7 +654,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -662,7 +674,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -32,8 +32,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -58,8 +59,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function subjectAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
         $comments = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
@@ -111,8 +113,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function replyAction()
     {
-        if (!($comment = $this->_getComment()))
+        if (!($comment = $this->_getComment())) {
             return new ViewModel();
+        }
 
         $replies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Reply')
@@ -131,10 +134,11 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $markAsReadForm->setData($post);
 
                 if ($markAsReadForm->isValid()) {
-                    if ($comment->isRead())
+                    if ($comment->isRead()) {
                         $comment->setReadBy(null);
-                    else
+                    } else {
                         $comment->setReadBy($this->getAuthentication()->getPersonObject());
+                    }
 
                     $this->getEntityManager()->flush();
 
@@ -200,8 +204,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($comment = $this->_getComment()))
+        if (!($comment = $this->_getComment())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($comment);
         $this->getEntityManager()->flush();
@@ -229,7 +234,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -249,7 +254,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -273,7 +278,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -293,7 +298,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -309,8 +314,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -322,7 +328,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'syllabus_admin_subject_comment',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

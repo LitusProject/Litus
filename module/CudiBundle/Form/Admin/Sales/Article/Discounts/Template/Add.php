@@ -24,9 +24,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Template
@@ -112,8 +112,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
     private function _getRoundings()
     {
         $roundings = array();
-        foreach(Discount::$POSSIBLE_ROUNDINGS as $key => $rounding)
+        foreach (Discount::$POSSIBLE_ROUNDINGS as $key => $rounding) {
             $roundings[$key] = $rounding['name'];
+        }
 
         return $roundings;
     }
@@ -125,8 +126,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAll();
 
         $organizationsOptions = array(0 => 'All');
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationsOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationsOptions;
     }

@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator;
-use CommonBundle\Component\Validator\Username as UsernameValidator;
+use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CommonBundle\Component\Validator\Username as UsernameValidator;
 
 /**
  * Add Person
@@ -160,8 +160,9 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($system !== $role->getSystem())
+            if ($system !== $role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }

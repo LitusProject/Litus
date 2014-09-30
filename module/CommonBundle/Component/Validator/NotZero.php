@@ -31,7 +31,7 @@ class NotZero extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The value may not be zero'
+        self::NOT_VALID => 'The value may not be zero',
     );
 
     /**
@@ -45,8 +45,9 @@ class NotZero extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (trim($value) != '0' && $value != 0)
+        if (trim($value) != '0' && $value != 0) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

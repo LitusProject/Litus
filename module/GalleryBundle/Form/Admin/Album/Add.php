@@ -18,17 +18,17 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Component\Validator\Name as NameValidator,
     GalleryBundle\Entity\Album\Album,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add an album.

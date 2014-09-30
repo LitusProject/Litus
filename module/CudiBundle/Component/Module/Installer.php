@@ -18,18 +18,18 @@
 
 namespace CudiBundle\Component\Module;
 
-use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Entity\General\Address;
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-use CommonBundle\Entity\General\Bank\BankDevice;
-use CommonBundle\Entity\General\Bank\MoneyUnit;
-use CommonBundle\Entity\General\Config;
-use CudiBundle\Entity\Article\Option\Binding;
-use CudiBundle\Entity\Article\Option\Color;
-use CudiBundle\Entity\Sale\PayDesk;
-use DateInterval;
-use DateTime;
-use Exception;
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\General\Bank\BankDevice,
+    CommonBundle\Entity\General\Bank\MoneyUnit,
+    CommonBundle\Entity\General\Config,
+    CudiBundle\Entity\Article\Option\Binding,
+    CudiBundle\Entity\Article\Option\Color,
+    CudiBundle\Entity\Sale\PayDesk,
+    DateInterval,
+    DateTime,
+    Exception;
 
 /**
  * CudiBundle installer

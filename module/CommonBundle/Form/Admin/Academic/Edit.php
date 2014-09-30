@@ -18,12 +18,12 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator;
-use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CommonBundle\Entity\User\Status\University as UniversityStatus;
-use LogicException;
-use SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
+use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
+    LogicException,
+    SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
 
 /**
  * Edit Academic

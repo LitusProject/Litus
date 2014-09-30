@@ -36,10 +36,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             'CommonBundle\Entity\General\Organization\Unit',
             $this->getParam('page'),
             array(
-                'active' => true
+                'active' => true,
             ),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
@@ -73,7 +73,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_unit',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -90,9 +90,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if(!($unit = $this->_getUnit()))
-
+        if (!($unit = $this->_getUnit())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('common_unit_member');
 
@@ -118,7 +118,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         array(
                             'unit' => $unit,
                             'academic' => $academic,
-                            'academicYear' => $this->getCurrentAcademicYear()
+                            'academicYear' => $this->getCurrentAcademicYear(),
                         )
                     );
 
@@ -166,8 +166,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->_getUnit()))
+        if (!($unit = $this->_getUnit())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('common_unit_edit', array('unit' => $unit));
 
@@ -185,7 +186,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_unit',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -204,8 +205,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->_getUnit()))
+        if (!($unit = $this->_getUnit())) {
             return new ViewModel();
+        }
 
         $unit->deactivate();
 
@@ -214,7 +216,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -224,8 +226,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($member = $this->_getMember()))
+        if (!($member = $this->_getMember())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($member);
         $this->getEntityManager()->flush();
@@ -245,13 +248,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($units as $unit) {
             foreach ($unit->getRoles() as $role) {
-                if ($this->_findRoleWithParent($role, $unit->getParent()))
+                if ($this->_findRoleWithParent($role, $unit->getParent())) {
                     $unit->removeRole($role);
+                }
             }
 
             foreach ($unit->getCoordinatorRoles() as $coordinatorRole) {
-                if ($this->_findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent()))
+                if ($this->_findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent())) {
                     $unit->removeCoordinatorRole($coordinatorRole);
+                }
             }
         }
 
@@ -265,7 +270,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'common_admin_unit',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -286,7 +291,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_unit',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -306,7 +311,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_unit',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -330,7 +335,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_unit',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -350,7 +355,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_unit',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -366,11 +371,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _findRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent)
+        if (null === $parent) {
             return false;
+        }
 
-        if (in_array($role, $parent->getRoles(false)))
+        if (in_array($role, $parent->getRoles(false))) {
             return true;
+        }
 
         return $this->_findRoleWithParent($role, $parent->getParent());
     }
@@ -381,11 +388,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent)
+        if (null === $parent) {
             return false;
+        }
 
-        if (in_array($role, $parent->getCoordinatorRoles(false)))
+        if (in_array($role, $parent->getCoordinatorRoles(false))) {
             return true;
+        }
 
         return $this->_findCoordinatorRoleWithParent($role, $parent->getParent());
     }

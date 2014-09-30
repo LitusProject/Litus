@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Hydrator\User;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {

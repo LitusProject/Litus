@@ -33,8 +33,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($shift = $this->_getShift()))
+        if (!($shift = $this->_getShift())) {
             return new ViewModel();
+        }
 
         $responsibles = $shift->getResponsibles();
         $volunteers = $shift->getVolunteers();
@@ -105,8 +106,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($subscription = $this->_getSubscription()))
+        if (!($subscription = $this->_getSubscription())) {
             return new ViewModel();
+        }
 
         $repository = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift');
@@ -153,8 +155,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
             ->setSubject($subject);
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV')) {
             $this->getMailTransport()->send($mail);
+        }
 
         $this->getEntityManager()->remove($subscription);
 
@@ -163,7 +166,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -191,7 +194,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 $this->redirect()->toRoute(
                     'shift_admin_shift',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -207,7 +210,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -225,7 +228,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -249,7 +252,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -269,7 +272,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

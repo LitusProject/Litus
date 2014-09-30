@@ -30,8 +30,9 @@ class MailingList extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object)
+        if (null === $object) {
             throw new InvalidObjectException();
+        }
 
         $entry = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\Named')

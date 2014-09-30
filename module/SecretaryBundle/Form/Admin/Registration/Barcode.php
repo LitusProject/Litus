@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator;
-use CommonBundle\Entity\User\Person;
-use LogicException;
+use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
+    CommonBundle\Entity\User\Person,
+    LogicException;
 
 /**
  * Academic Barcode form

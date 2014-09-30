@@ -119,16 +119,18 @@ class Config
     private static function _load($directory, $file)
     {
         $file = $directory . '/' . $file;
-        if (file_exists($file))
+        if (file_exists($file)) {
             return include $file;
-        else
+        } else {
             return array();
+        }
     }
 
     private static function _createTranslationConfig(array $settings)
     {
-        if (!array_key_exists('translation_files', $settings))
+        if (!array_key_exists('translation_files', $settings)) {
             return array();
+        }
 
         $translationFiles = array();
         $directory = $settings['directory'];
@@ -153,7 +155,7 @@ class Config
         if (!array_key_exists('has_entities', $settings) || $settings['has_entities']) {
             $doctrine['orm_default'] = array(
                 'drivers' => array(
-                    $namespace . '\Entity' => 'orm_annotation_driver'
+                    $namespace . '\Entity' => 'orm_annotation_driver',
                 ),
             );
             $doctrine['orm_annotation_driver'] = array(
@@ -167,7 +169,7 @@ class Config
         if (array_key_exists('has_documents', $settings) && $settings['has_documents']) {
             $doctrine['odm_default'] = array(
                 'drivers' => array(
-                    $namespace . '\Document' => 'odm_annotation_driver'
+                    $namespace . '\Document' => 'odm_annotation_driver',
                 ),
             );
             $doctrine['odm_annotation_driver'] = array(
@@ -187,18 +189,21 @@ class Config
         // don't include layout by default
         $hasLayout = array_key_exists('has_layouts', $settings) && $settings['has_layouts'];
 
-        if (!$hasView && !$hasLayout)
+        if (!$hasView && !$hasLayout) {
             return array();
+        }
 
         $directory = $settings['directory'];
         $namespace = $settings['namespace'];
         $bundleName = str_replace('bundle', '', strtolower($namespace));
 
         $templatePathStack = array();
-        if ($hasLayout)
+        if ($hasLayout) {
             $templatePathStack[$bundleName . '_layout'] = $directory . '/../layouts';
-        if ($hasView)
+        }
+        if ($hasView) {
             $templatePathStack[$bundleName . '_view'] = $directory . '/../views';
+        }
 
         return array(
             'template_path_stack' => $templatePathStack,
@@ -212,10 +217,12 @@ class Config
 
         $result = array();
 
-        if (array_key_exists('routes', $asseticConfig))
+        if (array_key_exists('routes', $asseticConfig)) {
             $result['routes'] = $asseticConfig['routes'];
-        if (array_key_exists('controllers', $asseticConfig))
+        }
+        if (array_key_exists('controllers', $asseticConfig)) {
             $result['controllers'] = $asseticConfig['controllers'];
+        }
         if (array_key_exists('collections', $asseticConfig)) {
             $namespace = $settings['namespace'];
 
@@ -237,15 +244,17 @@ class Config
 
         // returning an empty array here will ensure an error is thrown in the
         // installcontroller.
-        if (!file_exists($directory))
+        if (!file_exists($directory)) {
             return array();
+        }
 
         $result = array();
 
         foreach (array('configuration', 'acl', 'roles') as $name) {
             $file = $directory . '/' . $name . '.config.php';
-            if (file_exists($file))
+            if (file_exists($file)) {
                 $result[$name] = $file;
+            }
         }
 
         return array(

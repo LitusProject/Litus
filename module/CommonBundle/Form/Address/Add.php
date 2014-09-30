@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Form\Address;
 
-use CommonBundle\Component\Validator\NotZero as NotZeroValidator;
-use CommonBundle\Entity\General\Address;
+use CommonBundle\Component\Validator\NotZero as NotZeroValidator,
+    CommonBundle\Entity\General\Address;
 
 /**
  * Add Address

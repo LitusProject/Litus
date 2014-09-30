@@ -81,8 +81,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->addSubmit('Add', 'calendar_add');
 
-        if (null !== $this->getEvent())
+        if (null !== $this->getEvent()) {
             $this->bind($this->getEvent());
+        }
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)

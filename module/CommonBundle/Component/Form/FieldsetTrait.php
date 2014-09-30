@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\InputFilter\InputProviderInterface;
-use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\InputFilter\InputFilterProviderInterface,
+    Zend\InputFilter\InputProviderInterface;
 
 trait FieldsetTrait
 {
@@ -28,10 +28,11 @@ trait FieldsetTrait
         $spec = array();
 
         foreach ($this->byName as $name => $elementOrFieldset) {
-            if ($elementOrFieldset instanceof InputFilterProviderInterface)
+            if ($elementOrFieldset instanceof InputFilterProviderInterface) {
                 $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
-            elseif ($elementOrFieldset instanceof InputProviderInterface)
+            } elseif ($elementOrFieldset instanceof InputProviderInterface) {
                 $spec[$name] = $elementOrFieldset->getInputSpecification();
+            }
         }
 
         return $spec;
@@ -40,8 +41,9 @@ trait FieldsetTrait
     public function setRequired($required = true)
     {
         foreach ($this->byName as $elementOrFieldset) {
-            if ($elementOrFieldset instanceof ElementInterface)
+            if ($elementOrFieldset instanceof ElementInterface) {
                 $elementOrFieldset->setRequired($required);
+            }
         }
 
         return $this->setElementRequired($required);

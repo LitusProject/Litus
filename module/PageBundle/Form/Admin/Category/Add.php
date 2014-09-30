@@ -71,10 +71,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
 
         $pageOptions = array(
-            '' => ''
+            '' => '',
         );
-        foreach($pages as $page)
+        foreach ($pages as $page) {
             $pageOptions[$page->getId()] = $page->getTitle();
+        }
 
         return $pageOptions;
     }

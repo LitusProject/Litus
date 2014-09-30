@@ -20,8 +20,8 @@ namespace CudiBundle\Form\Prof\File;
 
 use CommonBundle\Component\OldForm\Bootstrap\Element\File,
     CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add File

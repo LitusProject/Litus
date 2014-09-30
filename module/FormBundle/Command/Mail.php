@@ -18,8 +18,8 @@
 
 namespace FormBundle\Command;
 
-use DateTime,
-    DateInterval,
+use DateInterval,
+    DateTime,
     FormBundle\Entity\Field\TimeSlot,
     FormBundle\Entity\Node\Form\Doodle,
     Zend\Mail\Message;
@@ -78,8 +78,9 @@ EOT
     {
         $form = $timeSlot->getForm();
 
-        if (!($form instanceof Doodle))
+        if (!($form instanceof Doodle)) {
             return;
+        }
 
         $english = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -99,8 +100,9 @@ EOT
             $mailAddress = $form->getReminderMail()->getFrom();
 
             $language = $english;
-            if ($entry->getFormEntry()->getCreationPerson())
+            if ($entry->getFormEntry()->getCreationPerson()) {
                 $language = $entry->getFormEntry()->getCreationPerson()->getLanguage();
+            }
 
             $mail = new Message();
             $mail->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
@@ -108,11 +110,13 @@ EOT
                 ->setSubject($form->getReminderMail()->getSubject())
                 ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());
 
-            if ($form->getReminderMail()->getBcc())
+            if ($form->getReminderMail()->getBcc()) {
                 $mail->addBcc($mailAddress);
+            }
 
-            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail'))
+            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail')) {
                 $this->getMailTransport()->send($mail);
+            }
         }
     }
 }

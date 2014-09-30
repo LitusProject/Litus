@@ -26,5 +26,4 @@ namespace CommonBundle\Component\View\Helper\Exception;
  */
 class RuntimeException extends \RuntimeException
 {
-
 }

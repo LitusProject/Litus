@@ -59,7 +59,7 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }

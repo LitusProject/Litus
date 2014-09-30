@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use RuntimeException;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use RuntimeException,
+    Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 /**
  * Manager for our hydrators
@@ -30,16 +30,17 @@ class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
 {
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {
-        if ($this->has($name))
+        if ($this->has($name)) {
             return parent::get($name, $options, $usePeeringServiceManagers);
+        }
 
         if (0 === strpos($name, '\\')) {
             $name = substr($name, 1);
         }
 
-        $hydratorName = '\\'.$this->getHydratorName($name);
+        $hydratorName = '\\' . $this->getHydratorName($name);
         if (!class_exists($hydratorName)) {
-            throw new RuntimeException('Unknown hydrator: '.$hydratorName);
+            throw new RuntimeException('Unknown hydrator: ' . $hydratorName);
         }
 
         $this->setInvokableClass($name, $hydratorName);
@@ -55,8 +56,9 @@ class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
     {
         $parts = explode('\\', $name, 3);
 
-        if ('Entity' !== $parts[1])
+        if ('Entity' !== $parts[1]) {
             return $name;
+        }
         $parts[1] = 'Hydrator';
 
         return implode('\\', $parts);
@@ -64,8 +66,9 @@ class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
 
     public function validatePlugin($plugin)
     {
-        if ($plugin instanceof ServiceLocatorAwareInterface)
+        if ($plugin instanceof ServiceLocatorAwareInterface) {
             $plugin->setServiceLocator($this->getServiceLocator());
+        }
 
         return parent::validatePlugin($plugin);
     }

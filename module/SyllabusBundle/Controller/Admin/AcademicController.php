@@ -46,10 +46,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 'CommonBundle\Entity\User\Person\Academic',
                 $this->getParam('page'),
                 array(
-                    'canLogin' => 'true'
+                    'canLogin' => 'true',
                 ),
                 array(
-                    'username' => 'ASC'
+                    'username' => 'ASC',
                 )
             );
         }
@@ -64,11 +64,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -97,8 +99,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudyEnrollment()))
+        if (!($study = $this->_getStudyEnrollment())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($study);
         $this->getEntityManager()->flush();
@@ -114,8 +117,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->_getSubjectEnrollment()))
+        if (!($subject = $this->_getSubjectEnrollment())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($subject);
         $this->getEntityManager()->flush();
@@ -129,11 +133,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addStudyAction()
     {
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -155,8 +161,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                     ->findOneByAcademicAndAcademicYearAndStudy($academic, $academicYear, $study);
 
-                if (null === $enrollment)
+                if (null === $enrollment) {
                     $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+                }
 
                 $subjects = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
@@ -168,8 +175,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                             ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject->getSubject());
 
-                        if (null === $enrollment)
+                        if (null === $enrollment) {
                             $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
+                        }
                     }
                 }
 
@@ -210,11 +218,13 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addSubjectAction()
     {
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -236,8 +246,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                     ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject);
 
-                if (null === $enrollment)
+                if (null === $enrollment) {
                     $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject));
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -334,7 +345,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -354,7 +365,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -375,7 +386,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -395,7 +406,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -416,7 +427,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -436,7 +447,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -449,8 +460,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -462,7 +474,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

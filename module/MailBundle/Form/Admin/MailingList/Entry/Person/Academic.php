@@ -58,7 +58,7 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                             array(
                                 'byId' => true,
                             )
-                        )
+                        ),
                     ),
                 ),
             ),

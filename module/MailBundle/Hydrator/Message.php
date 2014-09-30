@@ -39,8 +39,9 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
     {
         // SlugDocument requires the Person that created it, so
         // we cannot create an object here.
-        if (null === $object)
+        if (null === $object) {
             throw new InvalidObjectException();
+        }
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }

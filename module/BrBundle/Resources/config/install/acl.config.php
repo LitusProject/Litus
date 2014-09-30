@@ -19,58 +19,58 @@
 return array(
     'brbundle' => array(
         'br_admin_collaborator' => array(
-            'add', 'retire', 'edit', 'manage', 'rehire'
+            'add', 'retire', 'edit', 'manage', 'rehire',
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'contacts'
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'contacts',
         ),
         'br_admin_company_event' => array(
-            'add', 'delete', 'edit', 'editPoster', 'manage', 'upload'
+            'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',
         ),
         'br_admin_company_job' => array(
-            'add', 'delete', 'edit', 'manage'
+            'add', 'delete', 'edit', 'manage',
         ),
         'br_admin_company_user' => array(
-            'add', 'delete', 'edit', 'manage', 'activate'
+            'add', 'delete', 'edit', 'manage', 'activate',
         ),
         'br_admin_company_logo' => array(
-            'manage', 'add', 'delete'
+            'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signed', 'download', 'delete'
+            'manage', 'edit', 'view', 'history', 'sign', 'signed', 'download', 'delete',
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics'
+            'manage', 'delete', 'export', 'exportAcademics',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay'
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay',
         ),
         'br_admin_order' => array(
-            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage'
+            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage',
         ),
         'br_admin_overview' => array(
-            'person', 'company', 'view','personview','companyview'
+            'person', 'company', 'view','personview','companyview',
         ),
         'br_admin_product' => array(
-            'add', 'delete', 'manage', 'edit', 'old'
+            'add', 'delete', 'manage', 'edit', 'old',
         ),
         'br_admin_request' => array(
-            'reject', 'approve', 'manage', 'view'
+            'reject', 'approve', 'manage', 'view',
         ),
         'br_career_index' => array(
-            'index'
+            'index',
         ),
         'br_career_company' => array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_event' => array(
-            'view', 'overview'
+            'view', 'overview',
         ),
         'br_career_vacancy' => array(
-            'view', 'overview'
+            'view', 'overview',
         ),
         'br_career_internship' => array(
-            'view', 'overview'
+            'view', 'overview',
         ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete',

@@ -95,13 +95,15 @@ abstract class MailingList
     public function canBeEditedBy(Academic $academic, $editAdmin = false)
     {
         foreach ($academic->getFlattenedRoles() as $role) {
-            if ($role->getName() == 'editor')
+            if ($role->getName() == 'editor') {
                 return true;
+            }
 
             foreach ($this->adminRoles as $adminRole) {
                 if ($adminRole->getRole() == $role) {
-                    if ($editAdmin && !$adminRole->canEditAdmin())
+                    if ($editAdmin && !$adminRole->canEditAdmin()) {
                         return false;
+                    }
 
                     return true;
                 }
@@ -110,8 +112,9 @@ abstract class MailingList
 
         foreach ($this->admins as $admin) {
             if ($admin->getAcademic() == $academic) {
-                if ($editAdmin && !$admin->canEditAdmin())
+                if ($editAdmin && !$admin->canEditAdmin()) {
                     return false;
+                }
 
                 return true;
             }

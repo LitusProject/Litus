@@ -30,8 +30,9 @@ class AdminRoleMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object)
+        if (null === $object) {
             throw new InvalidObjectException();
+        }
 
         $role = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')

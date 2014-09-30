@@ -18,17 +18,17 @@
 
 namespace CommonBundle\Component\Controller;
 
-use CommonBundle\Component\Acl\Acl;
-use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
-use CommonBundle\Component\Controller\Exception\RuntimeException;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use CommonBundle\Entity\General\Language;
-use Locale;
-use Zend\Http\Header\HeaderInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Paginator\Paginator;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl,
+    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
+    CommonBundle\Component\Controller\Exception\RuntimeException,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Entity\General\Language,
+    Locale,
+    Zend\Http\Header\HeaderInterface,
+    Zend\Mvc\MvcEvent,
+    Zend\Paginator\Paginator,
+    Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -72,8 +72,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->_initFallbackLanguage();
         $this->_initViewHelpers();
 
-        if (null !== $this->initAuthentication())
+        if (null !== $this->initAuthentication()) {
             return new ViewModel();
+        }
 
         $this->initLocalization();
 
@@ -84,8 +85,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
 
         $authenticatedPerson = null;
-        if ($this->getAuthentication()->isAuthenticated())
+        if ($this->getAuthentication()->isAuthenticated()) {
             $authenticatedPerson = $this->getAuthentication()->getPersonObject();
+        }
 
         $result = parent::onDispatch($e);
 
@@ -238,8 +240,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $headers = $this->getResponse()->getHeaders();
 
         $contentType = $headers->get('Content-Type');
-        if ($contentType instanceof HeaderInterface)
+        if ($contentType instanceof HeaderInterface) {
             $headers->removeHeader($contentType);
+        }
 
         $headers->addHeaders(
             array_merge(
@@ -374,8 +377,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language)
+        if (null !== $this->_language) {
             return $this->_language;
+        }
 
         if ($this->getParam('language')) {
             $language = $this->getEntityManager()

@@ -44,8 +44,9 @@ abstract class Form extends \CommonBundle\Component\Form\Form
 
         $this->_displayFormActions = $displayFormActions;
 
-        if ($horizontal)
+        if ($horizontal) {
             $this->setAttribute('class', 'form-horizontal');
+        }
 
         $this->add(
             new Csrf('csrf')

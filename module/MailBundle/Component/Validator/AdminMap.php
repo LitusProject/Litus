@@ -44,7 +44,7 @@ class AdminMap extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This member already has admin rights on this list!'
+        self::NOT_VALID => 'This member already has admin rights on this list!',
     );
 
     /**
@@ -76,12 +76,13 @@ class AdminMap extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'academic' => $context['person_id']
+                    'academic' => $context['person_id'],
                 )
             );
 
-        if (null === $adminMap)
+        if (null === $adminMap) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

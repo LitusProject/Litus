@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Controller;
 
-use DateTime,
-    DateInterval,
+use DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,16 +40,18 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('PageBundle\Entity\Link')
                 ->findOneById($id);
 
-            if (null !== $link)
+            if (null !== $link) {
                 $page = $link->getParent();
+            }
         } catch (\Exception $e) {
             // No page info available
         }
 
         if (isset($page)) {
             $submenu = $this->_buildSubmenu($page);
-            if (empty($submenu) && null !== $page->getParent())
+            if (empty($submenu) && null !== $page->getParent()) {
                 $submenu = $this->_buildSubmenu($page->getParent());
+            }
         }
 
         $openingHours = $this->getEntityManager()
@@ -58,10 +60,11 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
         $start = new DateTime();
         $start->setTime(0, 0);
-        if ($start->format('N') > 5)
-            $start->add(new DateInterval('P' . (8 - $start->format('N')) .'D'));
-        else
-            $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+        if ($start->format('N') > 5) {
+            $start->add(new DateInterval('P' . (8 - $start->format('N')) . 'D'));
+        } else {
+            $start->sub(new DateInterval('P' . ($start->format('N') - 1) . 'D'));
+        }
 
         $startHour = 12;
         $endHour = 20;
@@ -76,11 +79,13 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         foreach ($openingHours as $openingHour) {
-            if ($openingHour->getStart()->format('H') < $startHour)
+            if ($openingHour->getStart()->format('H') < $startHour) {
                 $startHour = $openingHour->getStart()->format('H');
+            }
 
-            if ($openingHour->getEnd()->format('H') > $endHour)
+            if ($openingHour->getEnd()->format('H') > $endHour) {
                 $endHour = $openingHour->getEnd()->format('H');
+            }
 
             $openingHoursArray[$openingHour->getStart()->format('N') - 1][] = $openingHour;
         }

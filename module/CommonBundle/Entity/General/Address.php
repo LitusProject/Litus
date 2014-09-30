@@ -470,8 +470,9 @@ class Address
     public function getCountry()
     {
         foreach (self::$countries as $continent) {
-            if (array_key_exists($this->country, $continent))
+            if (array_key_exists($this->country, $continent)) {
                 return $continent[$this->country];
+            }
         }
 
         return '';
@@ -484,8 +485,9 @@ class Address
      */
     public function setCountry($country)
     {
-        if (self::isValidCountry($country))
+        if (self::isValidCountry($country)) {
             $this->country = $country;
+        }
 
         return $this;
     }
@@ -500,8 +502,9 @@ class Address
     public static function isValidCountry($country)
     {
         foreach (self::$countries as $continent) {
-            if (array_key_exists($country, $continent))
+            if (array_key_exists($country, $continent)) {
                 return true;
+            }
         }
 
         return false;

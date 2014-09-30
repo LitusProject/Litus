@@ -60,7 +60,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'label'      => 'Price Non Members',
             'required'   => true,
             'attributes' => array(
-                'class', 'price_non_members'
+                'class', 'price_non_members',
             ),
         ));
     }
@@ -79,7 +79,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                 'validators' => array(
                     array(
                         'name' => 'int',
-                    )
+                    ),
                 ),
             ),
             array(
@@ -96,7 +96,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
             array(
@@ -106,7 +106,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
         );

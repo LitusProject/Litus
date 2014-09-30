@@ -44,7 +44,7 @@ class External extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This external address already has been subscribed to this list!'
+        self::NOT_VALID => 'This external address already has been subscribed to this list!',
     );
 
     /**
@@ -76,12 +76,13 @@ class External extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'email' => $value
+                    'email' => $value,
                 )
             );
 
-        if (null === $entry)
+        if (null === $entry) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

@@ -27,7 +27,7 @@ class Subject extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new SubjectEntity;
+            $object = new SubjectEntity();
         }
 
         return $this->stdHydrate($data, $object, self::$std_keys);

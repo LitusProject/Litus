@@ -68,7 +68,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->redirect()->toRoute(
                     'notification_admin_notification',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -85,8 +85,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($notification = $this->_getNotification()))
+        if (!($notification = $this->_getNotification())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('notification_notification_edit', $notification);
 
@@ -105,7 +106,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->redirect()->toRoute(
                     'notification_admin_notification',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -124,8 +125,9 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($notification = $this->_getNotification()))
+        if (!($notification = $this->_getNotification())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($notification);
 
@@ -134,7 +136,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -151,7 +153,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'notification_admin_notification',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -171,7 +173,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'notification_admin_notification',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

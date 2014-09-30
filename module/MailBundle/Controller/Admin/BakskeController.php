@@ -19,9 +19,9 @@
 namespace MailBundle\Controller\Admin;
 
 use Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -79,12 +79,14 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 
                     $mail->addTo($mailAddress, 'System Administrator');
                 } else {
-                    foreach($recipients as $recipient)
+                    foreach ($recipients as $recipient) {
                         $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                    }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -94,7 +96,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                 $this->redirect()->toRoute(
                     'mail_admin_bakske',
                     array(
-                        'action' => 'send'
+                        'action' => 'send',
                     )
                 );
 

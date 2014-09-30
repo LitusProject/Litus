@@ -18,10 +18,10 @@
 
 namespace SecretaryBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime;
 
 /**
@@ -87,7 +87,7 @@ class Registration extends EntityRepository
                     $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
-            ->setParameter('universityIdentification', '%'.strtolower($universityIdentification).'%')
+            ->setParameter('universityIdentification', '%' . strtolower($universityIdentification) . '%')
             ->setParameter('academicYear', $academicYear)
             ->orderBy('r.timestamp', 'ASC')
             ->getQuery()
@@ -146,7 +146,7 @@ class Registration extends EntityRepository
                     $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('academicYear', $academicYear)
             ->orderBy('r.timestamp', 'ASC')
             ->getQuery()
@@ -157,8 +157,9 @@ class Registration extends EntityRepository
 
     public function findAllByBarcode($barcode, AcademicYear $academicYear, Organization $organization = null)
     {
-        if (!is_numeric($barcode))
+        if (!is_numeric($barcode)) {
             return array();
+        }
 
         if (null === $organization) {
             $resultSet = $this->_em

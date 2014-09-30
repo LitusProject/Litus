@@ -35,8 +35,9 @@ class External extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object)
+        if (null === $object) {
             throw new InvalidObjectException();
+        }
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }

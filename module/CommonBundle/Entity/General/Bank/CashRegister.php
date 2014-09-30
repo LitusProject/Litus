@@ -90,11 +90,13 @@ class CashRegister
     {
         $amount = 0;
 
-        foreach($this->bankDeviceAmounts as $device)
+        foreach ($this->bankDeviceAmounts as $device) {
             $amount += $device->getAmount();
+        }
 
-        foreach($this->moneyUnitAmounts as $number)
+        foreach ($this->moneyUnitAmounts as $number) {
             $amount += $number->getAmount() * $number->getUnit()->getUnit();
+        }
 
         return $amount;
     }
@@ -108,8 +110,9 @@ class CashRegister
     public function getAmountForUnit(MoneyUnit $unit)
     {
         foreach ($this->moneyUnitAmounts as $amount) {
-            if ($amount->getUnit() == $unit)
+            if ($amount->getUnit() == $unit) {
                 return $amount;
+            }
         }
     }
 
@@ -122,8 +125,9 @@ class CashRegister
     public function getAmountForDevice(BankDevice $device)
     {
         foreach ($this->bankDeviceAmounts as $amount) {
-            if ($amount->getDevice() == $device)
+            if ($amount->getDevice() == $device) {
                 return $amount;
+            }
         }
     }
 }

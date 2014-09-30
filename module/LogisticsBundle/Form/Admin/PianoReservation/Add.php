@@ -23,17 +23,17 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\Validator\Academic as AcademicValidator,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     DateInterval,
     DateTime,
     Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Reservation.
@@ -148,8 +148,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                             ->isTimeInExistingReservation($startSlot, $isStart);
 
-                        if (!$occupied)
+                        if (!$occupied) {
                             $list[$startSlot->format('D d/m/Y H:i')] = $startSlot->format('D d/m/Y H:i');
+                        }
 
                         $startSlot->add(new DateInterval('PT' . $slotDuration . 'M'));
                     }
@@ -236,7 +237,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             array(
                                 'byId' => true,
                             )
-                        )
+                        ),
                     ),
                 )
             )
@@ -255,6 +256,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         );
 
         return $inputFilter;
-
     }
 }

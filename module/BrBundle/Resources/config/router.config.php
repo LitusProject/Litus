@@ -157,7 +157,7 @@ return array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
                     'payed'  => '(true|false)',
-                    'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}'
+                    'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_invoice',

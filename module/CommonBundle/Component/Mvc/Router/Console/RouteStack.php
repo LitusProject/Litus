@@ -18,10 +18,10 @@
 
 namespace CommonBundle\Component\Mvc\Router\Console;
 
-use Zend\Stdlib\RequestInterface as Request,
-    Zend\Console\Request as ConsoleRequest,
+use Zend\Console\Request as ConsoleRequest,
     Zend\Mvc\Router\Console\RouteMatch,
-    Zend\Stdlib\Parameters;
+    Zend\Stdlib\Parameters,
+    Zend\Stdlib\RequestInterface as Request;
 
 class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implements \Zend\Mvc\Router\RouteStackInterface
 {

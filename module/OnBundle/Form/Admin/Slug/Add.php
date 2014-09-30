@@ -77,8 +77,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'slug_add');
 
-        if (null !== $this->slug)
+        if (null !== $this->slug) {
             $this->bind($this->slug);
+        }
     }
 
     /**

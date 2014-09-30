@@ -19,8 +19,8 @@
 namespace CudiBundle\Entity\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\General\Bank\CashRegister,
+    CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -208,13 +208,13 @@ class Session
      */
     public function isOpen()
     {
-        if(null === $this->getCloseDate())
-
+        if (null === $this->getCloseDate()) {
             return true;
+        }
 
-        if($this->getCloseDate() >= $this->getOpenDate())
-
+        if ($this->getCloseDate() >= $this->getOpenDate()) {
             return false;
+        }
 
         return true;
     }
@@ -235,8 +235,9 @@ class Session
      */
     public function getActualRevenue()
     {
-        if ($this->isOpen())
+        if ($this->isOpen()) {
             return 0;
+        }
 
         return $this->closeRegister->getTotalAmount() - $this->openRegister->getTotalAmount();
     }
@@ -293,8 +294,9 @@ class Session
     public function canSignIn(EntityManager $entityManager, Person $person)
     {
         foreach ($this->restrictions as $restriction) {
-            if (!$restriction->canSignIn($entityManager, $person))
+            if (!$restriction->canSignIn($entityManager, $person)) {
                 return false;
+            }
         }
 
         return true;

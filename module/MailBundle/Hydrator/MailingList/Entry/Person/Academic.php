@@ -30,8 +30,9 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object)
+        if (null === $object) {
             throw new InvalidObjectException();
+        }
 
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')

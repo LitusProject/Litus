@@ -34,9 +34,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $groupNames = array();
-        foreach($groups as $group)
-            if(strpos($group->getName(), "Master") === 0)
+        foreach ($groups as $group) {
+            if (strpos($group->getName(), "Master") === 0) {
                 $groupNames[$group->getId()] = $group->getName();
+            }
+        }
 
         $this->add(array(
             'type'       => 'select',
@@ -107,8 +109,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $promotionsArray = array();
-        foreach ($academicYears as $academicYear)
+        foreach ($academicYears as $academicYear) {
             $promotionsArray[$academicYear->getId()] = $academicYear->getCode();
+        }
 
         return $promotionsArray;
     }

@@ -35,8 +35,9 @@ class Barcode extends EntityRepository
         $ean12Result = null;
         if (is_numeric($barcode)) {
             $eanBarcode = $barcode;
-            if (strlen($barcode) == 13)
+            if (strlen($barcode) == 13) {
                 $eanBarcode = floor($barcode / 10);
+            }
 
             $query = $this->_em->createQueryBuilder();
             $ean12Result = $query->select('b')
@@ -61,8 +62,9 @@ class Barcode extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if (null !== $ean12Result && null !== $qrResult)
+        if (null !== $ean12Result && null !== $qrResult) {
             throw new \RuntimeException('Found both an EAN-12 and QR code for this barcode');
+        }
 
         return null !== $ean12Result ? $ean12Result : $qrResult;
     }
@@ -72,8 +74,9 @@ class Barcode extends EntityRepository
         $ean12Result = array();
         if (is_numeric($barcode)) {
             $eanBarcode = $barcode;
-            if (strlen($barcode) == 13)
+            if (strlen($barcode) == 13) {
                 $eanBarcode = floor($barcode / 10);
+            }
 
             $query = $this->_em->createQueryBuilder();
             $ean12Result = $query->select('b')
@@ -139,12 +142,12 @@ class Barcode extends EntityRepository
             }
         }
 
-
         $ean12Result = array();
         if (is_numeric($barcode)) {
             $eanBarcode = $barcode;
-            if (strlen($barcode) == 13)
+            if (strlen($barcode) == 13) {
                 $eanBarcode = floor($barcode / 10);
+            }
 
             $query = $this->_em->createQueryBuilder();
             $ean12Result = $query->select('b')

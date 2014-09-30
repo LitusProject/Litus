@@ -67,7 +67,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'api_admin_key',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -84,8 +84,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->_getKey()))
+        if (!($key = $this->_getKey())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('api_key_edit', $key);
 
@@ -103,7 +104,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'api_admin_key',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -122,8 +123,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey()))
+        if (!($key = $this->_getKey())) {
             return new ViewModel();
+        }
 
         $key->revoke();
 
@@ -132,7 +134,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -152,7 +154,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'api_admin_key',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -172,7 +174,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'api_admin_key',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

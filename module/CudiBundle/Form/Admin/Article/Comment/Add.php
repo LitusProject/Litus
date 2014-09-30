@@ -21,9 +21,9 @@ namespace CudiBundle\Form\Admin\Article\Comment;
 use CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CudiBundle\Entity\Comment\Comment,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Comment

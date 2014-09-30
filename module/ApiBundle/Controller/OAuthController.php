@@ -21,9 +21,9 @@ namespace ApiBundle\Controller;
 use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Document\Token\Access as AccessToken,
     ApiBundle\Document\Token\Refresh as RefreshToken,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -39,7 +39,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
         if ('code' != $this->getRequest()->getQuery('response_type')) {
             return new ViewModel(
                 array(
-                    'error' => 'The requested response type is not supported.'
+                    'error' => 'The requested response type is not supported.',
                 )
             );
         }
@@ -63,8 +63,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
                 if ($this->getAuthentication()->isAuthenticated()) {
                     $key = $this->getKey('client_id');
-                    if ($key instanceof ViewModel)
+                    if ($key instanceof ViewModel) {
                         return $key;
+                    }
 
                     $authorizationCode = new AuthorizationCode(
                         $this->getAuthentication()->getPersonObject(),
@@ -167,25 +168,30 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
-        if (!$this->getRequest()->isPost())
+        if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
 
-        if (null === $this->getRequest()->getPost('grant_type'))
+        if (null === $this->getRequest()->getPost('grant_type')) {
             return $this->error(400, 'The grant type was not specified');
+        }
 
         if ('authorization_code' == $this->getRequest()->getPost('grant_type')) {
-            if (null === $this->getRequest()->getPost('code'))
+            if (null === $this->getRequest()->getPost('code')) {
                 return $this->error(400, 'No authorization code was provided');
+            }
 
             $authorizationCode = $this->getDocumentManager()
                 ->getRepository('ApiBundle\Document\Code\Authorization')
                 ->findOneByCode($this->getRequest()->getPost('code'));
 
-            if (null === $authorizationCode)
+            if (null === $authorizationCode) {
                 return $this->error(500, 'This authorization code does not exist');
+            }
 
-            if ($authorizationCode->hasExpired())
+            if ($authorizationCode->hasExpired()) {
                 return $this->error(401, 'This authorization code has expired');
+            }
 
             if ($authorizationCode->hasBeenExchanged()) {
                 $tokens = array_merge(
@@ -197,8 +203,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         ->findAllActiveByAuthorizationCode($authorizationCode)
                 );
 
-                foreach ($tokens as $token)
+                foreach ($tokens as $token) {
                     $this->getDocumentManager()->remove($token);
+                }
 
                 $this->getDocumentManager()->flush();
 
@@ -206,8 +213,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
 
             $key = $this->getKey('client_id');
-            if ($key instanceof ViewModel)
+            if ($key instanceof ViewModel) {
                 return $key;
+            }
 
             $accessToken = new AccessToken(
                 $authorizationCode->getPerson($this->getEntityManager()),
@@ -235,24 +243,27 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
             return new ViewModel(
                 array(
-                    'result' => (object) $result
+                    'result' => (object) $result,
                 )
             );
         }
 
         if ('refresh_token' == $this->getRequest()->getPost('grant_type')) {
-            if (null === $this->getRequest()->getPost('refresh_token'))
+            if (null === $this->getRequest()->getPost('refresh_token')) {
                 return $this->error(400, 'No refresh token was provided');
+            }
 
             $refreshToken = $this->getDocumentManager()
                 ->getRepository('ApiBundle\Document\Token\Refresh')
                 ->findOneByCode($this->getRequest()->getPost('refresh_token'));
 
-            if (null === $refreshToken)
+            if (null === $refreshToken) {
                 return $this->error(500, 'This refresh token does not exist');
+            }
 
-            if ($refreshToken->hasExpired())
+            if ($refreshToken->hasExpired()) {
                 return $this->error(401, 'This refresh token has expired');
+            }
 
             if ($refreshToken->hasBeenExchanged()) {
                 $tokens = array_merge(
@@ -264,8 +275,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         ->findAllActiveByAuthorizationCode($refreshToken->getAuthorizationCode())
                 );
 
-                foreach ($tokens as $token)
+                foreach ($tokens as $token) {
                     $this->getDocumentManager()->remove($token);
+                }
 
                 $this->getDocumentManager()->flush();
 
@@ -273,8 +285,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             }
 
             $key = $this->getKey('client_id');
-            if ($key instanceof ViewModel)
+            if ($key instanceof ViewModel) {
                 return $key;
+            }
 
             $accessToken = new AccessToken(
                 $refreshToken->getPerson($this->getEntityManager()),
@@ -302,7 +315,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
             return new ViewModel(
                 array(
-                    'result' => (object) $result
+                    'result' => (object) $result,
                 )
             );
         }
@@ -323,10 +336,12 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                }
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
                     throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -336,8 +351,9 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         $shibbolethUrl .= '%3Fsource=api';
 
-        if ('' != $redirect)
+        if ('' != $redirect) {
             $shibbolethUrl .= '%26redirect=' . urlencode($redirect);
+        }
 
         return $shibbolethUrl;
     }

@@ -104,13 +104,15 @@ class Logo
         $this->width = $width;
         $this->height = $height;
 
-        if (strpos($url, 'http://') !== 0)
+        if (strpos($url, 'http://') !== 0) {
             $url = 'http://' . $url;
+        }
 
         $this->url = $url;
 
-        if (!self::isValidLogoType($type))
+        if (!self::isValidLogoType($type)) {
             throw new \InvalidArgumentException('The logo type is not valid.');
+        }
 
         $this->type = $type;
     }

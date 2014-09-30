@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz;
-use Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz,
+    Zend\View\Model\ViewModel;
 
 /**
  * QuizController
@@ -37,8 +37,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->findAll();
 
         foreach ($quizes as $key => $quiz) {
-            if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+            if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($quizes[$key]);
+            }
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -92,8 +93,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $form  = $this->getForm('quiz_quiz_edit', $quiz);
 
@@ -128,8 +130,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($quiz);
 

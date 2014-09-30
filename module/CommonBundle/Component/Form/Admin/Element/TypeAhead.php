@@ -30,8 +30,9 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
 
     public function init()
     {
-        if (null === $this->name)
+        if (null === $this->name) {
             throw new RuntimeException('Cannot create typeahead without name');
+        }
 
         $this->add(array(
             'type'       => 'hidden',
@@ -107,15 +108,18 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
 
     public function populateValues($data)
     {
-        if (is_string($data))
+        if (is_string($data)) {
             return;
+        }
 
-        if (array_key_exists($this->name, $data))
+        if (array_key_exists($this->name, $data)) {
             $this->get($this->name)
                 ->setValue($data[$this->name]);
+        }
 
-        if (array_key_exists($this->name . '_id', $data))
+        if (array_key_exists($this->name . '_id', $data)) {
             $this->get($this->name . '_id')
                 ->setValue($data[$this->name . '_id']);
+        }
     }
 }

@@ -23,7 +23,7 @@ return array(
         ),
         'actions' => array(
             'banner' => array(
-                'view'
+                'view',
             ),
         ),
     ),

@@ -18,9 +18,9 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-use NewsBundle\Entity\Node\News as NewsEntity,
-    NewsBundle\Entity\Node\Translation as TranslationEntity,
-    DateTime;
+use DateTime,
+    NewsBundle\Entity\Node\News as NewsEntity,
+    NewsBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts news data.
@@ -38,8 +38,9 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 
         $endDate = self::_loadDate($data['end_date']);
 
-        if (null !== $endDate)
+        if (null !== $endDate) {
             $object->setEndDate($endDate);
+        }
 
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
@@ -74,8 +75,9 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = array();
 
-        if (null !== $object->getEndDate())
+        if (null !== $object->getEndDate()) {
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
+        }
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language, false);

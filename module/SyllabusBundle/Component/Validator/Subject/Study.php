@@ -52,7 +52,7 @@ class Study extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The mapping already exists'
+        self::NOT_VALID => 'The mapping already exists',
     );
 
     /**
@@ -71,7 +71,6 @@ class Study extends \Zend\Validator\AbstractValidator
         $this->_subject = $subject;
         $this->_academicYear = $academicYear;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -93,8 +92,9 @@ class Study extends \Zend\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
             ->findOneByStudySubjectAndAcademicYear($study, $this->_subject, $this->_academicYear);
 
-        if (null === $mapping)
+        if (null === $mapping) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

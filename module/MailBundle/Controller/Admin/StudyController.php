@@ -21,9 +21,9 @@ namespace MailBundle\Controller\Admin;
 use Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -56,8 +56,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     $part = new Part($body);
 
                     $part->type = Mime::TYPE_TEXT;
-                    if ($formData['html'])
+                    if ($formData['html']) {
                         $part->type = Mime::TYPE_HTML;
+                    }
 
                     $part->charset = 'utf-8';
                     $message = new MimeMessage();
@@ -65,8 +66,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     if ($formData['test']) {
                         $body = '<br/>This email would have been sent to:<br/>';
-                        foreach($addresses as $address)
+                        foreach ($addresses as $address) {
                             $body = $body . $address . '<br/>';
+                        }
 
                         $part = new Part($body);
                         $part->type = Mime::TYPE_HTML;
@@ -74,8 +76,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     foreach ($formData['compose_message']['file'] as $file) {
-                        if ($file['size'] === NULL)
+                        if ($file['size'] === NULL) {
                             continue;
+                        }
 
                         $part = new Part(fopen($file['tmp_name'], 'r'));
                         $part->type = $file['type'];
@@ -105,8 +108,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     $part = new Part($body);
 
                     $part->type = Mime::TYPE_TEXT;
-                    if ($storedMessage->getType() == 'html')
+                    if ($storedMessage->getType() == 'html') {
                         $part->type = Mime::TYPE_HTML;
+                    }
 
                     $part->charset = 'utf-8';
                     $message = new MimeMessage();
@@ -114,8 +118,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     if ($formData['test']) {
                         $body = '<br/>This email would have been sent to:<br/>';
-                        foreach($addresses as $address)
+                        foreach ($addresses as $address) {
                             $body = $body . $address . '<br/>';
+                        }
 
                         $part = new Part($body);
                         $part->type = Mime::TYPE_HTML;
@@ -150,16 +155,18 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                         if (500 == $i) {
                             $i = 0;
 
-                            if ('development' != getenv('APPLICATION_ENV'))
+                            if ('development' != getenv('APPLICATION_ENV')) {
                                 $this->getMailTransport()->send($mail);
+                            }
 
                             $mail->setBcc(array());
                         }
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -169,7 +176,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $this->redirect()->toRoute(
                     'mail_admin_study',
                     array(
-                        'action' => 'send'
+                        'action' => 'send',
                     )
                 );
 
@@ -193,18 +200,22 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
         $addresses = array();
         $bccs = preg_split("/[,;\s]+/", $bcc);
-        foreach($bccs as $bcc)
+        foreach ($bccs as $bcc) {
             $addresses[$bcc] = $bcc;
+        }
 
-        foreach($extraMembers as $extraMember)
+        foreach ($extraMembers as $extraMember) {
             $addresses[$extraMember] = $extraMember;
+        }
 
-        foreach($enrollments as $enrollment)
+        foreach ($enrollments as $enrollment) {
             $addresses[$enrollment->getAcademic()->getEmail()] = $enrollment->getAcademic()->getEmail();
+        }
 
         foreach ($excludedMembers as $excludedMember) {
-            if (isset($addresses[$excludedMember]))
+            if (isset($addresses[$excludedMember])) {
                 unset($addresses[$excludedMember]);
+            }
         }
 
         return $addresses;
@@ -212,8 +223,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
     private function _getStudyEnrollments($studyIds)
     {
-        if (empty($studyIds))
+        if (empty($studyIds)) {
             return array();
+        }
 
         $currentYear = $this->getCurrentAcademicYear(false);
 
@@ -242,8 +254,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
     private function _getGroupEnrollments($groupIds)
     {
-        if (empty($groupIds))
+        if (empty($groupIds)) {
             return array(array(), array(), array());
+        }
 
         $currentYear = $this->getCurrentAcademicYear(false);
 
@@ -257,12 +270,14 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 ->findOneById($groupId);
 
             $groupExtraMembers = unserialize($group->getExtraMembers());
-            if ($groupExtraMembers)
+            if ($groupExtraMembers) {
                 $extraMembers = array_merge($extraMembers, $groupExtraMembers);
+            }
 
             $groupExcludedMembers = unserialize($group->getExcludedMembers());
-            if ($groupExcludedMembers)
+            if ($groupExcludedMembers) {
                 $excludedMembers = array_merge($excludedMembers, $groupExcludedMembers);
+            }
 
             $studies = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')

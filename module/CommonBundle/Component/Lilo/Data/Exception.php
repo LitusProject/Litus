@@ -58,7 +58,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
             'trace' => $this->_formatBacktrace($exception),
             'environment' => array(
                 'person' => $authentication->isAuthenticated()
-                    ? $authentication->getPersonObject()->getFullName() . ' ('. $authentication->getPersonObject()->getUsername() . ')'
+                    ? $authentication->getPersonObject()->getFullName() . ' (' . $authentication->getPersonObject()->getUsername() . ')'
                     : 'Guest',
                 'session' => $authentication->isAuthenticated()
                     ? $authentication->getSessionObject()->getId()
@@ -89,8 +89,9 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     {
         $backtrace = array();
         foreach ($exception->getTrace() as $t) {
-            if (!isset($t['file']))
+            if (!isset($t['file'])) {
                 continue;
+            }
 
             $backtrace[] = array(
                 'file' => basename($t['file']),
@@ -111,12 +112,13 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _formatUrl()
     {
-        if ($this->_request instanceof ConsoleRequest)
+        if ($this->_request instanceof ConsoleRequest) {
             return $this->_request->toString();
-        elseif ($this->_request instanceof PhpRequest)
+        } elseif ($this->_request instanceof PhpRequest) {
             return '' != $this->_request->getServer()->get('HTTP_HOST')
                 ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
                 : '';
+        }
 
         return '';
     }
@@ -128,10 +130,11 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     private function _getUserAgent()
     {
-        if ($this->_request instanceof ConsoleRequest)
+        if ($this->_request instanceof ConsoleRequest) {
             return 'Console';
-        elseif ($this->_request instanceof PhpRequest)
+        } elseif ($this->_request instanceof PhpRequest) {
             return $this->_request->getServer()->get('HTTP_USER_AGENT');
+        }
 
         return '';
     }

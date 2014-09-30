@@ -19,8 +19,8 @@
 namespace FormBundle\Entity\Field\Translation;
 
 use CommonBundle\Entity\General\Language,
-    FormBundle\Entity\Field\OptionSelector,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Field\OptionSelector;
 
 /**
  * This entity stores the node item.

@@ -37,15 +37,17 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson())) {
             return $this->error(401, 'The access token is not valid');
+        }
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
-        if (null === $authenticatedPerson)
+        if (null === $authenticatedPerson) {
             return $this->error(500, 'The person is not an academic');
+        }
 
         list($articles, $subjects) = $this->_getArticlesAndSubjects($authenticatedPerson);
 
@@ -55,8 +57,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     array(
                         'subjects' => array_values($subjects),
                         'articles' => array_values($articles),
-                    )
-                )
+                    ),
+                ),
             )
         );
     }
@@ -65,21 +67,25 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!$this->getRequest()->isPost())
+        if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
 
-        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson())) {
             return $this->error(401, 'The access token is not valid');
+        }
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return $this->error(500, 'The article was not found');
+        }
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
-        if (null === $authenticatedPerson)
+        if (null === $authenticatedPerson) {
             return $this->error(500, 'The person is not an academic');
+        }
 
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -91,8 +97,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ->getConfigValue('cudi.bookings_closed_exceptions')
         );
 
-        if (!$article->isBookable() || !($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)))
+        if (!$article->isBookable() || !($enableBookings || in_array($article->getId(), $bookingsClosedExceptions))) {
             return $this->error(500, 'The article is not bookable');
+        }
 
         $booking = new Booking(
             $this->getEntityManager(),
@@ -143,15 +150,17 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson())) {
             return $this->error(401, 'The access token is not valid');
+        }
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person);
 
-        if (null === $authenticatedPerson)
+        if (null === $authenticatedPerson) {
             return $this->error(500, 'The person is not an academic');
+        }
 
         $bookingsList = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -172,8 +181,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAllSoldByPerson($authenticatedPerson);
 
         $sold = array();
-        foreach ($bookingsSold as $booking)
+        foreach ($bookingsSold as $booking) {
             $sold[] = $booking->getArticle()->getId();
+        }
 
         list($articleList, ) = $this->_getArticlesAndSubjects($authenticatedPerson);
 
@@ -209,8 +219,8 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     array(
                         'bookings' => array_values($bookings),
                         'articles' => array_values($articles),
-                    )
-                )
+                    ),
+                ),
             )
         );
     }
@@ -219,17 +229,21 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!$this->getRequest()->isPost())
+        if (!$this->getRequest()->isPost()) {
             return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
 
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken()) {
             return $this->error(401, 'The access token is not valid');
+        }
 
-        if (null === $this->_getBooking())
+        if (null === $this->_getBooking()) {
             return $this->error(500, 'The booking was not found');
+        }
 
-        if (!($this->_getBooking()->getArticle()->isUnbookable()))
+        if (!($this->_getBooking()->getArticle()->isUnbookable())) {
             return $this->error(500, 'This article cannot be unbooked');
+        }
 
         $this->_getBooking()->setStatus('canceled', $this->getEntityManager());
         $this->getEntityManager()->flush();
@@ -238,7 +252,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                )
+                ),
             )
         );
     }
@@ -276,7 +290,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
@@ -306,7 +320,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
@@ -315,34 +329,39 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson())) {
             return $this->error(401, 'The access token is not valid');
+        }
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
-        if (null === $authenticatedPerson)
+        if (null === $authenticatedPerson) {
             return $this->error(500, 'The person is not an academic');
+        }
 
         $sessions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) == 0)
+        if (sizeof($sessions) == 0) {
             return $this->error(500, 'The is no open sale session');
+        }
 
         $session = $sessions[0];
 
-        if (!$session->canSignIn($this->getEntityManager(), $authenticatedPerson))
+        if (!$session->canSignIn($this->getEntityManager(), $authenticatedPerson)) {
             return $this->error(500, 'You cannot sign in');
+        }
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($authenticatedPerson);
 
-        if (empty($bookings))
+        if (empty($bookings)) {
             return $this->error(500, 'You cannot sign in');
+        }
 
         $queueItem = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -372,22 +391,25 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->_getPerson()))
+        if (null === $this->getAccessToken() || !($person = $this->_getPerson())) {
             return $this->error(401, 'The access token is not valid');
+        }
 
         $authenticatedPerson = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
 
-        if (null === $authenticatedPerson)
+        if (null === $authenticatedPerson) {
             return $this->error(500, 'The person is not an academic');
+        }
 
         $sessions = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOpen();
 
-        if (sizeof($sessions) == 0)
+        if (sizeof($sessions) == 0) {
             return $this->error(500, 'The is no open sale session');
+        }
 
         $session = $sessions[0];
 
@@ -443,8 +465,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAllSoldByPerson($authenticatedPerson);
 
         $sold = array();
-        foreach ($bookingsSold as $booking)
+        foreach ($bookingsSold as $booking) {
             $sold[] = $booking->getArticle()->getId();
+        }
 
         $articles = array();
         $subjects = array();
@@ -481,7 +504,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                                 array(
                                     'id'        => $subject->getId(),
                                     'mandatory' => $subjectMap->isMandatory(),
-                                )
+                                ),
                             ),
                             'price'          => $article->getSellPrice()/100,
                             'sold'           => in_array($article->getId(), $sold),
@@ -513,7 +536,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                         array(
                             'id'        => 0,
                             'mandatory' => false,
-                        )
+                        ),
                     ),
                     'price'     => $commonArticle->getSellPrice()/100,
                     'sold'      => in_array($commonArticle->getId(), $sold),
@@ -533,8 +556,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function _getBooking()
     {
-        if (null === $this->getRequest()->getPost('id'))
+        if (null === $this->getRequest()->getPost('id')) {
             return null;
+        }
 
         return $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -546,8 +570,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function _getArticle()
     {
-        if (null === $this->getRequest()->getPost('id'))
+        if (null === $this->getRequest()->getPost('id')) {
             return null;
+        }
 
         return $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -559,8 +584,9 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function _getPerson()
     {
-        if (null === $this->getAccessToken())
+        if (null === $this->getAccessToken()) {
             return null;
+        }
 
         return $this->getAccessToken()->getPerson($this->getEntityManager());
     }

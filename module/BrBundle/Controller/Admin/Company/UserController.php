@@ -34,18 +34,19 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return;
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\User\Person\Corporate',
             $this->getParam('page'),
             array(
                 'canLogin' => 'true',
-                'company'  => $company->getId()
+                'company'  => $company->getId(),
             ),
             array(
-                'username' => 'ASC'
+                'username' => 'ASC',
             )
         );
 
@@ -60,8 +61,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return;
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -78,7 +80,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     array(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('corporate')
+                            ->findOneByName('corporate'),
                     ),
                     $formData['first_name'],
                     $formData['last_name'],
@@ -116,8 +118,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return;
+        }
 
         $form = new EditForm($this->getEntityManager(), $user);
 
@@ -145,7 +148,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'br_admin_company_user',
                     array(
                         'action' => 'manage',
-                        'id' => $user->getCompany()->getId()
+                        'id' => $user->getCompany()->getId(),
                     )
                 );
 
@@ -163,8 +166,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return new ViewModel();
+        }
 
         $user->activate(
             $this->getEntityManager(),
@@ -196,8 +200,9 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return new ViewModel();
+        }
 
         $user->disableLogin();
         $this->getEntityManager()->flush();
@@ -223,7 +228,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -243,7 +248,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -267,7 +272,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -287,7 +292,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

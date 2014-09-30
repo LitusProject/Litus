@@ -122,8 +122,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $organizationOptions = array();
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationOptions;
     }

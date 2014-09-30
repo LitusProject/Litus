@@ -20,15 +20,15 @@ namespace FormBundle\Form\Admin\Group;
 
 use CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Tabs,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Node\Form,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Group
@@ -113,8 +113,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form\Tabbable
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
-            if (null == $group)
+            if (null == $group) {
                 $options[$form->getId()] = $form->getTitle($language);
+            }
         }
 
         return $options;

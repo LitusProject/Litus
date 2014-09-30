@@ -59,8 +59,9 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $organizationsArray = array();
-        foreach ($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationsArray[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationsArray;
     }
@@ -72,8 +73,9 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $academicYearsArray = array();
-        foreach ($academicYears as $academicYear)
+        foreach ($academicYears as $academicYear) {
             $academicYearsArray[$academicYear->getId()] = $academicYear->getCode();
+        }
 
         return $academicYearsArray;
     }

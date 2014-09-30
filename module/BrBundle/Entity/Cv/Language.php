@@ -131,7 +131,6 @@ class Language
         return array_key_exists($skill, self::$WRITTEN_SKILLS);
     }
 
-
     /**
      * @param  string  $skill
      * @return boolean
@@ -147,8 +146,9 @@ class Language
      */
     public function setWrittenSkill($skill)
     {
-        if (!self::isValidWrittenSkill($skill))
+        if (!self::isValidWrittenSkill($skill)) {
             throw new \InvalidArgumentException('The skill is not valid.');
+        }
         $this->written = $skill;
 
         return $this;
@@ -170,15 +170,15 @@ class Language
         return $this->written;
     }
 
-
     /**
      * @param  string                       $skill
      * @return \BrBundle\Entity\Cv\Language
      */
     public function setOralSkill($skill)
     {
-        if (!self::isValidOralSkill($skill))
+        if (!self::isValidOralSkill($skill)) {
             throw new \InvalidArgumentException('The skill is not valid.');
+        }
 
         $this->oral = $skill;
 

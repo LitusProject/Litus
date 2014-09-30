@@ -80,10 +80,11 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($events as $event)
+        foreach ($events as $event) {
             $eventsArray[$event->getId()] = $event->getTitle($this->language);
+        }
 
         return $eventsArray;
     }

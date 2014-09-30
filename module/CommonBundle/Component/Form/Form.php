@@ -18,14 +18,14 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\Validator\FormAwareInterface;
-use RuntimeException;
-use Zend\Form\FieldsetInterface;
-use Zend\Form\FormInterface;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputProviderInterface;
-use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    RuntimeException,
+    Zend\Form\FieldsetInterface,
+    Zend\Form\FormInterface,
+    Zend\InputFilter\InputFilterAwareInterface,
+    Zend\InputFilter\InputProviderInterface,
+    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -102,10 +102,11 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             'value'      => $value,
         );
 
-        if ($class)
+        if ($class) {
             $submit['attributes'] = array(
                 'class' => $class,
             );
+        }
 
         $this->add($submit);
 
@@ -161,10 +162,12 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function hydrateObject($object = null)
     {
-        if (!$this->hasValidated())
+        if (!$this->hasValidated()) {
             throw new RuntimeException('Please validate the form before extracting its data');
-        if (!$this->isValid())
+        }
+        if (!$this->isValid()) {
             throw new RuntimeException('Cannot hydrate object with data from an invalid form');
+        }
 
         return $this->getHydrator()->hydrate($this->getData(), $object);
     }
@@ -187,14 +190,16 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     private function injectSelfInValidators(FieldsetInterface $fieldset)
     {
         foreach ($fieldset->getElements() as $element) {
-            if (!$element instanceof InputProviderInterface)
+            if (!$element instanceof InputProviderInterface) {
                 continue;
+            }
             $spec = $element->getInputSpecification();
 
             if (isset($spec['validators'])) {
                 foreach ($spec['validators'] as $validator) {
-                    if ($validator instanceof FormAwareInterface)
+                    if ($validator instanceof FormAwareInterface) {
                         $validator->setForm($this);
+                    }
                 }
             }
         }

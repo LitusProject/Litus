@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Round;
-use Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Round,
+    Zend\View\Model\ViewModel;
 
 /**
  * RoundController
@@ -32,8 +32,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'QuizBundle\Entity\Round',
@@ -57,8 +58,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('quiz_round_add', array('quiz' => $quiz));
 
@@ -106,8 +108,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($round = $this->_getRound()))
+        if (!($round = $this->_getRound())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('quiz_round_edit', array('round' => $round));
 
@@ -144,8 +147,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($round = $this->_getRound()))
+        if (!($round = $this->_getRound())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($round);
 
@@ -163,19 +167,19 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-        if(!($quiz = $this->_getQuiz()))
-
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
-        if(!$this->getRequest()->isPost())
-
+        if (!$this->getRequest()->isPost()) {
             return new ViewModel();
+        }
 
         $data = $this->getRequest()->getPost();
 
-        if(!$data['items'])
-
+        if (!$data['items']) {
             return new ViewModel();
+        }
 
         foreach ($data['items'] as $order => $id) {
             $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);

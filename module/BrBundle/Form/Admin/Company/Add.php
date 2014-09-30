@@ -27,9 +27,9 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a company.
@@ -92,8 +92,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $cvYears = $this->_getArchiveYears();
         foreach ($years as $key => $year) {
             $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
-            if (isset($cvYears['archive-' . $shortCode]))
+            if (isset($cvYears['archive-' . $shortCode])) {
                 continue;
+            }
             $cvYears['year-' . $key] = $year;
         }
         asort($cvYears);
@@ -137,8 +138,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAll();
 
         $options = array();
-        foreach($years as $year)
+        foreach ($years as $year) {
             $options[$year->getId()] = $year->getCode();
+        }
 
         return $options;
     }
@@ -152,8 +154,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         );
 
         $options = array();
-        foreach($years as $code => $year)
+        foreach ($years as $code => $year) {
             $options['archive-' . $code] = $year['full_year'] . ' (Archive)';
+        }
 
         return $options;
     }
@@ -161,8 +164,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }
@@ -172,8 +176,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->_addressForm->getInputs();
-        foreach($inputs as $input)
+        foreach ($inputs as $input) {
             $inputFilter->add($input);
+        }
 
         $factory = new InputFactory();
 
@@ -203,7 +208,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'uri',
-                        )
+                        ),
                     ),
                 )
             )

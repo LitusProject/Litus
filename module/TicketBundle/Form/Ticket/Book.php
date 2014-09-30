@@ -61,7 +61,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'required' => true,
                         'validators' => array(
                             new NumberTicketsValidator($this->getEntityManager(), $this->event, $this->getAuthentication()->getPersonObject()),
-                        )
+                        ),
                     ),
                 ),
             ));
@@ -79,7 +79,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->getEntityManager(), $this->event, $this->getAuthentication()->getPersonObject()),
-                            )
+                            ),
                         ),
                     ),
                 ));
@@ -98,7 +98,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->getEntityManager(), $this->event, $this->getAuthentication()->getPersonObject()),
-                            )
+                            ),
                         ),
                     ),
                 ));
@@ -116,7 +116,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->getEntityManager(), $this->event, $this->getAuthentication()->getPersonObject()),
-                                )
+                                ),
                             ),
                         ),
                     ));

@@ -53,8 +53,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->getParam('page')
         );
 
-        foreach ($paginator as $lap)
+        foreach ($paginator as $lap) {
             $lap->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -71,15 +72,16 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             'SportBundle\Entity\Group',
             $this->getParam('page'),
             array(
-                'academicYear' => $this->_getAcademicYear()
+                'academicYear' => $this->_getAcademicYear(),
             ),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
-        foreach ($paginator as $group)
+        foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -97,12 +99,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->getParam('page'),
             array(),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
-        foreach ($paginator as $department)
+        foreach ($paginator as $department) {
             $department->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -168,8 +171,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($runner = $this->_getRunner()))
+        if (!($runner = $this->_getRunner())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('sport_runner_edit');
 
@@ -191,7 +195,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'sport_admin_run',
                     array(
-                        'action' => 'identification'
+                        'action' => 'identification',
                     )
                 );
 
@@ -243,7 +247,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'sport_admin_run',
                 array(
-                    'action' => 'identification'
+                    'action' => 'identification',
                 )
             );
 
@@ -263,7 +267,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'sport_admin_run',
                 array(
-                    'action' => 'identification'
+                    'action' => 'identification',
                 )
             );
 
@@ -275,8 +279,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
+        if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
+        }
 
         $start = AcademicYear::getDateTime($this->getParam('academicyear'));
         $start->setTime(0, 0);
@@ -294,7 +299,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'sport_admin_run',
                 array(
-                    'action' => 'queue'
+                    'action' => 'queue',
                 )
             );
 

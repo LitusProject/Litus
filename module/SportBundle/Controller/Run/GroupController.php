@@ -32,7 +32,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
     public function addAction()
     {
         $allMembers = array(
-            'one', 'two', 'three', 'four', 'five'
+            'one', 'two', 'three', 'four', 'five',
         );
 
         $form = $this->getForm('sport_group_add', array('all_members' => $allMembers));
@@ -67,7 +67,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                     $groupData['name'],
                     array(
                         $groupData['happy_hour_one'],
-                        $groupData['happy_hour_two']
+                        $groupData['happy_hour_two'],
                     )
                 );
 
@@ -120,7 +120,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                     $this->redirect()->toRoute(
                         'sport_run_index',
                         array(
-                            'action' => 'index'
+                            'action' => 'index',
                         )
                     );
                 }
@@ -129,7 +129,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }
@@ -149,8 +149,8 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                         'result' => (object) array(
                             'status' => 'success',
                             'firstName' => $academic->getFirstName(),
-                            'lastName' => $academic->getLastName()
-                        )
+                            'lastName' => $academic->getLastName(),
+                        ),
                     )
                 );
             }

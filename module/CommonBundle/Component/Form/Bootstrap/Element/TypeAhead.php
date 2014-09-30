@@ -30,8 +30,9 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
 
     public function init()
     {
-        if (null === $this->name)
+        if (null === $this->name) {
             throw new RuntimeException('Cannot create typeahead without name');
+        }
 
         $this->add(array(
             'type'       => 'hidden',

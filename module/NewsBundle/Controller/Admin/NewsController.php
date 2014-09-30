@@ -69,7 +69,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'news_admin_news',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -86,8 +86,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($news = $this->_getNews()))
+        if (!($news = $this->_getNews())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('news_news_edit', $news);
 
@@ -106,7 +107,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'news_admin_news',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -125,8 +126,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($news = $this->_getNews()))
+        if (!($news = $this->_getNews())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($news);
 
@@ -135,7 +137,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -152,7 +154,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'news_admin_news',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -172,7 +174,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'news_admin_news',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

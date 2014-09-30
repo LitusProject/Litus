@@ -44,8 +44,9 @@ class ReturnItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -92,8 +93,9 @@ class ReturnItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -135,7 +137,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -176,7 +178,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -230,7 +232,7 @@ class ReturnItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -266,7 +268,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -352,7 +354,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())

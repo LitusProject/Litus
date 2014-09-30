@@ -31,8 +31,9 @@ class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Comp
 
     public function init()
     {
-        if (!$this->hasAttribute('rows'))
+        if (!$this->hasAttribute('rows')) {
             $this->setAttribute('rows', 10);
+        }
 
         $this->addClass('form-control');
         $this->setLabelAttributes(

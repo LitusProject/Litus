@@ -61,7 +61,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'person_form',
             'label'      => 'Person',
             'attributes' => array(
-                'id' => 'person_form'
+                'id' => 'person_form',
             ),
             'elements'   => array(
                 array(

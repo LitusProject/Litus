@@ -38,8 +38,9 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object)
+        if (null === $object) {
             $object = new SlugDocument($this->getPerson());
+        }
 
         if ('' == $data['name']) {
             do {
@@ -71,8 +72,9 @@ class Slug extends \CommonBundle\Component\Hydrator\Hydrator
         $characters = 'abcdefghijklmnopqrstuwxyz0123456789';
 
         $name = array();
-        for ($i = 0; $i < 8; $i++)
+        for ($i = 0; $i < 8; $i++) {
             $name[$i] = $characters[rand(0, strlen($characters) - 1)];
+        }
 
         return implode('', $name);
     }

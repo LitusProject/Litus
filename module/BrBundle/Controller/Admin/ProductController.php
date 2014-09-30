@@ -18,9 +18,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Product,
+use BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Component\ContractParser\Parser as BulletParser,
-    BrBundle\Component\ContractParser\IllegalFormatException,
+    BrBundle\Entity\Product,
     BrBundle\Form\Admin\Product\Add as AddForm,
     BrBundle\Form\Admin\Product\Edit as EditForm,
     DateTime,
@@ -75,7 +75,6 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                                     'form' => $form,
                             )
                     );
-
                 }
 
                 $newProduct = new Product(
@@ -127,8 +126,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->_getProduct()))
+        if (!($product = $this->_getProduct())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $product);
 
@@ -153,7 +153,6 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                                     'form' => $form,
                             )
                     );
-
                 }
 
                 $product->setEntityManager($this->getEntityManager())
@@ -203,8 +202,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($product = $this->_getProduct()))
+        if (!($product = $this->_getProduct())) {
             return new ViewModel();
+        }
 
         $product->setOld();
         $this->getEntityManager()->flush();
@@ -245,7 +245,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_product',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -265,7 +265,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_product',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

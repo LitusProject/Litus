@@ -23,9 +23,9 @@ use CommonBundle\Entity\General\AcademicYear,
     DateTime,
     Markdown_Parser,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -72,11 +72,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->_saveConfig($formData['subject'], $formData['message']);
 
                 foreach ($statuses as $status) {
-                    if ('' == $status->getPerson()->getEmail())
+                    if ('' == $status->getPerson()->getEmail()) {
                         continue;
+                    }
 
-                    if (!($subjects = $this->_getSubjects($status->getPerson(), $academicYear, $semester)))
+                    if (!($subjects = $this->_getSubjects($status->getPerson(), $academicYear, $semester))) {
                         continue;
+                    }
 
                     $body = str_replace('{{ subjects }}', $subjects, $formData['message']);
 
@@ -118,11 +120,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         );
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
 
-                    if ($formData['test_it'])
+                    if ($formData['test_it']) {
                         break;
+                    }
                 }
 
                 $this->flashMessenger()->success(
@@ -133,7 +137,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'mail_admin_prof',
                     array(
-                        'action' => 'cudi'
+                        'action' => 'cudi',
                     )
                 );
 
@@ -179,13 +183,15 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if (empty($subjects))
+        if (empty($subjects)) {
             return;
+        }
 
         $text = '';
         for ($i = 0; isset($subjects[$i]); $i++) {
-            if ($i != 0)
-                 $text .= PHP_EOL;
+            if ($i != 0) {
+                $text .= PHP_EOL;
+            }
 
             $text .= '    [' . $subjects[$i]->getCode() . '] - ' . $subjects[$i]->getName();
         }

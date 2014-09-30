@@ -27,7 +27,6 @@ use Zend\View\Model\ViewModel;
  */
 class HtmlController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-
     public function viewAction()
     {
         $edition = $this->_getEdition();
@@ -38,7 +37,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'edition' => $edition
+                'edition' => $edition,
             )
         );
     }
@@ -54,7 +53,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -74,7 +73,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 

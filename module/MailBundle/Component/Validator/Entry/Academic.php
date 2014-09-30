@@ -44,7 +44,7 @@ class Academic extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This member already has been subscribed to this list!'
+        self::NOT_VALID => 'This member already has been subscribed to this list!',
     );
 
     /**
@@ -80,12 +80,13 @@ class Academic extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'academic' => $academic
+                    'academic' => $academic,
                 )
             );
 
-        if (null === $entry)
+        if (null === $entry) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

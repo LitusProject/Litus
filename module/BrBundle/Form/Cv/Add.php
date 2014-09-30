@@ -20,22 +20,22 @@ namespace BrBundle\Form\Cv;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
-    CommonBundle\Component\Validator\FieldLength as LengthValidator,
+    CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Bootstrap\Element\Button,
     CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
     CommonBundle\Component\OldForm\Bootstrap\Element\Select,
     CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Decimal as DecimalValidator,
+    CommonBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Fieldset,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Fieldset;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Cv
@@ -328,9 +328,9 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
         $this->get('lang_count')->setValue($formData['lang_count']);
 
         for ($i = 0; $i < $formData['lang_count']; $i++) {
-
-            if (!isset($formData['lang_name' . $i]))
+            if (!isset($formData['lang_name' . $i])) {
                 continue;
+            }
 
             $field = new Text('lang_name' . $i);
             $field->setLabel('Language')
@@ -349,8 +349,9 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                 ->setAttribute('options', CvLanguage::$WRITTEN_SKILLS);
             $languageCollection->add($field);
 
-            if ('' !== $formData['lang_name' . $i])
+            if ('' !== $formData['lang_name' . $i]) {
                 $realCount++;
+            }
         }
 
         $formData['lang_realcount'] = $realCount;
@@ -389,14 +390,13 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                                     new LengthValidator(
                                         $count,
                                         75
-                                    )
+                                    ),
                                 ),
                             )
                         )
                     );
                 }
             }
-
         }
     }
 

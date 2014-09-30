@@ -42,8 +42,9 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function yearAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $years = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Edition')
@@ -59,11 +60,13 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
-        if (!($year = $this->_getYear()))
+        if (!($year = $this->_getYear())) {
             return new ViewModel();
+        }
 
         $pdfs = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Edition\Pdf')
@@ -99,7 +102,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -119,7 +122,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -140,7 +143,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -160,7 +163,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 

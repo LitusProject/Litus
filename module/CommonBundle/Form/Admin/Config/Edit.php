@@ -77,7 +77,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param Config $config The config to edit
+     * @param  Config $config The config to edit
      * @return self
      */
     public function setConfig(Config $config)

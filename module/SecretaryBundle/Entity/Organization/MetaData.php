@@ -18,10 +18,10 @@
 
 namespace SecretaryBundle\Entity\Organization;
 
-use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic;
-use InvalidArgumentException;
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This entity stores the node item.
@@ -212,8 +212,9 @@ class MetaData
      */
     public function getTshirtSizeName()
     {
-        if (isset(self::$possibleSizes[$this->tshirtSize]))
+        if (isset(self::$possibleSizes[$this->tshirtSize])) {
             return self::$possibleSizes[$this->tshirtSize];
+        }
 
         return '';
     }
@@ -225,8 +226,9 @@ class MetaData
      */
     public function setTshirtSize($tshirtSize)
     {
-        if (!self::isValidTshirtSize($tshirtSize))
+        if (!self::isValidTshirtSize($tshirtSize)) {
             throw new InvalidArgumentException('The T-shirt size is not valid');
+        }
 
         $this->tshirtSize = $tshirtSize;
 

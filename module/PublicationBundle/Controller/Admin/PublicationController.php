@@ -84,8 +84,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('publication_publication_edit', array('publication' => $publication));
 
@@ -103,7 +104,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 $this->redirect()->toRoute(
                     'publication_admin_publication',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -122,8 +123,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $publication->delete();
         $this->getEntityManager()->flush();
@@ -149,7 +151,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -169,7 +171,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

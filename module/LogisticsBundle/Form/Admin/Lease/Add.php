@@ -21,9 +21,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\OldForm\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
     LogisticsBundle\Entity\Lease\Item,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a new lease
@@ -134,5 +134,4 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
 
         $this->setData($data);
     }
-
 }

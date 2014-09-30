@@ -207,12 +207,14 @@ class Session
      */
     public function validate(EntityManager $entityManager, $userAgent, $ip)
     {
-        if ($userAgent != $this->userAgent || !$this->active)
+        if ($userAgent != $this->userAgent || !$this->active) {
             return false;
+        }
 
         $now = new DateTime();
-        if ($this->expirationTime < $now)
+        if ($this->expirationTime < $now) {
             return false;
+        }
 
         if ($ip != $this->ip) {
             $this->deactivate();

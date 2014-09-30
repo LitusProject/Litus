@@ -52,12 +52,14 @@ class Factory extends \Zend\Form\Factory
      */
     public function create($spec, $data = null)
     {
-        if (isset($spec['instance']))
+        if (isset($spec['instance'])) {
             return $spec['instance'];
+        }
 
         if (null === $data && is_array($spec)
-                && isset($spec['options']['data']))
+                && isset($spec['options']['data'])) {
             $data = $spec['options']['data'];
+        }
 
         if ($data === null || is_array($data)) {
             $this->getFormElementManager()->setData($data);

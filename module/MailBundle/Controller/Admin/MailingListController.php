@@ -18,11 +18,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
+use MailBundle\Entity\MailingList\AdminMap as ListAdmin,
+    MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
+    MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
     MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
     MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
-    MailBundle\Entity\MailingList\AdminMap as ListAdmin,
-    MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,8 +51,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
             $paginatorArray = array();
             foreach ($lists as $list) {
-                if ($list->canBeEditedBy($person))
+                if ($list->canBeEditedBy($person)) {
                     $paginatorArray[] = $list;
+                }
             }
 
             $paginator = $this->paginator()->createFromArray(
@@ -65,7 +66,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $this->getParam('page'),
                 array(),
                 array(
-                    'name' => 'ASC'
+                    'name' => 'ASC',
                 )
             );
         }
@@ -116,12 +117,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
-        if(!($list = $this->_getList()))
-
+        if (!($list = $this->_getList())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($list, false))
+        if (!$this->_checkAccess($list, false)) {
             return new ViewModel();
+        }
 
         $academicForm = $this->getForm('mail_mailinglist_entry_person_academic', array('list' => $list));
         $externalForm = $this->getForm('mail_mailinglist_entry_person_external', array('list' => $list));
@@ -186,11 +188,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if (!($list = $this->_getList()))
+        if (!($list = $this->_getList())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($list, true))
+        if (!$this->_checkAccess($list, true)) {
             return new ViewModel();
+        }
 
         $adminForm = $this->getForm('mail_mailinglist_admin', array('list' => $list));
         $adminRoleForm = $this->getForm('mail_mailinglist_adminrole', array('list' => $list));
@@ -272,11 +276,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($list = $this->_getList()))
+        if (!($list = $this->_getList())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($list, false))
+        if (!$this->_checkAccess($list, false)) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($list);
         $this->getEntityManager()->flush();
@@ -292,11 +298,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($entry->getList(), false))
+        if (!$this->_checkAccess($entry->getList(), false)) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
@@ -310,15 +318,17 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function deleteAllEntriesAction()
     {
-        if (!($list = $this->_getList()))
+        if (!($list = $this->_getList())) {
             return new ViewModel();
+        }
 
         $entries = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\Entry')
             ->findByList($list);
 
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $this->getEntityManager()->remove($entry);
+        }
 
         $this->getEntityManager()->flush();
 
@@ -342,11 +352,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($admin = $this->_getAdmin()))
+        if (!($admin = $this->_getAdmin())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($admin->getList(), true))
+        if (!$this->_checkAccess($admin->getList(), true)) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($admin);
         $this->getEntityManager()->flush();
@@ -362,11 +374,13 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->_getAdminRole()))
+        if (!($adminRole = $this->_getAdminRole())) {
             return new ViewModel();
+        }
 
-        if (!$this->_checkAccess($adminRole->getList(), true))
+        if (!$this->_checkAccess($adminRole->getList(), true)) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($adminRole);
         $this->getEntityManager()->flush();
@@ -429,7 +443,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -449,7 +463,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -470,7 +484,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -490,7 +504,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -511,7 +525,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -531,7 +545,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -552,7 +566,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -572,7 +586,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -597,7 +611,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             $this->redirect()->toRoute(
                 'mail_admin_list',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

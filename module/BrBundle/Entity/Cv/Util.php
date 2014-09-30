@@ -54,7 +54,6 @@ class Util
             ->findAllUngroupedStudies();
 
         foreach ($cvStudies as $study) {
-
             $entries = $entityManager
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
@@ -66,7 +65,6 @@ class Util
                     'entries' => $entries,
                 );
             }
-
         }
 
         return $result;

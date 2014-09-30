@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'maxwidth'  => self::BANNER_WIDTH,
                                 'minheight' => self::BANNER_HEIGHT,
                                 'maxheight' => self::BANNER_HEIGHT,
-                            )
+                            ),
                         ),
                     ),
                 ),

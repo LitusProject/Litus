@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article as ArticleEntity,
-    CudiBundle\Entity\Supplier,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CudiBundle\Entity\Supplier;
 
 /**
  * Article
@@ -69,8 +69,9 @@ class Article extends EntityRepository
             ->getResult();
 
         $barcodes = array();
-        foreach($resultSet as $article)
+        foreach ($resultSet as $article) {
             $barcodes[] = $article->getBarcode();
+        }
 
         array_multisort($barcodes, $resultSet);
 
@@ -102,8 +103,9 @@ class Article extends EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($barcode);
 
-        if (isset($barcode))
+        if (isset($barcode)) {
             return $barcode->getArticle();
+        }
 
         return null;
     }
@@ -145,7 +147,7 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -167,7 +169,7 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('author', '%'.strtolower($author).'%')
+            ->setParameter('author', '%' . strtolower($author) . '%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -192,7 +194,7 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('string', '%'.strtolower($string).'%')
+            ->setParameter('string', '%' . strtolower($string) . '%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -214,7 +216,7 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('publisher', '%'.strtolower($publisher).'%')
+            ->setParameter('publisher', '%' . strtolower($publisher) . '%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -237,13 +239,14 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('barcode', '%'.$barcode.'%')
+            ->setParameter('barcode', '%' . $barcode . '%')
             ->getQuery()
             ->getResult();
 
         $ids = array(0);
-        foreach($articles as $id)
+        foreach ($articles as $id) {
             $ids[] = $id['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a, m')
@@ -325,7 +328,7 @@ class Article extends EntityRepository
                     $query->expr()->in('m.id', $articles)
                 )
             )
-            ->setParameter('title', '%'.strtolower($title).'%')
+            ->setParameter('title', '%' . strtolower($title) . '%')
             ->orderBy('m.title', 'ASC')
             ->getQuery();
 
@@ -374,8 +377,9 @@ class Article extends EntityRepository
         }
 
         $articles = array(0);
-        foreach ($resultSet as $item)
+        foreach ($resultSet as $item) {
             $articles[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a.id')
@@ -390,8 +394,9 @@ class Article extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        foreach ($resultSet as $item)
+        foreach ($resultSet as $item) {
             $articles[$item['id']] = $item['id'];
+        }
 
         return $articles;
     }

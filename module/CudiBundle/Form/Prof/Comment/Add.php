@@ -19,8 +19,8 @@
 namespace CudiBundle\Form\Prof\Comment;
 
 use CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Comment

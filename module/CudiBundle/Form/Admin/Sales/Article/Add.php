@@ -26,9 +26,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CudiBundle\Entity\Sale\Article,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Article
@@ -118,8 +118,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
         $supplierOptions = array();
-        foreach($suppliers as $item)
+        foreach ($suppliers as $item) {
             $supplierOptions[$item->getId()] = $item->getName();
+        }
 
         return $supplierOptions;
     }
@@ -135,7 +136,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                 'bookable' => $article->isBookable(),
                 'unbookable' => $article->isUnbookable(),
                 'sellable' => $article->isSellable(),
-                'can_expire' => $article->canExpire()
+                'can_expire' => $article->canExpire(),
             )
         );
     }

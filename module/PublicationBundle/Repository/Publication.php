@@ -95,5 +95,4 @@ class Publication extends EntityRepository
 
         return $resultSet;
     }
-
 }

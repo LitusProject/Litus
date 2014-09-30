@@ -29,9 +29,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Article
@@ -205,8 +205,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAll();
 
         $bindingOptions = array();
-        foreach($bindings as $item)
+        foreach ($bindings as $item) {
             $bindingOptions[$item->getId()] = $item->getName();
+        }
 
         return $bindingOptions;
     }
@@ -218,8 +219,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             ->findAll();
 
         $colorOptions = array();
-        foreach($colors as $item)
+        foreach ($colors as $item) {
             $colorOptions[$item->getId()] = $item->getName();
+        }
 
         return $colorOptions;
     }
@@ -236,7 +238,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
             'downloadable' => $article->isDownloadable(),
             'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
-            'internal' => $article->isInternal()
+            'internal' => $article->isInternal(),
         );
 
         if ($article instanceof InternalArticle) {
@@ -325,7 +327,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                         array(
                             'name' => 'isbn',
                             'options' => array(
-                                'type' => 'auto'
+                                'type' => 'auto',
                             ),
                         ),
                     ),

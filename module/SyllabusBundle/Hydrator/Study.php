@@ -27,7 +27,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new StudyEntity;
+            $object = new StudyEntity();
         }
 
         $object->setParent(

@@ -76,9 +76,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array(
                                 'byId' => false,
                             )
-                        )
+                        ),
                     ),
-                )
+                ),
             );
         } else {
             return array(
@@ -94,9 +94,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array(
                                 'byId' => true,
                             )
-                        )
+                        ),
                     ),
-                )
+                ),
             );
         }
     }

@@ -18,8 +18,8 @@
 
 namespace SecretaryBundle\Hydrator\Organization;
 
-use CommonBundle\Entity\User\Status\University as UniversityStatus;
-use SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
+use CommonBundle\Entity\User\Status\University as UniversityStatus,
+    SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {

@@ -84,8 +84,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($action = $this->_getAction()))
+        if (!($action = $this->_getAction())) {
             return new ViewModel();
+        }
 
         $action->setEntityManager($this->getEntityManager());
 
@@ -98,8 +99,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refuseAction()
     {
-        if (!($action = $this->_getAction()))
+        if (!($action = $this->_getAction())) {
             return new ViewModel();
+        }
 
         $action->setRefused($this->getAuthentication()->getPersonObject());
 
@@ -113,7 +115,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'cudi_admin_prof_action',
             array(
-                'action' => 'refused'
+                'action' => 'refused',
             )
         );
 
@@ -122,8 +124,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmAction()
     {
-        if (!($action = $this->_getAction()))
+        if (!($action = $this->_getAction())) {
             return new ViewModel();
+        }
 
         $action->setEntityManager($this->getEntityManager());
 
@@ -215,7 +218,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'cudi_admin_prof_action',
             array(
-                'action' => 'completed'
+                'action' => 'completed',
             )
         );
 
@@ -224,8 +227,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmArticleAction()
     {
-        if (!($action = $this->_getAction()))
+        if (!($action = $this->_getAction())) {
             return new ViewModel();
+        }
 
         $action->setEntityManager($this->getEntityManager());
 
@@ -238,7 +242,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_prof_action',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -258,7 +262,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->setAuthors($formData['author'])
                     ->setPublishers($formData['publisher'])
                     ->setYearPublished($formData['year_published'])
-                    ->setISBN($formData['isbn'] != ''? $formData['isbn'] : null)
+                    ->setISBN($formData['isbn'] != '' ? $formData['isbn'] : null)
                     ->setURL($formData['url'])
                     ->setIsDownloadable($formData['downloadable'])
                     ->setType($formData['type']);
@@ -302,7 +306,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
-                        'action' => 'completed'
+                        'action' => 'completed',
                     )
                 );
 
@@ -319,8 +323,9 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmFileAction()
     {
-        if (!($action = $this->_getAction()))
+        if (!($action = $this->_getAction())) {
             return new ViewModel();
+        }
 
         $action->setEntityManager($this->getEntityManager());
 
@@ -346,7 +351,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
-                        'action' => 'completed'
+                        'action' => 'completed',
                     )
                 );
 
@@ -372,7 +377,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_prof_action',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -392,7 +397,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_prof_action',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

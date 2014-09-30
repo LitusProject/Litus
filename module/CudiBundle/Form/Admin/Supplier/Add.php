@@ -18,15 +18,15 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
     CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
     CudiBundle\Entity\Supplier,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Supplier
@@ -105,8 +105,9 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->_addressForm->getInputs();
-        foreach($inputs as $input)
+        foreach ($inputs as $input) {
             $inputFilter->add($input);
+        }
 
         $factory = new InputFactory();
 

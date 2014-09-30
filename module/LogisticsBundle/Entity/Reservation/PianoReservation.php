@@ -32,7 +32,6 @@ use CommonBundle\Entity\User\Person,
  */
 class PianoReservation extends Reservation
 {
-
     const PIANO_RESOURCE_NAME = 'Piano';
 
     /**

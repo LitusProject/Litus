@@ -1,4 +1,20 @@
 <?php
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ *
+ * @license http://litus.cc/LICENSE
+ */
 
 namespace CommonBundle\Hydrator\Acl;
 
@@ -38,10 +54,11 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     /**
-     * @param RoleEntity[] $roles
+     * @param  RoleEntity[] $roles
      * @return string[]
      */
-    protected function rolesToArray(array $roles) {
+    protected function rolesToArray(array $roles)
+    {
         return array_map(function ($role) {
             return $role->getName();
         }, $roles);
@@ -51,7 +68,8 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      * @param string[]
      * @return RoleEntity[]
      */
-    protected function arrayToRoles(array $roles) {
+    protected function arrayToRoles(array $roles)
+    {
         return array_map(function ($role) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -63,7 +81,8 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      * @param ActionEntity[]
      * @return string[]
      */
-    protected function actionsToArray(array $actions) {
+    protected function actionsToArray(array $actions)
+    {
         return array_map(function ($action) {
             return $action->getId();
         }, $actions);
@@ -73,7 +92,8 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      * @param string[]
      * @return ActionEntity[]
      */
-    protected function arrayToActions(array $actions) {
+    protected function arrayToActions(array $actions)
+    {
         return array_map(function ($action) {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Action')

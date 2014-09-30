@@ -56,7 +56,7 @@ class Login extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Remember Me',
             'attributes' => array(
                 'id' => 'remember_me',
-            )
+            ),
         ));
     }
 }

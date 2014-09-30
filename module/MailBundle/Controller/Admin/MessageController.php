@@ -34,7 +34,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             $this->getParam('page'),
             array(),
             array(
-                'creationTime' => 'DESC'
+                'creationTime' => 'DESC',
             )
         );
 
@@ -48,8 +48,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
     public function editAction()
     {
-        if (!($message = $this->_getMessage()))
+        if (!($message = $this->_getMessage())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('mail_message_edit', $message);
 
@@ -68,7 +69,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
                 $this->redirect()->toRoute(
                     'mail_admin_message',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -87,8 +88,9 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($message = $this->_getMessage()))
+        if (!($message = $this->_getMessage())) {
             return new ViewModel();
+        }
 
         $this->getDocumentManager()->remove($message);
 
@@ -115,7 +117,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_message',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -135,7 +137,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_message',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

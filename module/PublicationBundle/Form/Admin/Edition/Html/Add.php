@@ -52,8 +52,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         new TitleValidator($this->getEntityManager(), $this->publication, $this->getCurrentAcademicYear(true)),
                     ),
-                )
-            )
+                ),
+            ),
         ));
 
         $this->add(array(

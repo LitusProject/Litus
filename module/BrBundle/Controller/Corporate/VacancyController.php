@@ -61,8 +61,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getJob()))
+        if (!($oldJob = $this->_getJob())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($oldJob);
 
@@ -183,8 +184,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        if (!($vacancy = $this->_getVacancy()))
+        if (!($vacancy = $this->_getVacancy())) {
             return new ViewModel();
+        }
 
         $contact = $this->getAuthentication()->getPersonObject();
 
@@ -211,7 +213,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_corporate_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -231,7 +233,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_corporate_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -244,8 +246,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }
@@ -261,7 +264,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -281,7 +284,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

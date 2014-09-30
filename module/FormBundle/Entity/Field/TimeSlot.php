@@ -21,9 +21,9 @@ namespace FormBundle\Entity\Field;
 use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
-    IntlDateFormatter,
     FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Node\Form,
+    IntlDateFormatter;
 
 /**
  * This entity stores the node item.
@@ -154,8 +154,9 @@ class TimeSlot extends Field
     {
         $translation = $this->getTimeSlotTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getLocation();
+        }
 
         return '';
     }
@@ -170,8 +171,9 @@ class TimeSlot extends Field
     {
         $translation = $this->getTimeSlotTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getExtraInformation();
+        }
 
         return '';
     }
@@ -185,15 +187,18 @@ class TimeSlot extends Field
     public function getTimeSlotTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->timeslotTranslations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language) {
                 return $translation;
+            }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
                 $fallbackTranslation = $translation;
+            }
         }
 
-        if ($allowFallback && isset($fallbackTranslation))
+        if ($allowFallback && isset($fallbackTranslation)) {
             return $fallbackTranslation;
+        }
 
         return null;
     }

@@ -65,7 +65,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'page_admin_link',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -82,8 +82,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($link = $this->_getLink()))
+        if (!($link = $this->_getLink())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('page_link_edit', $link);
 
@@ -102,7 +103,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'page_admin_link',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -121,8 +122,9 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($link = $this->_getLink()))
+        if (!($link = $this->_getLink())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($link);
 
@@ -131,8 +133,8 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
-                )
+                    'status' => 'success',
+                ),
             )
         );
     }
@@ -148,7 +150,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'page_admin_link',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -168,7 +170,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'page_admin_link',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

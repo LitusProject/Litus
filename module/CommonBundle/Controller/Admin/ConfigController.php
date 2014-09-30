@@ -40,12 +40,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $explodedKey = explode(Config::$separator, $entry->getKey());
                 $formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
                     'value' => $entry->getValue(),
-                    'fullKey' => $entry->getKey()
+                    'fullKey' => $entry->getKey(),
                 );
             } else {
                 $formattedValues[0][$entry->getKey()] = array(
                     'value' => $entry->getValue(),
-                    'fullKey' => $entry->getKey()
+                    'fullKey' => $entry->getKey(),
                 );
             }
         }
@@ -61,8 +61,9 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('common_config_edit', array('config' => $entry));
 
@@ -80,7 +81,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'common_admin_config',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -110,7 +111,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'common_admin_config',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -130,7 +131,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'common_admin_config',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

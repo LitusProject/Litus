@@ -18,10 +18,10 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.
@@ -110,10 +110,11 @@ class Driver
      */
     public function getColor()
     {
-        if ($this->color)
+        if ($this->color) {
             return $this->color;
-        else
+        } else {
             return '#888888';
+        }
     }
 
     /**

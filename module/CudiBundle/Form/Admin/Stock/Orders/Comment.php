@@ -21,8 +21,8 @@ namespace CudiBundle\Form\Admin\Stock\Orders;
 use CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CudiBundle\Entity\Stock\Order\Order,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Order Comment

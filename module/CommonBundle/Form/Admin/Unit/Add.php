@@ -131,7 +131,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param Unit $unit
+     * @param  Unit $unit
      * @return self
      */
     public function setUnit(Unit $unit)
@@ -152,12 +152,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findBy(array(), array('name' => 'ASC'));
 
-        if (empty($organizations))
+        if (empty($organizations)) {
             throw new RuntimeException('There needs to be at least one organization before you can add a unit');
+        }
 
         $organizationsArray = array();
-        foreach ($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationsArray[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationsArray;
     }
@@ -176,11 +178,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $exclude = null === $this->unit ? 0 : $this->unit->getId();
 
         $unitsArray = array(
-            '' => ''
+            '' => '',
         );
         foreach ($units as $unit) {
-            if ($unit->getId() != $exclude)
+            if ($unit->getId() != $exclude) {
                 $unitsArray[$unit->getId()] = $unit->getName();
+            }
         }
 
         return $unitsArray;
@@ -200,14 +203,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new RuntimeException('There needs to be at least one role before you can add a unit');
+        }
 
         return $rolesArray;
     }

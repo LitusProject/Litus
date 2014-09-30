@@ -114,5 +114,4 @@ class VanReservation extends Reservation
 
         return $this;
     }
-
 }

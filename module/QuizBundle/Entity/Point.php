@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
+use Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for a point.
@@ -111,8 +111,9 @@ class Point
      */
     public function setPoint($point)
     {
-        if ($point > $this->round->getMaxPoints())
+        if ($point > $this->round->getMaxPoints()) {
             throw new InvalidArgumentException('Points exceed maximum');
+        }
         $this->point = $point;
 
         return $this;

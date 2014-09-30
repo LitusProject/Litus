@@ -104,8 +104,9 @@ class InvoiceEntry
      */
     private function _setVersion($versionNmbr)
     {
-        if($versionNmbr < 0)
+        if ($versionNmbr < 0) {
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+        }
 
         $this->version = $versionNmbr;
     }

@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person,
     DateTime,
     LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 

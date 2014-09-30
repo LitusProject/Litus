@@ -28,8 +28,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Confirm Article add action
@@ -37,8 +37,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
  class Confirm extends \CommonBundle\Component\OldForm\Admin\Form
-{
-    /**
+ {
+     /**
      * @var EntityManager The EntityManager instance
      */
     protected $_entityManager = null;
@@ -172,33 +172,35 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
         $this->populateFromArticle($article);
     }
 
-    private function _getBindings()
-    {
-        $bindings = $this->_entityManager
+     private function _getBindings()
+     {
+         $bindings = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Article\Option\Binding')
             ->findAll();
-        $bindingOptions = array();
-        foreach($bindings as $item)
-            $bindingOptions[$item->getId()] = $item->getName();
+         $bindingOptions = array();
+         foreach ($bindings as $item) {
+             $bindingOptions[$item->getId()] = $item->getName();
+         }
 
-        return $bindingOptions;
-    }
+         return $bindingOptions;
+     }
 
-    private function _getColors()
-    {
-        $colors = $this->_entityManager
+     private function _getColors()
+     {
+         $colors = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Article\Option\Color')
             ->findAll();
-        $colorOptions = array();
-        foreach($colors as $item)
-            $colorOptions[$item->getId()] = $item->getName();
+         $colorOptions = array();
+         foreach ($colors as $item) {
+             $colorOptions[$item->getId()] = $item->getName();
+         }
 
-        return $colorOptions;
-    }
+         return $colorOptions;
+     }
 
-    public function populateFromArticle(Article $article)
-    {
-        $data = array(
+     public function populateFromArticle(Article $article)
+     {
+         $data = array(
             'title' => $article->getTitle(),
             'author' => $article->getAuthors(),
             'publisher' => $article->getPublishers(),
@@ -208,29 +210,29 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             'downloadable' => $article->isDownloadable(),
             'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
-            'internal' => $article->isInternal()
+            'internal' => $article->isInternal(),
         );
 
-        if ($article instanceof InternalArticle) {
-            $data['nb_black_and_white'] = '';
-            $data['nb_colored'] = '';
-            $data['front_color'] = 0;
-            $data['binding'] = $article->getBinding()->getId();
-            $data['official'] = $article->isOfficial();
-            $data['rectoverso'] = $article->isRectoVerso();
-            $data['perforated'] = $article->isPerforated();
-            $data['colored'] = $article->isColored();
-        }
+         if ($article instanceof InternalArticle) {
+             $data['nb_black_and_white'] = '';
+             $data['nb_colored'] = '';
+             $data['front_color'] = 0;
+             $data['binding'] = $article->getBinding()->getId();
+             $data['official'] = $article->isOfficial();
+             $data['rectoverso'] = $article->isRectoVerso();
+             $data['perforated'] = $article->isPerforated();
+             $data['colored'] = $article->isColored();
+         }
 
-        $this->setData($data);
-    }
+         $this->setData($data);
+     }
 
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+     public function getInputFilter()
+     {
+         $inputFilter = new InputFilter();
+         $factory = new InputFactory();
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'title',
@@ -242,7 +244,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'author',
@@ -254,7 +256,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'publisher',
@@ -266,7 +268,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'year',
@@ -284,7 +286,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'isbn',
@@ -296,7 +298,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
                         array(
                             'name' => 'isbn',
                             'options' => array(
-                                'type' => 'auto'
+                                'type' => 'auto',
                             ),
                         ),
                     ),
@@ -304,7 +306,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'url',
@@ -319,7 +321,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        $inputFilter->add(
+         $inputFilter->add(
             $factory->createInput(
                 array(
                     'name'     => 'type',
@@ -328,8 +330,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
             )
         );
 
-        if (isset($this->data['internal']) && $this->data['internal']) {
-            $inputFilter->add(
+         if (isset($this->data['internal']) && $this->data['internal']) {
+             $inputFilter->add(
                 $factory->createInput(
                     array(
                         'name'     => 'nb_black_and_white',
@@ -346,7 +348,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
                 )
             );
 
-            $inputFilter->add(
+             $inputFilter->add(
                 $factory->createInput(
                     array(
                         'name'     => 'nb_colored',
@@ -363,7 +365,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
                 )
             );
 
-            $inputFilter->add(
+             $inputFilter->add(
                 $factory->createInput(
                     array(
                         'name'     => 'binding',
@@ -372,7 +374,7 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
                 )
             );
 
-            $inputFilter->add(
+             $inputFilter->add(
                 $factory->createInput(
                     array(
                         'name'     => 'front_color',
@@ -380,8 +382,8 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
                     )
                 )
             );
-        }
+         }
 
-        return $inputFilter;
-    }
-}
+         return $inputFilter;
+     }
+ }

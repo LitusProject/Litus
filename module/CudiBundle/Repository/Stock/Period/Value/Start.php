@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Stock\Period\Value;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Stock\Period;
 
 /**
  * Start
@@ -54,8 +54,9 @@ class Start extends EntityRepository
     {
         $value = $this->findOneByArticleAndPeriod($article, $period);
 
-        if (null == $value)
+        if (null == $value) {
             return 0;
+        }
 
         return $value->getValue();
     }

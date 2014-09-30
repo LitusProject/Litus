@@ -84,8 +84,9 @@ class DateCompare extends AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $value || '' == $value)
+        if (null === $value || '' == $value) {
             return true;
+        }
 
         if ('now' == $this->_endDate) {
             $endDate = 'now';

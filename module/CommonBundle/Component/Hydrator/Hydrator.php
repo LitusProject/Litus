@@ -18,11 +18,11 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use DateTime;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
-use Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use DateTime,
+    RecursiveArrayIterator,
+    RecursiveIteratorIterator,
+    RuntimeException,
+    Zend\Stdlib\Hydrator\Filter\FilterComposite;
 
 /**
  * A common superclass for hydrators.
@@ -63,8 +63,9 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
             $entity = get_class($this);
             $entity = explode('\\', $entity, 3);
 
-            if ('Hydrator' != $entity[1])
-                throw new RuntimeException('Class '.get_class($this).' should be placed in namespace '.$entity[0].'\Hydrator');
+            if ('Hydrator' != $entity[1]) {
+                throw new RuntimeException('Class ' . get_class($this) . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
+            }
             $entity[1] = 'Entity';
 
             $this->entity = implode('\\', $entity);
@@ -144,9 +145,10 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     {
         $keys = self::flatten($keys);
 
-        if (empty($keys))
+        if (empty($keys)) {
             return $this->getHydrator('classmethods')
                 ->hydrate($data, $object);
+        }
 
         return $this->getHydrator('classmethods')
                 ->hydrate(array_intersect_key($data, array_flip($keys)), $object);
@@ -161,8 +163,9 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      */
     protected function stdExtract($object = null, array $keys = null)
     {
-        if (null === $object)
+        if (null === $object) {
             return array();
+        }
 
         $keys = self::flatten($keys);
 

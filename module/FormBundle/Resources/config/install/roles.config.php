@@ -23,13 +23,13 @@ return array(
         ),
         'actions' => array(
             'form_manage' => array(
-                'index'
+                'index',
             ),
             'form_manage_auth' => array(
                 'login', 'logout', 'shibboleth',
             ),
             'form_view' => array(
-                'doodle', 'downloadFile', 'edit', 'index', 'view', 'saveDoodle'
+                'doodle', 'downloadFile', 'edit', 'index', 'view', 'saveDoodle',
             ),
             'form_group' => array(
                 'view',

@@ -18,9 +18,9 @@
 
 namespace MailBundle\Hydrator\MailingList;
 
-use MailBundle\Entity\MailingList\Named as NamedEntity,
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     MailBundle\Entity\MailingList\AdminMap as ListAdminEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+    MailBundle\Entity\MailingList\Named as NamedEntity;
 
 /**
  * This hydrator hydrates/extracts mailinglist data.
@@ -32,8 +32,9 @@ class MailingList extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null !== $object)
+        if (null !== $object) {
             throw new InvalidObjectException();
+        }
 
         $list = new NamedEntity($data['name']);
         $this->getEntityManager()->persist($list);

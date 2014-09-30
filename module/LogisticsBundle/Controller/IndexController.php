@@ -77,7 +77,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $driverArray = array(
                     'color' => '#444444',
-                    'name' => ''
+                    'name' => '',
                 );
                 if (null !== $driver) {
                     $driverArray['id'] = $driver->getPerson()->getId();
@@ -101,7 +101,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
-                    'id' => $reservation->getId()
+                    'id' => $reservation->getId(),
                 );
 
                 return new ViewModel(
@@ -109,7 +109,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         'result' => array(
                             'status' => 'success',
                             'reservation' => $result,
-                        )
+                        ),
                     )
                 );
             } else {
@@ -118,7 +118,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         'result' => array(
                             'status' => 'error',
                             'errors' => $form->getMessages(),
-                        )
+                        ),
                     )
                 );
             }
@@ -128,7 +128,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'result' => array(
                     'status' => 'error',
-                )
+                ),
             )
         );
     }
@@ -137,11 +137,12 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return $this->notFoundAction();
+        }
 
         if ($this->getRequest()->isPost()) {
-            $form = $this->getForm('logistics_van-reservation_add', array('reservation' => $reservation))
+            $form = $this->getForm('logistics_van-reservation_add', array('reservation' => $reservation));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
@@ -151,7 +152,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $driverArray = array(
                     'color' => '#444444',
-                    'name' => ''
+                    'name' => '',
                 );
                 if (null !== $driver) {
                     $driverArray['id'] = $driver->getPerson()->getId();
@@ -177,7 +178,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
-                    'id' => $reservation->getId()
+                    'id' => $reservation->getId(),
                 );
 
                 return new ViewModel(
@@ -185,7 +186,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         'result' => array(
                             'status' => 'success',
                             'reservation' => $result,
-                        )
+                        ),
                     )
                 );
             } else {
@@ -193,8 +194,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
 
@@ -208,7 +210,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                         'result' => array(
                             'status' => 'error',
                             'errors' => $formErrors,
-                        )
+                        ),
                     )
                 );
             }
@@ -218,7 +220,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'result' => array(
                     'status' => 'error',
-                )
+                ),
             )
         );
     }
@@ -227,8 +229,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return $this->notFoundAction();
+        }
 
         $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();
@@ -242,8 +245,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return $this->notFoundAction();
+        }
 
         $start = new DateTime();
         $start->setTimeStamp($this->getRequest()->getPost('start'));
@@ -259,7 +263,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'result' => array(
                     'status' => 'success',
-                )
+                ),
             )
         );
     }
@@ -280,7 +284,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $driverArray = array(
                 'color' => '#444444',
-                'name' => ''
+                'name' => '',
             );
             if (null !== $driver) {
                 $driverArray['id'] = $driver->getPerson()->getId();
@@ -306,7 +310,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'passengerId' => $passengerId,
                 'load' => $reservation->getLoad(),
                 'additionalInfo' => $reservation->getAdditionalInfo(),
-                'id' => $reservation->getId()
+                'id' => $reservation->getId(),
             );
         }
 
@@ -314,8 +318,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'reservations' => (object) $result
-                )
+                    'reservations' => (object) $result,
+                ),
             )
         );
     }
@@ -371,28 +375,34 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 ->getRepository('LogisticsBundle\Document\Token')
                 ->findOneByHash($this->getParam('token'));
 
-            if (null !== $token)
+            if (null !== $token) {
                 $person = $token->getPerson($this->getEntityManager());
+            }
         }
 
         foreach ($reservations as $reservation) {
-            if (null !== $person && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person)
+            if (null !== $person && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person) {
                 continue;
+            }
 
             $summary = array();
-            if (strlen($reservation->getLoad()) > 0)
+            if (strlen($reservation->getLoad()) > 0) {
                 $summary[] = str_replace("\n", '', $reservation->getLoad());
-            if (strlen($reservation->getAdditionalInfo()) > 0)
+            }
+            if (strlen($reservation->getAdditionalInfo()) > 0) {
                 $summary[] = str_replace("\n", '', $reservation->getAdditionalInfo());
+            }
 
             $result .= 'BEGIN:VEVENT' . PHP_EOL;
             $result .= 'SUMMARY:' . $reservation->getReason() . PHP_EOL;
             $result .= 'DTSTART:' . $reservation->getStartDate()->format('Ymd\THis') . PHP_EOL;
             $result .= 'DTEND:' . $reservation->getEndDate()->format('Ymd\THis') . PHP_EOL;
-            if ($reservation->getDriver())
+            if ($reservation->getDriver()) {
                 $result .= 'ORGANIZER;CN="' . $reservation->getDriver()->getPerson()->getFullname() . '":MAILTO:' . $reservation->getDriver()->getPerson()->getEmail() . PHP_EOL;
-            if ($reservation->getPassenger())
+            }
+            if ($reservation->getPassenger()) {
                 $result .= 'ATTENDEE;CN="' . $reservation->getPassenger()->getFullname() . '":MAILTO:' . $reservation->getPassenger()->getEmail() . PHP_EOL;
+            }
             $result .= 'DESCRIPTION:' . implode(' - ', $summary) . PHP_EOL;
             $result .= 'TRANSP:OPAQUE' . PHP_EOL;
             $result .= 'CLASS:PUBLIC' . PHP_EOL;
@@ -425,8 +435,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
             ->findAllByDates($startTime, $endTime);
 
-        if (empty($reservations))
+        if (empty($reservations)) {
             $reservations = array();
+        }
 
         return $reservations;
     }

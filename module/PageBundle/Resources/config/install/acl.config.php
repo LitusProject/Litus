@@ -19,19 +19,19 @@
 return array(
     'pagebundle' => array(
         'page_admin_page' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'upload'
+            'add', 'delete', 'edit', 'manage', 'search', 'upload',
         ),
         'page_admin_category' => array(
-            'add', 'delete', 'edit', 'manage'
+            'add', 'delete', 'edit', 'manage',
         ),
         'page_admin_link' => array(
-            'add', 'delete', 'edit', 'manage'
+            'add', 'delete', 'edit', 'manage',
         ),
         'page_link' => array(
-            'view'
+            'view',
         ),
         'page' => array(
-            'file', 'view'
+            'file', 'view',
         ),
     ),
 );

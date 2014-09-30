@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\OldForm\Admin;
 
-use Zend\Form\Element\Collection,
-    Zend\Form\FormInterface,
-    Zend\Form\ElementPrepareAwareInterface;
+use Zend\Form\ElementPrepareAwareInterface,
+    Zend\Form\Element\Collection,
+    Zend\Form\FormInterface;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
@@ -62,8 +62,9 @@ abstract class Fieldset extends \Zend\Form\Fieldset
 
         $fieldsets = $this->getFieldsets();
         foreach ($fieldsets as $fieldset) {
-            if ($fieldset instanceof Collection)
+            if ($fieldset instanceof Collection) {
                 continue;
+            }
 
             $fieldset->populateValues($data);
         }

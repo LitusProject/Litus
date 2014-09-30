@@ -18,8 +18,8 @@
 
 namespace ApiBundle\Entity;
 
-use CommonBundle\Entity\Acl\Role,
-    CommonBundle\Component\Acl\RoleAware,
+use CommonBundle\Component\Acl\RoleAware,
+    CommonBundle\Entity\Acl\Role,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -222,11 +222,13 @@ class Key implements RoleAware
     public function validate($ip)
     {
         $now = new DateTime();
-        if ($this->expirationTime < $now)
+        if ($this->expirationTime < $now) {
             return false;
+        }
 
-        if ($this->checkHost && gethostbyname($this->host) != $ip)
+        if ($this->checkHost && gethostbyname($this->host) != $ip) {
             return false;
+        }
 
         return true;
     }
@@ -242,8 +244,9 @@ class Key implements RoleAware
     private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
     {
         foreach ($inheritanceRoles as $role) {
-            if (!in_array($role, $return))
+            if (!in_array($role, $return)) {
                 $return[] = $role;
+            }
             $return = $this->_flattenRolesInheritance($role->getParents(), $return);
         }
 

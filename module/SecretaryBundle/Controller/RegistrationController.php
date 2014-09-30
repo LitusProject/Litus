@@ -18,16 +18,16 @@
 
 namespace SecretaryBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication;
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
-use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
-use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use DateTime;
-use SecretaryBundle\Entity\Organization\MetaData;
-use SecretaryBundle\Entity\Registration;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    DateTime,
+    SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Registration,
+    Zend\Mvc\MvcEvent,
+    Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController
@@ -51,8 +51,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        if (!$enableRegistration)
+        if (!$enableRegistration) {
             return $this->notFoundAction();
+        }
 
         return $result;
     }
@@ -223,8 +224,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($organizationData['become_member']) {
-                        if ($selectedOrganization)
+                        if ($selectedOrganization) {
                             $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        }
                     }
 
                     $academic->activate(
@@ -390,12 +392,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $formData = $this->getRequest()->getPost()->toArray();
             $formData['academic']['university_identification'] = $academic->getUniversityIdentification();
 
-            if ($metaData && $metaData->becomeMember())
+            if ($metaData && $metaData->becomeMember()) {
                 $formData['organization_info']['become_member'] = true;
-            else
+            } else {
                 $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
                     ? $formData['organization_info']['become_member']
                     : false;
+            }
 
             $form->setData($formData);
 
@@ -647,8 +650,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
-        foreach($subjects as $enrollment)
+        foreach ($subjects as $enrollment) {
             $subjectIds[] = $enrollment->getSubject()->getId();
+        }
 
         return new ViewModel(
             array(
@@ -686,10 +690,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
-                    throw new ShibbolethUrlException('Array key '.getenv('SERVED_BY').' does not exist');
+                }
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
+                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -697,10 +703,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             // No load balancer active
         }
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3))
+        if ('%2F' != substr($shibbolethUrl, 0, -3)) {
             $shibbolethUrl .= '%2F';
+        }
 
-        return $shibbolethUrl.'?source=register';
+        return $shibbolethUrl . '?source=register';
     }
 
     private function _authenticate()
@@ -734,6 +741,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
      */
     private static function _loadDate($date)
     {
-        return DateTime::createFromFormat('d#m#Y H#i', $date.' 00:00') ?: null;
+        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

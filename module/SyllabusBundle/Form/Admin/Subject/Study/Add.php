@@ -20,8 +20,8 @@ namespace SyllabusBundle\Form\Admin\Subject\Study;
 
 use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Component\Validator\Subject\Study as StudyValidator,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\StudySubjectMap;
+    SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Add Study to Subject

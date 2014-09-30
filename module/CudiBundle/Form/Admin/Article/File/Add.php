@@ -22,9 +22,9 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     CommonBundle\Component\OldForm\Admin\Element\File,
     CommonBundle\Component\OldForm\Admin\Element\Text,
     CudiBundle\Entity\File\Mapping as FileMapping,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add File
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         $this->setData(
             array(
                 'description' => $mapping->getFile()->getDescription(),
-                'printable' => $mapping->isPrintable()
+                'printable' => $mapping->isPrintable(),
             )
         );
     }

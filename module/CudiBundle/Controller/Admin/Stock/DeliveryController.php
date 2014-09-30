@@ -54,11 +54,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -83,8 +85,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -174,11 +177,13 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
-        if (!($delivery = $this->_getDelivery()))
+        if (!($delivery = $this->_getDelivery())) {
             return new ViewModel();
+        }
 
         $ordered = $period->getNbOrdered($delivery->getArticle()) + $period->getNbVirtualOrdered($delivery->getArticle());
         $delivered = $period->getNbDelivered($delivery->getArticle()) - $delivery->getNumber();
@@ -190,8 +195,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
             $diff = $ordered - $delivered;
             foreach ($virtualOrders as $virtual) {
-                if ($diff <= 0)
+                if ($diff <= 0) {
                     break;
+                }
 
                 if ($virtual->getNumber() > $diff) {
                     $virtual->setNumber($virtual->getNumber() - $diff);
@@ -214,8 +220,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 ->findLastAssignedByArticle($delivery->getArticle());
 
             foreach ($bookings as $booking) {
-                if ($nbToMuchAssigned <= 0)
+                if ($nbToMuchAssigned <= 0) {
                     break;
+                }
                 $booking->setStatus('booked', $this->getEntityManager());
                 $nbToMuchAssigned -= $booking->getNumber();
             }
@@ -233,8 +240,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -279,7 +287,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_stock_delivery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -299,7 +307,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_stock_delivery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -320,7 +328,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_stock_delivery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -340,7 +348,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_stock_delivery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

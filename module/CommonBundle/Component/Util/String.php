@@ -42,13 +42,15 @@ class String
 
         if (is_array($m)) {
             foreach ($m as $o) {
-                if($o[0][1] - $i >= $length)
+                if ($o[0][1] - $i >= $length) {
                     break;
+                }
                 $t = substr(strtok($o[0][0], " \t\n\r\0\x0B>"), 1);
-                if($t[0] != '/')
+                if ($t[0] != '/') {
                     $tags[] = $t;
-                elseif(end($tags) == substr($t, 1))
+                } elseif (end($tags) == substr($t, 1)) {
                     array_pop($tags);
+                }
                 $i += $o[1][1] - $o[0][1];
             }
         }

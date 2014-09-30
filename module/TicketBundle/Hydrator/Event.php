@@ -53,8 +53,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($enableOptions) {
             foreach ($data['options'] as $optionData) {
-                if (strlen($optionData['option']) == 0)
+                if (strlen($optionData['option']) == 0) {
                     continue;
+                }
 
                 if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
                     $option = $this->getEntityManager()
@@ -102,8 +103,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     $numberOfTickets = $object->getNumberOfTickets() - $data['number_of_tickets'];
 
                     foreach ($tickets as $ticket) {
-                        if ($numberOfTickets == 0)
+                        if ($numberOfTickets == 0) {
                             break;
+                        }
 
                         $numberOfTickets--;
                         $this->getEntityManager()->remove($ticket);

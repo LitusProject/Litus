@@ -18,8 +18,8 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use PublicationBundle\Entity\Publication,
-    PublicationBundle\Component\Validator\Title\Publication as TitleValidator;
+use PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
+    PublicationBundle\Entity\Publication;
 
 /**
  * The form used to add a new Publication
@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         null === $this->publication
                             ? new TitleValidator($this->getEntityManager())
-                            : new TitleValidator($this->getEntityManager(), $this->publication->getId())
+                            : new TitleValidator($this->getEntityManager(), $this->publication->getId()),
                     ),
                 ),
             ),

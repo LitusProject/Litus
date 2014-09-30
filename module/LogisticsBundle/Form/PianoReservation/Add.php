@@ -23,8 +23,8 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     DateInterval,
     DateTime,
     IntlDateFormatter,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
-                                )
+                                ),
                             );
                         }
 
@@ -193,7 +193,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
-                                )
+                                ),
                             );
                         }
 
@@ -227,11 +227,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function getInputFilterSpecification()
     {
         foreach ($this->getFieldsets() as $fieldset) {
-            if (!isset($this->data[$fieldset->getName()]['submit']))
+            if (!isset($this->data[$fieldset->getName()]['submit'])) {
                 continue;
+            }
 
             return array(
-                $fieldset->getName() => $fieldset->getInputSpecification();
+                $fieldset->getName() => $fieldset->getInputSpecification(),
             );
         }
 

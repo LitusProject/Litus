@@ -200,5 +200,4 @@ class Reservation
     {
         return $this->additionalInfo;
     }
-
 }

@@ -53,7 +53,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'common_index',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -178,13 +178,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $academicYear = $this->getCurrentAcademicYear();
         $now = new DateTime();
 
-        if (!isset($resultString))
+        if (!isset($resultString)) {
             $resultString = 'Results';
+        }
 
         if (null !== $searchResults) {
             foreach ($myShifts as $shift) {
-                if (in_array($shift, $searchResults))
+                if (in_array($shift, $searchResults)) {
                     unset($searchResults[array_keys($searchResults, $shift)[0]]);
+                }
             }
         }
 
@@ -197,7 +199,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'myShifts' => $myShifts,
                 'token' => $token,
                 'searchResults' => $searchResults,
-                'entityManager' => $this->getEntityManager()
+                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -209,7 +211,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
@@ -217,7 +219,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person))) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
@@ -236,8 +238,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countResponsibles() / $shift->getNbResponsibles()
-                )
+                    'ratio' => $shift->countResponsibles() / $shift->getNbResponsibles(),
+                ),
             )
         );
     }
@@ -249,7 +251,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
@@ -257,7 +259,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person))) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
@@ -298,8 +300,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         ->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName())
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
 
                     $this->getEntityManager()->remove($volunteer);
                     break;
@@ -308,8 +311,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $payed = false;
-        if ($shift->getHandledOnEvent())
+        if ($shift->getHandledOnEvent()) {
             $payed = true;
+        }
 
         $shift->addVolunteer(
             $this->getEntityManager(),
@@ -325,8 +329,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
-                )
+                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
+                ),
             )
         );
     }
@@ -338,7 +342,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
@@ -346,14 +350,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($shift->canSignOut($this->getEntityManager()))) {
             return new ViewModel(
                 array(
-                    'result' => (object) array('status' => 'error')
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }
 
         $remove = $shift->removePerson($person);
-        if (null !== $remove)
+        if (null !== $remove) {
             $this->getEntityManager()->remove($remove);
+        }
 
         /**
          * @TODO If a responsible signs out, and there's another praesidium member signed up as a volunteer, promote him
@@ -365,8 +370,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers()
-                )
+                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
+                ),
             )
         );
     }
@@ -463,8 +468,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $unPayedCoins = 0;
         $lastShift = new DateTime();
         foreach ($asVolunteer as $shift) {
-            if ($shift->getStartDate() > $now)
+            if ($shift->getStartDate() > $now) {
                 continue;
+            }
 
             //if ($shift->getEndDate() > $lastShift)
                 $lastShift = $shift->getEndDate();
@@ -472,7 +478,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
                     'count' => 1,
-                    'unitName' => $shift->getUnit()->getName()
+                    'unitName' => $shift->getUnit()->getName(),
                 );
             } else {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()]['count']++;
@@ -490,13 +496,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $shiftsAsResponsible = array();
         $shiftsAsResponsibleCount = 0;
         foreach ($asResponsible as $shift) {
-            if ($shift->getStartDate() > $now)
+            if ($shift->getStartDate() > $now) {
                 continue;
+            }
 
             if (!isset($shiftsAsResponsible[$shift->getUnit()->getId()])) {
                 $shiftsAsResponsible[$shift->getUnit()->getId()] = array(
                     'count' => 1,
-                    'unitName' => $shift->getUnit()->getName()
+                    'unitName' => $shift->getUnit()->getName(),
                 );
             } else {
                 $shiftsAsResponsible[$shift->getUnit()->getId()]['count']++;
@@ -513,7 +520,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'totalAsResponsible' => $shiftsAsResponsibleCount,
                 'unPayedShifts' => $unPayedShifts,
                 'unPayedCoins' => $unPayedCoins,
-                'lastShift' => $lastShift->format('d/m/Y')
+                'lastShift' => $lastShift->format('d/m/Y'),
             )
         );
     }
@@ -523,8 +530,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function _getShift()
     {
-        if (null === $this->getRequest()->getPost('id'))
+        if (null === $this->getRequest()->getPost('id')) {
             return null;
+        }
 
         $shift = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -538,8 +546,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function _getPerson()
     {
-        if (null === $this->getRequest()->getPost('person'))
+        if (null === $this->getRequest()->getPost('person')) {
             return null;
+        }
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')

@@ -42,16 +42,19 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
     public function sendAction()
     {
-        if (!($type = $this->_getType()))
+        if (!($type = $this->_getType())) {
             return new ViewModel();
+        }
 
         if ('organization' == $type) {
-            if (!($status = $this->_getOrganizationStatus()))
+            if (!($status = $this->_getOrganizationStatus())) {
                 return new ViewModel();
+            }
             $statuses = OrganizationStatus::$possibleStatuses;
         } else {
-            if (!($status = $this->_getUniversityStatus()))
+            if (!($status = $this->_getUniversityStatus())) {
                 return new ViewModel();
+            }
             $statuses = UniversityStatus::$possibleStatuses;
         }
 
@@ -65,8 +68,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 $formData = $form->getData();
 
                 $body = $formData['message'];
-                if ($formData['test'])
+                if ($formData['test']) {
                     $body = 'This email would have been sent to the group "' . $type . ' - ' . $status . '":' . PHP_EOL . PHP_EOL . $body;
+                }
 
                 $mail = new Message();
                 $mail->setBody($body)
@@ -88,8 +92,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 if (!$formData['test']) {
                     $addresses = array();
                     foreach ($people as $person) {
-                        if (null === $person->getPerson()->getEmail())
+                        if (null === $person->getPerson()->getEmail()) {
                             continue;
+                        }
 
                         $addresses[$person->getPerson()->getEmail()] = array(
                             'address' => $person->getPerson()->getEmail(),
@@ -105,16 +110,18 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                         if (500 == $i) {
                             $i = 0;
 
-                            if ('development' != getenv('APPLICATION_ENV'))
+                            if ('development' != getenv('APPLICATION_ENV')) {
                                 $this->getMailTransport()->send($mail);
+                            }
 
                             $mail->setBcc(array());
                         }
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -124,7 +131,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 $this->redirect()->toRoute(
                     'mail_admin_group',
                     array(
-                        'action' => 'groups'
+                        'action' => 'groups',
                     )
                 );
 
@@ -152,7 +159,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 
@@ -170,7 +177,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 
@@ -191,7 +198,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 
@@ -209,7 +216,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 
@@ -230,7 +237,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 
@@ -248,7 +255,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups'
+                    'action' => 'groups',
                 )
             );
 

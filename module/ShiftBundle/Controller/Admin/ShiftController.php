@@ -109,7 +109,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'shift_admin_shift',
                     array(
-                        'action' => 'add'
+                        'action' => 'add',
                     )
                 );
 
@@ -129,16 +129,18 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function addInterval(DateTime $time, $interval, $duplicate)
     {
-        for ($i = 0; $i < $duplicate; $i++)
+        for ($i = 0; $i < $duplicate; $i++) {
             $time = $time->add($interval);
+        }
 
         return clone $time;
     }
 
     public function editAction()
     {
-        if (!($shift = $this->_getShift()))
+        if (!($shift = $this->_getShift())) {
             return new ViewModel();
+        }
 
         $form = $this->getForm('shift_shift_edit', array('shift' => $shift));
 
@@ -160,7 +162,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'shift_admin_shift',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -179,8 +181,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()))
+        if (!($shift = $this->_getShift())) {
             return new ViewModel();
+        }
 
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -211,14 +214,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $mail->addTo($mailAddress, $mailName);
 
-        foreach ($shift->getVolunteers() as $volunteer)
+        foreach ($shift->getVolunteers() as $volunteer) {
             $mail->addBcc($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
+        }
 
-        foreach ($shift->getResponsibles() as $responsible)
+        foreach ($shift->getResponsibles() as $responsible) {
             $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
+        }
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV')) {
             $this->getMailTransport()->send($mail);
+        }
 
         $this->getEntityManager()->remove(
             $shift->prepareRemove()
@@ -229,7 +235,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -277,8 +283,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -329,7 +336,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -349,7 +356,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'shift_admin_shift',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -370,7 +377,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -390,7 +397,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

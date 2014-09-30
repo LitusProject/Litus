@@ -97,7 +97,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'      => 'departments',
                         'options' => $this->getDepartments(),
                     ),
-                )
+                ),
             ),
         ));
 
@@ -112,8 +112,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAll();
 
         $array = array('0' => '');
-        foreach($departments as $department)
+        foreach ($departments as $department) {
             $array[$department->getId()] = $department->getName();
+        }
 
         return $array;
     }
