@@ -388,7 +388,7 @@
                 }
                 break;
             case 'collecting':
-                if (data.collectPrinted) {
+                if (data.displayScanButton) {
                     row.find('.startScanning, .cancelCollecting, .hold').show();
                     row.find('.startCollecting, .stopCollecting, .startSale, .cancelSale, .unhold').hide();
                 } else {
@@ -619,7 +619,7 @@
 
     function _printNextInQueue($this) {
         var settings = $this.data('queueSettings');
-        
+
         $this.find('tbody tr').each(function () {
             if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
                 settings.sendToSocket(
@@ -629,11 +629,6 @@
                         'id': $(this).data('info').id,
                     })
                 );
-                console.log(JSON.stringify({
-                    'command': 'action',
-                    'action': 'startCollectingBulk',
-                    'id': $(this).data('info').id,
-                }));
                 return false;
             }
         });
