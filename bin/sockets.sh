@@ -126,7 +126,7 @@ function socket() {
         log "Starting socket $1";
 
         # start socket in background
-        php public/index.php "socket:$1" --run &
+        php public/index.php "socket:$1" --run >> $_LOGFILE &
 
         # get PID
         local _PID=$!
