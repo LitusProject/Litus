@@ -13,10 +13,13 @@
         tHideHold: 'Hide Hold',
         tUndoLastSale: 'Undo Last Sale',
         tPrintNext: 'Print Next',
+        tSellNext: 'Sell Next',
         tNotFoundInQueue: '<i><b>{{ name }}</b> was not found in the queue.</i>',
         tAddToQueue: 'Add to queue',
         tErrorAddPerson: 'The person could not be added to the queue',
         tErrorAddPersonType: {'person': 'The person was not found', 'noBookings': 'There were no bookings for this person'},
+        tNoNextToPrint: 'There is no next item to print',
+        tNoNextToSell: 'There is no next item to sell',
 
         translateStatus: function (status) {return status;},
         sendToSocket: function (text) {},
@@ -137,6 +140,10 @@
                             hideHold = $('<input>', {'class': 'hideHold', 'type': 'checkbox', 'checked': 'checked'}),
                             settings.tHideHold
                         ).css('margin-left', '20px'),
+                        sellNext = $('<button>', {'class': 'btn btn-success', 'data-key': '116'}).append(
+                            $('<i>', {'class': 'glyphicon glyphicon-shopping-cart'}),
+                            settings.tSellNext + ' - F5'
+                        ),
                         undoLastSale = $('<button>', {'class': 'btn btn-danger undoLastSale', 'data-key': '117'}).append(
                             $('<i>', {'class': 'glyphicon glyphicon-arrow-left'}),
                             settings.tUndoLastSale + ' - F6'
@@ -208,6 +215,10 @@
 
         printNext.click(function () {
             _printNextInQueue($this);
+        });
+
+        sellNext.click(function () {
+            _sellNextInQueue($this);
         });
 
         undoLastSale.click(function () {
@@ -619,9 +630,11 @@
 
     function _printNextInQueue($this) {
         var settings = $this.data('queueSettings');
+        var nextPrinted = false;
 
         $this.find('tbody tr').each(function () {
             if ($(this).data('info').status == 'signed_in' && !$(this).data('info').collectPrinted) {
+                nextPrinted = true;
                 settings.sendToSocket(
                     JSON.stringify({
                         'command': 'action',
@@ -632,5 +645,46 @@
                 return false;
             }
         });
+
+        if (!nextPrinted) {
+            $this.find('.modal-body').prepend(
+                $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
+                    $('<div>', {'class': 'content'}).append('<p>').html(
+                        settings.tNoNextToPrint
+                    )
+                )
+            );
+
+            setTimeout(function () {
+                $this.find('.modal-body .flashmessage').remove();
+            }, 2000);
+        }
+    }
+
+    function _sellNextInQueue($this) {
+        var settings = $this.data('queueSettings');
+        var nextSelling = false;
+
+        $this.find('tbody tr').each(function () {
+            if ($(this).data('info').status == 'collected' && $(this).find('.startSale').is(':visible')) {
+                nextSelling = true;
+                $(this).find('.startSale').click();
+                return false;
+            }
+        });
+
+        if (!nextSelling) {
+            $this.find('.modal-body').prepend(
+                $('<div>', {'class': 'flashmessage alert alert-danger fade in'}).append(
+                    $('<div>', {'class': 'content'}).append('<p>').html(
+                        settings.tNoNextToSell
+                    )
+                )
+            );
+
+            setTimeout(function () {
+                $this.find('.modal-body .flashmessage').remove();
+            }, 2000);
+        }
     }
 })(jQuery);
