@@ -25,7 +25,9 @@ trait FieldsetTrait
 {
     public function getInputFilterSpecification()
     {
-        $spec = array();
+        $spec = array(
+            'type' => 'inputfilter',
+        );
 
         foreach ($this->byName as $name => $elementOrFieldset) {
             if ($elementOrFieldset instanceof InputFilterProviderInterface) {
