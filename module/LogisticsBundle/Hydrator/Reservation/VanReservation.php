@@ -32,15 +32,17 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['driver'] = $object->getDriver()->getId();
+        $data['driver'] = null !== $object->getDriver()
+            ? $object->getDriver()->getPerson()->getId()
+            : -1;
 
         if (null !== $object->getPassenger()) {
             $data['passenger_id'] = $object->getPassenger()->getId();
             $data['passenger_name'] = $object->getPassenger()->getName();
         }
 
-        $data['start_date'] = $object->getStartDate()->format('d/m/Y');
-        $data['end_date'] = $object->getEndDate()->format('d/m/Y');
+        $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
+        $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
         return $data;
     }
@@ -78,11 +80,11 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['start_date'])) {
-            $object->setStartDate(self::loadDate($data['start_date']));
+            $object->setStartDate(self::loadDateTime($data['start_date']));
         }
 
         if (isset($data['end_date'])) {
-            $object->setEndDate(self::loadDate($data['end_date']));
+            $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
         return $this->stdHydrate($data, $object, self::$std_keys);

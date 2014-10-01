@@ -19,8 +19,6 @@ namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Component\Controller\ActionController\AdminController,
     LogisticsBundle\Entity\Lease\Item,
-    LogisticsBundle\Form\Admin\Lease\Add as AddItemForm,
-    LogisticsBundle\Form\Admin\Lease\Edit as EditItemForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,17 +45,15 @@ class LeaseController extends AdminController
 
     public function addAction()
     {
-        $form = new AddItemForm($this->getEntityManager());
+        $form = $this->getForm('logistics_lease_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $item = new Item($formData['name'], $formData['barcode'], $formData['additional_info']);
-                $this->getEntityManager()->persist($item);
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
 
                 $this->getEntityManager()->flush();
 
@@ -90,19 +86,12 @@ class LeaseController extends AdminController
             return new ViewModel();
         }
 
-        $form  = new EditItemForm($this->getEntityManager(), $item);
+        $form = $this->getForm('logistics_lease_edit', $item);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $item->setName($formData['name'])
-                    ->setBarcode($formData['barcode'])
-                    ->setAdditionalInfo($formData['additional_info']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

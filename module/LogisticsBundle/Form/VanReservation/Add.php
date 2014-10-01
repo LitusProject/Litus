@@ -30,6 +30,8 @@ use CommonBundle\Component\Validator\Academic as AcademicValidator,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\VanReservation';
+
     /**
      * @param VanReservation|null
      */

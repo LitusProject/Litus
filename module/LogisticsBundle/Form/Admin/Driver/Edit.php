@@ -18,53 +18,21 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use Doctrine\ORM\EntityManager,
-    LogisticsBundle\Entity\Driver,
-    Zend\Form\Element\Submit;
-
 /**
  * This form allows the user to edit the driver.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends \LogisticsBundle\Form\Admin\Driver\Add
+class Edit extends Add
 {
-    /**
-     * @var Driver
-     */
-    private $_driver;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Driver          $driver
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Driver $driver, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_driver = $driver;
+        $this->remove('person_id')
+            ->remove('person_name');
 
-        $this->remove('person_id');
-        $this->remove('person_name');
-
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'driver_edit');
-        $this->add($field);
-
-        $this->populateFromDriver($driver);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('person_id');
-        $inputFilter->remove('person_name');
-
-        return $inputFilter;
+        $this->remove('submit')
+            ->addSubmit('Save', 'driver_edit');
     }
 }

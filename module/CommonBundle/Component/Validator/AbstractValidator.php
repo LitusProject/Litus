@@ -34,7 +34,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator
             return null;
         }
 
-        if (is_array($value)) {
+        if (is_array($path)) {
             if (empty($path) || !array_key_exists($path[0], $context)) {
                 return null;
             }

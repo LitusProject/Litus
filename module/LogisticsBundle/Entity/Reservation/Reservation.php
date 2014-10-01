@@ -99,6 +99,7 @@ class Reservation
     {
         $this->creator = $creator;
         $this->resource = $resource;
+        $this->additionalInfo = '';
     }
 
     /**

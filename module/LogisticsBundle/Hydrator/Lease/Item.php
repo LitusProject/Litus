@@ -16,26 +16,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Form\Admin\VanReservation;
+namespace LogisticsBundle\Hydrator\Lease;
 
-use LogicException;
+use LogicException\Entity\Lease\Item as ItemEntity;
 
-/**
- * This form allows the user to edit the reservation.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- */
-class Edit extends Add
+class Entity extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    public function init()
+    private static $std_keys = array('name', 'barcode', 'additional_info');
+
+    protected function doExtract($object = null)
     {
-        if (null === $this->reservation) {
-            throw new LogicException('Cannot edit a null reservation');
+        if (null === $object) {
+            return array();
         }
 
-        parent::init();
+        return $this->stdExtract($object, self::$std_keys);
+    }
 
-        $this->remove('submit')
-            ->addSubmit('Save', 'reservation_edit');
+    protected function doHydrate(array $data, $object = null)
+    {
+        if (null === $object) {
+            $object = new ItemEntity();
+        }
+
+        return $this->stdHydrate($data, $object, self::$std_keys);
     }
 }

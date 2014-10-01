@@ -21,8 +21,6 @@ namespace LogisticsBundle\Controller\Admin;
 use DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
-    LogisticsBundle\Form\Admin\PianoReservation\Add as AddForm,
-    LogisticsBundle\Form\Admin\PianoReservation\Edit as EditForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -64,38 +62,13 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('logistics_piano-reservation_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $player = ('' == $formData['player_id'])
-                    ? $repository->findOneByUsername($formData['player']) : $repository->findOneById($formData['player_id']);
-
-                $piano = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                    ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
-
-                $reservation = new PianoReservation(
-                    $startDate,
-                    $endDate,
-                    $piano,
-                    $formData['additional_info'],
-                    $this->getAuthentication()->getPersonObject(),
-                    $player
-                );
-
-                $reservation->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
+            if ($form->isValid()) {
+                $reservation = $form->hydrateObject();
 
                 if ($reservation->isConfirmed()) {
                     $mailData = unserialize(
@@ -186,30 +159,12 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $reservation);
+        $form = $this->getForm('logistics_piano-reservation_edit', array('reservation' => $reservation));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $player = ('' == $formData['player_id'])
-                    ? $repository->findOneByUsername($formData['player']) : $repository->findOneById($formData['player_id']);
-
-                $reservation->setStartDate($startDate)
-                    ->setEndDate($endDate)
-                    ->setAdditionalInfo($formData['additional_info'])
-                    ->setPlayer($player)
-                    ->setConfirmed(isset($formData['confirmed']) && $formData['confirmed']);
-
+            if ($form->isValid()) {
                 if ($reservation->isConfirmed()) {
                     $mailData = unserialize(
                         $this->getEntityManager()
