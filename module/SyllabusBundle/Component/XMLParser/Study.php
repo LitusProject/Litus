@@ -21,7 +21,6 @@ namespace SyllabusBundle\Component\XMLParser;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateTime,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,

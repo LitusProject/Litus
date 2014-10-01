@@ -22,7 +22,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
     Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilter;

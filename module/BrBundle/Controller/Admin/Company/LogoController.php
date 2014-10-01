@@ -20,7 +20,6 @@ namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Logo,
     BrBundle\Form\Admin\Company\Logo\Add as AddForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileTransfer,
     Zend\InputFilter\InputInterface,

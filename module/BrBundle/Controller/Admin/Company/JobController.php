@@ -21,7 +21,6 @@ namespace BrBundle\Controller\Admin\Company;
 use BrBundle\Entity\Company\Job,
     BrBundle\Form\Admin\Company\Job\Add as AddForm,
     BrBundle\Form\Admin\Company\Job\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
