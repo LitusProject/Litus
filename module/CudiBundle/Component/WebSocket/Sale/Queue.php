@@ -111,6 +111,10 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
         $identification = $item->getPerson()->getUniversityIdentification() ? $item->getPerson()->getUniversityIdentification() : $item->getPerson()->getUserName();
 
         $result = (object) array();
@@ -120,8 +124,9 @@ class Queue
         $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
         $result->university_identification = $identification;
         $result->status = $item->getStatus();
-        $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() :*/ false;
+        $result->locked = false;
         $result->collectPrinted = $item->getCollectPrinted();
+        $result->displayScanButton = $item->getCollectPrinted() && $enableCollectScanning;
 
         if ($item->getPayDesk()) {
             $result->payDesk = $item->getPayDesk()->getName();
@@ -252,9 +257,7 @@ class Queue
             ->findOneById($id);
 
         $item->setStatus('collecting');
-        if ($bulk) {
-            $item->setCollectPrinted(true);
-        }
+        $item->setCollectPrinted(true);
 
         $this->_entityManager->flush();
 
@@ -592,6 +595,10 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
+        $enableCollectScanning = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_collect_scanning');
+
         $results = array();
         foreach ($items as $item) {
             $result = (object) array();
@@ -601,8 +608,9 @@ class Queue
             $result->name = $item->getPerson() ? $item->getPerson()->getFullName() : '';
             $result->university_identification = $item->getPerson()->getUniversityIdentification();
             $result->status = $item->getStatus();
-            $result->locked = /*isset($this->_queueItems[$item->getId()]) ? $this->_queueItems[$item->getId()]->isLocked() : */false;
+            $result->locked = false;
             $result->collectPrinted = $item->getCollectPrinted();
+            $result->displayScanButton = $item->getCollectPrinted() && $enableCollectScanning;
 
             if ($item->getPayDesk()) {
                 $result->payDesk = $item->getPayDesk()->getName();

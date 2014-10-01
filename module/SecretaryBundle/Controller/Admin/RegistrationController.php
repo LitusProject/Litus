@@ -599,7 +599,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         switch ($type) {
             case 'ean12':
                 $validator = new Ean12Validator();
-                if (!$validator->isValid($barcode)) {
+                if (!$validator->hasValidChecksum($barcode)) {
                     throw new \InvalidArgumentException('The given barcode was not a valid EAN-12 code');
                 }
 
