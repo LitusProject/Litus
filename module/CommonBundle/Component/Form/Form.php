@@ -172,39 +172,29 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         return $this->getHydrator()->hydrate($this->getData(), $object);
     }
 
-    /**
-     * Validate the form
-     *
-     * Typically, will proxy to the composed input filter.
-     *
-     * @return bool
-     * @throws Zend\Form\Exception\DomainException
-     */
-    public function isValid()
+    private function injectSelfInValidators(array $specification)
     {
-        $this->injectSelfInValidators($this);
+        if (!array_key_exists('type', $specification)
+                || !is_string($specification['type'])
+                || $specification['type'] !== 'inputfilter') {
+            // not an InputFilter specification, probably an Input specification
 
-        return parent::isValid();
-    }
-
-    private function injectSelfInValidators(FieldsetInterface $fieldset)
-    {
-        foreach ($fieldset->getElements() as $element) {
-            if (!$element instanceof InputProviderInterface) {
-                continue;
-            }
-            $spec = $element->getInputSpecification();
-
-            if (isset($spec['validators'])) {
-                foreach ($spec['validators'] as $validator) {
+            if (array_key_exists('validators', $specification) && is_array($specification['validators'])) {
+                foreach ($specification['validators'] as $validator) {
                     if ($validator instanceof FormAwareInterface) {
                         $validator->setForm($this);
                     }
                 }
             }
+
+            return;
         }
 
-        foreach ($fieldset->getFieldsets() as $child) {
+        foreach ($specification as $child) {
+            if (!is_array($child)) {
+                continue;
+            }
+
             $this->injectSelfInValidators($child);
         }
     }
@@ -212,8 +202,12 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getInputFilter()
     {
         if (!isset($this->filter)) {
+            $specification = $this->getInputFilterSpecification();
+
+            $this->injectSelfInValidators($specification);
+
             $this->filter = $this->getInputFilterFactory()
-                ->createInputFilter($this->getInputFilterSpecification());
+                ->createInputFilter($specification);
         }
 
         return $this->filter;
