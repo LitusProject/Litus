@@ -110,6 +110,8 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     {
         $element->init();
         $this->getFormFactory()->configureFieldset($element, array());
+
+        $element->setFormFactory($this->getFormFactory());
     }
 
     /**
