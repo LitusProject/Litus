@@ -28,7 +28,6 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
     Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilter;

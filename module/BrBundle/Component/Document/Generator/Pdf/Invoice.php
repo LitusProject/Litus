@@ -18,8 +18,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Contract,
-    BrBundle\Entity\Invoice as InvoiceEntity,
+use BrBundle\Entity\Invoice as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
