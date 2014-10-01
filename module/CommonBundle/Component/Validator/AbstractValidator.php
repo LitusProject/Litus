@@ -18,36 +18,56 @@
 
 namespace CommonBundle\Component\Validator;
 
+use Zend\Form\ElementInterface;
+
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
 abstract class AbstractValidator extends \Zend\Validator\AbstractValidator
 {
     /**
-     * @param  array|null   $context
-     * @param  string|array $path
+     * @param  array|ElementInterface|null $context
+     * @param  string|array                $path
      * @return mixed|false
      */
     protected static function getFormValue($context = null, $path)
     {
-        if (null === $context || !is_array($context)) {
+        if (null === $context || !(is_array($context) || $context instanceof ElementInterface)) {
             return null;
         }
-
         if (is_array($path)) {
-            if (empty($path) || !array_key_exists($path[0], $context)) {
-                return null;
+            if (empty($path)) {
+                return $context instanceof ElementInterface
+                    ? $context->getValue()
+                    : $context;
             }
 
             $step = array_shift($path);
 
-            return self::getFormValue($context[$step], $path);
+            return self::getFormValue(self::takeStep($context, $step), $path);
         } else {
-            if (!array_key_exists($path, $context)) {
+            $context = self::takeStep($context, $path);
+
+            return $context instanceof ElementInterface
+                ? $context->getValue()
+                : $context;
+        }
+    }
+
+    private static function takeStep($context, $step)
+    {
+        if ($context instanceof ElementInterface) {
+            if (!$context->has($step)) {
                 return null;
             }
 
-            return $context[$path];
+            return $context->get($step);
         }
+
+        if (!array_key_exists($step, $context)) {
+            return null;
+        }
+
+        return $context[$step];
     }
 }
