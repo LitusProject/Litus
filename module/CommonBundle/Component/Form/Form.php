@@ -208,4 +208,14 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             $this->injectSelfInValidators($child);
         }
     }
+
+    public function getInputFilter()
+    {
+        if (!isset($this->filter)) {
+            $this->filter = $this->getInputFilterFactory()
+                ->createInputFilter($this->getInputFilterSpecification());
+        }
+
+        return $this->filter;
+    }
 }
