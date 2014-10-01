@@ -252,4 +252,11 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     {
         return DateTime::createFromFormat('H#i', $date) ?: null;
     }
+
+    protected function getLanguages()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+    }
 }

@@ -22,8 +22,6 @@ use DateTime,
     GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Photo,
     GalleryBundle\Entity\Album\Translation,
-    GalleryBundle\Form\Admin\Album\Add as AddForm,
-    GalleryBundle\Form\Admin\Album\Edit as EditForm,
     Imagick,
     ImagickPixel,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -59,31 +57,17 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('gallery_album_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $date = self::_loadDate($formData['date']);
+            if ($form->isValid()) {
+                var_dump($form->getData());
+                die();
+                $album = $form->hydrateObject();
 
-            if ($form->isValid() && $date) {
-                $formData = $form->getFormData($formData);
-
-                $album = new Album($this->getAuthentication()->getPersonObject(), $date, $formData['watermark']);
                 $this->getEntityManager()->persist($album);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()]) {
-                        $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -116,35 +100,12 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $album);
+        $form = $this->getForm('gallery_album_edit', array('album' => $album));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $date = self::_loadDate($formData['date']);
-
-            if ($form->isValid() && $date) {
-                $formData = $form->getFormData($formData);
-
-                $album->setDate($date)
-                    ->setWatermark($formData['watermark']);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $album->getTranslation($language);
-
-                    if ($translation) {
-                        $translation->setTitle($formData['title_' . $language->getAbbrev()]);
-                    } else {
-                        $translation = new Translation($album, $language, $formData['title_' . $language->getAbbrev()]);
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

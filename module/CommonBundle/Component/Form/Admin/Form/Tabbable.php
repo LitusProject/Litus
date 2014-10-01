@@ -164,6 +164,9 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
 
+    /**
+     * @return Language[]
+     */
     protected function getLanguages()
     {
         return $this->getEntityManager()

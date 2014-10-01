@@ -19,6 +19,7 @@
 namespace GalleryBundle\Component\Validator;
 
 use CommonBundle\Component\Util\Url,
+    DateTime,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Entity\Album\Album;
 
@@ -73,7 +74,7 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $date = \DateTime::createFromFormat('d#m#Y', $context['date']);
+        $date = DateTime::createFromFormat('d#m#Y', $context['date']);
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);

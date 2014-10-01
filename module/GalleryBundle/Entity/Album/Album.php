@@ -66,7 +66,7 @@ class Album
     /**
      * @var array The translations of this album
      *
-     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"persist", "remove"})
      */
     private $translations;
 
@@ -87,7 +87,7 @@ class Album
     /**
      * @var array The photos of this album
      *
-     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id": "ASC"})
      */
     private $photos;
@@ -97,13 +97,10 @@ class Album
      * @param DateTime $date
      * @param boolean  $watermark
      */
-    public function __construct(Person $person, DateTime $date, $watermark = true)
+    public function __construct(Person $person)
     {
         $this->createTime = new DateTime();
         $this->createPerson = $person;
-        $this->dateActivity = $date;
-        $this->name = $date->format('d_m_Y_H_i');
-        $this->watermark = $watermark;
     }
 
     /**
@@ -138,6 +135,10 @@ class Album
     {
         $this->dateActivity = $date;
 
+        if (null === $this->name) {
+            $this->name = $date->format('d_m_Y_H_i');
+        }
+
         return $this;
     }
 
@@ -147,6 +148,33 @@ class Album
     public function getDate()
     {
         return $this->dateActivity;
+    }
+
+    /**
+     * @param  Translation $translation
+     * @return self
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $existing = $this->getTranslation($translation->getLanguage(), false);
+        if (null !== $existing) {
+            $this->removeTranslation($existing);
+        }
+
+        $this->translations->add($translation);
+
+        return $this;
+    }
+
+    /**
+     * @param  Translation $translation
+     * @return self
+     */
+    public function removeTranslation(Translation $translation)
+    {
+        $this->translations->remove($translation);
+
+        return $this;
     }
 
     /**

@@ -18,32 +18,22 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    Doctrine\ORM\EntityManager,
-    GalleryBundle\Entity\Album\Album;
+use LogicException;
 
 /**
  * Edit an album.
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Album $album, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->album) {
+            throw new LogicException('Cannot edit a null album');
+        }
 
-        $this->album = $album;
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'gallery_edit');
-        $this->add($field);
-
-        $this->populateFromAlbum($album);
+        $this->remove('submit')
+            ->addSubmit('Save', 'gallery_edit');
     }
 }
