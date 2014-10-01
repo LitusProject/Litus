@@ -21,7 +21,7 @@ namespace CommonBundle\Component\Validator;
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class AbstractValidator extends \Zend\Validator\AbstractValidator
+abstract class AbstractValidator extends \Zend\Validator\AbstractValidator
 {
     /**
      * @param  array|null   $context
