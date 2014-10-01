@@ -20,7 +20,7 @@ namespace LogisticsBundle\Hydrator\Lease;
 
 use LogicException\Entity\Lease\Item as ItemEntity;
 
-class Entity extends \CommonBundle\Component\Hydrator\Hydrator
+class Item extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array('name', 'barcode', 'additional_info');
 
