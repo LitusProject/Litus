@@ -106,8 +106,9 @@ class ContractEntry
      */
     private function _setVersion($versionNmbr)
     {
-        if($versionNmbr < 0)
+        if ($versionNmbr < 0) {
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+        }
 
         $this->version = $versionNmbr;
     }
@@ -172,8 +173,9 @@ class ContractEntry
      */
     public function setPosition($position)
     {
-        if ($position < 0)
+        if ($position < 0) {
             throw new \InvalidArgumentException("Position must be a positive number");
+        }
 
         $this->position = round($position);
 

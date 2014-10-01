@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Group as GroupEntity;
 
 /**
@@ -65,8 +65,9 @@ class Group extends EntityRepository
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $ids = array(0);
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $ids[] = $study->getStudy()->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select($query->expr()->count('e'))
@@ -81,8 +82,9 @@ class Group extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($resultSet)
+        if ($resultSet) {
             return $resultSet;
+        }
 
         return 0;
     }

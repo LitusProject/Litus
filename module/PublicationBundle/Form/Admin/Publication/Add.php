@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
     PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
     PublicationBundle\Entity\Publication,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Publication
@@ -73,7 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager)
+                        new TitleValidator($this->_entityManager),
                     ),
                 )
             )

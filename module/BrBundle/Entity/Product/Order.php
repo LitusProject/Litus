@@ -18,14 +18,14 @@
 
 namespace BrBundle\Entity\Product;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Collaborator,
+use BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Company,
     BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * An order of several products.
@@ -278,8 +278,9 @@ class Order
     {
         $cost = 0;
         if ($this->taxFree) {
-            foreach ($this->orderEntries as $orderEntry)
+            foreach ($this->orderEntries as $orderEntry) {
                 $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+            }
         } else {
             foreach ($this->orderEntries as $orderEntry) {
                 $orderEntry->getProduct()->setEntityManager($this->_entityManager);

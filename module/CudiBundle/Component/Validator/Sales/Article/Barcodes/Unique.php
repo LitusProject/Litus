@@ -46,7 +46,7 @@ class Unique extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The article barcode already exists'
+        self::NOT_VALID => 'The article barcode already exists',
     );
 
     /**
@@ -63,7 +63,6 @@ class Unique extends \Zend\Validator\AbstractValidator
         $this->_entityManager = $entityManager;
         $this->_saleArticle = $saleArticle;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -87,8 +86,9 @@ class Unique extends \Zend\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || $barcode->getArticle() == $this->_saleArticle)
+        if (null === $barcode || $barcode->getArticle() == $this->_saleArticle) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

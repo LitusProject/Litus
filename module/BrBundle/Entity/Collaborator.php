@@ -118,5 +118,4 @@ class Collaborator
     {
         return $this->active;
     }
-
 }

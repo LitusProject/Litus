@@ -44,7 +44,7 @@ abstract class Barcode
      */
     public static $possibleTypes = array(
         'ean12' => 'EAN-12',
-        'qr'    => 'QR'
+        'qr'    => 'QR',
     );
 
     /**
@@ -109,10 +109,12 @@ abstract class Barcode
      */
     public function getType()
     {
-        if ($this instanceof Ean12)
+        if ($this instanceof Ean12) {
             return 'ean12';
+        }
 
-        if ($this instanceof QR)
+        if ($this instanceof QR) {
             return 'qr';
+        }
     }
 }

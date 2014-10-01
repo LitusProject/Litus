@@ -70,8 +70,9 @@ class Articles
                 $entityManager->persist($booking);
             }
 
-            if (isset($options['payed']) && $options['payed'])
+            if (isset($options['payed']) && $options['payed']) {
                 $booking->setStatus('sold', $entityManager);
+            }
         }
 
         $enableAssignment = $entityManager
@@ -99,8 +100,9 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking)
+            if (null !== $booking) {
                 continue;
+            }
 
             $booking = new Booking(
                 $entityManager,
@@ -151,8 +153,9 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking)
+            if (null !== $booking) {
                 $booking->setStatus('canceled', $entityManager);
+            }
         }
 
         $registrationArticles = unserialize(
@@ -172,8 +175,9 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking)
-                    $booking->setStatus('canceled', $entityManager);
+            if (null !== $booking) {
+                $booking->setStatus('canceled', $entityManager);
+            }
         }
     }
 }

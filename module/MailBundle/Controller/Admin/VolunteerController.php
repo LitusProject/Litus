@@ -20,9 +20,9 @@ namespace MailBundle\Controller\Admin;
 
 use MailBundle\Form\Admin\Volunteer\Mail as MailForm,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -90,8 +90,9 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -101,7 +102,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 $this->redirect()->toRoute(
                     'mail_admin_volunteer',
                     array(
-                        'action' => 'send'
+                        'action' => 'send',
                     )
                 );
 

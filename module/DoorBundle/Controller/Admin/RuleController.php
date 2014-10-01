@@ -93,7 +93,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'door_admin_rule',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -110,8 +110,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->_getRule()))
+        if (!($rule = $this->_getRule())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getDocumentManager(), $rule);
 
@@ -148,7 +149,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'door_admin_rule',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -177,7 +178,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'entityManager' => $this->getEntityManager()
+                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -186,8 +187,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->_getRule()))
+        if (!($rule = $this->_getRule())) {
             return new ViewModel();
+        }
 
         $this->getDocumentManager()->remove($rule);
 
@@ -214,7 +216,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'door_admin_rule',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -234,7 +236,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'door_admin_rule',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -249,8 +251,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         if (null !== $this->getCache()) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
                 $now = new DateTime();
-                if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now)
+                if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now) {
                     return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
+                }
             }
 
             $this->getCache()->setItem(
@@ -272,7 +275,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
             'labels' => array(),
-            'dataset' => array()
+            'dataset' => array(),
         );
 
         $data = array();
@@ -287,8 +290,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('DoorBundle\Document\Log')
             ->findAllSince($today->sub(new DateInterval('P6D')));
 
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $data[$entry->getTimestamp()->format('d/m/Y')]++;
+        }
 
         foreach (array_reverse($data) as $label => $value) {
             $logGraphData['labels'][] = $label;

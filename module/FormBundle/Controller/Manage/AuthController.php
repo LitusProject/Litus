@@ -18,8 +18,8 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 

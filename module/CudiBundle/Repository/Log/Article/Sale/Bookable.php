@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Log\Article\Sale;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Bookable

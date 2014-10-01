@@ -58,8 +58,9 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
         $nbPayDesks = sizeof($payDesks);
         for ($i = 0; $i < $nbPayDesks; $i++) {
-            if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0)
+            if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0) {
                 unset($payDesks[$i]);
+            }
         }
 
         return new ViewModel(

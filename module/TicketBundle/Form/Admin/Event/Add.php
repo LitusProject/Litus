@@ -18,19 +18,19 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Add Event
@@ -193,10 +193,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($events as $event)
+        foreach ($events as $event) {
             $eventsArray[$event->getId()] = $event->getTitle();
+        }
 
         return $eventsArray;
     }
@@ -230,7 +231,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                     new DateCompareValidator('now', 'd/m/Y H:i'),
                     new DateValidator($this->_entityManager, 'd/m/Y H:i'),
                 ),
-            )
+            ),
         );
 
         if (isset($this->data['generate_tickets']) && $this->data['generate_tickets']) {
@@ -246,8 +247,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                         'name' => 'greaterthan',
                         'options' => array(
                             'min' => 0,
-                        )
-                    )
+                        ),
+                    ),
                 ),
             );
         } else {
@@ -288,7 +289,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             );
 
@@ -299,7 +300,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             );
         }

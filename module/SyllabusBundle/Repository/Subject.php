@@ -18,10 +18,10 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\User\Person,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CommonBundle\Entity\User\Person;
 
 /**
  * Subject
@@ -53,8 +53,9 @@ class Subject extends EntityRepository
             ->getResult();
 
         $subjects = array();
-        foreach($resultSet as $map)
+        foreach ($resultSet as $map) {
             $subjects[$map->getSubject()->getId()] = $map->getSubject();
+        }
 
         return $subjects;
     }
@@ -70,10 +71,11 @@ class Subject extends EntityRepository
 
         foreach ($studies as $studyMap) {
             $year = $studyMap->getStudy()->getPhase();
-            if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false)
+            if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false) {
                 $years[$year+3] = $year+3;
-            elseif (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'bachelor') !== false)
+            } elseif (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'bachelor') !== false) {
                 $years[$year] = $year;
+            }
         }
 
         return $years;

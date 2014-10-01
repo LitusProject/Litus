@@ -98,8 +98,10 @@ class String extends Field
      */
     public function getLines()
     {
-        if (!$this->isMultiLine())
+        if (!$this->isMultiLine()) {
             return 1;
+        }
+
         return $this->lines;
     }
 

@@ -21,9 +21,9 @@ namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add External

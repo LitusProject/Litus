@@ -56,8 +56,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);
 
-                if ('development' != getenv('APPLICATION_ENV'))
+                if ('development' != getenv('APPLICATION_ENV')) {
                     $this->getMailTransport()->send($mail);
+                }
 
                 return new ViewModel(
                     array(
@@ -70,8 +71,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
                     foreach ($errors[$element->getName()] as $errorKey => $error) {
@@ -83,7 +85,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors
+                            'errors' => $formErrors,
                         ),
                     )
                 );
@@ -92,7 +94,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "error")
+                'result' => (object) array("status" => "error"),
             )
         );
     }

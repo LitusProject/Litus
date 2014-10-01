@@ -46,7 +46,7 @@ class Exists extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The discount already exist!'
+        self::NOT_VALID => 'The discount already exist!',
     );
 
     /**
@@ -63,7 +63,6 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->_article = $article;
         $this->_entityManager = $entityManager;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -89,8 +88,9 @@ class Exists extends \Zend\Validator\AbstractValidator
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
             ->findOneByArticleAndTypeAndOrganization($this->_article, $value, $organization);
 
-        if (null === $discount)
+        if (null === $discount) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

@@ -125,8 +125,9 @@ class Order
     public function getTotalNumber()
     {
         $number = 0;
-        foreach($this->items as $item)
+        foreach ($this->items as $item) {
             $number += $item->getNumber();
+        }
 
         return $number;
     }
@@ -139,8 +140,9 @@ class Order
     public function getPrice()
     {
         $price = 0;
-        foreach($this->items as $item)
+        foreach ($this->items as $item) {
             $price += $item->getPrice();
+        }
 
         return $price;
     }

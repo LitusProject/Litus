@@ -23,8 +23,8 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Node\Group,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Group

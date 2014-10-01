@@ -18,13 +18,13 @@
 
 namespace MailBundle\Form\Admin\Volunteer;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -33,7 +33,6 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
-
     /**
      * @var EntityManager The EntityManager instance
      */
@@ -89,10 +88,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         );
 
         $ranks = array(
-            'none' => 'None'
+            'none' => 'None',
         );
-        foreach ($rankingCriteria as $key => $criterium)
+        foreach ($rankingCriteria as $key => $criterium) {
             $ranks[$key] = ucfirst($criterium['name']);
+        }
 
         return $ranks;
     }
@@ -113,7 +113,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'emailAddress',
-                        )
+                        ),
                     ),
                 )
             )

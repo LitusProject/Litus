@@ -27,9 +27,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Discount
@@ -155,8 +155,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
             ->findAll();
         $templateOptions = array(0 => 'none');
-        foreach($templates as $template)
+        foreach ($templates as $template) {
             $templateOptions[$template->getId()] = $template->getName();
+        }
 
         return $templateOptions;
     }
@@ -168,8 +169,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $organizationsOptions = array(0 => 'All');
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationsOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationsOptions;
     }
@@ -177,8 +179,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getRoundings()
     {
         $roundings = array();
-        foreach(Discount::$POSSIBLE_ROUNDINGS as $key => $rounding)
+        foreach (Discount::$POSSIBLE_ROUNDINGS as $key => $rounding) {
             $roundings[$key] = $rounding['name'];
+        }
 
         return $roundings;
     }

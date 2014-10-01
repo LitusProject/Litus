@@ -33,8 +33,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return $this->notFoundAction();
+        }
 
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
@@ -102,13 +103,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()))
+        if (!($ticket = $this->_getTicket())) {
             return $this->notFoundAction();
+        }
 
-        if ($ticket->getEvent()->areTicketsGenerated())
+        if ($ticket->getEvent()->areTicketsGenerated()) {
             $ticket->setStatus('empty');
-        else
+        } else {
             $this->getEntityManager()->remove($ticket);
+        }
 
         $this->getEntityManager()->flush();
 
@@ -124,15 +127,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function _getEvent()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('id')) {
             return;
+        }
 
         $event = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null === $event || !$event->isActive())
+        if (null === $event || !$event->isActive()) {
             return;
+        }
 
         return $event;
     }
@@ -142,15 +147,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function _getTicket()
     {
-        if (null === $this->getParam('id'))
+        if (null === $this->getParam('id')) {
             return;
+        }
 
         $ticket = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneById($this->getParam('id'));
 
-        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject())
+        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
             return;
+        }
 
         return $ticket;
     }

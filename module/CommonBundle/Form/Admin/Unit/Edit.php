@@ -63,7 +63,7 @@ class Edit extends Add
             'parent' => null === $unit->getParent() ? '' : $unit->getParent()->getId(),
             'roles' => $this->_createRolesPopulationArray($unit->getRoles(false)),
             'coordinatorRoles' => $this->_createRolesPopulationArray($unit->getCoordinatorRoles(false)),
-            'displayed' => $unit->getDisplayed()
+            'displayed' => $unit->getDisplayed(),
         );
 
         $this->setData($data);
@@ -73,8 +73,9 @@ class Edit extends Add
     {
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[] = $role->getName();
         }

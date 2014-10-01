@@ -22,17 +22,17 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Form\Admin\Address\AddPrimary as PrimaryAddressForm,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
+    CommonBundle\Form\Admin\Address\Add as AddressForm,
+    CommonBundle\Form\Admin\Address\AddPrimary as PrimaryAddressForm,
     Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Academic
@@ -93,7 +93,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                 'options',
                 array_merge(
                     array(
-                        '' => ''
+                        '' => '',
                     ),
                     OrganizationStatus::$possibleStatuses
                 )
@@ -123,7 +123,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                 'options',
                 array_merge(
                     array(
-                        '' => ''
+                        '' => '',
                     ),
                     UniversityStatus::$possibleStatuses
                 )
@@ -160,8 +160,9 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
     {
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail)
+        if ($universityEmail) {
             $universityEmail = explode('@', $universityEmail)[0];
+        }
 
         $data = array(
             'birthday' => $academic->getBirthday() ? $academic->getBirthday()->format('d/m/Y') : '',
@@ -191,7 +192,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             } else {
+            } else {
                 $data['primary_address_address_city'] = 'other';
                 $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
                 $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
@@ -210,14 +211,16 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
         if ($this->has('secondary_address')) {
             $inputs = $this->_secondaryAddressForm->getInputs();
-            foreach($inputs as $input)
+            foreach ($inputs as $input) {
                 $inputFilter->add($input);
+            }
         }
 
         if ($this->has('primary_address')) {
-            $inputs =$this->_primaryAddressForm->getInputs();
-            foreach($inputs as $input)
+            $inputs = $this->_primaryAddressForm->getInputs();
+            foreach ($inputs as $input) {
                 $inputFilter->add($input);
+            }
         }
 
         $factory = new InputFactory();
@@ -289,7 +292,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum'
+                            'name' => 'alnum',
                         ),
                     ),
                 )

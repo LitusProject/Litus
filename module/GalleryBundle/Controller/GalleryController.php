@@ -37,8 +37,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $sorted = array();
         foreach ($albums as $album) {
-            if (sizeof($album->getPhotos()) == 0)
+            if (sizeof($album->getPhotos()) == 0) {
                 continue;
+            }
 
             $date = $album->getDate();
             $date->add(new DateInterval('P1W'));
@@ -85,8 +86,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $albums = array();
         foreach ($albumsFound as $album) {
-            if (sizeof($album->getPhotos()) >= 0)
+            if (sizeof($album->getPhotos()) >= 0) {
                 $albums[] = $album;
+            }
         }
 
         $filePath = $this->getEntityManager()
@@ -104,8 +106,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->_getAlbumByName()))
+        if (!($album = $this->_getAlbumByName())) {
             return $this->notFoundAction();
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -114,8 +117,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         $allowCensor = false;
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->getPersonObject()->isPraesidium($this->getCurrentAcademicYear())
-                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor'))
+                && $this->hasAccess()->toResourceAction('gallery', 'censor') && $this->hasAccess()->toResourceAction('gallery', 'uncensor')) {
                 $allowCensor = true;
+            }
         }
 
         return new ViewModel(
@@ -133,8 +137,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto()))
+        if (!($photo = $this->_getPhoto())) {
             return $this->notFoundAction();
+        }
 
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
@@ -142,7 +147,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -154,8 +159,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto()))
+        if (!($photo = $this->_getPhoto())) {
             return $this->notFoundAction();
+        }
 
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
@@ -163,7 +169,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );

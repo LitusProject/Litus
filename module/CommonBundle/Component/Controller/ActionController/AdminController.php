@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Component\Util\NamedPriorityQueue,
+use CommonBundle\Component\Util\NamedPriorityQueue,
+    CommonBundle\Entity\General\Language,
     Zend\Mvc\MvcEvent,
     Zend\Validator\AbstractValidator;
 
@@ -44,7 +44,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         $result->language = $this->getLanguage();
         $result->now = array(
             'iso8601' => date('c', time()),
-            'display' => date('l, F j Y, H:i', time())
+            'display' => date('l, F j Y, H:i', time()),
         );
 
         if ($this->hasAccess()->toResourceAction('cudi_admin_stock_period', 'new')) {
@@ -60,8 +60,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $result->servedBy = null;
-        if (false !== getenv('SERVED_BY'))
+        if (false !== getenv('SERVED_BY')) {
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
+        }
 
         $result->menu = $this->_getMenu();
 
@@ -92,8 +93,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language)
+        if (null !== $this->_language) {
             return $this->_language;
+        }
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -126,7 +128,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'controller'     => 'common_auth',
 
             'auth_route'     => 'common_admin_auth',
-            'redirect_route' => 'common_admin_index'
+            'redirect_route' => 'common_admin_index',
         );
     }
 
@@ -142,16 +144,19 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
     private function _addToMenu($controller, $settings, &$menu)
     {
-        if (!is_array($settings))
+        if (!is_array($settings)) {
             $settings = array('title' => $settings);
-        if (!array_key_exists('action', $settings))
+        }
+        if (!array_key_exists('action', $settings)) {
             $settings['action'] = 'manage';
+        }
         $settings['controller'] = $controller;
 
-        if (array_key_exists('priority', $settings))
+        if (array_key_exists('priority', $settings)) {
             $priority = array($settings['priority'], $settings['title']);
-        else
+        } else {
             $priority = $settings['title'];
+        }
 
         if ($this->hasAccess()->toResourceAction($controller, $settings['action'])) {
             $menu->insert($settings, $priority);
@@ -198,8 +203,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             foreach ($submenu['items'] as $controller => $settings) {
                 $this->_addToMenu($controller, $settings, $newSubmenuItems);
 
-                if ($currentController === $controller)
+                if ($currentController === $controller) {
                     $active = true;
+                }
             }
 
             if (!$active && array_key_exists('controllers', $submenu)) {
@@ -214,8 +220,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu['active'] = $active;
             $newSubmenu['items']  = $newSubmenuItems->toArray();
 
-            if (count($newSubmenu['items']))
+            if (count($newSubmenu['items'])) {
                 $submenus[$name] = $newSubmenu;
+            }
         }
 
         uksort($submenus, 'strnatcmp');

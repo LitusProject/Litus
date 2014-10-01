@@ -22,5 +22,6 @@ pg_query($connection, 'ALTER TABLE users.barcodes ADD inheritance_type VARCHAR(2
 pg_query($connection, 'UPDATE users.barcodes SET inheritance_type = \'ean12\'');
 
 $result = pg_query($connection, 'SELECT id, barcode FROM users.barcodes');
-while ($row = pg_fetch_assoc($result))
+while ($row = pg_fetch_assoc($result)) {
     pg_query('INSERT INTO users.barcodes_ean12 (id, barcode) VALUES (\'' . $row['id'] . '\', \'' . $row['barcode'] . '\')');
+}

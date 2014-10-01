@@ -128,15 +128,18 @@ class Link
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language) {
                 return $translation;
+            }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
                 $fallbackTranslation = $translation;
+            }
         }
 
-        if ($allowFallback && isset($fallbackTranslation))
+        if ($allowFallback && isset($fallbackTranslation)) {
             return $fallbackTranslation;
+        }
 
         return null;
     }
@@ -150,8 +153,9 @@ class Link
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getName();
+        }
 
         return '';
     }
@@ -165,8 +169,9 @@ class Link
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getUrl();
+        }
 
         return '';
     }

@@ -18,8 +18,8 @@
 
 namespace SecretaryBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Promotion
@@ -91,11 +91,13 @@ class Promotion extends EntityRepository
             ->getResult();
 
         $resultSet = array();
-        foreach($resultSetAcademic as $academic)
+        foreach ($resultSetAcademic as $academic) {
             $resultSet[$academic->getId()] = $academic;
+        }
 
-        foreach($resultSetExternal as $external)
+        foreach ($resultSetExternal as $external) {
             $resultSet[$external->getId()] = $external;
+        }
 
         ksort($resultSet);
 
@@ -134,11 +136,13 @@ class Promotion extends EntityRepository
             ->getResult();
 
         $resultSet = array();
-        foreach($resultSetAcademic as $academic)
+        foreach ($resultSetAcademic as $academic) {
             $resultSet[$academic->getId()] = $academic;
+        }
 
-        foreach($resultSetExternal as $external)
+        foreach ($resultSetExternal as $external) {
             $resultSet[$external->getId()] = $external;
+        }
 
         ksort($resultSet);
 

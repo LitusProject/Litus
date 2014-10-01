@@ -71,7 +71,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
+                        if ('student' == $role) {
+                            continue;
+                        }
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -96,7 +98,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'api_admin_key',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -113,8 +115,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->_getKey()))
+        if (!($key = $this->_getKey())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $key);
 
@@ -132,7 +135,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
+                        if ('student' == $role) {
+                            continue;
+                        }
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -153,7 +158,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'api_admin_key',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -172,8 +177,9 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey()))
+        if (!($key = $this->_getKey())) {
             return new ViewModel();
+        }
 
         $key->revoke();
 
@@ -182,7 +188,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -202,7 +208,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'api_admin_key',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -222,7 +228,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'api_admin_key',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

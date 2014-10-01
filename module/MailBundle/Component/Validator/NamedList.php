@@ -44,7 +44,7 @@ class NamedList extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'A list with this name already exists'
+        self::NOT_VALID => 'A list with this name already exists',
     );
 
     /**
@@ -75,8 +75,9 @@ class NamedList extends \Zend\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneByName($value);
 
-        if (null === $list || ($this->_list && $list == $this->_list))
+        if (null === $list || ($this->_list && $list == $this->_list)) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

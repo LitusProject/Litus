@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Repository\Organization;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic;
 
 /**
  * MetaData

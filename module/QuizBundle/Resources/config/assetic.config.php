@@ -47,7 +47,7 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@quiz_css',
-        )
+        ),
     ),
 
     'collections' => array(

@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
 
         $this->populateValues(
             array(
-                $prefix . 'address_country' => 'BE'
+                $prefix . 'address_country' => 'BE',
             )
         );
     }

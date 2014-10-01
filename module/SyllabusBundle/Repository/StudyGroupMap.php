@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Group as GroupEntity,
     SyllabusBundle\Entity\Study as StudyEntity;
 

@@ -47,8 +47,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $form)
+        foreach ($paginator as $form) {
             $form->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -67,8 +68,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        foreach($paginator as $form)
+        foreach ($paginator as $form) {
             $form->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -97,10 +99,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
                 $formData = $form->getFormData($formData);
 
-                if ($formData['max'] == '')
+                if ($formData['max'] == '') {
                     $max = 0;
-                else
+                } else {
                     $max = $formData['max'];
+                }
 
                 if ($formData['type'] == 'doodle') {
                     $form = new Doodle(
@@ -208,8 +211,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         $formSpecification->setEntityManager($this->getEntityManager());
 
@@ -254,10 +258,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     ->findOneByForm($formSpecification);
 
                 if (null === $group) {
-                    if ($formData['max'] == '')
+                    if ($formData['max'] == '') {
                         $max = 0;
-                    else
+                    } else {
                         $max = $formData['max'];
+                    }
 
                     $formSpecification->setStartDate($startDate)
                         ->setEndDate($endDate)
@@ -400,8 +405,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($form = $this->_getForm()))
+        if (!($form = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$form->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -423,22 +429,25 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Field')
             ->findAllByForm($form);
 
-        foreach ($fields as $field)
+        foreach ($fields as $field) {
             $this->_deleteField($field);
+        }
 
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
 
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $this->getEntityManager()->remove($entry);
+        }
 
         $viewers = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findAllByForm($form);
 
-        foreach ($viewers as $viewer)
+        foreach ($viewers as $viewer) {
             $this->getEntityManager()->remove($viewer);
+        }
 
         $this->getEntityManager()->remove($form);
 
@@ -447,7 +456,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -459,8 +468,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);
 
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $this->getEntityManager()->remove($entry);
+        }
 
         $this->getEntityManager()->remove($field);
     }
@@ -476,7 +486,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -496,7 +506,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

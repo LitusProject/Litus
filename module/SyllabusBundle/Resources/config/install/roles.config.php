@@ -29,7 +29,7 @@ return array(
         'system' => true,
         'actions' => array(
             'syllabus_subject' => array(
-                'typeahead'
+                'typeahead',
             ),
         ),
     ),

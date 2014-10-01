@@ -48,8 +48,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         $this->setAttribute('method', 'post')
             ->setAttribute('novalidate', true);
 
-        if ($horizontal)
+        if ($horizontal) {
             $this->setAttribute('class', 'form-horizontal');
+        }
 
         $this->add(
             new Csrf('csrf')
@@ -128,8 +129,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getFormData($formData)
     {
         foreach ($this->getData() as $key => $value) {
-            if (null !== $value)
+            if (null !== $value) {
                 $formData->{$key} = $value;
+            }
         }
 
         return $formData;

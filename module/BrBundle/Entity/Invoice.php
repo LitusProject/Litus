@@ -159,8 +159,10 @@ class Invoice
      */
     public function isPayed()
     {
-        if (null === $this->paidTime)
+        if (null === $this->paidTime) {
             return false;
+        }
+
         return true;
     }
 
@@ -171,8 +173,9 @@ class Invoice
      */
     public function setPayed()
     {
-        if ($this->isPayed())
+        if ($this->isPayed()) {
             throw new \InvalidArgumentException('This invoice has already been paid');
+        }
 
         $this->paidTime = new DateTime();
 
@@ -241,8 +244,9 @@ class Invoice
      */
     public function setPaidTime($paidTime)
     {
-        if ($this->isPaid())
+        if ($this->isPaid()) {
             throw new \InvalidArgumentException('This invoice has already been paid');
+        }
 
         $this->paidTime = $paidTime;
 
@@ -276,11 +280,11 @@ class Invoice
         $array = array();
 
         foreach ($this->getAllEntries() as $entry) {
-            if($entry->getVersion() == $version)
+            if ($entry->getVersion() == $version) {
                 array_push($array, $entry);
+            }
         }
 
         return $array;
     }
-
 }

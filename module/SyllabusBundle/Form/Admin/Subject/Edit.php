@@ -21,8 +21,8 @@ namespace SyllabusBundle\Form\Admin\Subject;
 use Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
     SyllabusBundle\Entity\Subject,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit Subject

@@ -63,18 +63,22 @@ class HasAccess
      */
     public function __invoke($resource, $action)
     {
-        if (null === $this->_acl)
+        if (null === $this->_acl) {
             throw new Exception\RuntimeException('No ACL object was provided');
+        }
 
-        if ($this->_authenticated && null === $this->_entity)
+        if ($this->_authenticated && null === $this->_entity) {
             throw new Exception\RuntimeException('No entity was provided');
+        }
 
         // Making it easier to develop new actions and controllers, without all the ACL hassle
-        if ('development' == getenv('APPLICATION_ENV'))
+        if ('development' == getenv('APPLICATION_ENV')) {
             return true;
+        }
 
-        if (!$this->_acl->hasResource($resource))
+        if (!$this->_acl->hasResource($resource)) {
             return false;
+        }
 
         if ($this->_authenticated && null !== $this->_entity) {
             foreach ($this->_entity->getRoles() as $role) {

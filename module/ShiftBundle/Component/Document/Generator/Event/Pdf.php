@@ -18,10 +18,10 @@
 
 namespace ShiftBundle\Component\Document\Generator\Event;
 
-use CommonBundle\Component\Util\File\TmpFile,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
-    CalendarBundle\Entity\Node\Event,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -56,7 +56,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.pdf_generator_path');
 
-           parent::__construct(
+        parent::__construct(
                $entityManager,
             $filePath . '/event/event.xsl',
             $file->getFilename()
@@ -101,7 +101,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'responsible',
                             array(),
                             '1'
-                        )
+                        ),
                     )
                 );
             }
@@ -125,7 +125,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'responsible',
                             array(),
                             '0'
-                        )
+                        ),
                     )
                 );
             }
@@ -165,7 +165,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 'event',
                 array(
                     'name' => $this->_event->getTitle(),
-                    'date' => $this->_event->getStartDate()->format('d F Y H:i')
+                    'date' => $this->_event->getStartDate()->format('d F Y H:i'),
                 ),
                 array(
                     new Object(
@@ -181,14 +181,14 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 array(),
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(
                         'shifts',
                         array(),
                         $shifts
-                    )
+                    ),
                 )
             )
         );

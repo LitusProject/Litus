@@ -62,8 +62,9 @@ class Acl extends \Zend\Permissions\Acl\Acl
             ->from('CommonBundle\Entity\Acl\Resource', 'r')
             ->where('r.parent IS NULL');
 
-        foreach ($query->getQuery()->getResult() as $resource)
+        foreach ($query->getQuery()->getResult() as $resource) {
             $this->_addResource($resource);
+        }
     }
 
     /**
@@ -79,8 +80,9 @@ class Acl extends \Zend\Permissions\Acl\Acl
             (null === $resource->getParent()) ? null : $resource->getParent()->getName()
         );
 
-        foreach ($resource->getChildren($this->_entityManager) as $childResource)
+        foreach ($resource->getChildren($this->_entityManager) as $childResource) {
             $this->_addResource($childResource);
+        }
     }
 
     /**
@@ -90,8 +92,9 @@ class Acl extends \Zend\Permissions\Acl\Acl
      */
     protected function loadRoles()
     {
-        foreach ($this->_entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role)
+        foreach ($this->_entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role) {
             $this->_addRole($role);
+        }
     }
 
     /**
@@ -102,13 +105,15 @@ class Acl extends \Zend\Permissions\Acl\Acl
      */
     private function _addRole(Role $role)
     {
-        if ($this->hasRole($role->getName()))
+        if ($this->hasRole($role->getName())) {
             return;
+        }
 
         $parents = array();
         foreach ($role->getParents() as $parentRole) {
-            if (!$this->hasRole($parentRole->getName()))
+            if (!$this->hasRole($parentRole->getName())) {
                 $this->_addRole($parentRole);
+            }
 
             $parents[] = $parentRole->getName();
         }

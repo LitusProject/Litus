@@ -19,13 +19,13 @@
 namespace MailBundle\Form\Admin\Bakske;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -92,12 +92,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('PublicationBundle\Entity\Edition\Html')
             ->findAllByPublicationAndAcademicYear($publication, $this->_academicYear);
 
-        if (empty($editions))
+        if (empty($editions)) {
             throw new \RuntimeException('There needs to be at least one edition before you can mail it');
+        }
 
         $editionsArray = array();
-        foreach ($editions as $edition)
+        foreach ($editions as $edition) {
             $editionsArray[$edition->getId()] = $edition->getTitle();
+        }
 
         return $editionsArray;
     }

@@ -32,8 +32,9 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Comment\Mapping')
@@ -90,12 +91,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getCommentMapping()))
+        if (!($mapping = $this->_getCommentMapping())) {
             return new ViewModel();
+        }
 
         if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
-                'result' => (object) array("status" => "error")
+                'result' => (object) array("status" => "error"),
             );
         }
 

@@ -18,9 +18,9 @@
 
 namespace LogisticsBundle\Command;
 
-use LogisticsBundle\Entity\Reservation\VanReservation,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    LogisticsBundle\Entity\Reservation\ReservableResource;
+use LogisticsBundle\Entity\Reservation\PianoReservation,
+    LogisticsBundle\Entity\Reservation\ReservableResource,
+    LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * InstallController for the LogisticsBundle

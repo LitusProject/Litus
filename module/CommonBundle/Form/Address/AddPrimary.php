@@ -115,8 +115,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private function _getCities()
     {
         if (null !== $this->_cache) {
-            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
+            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
                 return $result;
+            }
         }
 
         $cities = $this->_entityManager
@@ -140,7 +141,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
                 array(
                     $optionsCity,
-                    $optionsStreet
+                    $optionsStreet,
                 )
             );
         }

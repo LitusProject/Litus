@@ -41,7 +41,7 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'wiki_auth',
 
             'auth_route'     => 'wiki_auth',
-            'redirect_route' => 'wiki_auth'
+            'redirect_route' => 'wiki_auth',
         );
     }
 
@@ -58,10 +58,12 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!array_key_exists(getenv('SERVED_BY'), $shibbolethUrl))
+                }
+                if (!array_key_exists(getenv('SERVED_BY'), $shibbolethUrl)) {
                     throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -71,8 +73,9 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
 
         $shibbolethUrl .= '?source=wiki';
 
-        if (null !== $this->getParam('redirect'))
+        if (null !== $this->getParam('redirect')) {
             $shibbolethUrl .= '%26redirect=' . urlencode(urlencode($this->getParam('redirect')));
+        }
 
         return $shibbolethUrl;
     }

@@ -21,8 +21,9 @@ return array(
         'factories' => array(
             'cache' => function ($serviceManager) {
                 if (('production' == getenv('APPLICATION_ENV'))) {
-                    if (!extension_loaded('memcached'))
+                    if (!extension_loaded('memcached')) {
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');
+                    }
 
                     return \Zend\Cache\StorageFactory::factory(
                         array(
@@ -32,8 +33,8 @@ return array(
                                     'ttl' => 0,
                                     'namespace' => getenv('ORGANIZATION') . '_LITUS',
                                     'servers' => array(
-                                        array('localhost', 11211)
-                                    )
+                                        array('localhost', 11211),
+                                    ),
                                 ),
                             ),
                         )

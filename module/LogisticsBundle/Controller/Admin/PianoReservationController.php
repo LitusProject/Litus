@@ -149,8 +149,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                         )
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
                 }
 
                 $this->getEntityManager()->persist($reservation);
@@ -181,8 +182,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function editAction()
     {
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $reservation);
 
@@ -251,8 +253,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                         )
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -284,8 +287,9 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation()))
+        if (!($reservation = $this->_getReservation())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($reservation);
         $this->getEntityManager()->flush();

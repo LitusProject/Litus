@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager;
 
@@ -50,8 +49,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->findAll();
 
         foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
-            foreach($organizations as $organization)
+            foreach ($organizations as $organization) {
                 $headers[] = 'Sell Price (' . $type . ' Discounted ' . $organization->getName() . ')';
+            }
         }
 
         parent::__construct(
@@ -77,7 +77,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                 $article->getMainArticle()->getAuthors(),
                 $article->getBarcode(),
                 number_format($article->getSellPrice() / 100, 2),
-                $article->getStockValue()
+                $article->getStockValue(),
             );
 
             $discounts = $article->getDiscounts();
@@ -87,8 +87,9 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     $foundDiscount = null;
 
                     foreach ($discounts as $discount) {
-                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || null === $discount->getOrganization()))
+                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || null === $discount->getOrganization())) {
                             $foundDiscount = $discount;
+                        }
                     }
 
                     if (null !== $foundDiscount) {

@@ -19,8 +19,8 @@
 namespace CudiBundle\Command;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Bank\BankDevice,
     CommonBundle\Entity\General\Bank\MoneyUnit,
     CommonBundle\Entity\General\Config,

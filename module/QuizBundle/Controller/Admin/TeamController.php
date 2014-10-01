@@ -34,17 +34,18 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'QuizBundle\Entity\Team',
             $this->getParam('page'),
             array(
-                'quiz' => $quiz
+                'quiz' => $quiz,
             ),
             array(
-                'number' => 'ASC'
+                'number' => 'ASC',
             )
         );
 
@@ -59,8 +60,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $quiz);
 
@@ -110,8 +112,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($team = $this->_getTeam()))
+        if (!($team = $this->_getTeam())) {
             return new ViewModel();
+        }
 
         $form  = new EditForm($this->getEntityManager(), $team);
 
@@ -136,7 +139,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
                     'quiz_admin_team',
                     array(
                         'action' => 'manage',
-                        'quizid' => $team->getQuiz()->getId()
+                        'quizid' => $team->getQuiz()->getId(),
                     )
                 );
             }
@@ -154,8 +157,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam()))
+        if (!($team = $this->_getTeam())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($team);
 
@@ -164,7 +168,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -204,7 +208,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -220,7 +224,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -282,7 +286,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

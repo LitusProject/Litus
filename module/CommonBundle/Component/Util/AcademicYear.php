@@ -19,8 +19,8 @@
 namespace CommonBundle\Component\Util;
 
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateTime,
     DateInterval,
+    DateTime,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -49,8 +49,9 @@ class AcademicYear
      */
     public static function getAcademicYear(DateTime $date = null)
     {
-        if ($date === null)
+        if ($date === null) {
             $date = new DateTime('now');
+        }
 
         $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
@@ -75,8 +76,9 @@ class AcademicYear
      */
     public static function getShortAcademicYear(DateTime $date = null)
     {
-        if ($date === null)
+        if ($date === null) {
             $date = new DateTime('now');
+        }
 
         $startOfAcademicYear = self::getStartOfAcademicYear($date);
 
@@ -110,8 +112,9 @@ class AcademicYear
             );
         }
 
-        if (($delta === null) || !is_numeric($delta))
+        if (($delta === null) || !is_numeric($delta)) {
             $delta = 0;
+        }
 
         do {
             $christmas = new DateTime(
@@ -198,10 +201,11 @@ class AcademicYear
 
         $startAcademicYear = self::getStartOfAcademicYear($date);
 
-        if ($date < $startAcademicYear)
+        if ($date < $startAcademicYear) {
             return $date->format('Y');
-        else
+        } else {
             return $date->modify('+1 year')->format('Y');
+        }
     }
 
     /**

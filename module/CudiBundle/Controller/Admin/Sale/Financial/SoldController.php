@@ -20,8 +20,8 @@ namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
     CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
+    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
@@ -36,8 +36,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     public function individualAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_individualSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -91,10 +92,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem) {
                 $organization = null;
-            else
+            } else {
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            }
 
             $item = (object) array();
             $item->id = $soldItem->getId();
@@ -179,8 +181,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionAction()
     {
-        if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession())) {
             return new ViewModel();
+        }
 
         $academicYear = $session->getAcademicYear();
 
@@ -192,8 +195,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_sessionSearch($session);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -225,8 +229,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession())) {
             return new ViewModel();
+        }
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -240,10 +245,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem) {
                 $organization = null;
-            else
+            } else {
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            }
 
             $item = (object) array();
             $item->id = $soldItem->getId();
@@ -295,8 +301,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_articlesSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -388,8 +395,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -401,8 +409,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_articleSearch($article, $this->getAcademicYear());
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -438,8 +447,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -455,10 +465,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem) {
                 $organization = null;
-            else
+            } else {
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            }
 
             $item = (object) array();
             $item->id = $soldItem->getId();
@@ -534,8 +545,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -547,8 +559,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -584,8 +597,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -601,10 +615,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         foreach ($records as $soldItem) {
             $soldItem->getSession()->setEntityManager($this->getEntityManager());
 
-            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem)
+            if ($soldItem instanceof ProfItem || $soldItem instanceof ExternalItem) {
                 $organization = null;
-            else
+            } else {
                 $organization = $soldItem->getPerson()->getOrganization($soldItem->getSession()->getAcademicYear());
+            }
 
             $item = (object) array();
             $item->id = $soldItem->getId();
@@ -668,7 +683,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'sessions'
+                    'action' => 'sessions',
                 )
             );
 
@@ -688,7 +703,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'sessions'
+                    'action' => 'sessions',
                 )
             );
 
@@ -711,7 +726,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 
@@ -731,7 +746,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 
@@ -754,7 +769,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 
@@ -774,7 +789,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 

@@ -19,11 +19,11 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Form\Admin\Role\Add as AddForm,
-    CommonBundle\Form\Admin\Role\Edit as EditForm,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\User\Person,
+    CommonBundle\Form\Admin\Role\Add as AddForm,
+    CommonBundle\Form\Admin\Role\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,7 +40,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page'),
             array(),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
@@ -100,7 +100,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_role',
                     array(
-                        'action' => 'add'
+                        'action' => 'add',
                     )
                 );
 
@@ -118,9 +118,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if(!($role = $this->_getRole()))
-
+        if (!($role = $this->_getRole())) {
             return new ViewModel();
+        }
 
         $members = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
@@ -136,8 +136,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->_getRole()))
+        if (!($role = $this->_getRole())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $role);
 
@@ -180,7 +181,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_role',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -199,8 +200,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole()))
+        if (!($role = $this->_getRole())) {
             return new ViewModel();
+        }
 
         $users = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
@@ -226,11 +228,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole()))
+        if (!($role = $this->_getRole())) {
             return new ViewModel();
+        }
 
-        if (!($member = $this->_getMember()))
+        if (!($member = $this->_getMember())) {
             return new ViewModel();
+        }
 
         $member->removeRole($role);
         $this->getEntityManager()->flush();
@@ -250,8 +254,9 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($roles as $role) {
             foreach ($role->getActions() as $action) {
-                if ($this->_findActionWithParents($action, $role->getParents()))
+                if ($this->_findActionWithParents($action, $role->getParents())) {
                     $role->removeAction($action);
+                }
             }
         }
 
@@ -267,7 +272,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'common_admin_role',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -288,7 +293,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_role',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -308,7 +313,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_role',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -332,7 +337,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_role',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -352,7 +357,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'common_admin_role',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -385,11 +390,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     private function _findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {
-            if (in_array($action, $parent->getActions()))
+            if (in_array($action, $parent->getActions())) {
                 return true;
+            }
 
-            if ($this->_findActionWithParents($action, $parent->getParents()))
+            if ($this->_findActionWithParents($action, $parent->getParents())) {
                 return true;
+            }
         }
 
         return false;

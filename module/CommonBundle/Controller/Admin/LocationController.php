@@ -18,10 +18,10 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Form\Admin\Location\Add as AddForm,
-    CommonBundle\Form\Admin\Location\Edit as EditForm,
-    CommonBundle\Entity\General\Address,
+use CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Location,
+    CommonBundle\Form\Admin\Location\Add as AddForm,
+    CommonBundle\Form\Admin\Location\Edit as EditForm,
     Zend\Http\Client,
     Zend\View\Model\ViewModel;
 
@@ -38,10 +38,10 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             'CommonBundle\Entity\General\Location',
             $this->getParam('page'),
             array(
-                'active' => true
+                'active' => true,
             ),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
@@ -90,7 +90,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'common_admin_location',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -110,8 +110,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($location = $this->_getLocation()))
+        if (!($location = $this->_getLocation())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($location);
 
@@ -146,7 +147,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'common_admin_location',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -165,8 +166,9 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($location = $this->_getLocation()))
+        if (!($location = $this->_getLocation())) {
             return new ViewModel();
+        }
 
         $location->deactivate();
 
@@ -175,8 +177,8 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
-                )
+                    'status' => 'success',
+                ),
             )
         );
     }
@@ -198,7 +200,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
                     $this->getRequest()->getPost()->get('street') . ' ' . $this->getRequest()->getPost()->get('number') . ', '
                         . $this->getRequest()->getPost()->get('postal') . ' ' . $this->getRequest()->getPost()->get('city') . ', '
                         . $this->getRequest()->getPost()->get('country')
-                )
+                ),
             )
         );
 
@@ -223,7 +225,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_location',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -243,7 +245,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_location',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -21,9 +21,9 @@ namespace CommonBundle\Form\Admin\Location;
 use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Form\Admin\Address\Add as AddressForm,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Location
@@ -32,7 +32,6 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-
     /**
      * @var \CommonBundle\Form\Admin\Address\Add
      */
@@ -79,8 +78,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->_addressForm->getInputs();
-        foreach($inputs as $input)
+        foreach ($inputs as $input) {
             $inputFilter->add($input);
+        }
 
         $factory = new InputFactory();
 

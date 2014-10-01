@@ -46,8 +46,9 @@ class NamedPriorityQueue extends \SplPriorityQueue
      */
     public function insert($data, $priority = '')
     {
-        if (!is_array($priority))
+        if (!is_array($priority)) {
             $priority = array(0, $priority);
+        }
 
         return parent::insert($data, $priority);
     }

@@ -64,7 +64,7 @@ return array(
     'collections' => array(
         'calendar_css' => array(
             'assets' => array(
-                'calendar/less/calendar.less'
+                'calendar/less/calendar.less',
             ),
             'filters' => array('less'),
             'options' => array(

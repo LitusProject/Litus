@@ -17,8 +17,9 @@
  */
 
 $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'calendar_admin_calendar\' AND name = \'pdf\'');
-if (0 == pg_num_rows($result))
+if (0 == pg_num_rows($result)) {
     throw new \RuntimeException('The ACL action calendar_admin_calendar.pdf does not exist');
+}
 $id = pg_fetch_row($result)[0];
 
 $result = pg_query($connection, 'SELECT * FROM acl.roles_actions_map WHERE action = \'' . $id . '\'');

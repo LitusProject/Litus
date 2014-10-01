@@ -39,7 +39,7 @@ class Role extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The role already exists'
+        self::NOT_VALID => 'The role already exists',
     );
 
     /**
@@ -68,8 +68,9 @@ class Role extends \Zend\Validator\AbstractValidator
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findOneByName($value);
 
-        if (null === $role)
+        if (null === $role) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

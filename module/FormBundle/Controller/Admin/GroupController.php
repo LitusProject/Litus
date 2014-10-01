@@ -44,8 +44,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        foreach($paginator as $group)
+        foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -64,8 +65,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        foreach($paginator as $group)
+        foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -123,7 +125,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'form_admin_group',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -140,8 +142,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $group->setEntityManager($this->getEntityManager());
 
@@ -174,10 +177,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $formData = $form->getFormData($formData);
 
-                if ($formData['max'] == '')
+                if ($formData['max'] == '') {
                     $max = 0;
-                else
+                } else {
                     $max = $formData['max'];
+                }
 
                 $group->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
                         ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
@@ -243,8 +247,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -269,7 +274,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -277,8 +282,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function formsAction()
     {
-        if (!($group = $this->_getGroup()))
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $form = new MappingForm($this->getEntityManager());
 
@@ -321,8 +327,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                         ->getRepository('FormBundle\Entity\ViewerMap')
                         ->findByForm($form);
 
-                    foreach($formViewers as $viewer)
+                    foreach ($formViewers as $viewer) {
                         $this->getEntityManager()->remove($viewer);
+                    }
 
                     $groupViewers = $this->getEntityManager()
                         ->getRepository('FormBundle\Entity\ViewerMap')
@@ -378,9 +385,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if(!($group = $this->_getGroup()))
-
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -398,15 +405,15 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if(!$this->getRequest()->isPost())
-
+        if (!$this->getRequest()->isPost()) {
             return new ViewModel();
+        }
 
         $data = $this->getRequest()->getPost();
 
-        if(!$data['items'])
-
+        if (!$data['items']) {
             return new ViewModel();
+        }
 
         foreach ($data['items'] as $order => $id) {
             $mapping = $this->getEntityManager()
@@ -421,7 +428,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => array(
                     'status' => 'success',
-                )
+                ),
             )
         );
     }
@@ -430,8 +437,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         if (!$mapping->getGroup()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -456,7 +464,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -473,7 +481,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -493,7 +501,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -514,7 +522,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -534,7 +542,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_group',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

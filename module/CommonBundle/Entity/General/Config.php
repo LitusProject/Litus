@@ -71,8 +71,9 @@ class Config
      */
     public function __construct($key, $value)
     {
-        if(!is_string($key))
+        if (!is_string($key)) {
             throw new InvalidArgumentException('Key must be a string');
+        }
 
         $this->key = $key;
         $this->setValue($value);
@@ -101,8 +102,9 @@ class Config
      */
     public function setValue($value)
     {
-        if(!is_string($value))
+        if (!is_string($value)) {
             $value = serialize($value);
+        }
 
         $this->value = $value;
 
@@ -124,8 +126,9 @@ class Config
      */
     public function setDescription($description = null)
     {
-        if(($description !== null) && !is_string($description))
+        if (($description !== null) && !is_string($description)) {
             throw new InvalidArgumentException('Description must be a string or null');
+        }
 
         $this->description = $description;
     }

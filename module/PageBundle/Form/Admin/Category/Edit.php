@@ -52,8 +52,9 @@ class Edit extends Add
     private function _populateFromCategory(Category $category)
     {
         $data = array();
-        foreach($this->getLanguages() as $language)
+        foreach ($this->getLanguages() as $language) {
             $data['name_' . $language->getAbbrev()] = $category->getName($language, false);
+        }
 
         $data['parent'] = null !== $category->getParent() ? $category->getParent()->getId() : '';
 

@@ -18,22 +18,22 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Form\Address\Add as AddressForm,
     CommonBundle\Form\Address\AddPrimary as PrimaryAddressForm,
+    Doctrine\ORM\EntityManager,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\Cache\Storage\StorageInterface as CacheStorage,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Registration
@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'options',
                 array(
                     'm' => 'M',
-                    'f' => 'F'
+                    'f' => 'F',
                 )
             );
         $personal->add($field);
@@ -183,8 +183,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->setValue(true);
         $organization->add($field);
 
-        if ('1' != $registrationEnabled)
+        if ('1' != $registrationEnabled) {
             $field->setAttribute('disabled', 'disabled');
+        }
 
         $field = new Checkbox('conditions');
         $field->setLabel('I have read and agree with the terms and conditions');
@@ -200,8 +201,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $universityEmail = $academic->getUniversityEmail();
 
-        if ($universityEmail)
+        if ($universityEmail) {
             $universityEmail = explode('@', $universityEmail)[0];
+        }
 
         $organization = $academic->getOrganization($academicYear);
 
@@ -238,7 +240,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ->findOneByCityAndName($city, $academic->getPrimaryAddress()->getStreet());
 
                 $data['primary_address_address_street_' . $city->getId()] = $street ? $street->getId() : 0;
-             } else {
+            } else {
                 $data['primary_address_address_city'] = 'other';
                 $data['primary_address_address_postal_other'] = $academic->getPrimaryAddress()->getPostal();
                 $data['primary_address_address_city_other'] = $academic->getPrimaryAddress()->getCity();
@@ -272,8 +274,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAll();
 
         $organizationOptions = $this->_enableOtherOrganization ? array("Other") : array();
-        foreach($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationOptions[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationOptions;
     }
@@ -283,12 +286,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $inputFilter = new InputFilter();
 
         $inputs = $this->_secondaryAddressForm->getInputs();
-        foreach($inputs as $input)
+        foreach ($inputs as $input) {
             $inputFilter->add($input);
+        }
 
-        $inputs =$this->_primaryAddressForm->getInputs();
-        foreach($inputs as $input)
+        $inputs = $this->_primaryAddressForm->getInputs();
+        foreach ($inputs as $input) {
             $inputFilter->add($input);
+        }
 
         $factory = new InputFactory();
 

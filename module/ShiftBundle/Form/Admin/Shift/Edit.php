@@ -72,7 +72,7 @@ class Edit extends Add
             'event' => null === $shift->getEvent() ? '' : $shift->getEvent()->getId(),
             'location' => $shift->getLocation()->getId(),
             'name' => $shift->getName(),
-            'description' => $shift->getDescription()
+            'description' => $shift->getDescription(),
         );
 
         $this->setData($data);

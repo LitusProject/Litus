@@ -46,7 +46,7 @@ class Exists extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The restriction already exists'
+        self::NOT_VALID => 'The restriction already exists',
     );
 
     /**
@@ -63,7 +63,6 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->_entityManager = $entityManager;
         $this->_session = $session;
     }
-
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -92,8 +91,9 @@ class Exists extends \Zend\Validator\AbstractValidator
                 ->findOneBySession($this->_session);
         }
 
-        if (null == $restriction)
+        if (null == $restriction) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

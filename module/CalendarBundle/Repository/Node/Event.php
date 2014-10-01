@@ -18,8 +18,8 @@
 
 namespace CalendarBundle\Repository\Node;
 
-use DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Event
@@ -43,8 +43,9 @@ class Event extends EntityRepository
             ->orderBy('e.startDate', 'ASC')
             ->setParameter('now', new DateTime());
 
-        if ($nbResults > 0)
+        if ($nbResults > 0) {
             $query->setMaxResults($nbResults);
+        }
 
         $resultSet = $query->getQuery();
 

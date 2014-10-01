@@ -22,10 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Mapping
@@ -94,7 +93,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 )
             )
         );
-
 
         return $inputFilter;
     }

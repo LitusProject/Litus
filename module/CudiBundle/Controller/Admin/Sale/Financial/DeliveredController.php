@@ -32,8 +32,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     public function individualAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_individualSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -111,8 +112,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_articlesSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -204,8 +206,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -262,8 +265,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -271,8 +275,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -300,8 +305,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -353,7 +359,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_delivered',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 
@@ -373,7 +379,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_delivered',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 
@@ -396,7 +402,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_delivered',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 
@@ -416,7 +422,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_delivered',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 

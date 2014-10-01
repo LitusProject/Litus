@@ -66,9 +66,9 @@ class Round extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if($resultSet === null)
-
+        if ($resultSet === null) {
             return 1;
+        }
 
         return $resultSet + 1;
     }

@@ -41,55 +41,55 @@ class Install extends \CommonBundle\Component\Console\Command\Install
             array(
                 'name'       => 'Architectuur',
                 'happyHours' => array(
-                    '0809'
+                    '0809',
                 ),
             ),
             array(
                 'name'       => 'Bouwkunde',
                 'happyHours' => array(
-                    '1819'
+                    '1819',
                 ),
             ),
             array(
                 'name'       => 'Chemische Ingenieurstechnieken',
                 'happyHours' => array(
-                    '1415'
+                    '1415',
                 ),
             ),
             array(
                 'name'       => 'Computerwetenschappen',
                 'happyHours' => array(
-                    '1112'
+                    '1112',
                 ),
             ),
             array(
                 'name'       => 'Eerstejaars Burgies',
                 'happyHours' => array(
-                    '1718'
+                    '1718',
                 ),
             ),
             array(
                 'name'       => 'Elektrotechniek',
                 'happyHours' => array(
-                    '2300'
+                    '2300',
                 ),
             ),
             array(
                 'name'       => 'Materiaalkunde',
                 'happyHours' => array(
-                    '1213'
+                    '1213',
                 ),
             ),
             array(
                 'name'       => 'Tweedejaars Burgies',
                 'happyHours' => array(
-                    '2223'
+                    '2223',
                 ),
             ),
             array(
                 'name'       => 'Werktuigkunde',
                 'happyHours' => array(
-                    '1314'
+                    '1314',
                 ),
             ),
         );

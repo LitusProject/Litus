@@ -59,7 +59,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYear' => $academicYear,
             ),
             array(
-                'timestamp' => 'ASC'
+                'timestamp' => 'ASC',
             )
         );
 
@@ -77,8 +77,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function barcodeAction()
     {
-        if (!($registration = $this->_getRegistration()))
+        if (!($registration = $this->_getRegistration())) {
             return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -265,8 +266,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($registration = $this->_getRegistration()))
+        if (!($registration = $this->_getRegistration())) {
             return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -324,8 +326,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     );
                 }
 
-                if ($formData['cancel'])
+                if ($formData['cancel']) {
                     $this->_cancelRegistration($registration);
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -362,8 +365,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($registration = $this->_getRegistration()))
+        if (!($registration = $this->_getRegistration())) {
             return new ViewModel();
+        }
 
         $academic = $registration->getAcademic();
         $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
@@ -464,8 +468,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     private function _getAcademicYear()
     {
-        if (null === $this->getParam('academicyear'))
+        if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
+        }
 
         $start = AcademicYear::getDateTime($this->getParam('academicyear'));
         $start->setTime(0, 0);
@@ -483,7 +488,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -504,7 +509,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -524,7 +529,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'secretary_admin_registration',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -536,8 +541,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     private function _getOrganization()
     {
-        if (null === $this->getParam('organization'))
+        if (null === $this->getParam('organization')) {
             return;
+        }
 
         $organization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
@@ -582,8 +588,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         switch ($type) {
             case 'ean12':
                 $validator = new Ean12Validator();
-                if (!$validator->isValid($barcode))
+                if (!$validator->hasValidChecksum($barcode)) {
                     throw new \InvalidArgumentException('The given barcode was not a valid EAN-12 code');
+                }
 
                 return new Ean12($person, $barcode);
                 break;

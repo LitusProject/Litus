@@ -18,7 +18,7 @@
 
 $prices = unserialize(getConfigValue($connection, 'cudi.sell_prices'));
 
-foreach($prices as $key => $value) {
+foreach ($prices as $key => $value) {
     $prices[$key] = $value * 1000;
 }
 

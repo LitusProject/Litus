@@ -44,8 +44,9 @@ EOT
 
     protected function executeCommand()
     {
-        foreach ($this->_getModules() as $module)
+        foreach ($this->_getModules() as $module) {
             $this->_installModule($module);
+        }
 
         $this->writeln('Installation completed successfully!');
     }
@@ -76,8 +77,9 @@ EOT
 
         $command = $this->getApplication()->find('install:' . $moduleName);
 
-        if (null === $command)
+        if (null === $command) {
             throw new RuntimeException('Unknown command install:' . $moduleName . ' for module ' . $module);
+        }
 
         $command->execute($this->input, $this->output);
     }

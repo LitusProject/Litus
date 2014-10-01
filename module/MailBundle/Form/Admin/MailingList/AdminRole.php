@@ -21,9 +21,9 @@ namespace MailBundle\Form\Admin\MailingList;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Admin Role
@@ -72,12 +72,14 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can map a role');
+        }
 
         return $rolesArray;
     }

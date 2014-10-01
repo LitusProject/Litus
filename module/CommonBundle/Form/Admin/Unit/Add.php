@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Unit
@@ -106,12 +106,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findBy(array(), array('name' => 'ASC'));
 
-        if (empty($organizations))
+        if (empty($organizations)) {
             throw new \RuntimeException('There needs to be at least one organization before you can add a unit');
+        }
 
         $organizationsArray = array();
-        foreach ($organizations as $organization)
+        foreach ($organizations as $organization) {
             $organizationsArray[$organization->getId()] = $organization->getName();
+        }
 
         return $organizationsArray;
     }
@@ -128,11 +130,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAllActive();
 
         $unitsArray = array(
-            '' => ''
+            '' => '',
         );
         foreach ($units as $unit) {
-            if ($unit->getId() != $exclude)
+            if ($unit->getId() != $exclude) {
                 $unitsArray[$unit->getId()] = $unit->getName();
+            }
         }
 
         return $unitsArray;
@@ -152,14 +155,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can add a unit');
+        }
 
         return $rolesArray;
     }
@@ -191,7 +196,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'emailaddress'),
-                    )
+                    ),
                 )
             )
         );

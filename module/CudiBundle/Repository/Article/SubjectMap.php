@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Article;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**

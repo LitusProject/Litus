@@ -19,9 +19,9 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -99,8 +99,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
         foreach ($entries as $entry) {
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();
-            if ($address->getMailbox())
+            if ($address->getMailbox()) {
                 $addressString = $addressString . ' (' . $address->getMailbox() . ')';
+            }
             $addressString = $addressString . ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
 
             $results[] = array(
@@ -109,7 +110,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 $entry->getEmail(),
                 $addressString,
                 $entry->getPhoneNumber(),
-                $entry->getStudy()->getFullTitle()
+                $entry->getStudy()->getFullTitle(),
             );
         }
 
@@ -134,8 +135,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry()))
+        if (!($entry = $this->_getEntry())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
@@ -158,7 +160,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             $this->redirect()->toRoute(
                 'br_admin_cv_entry',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -178,7 +180,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
             $this->redirect()->toRoute(
                 'br_admin_cv_entry',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

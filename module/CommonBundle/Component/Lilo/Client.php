@@ -22,9 +22,9 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
     Exception,
-    Zend\Stdlib\RequestInterface,
     Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    Zend\Stdlib\RequestInterface;
 
 /**
  * Lilo is a small application that can store exception and log messages.
@@ -99,7 +99,8 @@ class Client
      */
     public function handleMvcEvent(MvcEvent $e)
     {
-        if ($e->getError() == Application::ERROR_EXCEPTION)
+        if ($e->getError() == Application::ERROR_EXCEPTION) {
             $this->sendException($e->getParam('exception'));
+        }
     }
 }

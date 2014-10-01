@@ -99,8 +99,9 @@ class Frame
     {
         $this->_data .= $data;
 
-        if (strlen($this->_data) > self::MAX_BUFFER_SIZE)
+        if (strlen($this->_data) > self::MAX_BUFFER_SIZE) {
             $this->_data = '';
+        }
     }
 
     /**
@@ -131,8 +132,9 @@ class Frame
             return;
         }
 
-        if ($paylen >= self::MAX_PAYLOAD_LEN)
+        if ($paylen >= self::MAX_PAYLOAD_LEN) {
             return;
+        }
 
         $data = '';
 

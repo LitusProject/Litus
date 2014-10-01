@@ -23,7 +23,7 @@ return array(
         ),
         'actions' => array(
             'wiki_auth' => array(
-                'login', 'logout', 'shibboleth'
+                'login', 'logout', 'shibboleth',
             ),
         ),
     ),

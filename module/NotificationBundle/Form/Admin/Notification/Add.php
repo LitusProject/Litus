@@ -19,17 +19,17 @@
 namespace NotificationBundle\Form\Admin\Notification;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     NotificationBundle\Entity\Node\Notification,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Notification
@@ -116,8 +116,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $factory = new InputFactory();
 
         foreach ($this->getLanguages() as $language) {
-            if ($language->getAbbrev() !== \Locale::getDefault())
+            if ($language->getAbbrev() !== \Locale::getDefault()) {
                 continue;
+            }
             $inputFilter->add(
                 $factory->createInput(
                     array(

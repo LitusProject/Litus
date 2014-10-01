@@ -18,9 +18,9 @@
 
 namespace BrBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Company;
+use BrBundle\Entity\Company,
+    CommonBundle\Component\Util\Url,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given company name against the database to check whether it is
@@ -46,7 +46,7 @@ class CompanyName extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The company name already exists'
+        self::NOT_VALID => 'The company name already exists',
     );
 
     /**
@@ -77,8 +77,9 @@ class CompanyName extends \Zend\Validator\AbstractValidator
             ->getRepository('BrBundle\Entity\Company')
             ->findOneBySlug(Url::createSlug($value));
 
-        if (null === $company || ($this->_company && ($company == $this->_company || !$company->isActive())))
+        if (null === $company || ($this->_company && ($company == $this->_company || !$company->isActive()))) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

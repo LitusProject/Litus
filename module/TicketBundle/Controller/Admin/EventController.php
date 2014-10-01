@@ -97,8 +97,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 if ($formData['enable_options']) {
                     foreach ($formData['options'] as $option) {
-                        if (strlen($option['option']) == 0)
+                        if (strlen($option['option']) == 0) {
                             continue;
+                        }
                         $option = new Option($event, $option['option'], $option['price_members'], $formData['only_members'] ? 0 : $option['price_non_members']);
                         $this->getEntityManager()->persist($option);
                     }
@@ -123,7 +124,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'ticket_admin_event',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -140,8 +141,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($event, $this->getEntityManager());
 
@@ -168,8 +170,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                             $numberOfTickets = $event->getNumberOfTickets() - $formData['number_of_tickets'];
 
                             foreach ($tickets as $ticket) {
-                                if ($numberOfTickets == 0)
+                                if ($numberOfTickets == 0) {
                                     break;
+                                }
 
                                 $numberOfTickets--;
                                 $this->getEntityManager()->remove($ticket);
@@ -213,8 +216,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
                 if ($enableOptions) {
                     foreach ($formData['options'] as $optionData) {
-                        if (strlen($optionData['option']) == 0)
+                        if (strlen($optionData['option']) == 0) {
                             continue;
+                        }
 
                         if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
                             $option = $this->getEntityManager()
@@ -265,8 +269,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $event->setActive(false);
         $this->getEntityManager()->flush();
@@ -292,7 +297,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -312,7 +317,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

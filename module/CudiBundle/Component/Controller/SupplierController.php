@@ -38,8 +38,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function onDispatch(MvcEvent $e)
     {
-        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated())
+        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated()) {
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
+        }
 
         $result = parent::onDispatch($e);
 
@@ -48,7 +49,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             $this->url()->fromRoute(
                 'cudi_supplier_auth',
                 array(
-                    'action' => 'login'
+                    'action' => 'login',
                 )
             )
         );
@@ -75,7 +76,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
             'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_supplier_index',
-            'redirect_route' => 'cudi_supplier_index'
+            'redirect_route' => 'cudi_supplier_index',
         );
     }
 
@@ -86,7 +87,8 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     protected function getSupplier()
     {
-        if ($this->getAuthentication()->isAuthenticated())
+        if ($this->getAuthentication()->isAuthenticated()) {
             return $this->getAuthentication()->getPersonObject()->getSupplier();
+        }
     }
 }

@@ -89,8 +89,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($collaborator = $this->_getCollaborator()))
+        if (!($collaborator = $this->_getCollaborator())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $collaborator);
 
@@ -128,8 +129,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function retireAction()
     {
-        if (!($collaborator = $this->_getCollaborator()))
+        if (!($collaborator = $this->_getCollaborator())) {
             return new ViewModel();
+        }
 
         $collaborator->retire();
 
@@ -152,8 +154,9 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function rehireAction()
     {
-        if (!($collaborator = $this->_getCollaborator()))
+        if (!($collaborator = $this->_getCollaborator())) {
             return new ViewModel();
+        }
 
         $collaborator->rehire();
 
@@ -185,7 +188,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'br_admin_collaborator',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -205,7 +208,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
             $this->redirect()->toRoute(
                 'br_admin_collaborator',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

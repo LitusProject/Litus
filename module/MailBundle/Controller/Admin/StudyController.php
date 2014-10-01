@@ -22,9 +22,9 @@ use MailBundle\Form\Admin\Study\Mail as MailForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -61,8 +61,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                 $upload = new FileUpload(array('ignoreNoFile' => true));
                 $inputFilter = $form->getInputFilter()->get('file');
-                if ($inputFilter instanceof InputInterface)
+                if ($inputFilter instanceof InputInterface) {
                     $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+                }
 
                 if ($upload->isValid()) {
                     $enrollments = array();
@@ -100,12 +101,14 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                                 ->findOneById($groupId);
 
                             $groupExtraMembers = unserialize($group->getExtraMembers());
-                            if ($groupExtraMembers)
+                            if ($groupExtraMembers) {
                                 $extraMembers = array_merge($extraMembers, $groupExtraMembers);
+                            }
 
                             $groupExcludedMembers = unserialize($group->getExcludedMembers());
-                            if ($groupExcludedMembers)
+                            if ($groupExcludedMembers) {
                                 $excludedMembers = array_merge($excludedMembers, $groupExcludedMembers);
+                            }
 
                             $studies = $this->getEntityManager()
                                 ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
@@ -131,18 +134,22 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                     $addresses = array();
                     $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
-                    foreach($bccs as $bcc)
+                    foreach ($bccs as $bcc) {
                         $addresses[$bcc] = $bcc;
+                    }
 
-                    foreach($extraMembers as $extraMember)
+                    foreach ($extraMembers as $extraMember) {
                         $addresses[$extraMember] = $extraMember;
+                    }
 
-                    foreach($enrollments as $enrollment)
+                    foreach ($enrollments as $enrollment) {
                         $addresses[$enrollment->getAcademic()->getEmail()] = $enrollment->getAcademic()->getEmail();
+                    }
 
                     foreach ($excludedMembers as $excludedMember) {
-                        if (isset($addresses[$excludedMember]))
+                        if (isset($addresses[$excludedMember])) {
                             unset($addresses[$excludedMember]);
+                        }
                     }
 
                     if ('' == $formData['stored_message']) {
@@ -151,8 +158,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                         $part = new Part($body);
 
                         $part->type = Mime::TYPE_TEXT;
-                        if ($formData['html'])
+                        if ($formData['html']) {
                             $part->type = Mime::TYPE_HTML;
+                        }
 
                         $part->charset = 'utf-8';
                         $message = new MimeMessage();
@@ -160,8 +168,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                         if ($formData['test']) {
                             $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($addresses as $address)
+                            foreach ($addresses as $address) {
                                 $body = $body . $address . '<br/>';
+                            }
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
@@ -171,8 +180,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                         $upload->receive();
 
                         foreach ($upload->getFileInfo() as $file) {
-                            if ($file['size'] === NULL)
+                            if ($file['size'] === NULL) {
                                 continue;
+                            }
 
                             $part = new Part(fopen($file['tmp_name'], 'r'));
                             $part->type = $file['type'];
@@ -202,8 +212,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                         $part = new Part($body);
 
                         $part->type = Mime::TYPE_TEXT;
-                        if ($storedMessage->getType() == 'html')
+                        if ($storedMessage->getType() == 'html') {
                             $part->type = Mime::TYPE_HTML;
+                        }
 
                         $part->charset = 'utf-8';
                         $message = new MimeMessage();
@@ -211,8 +222,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                         if ($formData['test']) {
                             $body = '<br/>This email would have been sent to:<br/>';
-                            foreach($addresses as $address)
+                            foreach ($addresses as $address) {
                                 $body = $body . $address . '<br/>';
+                            }
 
                             $part = new Part($body);
                             $part->type = Mime::TYPE_HTML;
@@ -247,16 +259,18 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                             if (500 == $i) {
                                 $i = 0;
 
-                                if ('development' != getenv('APPLICATION_ENV'))
+                                if ('development' != getenv('APPLICATION_ENV')) {
                                     $this->getMailTransport()->send($mail);
+                                }
 
                                 $mail->setBcc(array());
                             }
                         }
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
 
                     $this->flashMessenger()->success(
                         'Success',
@@ -266,7 +280,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     $this->redirect()->toRoute(
                         'mail_admin_study',
                         array(
-                            'action' => 'send'
+                            'action' => 'send',
                         )
                     );
 
@@ -275,10 +289,11 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     $dataError = $upload->getMessages();
                     $error = array();
 
-                    foreach($dataError as $key=>$row)
+                    foreach ($dataError as $key => $row) {
                         $error[] = $row;
+                    }
 
-                    $form->setMessages(array('file'=>$error ));
+                    $form->setMessages(array('file' => $error ));
                 }
             }
         }

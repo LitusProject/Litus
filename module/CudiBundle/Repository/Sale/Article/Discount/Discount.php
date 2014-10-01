@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\Organization,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CudiBundle\Entity\Sale\Article;
 
 /**
  * Discount
@@ -76,8 +76,9 @@ class Discount extends EntityRepository
             ->setParameter('article', $article->getId())
             ->setParameter('type', $type);
 
-        if ($organization != null)
+        if ($organization != null) {
             $query->setParameter('organization', $organization);
+        }
 
         $resultSet = $query->setMaxResults(1)
             ->getQuery()

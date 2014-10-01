@@ -20,8 +20,8 @@ namespace CudiBundle\Form\Prof\Comment;
 
 use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Reply

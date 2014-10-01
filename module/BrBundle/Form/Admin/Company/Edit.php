@@ -21,8 +21,8 @@ namespace BrBundle\Form\Admin\Company;
 use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
     BrBundle\Entity\Company,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit a company.
@@ -60,15 +60,18 @@ class Edit extends Add
     private function _populateFromCompany(Company $company)
     {
         $yearIds = array();
-        foreach($company->getPage()->getYears() as $year)
+        foreach ($company->getPage()->getYears() as $year) {
             $yearIds[] = $year->getId();
+        }
 
         $cvYearIds = array();
-        foreach($company->getCvBookYears() as $year)
+        foreach ($company->getCvBookYears() as $year) {
             $cvYearIds[] = 'year-' . $year->getId();
+        }
 
-        foreach($company->getCvBookArchiveYears() as $year)
+        foreach ($company->getCvBookArchiveYears() as $year) {
             $cvYearIds[] = 'archive-' . $year;
+        }
 
         $formData =  array(
             'company_name' => $company->getName(),

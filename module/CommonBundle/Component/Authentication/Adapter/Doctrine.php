@@ -99,7 +99,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
                 'code' => Result::FAILURE,
                 'identity' => '',
                 'messages' => array(),
-                'personObject' => null
+                'personObject' => null,
             )
         );
     }
@@ -247,8 +247,8 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
                 array(
                     'code' => Result::FAILURE_IDENTITY_NOT_FOUND,
                     'messages' => array(
-                        'A record with the supplied identity could not be found'
-                    )
+                        'A record with the supplied identity could not be found',
+                    ),
                 )
             );
         } elseif (count($resultSet) > 1) {
@@ -256,8 +256,8 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
                 array(
                     'code' => Result::FAILURE_IDENTITY_AMBIGUOUS,
                     'messages' => array(
-                        'More than one record matches the supplied identity'
-                    )
+                        'More than one record matches the supplied identity',
+                    ),
                 )
             );
         } else {

@@ -23,9 +23,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a member to a unit.
@@ -92,7 +92,7 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => false,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )
@@ -112,7 +112,7 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => true,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )

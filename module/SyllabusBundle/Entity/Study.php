@@ -18,8 +18,8 @@
 
 namespace SyllabusBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
@@ -220,8 +220,10 @@ class Study
      */
     public function getParents()
     {
-        if ($this->parent)
+        if ($this->parent) {
             return array_merge(array($this->parent), $this->parent->getParents());
+        }
+
         return array();
     }
 

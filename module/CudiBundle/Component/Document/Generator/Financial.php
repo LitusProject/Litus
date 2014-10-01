@@ -32,7 +32,6 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class Financial extends \CommonBundle\Component\Document\Generator\Pdf
 {
-
     /**
      * @var AcademicYear
      */
@@ -139,10 +138,11 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
                 )
             );
 
-            if ($article->getMainArticle()->isInternal())
+            if ($article->getMainArticle()->isInternal()) {
                 $internal[$article->getBarcode()] = $object;
-            else
+            } else {
                 $external[] = $object;
+            }
         }
 
         ksort($internal);
@@ -153,13 +153,13 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'financial',
                 array(
-                    'date' => $now->format('d F Y')
+                    'date' => $now->format('d F Y'),
                 ),
                 array(
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $organization_short_name
+                            'short_name' => $organization_short_name,
                         ),
                         array(
                             new Object(
@@ -171,13 +171,13 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 null,
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(
                         'cudi',
                         array(
-                            'name' => $cudi_name
+                            'name' => $cudi_name,
                         ),
                         array(
                              new Object(

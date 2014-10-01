@@ -42,8 +42,9 @@ class GuestInfo extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if (null === $guestInfo)
+        if (null === $guestInfo) {
             return null;
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -60,8 +61,9 @@ class GuestInfo extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if (null === $resultSet)
+        if (null === $resultSet) {
             return null;
+        }
 
         return $guestInfo;
     }

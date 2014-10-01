@@ -76,8 +76,9 @@ class Academic extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        if (!$this->_isRequired && '' == $value)
+        if (!$this->_isRequired && '' == $value) {
             return true;
+        }
 
         $this->setValue($value);
 

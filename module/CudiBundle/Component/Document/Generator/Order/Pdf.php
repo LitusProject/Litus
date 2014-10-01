@@ -143,7 +143,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'amount',
                             null,
                             (string) $item->getNumber()
-                        )
+                        ),
                     )
                 );
             } else {
@@ -175,7 +175,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'amount',
                             null,
                             (string) $item->getNumber()
-                        )
+                        ),
                     )
                 );
             }
@@ -198,7 +198,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $organization_short_name
+                            'short_name' => $organization_short_name,
                         ),
                         array(
                             new Object(
@@ -210,13 +210,13 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 null,
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(
                         'cudi',
                         array(
-                            'name' => $cudi_name
+                            'name' => $cudi_name,
                         ),
                         array(
                              new Object(
@@ -252,7 +252,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                                          'extra',
                                          null,
                                          $delivery_address_extra
-                                     )
+                                     ),
                                  )
                              ),
                              new Object(
@@ -278,9 +278,9 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                                          'city',
                                          null,
                                          $billing_address->getPostal() . ' ' . $billing_address->getCity()
-                                     )
+                                     ),
                                  )
-                             )
+                             ),
                         )
                     ),
                     new Object(
@@ -292,7 +292,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         'internal_items',
                         null,
                         $internal_items
-                    )
+                    ),
                 )
             )
         );

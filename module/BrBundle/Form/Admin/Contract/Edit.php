@@ -23,9 +23,9 @@ use BrBundle\Entity\Contract,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to edit an existing contract
@@ -36,7 +36,6 @@ use BrBundle\Entity\Contract,
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
     {
         parent::__construct($options);
@@ -69,7 +68,6 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 ->setValue($entry->getContractText())
                 ->setRequired(false);
             $this->add($field);
-
         }
     }
 

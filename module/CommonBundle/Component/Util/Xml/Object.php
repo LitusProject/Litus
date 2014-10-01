@@ -40,16 +40,18 @@ class Object
      */
     public function __construct($tag, array $params = null, $content = null)
     {
-        if (($tag === null) || !is_string($tag))
+        if (($tag === null) || !is_string($tag)) {
             throw new InvalidArgumentException('Invalid tag');
+        }
 
         if ($content === null) {
             if ($params === null) {
                 $this->_content = '<' . $tag . '/>';
             } else {
                 $this->_content .= '<' . $tag;
-                foreach ($params as $key => $value)
+                foreach ($params as $key => $value) {
                     $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
+                }
                 $this->_content .= '/>';
             }
         } else {
@@ -57,8 +59,9 @@ class Object
                 $this->_content = '<' . $tag . '>';
             } else {
                 $this->_content .= '<' . $tag;
-                foreach ($params as $key => $value)
+                foreach ($params as $key => $value) {
                     $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
+                }
                 $this->_content .= '>';
             }
 

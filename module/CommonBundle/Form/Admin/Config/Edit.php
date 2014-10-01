@@ -21,9 +21,9 @@ namespace CommonBundle\Form\Admin\Config;
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Entity\General\Config,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Edit Configuration
@@ -68,7 +68,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
         $this->setData(
             array(
                 'key' => $entry->getKey(),
-                'value' => $entry->getValue()
+                'value' => $entry->getValue(),
             )
         );
     }

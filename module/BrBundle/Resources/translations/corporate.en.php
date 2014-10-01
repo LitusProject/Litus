@@ -57,5 +57,5 @@ return array(
     'The removal of the internship was succesfully registered.  This will be reviewed by our corporate relations team.' => 'The removal of the internship was succesfully registered.  This will be reviewed by our corporate relations team.',
     'The removal of the vacancy was succesfully registered.  This will be reviewed by our corporate relations team.' => 'The removal of the vacancy was succesfully registered.  This will be reviewed by our corporate relations team.',
     'An error occurred while removing the internship.' => 'An error occurred while removing the internship.',
-    'An error occurred while removing the vacancy.' => 'An error occurred while removing the vacancy.'
+    'An error occurred while removing the vacancy.' => 'An error occurred while removing the vacancy.',
 );

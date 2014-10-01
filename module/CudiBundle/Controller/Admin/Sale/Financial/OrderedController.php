@@ -34,8 +34,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYear();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_individualSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -113,8 +114,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     public function ordersAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_ordersSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -186,12 +188,14 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function orderAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_orderSearch($order, $academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -223,8 +227,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -295,8 +300,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -304,8 +310,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -333,8 +340,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -386,7 +394,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_ordered',
                 array(
-                    'action' => 'orders'
+                    'action' => 'orders',
                 )
             );
 
@@ -406,7 +414,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_ordered',
                 array(
-                    'action' => 'orders'
+                    'action' => 'orders',
                 )
             );
 
@@ -427,7 +435,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_ordered',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 
@@ -447,7 +455,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_ordered',
                 array(
-                    'action' => 'suppliers'
+                    'action' => 'suppliers',
                 )
             );
 

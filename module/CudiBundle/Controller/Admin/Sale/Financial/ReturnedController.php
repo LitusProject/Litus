@@ -33,8 +33,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function individualAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_individualSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -162,8 +163,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function sessionAction()
     {
-        if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession())) {
             return new ViewModel();
+        }
 
         $academicYear = $session->getAcademicYear();
 
@@ -175,8 +177,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_sessionSearch($session);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -205,8 +208,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($session = $this->_getSession()))
+        if (!($session = $this->_getSession())) {
             return new ViewModel();
+        }
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -265,8 +269,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYear();
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_articlesSearch($academicYear);
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -358,8 +363,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -371,8 +377,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $records = $this->_articleSearch($article, $this->getAcademicYear());
+        }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
@@ -405,8 +412,9 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getAcademicYear();
 
@@ -474,7 +482,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'sessions'
+                    'action' => 'sessions',
                 )
             );
 
@@ -494,7 +502,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'sessions'
+                    'action' => 'sessions',
                 )
             );
 
@@ -517,7 +525,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 
@@ -537,7 +545,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_sales_financial_sold',
                 array(
-                    'action' => 'articles'
+                    'action' => 'articles',
                 )
             );
 

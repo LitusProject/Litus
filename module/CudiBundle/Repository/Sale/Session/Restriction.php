@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Session;
 
 /**
  * Restriction

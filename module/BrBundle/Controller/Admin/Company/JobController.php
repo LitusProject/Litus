@@ -21,7 +21,6 @@ namespace BrBundle\Controller\Admin\Company;
 use BrBundle\Entity\Company\Job,
     BrBundle\Form\Admin\Company\Job\Add as AddForm,
     BrBundle\Form\Admin\Company\Job\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -34,8 +33,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Company\Job',
@@ -44,7 +44,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 'company' => $company,
             ),
             array(
-                'type'=> 'ASC',
+                'type' => 'ASC',
             )
         );
 
@@ -59,8 +59,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany()))
+        if (!($company = $this->_getCompany())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
 
@@ -120,8 +121,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($job = $this->_getJob()))
+        if (!($job = $this->_getJob())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($job);
 
@@ -176,8 +178,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($job = $this->_getJob()))
+        if (!($job = $this->_getJob())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($job);
         $this->getEntityManager()->flush();
@@ -203,7 +206,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -223,7 +226,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -247,7 +250,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -267,7 +270,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
