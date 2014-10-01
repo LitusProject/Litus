@@ -18,7 +18,10 @@
 
 namespace GalleryBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Util\Url,
+    CommonBundle\Component\Validator\AbstractValidator,
+    CommonBundle\Component\Validator\FormAwareInterface,
     DateTime,
     Doctrine\ORM\EntityManager,
     GalleryBundle\Entity\Album\Album;
@@ -29,19 +32,21 @@ use CommonBundle\Component\Util\Url,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \Zend\Validator\AbstractValidator
+class Name extends AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var Album The album exluded from this check
      */
-    private $_album;
+    private $album;
+
+    private $form;
 
     /**
      * @var array The error messages
@@ -59,8 +64,13 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         parent::__construct($opts);
 
-        $this->_entityManager = $entityManager;
-        $this->_album = $album;
+        $this->entityManager = $entityManager;
+        $this->album = $album;
+    }
+
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
     }
 
     /**
@@ -74,16 +84,16 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $date = DateTime::createFromFormat('d#m#Y', $context['date']);
+        $date = DateTime::createFromFormat('d#m#Y', self::getFormValue($this->form, 'date'));
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
-            $album = $this->_entityManager
+            $album = $this->entityManager
                 ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->_album && $album == $this->_album)) {
+            if (null === $album || ($this->album && $album == $this->album)) {
                 return true;
             }
 

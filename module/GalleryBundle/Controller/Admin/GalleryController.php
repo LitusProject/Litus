@@ -63,8 +63,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                var_dump($form->getData());
-                die();
                 $album = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($album);
