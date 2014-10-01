@@ -21,6 +21,7 @@ namespace GalleryBundle\Entity\Album;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     Locale;
 
@@ -101,6 +102,9 @@ class Album
     {
         $this->createTime = new DateTime();
         $this->createPerson = $person;
+
+        $this->translations = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     /**
