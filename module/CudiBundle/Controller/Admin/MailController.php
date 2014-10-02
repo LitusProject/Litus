@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Form\Admin\Mail\Send as MailForm,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,14 +32,13 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $form = new MailForm();
+        $form = $this->getForm('cudi_mail_send');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $mailAddress = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
