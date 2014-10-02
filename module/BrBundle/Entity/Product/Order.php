@@ -185,7 +185,7 @@ class Order
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return \BrBundle\Entity\Collaborator
      */
     public function getCreationPerson()
     {

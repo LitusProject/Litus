@@ -32,15 +32,6 @@ use BrBundle\Entity\Company\Job,
 class RequestVacancy extends \BrBundle\Entity\Company\Request
 {
     /**
-     * @var request's ID
-     *
-     * @ORM\Id
-     * @ORM\Column(type="bigint")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
      * @var string The type of the request
      *
      * @ORM\Column(type="text")
