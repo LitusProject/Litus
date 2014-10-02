@@ -171,6 +171,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'name'       => 'type',
                     'label'      => 'Type',
                     'required'   => true,
+                    'value'      => 'other',
                     'attributes' => array(
                         'data-help' => 'The type of the article can be:
                         <ul>
