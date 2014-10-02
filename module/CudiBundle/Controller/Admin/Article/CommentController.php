@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Admin\Article;
 
 use CudiBundle\Entity\Comment\Comment,
-    CudiBundle\Form\Admin\Article\Comment\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -42,14 +41,13 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_article_comment_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $comment = new Comment(
                     $this->getEntityManager(),

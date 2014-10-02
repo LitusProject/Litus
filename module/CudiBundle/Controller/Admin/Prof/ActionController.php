@@ -146,7 +146,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
             } else {
                 $edited = $action->getEntity();
                 $current = $action->getPreviousEntity();
-                $duplicate = $current->duplicate();
+                $duplicate = clone $current;
 
                 $current->setTitle($edited->getTitle())
                     ->setAuthors($edited->getAuthors())

@@ -286,7 +286,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $formData = $form->getFormData($formData);
 
                 if (!$article->isProf()) {
-                    $duplicate = $article->duplicate();
+                    $duplicate = clone $article;
                     $duplicate->setIsProf(true);
                     $edited = false;
 
