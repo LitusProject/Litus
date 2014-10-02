@@ -25,7 +25,7 @@ use CudiBundle\Entity\Article\External as ExternalArticle,
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $article_keys = array(
-        'title', 'year_published', 'type', 'isbn', 'url',
+        'title', 'year_published', 'isbn', 'url',
     );
 
     private static $internal_keys = array(
@@ -52,7 +52,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         $data['article']['publisher'] = $object->getPublishers();
         $data['article']['type'] = $object->getType();
 
-        if ($data['article']['internal']) {
+        if (isset($data['article']['internal']) && $data['article']['internal']) {
             $data['internal'] = $this->stdExtract(
                 $object,
                 array(

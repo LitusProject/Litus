@@ -33,9 +33,23 @@
             {% for template in paginator %}
                 <tr class="item item-{{ template.getId() }}">
                     <td>{{ template.getName() }}</td>
-                    <td>{{ template.getValue() }}</td>
+                    <td>
+                        {% if template.getMethod() == 'percentage' %}
+                            -{{ (template.getValue()/100)|number_format(2) }}%
+                        {% elseif template.getMethod() == 'fixed' %}
+                            - &euro; {{ (template.getValue()/100)|number_format(2) }}
+                        {% else %}
+                            &euro; {{ (template.getValue()/100)|number_format(2) }}
+                        {% endif %}
+                    </td>
                     <td>{{ template.getType() }}</td>
-                    <td>{{ template.getOrganization().getName() }}</td>
+                    <td>
+                        {% if null == template.getOrganization() %}
+                            <i>All</i>
+                        {% else %}
+                            {{ template.getOrganization().getName() }}
+                        {% endif %}
+                    </td>
                     <td>{{ template.getMethod() }}</td>
                     <td>{{ template.getRounding() }}</td>
                     <td style="text-align: center">{% if template.applyOnce() %}&times;{% endif %}</td>
