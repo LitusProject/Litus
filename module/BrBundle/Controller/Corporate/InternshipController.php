@@ -83,8 +83,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $formData['city'],
                     $contact->getCompany(),
                     'internship',
-                    $this->_loadDate($formData['start_date']),
-                    $this->_loadDate($formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -143,8 +143,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $formData['city'],
                     $contact->getCompany(),
                     'internship',
-                    $this->_loadDate($formData['start_date']),
-                    $this->_loadDate($formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 

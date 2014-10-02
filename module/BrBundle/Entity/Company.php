@@ -189,7 +189,7 @@ class Company
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {

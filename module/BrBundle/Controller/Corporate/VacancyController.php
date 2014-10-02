@@ -84,8 +84,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    $this->_loadDate($formData['start_date']),
-                    $this->_loadDate($formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -144,8 +144,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    $this->_loadDate($formData['start_date']),
-                    $this->_loadDate($formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
