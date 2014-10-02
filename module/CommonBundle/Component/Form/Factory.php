@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\ElementInterface as OriginalElementInterface,
+use CommonBundle\Component\InputFilter\Factory as inputFilterFactory,
+    Zend\Form\ElementInterface as OriginalElementInterface,
     Zend\Form\FieldsetInterface as OriginalFieldsetInterface;
 
 /**
@@ -116,5 +117,14 @@ class Factory extends \Zend\Form\Factory
         }
 
         return parent::prepareAndInjectElements($elements, $fieldset, $method);
+    }
+
+    public function getInputFilterFactory()
+    {
+        if (null === $this->inputFilterFactory) {
+            $this->setInputFilterFactory(new InputFilterFactory());
+        }
+
+        return $this->inputFilterFactory;
     }
 }
