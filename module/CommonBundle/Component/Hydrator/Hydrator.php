@@ -167,9 +167,16 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
             return array();
         }
 
+        static $originalHydrator = null;
+
+        if (null === $originalHydrator) {
+            $originalHydrator = $this->getHydrator('classmethods');
+            $originalHydrator->setNamingStrategy(new NamingStrategy\RemoveIs());
+        }
+
         $keys = self::flatten($keys);
 
-        $hydrator = clone $this->getHydrator('classmethods');
+        $hydrator = clone $originalHydrator;
         if (!empty($keys)) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
                 $method = explode('::', $property)[1];
