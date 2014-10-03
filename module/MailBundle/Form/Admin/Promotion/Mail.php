@@ -18,6 +18,8 @@
 
 namespace MailBundle\Form\Admin\Promotion;
 
+use MailBundle\Component\Validator\MultiMail as MultiMailValidator;
+
 /**
  * Send Mail
  *
@@ -83,6 +85,25 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
+            'type'       => 'text',
+            'name'       => 'bcc',
+            'label'      => 'Additional BCC',
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
             'type'       => 'textarea',
             'name'       => 'message',
             'label'      => 'Message',
@@ -94,6 +115,27 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Attachments',
+            'attributes' => array(
+                'multiple' => true,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '50MB',
+                            ),
+                        ),
                     ),
                 ),
             ),

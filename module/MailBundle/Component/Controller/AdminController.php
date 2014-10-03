@@ -23,7 +23,7 @@ namespace MailBundle\Component\Controller;
  */
 class AdminController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
-    protected function findCurrentAcademicYear()
+    public function findCurrentAcademicYear()
     {
         return $this->getCurrentAcademicYear(false);
     }

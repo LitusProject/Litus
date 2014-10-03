@@ -19,6 +19,9 @@
 namespace MailBundle\Controller\Admin;
 
 use Zend\Mail\Message,
+    Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,8 +36,12 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
         $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(
+                array_merge(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -94,12 +101,42 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.mail_name');
 
+                $body = $formData['message'];
+
+                $part = new Part($body);
+                $part->type = Mime::TYPE_TEXT;
+                $part->charset = 'utf-8';
+
+                $message = new MimeMessage();
+                $message->addPart($part);
+
+                if (isset($formData['file'])) {
+                    foreach ($formData['file'] as $file) {
+                        if ($file['size'] === NULL) {
+                            continue;
+                        }
+
+                        $part = new Part(fopen($file['tmp_name'], 'r'));
+                        $part->type = $file['type'];
+                        $part->id = $file['name'];
+                        $part->disposition = 'attachment';
+                        $part->filename = $file['name'];
+                        $part->encoding = Mime::ENCODING_BASE64;
+
+                        $message->addPart($part);
+                    }
+                }
+
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setBody($message)
                     ->setFrom($from, $mailName)
                     ->addTo($from, $mailName)
                     ->setSubject($formData['subject']);
 
+                $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+                foreach ($bccs as $bcc) {
+                    $mail->addBcc($bcc);
+                }
                 $i = 0;
                 foreach ($people as $person) {
                     if (null !== $person->getPersonalEmail()) {

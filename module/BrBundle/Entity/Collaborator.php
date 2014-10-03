@@ -39,7 +39,7 @@ class Collaborator
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Collaborator The contract accompanying this order
+     * @var \CommonBundle\Entity\User\Person The contract accompanying this order
      *
      * @ORM\OneToOne(targetEntity="\CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -104,6 +104,9 @@ class Collaborator
         $this->active = true;
     }
 
+    /**
+     * @return CommonBundle\Entity\User\Person
+     */
     public function getPerson()
     {
         return $this->person;
