@@ -26,6 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Option
 {
+    const PRICE_MULTIPLIER = 100;
+
     /**
      * @var integer The ID of the ticket
      *
@@ -53,14 +55,14 @@ class Option
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint")
+     * @ORM\Column(name="price_members", type="amount")
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\Column(name="price_non_members", type="amount")
      */
     private $priceNonMembers;
 
@@ -115,39 +117,55 @@ class Option
     }
 
     /**
-     * @return integer
+     * @return float
      */
     public function getPriceMembers()
     {
-        return $this->priceMembers;
+        return $this->priceMembers->asFloat(self::PRICE_MULTIPLIER);
     }
 
     /**
-     * @param  integer $priceMembers
+     * @return integer
+     */
+    public function getPriceMembersAsInt()
+    {
+        return $this->priceMembers->asInteger();
+    }
+
+    /**
+     * @param  float $priceMembers
      * @return self
      */
     public function setPriceMembers($priceMembers)
     {
-        $this->priceMembers = $priceMembers * 100;
+        $this->priceMembers = AmountType::fromFloat($priceMembers, self::PRICE_MULTIPLIER);
 
         return $this;
     }
 
     /**
-     * @return integer
+     * @return float
      */
     public function getPriceNonMembers()
     {
-        return $this->priceNonMembers;
+        return $this->priceNonMembers->asFloat(self::PRICE_MULTIPLIER);
     }
 
     /**
-     * @param  integer $priceNonMembers
+     * @return integer
+     */
+    public function getPriceNonMembersAsInt()
+    {
+        return $this->priceNonMembers->asInteger();
+    }
+
+    /**
+     * @param  float $priceNonMembers
      * @return self
      */
     public function setPriceNonMembers($priceNonMembers)
     {
-        $this->priceNonMembers = $priceNonMembers * 100;
+        $this->priceNonMembers = AmountType::fromFloat($priceNonMembers, self::PRICE_MULTIPLIER);
 
         return $this;
     }

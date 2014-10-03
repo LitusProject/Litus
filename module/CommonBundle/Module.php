@@ -41,6 +41,8 @@ class Module
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);
 
+        \Doctrine\DBAL\Types\Type::addType(\CommonBundle\Component\Doctrine\DBAL\Types\AmountType::AMOUNT, 'CommonBundle\Component\Doctrine\DBAL\Types\AmountType');
+
         if ($event->getRequest() instanceof ConsoleRequest) {
             $event->setRouter($services->get('litus.console_router'));
             $this->initializeConsole($services->get('litus.console_application'), $services);

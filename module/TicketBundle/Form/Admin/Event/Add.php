@@ -165,8 +165,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
         );
 
         if (sizeof($event->getOptions()) == 0) {
-            $data['price_members'] = number_format($event->getPriceMembers()/100, 2);
-            $data['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers()/100, 2);
+            $data['price_members'] = number_format($event->getPriceMembers(), 2);
+            $data['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers(), 2);
         } else {
             $data['enable_options'] = true;
             $data['enable_options_hidden'] = '1';
@@ -177,8 +177,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form implements InputFilter
                 $data['options'][] = array(
                     'option_id' => $option->getId(),
                     'option' => $option->getName(),
-                    'price_members' => number_format($option->getPriceMembers()/100, 2),
-                    'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
+                    'price_members' => number_format($option->getPriceMembers(), 2),
+                    'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers(), 2),
                 );
             }
         }

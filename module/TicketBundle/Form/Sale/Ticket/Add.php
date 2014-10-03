@@ -115,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $field->setLabel('Number Member')
                 ->setAttribute('options', $this->_getNumberOptions())
                 ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                ->setAttribute('data-price', $event->getPriceMembers());
+                ->setAttribute('data-price', $event->getPriceMembersAsInt());
             $optionsForm->add($field);
 
             if (!$event->isOnlyMembers()) {
@@ -123,7 +123,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field->setLabel('Number Non Member')
                     ->setAttribute('options', $this->_getNumberOptions())
                     ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                    ->setAttribute('data-price', $event->getPriceNonMembers());
+                    ->setAttribute('data-price', $event->getPriceNonMembersAsInt());
                 $optionsForm->add($field);
             }
         } else {
@@ -132,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field->setLabel(ucfirst($option->getName()) . ' (Member)')
                     ->setAttribute('options', $this->_getNumberOptions())
                     ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                    ->setAttribute('data-price', $option->getPriceMembers());
+                    ->setAttribute('data-price', $option->getPriceMembersAsInt());
                 $optionsForm->add($field);
 
                 if (!$event->isOnlyMembers()) {
@@ -140,7 +140,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $field->setLabel(ucfirst($option->getName()) . ' (Non Member)')
                         ->setAttribute('options', $this->_getNumberOptions())
                         ->setAttribute('class', $field->getAttribute('class') . ' ticket_option')
-                        ->setAttribute('data-price', $option->getPriceNonMembers());
+                        ->setAttribute('data-price', $option->getPriceNonMembersAsInt());
                     $optionsForm->add($field);
                 }
             }
