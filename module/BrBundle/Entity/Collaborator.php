@@ -104,6 +104,9 @@ class Collaborator
         $this->active = true;
     }
 
+    /**
+     * @return CommonBundle\Entity\User\Person
+     */
     public function getPerson()
     {
         return $this->person;

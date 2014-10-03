@@ -34,7 +34,7 @@ use BrBundle\Entity\Collaborator,
 class Edit extends Add
 {
     /**
-     * @var \BrBundle\Entity\Product\Collaborator
+     * @var \BrBundle\Entity\Collaborator
      */
     private $_collaborator;
 

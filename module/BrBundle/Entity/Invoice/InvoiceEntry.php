@@ -112,7 +112,7 @@ class InvoiceEntry
     }
 
     /**
-     * @param  int                                   $text
+     * @param  string                                $text
      * @return \BrBundle\Entity\Invoice\InvoiceEntry
      */
     public function setInvoiceText($text)

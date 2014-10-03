@@ -19,6 +19,7 @@
 namespace MailBundle\Controller\Admin;
 
 use MailBundle\Form\Admin\Promotion\Mail as MailForm,
+    Zend\InputFilter\InputInterface,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
