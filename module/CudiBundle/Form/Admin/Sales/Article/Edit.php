@@ -18,89 +18,35 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
+use LogicException;
 
 /**
  * Edit Sale Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CudiBundle\Form\Admin\Sales\Article\Add
+class Edit extends Add
 {
-    /**
-     * @var Article
-     */
-    private $_article;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Article         $article
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Article $article, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->article) {
+            throw new LogicException('Cannot edit a null sale article.');
+        }
 
-        $this->_article = $article;
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'article_edit');
-        $this->add($field);
-
-        $this->populateFromArticle($article);
+        $this->remove('submit')
+            ->addSubmit('Save', 'article_edit');
 
         $membershipArticles = unserialize(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
         );
 
-        if (in_array($article->getId(), $membershipArticles)) {
-            $this->get('bookable')->setAttribute('disabled', 'disabled');
-            $this->get('unbookable')->setAttribute('disabled', 'disabled');
+        if (in_array($this->article->getId(), $membershipArticles)) {
+            $this->get('bookable')->setAttribute('disabled', true);
+            $this->get('unbookable')->setAttribute('disabled', true);
         }
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $barcodeCheck = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_sale_article_barcode_check');
-
-        if ($barcodeCheck) {
-            $inputFilter->remove('barcode');
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'barcode',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'barcode',
-                                'options' => array(
-                                    'adapter'     => 'Ean12',
-                                    'useChecksum' => false,
-                                ),
-                            ),
-                            new UniqueBarcodeValidator($this->_entityManager, $this->_article),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
     }
 }

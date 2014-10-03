@@ -18,95 +18,129 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Restrictions;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Restrictions\Exists as RestrictionValidator,
     CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Restriction,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    LogicException;
 
 /**
  * Add Restriction
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var EntityManager
+     * @var Article
      */
-    protected $_entityManager = null;
+    protected $article;
 
-    /**
-     * @var \CudiBundle\Entity\Sale\Article
-     */
-    protected $_article;
-
-    /**
-     * @param Article         $article
-     * @param EntityManager   $entityManager
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(Article $article, EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $article) {
+            throw new LogicException('Cannot add a restriction to a null article');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_article = $article;
+        parent::init();
 
-        $field = new Select('type');
-        $field->setAttribute('id', 'restriction_type')
-            ->setLabel('Type')
-            ->setAttribute('options', array('amount' => 'Amount', 'member' => 'Member', 'study' => 'Study'))
-            ->setAttribute('data-help', 'Limit the sale of this article on user base:
-                <ul>
-                    <li><b>Amount:</b> restrict the number of this article sold to this user</li>
-                    <li><b>Member:</b> restrict this article to members only</li>
-                    <li><b>Study:</b> restrict this article to students of one ore more studies</li>
-                </ul>')
-            ->setRequired();
-        $this->add($field);
+        $this->addClass('restriction');
 
-        $field = new Text('value_amount');
-        $field->setAttribute('id', 'restriction_value_amount')
-            ->setAttribute('class', 'restriction_value')
-            ->setLabel('Amount')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'class'     => 'type',
+                'data-help' => 'Limit the sale of this article on user base:
+                    <ul>
+                        <li><b>Amount:</b> restrict the number of this article sold to this user</li>
+                        <li><b>Member:</b> restrict this article to members only</li>
+                        <li><b>Study:</b> restrict this article to students of one ore more studies</li>
+                    </ul>',
+                'options'   => array(
+                    'amount' => 'Amount',
+                    'member' => 'Member',
+                    'study'  => 'Study',
+                ),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new RestrictionValidator($this->article, $this->getEntityManager()),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Checkbox('value_member');
-        $field->setAttribute('id', 'restriction_value_member')
-            ->setAttribute('class', 'restriction_value')
-            ->setLabel('Member');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'value',
+            'attributes' => array(
+                'class' => 'value',
+            ),
+            'elements'   => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'amount',
+                    'label'      => 'Amount',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class' => 'amount',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validator' => array(
+                                array('name' => 'int'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'member',
+                    'label'      => 'Member',
+                    'attributes' => array(
+                        'class' => 'member',
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'study',
+                    'label'      => 'Study',
+                    'required'   => true,
+                    'attributes' => array(
+                        'class'    => 'study',
+                        'multiple' => true,
+                        'options'  => $this->getStudies(),
+                        'style'    => 'max-width: 100%;',
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('value_study');
-        $field->setAttribute('id', 'restriction_value_study')
-            ->setAttribute('class', 'restriction_value')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_getStudies())
-            ->setAttribute('style', 'max-width: 100%;')
-            ->setLabel('Studies')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
+        $this->addSubmit('Add', 'add');
     }
 
-    public function _getStudies()
+    /**
+     * @param  Article $article
+     * @return self
+     */
+    public function setArticle(Article $article)
     {
-        $academicYear = AcademicYear::getOrganizationYear($this->_entityManager);
+        $this->article = $article;
 
-        $studies = $this->_entityManager
+        return $this;
+    }
+
+    private function getStudies()
+    {
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager());
+
+        $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($academicYear);
 
@@ -118,58 +152,14 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         return $options;
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $specs = parent::getInputFilterSpecification();
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'type',
-                    'required' => true,
-                    'validators' => array(
-                        new RestrictionValidator($this->_article, $this->_entityManager),
-                    ),
-                )
-            )
-        );
+        $specs['value']['amount']['required'] = 'amount' === $this->data['type'];
+        $specs['value']['member']['required'] = 'member' === $this->data['type'];
+        $specs['value']['study']['required'] = 'study' === $this->data['type'];
 
-        if ('amount' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'value_amount',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validator' => array(
-                            array('name' => 'int'),
-                        ),
-                    )
-                )
-            );
-        } elseif ('member' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'value_member',
-                        'required' => true,
-                    )
-                )
-            );
-        } elseif ('study' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'value_study',
-                        'required' => true,
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
+        return $specs;
     }
 }

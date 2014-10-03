@@ -18,103 +18,176 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\Price as PriceValidator,
+use CommonBundle\Component\Validator\Price as PriceValidator,
     CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
     CudiBundle\Entity\Sale\Article,
-    DateInterval,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    DateInterval;
 
 /**
  * Add Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'CudiBundle\Hydrator\Sale\Article';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Article\null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $article;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'purchase_price',
+            'label'    => 'Purchase Price',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('purchase_price');
-        $field->setLabel('Purchase Price')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'sell_price',
+            'label'    => 'Sell Price',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('sell_price');
-        $field->setLabel('Sell Price')
-            ->setRequired();
-        $this->add($field);
-
-        $barcodeCheck = $this->_entityManager
+        $barcodeCheck = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_sale_article_barcode_check');
 
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-            ->setAttribute('class', 'disableEnter')
-            ->setAttribute('data-help', 'This is the main barcode of the article. This one will be printed on the front page.')
-            ->setRequired($barcodeCheck);
-        $this->add($field);
+        $barcodeInput = array();
+        if ($barcodeCheck) {
+            $barcodeInput = array(
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'barcode',
+                        'options' => array(
+                            'adapter'     => 'Ean12',
+                            'useChecksum' => false,
+                        ),
+                    ),
+                    new UniqueBarcodeValidator($this->getEntityManager(), $this->article),
+                ),
+            );
+        }
 
-        $field = new Select('supplier');
-        $field->setLabel('Supplier')
-            ->setRequired()
-            ->setAttribute('options', $this->_getSuppliers());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'barcode',
+            'label'      => 'Barcode',
+            'required'   => $barcodeCheck,
+            'attributes' => array(
+                'class'     => 'disableEnter',
+                'data-help' => 'This is the main barcode of the article. This one will be printed on the front page.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    $barcodeInput,
+                ),
+            ),
+        ));
 
-        $field = new Checkbox('bookable');
-        $field->setLabel('Bookable')
-            ->setAttribute('data-help', 'Enabling this option will allow students to book this article.');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'supplier',
+            'label'      => 'Supplier',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getSuppliers(),
+            ),
+        ));
 
-        $field = new Checkbox('unbookable');
-        $field->setLabel('Unbookable')
-            ->setAttribute('data-help', 'Enabling this option will allow students with bookings of this article to cancel there reservation.');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'bookable',
+            'label'      => 'Bookable',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will allow students to book this article.',
+            ),
+        ));
 
-        $field = new Checkbox('sellable');
-        $field->setLabel('Sellable')
-            ->setValue(true)
-                ->setAttribute('data-help', 'Enabling this option will allow to sell this article in the \'Sale App\'.');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'unbookable',
+            'label'      => 'Unbookable',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will allow students with bookings of this article to cancel there reservation.',
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'sellable',
+            'label'      => 'Sellable',
+            'value'      => true,
+            'attributes' => array(
+                'data-help' => 'Enabling this option will allow to sell this article in the \'Sale App\'.',
+            ),
+        ));
 
         $dateinterval = new DateInterval(
-            $entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.reservation_expire_time')
         );
 
-        $field = new Checkbox('can_expire');
-        $field->setLabel('Can Expire')
-            ->setAttribute('data-help', 'Enabling this option will expire the bookings of this article after a period of ' . $dateinterval->format('%d days'));
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'can_expire',
+            'label'      => 'Can Expire',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will expire the bookings of this article after a period of ' . $dateinterval->format('%d days'),
+            ),
+        ));
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'article_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'article_add');
+
+        if ($this->article !== null) {
+            $this->bind($this->article);
+        }
     }
 
-    private function _getSuppliers()
+    /**
+     * @param  Article $article
+     * @return self
+     */
+    public function setArticle(Article $article)
     {
-        $suppliers = $this->_entityManager
+        $this->article = $article;
+
+        return $this;
+    }
+
+    private function getSuppliers()
+    {
+        $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
         $supplierOptions = array();
@@ -123,96 +196,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         }
 
         return $supplierOptions;
-    }
-
-    public function populateFromArticle(Article $article)
-    {
-        $this->setData(
-            array(
-                'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
-                'sell_price' => number_format($article->getSellPrice()/100, 2),
-                'barcode' => $article->getBarcode() != '' ? str_pad($article->getBarcode(), 12, '0', STR_PAD_LEFT) : '',
-                'supplier' => $article->getSupplier()->getId(),
-                'bookable' => $article->isBookable(),
-                'unbookable' => $article->isUnbookable(),
-                'sellable' => $article->isSellable(),
-                'can_expire' => $article->canExpire(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'purchase_price',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sell_price',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                )
-            )
-        );
-
-        $barcodeCheck = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_sale_article_barcode_check');
-
-        if ($barcodeCheck) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'barcode',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'barcode',
-                                'options' => array(
-                                    'adapter'     => 'Ean12',
-                                    'useChecksum' => false,
-                                ),
-                            ),
-                            new UniqueBarcodeValidator($this->_entityManager),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'supplier',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

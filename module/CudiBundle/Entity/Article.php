@@ -519,6 +519,7 @@ abstract class Article
     public function __clone()
     {
         $this->id = null;
+        $this->timestamp = new DateTime();
     }
 
     /**

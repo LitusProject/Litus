@@ -18,26 +18,25 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
+use LogicException;
+
 /**
  * View Sale Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class View extends \CudiBundle\Form\Admin\Sales\Article\Edit
+class View extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Article         $article
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Article $article, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $article, $name);
+        if (null === $this->article) {
+            throw new LogicException('Cannot view a null sale article');
+        }
+
+        parent::init();
 
         foreach ($this->getElements() as $element) {
-            $element->setAttribute('disabled', 'disabled');
+            $element->setAttribute('disabled', true);
         }
 
         $this->remove('submit');
