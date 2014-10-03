@@ -19,7 +19,6 @@
 namespace TicketBundle\Entity;
 
 use CalendarBundle\Entity\Node\Event as CalendarEvent,
-    CommonBundle\Entity\User\Person,
     DateInterval,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,

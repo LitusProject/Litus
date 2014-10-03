@@ -1724,12 +1724,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LitusProject/PhpCodeStyle.git",
-                "reference": "f8a302db5da11713ad23af7638dc2c0383caf897"
+                "reference": "7c727c4082370c951518085a69d9d5534684126b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/f8a302db5da11713ad23af7638dc2c0383caf897",
-                "reference": "f8a302db5da11713ad23af7638dc2c0383caf897",
+                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/7c727c4082370c951518085a69d9d5534684126b",
+                "reference": "7c727c4082370c951518085a69d9d5534684126b",
                 "shasum": ""
             },
             "require": {
@@ -1745,7 +1745,7 @@
             "license": [
                 "GPL-3.0+"
             ],
-            "time": "2014-09-29 21:35:31"
+            "time": "2014-10-01 21:14:36"
         },
         {
             "name": "sebastian/diff",

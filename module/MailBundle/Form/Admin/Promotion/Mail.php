@@ -18,10 +18,12 @@
 
 namespace MailBundle\Form\Admin\Promotion;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\File,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilter;
@@ -76,9 +78,20 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $field = new Text('bcc');
+        $field->setLabel('Additional BCC')
+            ->setAttribute('style', 'width: 400px;');
+        $this->add($field);
+
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttribute('style', 'width: 500px; height: 200px;')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new File('file');
+        $field->setLabel('Attachments')
+            ->setAttribute('multiple', 'multiple')
             ->setRequired();
         $this->add($field);
 
@@ -131,10 +144,42 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'bcc',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'message',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'file',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '50MB',
+                            ),
+                        ),
                     ),
                 )
             )

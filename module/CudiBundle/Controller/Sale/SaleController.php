@@ -60,6 +60,9 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 'paydesks' => $paydesks,
                 'membershipArticles' => $membershipArticles,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                'printCollectAsSignin' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.print_collect_as_signin'),
             )
         );
     }

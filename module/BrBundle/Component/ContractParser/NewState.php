@@ -25,11 +25,6 @@ namespace BrBundle\Component\ContractParser;
  */
 class NewState extends EntryState
 {
-    public function __construct($entry)
-    {
-        parent::__construct($entry);
-    }
-
     public function addEntry($text)
     {
         $entries = new Entries($text);

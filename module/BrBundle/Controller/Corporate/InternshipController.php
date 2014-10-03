@@ -23,7 +23,6 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Request\RequestInternship,
     BrBundle\Form\Corporate\Internship\Add as AddForm,
     BrBundle\Form\Corporate\Internship\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -84,8 +83,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $formData['city'],
                     $contact->getCompany(),
                     'internship',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -144,8 +143,8 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $formData['city'],
                     $contact->getCompany(),
                     'internship',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -250,5 +249,14 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         return $sectorArray;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
