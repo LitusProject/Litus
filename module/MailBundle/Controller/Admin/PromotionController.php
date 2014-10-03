@@ -48,7 +48,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                 $people = array();
                 $enrollments = array();
-                $groupIds = $formData['groups'];
+                $groupIds = isset($formData['groups']) ? $formData['groups'] : null;
 
                 foreach ($formData['to'] as $to) {
                     $academicYear = $this->getEntityManager()
@@ -126,6 +126,10 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         $message->addPart($part);
                     }
                 }
+
+                $from = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.mail');
 
                 $mail = new Message();
                 $mail->setBody($message)
