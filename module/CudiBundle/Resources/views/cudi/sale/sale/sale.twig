@@ -19,6 +19,9 @@
                     {'id': {{ article.getId() }}, 'barcode': {{ article.getBarcode() }}, 'title': '{{ article.getMainArticle().getTitle() }}', 'price': {{ article.getSellPrice() }} },
                 {% endfor %}],
 
+                tPrint: {% if printCollectAsSignin %}'Collect'{% else %}'Print'{% endif %},
+                tPrintNext: {% if printCollectAsSignin %}'Collect Next'{% else %}'Print Next'{% endif %},
+
                 paydesks: [
                     {% for paydesk in paydesks %}
                         {'name': '{{ paydesk.getName() }}', 'code': '{{ paydesk.getCode() }}'},

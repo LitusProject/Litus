@@ -19,7 +19,6 @@
 namespace BrBundle\Component\Validator;
 
 use BrBundle\Entity\Product,
-    CommonBundle\Component\Util\Url,
     Doctrine\ORM\EntityManager;
 
 /**

@@ -20,8 +20,7 @@ namespace CudiBundle\Form\Admin\Article;
 
 use CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
-    CudiBundle\Entity\Article,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator;
+    CudiBundle\Entity\Article;
 
 /**
  * Add Article

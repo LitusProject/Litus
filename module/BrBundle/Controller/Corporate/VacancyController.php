@@ -23,7 +23,6 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Request\RequestVacancy,
     BrBundle\Form\Corporate\Vacancy\Add as AddForm,
     BrBundle\Form\Corporate\Vacancy\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 

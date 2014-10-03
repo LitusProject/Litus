@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Article\Mapping;
 
-use SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator;
-
 /**
  * Add Mapping
  *

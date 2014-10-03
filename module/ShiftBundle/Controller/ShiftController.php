@@ -18,8 +18,7 @@
 
 namespace ShiftBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
+use DateInterval,
     DateTime,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,

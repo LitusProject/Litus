@@ -19,7 +19,6 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Cv\Util,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\General\AcademicYear,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;

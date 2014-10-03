@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
     CudiBundle\Entity\Article\Internal as InternalArticle,
@@ -28,7 +27,6 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
-    DateTime,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
