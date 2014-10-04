@@ -548,7 +548,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 if (null !== $metaData) {
                     if ($enableRegistration) {
-                        if (null !== $metaData->getTshirtSize()) {
+                        if (null !== $metaData->getTshirtSize() && $metaData->getTshirtSize() != $formData['tshirt_size']) {
                             $booking = $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                                 ->findOneAssignedByArticleAndPersonInAcademicYear(
