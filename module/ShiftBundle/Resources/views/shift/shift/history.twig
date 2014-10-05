@@ -8,7 +8,7 @@
     {% include 'shift/shift/partials/navigation.twig' %}
 
     <div style="text-align: justify;">
-    	{{ translate('Here you can see some statistics about shifts you have done before.') }}
+        {{ translate('Here you can see some statistics about shifts you have done before.') }}
     </div>
     <br>
 
@@ -17,7 +17,7 @@
     {% endif %}
 
     {% if shiftsAsResponsible %}
-    	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
+        <h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
 
         <dl class="dl-horizontal">
             {% for unit in shiftsAsResponsible %}
@@ -29,9 +29,9 @@
             <dd>{{ totalAsResponsible }}</dd>
         </dl>
 
-    	<h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
+        <h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
     {% else %}
-    	<h2>{{ translate('Shifts')}}:</h2>
+        <h2>{{ translate('Shifts')}}:</h2>
     {% endif %}
 
     {% if shiftsAsVolunteer%}

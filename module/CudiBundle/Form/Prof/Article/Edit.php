@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
     CudiBundle\Entity\Article,
     Doctrine\ORM\EntityManager;
 

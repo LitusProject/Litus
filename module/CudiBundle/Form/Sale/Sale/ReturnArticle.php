@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Reset,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
+class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var EntityManager

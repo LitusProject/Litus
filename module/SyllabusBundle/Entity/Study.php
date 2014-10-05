@@ -79,20 +79,8 @@ class Study
      */
     private $children;
 
-    /**
-     * @param string  $title
-     * @param integer $kulId
-     * @param integer $phase
-     * @param string  $language
-     * @param Study   $parent
-     */
-    public function __construct($title, $kulId, $phase, $language, Study $parent = null)
+    public function __construct()
     {
-        $this->title = $title;
-        $this->kulId = $kulId;
-        $this->phase = $phase;
-        $this->language = $language;
-        $this->parent = $parent;
         $this->children = new ArrayCollection();
     }
 

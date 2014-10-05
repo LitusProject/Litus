@@ -18,16 +18,10 @@
 
 namespace MailBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\File,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+use CommonBundle\Component\Validator\Proxy as ProxyValidator,
+    CommonBundle\Entity\General\AcademicYear,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    Zend\Validator\NotEmpty as NotEmptyValidator;
 
 /**
  * Send Mail
@@ -36,26 +30,267 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '50MB';
+
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var AcademicYear
      */
-    public function __construct($studies, $groups, $storedMessages, $name = null)
+    private $_academicYear;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->setAttribute('id', 'uploadFile');
-        $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setAttribute('accept-charset', 'utf-8');
+
+        $studies = $this->_getStudies();
+        if (0 != count($studies)) {
+            $this->add(array(
+                'type'       => 'select',
+                'name'       => 'studies',
+                'label'      => 'Studies',
+                'attributes' => array(
+                    'style' => 'max-width: 400px;',
+                    'multiple' => true,
+                ),
+                'options'    => array(
+                    'options' => $studies,
+                ),
+            ));
+        }
+
+        $groups = $this->_getGroups();
+        if (0 != count($groups)) {
+            $this->add(array(
+                'type'       => 'select',
+                'name'       => 'groups',
+                'label'      => 'Groups',
+                'attributes' => array(
+                    'multiple' => true,
+                ),
+                'options'    => array(
+                    'options' => $groups,
+                ),
+            ));
+        }
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'test',
+            'label'      => 'Test Mail',
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'html',
+            'label'      => 'HTML Mail',
+        ));
+
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'from',
+            'label'      => 'From',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'emailAddress'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'bcc',
+            'label'      => 'Additional BCC',
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
+                    ),
+                ),
+            ),
+        ));
+
+        $selectMessage = null;
+        $storedMessages = $this->_getStoredMessages();
+        if (1 < count($storedMessages)) {
+            $selectMessage = $this->addFieldset('Select Message', 'select_message');
+
+            $selectMessage->add(array(
+                'type'       => 'select',
+                'name'       => 'stored_message',
+                'label'      => 'Stored Message',
+                'attributes' => array(
+                    'style' => 'max-width: 100%;',
+                ),
+                'options'    => array(
+                    'options' => $storedMessages,
+                ),
+            ));
+        }
+
+        $fieldset = $this->addFieldset('Compose Message', 'compose_message');
+
+        $fieldset->add(array(
+            'type'       => 'text',
+            'name'       => 'subject',
+            'label'      => 'Subject',
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'label_attributes' => array(
+                    'class' => 'required',
+                ),
+                'input' => array(
+                    'allow_empty' => false,
+                    'continue_if_empty' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 'null',
+                            ),
+                        ),
+                        new ProxyValidator(
+                            new NotEmptyValidator(),
+                            function () use ($selectMessage) {
+                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
+                            }
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $fieldset->add(array(
+            'type'       => 'textarea',
+            'name'       => 'message',
+            'label'      => 'Message',
+            'attributes' => array(
+                'style' => 'width: 500px; height: 200px;',
+            ),
+            'options'    => array(
+                'label_attributes' => array(
+                    'class' => 'required',
+                ),
+                'input' => array(
+                    'allow_empty' => false,
+                    'continue_if_empty' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'notempty',
+                            'options' => array(
+                                'type' => 'null',
+                            ),
+                        ),
+                        new ProxyValidator(
+                            new NotEmptyValidator(),
+                            function () use ($selectMessage) {
+                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
+                            }
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $fieldset->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Attachments',
+            'attributes' => array(
+                'multiple' => true,
+                'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'filesize',
+                            'options' => array(
+                                'max' => self::FILESIZE,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'send',
+            'value'      => 'Send',
+            'attributes' => array(
+                'class' => 'mail',
+            ),
+        ));
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return self
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->_academicYear = $academicYear;
+
+        return $this;
+    }
+
+    private function _getStudies()
+    {
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($this->_academicYear);
 
         $studyNames = array();
         foreach ($studies as $study) {
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
         }
 
+        return $studyNames;
+    }
+
+    private function _getGroups()
+    {
+        $groups = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group')
+            ->findAll();
+
         $groupNames = array();
         foreach ($groups as $group) {
             $groupNames[$group->getId()] = $group->getName();
         }
+
+        return $groupNames;
+    }
+
+    private function _getStoredMessages()
+    {
+        $storedMessages = $this->getDocumentManager()
+            ->getRepository('MailBundle\Document\Message')
+            ->findAll(array(), array('creationTime' => 'DESC'));
 
         $storedMessagesTitles = array(
             '' => '',
@@ -64,163 +299,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
         }
 
-        if (0 != count($studyNames)) {
-            $field = new Select('studies');
-            $field->setLabel('Studies')
-                ->setAttribute('multiple', true)
-                ->setAttribute('style', 'max-width: 100%;')
-                ->setAttribute('options', $studyNames);
-            $this->add($field);
-        }
-
-        if (0 != count($groupNames)) {
-            $field = new Select('groups');
-            $field->setLabel('Groups')
-                ->setAttribute('multiple', true)
-                ->setAttribute('options', $groupNames);
-            $this->add($field);
-        }
-
-        $field = new Checkbox('test');
-        $field->setLabel('Test Mail');
-        $this->add($field);
-
-        $field = new Checkbox('html');
-        $field->setLabel('HTML Mail');
-        $this->add($field);
-
-        $field = new Text('from');
-        $field->setLabel('From')
-            ->setAttribute('style', 'width: 400px;')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('bcc');
-        $field->setLabel('Additional BCC')
-            ->setAttribute('style', 'width: 400px;');
-        $this->add($field);
-
-        if (0 != count($storedMessages)) {
-            $collection = new Collection('select_message');
-            $collection->setLabel('Select Message');
-            $this->add($collection);
-
-            $field = new Select('stored_message');
-            $field->setLabel('Stored Message')
-                ->setAttribute('style', 'max-width: 100%;')
-                ->setAttribute('options', $storedMessagesTitles);
-            $collection->add($field);
-        }
-
-        if (0 != count($storedMessages)) {
-            $collection = new Collection('compose_message');
-            $collection->setLabel('Compose Message');
-            $this->add($collection);
-        } else {
-            $collection = $this;
-        }
-
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 400px;');
-        $collection->add($field);
-
-        $field = new Textarea('message');
-        $field->setLabel('Message')
-            ->setAttribute('style', 'width: 500px; height: 200px;');
-        $collection->add($field);
-
-        $field = new File('file');
-        $field->setLabel('Attachments')
-            ->setAttribute('multiple', 'multiple')
-            ->setRequired();
-        $collection->add($field);
-
-        $field = new Submit('send');
-        $field->setValue('Send')
-            ->setAttribute('id', 'send_mail')
-            ->setAttribute('class', 'mail');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'message',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'from',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'emailAddress',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'bcc',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new MultiMailValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'file',
-                    'required' => false,
-                    'validators' => array(
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'max' => '50MB',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $storedMessagesTitles;
     }
 }

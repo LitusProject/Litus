@@ -18,50 +18,26 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Radio form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Radio extends \Zend\Form\Element\Radio
+class Radio extends \Zend\Form\Element\Radio implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @var boolean
-     */
-    private $_required = false;
+    use ElementTrait;
 
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    public function init()
     {
-        parent::__construct($name, $options);
         $this->setLabelAttributes(array('class' => 'radio'));
     }
 
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return Radio
-     */
-    public function setRequired($flag = true)
+    public function setName($name)
     {
-        $this->setAttribute('required', $flag);
-        $this->_required = $flag;
+        $this->setAttribute('id', $name);
 
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRequired()
-    {
-        return $this->_required;
+        return parent::setName($name);
     }
 }

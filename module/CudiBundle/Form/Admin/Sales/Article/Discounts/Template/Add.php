@@ -18,15 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Price as PriceValidator,
+    CudiBundle\Entity\Sale\Article\Discount\Discount;
 
 /**
  * Add Template
@@ -36,80 +29,113 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'Cudibundle\Hydrator\Sale\Article\Discount\Template';
 
-    /**
-     * @param EntityManager   $entityManager
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'name',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('name');
-        $field->setAttribute('id', 'name')
-            ->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'value',
+            'label'      => 'Value',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'value',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('value');
-        $field->setAttribute('id', 'value')
-            ->setLabel('Value')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'method',
+            'label'      => 'Method',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The method of this discount:
+                    <ul>
+                        <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
+                        <li><b>Fixed:</b> the value will be subtracted from the real price</li>
+                        <li><b>Override:</b> the value will be used as the new price</li>
+                    </ul>',
+                'id'        => 'method',
+                'options'   => Discount::$POSSIBLE_METHODS,
+            ),
+        ));
 
-        $field = new Select('method');
-        $field->setAttribute('id', 'method')
-            ->setLabel('Method')
-            ->setAttribute('options', Discount::$POSSIBLE_METHODS)
-            ->setRequired()
-            ->setAttribute('data-help', 'The method of this discount:
-                <ul>
-                    <li><b>Percentage:</b> the value will used as the percentage to substract from the real price</li>
-                    <li><b>Fixed:</b> the value will be subtracted from the real price</li>
-                    <li><b>Override:</b> the value will be used as the new price</li>
-                </ul>');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'type',
+                'options' => Discount::$POSSIBLE_TYPES,
+            ),
+        ));
 
-        $field = new Select('type');
-        $field->setAttribute('id', 'type')
-            ->setLabel('Type')
-            ->setRequired()
-            ->setAttribute('options', Discount::$POSSIBLE_TYPES);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'organization',
+            'label'      => 'Organization',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'organization',
+                'options' => $this->getOrganizations(),
+            ),
+        ));
 
-        $field = new Select('organization');
-        $field->setAttribute('id', 'organization')
-            ->setAttribute('options', $this->_getOrganizations())
-            ->setLabel('Organization')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'rounding',
+            'label'      => 'Rounding',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'rounding',
+                'options' => $this->getRoundings(),
+            ),
+        ));
 
-        $field = new Select('rounding');
-        $field->setAttribute('id', 'rounding')
-            ->setLabel('Rounding')
-            ->setRequired()
-            ->setAttribute('options', $this->_getRoundings());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'apply_once',
+            'label'      => 'Apply Once',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will allow apply this discount only once to every user.',
+                'id'        => 'apply_once',
+            ),
+        ));
 
-        $field = new Checkbox('apply_once');
-        $field->setAttribute('id', 'apply_once')
-            ->setLabel('Apply Once')
-            ->setAttribute('data-help', 'Enabling this option will allow apply this discount only once to every user.');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
+        $this->addSubmit('Add', 'add');
     }
 
-    private function _getRoundings()
+    private function getRoundings()
     {
         $roundings = array();
         foreach (Discount::$POSSIBLE_ROUNDINGS as $key => $rounding) {
@@ -119,9 +145,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $roundings;
     }
 
-    private function _getOrganizations()
+    private function getOrganizations()
     {
-        $organizations = $this->_entityManager
+        $organizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
@@ -131,73 +157,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $organizationsOptions;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'value',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'method',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'rounding',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'type',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'organization',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

@@ -26,7 +26,7 @@ use DateTime,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class ReservationConflict extends \Zend\Validator\AbstractValidator
+class ReservationConflict extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @const string The error codes
@@ -99,15 +99,7 @@ class ReservationConflict extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (($context !== null) && isset($context) && array_key_exists($this->_startDate, $context)) {
-            $startDate = $context[$this->_startDate];
-        } else {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
-        if ($startDate === null) {
+        if (null === $startDate = self::getFormValue($context, $this->_startDate)) {
             $this->error(self::NOT_VALID);
 
             return false;

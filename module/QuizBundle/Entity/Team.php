@@ -71,11 +71,9 @@ class Team
      * @param Quiz   $quiz
      * @param string $name
      */
-    public function __construct(Quiz $quiz, $name, $number)
+    public function __construct(Quiz $quiz)
     {
         $this->quiz = $quiz;
-        $this->name = $name;
-        $this->number = $number;
         $this->points = new ArrayCollection();
     }
 

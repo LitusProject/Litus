@@ -18,13 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Barcodes;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CudiBundle\Component\Validator\Sales\Article\Barcodes\Unique as UniqueBarcodeValidator;
 
 /**
  * Add Article
@@ -33,52 +27,20 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-            ->setAttribute('class', 'disableEnter')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'article_add');
-        $this->add($field);
-    }
-
-    public function populateFromArticle(Barcode $barcode)
-    {
-        $this->setData(
-            array(
-                'barcode' => $barcode->getBarcode(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'barcode',
+            'label'      => 'Barcode',
+            'required'   => true,
+            'attributes' => array(
+                'class' => 'disableEnter',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -90,12 +52,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'useChecksum' => false,
                             ),
                         ),
-                        new UniqueBarcodeValidator($this->_entityManager),
+                        new UniqueBarcodeValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'article_add');
     }
 }

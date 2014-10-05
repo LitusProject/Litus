@@ -23,56 +23,17 @@ namespace CommonBundle\Component\Form\Admin\Form\SubForm;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TabPane extends \CommonBundle\Component\Form\Admin\Fieldset
+class TabPane extends \CommonBundle\Component\Form\Fieldset
 {
-    /**
-     * Constructor
-     *
-     * @param string $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        $this->addClass('tab_pane');
+    }
 
-        $this->setAttribute('class', 'tab_pane');
+    public function setName($name)
+    {
         $this->setAttribute('id', $name);
-    }
 
-    /**
-     * Recursively populate values of attached elements and fieldsets
-     *
-     * @param  array|\Traversable                 $data
-     * @return TabPane
-     * @throws Exception\InvalidArgumentException
-     */
-    public function populateValues($data)
-    {
-        parent::populateValues($data);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->populateValues($data);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set a hash of element names/messages to use when validation fails
-     *
-     * @param  array|\Traversable                 $messages
-     * @return TabPane
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setMessages($messages)
-    {
-        parent::setMessages($messages);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->setMessages($messages);
-        }
-
-        return $this;
+        return parent::setName($name);
     }
 }

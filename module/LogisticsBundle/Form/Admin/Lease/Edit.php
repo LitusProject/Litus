@@ -17,32 +17,18 @@
  */
 namespace LogisticsBundle\Form\Admin\Lease;
 
-use Doctrine\ORM\EntityManager,
-    LogisticsBundle\Entity\Lease\Item,
-    Zend\Form\Element\Submit;
-
 /**
  * Edits a lease
+ *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager
-     * @param Item            $lease         The lease item to populate the form with
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, Item $lease, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Edit')
-            ->setAttribute('class', 'lease_edit');
-        $this->add($field);
-
-        $this->populateFromLease($lease);
+        $this->remove('submit')
+            ->addSubmit('Edit', 'lease_edit');
     }
 }

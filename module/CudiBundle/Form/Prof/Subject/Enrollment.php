@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Prof\Subject;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     SyllabusBundle\Entity\StudentEnrollment,
     Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilter;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
+class Enrollment extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @param StudentEnrollment $enrollment

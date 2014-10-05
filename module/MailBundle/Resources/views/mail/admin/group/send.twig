@@ -16,7 +16,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#send_mail').click(function () {
+            $('#controller_action form input[type=submit]').click(function (e) {
                 if ($(this).prop('disabled'))
                     return false;
 

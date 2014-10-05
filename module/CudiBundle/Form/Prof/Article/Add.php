@@ -18,11 +18,11 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
     CudiBundle\Entity\Article,
@@ -37,7 +37,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var EntityManager The EntityManager instance

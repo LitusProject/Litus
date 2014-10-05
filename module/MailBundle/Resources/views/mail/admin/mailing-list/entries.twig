@@ -25,7 +25,10 @@
         <h1>Entries</h1>
 
         {% import 'admin/partials/form.twig' as forms %}
+        <h2>Add Academic</h2>
         {{ forms.renderForm(academicForm) }}
+
+        <h2>Add External</h2>
         {{ forms.renderForm(externalForm) }}
 
         <br style="clear:both">

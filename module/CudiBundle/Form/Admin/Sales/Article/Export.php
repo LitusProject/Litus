@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Export form
  *
@@ -29,52 +25,41 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Export extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'academic_year',
+            'label'      => 'Academic Year',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getAcademicYears(),
+            ),
+        ));
 
-        $field = new Select('academic_year');
-        $field->setLabel('Academic Year')
-            ->setRequired()
-            ->setAttribute('options', $this->_getAcademicYears());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'semester',
+            'label'      => 'Semester',
+            'required'   => true,
+            'attributes' => array(
+                'options' => array(
+                    '0' => 'All',
+                    '1' => 'Semester 1',
+                    '2' => 'Semester 2',
+                    '3' => 'Semester 1 & 2',
+                ),
+            ),
+        ));
 
-        $field = new Select('semester');
-        $field->setLabel('Semester')
-            ->setRequired()
-            ->setAttribute('options', $this->_getSemesters());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Download')
-            ->setAttribute('class', 'download');
-        $this->add($field);
+        $this->addSubmit('Download', 'download');
     }
 
-    private function _getSemesters()
+    private function getAcademicYears()
     {
-        return array(
-            '0' => 'All',
-            '1' => 'Semester 1',
-            '2' => 'Semester 2',
-            '3' => 'Semester 1 & 2',
-        );
-    }
-
-    private function _getAcademicYears()
-    {
-        $academicYears = $this->_entityManager
+        $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 

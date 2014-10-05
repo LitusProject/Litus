@@ -18,61 +18,33 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CudiBundle\Form\Admin\Article\Add
+class Edit extends Add
 {
-    /**
-     * @var Article
-     */
-    private $_article;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Article         $article
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Article $article, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->article) {
+            throw new LogicException('Cannot edit a null article');
+        }
 
-        $this->_article = $article;
+        parent::init();
 
-        $this->remove('submit');
+        $this->remove('subject');
 
-        $this->remove('subject_form');
-
-        if ($article->getType() == 'common') {
+        if ($this->article->getType() == 'common') {
             $this->get('article')
                 ->remove('type');
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'article_edit');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Save', 'article_edit');
 
-        $this->populateFromArticle($article);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        if ($this->_article->getType() == 'common') {
-            $inputFilter->remove('type');
-        }
-
-        $inputFilter->remove('subject');
-        $inputFilter->remove('subject_id');
-
-        return $inputFilter;
+        $this->bind($this->article);
     }
 }

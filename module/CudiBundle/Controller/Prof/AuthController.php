@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Prof;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,7 +31,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
 {
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm('common_auth_login');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

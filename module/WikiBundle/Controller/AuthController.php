@@ -20,7 +20,6 @@ namespace WikiBundle\Controller;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
-    WikiBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,7 +32,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm('wiki_auth_login');
 
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->isExternallyAuthenticated()) {
@@ -57,8 +56,6 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
@@ -185,8 +182,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
     protected function redirectAfterAuthentication()
     {
-        if (!$this->getAuthentication()->isAuthenticated()
-            || !$this->getAuthentication()->isExternallyAuthenticated()) {
+        if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->isExternallyAuthenticated()) {
             return null;
         }
 

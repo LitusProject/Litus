@@ -18,10 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Promotion\Mail as MailForm,
-    Zend\InputFilter\InputInterface,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
     Zend\Mime\Part,
@@ -36,34 +33,22 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 {
     public function sendAction()
     {
-        $from = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.mail');
-
-        $results = array();
-
-        $groups = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findAll();
-
-        $form = new MailForm($this->getEntityManager(), $groups);
+        $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(
+                array_merge(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $upload = new FileUpload(array('ignoreNoFile' => true));
-                $inputFilter = $form->getInputFilter()->get('file');
-                if ($inputFilter instanceof InputInterface) {
-                    $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-                }
+                $formData = $form->getData();
 
                 $people = array();
                 $enrollments = array();
-                $groupIds = $formData['groups'];
+                $groupIds = isset($formData['groups']) ? $formData['groups'] : null;
 
                 foreach ($formData['to'] as $to) {
                     $academicYear = $this->getEntityManager()
@@ -125,24 +110,26 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $message = new MimeMessage();
                 $message->addPart($part);
 
-                $upload->receive();
+                if (isset($formData['file'])) {
+                    foreach ($formData['file'] as $file) {
+                        if ($file['size'] === NULL) {
+                            continue;
+                        }
 
-                foreach ($upload->getFileInfo() as $file) {
-                    if ($file['size'] === NULL) {
-                        continue;
+                        $part = new Part(fopen($file['tmp_name'], 'r'));
+                        $part->type = $file['type'];
+                        $part->id = $file['name'];
+                        $part->disposition = 'attachment';
+                        $part->filename = $file['name'];
+                        $part->encoding = Mime::ENCODING_BASE64;
+
+                        $message->addPart($part);
                     }
-
-                    $part = new Part(fopen($file['tmp_name'], 'r'));
-                    $part->type = $file['type'];
-                    $part->id = $file['name'];
-                    $part->disposition = 'attachment';
-                    $part->filename = $file['name'];
-                    $part->encoding = Mime::ENCODING_BASE64;
-
-                    unlink($file['tmp_name']);
-
-                    $message->addPart($part);
                 }
+
+                $from = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.mail');
 
                 $mail = new Message();
                 $mail->setBody($message)
@@ -196,5 +183,24 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 'form' => $form,
             )
         );
+    }
+
+    private function _getPeople($listTo)
+    {
+        $people = array();
+        foreach ($listTo as $to) {
+            $academicYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneById($to);
+
+            $people = array_merge(
+                $people,
+                $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Promotion')
+                    ->findAllByAcademicYear($academicYear)
+            );
+        }
+
+        return $people;
     }
 }

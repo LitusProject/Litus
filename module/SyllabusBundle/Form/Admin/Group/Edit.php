@@ -18,11 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Group\Name as NameValidator,
-    SyllabusBundle\Entity\Group,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
+use LogicException;
 
 /**
  * Edit Group
@@ -31,53 +27,17 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @var Group
-     */
-    private $_group = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Group           $group         The group we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Group $group, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->group) {
+            throw new LogicException('Cannot edit null group');
+        }
 
-        $this->_group = $group;
+        parent::init();
 
         $this->remove('submit');
+        $this->addSubmit('Save', 'edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->populateFromGroup($group);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('name');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new NameValidator($this->_entityManager, $this->_group),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->bind($this->group);
     }
 }

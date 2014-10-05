@@ -269,6 +269,7 @@ class Config
     public static function create(array $settings, array $override = array())
     {
         $directory = $settings['directory'];
+        $module = $settings['namespace'];
 
         $routerConfig = self::_load($directory, 'router.config.php');
 
@@ -286,6 +287,12 @@ class Config
 
             'doctrine' => array(
                 'driver' => self::_createDoctrineConfig($settings),
+            ),
+
+            'service_manager' => array(
+                'invokables' => array(
+                    'litus.install.' . $module => $module . '\Component\Module\Installer',
+                ),
             ),
 
             'assetic_configuration' => self::_createAsseticConfig($settings),

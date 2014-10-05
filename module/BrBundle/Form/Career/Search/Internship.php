@@ -28,7 +28,7 @@ use BrBundle\Entity\Company,
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
+class Internship extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var array The search possibilities

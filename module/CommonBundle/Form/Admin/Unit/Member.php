@@ -18,14 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Academic as AcademicValidator;
 
 /**
  * The form used to add a member to a unit.
@@ -35,90 +28,77 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Member extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'person_name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'personSearch',
+            ),
+        ));
 
-        $field = new Text('person_name');
-        $field->setLabel('Name')
-            ->setRequired(true)
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'coordinator',
+            'label' => 'Coordiantor',
+        ));
 
-        $field = new Checkbox('coordinator');
-        $field->setLabel('Coordinator');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'person_id',
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+        ));
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'unit_member_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'unit_member_add');
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
         if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_name',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+            return array(
+                array(
+                    'name' => 'person_name',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => false,
+                            )
                         ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => false,
-                                )
-                            ),
-                        ),
-                    )
-                )
+                    ),
+                ),
             );
         } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_id',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+            return array(
+                array(
+                    'name' => 'person_id',
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => true,
+                            )
                         ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => true,
-                                )
-                            ),
-                        ),
-                    )
-                )
+                    ),
+                ),
             );
         }
-
-        return $inputFilter;
     }
 }

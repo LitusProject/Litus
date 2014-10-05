@@ -19,9 +19,6 @@
 namespace PageBundle\Controller\Admin;
 
 use PageBundle\Entity\Category,
-    PageBundle\Entity\Category\Translation,
-    PageBundle\Form\Admin\Category\Add as AddForm,
-    PageBundle\Form\Admin\Category\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,43 +48,16 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('page_category_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $category = new Category();
-
-                if ('' != $formData['parent']) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent']);
-
-                    $category->setParent($parent);
-                }
+                $category = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($category);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['name_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $category,
-                            $language,
-                            $formData['name_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -119,45 +89,13 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $category);
+        $form = $this->getForm('page_category_edit', $category);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ('' != $formData['parent']) {
-                    $parent = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\Page')
-                        ->findOneById($formData['parent']);
-
-                    $category->setParent($parent);
-                }
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $category->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setName($formData['name_' . $language->getAbbrev()]);
-                    } else {
-                        if ('' != $formData['name_' . $language->getAbbrev()]) {
-                            $translation = new Translation(
-                                $category,
-                                $language,
-                                $formData['name_' . $language->getAbbrev()]
-                            );
-
-                            $this->getEntityManager()->persist($translation);
-                        }
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

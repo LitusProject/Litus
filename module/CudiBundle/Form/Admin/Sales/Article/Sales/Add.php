@@ -18,12 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Sales;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Price as PriceValidator;
 
 /**
  * Add Sales
@@ -32,62 +27,33 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Select('sale_to');
-        $field->setLabel('Sale To')
-            ->setAttribute('options', array('prof' => 'Prof', 'other' => 'Other'))
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'sale_to',
+            'label'      => 'Sale To',
+            'required'   => true,
+            'attributes' => array(
+                'options' => array(
+                    'prof'  => 'Prof',
+                    'other' => 'Other',
+                ),
+            ),
+        ));
 
-        $field = new Text('number');
-        $field->setLabel('Number')
-            ->setAttribute('style', 'width: 75px')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('price');
-        $field->setLabel('Price')
-            ->setAttribute('style', 'width: 75px')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setAttribute('style', 'width: 300px')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Sale')
-            ->setAttribute('class', 'sale');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sale_to',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'number',
+            'label'      => 'Number',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 75px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -102,37 +68,56 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price',
-                    'required' => !isset($this->data['sale_to']) || $this->data['sale_to'] == 'other',
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'price',
+            'label'      => 'Price',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 75px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new PriceValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 300px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Sale', 'sale');
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        $specs['price']['required'] = !isset($this->data['sale_to']) || $this->data['sale_to'] == 'other';
+
+        return $specs;
     }
 }

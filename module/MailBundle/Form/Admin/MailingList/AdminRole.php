@@ -18,12 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use MailBundle\Component\Validator\AdminRole as AdminRoleValidator,
+    MailBundle\Entity\MailingList;
 
 /**
  * Add Admin Role
@@ -33,40 +29,51 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class AdminRole extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'MailBundle\Hydrator\MailingList\AdminRoleMap';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var MailingList
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    private $_list;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'role',
+            'label'      => 'Role',
+            'required'   => true,
+            'options'    => array(
+                'options' => $this->_createRolesArray(),
+                'input' => array(
+                    'validators' => array(
+                        new AdminRoleValidator($this->getEntityManager(), $this->getList()),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('role');
-        $field->setLabel('Role')
-            ->setRequired()
-            ->setAttribute('options', $this->_createRolesArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'edit_admin',
+            'label'      => 'Can Edit Admins',
+        ));
 
-        $field = new Checkbox('edit_admin');
-        $field->setLabel('Can Edit Admins');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'mail_add');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'admin_role',
+            'value'      => 'Add',
+            'attributes' => array(
+                'class' => 'mail_add',
+            ),
+        ));
     }
 
     private function _createRolesArray()
     {
-        $roles = $this->_entityManager
+        $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -84,20 +91,22 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         return $rolesArray;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  MailingList $list
+     * @return self
+     */
+    public function setList(MailingList $list)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_list = $list;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'role',
-                    'required' => true,
-                )
-            )
-        );
+        return $this;
+    }
 
-        return $inputFilter;
+    /**
+     * @return MailingList
+     */
+    public function getList()
+    {
+        return $this->_list;
     }
 }

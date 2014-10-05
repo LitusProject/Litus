@@ -25,13 +25,9 @@ namespace WikiBundle\Form\Auth;
  */
 class Login extends \CommonBundle\Form\Auth\Login
 {
-    /**
-     * @param string          $action
-     * @param null|string|int $name   Optional name for the element
-     */
-    public function __construct($action = '', $name = null)
+    public function init()
     {
-        parent::__construct($action, $name);
+        parent::init();
 
         $this->get('remember_me')
             ->setValue(true)

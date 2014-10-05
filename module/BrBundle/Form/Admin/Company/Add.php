@@ -36,7 +36,7 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

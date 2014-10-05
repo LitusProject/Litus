@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     CommonBundle\Entity\General\Bank\CashRegister,
     Doctrine\ORM\EntityManager,
@@ -31,7 +31,7 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var EntityManager The EntityManager instance

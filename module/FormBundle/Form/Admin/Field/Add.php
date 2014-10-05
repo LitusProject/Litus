@@ -18,14 +18,14 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Collection,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Tabs,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
+    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
     FormBundle\Component\Validator\Required as RequiredValidator,
@@ -47,7 +47,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var EntityManager

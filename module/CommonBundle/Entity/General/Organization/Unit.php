@@ -108,26 +108,12 @@ class Unit
      */
     private $active;
 
-    /**
-     * @param string       $name             The unit's name
-     * @param string       $mail             The unit's mail
-     * @param Organization $organization     The unit's organization
-     * @param array        $roles            The roles associated with the unit
-     * @param array        $coordinatorRoles The roles associated with the coordinator of the unit
-     * @param boolean      $displayed        Whether or not this unit is displayed on the site
-     * @param self         $parent           The unit's parent
-     */
-    public function __construct($name, $mail, Organization $organization, array $roles, array $coordinatorRoles, $displayed, Unit $parent = null)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->mail = $mail;
-        $this->organization = $organization;
-        $this->parent = $parent;
-        $this->displayed = $displayed;
         $this->active = true;
 
-        $this->roles = new ArrayCollection($roles);
-        $this->coordinatorRoles = new ArrayCollection($coordinatorRoles);
+        $this->roles = new ArrayCollection();
+        $this->coordinatorRoles = new ArrayCollection();
     }
 
     /**

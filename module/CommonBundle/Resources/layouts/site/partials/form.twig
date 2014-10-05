@@ -11,8 +11,19 @@
 {% macro renderFieldset(fieldset) %}
     {% autoescape false %}
         {% set buttons = [] %}
-        {% for element in fieldset.getElements() %}
-            {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
+        {% for element in fieldset %}
+            {% if element.add is defined %}
+                {% if element.showAs() == 'fieldset' and element.getLabel() %}
+                    <fieldset class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                        <legend>{{ translate(element.getLabel()) }}</legend>
+                        {{ _self.renderFieldset(element) }}
+                    </fieldset>
+                {% else %}
+                    <div class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                        {{ _self.renderFieldset(element) }}
+                    </div>
+                {% endif %}
+            {% elseif element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
                 {% set buttons = buttons|merge([element]) %}
             {% elseif element.getAttribute('type') == 'tabs' %}
                 <ul class="nav nav-tabs {{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
@@ -96,18 +107,6 @@
                 {{ formElement(element) }}
             {% else %}
                 {{ _self.renderOther(element) }}
-            {% endif %}
-        {% endfor %}
-        {% for child in fieldset.getFieldsets() %}
-            {% if child.isCollection() %}
-                <fieldset class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
-                    <legend>{{ translate(child.getLabel()) }}</legend>
-                    {{ _self.renderFieldset(child) }}
-                </fieldset>
-            {% else %}
-                <div class="{{ child.getAttribute('class') }}" id="{{ child.getAttribute('id') }}">
-                    {{ _self.renderFieldset(child) }}
-                </div>
             {% endif %}
         {% endfor %}
         {% if buttons|length > 0 %}

@@ -99,15 +99,7 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (($context !== null) && isset($context) && array_key_exists($this->_startDate, $context)) {
-            $startDate = $context[$this->_startDate];
-        } else {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
-        if ($startDate === null) {
+        if (null === $stardDate = self::getFormValue($context, $this->_startDate)) {
             $this->error(self::NOT_VALID);
 
             return false;

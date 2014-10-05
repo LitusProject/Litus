@@ -18,8 +18,8 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
+use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
@@ -38,7 +38,7 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
+class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
 {
     /**
      * @var Form

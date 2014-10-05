@@ -18,13 +18,7 @@
 
 namespace ApiBundle\Form\Admin\Key;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter,
+use RuntimeException,
     Zend\Validator\Hostname as HostnameValidator;
 
 /**
@@ -34,41 +28,55 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'ApiBundle\Hydrator\Key';
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'host',
+            'label'      => 'Host',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The host from which the API can be accessed with the key.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'Hostname',
+                            'options' => array(
+                                'allow' => HostnameValidator::ALLOW_ALL,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('host');
-        $field->setLabel('Host')
-            ->setAttribute('data-help', 'The host from which the API can be accessed with the key.')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'check_host',
+            'label'      => 'Check Host',
+            'value'      => true,
+        ));
 
-        $field = new Checkbox('check_host');
-        $field->setLabel('Check Host')
-            ->setValue(1);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'roles',
+            'label'      => 'Groups',
+            'attributes' => array(
+                'multiple' => true,
+                'options'  => $this->createRolesArray(),
+            ),
+        ));
 
-        $field = new Select('roles');
-        $field->setLabel('Groups')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->createRolesArray());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'key_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'key_add');
     }
 
     /**
@@ -79,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     protected function createRolesArray()
     {
-        $roles = $this->_entityManager
+        $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -93,37 +101,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray)) {
-            throw new \RuntimeException('There needs to be at least one role before you can add a person');
+            throw new RuntimeException('There needs to be at least one role before you can add an API key');
         }
 
         return $rolesArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'host',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'Hostname',
-                            'options' => array(
-                                'allow' => HostnameValidator::ALLOW_ALL,
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

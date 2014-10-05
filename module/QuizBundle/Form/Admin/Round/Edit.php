@@ -18,12 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    Doctrine\ORM\EntityManager,
-    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
-    QuizBundle\Entity\Round,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
+use LogicException;
 
 /**
  * Edits a quiz round
@@ -31,56 +26,17 @@ use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
  */
 class Edit extends Add
 {
-    /**
-     * @var Round $round
-     */
-    private $_round;
-
-    /**
-     * @param EntityManager   $entityManager
-     * @param Round           $round         The quiz round to populate the form with
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, Round $round, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $round->getQuiz(), $name);
+        if (null === $this->round) {
+            throw new LogicException('Cannot edit a null round');
+        }
 
-        $this->_round = $round;
+        parent::init();
 
-        $this->remove('submit');
+        $this->remove('submit')
+            ->addSubmit('Edit', 'edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Edit')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->populateFromRound($round);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('order');
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'order',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                        new PositiveNumberValidator(),
-                        new UniqueRoundValidator($this->_entityManager, $this->_quiz, $this->_round),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->bind($this->round);
     }
 }

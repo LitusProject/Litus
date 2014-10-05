@@ -18,10 +18,9 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use Doctrine\ORM\EntityManager,
+use LogicException,
     TicketBundle\Component\Validator\Activity as ActivityValidator,
-    TicketBundle\Entity\Event,
-    Zend\Form\Element\Submit;
+    TicketBundle\Entity\Event;
 
 /**
  * Edit Event
@@ -33,25 +32,29 @@ class Edit extends Add
     /**
      * @var Event
      */
-    private $_event;
+    private $event;
 
-    /**
-     * @param Event           $event
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(Event $event, EntityManager $entityManager, $name = null)
+    public function init()
     {
-        $this->_event = $event;
+        if (null === $this->event) {
+            throw new LogicException('No event given to edit');
+        }
 
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->populateFromEvent($event);
+        $events = $this->createEventsArray();
+        $events[$this->event->getActivity()->getId()] = $this->event->getActivity()->getTitle();
+        $this->get('event')->setAttribute('options', $events);
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
+        if (!empty($this->event->getOptions())) {
+            $this->get('enable_options')
+                ->setAttribute('disabled', true);
+        }
+
+        $this->remove('submit');
+        $this->addSubmit('Save', 'edit');
+
+        $this->bind($this->event);
     }
 
     public function getInputFilterSpecification()
@@ -61,12 +64,19 @@ class Edit extends Add
         foreach ($inputs as $key => $input) {
             if ($input['name'] == 'event') {
                 $inputs[$key]['validators'] = array(
-                    new ActivityValidator($this->_entityManager, $this->_event),
+                    new ActivityValidator($this->geEntityManager(), $this->event),
                 );
                 break;
             }
         }
 
         return $inputs;
+    }
+
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+
+        return $this;
     }
 }

@@ -22,7 +22,6 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
-    SecretaryBundle\Form\Admin\Export\Export as ExportForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,24 +33,7 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function exportAction()
     {
-        $form = new ExportForm($this->getEntityManager());
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'secretary_admin_export', array('action' => 'download')
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    public function downloadAction()
-    {
-        $form = new ExportForm($this->getEntityManager());
+        $form = $this->getForm('secretary_export_export');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -82,7 +64,11 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
-        return $this->notFoundAction();
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     private function _generateFile(Organization $organization, AcademicYear $academicYear)

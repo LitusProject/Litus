@@ -22,7 +22,6 @@ use DateInterval,
     DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
-    LogisticsBundle\Form\PianoReservation\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -37,7 +36,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $this->getLanguage());
+        $form = $this->getForm('logistics_piano-reservation_add');
 
         $reservations = array();
         if ($this->getAuthentication()->isAuthenticated()) {
@@ -72,13 +71,13 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     ->findOneByName(PianoReservation::PIANO_RESOURCE_NAME);
 
                 $reservation = new PianoReservation(
-                    $startDate,
-                    $endDate,
                     $piano,
-                    '',
-                    $this->getAuthentication()->getPersonObject(),
                     $this->getAuthentication()->getPersonObject()
                 );
+
+                $reservation->setStartDate($startDate)
+                    ->setEndDate($endDate)
+                    ->setPlayer($this->getAuthentication()->getPersonObject());
 
                 $startWeek = new DateTime();
                 $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex, 1)

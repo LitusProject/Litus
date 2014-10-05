@@ -23,7 +23,6 @@ use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Form\Admin\Mail\Send as MailForm,
     CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
     CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
     CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
@@ -243,7 +242,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
+        $mailForm = $this->getForm('cudi_mail_send', array(
+            'email' => $booking->getPerson()->getEmail(),
+            'name'  => $booking->getPerson()->getFullName(),
+        ));
         $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
         return new ViewModel(

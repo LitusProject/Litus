@@ -18,56 +18,31 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\Admin\Element
+class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @var boolean
-     */
-    private $_required = false;
+    use ElementTrait {
+        ElementTrait::getInputSpecification as getTraitInputSpecification;
+    }
 
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    public function setName($name)
     {
-        parent::__construct($name, $options);
         $this->setAttribute('id', $name);
-        $this->setRequired(false);
+
+        return parent::setName($name);
     }
 
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return File
-     */
-    public function setRequired($flag = true)
+    public function getInputSpecification()
     {
-        $this->setAttribute('required', $flag);
-        $this->setLabelAttributes(
-            array(
-                'class' => $flag ? 'required' : 'optional',
-            )
-        );
-        $this->_required = $flag;
+        $specification = $this->getTraitInputSpecification();
+        $specification['type'] = 'Zend\InputFilter\FileInput';
 
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRequired()
-    {
-        return $this->_required;
+        return $specification;
     }
 }

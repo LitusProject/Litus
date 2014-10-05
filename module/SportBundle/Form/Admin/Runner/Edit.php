@@ -18,11 +18,6 @@
 
 namespace SportBundle\Form\Admin\Runner;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Edit a runner of the queue.
  *
@@ -31,41 +26,27 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('runner_identification');
-        $field->setLabel('Runner Identification')
-            ->setAttribute('autocomplete', 'off');
-        $this->add($field);
-
-        $field = new Submit('save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'runner_identification',
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'runner_identification',
+            'label'      => 'Runner Identification',
+            'attributes' => array(
+                'autocomplete' => 'off',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'edit');
     }
 }

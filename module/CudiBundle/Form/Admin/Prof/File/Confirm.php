@@ -18,10 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Prof\File;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CudiBundle\Entity\File\Mapping as FileMapping,
-    Zend\Form\Element\Submit;
+use CudiBundle\Entity\File\Mapping as FileMapping,
+    LogicException;
 
 /**
  * Confirm File add action
@@ -31,40 +29,58 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Confirm extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param FileMapping     $mapping
-     * @param null|string|int $name    Optional name for the element
+     * @var FileMapping|null
      */
-    public function __construct(FileMapping $mapping, $name = null)
+    private $mapping;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->mapping) {
+            throw new LogicException('Cannot confirm a null mapping');
+        }
+
+        parent::init();
 
         $this->setAttribute('id', 'uploadFile');
 
-        $field = new Text('description');
-        $field->setLabel('Description')
-            ->setAttribute('size', 70)
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'description',
+            'label'      => 'Description',
+            'required'   => true,
+            'value'      => $this->mapping->getFile()->getDescription(),
+            'attributes' => array(
+                'size' => 70,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Checkbox('printable');
-        $field->setLabel('Printable')
-            ->setAttribute('data-help', 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'printable',
+            'label'      => 'Printable',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.',
+            ),
+        ));
 
-        $field = new Submit('submit');
-        $field->setValue('Confirm')
-            ->setAttribute('class', 'file_add');
-        $this->add($field);
-
-        $this->populateFromFile($mapping);
+        $this->addSubmit('Confirm', 'file_add');
     }
 
-    public function populateFromFile(FileMapping $mapping)
+    /**
+     * @param  FileMapping $mapping
+     * @return self
+     */
+    public function setMapping(FileMapping $mapping)
     {
-        $this->setData(
-            array(
-                'description' => $mapping->getFile()->getDescription(),
-            )
-        );
+        $this->mapping = $mapping;
+
+        return $this;
     }
 }

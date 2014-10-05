@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Article\File;
 
-use CudiBundle\Entity\File\Mapping as FileMapping,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit File
  *
@@ -28,27 +25,13 @@ use CudiBundle\Entity\File\Mapping as FileMapping,
  */
 class Edit extends Add
 {
-    public function __construct(FileMapping $mapping, $options = null)
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
         $this->remove('file');
-        $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'file_edit');
-        $this->add($field);
-
-        $this->populateFromFile($mapping);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('file');
-
-        return $inputFilter;
+        $this->remove('submit')
+            ->addSubmit('Save', 'file_edit');
     }
 }

@@ -18,22 +18,13 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
+use CommonBundle\Component\Validator\Academic as AcademicValidator,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     DateInterval,
     DateTime,
-    Doctrine\ORM\EntityManager,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -42,71 +33,172 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\PianoReservation';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var PianoReservation|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $reservation;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'player_id',
+            'attributes' => array(
+                'id' => 'playerId',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'required' => true,
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => true,
+                            )
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Hidden('player_id');
-        $field->setAttribute('id', 'playerId');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'player',
+            'label'      => 'Player',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'playerSearch',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('player');
-        $field->setLabel('Player')
-            ->setRequired()
-            ->setAttribute('id', 'playerSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'start_date',
+            'label'      => 'Start Date',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getTimeSlots(true),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'D d/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('options', $this->_getTimeSlots(true))
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'end_date',
+            'label'      => 'End Date',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getTimeSlots(false),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'D d/m/Y H:i',
+                            ),
+                        ),
+                        new DateCompareValidator('start_date', 'D d/m/Y H:i'),
+                        new ReservationConflictValidator(
+                            'start_date',
+                            'D d/m/Y H:i',
+                            PianoReservation::PIANO_RESOURCE_NAME,
+                            $this->getEntityManager(),
+                            null !== $this->reservation ? $this->reservation->getId() : null
+                        ),
+                        new PianoDurationValidator(
+                            'start_date',
+                            'D d/m/Y H:i',
+                            $this->getEntityManager()
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('options', $this->_getTimeSlots(false))
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'additional_info',
+            'label'   => 'Additional Info',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Textarea('additional_info');
-        $field->setLabel('Additional Information');
-        $this->add($field);
+        $this->add(array(
+            'type'   => 'checkbox',
+            'name'   => 'confirmed',
+            'label'  => 'Confirmed',
+        ));
 
-        $field = new Checkbox('confirmed');
-        $field->setLabel('Confirmed');
-        $this->add($field);
+        $this->addSubmit('Add', 'reservation_add');
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'reservation_add');
-        $this->add($field);
+        if (null !== $this->reservation) {
+            $this->bind($this->reservation);
+        }
+    }
+
+    /**
+     * @param  PianoReservation $reservation
+     * @return self
+     */
+    public function setReservation(PianoReservation $reservation)
+    {
+        $this->reservation = $reservation;
+
+        return $this;
     }
 
     /**
      * @param boolean $isStart
      */
-    private function _getTimeSlots($isStart)
+    private function getTimeSlots($isStart)
     {
         $config = unserialize(
-            $this->_entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('logistics.piano_time_slots')
         );
 
-        $slotDuration = $this->_entityManager
+        $slotDuration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.piano_time_slot_duration');
 
@@ -114,7 +206,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $maxDate = new DateTime();
         $maxDate->add(
             new DateInterval(
-                $this->_entityManager
+                $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.piano_reservation_max_in_advance')
             )
@@ -144,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             continue;
                         }
 
-                        $occupied = $this->_entityManager
+                        $occupied = $this->getEntityManager()
                             ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                             ->isTimeInExistingReservation($startSlot, $isStart);
 
@@ -161,100 +253,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $list;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'D d/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'D d/m/Y H:i',
-                            ),
-                        ),
-                        new DateCompareValidator('start_date', 'D d/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'D d/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager),
-                        new PianoDurationValidator('start_date', 'D d/m/Y H:i', $this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'additional_info',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'player_id',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->_entityManager,
-                            array(
-                                'byId' => true,
-                            )
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'player',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

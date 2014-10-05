@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Radio,
+use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
+    CommonBundle\Component\OldForm\Admin\Element\Radio,
     Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
     Zend\InputFilter\InputFilter;
@@ -29,7 +29,7 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SelectOptions extends \CommonBundle\Component\Form\Admin\Form
+class SelectOptions extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @param null|string|int $name Optional name for the element

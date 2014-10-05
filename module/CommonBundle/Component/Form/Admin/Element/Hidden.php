@@ -18,21 +18,21 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Hidden form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Hidden extends \Zend\Form\Element\Hidden
+class Hidden extends \Zend\Form\Element\Hidden implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    use ElementTrait;
+
+    public function setName($name)
     {
-        parent::__construct($name, $options);
         $this->setAttribute('id', $name);
+
+        return parent::setName($name);
     }
 }

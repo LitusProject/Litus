@@ -53,18 +53,11 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     /**
      * Creates a new list entry for the given list with the given mail address.
      *
-     * @param MailingList $list      The list for this entry
-     * @param string      $firstName The first name to add
-     * @param string      $lastName  The last name to add
-     * @param string      $email     The e-mail address to add
+     * @param MailingList $list The list for this entry
      */
-    public function __construct(MailingList $list, $firstName, $lastName, $email)
+    public function __construct(MailingList $list)
     {
         parent::__construct($list);
-
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
     }
 
     /**
@@ -76,6 +69,17 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
+     * @param  string   $firstName
+     * @return External
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLastName()
@@ -84,10 +88,32 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
+     * @param  string   $lastName
+     * @return External
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getEmailAddress()
     {
         return $this->email;
+    }
+
+    /**
+     * @param  string   $email
+     * @return External
+     */
+    public function setEmailAddress($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

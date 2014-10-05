@@ -61,17 +61,12 @@ class Notification extends \CommonBundle\Entity\Node
     private $active;
 
     /**
-     * @param Person   $person
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param boolean  $active
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->active = $active;
+
         $this->translations = new ArrayCollection();
     }
 
@@ -122,6 +117,14 @@ class Notification extends \CommonBundle\Entity\Node
         $this->active = $active;
 
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 
     /**

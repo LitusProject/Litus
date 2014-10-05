@@ -21,7 +21,8 @@ namespace CommonBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     CommonBundle\Entity\General\Language,
     Locale,
     Zend\Http\Header\HeaderInterface,
@@ -41,8 +42,10 @@ use CommonBundle\Component\Acl\Acl,
  * @method \Zend\Http\PhpEnvironment\Response getResponse()
  * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
-class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware
+class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware, ServiceLocatorAware
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      * @var Language
      */
@@ -61,6 +64,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->get('Zend\View\Renderer\PhpRenderer')
             ->plugin('headMeta')
             ->setCharset('utf-8');
+
+        $this->_initAcademicYear();
 
         $this->_initAuthenticationService();
         $this->_initControllerPlugins();
@@ -112,12 +117,25 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initAjax()
     {
-        $requestWith = $this->getRequest()->getHeader('X_REQUESTED_WITH');
-        if (null === $requestWith || !($requestWith instanceof HeaderInterface) || 'XMLHttpRequest' != $requestWith->getFieldValue()) {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );
         }
+    }
+
+    private function _initAcademicYear()
+    {
+        $this->getServiceLocator()
+            ->setService('litus.academic_year', $this->findCurrentAcademicYear());
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    protected function findCurrentAcademicYear()
+    {
+        return $this->getCurrentAcademicYear(false);
     }
 
     private function _initAuthenticationService()
@@ -353,57 +371,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\Adapter\Apc
-     */
-    public function getCache()
-    {
-        if ($this->getServiceLocator()->has('cache')) {
-            return $this->getServiceLocator()->get('cache');
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = false)
-    {
-        if ($organization) {
-            return AcademicYear::getOrganizationYear($this->getEntityManager());
-        }
-
-        return AcademicYear::getUniversityYear($this->getEntityManager());
-    }
-
-    /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
-    /**
      * Returns the language that is currently requested.
      *
      * @return \CommonBundle\Entity\General\Language
@@ -449,17 +416,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    public function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
      * Gets a parameter from a GET request.
      *
      * @param  string $param   The parameter's key
@@ -469,16 +425,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     public function getParam($param, $default = null)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
-    }
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    public function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
     }
 
     /**
@@ -503,5 +449,25 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         return $this->redirect()->toRoute(
             $this->getAuthenticationHandler()['redirect_route']
         );
+    }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.bootstrap');
+    }
+
+    /**
+     * @param  string                            $name
+     * @param  array|object|null                 $data
+     * @return \CommonBundle\Component\Form\Form
+     */
+    public function getForm($name, $data = null)
+    {
+        $form = $this->getFormFactory()->create(array('type' => $name), $data);
+
+        return $form;
     }
 }

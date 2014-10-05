@@ -22,7 +22,6 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
-    SecretaryBundle\Form\Admin\Promotion\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -114,16 +113,15 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('secretary_promotion_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 if ($formData['academic_add']) {
+                    $formData = $formData['academic'];
+
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneById($formData['academic_id']);
@@ -151,6 +149,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
                     $this->getEntityManager()->persist(new Academic($academicYear, $academic));
                 } else {
+                    $formData = $formData['external'];
+
                     $promotion = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Promotion\External')
                         ->findOneByEmailAndAcademicYear($formData['external_email'], $academicYear);

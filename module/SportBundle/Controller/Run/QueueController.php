@@ -18,8 +18,7 @@
 
 namespace SportBundle\Controller\Run;
 
-use SportBundle\Form\Queue\Add as AddForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * QueueController
@@ -30,7 +29,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 {
     public function indexAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('sport_queue_add');
 
         return new ViewModel(
             array(

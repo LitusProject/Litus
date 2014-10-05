@@ -20,8 +20,6 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
-    SyllabusBundle\Form\Admin\Subject\Study\Add as AddForm,
-    SyllabusBundle\Form\Admin\Subject\Study\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,20 +39,27 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $subject, $academicYear);
+        $form = $this->getForm(
+            'syllabus_subject_study_add',
+            array(
+                'subject'       => $subject,
+                'academic_year' => $academicYear,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($formData['study_id']);
 
-                $mapping = new StudySubjectMap($study, $subject, $formData['mandatory'], $academicYear);
+                $mapping = $form->hydrateObject(
+                    new StudySubjectMap($study, $subject, false, $academicYear)
+                );
                 $this->getEntityManager()->persist($mapping);
 
                 $this->getEntityManager()->flush();
@@ -95,17 +100,12 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $mapping);
+        $form = $this->getForm('syllabus_subject_study_edit', array('mapping' => $mapping));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $mapping->setMandatory($formData['mandatory']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -123,6 +123,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
                 );
             }
         }
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();

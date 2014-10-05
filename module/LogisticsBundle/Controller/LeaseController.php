@@ -22,8 +22,6 @@ use DateTime,
     LogisticsBundle\Component\Controller\LogisticsController,
     LogisticsBundle\Entity\Lease\Item,
     LogisticsBundle\Entity\Lease\Lease,
-    LogisticsBundle\Form\Lease\AddLease as AddLeaseForm,
-    LogisticsBundle\Form\Lease\AddReturn as AddReturnForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -157,7 +155,7 @@ class LeaseController extends LogisticsController
 
     private function _handleLeaseForm()
     {
-        $form = new AddLeaseForm($this->getEntityManager(), 'lease');
+        $form = $this->getForm('logistics_lease_add-lease');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -165,7 +163,7 @@ class LeaseController extends LogisticsController
                 $form->setData($formData);
 
                 if ($form->isValid()) {
-                    $formData = $form->getFormData($formData);
+                    $formData = $form->getData();
 
                     $item = $this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')
@@ -204,7 +202,7 @@ class LeaseController extends LogisticsController
 
     private function _handleReturnForm()
     {
-        $form = new AddReturnForm($this->getEntityManager(), 'return');
+        $form = $this->getForm('logistics_lease_add-return');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -212,7 +210,7 @@ class LeaseController extends LogisticsController
                 $form->setData($formData);
 
                 if ($form->isValid()) {
-                    $data = $form->getFormData($formData);
+                    $data = $form->getData();
 
                     $item = $this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')

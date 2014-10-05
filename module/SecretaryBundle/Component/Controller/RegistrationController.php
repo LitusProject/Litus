@@ -18,9 +18,7 @@
 
 namespace SecretaryBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
@@ -35,11 +33,6 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
  */
 class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    /**
-     * @var AcademicYear
-     */
-    private $_academicYear;
-
     protected function _studiesAction(Academic $academic, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
@@ -279,38 +272,6 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $termsAndConditions[$this->getLanguage()->getAbbrev()];
     }
 
-    /**
-     * @param  object|array $formData
-     * @return Address
-     */
-    protected function _getPrimaryAddress($formData)
-    {
-        if ($formData['primary_address_address_city'] != 'other') {
-            $primaryCity = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Address\City')
-                ->findOneById($formData['primary_address_address_city']);
-            $primaryCityName = $primaryCity->getName();
-            $primaryPostal = $primaryCity->getPostal();
-            $street = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Address\Street')
-                ->findOneById($formData['primary_address_address_street_' . $formData['primary_address_address_city']]);
-            $primaryStreet = $street ? $street->getName() : '';
-        } else {
-            $primaryCityName = $formData['primary_address_address_city_other'];
-            $primaryStreet = $formData['primary_address_address_street_other'];
-            $primaryPostal = $formData['primary_address_address_postal_other'];
-        }
-
-        return new Address(
-            $primaryStreet,
-            $formData['primary_address_address_number'],
-            $formData['primary_address_address_mailbox'],
-            $primaryPostal,
-            $primaryCityName,
-            'BE'
-        );
-    }
-
     protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
         $map = $this->getEntityManager()
@@ -324,21 +285,5 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $this->getEntityManager()->flush();
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @return AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = false)
-    {
-        if (null !== $this->_academicYear) {
-            return $this->_academicYear;
-        }
-
-        $this->_academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
-
-        return $this->_academicYear;
     }
 }

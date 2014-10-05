@@ -18,11 +18,8 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Fieldset,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    Ticketbundle\Entity\Event,
-    Zend\Form\Fieldset,
     Zend\InputFilter\InputFilterProviderInterface;
 
 /**
@@ -32,30 +29,40 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Option extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct('option');
+        parent::init();
 
         $this->setLabel('Option');
 
-        $field = new Hidden('option_id');
-        $this->add($field);
+        $this->add(array(
+            'type' => 'hidden',
+            'name' => 'option_id',
+        ));
 
-        $field = new Text('option');
-        $field->setLabel('Name')
-            ->setRequired(true);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'option',
+            'label'      => 'Name',
+            'required'   => true,
+        ));
 
-        $field = new Text('price_members');
-        $field->setLabel('Price Members')
-            ->setRequired(true);
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'price_members',
+            'label'    => 'Price Members',
+            'required' => true,
+        ));
 
-        $field = new Text('price_non_members');
-        $field->setLabel('Price Non Members')
-            ->setRequired(true)
-            ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'price_non_members',
+            'label'      => 'Price Non Members',
+            'required'   => true,
+            'attributes' => array(
+                'class', 'price_non_members',
+            ),
+        ));
     }
 
     public function getInputFilterSpecification()

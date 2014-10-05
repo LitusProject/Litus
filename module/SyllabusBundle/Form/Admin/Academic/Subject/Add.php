@@ -18,12 +18,6 @@
 
 namespace SyllabusBundle\Form\Admin\Academic\Subject;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Study
  *
@@ -31,41 +25,18 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('subject_id');
-        $field->setAttribute('id', 'subjectId');
-        $this->add($field);
-
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 500px')
-            ->setAttribute('id', 'subjectSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'subject_id',
+            'attributes' => array(
+                'id' => 'subjectId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -75,22 +46,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'subject',
+            'label'      => 'Subject',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'subjectSearch',
+                'style'        => 'width: 500px',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
     }
 }

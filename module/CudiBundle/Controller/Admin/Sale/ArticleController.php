@@ -27,11 +27,6 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\History,
-    CudiBundle\Form\Admin\Sales\Article\Add as AddForm,
-    CudiBundle\Form\Admin\Sales\Article\Edit as EditForm,
-    CudiBundle\Form\Admin\Sales\Article\Export as ExportForm,
-    CudiBundle\Form\Admin\Sales\Article\Mail as MailForm,
-    CudiBundle\Form\Admin\Sales\Article\View as ViewForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -80,7 +75,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        $form = new ExportForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sales_article_export');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -97,7 +92,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function downloadAction()
     {
-        $form = new ExportForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sales_article_export');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -141,38 +136,31 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $article->setEntityManager($this->getEntityManager());
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sales_article_add');
 
-        $precalculatedSellPrice = ($article instanceof InternalArticle) ? $article->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = ($article instanceof InternalArticle) ? $article->precalculatePurchasePrice($this->getEntityManager()) : 0;
+        $precalculatedSellPrice = 0;
+        $precalculatedPurchasePrice = 0;
+
+        if ($article instanceof InternalArticle) {
+            $precalculatedSellPrice = $article->precalculateSellPrice($this->getEntityManager());
+            $precalculatedPurchasePrice = $article->precalculatePurchasePrice($this->getEntityManager());
+        }
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $supplier = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Supplier')
-                    ->findOneById($formData['supplier']);
-
-                $saleArticle = new SaleArticle(
-                    $article,
-                    $formData['barcode'],
-                    $formData['purchase_price'],
-                    $formData['sell_price'],
-                    $formData['bookable'],
-                    $formData['unbookable'],
-                    $formData['sellable'],
-                    $supplier,
-                    $formData['can_expire']
+                $formData = $form->getData();
+                $saleArticle = $form->hydrateObject(
+                    new SaleArticle($article)
                 );
 
                 $this->getEntityManager()->persist($saleArticle);
 
                 if (isset($formData['bookable'])) {
-                    $this->getEntityManager()->persist(new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle));
+                    $this->getEntityManager()->persist(
+                        new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle)
+                    );
                 }
 
                 $this->getEntityManager()->flush();
@@ -210,51 +198,34 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $saleArticle);
+        $form = $this->getForm('cudi_sales_article_edit', array('article' => $saleArticle));
 
         $mainArticle = $saleArticle->getMainArticle();
 
-        $precalculatedSellPrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculateSellPrice($this->getEntityManager()) : 0;
-        $precalculatedPurchasePrice = ($mainArticle instanceof InternalArticle) ? $mainArticle->precalculatePurchasePrice($this->getEntityManager()) : 0;
+        $precalculatedSellPrice = 0;
+        $precalculatedPurchasePrice = 0;
+
+        if ($mainArticle instanceof InternalArticle) {
+            $precalculatedSellPrice = $mainArticle->precalculateSellPrice($this->getEntityManager());
+            $precalculatedPurchasePrice = $mainArticle->precalculatePurchasePrice($this->getEntityManager());
+        }
+
+        // make $history before changing the sale article
+        $history = new History($saleArticle);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $history = new History($saleArticle);
                 $this->getEntityManager()->persist($history);
-
-                $supplier = $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\Supplier')
-                    ->findOneById($formData['supplier']);
-
-                $saleArticle->setPurchasePrice($formData['purchase_price'])
-                    ->setSellPrice($formData['sell_price'])
-                    ->setIsBookable(isset($formData['bookable']) && $formData['bookable'])
-                    ->setIsUnbookable(isset($formData['unbookable']) && $formData['unbookable'])
-                    ->setIsSellable($formData['sellable'])
-                    ->setSupplier($supplier)
-                    ->setCanExpire($formData['can_expire']);
-
-                $barcodeCheck = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.enable_sale_article_barcode_check');
-
-                if ('' == $formData['barcode'] && !$barcodeCheck) {
-                    foreach ($saleArticle->getBarcodes() as $barcode) {
-                        $this->getEntityManager()->remove($barcode);
-                    }
-                } else {
-                    $saleArticle->setBarcode($formData['barcode']);
-                }
 
                 if ($mainArticle instanceof InternalArticle) {
                     $cachePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
+
                     if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
                         unlink($cachePath . '/' . $mainArticle->getFrontPage());
                     }
@@ -303,7 +274,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new ViewForm($this->getEntityManager(), $saleArticle);
+        $form = $this->getForm('cudi_sales_article_view', array('article' => $saleArticle));
 
         return new ViewModel(
             array(
@@ -441,7 +412,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new MailForm();
+        $form = $this->getForm('cudi_sales_article_mail');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

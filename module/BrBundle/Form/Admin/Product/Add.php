@@ -20,9 +20,9 @@ namespace BrBundle\Form\Admin\Product;
 
 use BrBundle\Component\Validator\ProductName as ProductNameValidator,
     BrBundle\Entity\Product,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
+    CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
+    CommonBundle\Component\OldForm\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
@@ -35,7 +35,7 @@ use BrBundle\Component\Validator\ProductName as ProductNameValidator,
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var \Doctrine\ORM\EntityManager The EntityManager instance

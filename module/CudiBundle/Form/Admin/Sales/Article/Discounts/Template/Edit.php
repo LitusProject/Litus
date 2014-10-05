@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sales\Article\Discounts\Template;
 
-use Cudibundle\Entity\Sale\Article\Discount\Template,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Discount Template
  *
@@ -30,35 +26,11 @@ use Cudibundle\Entity\Sale\Article\Discount\Template,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager
-     * @param Template        $template      The template we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Template $template, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->_populateFromTemplate($template);
-    }
-
-    private function _populateFromTemplate(Template $template)
-    {
-        $data = array(
-            'name' => $template->getName(),
-            'method' => $template->getMethod(),
-            'value' => $template->getValue(),
-            'rounding' => $template->getRounding(),
-            'apply_once' => $template->applyOnce(),
-            'organization' => $template->getOrganization(),
-            'type' => $template->getType(),
-        );
-
-        $this->setData($data);
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
     }
 }

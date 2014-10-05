@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\Restriction;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\OldForm\Admin\Element\Select,
+    CommonBundle\Component\OldForm\Admin\Element\Text,
     CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Exists as ExistsValidator,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Values as ValuesValidator,
@@ -36,7 +36,7 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\Form\Admin\Form
+class Add extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
      * @var EntityManager The EntityManager instance
