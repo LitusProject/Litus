@@ -35,9 +35,24 @@ class Amount
         return $this->amount / $multiplier;
     }
 
-    public function asInteger()
+    /**
+     * Returns the value as integer.
+     *
+     * Returns the value times $multiplier, if the current value is stored times
+     * $storedMultiplier.
+     *
+     * @param int      $multiplier
+     * @param int|null $storedMultiplier
+     *
+     * @return int
+     */
+    public function asInteger($multiplier = 1, $storedMultiplier = null)
     {
-        return $this->amount;
+        if ($storedMultiplier !== null && $multiplier !== $storedMultiplier) {
+            $multiplier /= $storedMultiplier;
+        }
+
+        return (int) ($this->amount * $multiplier);
     }
 
     public static function fromFloat($amount, $multiplier = 1)
@@ -47,9 +62,25 @@ class Amount
         return new Amount((int) ($float * $multiplier));
     }
 
-    public static function fromInteger($amount, $multiplier = 1)
+    /**
+     * Creates an amount for the given integer.
+     *
+     * The amount will represent the amount times $multiplier, where the amount
+     * is given times $givenMultiplier as $amount.
+     *
+     * @param int      $amount
+     * @param int      $multiplier
+     * @param int|null $givenMultiplier
+     *
+     * @return self
+     */
+    public static function fromInteger($amount, $multiplier = 1, $givenMultiplier = null)
     {
-        return new Amount($amount * $multiplier);
+        if ($givenMultiplier !== null && $multiplier !== $givenMultiplier) {
+            $multiplier /= $givenMultiplier;
+        }
+
+        return new Amount((int) ($amount * $multiplier));
     }
 
     public static function zero()

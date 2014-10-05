@@ -405,9 +405,9 @@ class Event
     /**
      * @return integer
      */
-    public function getPriceMembersAsInt()
+    public function getPriceMembersAsInt($times = self::PRICE_MULTIPLIER)
     {
-        return $this->priceMembers->asInteger();
+        return $this->priceMembers->asInteger($times, self::PRICE_MULTIPLIER);
     }
 
     /**
@@ -417,6 +417,18 @@ class Event
     public function setPriceMembers($priceMembers)
     {
         $this->priceMembers = AmountType::fromFloat($priceMembers, self::PRICE_MULTIPLIER);
+
+        return $this;
+    }
+
+    /**
+     * @param  int  $priceMembers
+     * @param  int  $multiplier
+     * @return self
+     */
+    public function setPriceMembersAsInt($priceMembers, $multiplier)
+    {
+        $this->priceMembers = AmountType::fromInteger($priceMembers, self::PRICE_MULTIPLIER, $multiplier);
 
         return $this;
     }
@@ -432,9 +444,9 @@ class Event
     /**
      * @return integer
      */
-    public function getPriceNonMembersAsInt()
+    public function getPriceNonMembersAsInt($times = self::PRICE_MULTIPLIER)
     {
-        return $this->priceNonMembers->asInteger();
+        return $this->priceNonMembers->asInteger($times, self::PRICE_MULTIPLIER);
     }
 
     /**
@@ -444,6 +456,18 @@ class Event
     public function setPriceNonMembers($priceNonMembers)
     {
         $this->priceNonMembers = AmountType::fromFloat($priceNonMembers, self::PRICE_MULTIPLIER);
+
+        return $this;
+    }
+
+    /**
+     * @param  int  $priceNonMembers
+     * @param  int  $multiplier
+     * @return self
+     */
+    public function setPriceNonMembersAsInt($priceNonMembers, $multiplier)
+    {
+        $this->priceNonMembers = AmountType::fromInteger($priceNonMembers, self::PRICE_MULTIPLIER, $multiplier);
 
         return $this;
     }
