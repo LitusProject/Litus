@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Edit Sale Session content
@@ -29,22 +27,17 @@ use CommonBundle\Entity\General\Bank\CashRegister,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param CashRegister    $cashRegister
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, CashRegister $cashRegister, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->cashRegister) {
+            throw new LogicException('Cannot edit a sale session with a null cash register');
+        }
 
-        $this->remove('submit');
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'sale_edit');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Save', 'sale_edit');
 
-        $this->populateFromCashRegister($cashRegister);
+        $this->bind($this->cashRegister);
     }
 }

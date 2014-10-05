@@ -20,8 +20,6 @@ namespace CudiBundle\Controller\Admin\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
-    CudiBundle\Form\Admin\Sales\Session\OpeningHour\Add as AddForm,
-    CudiBundle\Form\Admin\Sales\Session\OpeningHour\Edit as EditForm,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -68,40 +66,15 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sales_session_opening-hour_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start']);
-            $endDate = self::_loadDate($formData['end']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $openingHour = new OpeningHour(
-                    $startDate,
-                    $endDate,
-                    $this->getAuthentication()->getPersonObject()
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-                $this->getEntityManager()->persist($openingHour);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['comment_' . $language->getAbbrev()]) {
-                        $translation = new Translation(
-                            $openingHour,
-                            $language,
-                            $formData['comment_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
 
                 $this->getEntityManager()->flush();
 
@@ -134,43 +107,12 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = new EditForm($openingHour, $this->getEntityManager());
+        $form = $this->getForm('cudi_sales_session_opening-hour_edit', $openingHour);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start']);
-            $endDate = self::_loadDate($formData['end']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $openingHour->setStart($startDate)
-                    ->setEnd($endDate);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $openingHour->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setComment($formData['comment_' . $language->getAbbrev()]);
-                    } else {
-                        if ('' != $formData['comment_' . $language->getAbbrev()]) {
-                            $translation = new Translation(
-                                $openingHour,
-                                $language,
-                                $formData['comment_' . $language->getAbbrev()]
-                            );
-
-                            $this->getEntityManager()->persist($translation);
-                        }
-                    }
-                }
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

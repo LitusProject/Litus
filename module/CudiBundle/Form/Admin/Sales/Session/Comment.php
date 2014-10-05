@@ -18,38 +18,54 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CudiBundle\Entity\Sale\Session,
-    Zend\Form\Element\Submit;
+use CudiBundle\Entity\Sale\Session,
+    LogicException;
 
 /**
  * Add Sale Session Comment
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Comment extends \CommonBundle\Component\OldForm\Admin\Form
+class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param Session         $session
-     * @param null|string|int $name    Optional name for the element
+     * @var Session|null
      */
-    public function __construct(Session $session, $name = null)
+    private $session;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->session) {
+            throw new LogicException('Cannot edit the comment of a null sale session');
+        }
 
-        $field = new Textarea('comment');
-        $field->setLabel('Comment');
-        $this->add($field);
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue('Edit Comment')
-            ->setAttribute('class', 'sale_edit');
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'comment',
+            'label'   => 'Comment',
+            'value'   => $this->session->getComment(),
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $this->setData(
-            array(
-                'comment' => $session->getComment(),
-            )
-        );
+        $this->addSubmit('Edit Comment', 'sale_edit');
+    }
+
+    /**
+     * @param  Session $session
+     * @return self
+     */
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+
+        return $this;
     }
 }

@@ -18,106 +18,44 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Price as PriceValidator,
+    CommonBundle\Entity\General\Bank\CashRegister;
 
 /**
  * Add Sale Session content
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'CommonBundle\Hydrator\General\Bank\CashRegister';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var CashRegister|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $cashRegister = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $units = $this->_getUnits();
+        $units = $this->getUnits();
+        $unitElements = array();
 
         foreach ($units as $unit) {
-            $field = new Text('unit_' . $unit->getId());
-            $field->setLabel('&euro; ' . number_format($unit->getUnit() / 100, 2))
-                ->setAttribute('autocomplete', 'off')
-                ->setAttribute('class', 'moneyunit')
-                ->setAttribute('data-value', $unit->getUnit())
-                ->setRequired()
-                ->setValue(0);
-            $this->add($field);
-        }
-
-        $devices = $this->_getDevices();
-
-        foreach ($devices as $device) {
-            $field = new Text('device_' . $device->getId());
-            $field->setLabel($device->getName())
-                ->setAttribute('autocomplete', 'off')
-                ->setAttribute('class', 'device')
-                ->setRequired()
-                ->setValue(0);
-            $this->add($field);
-        }
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'sale_add');
-        $this->add($field);
-    }
-
-    private function _getUnits()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
-            ->findAll();
-    }
-
-    private function _getDevices()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
-            ->findAll();
-    }
-
-    public function populateFromCashRegister(CashRegister $cashRegister)
-    {
-        $data = array();
-        foreach ($cashRegister->getBankDeviceAmounts() as $amount) {
-            $data['device_' . $amount->getDevice()->getId()] = $amount->getAmount() / 100;
-        }
-        foreach ($cashRegister->getMoneyUnitAmounts() as $amount) {
-            $data['unit_' . $amount->getUnit()->getId()] = $amount->getAmount();
-        }
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $units = $this->_getUnits();
-        foreach ($units as $unit) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'unit_' . $unit->getId(),
-                        'required' => true,
+            $unitElements[] = array(
+                'type'       => 'text',
+                'name'       => $unit->getId(),
+                'label'      => '&euro; ' . number_format($unit->getUnit() / 100, 2),
+                'required'   => true,
+                'value'      => 0,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'class'        => 'moneyunit',
+                    'data-value'   => $unit->getUnit(),
+                ),
+                'options'    => array(
+                    'input' => array(
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -126,29 +64,75 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                                 'name' => 'int',
                             ),
                         ),
-                    )
-                )
+                    ),
+                ),
             );
         }
 
-        $devices = $this->_getDevices();
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'unit',
+            'elements' => $unitElements,
+        ));
+
+        $devices = $this->getDevices();
+        $deviceElements = array();
+
         foreach ($devices as $device) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'device_' . $device->getId(),
-                        'required' => true,
+            $deviceElements[] = array(
+                'type'       => 'text',
+                'name'       => $device->getId(),
+                'label'      => $device->getName(),
+                'required'   => true,
+                'value'      => 0,
+                'attributes' => array(
+                    'autocomplete' => 'off',
+                    'class'        => 'device',
+                ),
+                'options'    => array(
+                    'input' => array(
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
                             new PriceValidator(),
                         ),
-                    )
-                )
+                    ),
+                ),
             );
         }
 
-        return $inputFilter;
+        $this->add(array(
+            'type'     => 'fieldset',
+            'name'     => 'device',
+            'elements' => $deviceElements,
+        ));
+
+        $this->addSubmit('Add', 'sale_add');
+    }
+
+    /**
+     * @param  CashRegister $cashRegister
+     * @return self
+     */
+    public function setCashRegister(CashRegister $cashRegister)
+    {
+        $this->cashRegister = $cashRegister;
+
+        return $this;
+    }
+
+    private function getUnits()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
+            ->findAll();
+    }
+
+    private function getDevices()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
+            ->findAll();
     }
 }

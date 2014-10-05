@@ -18,108 +18,173 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\Restriction;
 
-use CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Exists as ExistsValidator,
     CudiBundle\Component\Validator\Sales\Session\Restriction\Values as ValuesValidator,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
 
 /**
  * Add Sale Session content
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var EntityManager The EntityManager instance
+     * @var Session|null
      */
-    protected $_entityManager = null;
+    private $session;
 
-    /**
-     * @var Session
-     */
-    private $_session;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Session         $session
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Session $session, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->session) {
+            throw new LogicException('Cannot add a restriction to a null sale session');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_session = $session;
+        parent::init();
 
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setAttribute('id', 'restriction_type')
-            ->setRequired()
-            ->setAttribute('options', array('name' => 'Name', 'year' => 'Year', 'study' => 'Study'))
-            ->setAttribute('data-help', 'Limit the students that can buy articles during this sale session:
-                <ul>
-                    <li><b>Name:</b> restrict by name</li>
-                    <li><b>Year:</b> restrict study year</li>
-                    <li><b>Study:</b> restrict by study</li>
-                </ul>');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'Limit the students that can buy articles during this sale session:
+                    <ul>
+                        <li><b>Name:</b> restrict by name</li>
+                        <li><b>Year:</b> restrict study year</li>
+                        <li><b>Study:</b> restrict by study</li>
+                    </ul>',
+                'id'        => 'restriction_type',
+                'options'   => array(
+                    'name'  => 'Name',
+                    'year'  => 'Year',
+                    'study' => 'Study',
+                ),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new ExistsValidator($this->getEntityManager(), $this->session),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('start_value_name');
-        $field->setLabel('Start Value')
-            ->setAttribute('class', 'restriction_value restriction_value_name')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'start_value_name',
+            'label'      => 'Start Value',
+            'required'   => true,
+            'attributes' => array(
+                'class' => 'restriction_value restriction_value_name',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('end_value_name');
-        $field->setLabel('End Value')
-            ->setAttribute('class', 'restriction_value restriction_value_name')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'end_value_name',
+            'label'      => 'End Value',
+            'required'   => true,
+            'attributes' => array(
+                'class' => 'restriction_value restriction_value_name',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new ValuesValidator('start_value_name'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('start_value_year');
-        $field->setLabel('Start Value')
-            ->setAttribute('class', 'restriction_value restriction_value_year')
-            ->setRequired()
-            ->setAttribute('options', YearRestriction::$POSSIBLE_YEARS);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'start_value_year',
+            'label'      => 'Start Value',
+            'required'   => true,
+            'attributes' => array(
+                'class'   => 'restriction_value restriction_value_year',
+                'options' => YearRestriction::$POSSIBLE_YEARS,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new ValuesValidator('start_value_year'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('end_value_year');
-        $field->setLabel('End Value')
-            ->setAttribute('class', 'restriction_value restriction_value_year')
-            ->setRequired()
-            ->setAttribute('options', YearRestriction::$POSSIBLE_YEARS);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'end_value_year',
+            'label'      => 'End Value',
+            'required'   => true,
+            'attributes' => array(
+                'class'   => 'restriction_value restriction_value_year',
+                'options' => YearRestriction::$POSSIBLE_YEARS,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new ValuesValidator('start_value_year'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('value_study');
-        $field->setAttribute('id', 'restriction_value_study')
-            ->setAttribute('class', 'restriction_value restriction_value_study')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_getStudies())
-            ->setAttribute('style', 'max-width: 100%;')
-            ->setLabel('Studies')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'value_study',
+            'label'      => 'Studies',
+            'required'   => true,
+            'attributes' => array(
+                'class'    => 'restriction_value restriction_value_study',
+                'id'       => 'restriction_value_study',
+                'multiple' => true,
+                'options'  => $this->getStudies(),
+                'style'    => 'max-width: 100%;',
+            ),
+        ));
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
+        $this->addSubmit('Add', 'add');
     }
 
-    public function _getStudies()
+    /**
+     * @param  Session $session
+     * @return self
+     */
+    public function setSession(Session $session)
     {
-        $academicYear = AcademicYear::getOrganizationYear($this->_entityManager);
+        $this->session = $session;
 
-        $studies = $this->_entityManager
+        return $this;
+    }
+
+    public function getStudies()
+    {
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager());
+
+        $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($academicYear);
 
@@ -131,91 +196,28 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         return $options;
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'type',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new ExistsValidator($this->_entityManager, $this->_session),
-                    ),
-                )
-            )
-        );
+        $specs = parent::getInputFilterSpecification();
 
         if ('name' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'start_value_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
+            unset($specs['start_value_year']);
+            unset($specs['end_value_year']);
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_value_name',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new ValuesValidator('start_value_name'),
-                        ),
-                    )
-                )
-            );
+            unset($specs['value_study']);
         } elseif ('year' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'start_value_year',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
+            unset($specs['start_value_name']);
+            unset($specs['end_value_name']);
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_value_year',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new ValuesValidator('start_value_year'),
-                        ),
-                    )
-                )
-            );
+            unset($specs['value_study']);
         } elseif ('study' == $this->data['type']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'value_study',
-                        'required' => true,
-                    )
-                )
-            );
+            unset($specs['start_value_name']);
+            unset($specs['end_value_name']);
+
+            unset($specs['start_value_year']);
+            unset($specs['end_value_year']);
         }
 
-        return $inputFilter;
+        return $specs;
     }
 }
