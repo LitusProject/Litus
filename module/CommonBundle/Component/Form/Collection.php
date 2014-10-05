@@ -20,8 +20,10 @@ namespace CommonBundle\Component\Form;
 
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {
-    use ElementTrait;
-    use FieldsetTrait;
+    use ElementTrait, FieldsetTrait {
+        FieldsetTrait::setRequired insteadof ElementTrait;
+        ElementTrait::setRequired as setElementRequired;
+    }
 
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
