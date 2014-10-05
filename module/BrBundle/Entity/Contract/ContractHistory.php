@@ -71,6 +71,14 @@ class ContractHistory
         $this->version = $contract->getVersion();
     }
 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getContract()
     {
         return $this->contract;

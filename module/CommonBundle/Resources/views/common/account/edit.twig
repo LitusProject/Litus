@@ -83,11 +83,6 @@
                 }
             });
 
-            $('#primary_address_address_city').change(cityChange);
-            $('#become_member').change(toggleMember);
-            toggleMember();
-            cityChange();
-
             {% if metaData.becomeMember() %}
                 $('#register_form #organization').closest('.form-group').hide();
                 $('#register_form #become_member').closest('.form-group').hide();
@@ -101,6 +96,11 @@
                     $('#register_form #become_member').closest('label').find('.price').html(membershipArticles[$('#register_form #organization').val()]);
                 });
             {% endif %}
+
+            $('#primary_address_address_city').change(cityChange);
+            $('#become_member').change(toggleMember);
+            toggleMember();
+            cityChange();
 
             if ($('#register_form #organization').val() == 0) {
 

@@ -127,11 +127,6 @@
                 }
             });
 
-            $('#primary_address_address_city').change(cityChange);
-            $('#become_member').change(toggleMember);
-            toggleMember();
-            cityChange();
-
             $('#register_form #organization').closest('.form-group').hide();
             if ($('#register_form #organization').val() == 0) {
                 $('#register_form #become_member').closest('.form-group').hide();
@@ -141,6 +136,11 @@
                 $('#register_form #become_member').closest('.form-group').show();
                 $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#register_form #organization').val()]));
             }
+
+            $('#primary_address_address_city').change(cityChange);
+            $('#become_member').change(toggleMember);
+            toggleMember();
+            cityChange();
 
             $('#university_email').wrap('<div class=\"input-group\" />');
             $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');

@@ -118,11 +118,6 @@ class Order
     private $taxFree;
 
     /**
-     * @var int that determines the maximum cost that can be given to an order.
-     **/
-    private static $MAX_TOTAL_COST = 50000;
-
-    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $_entityManager;
@@ -185,7 +180,7 @@ class Order
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return \BrBundle\Entity\Collaborator
      */
     public function getCreationPerson()
     {

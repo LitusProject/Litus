@@ -94,8 +94,6 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('organization_logo');
 
-        $finalEntry = $configs->getConfigValue('br.contract_final_entry');
-
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
         $contractText = '';

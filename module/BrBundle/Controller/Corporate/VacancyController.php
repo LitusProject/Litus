@@ -84,8 +84,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -144,8 +144,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -291,5 +291,14 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         return $job;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
