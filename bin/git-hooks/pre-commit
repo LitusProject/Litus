@@ -6,9 +6,29 @@
 # - PHP_VALID=1 # or 0, enables or disables checking of the php code is valid, enabled by default
 # - PHP_CS=1 # or 0, enables or disables php-cs-fixer, enabled by default if php-cs-fixer is available
 # - STD_WHITESPACE=1 # or 0, enables or disables git whitespace checking, enabled by default
+# - GIT_STASH=1 # or 0, enables or disables stashing all untracked changes before running the hook
 #
 # @license AGPLv3
 # @author Bram Gotink <bram.gotink@litus.cc>
+
+# Helper functions
+#
+
+log_success() {
+    echo -e "\033[1m\033[32m$@" "\033[0m"
+}
+
+log_info() {
+    echo -e "\033[1m\033[34m$@" "\033[0m"
+}
+
+log_warning() {
+    echo -e "\033[1m\033[33m$@" "\033[0m"
+}
+
+log_error() {
+    echo -e "\033[1m\033[31m$@" "\033[0m"
+}
 
 # Initialization
 #
@@ -31,12 +51,24 @@ set -e
 PHP_VALID=1
 PHP_CS=1
 STD_WHITESPACE=1
+GIT_STASH=1
 
 # Source configuration
 if [ -f ./.git-hooks ]
 then
     source ./.git-hooks
 fi
+
+# Before running: git-stash
+#
+
+if [ $GIT_STASH -eq 1 ]
+then
+    git stash save --keep-index --include-untracked --quiet 'pre-commit hook stash'
+    log_info 'Untracked changes have been stashed'
+fi
+
+abort=0
 
 # Check 1 (always check this): only allow ASCII filenames
 #
@@ -54,7 +86,7 @@ if [ "$allownonascii" != "true" ] &&
     test $(git diff --cached --name-only --diff-filter=A -z $against |
       LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
 then
-    cat <<\EOF
+    cat <<\EOF | while read line; do log_error "$line"; done
 Error: Attempt to add a non-ASCII file name.
 
 This can cause problems if you want to work with people on other platforms.
@@ -65,7 +97,7 @@ If you know what you are doing you can disable this check using:
 
   git config hooks.allownonascii true
 EOF
-    exit 1
+    abort=1
 fi
 
 # Check 2: check php consistency before running php-cs-fixer
@@ -84,7 +116,7 @@ check_php() {
             if [ $status -ne 0 ]
             then
                 echo -e -n "\r\033[K"
-                echo "$output"
+                log_error "$output"
                 return $status
             else
                 echo -e -n "\r\033[K"
@@ -94,28 +126,33 @@ check_php() {
     done
 
     echo -e -n "\r\033[K"
-    echo "PHP syntax checked"
+    log_success "PHP syntax checked"
 }
 
-if [ $PHP_VALID -eq 1 ]
+if [ $abort -ne 1 ] && [ $PHP_VALID -eq 1 ]
 then
-    check_php || exit $?
+    check_php || abort=1
 fi
 
 # Check 3: run php-cs-fixer
 #
 
-if [ $PHP_CS -eq 1 ] && [ -f vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh ]
+if [ $abort -ne 1 ] && [ $PHP_CS -eq 1 ] && [ -f vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh ]
 then
-    vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh
+    vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh || abort=1
 
     # Check PHP validity again, to make sure php-cs-fixer hasn't broken stuff
-    if [ $PHP_VALID -eq 1 ]
+    if [ $abort -ne 1 ]
     then
-        if ! check_php
+        log_success "php-cs-fixer is finished"
+
+        if [ $PHP_VALID -eq 1 ]
         then
-            echo "Php-cs-fixer seems to have broken code."
-            exit 1
+            if ! check_php
+            then
+                log_error "Php-cs-fixer seems to have broken code."
+                abort=1
+            fi
         fi
     fi
 fi
@@ -123,7 +160,33 @@ fi
 # Check 4: If there are whitespace errors, print the offending file names and fail.
 #
 
-if [ $STD_WHITESPACE -eq 1 ]
+if [ $abort -ne 1 ] && [ $STD_WHITESPACE -eq 1 ]
 then
-    git diff-index --check --cached $against --
+    git diff-index --check --cached $against -- || abort=1
+
+    if [ $abort -eq 1 ]
+    then
+        log_error 'Whitespace errors found'
+    else
+        log_success 'No whitespace errors found'
+    fi
 fi
+
+# After running: unstash changes
+#
+
+if [ $GIT_STASH -eq 1 ]
+then
+    status=0
+    git stash pop --quiet || status=$?
+
+    if [ $status -eq 0 ]
+    then
+        log_info 'Stashed changes have been reapplied'
+    else
+        log_error "The stashed changes couldn\'t be re-applied, please solve the merge conflicts before continuing."
+        log_info "The untracked changes can also be found in the most recent git stash (stash@{0})"
+    fi
+fi
+
+exit $abort
