@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # A pre-commit git hook for the Litus Project.
 #
@@ -72,13 +72,29 @@ fi
 #
 
 check_php() {
+    local output='';
+    local status=0;
+
     for file in $(git diff --cached --name-only --diff-filter=ACMR $against)
     do
         if echo "$file" | grep -q -E '\.php$'
         then
-            php -l "$file" || return $?
+            output=$(php -l "$file" 2>&1)
+            status=$?
+            if [ $status -ne 0 ]
+            then
+                echo -e -n "\r\033[K"
+                echo "$output"
+                return $status
+            else
+                echo -e -n "\r\033[K"
+                echo -n "$output"
+            fi
         fi
     done
+
+    echo -e -n "\r\033[K"
+    echo "PHP syntax checked"
 }
 
 if [ $PHP_VALID -eq 1 ]
