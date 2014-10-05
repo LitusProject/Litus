@@ -637,6 +637,7 @@ class Booking extends EntityRepository
                     $period->isOpen() && !$limitByPeriod ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
             )
+            ->addOrderBy('b.saleDate', 'DESC')
             ->setParameter(':person', $person->getId())
             ->setParameter(':article', $article->getId());
 
@@ -778,9 +779,10 @@ class Booking extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
-                    $query->expr()->neq('b.status', '\'sold\''),
-                    $query->expr()->neq('b.status', '\'expired\''),
-                    $query->expr()->neq('b.status', '\'canceled\''),
+                    $query->expr()->orX(
+                        $query->expr()->eq('b.status', '\'booked\''),
+                        $query->expr()->eq('b.status', '\'assigned\'')
+                    ),
                     $query->expr()->gte('b.bookDate', ':startDate'),
                     $period->isOpen() ? '1=1' : $query->expr()->lt('b.bookDate', ':endDate')
                 )
