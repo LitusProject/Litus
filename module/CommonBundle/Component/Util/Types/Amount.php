@@ -48,7 +48,7 @@ class Amount
      */
     public function asInteger($multiplier = 1, $storedMultiplier = null)
     {
-        if ($storedMultiplier !== null && $multiplier !== $storedMultiplier) {
+        if ($storedMultiplier !== null && $multiplier === $storedMultiplier) {
             $multiplier /= $storedMultiplier;
         }
 
