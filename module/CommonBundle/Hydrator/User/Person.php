@@ -54,7 +54,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
         );
 
         $data['code'] = null !== $object->getCode()
-            ? $code->getCode()->getCode()
+            ? $object->getCode()->getCode()
             : null;
 
         return $data;

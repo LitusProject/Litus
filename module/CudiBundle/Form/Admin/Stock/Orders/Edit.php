@@ -18,11 +18,8 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CudiBundle\Entity\Stock\Order\Item,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CudiBundle\Entity\Stock\Order\Item,
+    LogicException;
 
 /**
  * Edit Order
@@ -32,54 +29,33 @@ use CommonBundle\Component\OldForm\Admin\Element\Text,
 class Edit extends \CommonBundle\Component\OldForm\Admin\Form
 {
     /**
-     * @param Item            $item
-     * @param null|string|int $name Optional name for the element
+     * @var Item|null
      */
-    public function __construct(Item $item, $name = null)
+    private $item;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->item) {
+            throw new LogicException('Cannot edit a null order item.');
+        }
 
-        $field = new Text('number');
-        $field->setLabel('Number')
-            ->setAttribute('autocomplete', 'off')
-            ->setRequired()
-            ->setValue($item->getNumber());
-        $this->add($field);
+        parent::init();
 
-        $field = new Submit('edit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'stock_edit');
-        $this->add($field);
+        $this->get('number')
+            ->setValue($this->item->getNumber());
+
+        $this->remove('add')
+            ->addSubmit('Save', 'stock_edit', 'edit');
     }
 
-    public function getInputFilter()
+    /**
+     * @param  Item $item
+     * @return self
+     */
+    public function setItem(Item $item)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->item = $item;
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                        array(
-                            'name' => 'greaterthan',
-                            'options' => array(
-                                'min' => 0,
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $this;
     }
 }

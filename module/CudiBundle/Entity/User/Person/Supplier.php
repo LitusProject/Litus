@@ -38,23 +38,6 @@ class Supplier extends \CommonBundle\Entity\User\Person
     private $supplier;
 
     /**
-     * @param string         $username    The user's username
-     * @param array          $roles       The user's roles
-     * @param string         $firstName   The user's first name
-     * @param string         $lastName    The user's last name
-     * @param string         $email       The user's e-mail address
-     * @param string|null    $phoneNumber The user's phone number
-     * @param string|null    $sex         The users sex
-     * @param SupplierEntity $supplier    The supplier
-     */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null, SupplierEntity $supplier)
-    {
-        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
-
-        $this->supplier = $supplier;
-    }
-
-    /**
      * @return SupplierEntity
      */
     public function getSupplier()

@@ -18,57 +18,59 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CudiBundle\Entity\Stock\Order\Order,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CudiBundle\Entity\Stock\Order\Order,
+    LogicException;
 
 /**
  * Add Order Comment
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Comment extends \CommonBundle\Component\OldForm\Admin\Form
+class Comment extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param Order           $order
-     * @param null|string|int $name  Optional name for the element
+     * @var Order|null
      */
-    public function __construct(Order $order, $name = null)
+    private $order;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->order) {
+            throw new LogicException('Cannot comment on a null order.');
+        }
 
-        $field = new Textarea('comment');
-        $field->setLabel('Comment')
-            ->setAttribute('style', 'height: 50px')
-            ->setRequired()
-            ->setValue($order->getComment());
-        $this->add($field);
+        parent::init();
 
-        $field = new Submit('save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'comment',
+            'label'      => 'Comment',
+            'required'   => true,
+            'value'      => $this->order->getComment(),
+            'attributes' => array(
+                'style' => 'height: 50px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => false,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'edit', 'save');
+    }
+
+    /**
+     * @param  Order $order
+     * @return self
+     */
+    public function setOrder(Order $order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }

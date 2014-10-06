@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Admin;
 
 use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Form\Admin\SpecialActions\Irreeel\Assign as IrreeelForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -37,15 +36,16 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
     public function irreeelAction()
     {
-        $form = new IrreeelForm();
+        $form = $this->getForm('cudi_special-actions_irreeel_assign');
 
         $academicYear = $this->getCurrentAcademicYear();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $number = 0;
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')

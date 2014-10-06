@@ -18,69 +18,30 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Order
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param string          $barcodePrefix
-     * @param null|string|int $name          Optional name for the element
+     * @var string
      */
-    public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
+    private $barcodePrefix = '';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('article_id');
-        $field->setAttribute('id', 'articleId');
-        $this->add($field);
-
-        $field = new Text('article');
-        $field->setLabel('Article')
-            ->setAttribute('class', 'disableEnter')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'articleSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired()
-            ->setValue($barcodePrefix);
-        $this->add($field);
-
-        $field = new Text('number');
-        $field->setLabel('Number')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('id', 'order_number')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('add');
-        $field->setValue('Add')
-            ->setAttribute('class', 'stock_add')
-            ->setAttribute('id', 'stock_add')
-            ->setAttribute('data-help', '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
-                <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'article_id',
+            'attributes' => array(
+                'id' => 'articleId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -90,27 +51,43 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'article',
+            'label'      => 'Article',
+            'required'   => true,
+            'value'      => $this->barcodePrefix,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'class'        => 'disableEnter',
+                'data-provide' => 'typeahead',
+                'id'           => 'articleSearch',
+                'style'        => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'number',
+            'label'      => 'Number',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'id'           => 'order_number',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -125,10 +102,25 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'stock_add', 'add', array(
+            'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
+                <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
+            'id'        => 'stock_add',
+        ));
+    }
+
+    /**
+     * @param  string $barcodePrefix
+     * @return self
+     */
+    public function setBarcodePrefix($barcodePrefix)
+    {
+        $this->barcodePrefix = $barcodePrefix;
+
+        return $this;
     }
 }
