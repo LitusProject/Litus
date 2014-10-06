@@ -83,11 +83,7 @@ class Activity extends \Zend\Validator\AbstractValidator
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneByActivity($activity);
 
-        if (null === $event) {
-            return true;
-        }
-
-        if ($event->getId() == $this->_event->getId()) {
+        if (null === $event || null == $this->_event || $event->getId() == $this->_event->getId()) {
             return true;
         }
 

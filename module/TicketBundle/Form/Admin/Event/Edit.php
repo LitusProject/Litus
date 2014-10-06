@@ -64,7 +64,7 @@ class Edit extends Add
         foreach ($inputs as $key => $input) {
             if ($input['name'] == 'event') {
                 $inputs[$key]['validators'] = array(
-                    new ActivityValidator($this->geEntityManager(), $this->event),
+                    new ActivityValidator($this->getEntityManager(), $this->event),
                 );
                 break;
             }
@@ -73,6 +73,10 @@ class Edit extends Add
         return $inputs;
     }
 
+    /**
+     * @param  \TicketBundle\Entity\Event $event
+     * @return self
+     */
     public function setEvent(Event $event)
     {
         $this->event = $event;
