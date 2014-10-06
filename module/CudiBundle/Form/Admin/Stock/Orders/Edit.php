@@ -26,7 +26,7 @@ use CudiBundle\Entity\Stock\Order\Item,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Component\OldForm\Admin\Form
+class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var Item|null

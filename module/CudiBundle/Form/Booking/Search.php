@@ -18,27 +18,27 @@
 
 namespace CudiBundle\Form\Booking;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text;
-
 /**
  * Search articles
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Search extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Search extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
+
         $this->setAttribute('class', 'form-horizontal pull-right col-md-10');
 
-        $field = new Text('search_string');
-        $field->setLabel('Search String')
-            ->setAttribute('pattern', '.{3}.*')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'search_string',
+            'label'      => 'Search String',
+            'required'   => true,
+            'attributes' => array(
+                'pattern' => '.{3}.*',
+            ),
+        ));
     }
 }
