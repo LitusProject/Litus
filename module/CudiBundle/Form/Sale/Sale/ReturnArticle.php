@@ -18,83 +18,27 @@
 
 namespace CudiBundle\Form\Sale\Sale;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Reset,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator;
 
 /**
  * Return Sale
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Text('person');
-        $field->setLabel('Person')
-            ->setAttribute('placeholder', 'Student')
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Hidden('article_id');
-        $field->setAttribute('id', 'articleId');
-        $this->add($field);
-
-        $field = new Text('article');
-        $field->setLabel('Article')
-            ->setRequired()
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('placeholder', 'Article')
-            ->setAttribute('id', 'articleSearch')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Return')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('id', 'signin');
-        $this->add($field);
-
-        $field = new Reset('cancel');
-        $field->setValue('Cancel');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'person_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'person_id',
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -104,26 +48,38 @@ class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'person',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'person',
+            'label'      => 'Person',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'personSearch',
+                'placeholder'  => 'Student',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'article_id',
+            'attributes' => array(
+                'id' => 'articleId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -133,25 +89,42 @@ class ReturnArticle extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'article',
+            'label'      => 'Article',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'articleSearch',
+                'placeholder'  => 'Article',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new HasBoughtValidator($this->_entityManager),
+                        new HasBoughtValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Return', null, 'submit', array(
+            'autocomplete' => 'off',
+            'id'           => 'signin',
+        ));
+
+        $this->add(array(
+            'type'  => 'reset',
+            'name'  => 'cancel',
+            'value' => 'Cancel',
+        ));
     }
 }

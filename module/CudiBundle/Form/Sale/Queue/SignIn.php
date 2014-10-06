@@ -18,39 +18,42 @@
 
 namespace CudiBundle\Form\Sale\Queue;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Button,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Reset,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text;
-
 /**
  * Sign in to queue
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SignIn extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('username');
-        $field->setLabel('Student Number')
-            ->setRequired()
-            ->setAttribute('id', 'username')
-            ->setAttribute('placeholder', "Student Number")
-            ->setAttribute('autocomplete', 'off');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'username',
+            'label'      => 'Student Number',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'id'           => 'username',
+                'placeholder'  => 'Student Number',
+            ),
+        ));
 
-        $field = new Button('submit');
-        $field->setLabel('Sign In')
-            ->setAttribute('id', 'signin');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'button',
+            'name'       => 'submit',
+            'label'      => 'Sign In',
+            'attributes' => array(
+                'id' => 'signin',
+            ),
+        ));
 
-        $field = new Reset('cancel');
-        $field->setValue('Cancel');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'reset',
+            'name'  => 'cancel',
+            'label' => 'Cancel',
+        ));
     }
 }

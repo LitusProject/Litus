@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Sale;
 
 use CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
-    CudiBundle\Form\Sale\Sale\ReturnArticle as ReturnForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -73,14 +72,13 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        $form = new ReturnForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sale_sale_return-article');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person')
