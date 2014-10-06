@@ -123,8 +123,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                 $this->getEntityManager()->flush();
 
                 $enableAssignment = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.enable_automatic_assignment');
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment') &&
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                 if ($enableAssignment) {
                     $this->getEntityManager()
