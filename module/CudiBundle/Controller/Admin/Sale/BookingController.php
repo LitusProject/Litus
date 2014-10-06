@@ -23,9 +23,6 @@ use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
-    CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
-    CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateInterval,
     DateTime,
     Zend\View\Model\ViewModel;
@@ -129,14 +126,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getAcademicYear();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sales_booking_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $booking = new Booking(
                     $this->getEntityManager(),
@@ -639,7 +635,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function personAction()
     {
-        $form = new PersonForm();
+        $form = $this->getForm('cudi_sales_booking_person');
 
         if ($person = $this->_getPerson()) {
             $paginator = $this->paginator()->createFromQuery(
@@ -672,7 +668,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new ArticleForm();
+        $form = $this->getForm('cudi_sales_booking_article');
 
         if ($article = $this->_getArticle()) {
             $paginator = $this->paginator()->createFromQuery(

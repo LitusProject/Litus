@@ -92,9 +92,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      * @param  string $value
      * @param  string $class
      * @param  string $name
+     * @param  array  $attributes
      * @return self
      */
-    public function addSubmit($value, $class = null, $name = 'submit')
+    public function addSubmit($value, $class = null, $name = 'submit', $attributes = array())
     {
         $submit = array(
             'type'       => 'submit',
@@ -103,10 +104,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         );
 
         if ($class) {
-            $submit['attributes'] = array(
-                'class' => $class,
-            );
+            $attributes['class'] = $class;
         }
+
+        $submit['attributes'] = $attributes;
 
         $this->add($submit);
 

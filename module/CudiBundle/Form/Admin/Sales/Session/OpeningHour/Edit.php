@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Opening Hour
  *
@@ -29,22 +25,11 @@ use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
  */
 class Edit extends Add
 {
-    /**
-     * @param OpeningHour     $openingHour
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(OpeningHour $openingHour, EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'clock_edit');
-        $this->add($field);
-
-        $this->populateFromOpeningHour($openingHour);
+        $this->remove('submit')
+            ->addSubmit('Save', 'clock_edit');
     }
 }

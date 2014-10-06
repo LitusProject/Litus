@@ -48,12 +48,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'type'  => 'checkbox',
             'name'  => 'force',
             'label' => 'Force (Ignore limits)',
+            'attributes' => array(
+                'id' => 'force',
+            ),
         ));
 
         $this->add(array(
             'type'  => 'checkbox',
             'name'  => 'is_guest',
             'label' => 'Is Guest',
+            'attributes' => array(
+                'id' => 'is_guest',
+            ),
         ));
 
         $this->add(array(
@@ -98,31 +104,41 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'     => 'guest_first_name',
                     'label'    => 'First Name',
                     'required' => true,
+                    'attributes' => array(
+                        'id' => 'guest_first_name',
+                    ),
                 ),
                 array(
                     'type'     => 'text',
                     'name'     => 'guest_last_name',
                     'label'    => 'Last Name',
                     'required' => true,
+                    'attributes' => array(
+                        'id' => 'guest_last_name',
+                    ),
                 ),
                 array(
                     'type'     => 'text',
                     'name'     => 'guest_email',
                     'label'    => 'Email',
                     'required' => true,
+                    'attributes' => array(
+                        'id' => 'guest_email',
+                    ),
                 ),
             ),
         ));
 
         $optionElements = array();
 
-        if (empty($this->event->getOptions())) {
+        if (empty($this->event->getOptions()->toArray())) {
             $optionElements[] = array(
                 'type'       => 'select',
                 'name'       => 'number_member',
                 'label'      => 'Number Member',
                 'attributes' => array(
                     'class'      => 'ticket_option',
+                    'id'         => 'number_member',
                     'data-price' => $this->event->getPriceMembersAsInt(100),
                     'options'    => $this->getNumberOptions(),
                 ),
@@ -135,6 +151,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Number Non Member',
                     'attributes' => array(
                         'class'      => 'ticket_option',
+                        'id'         => 'number_non_member',
                         'data-price' => $this->event->getPriceNonMembersAsInt(100),
                         'options'    => $this->getNumberOptions(),
                     ),
@@ -148,6 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => ucfirst($option->getName()) . ' (Member)',
                     'attributes' => array(
                         'class'      => 'ticket_option',
+                        'id'         => 'option_' . $option->getId() . '_number_member',
                         'data-price' => $option->getPriceMembersAsInt(100),
                         'options'    => $this->getNumberOptions(),
                     ),
@@ -160,6 +178,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'label'      => ucfirst($option->getName()) . ' (Non Member)',
                         'attributes' => array(
                             'class'      => 'ticket_option',
+                            'id'         => 'option_' . $option->getId() . '_number_non_member',
                             'data-price' => $option->getPriceNonMembersAsInt(100),
                             'options'    => $this->getNumberOptions(),
                         ),
@@ -179,9 +198,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'type'  => 'checkbox',
             'name'  => 'payed',
             'label' => 'Payed',
+            'attributes' => array(
+                'id' => 'payed',
+            ),
         ));
 
-        $this->addSubmit('Sale', 'sale_tickets');
+        $this->addSubmit('Sale', 'sale_tickets', 'submit', array('id' => 'sale_tickets'));
     }
 
     private function getNumberOptions()

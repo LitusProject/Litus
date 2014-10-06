@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Financial as FinancialGenerator,
-    CudiBundle\Form\Admin\Sales\Financial\Period as PeriodForm,
     DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -121,14 +120,13 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         $organizationsList = array();
         $data = array();
 
-        $form = new PeriodForm();
+        $form = $this->getForm('cudi_sales_financial_period');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $startDate = DateTime::createFromFormat('d/m/Y', $formData['start_date']);
                 $endDate = DateTime::createFromFormat('d/m/Y', $formData['end_date']);

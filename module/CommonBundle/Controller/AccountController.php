@@ -135,6 +135,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
+        $oldTshirtSize = null;
+        if ($metaData !== null) {
+            $oldTshirtSize = $metaData->getTshirtSize();
+        }
+
         $termsAndConditions = $this->_getTermsAndConditions();
 
         $enableOtherOrganization = $this->getEntityManager()
@@ -220,7 +225,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 );
 
                 if ($enableRegistration) {
-                    if (null !== $metaData->getTshirtSize()) {
+                    if (null !== $oldTshirtSize && $oldTshirtSize != $metaData->getTshirtSize()) {
                         $booking = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Booking')
                             ->findOneAssignedByArticleAndPersonInAcademicYear(

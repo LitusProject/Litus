@@ -18,92 +18,40 @@
 
 namespace CudiBundle\Form\Admin\Sales\Financial;
 
-use CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
 
 /**
  * Search financial for period
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Period extends \CommonBundle\Component\OldForm\Admin\Form
+class Period extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-datepicker', true)
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'date',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => true,
+        ));
 
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-datepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Search')
-            ->setAttribute('class', 'financial');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'     => 'date',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
                         new DateCompareValidator('start_date', 'd/m/Y'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Search', 'financial');
     }
 }

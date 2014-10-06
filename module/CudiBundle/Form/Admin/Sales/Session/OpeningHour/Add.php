@@ -18,161 +18,61 @@
 
 namespace CudiBundle\Form\Admin\Sales\Session\OpeningHour;
 
-use CommonBundle\Component\OldForm\Admin\Element\Tabs,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
+use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    CommonBundle\Entity\General\Language;
 
 /**
  * Add opening hour
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'CudiBundle\Hydrator\Sale\Session\OpeningHour\OpeningHour';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected function initBeforeTabs()
     {
-        parent::__construct($name);
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'start',
+            'label'    => 'Start',
+            'required' => true,
+        ));
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('start');
-        $field->setLabel('Start')
-            ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true);
-        $this->add($field);
-
-        $field = new Text('end');
-        $field->setLabel('End')
-            ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true);
-        $this->add($field);
-
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('comment_' . $language->getAbbrev());
-            $field->setLabel('Comment');
-
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'clock_add');
-        $this->add($field);
-    }
-
-    public function populateFromOpeningHour(OpeningHour $openingHour)
-    {
-        $data = array(
-            'start' => $openingHour->getStart()->format('d/m/Y H:i'),
-            'end' => $openingHour->getEnd()->format('d/m/Y H:i'),
-        );
-        foreach ($this->getLanguages() as $language) {
-            $data['comment_' . $language->getAbbrev()] = $openingHour->getComment($language, false);
-        }
-
-        $this->setData($data);
-    }
-
-    protected function getLanguages()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'end',
+            'label'    => 'End',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
                         new DateCompareValidator('start', 'd/m/Y H:i'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
+    }
 
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'comment_' . $language->getAbbrev(),
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
+    {
+        $container->add(array(
+            'type'    => 'text',
+            'name'    => 'comment',
+            'label'   => 'Comment',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+    }
 
-        return $inputFilter;
+    protected function initAfterTabs()
+    {
+        $this->addSubmit('Add', 'clock_add');
     }
 }

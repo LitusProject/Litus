@@ -18,52 +18,25 @@
 
 namespace CudiBundle\Form\Admin\Sales\Booking;
 
-use CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Booking by person
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Person extends \CommonBundle\Component\OldForm\Admin\Form
+class Person extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct($options = null)
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Text('person');
-        $field->setLabel('Person')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Search')
-            ->setAttribute('class', 'booking')
-            ->setAttribute('id', 'search');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'person_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'person_id',
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+            'options'    => array(
+                'init' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -73,22 +46,38 @@ class Person extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'person',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'person',
+            'label'      => 'Person',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'personSearch',
+                'style'        => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'submit',
+            'name'       => 'submit',
+            'value'      => 'Search',
+            'attributes' => array(
+                'class' => 'booking',
+                'id'    => 'search',
+            ),
+        ));
     }
 }

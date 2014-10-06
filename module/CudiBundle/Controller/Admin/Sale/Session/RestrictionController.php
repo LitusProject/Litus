@@ -21,7 +21,6 @@ namespace CudiBundle\Controller\Admin\Sale\Session;
 use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
-    CudiBundle\Form\Admin\Sales\Session\Restriction\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,14 +40,15 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
-        $form = new AddForm($this->getEntityManager(), $session);
+        $form = $this->getForm('cudi_sales_session_restriction_add', array(
+            'session' => $session,
+        ));
 
         if ($this->getRequest()->isPost() && $session->isOpen()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if ('name' == $formData['type']) {
                     $restriction = new NameRestriction($session, $formData['start_value_name'], $formData['end_value_name']);
