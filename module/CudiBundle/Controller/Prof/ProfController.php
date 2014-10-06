@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Form\Prof\Prof\Add as AddForm,
-    SyllabusBundle\Entity\SubjectProfMap,
+use SyllabusBundle\Entity\SubjectProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -39,14 +38,13 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_prof_prof_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $docent = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')

@@ -18,64 +18,48 @@
 
 namespace CudiBundle\Form\Prof\Comment;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Reply
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reply extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('comment');
-        $this->add($field);
-
-        $field = new Textarea('reply');
-        $field->setLabel('Reply')
-            ->setAttribute('rows', 5)
-            ->setRequired();
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'comment',
+            'attributes' => array(
+                'id' => 'comment',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'int'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'reply',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'Textarea',
+            'name'       => 'reply',
+            'label'      => 'Reply',
+            'required'   => true,
+            'attributes' => array(
+                'rows' => 5,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
-
-        return $inputFilter;
+                ),
+            ),
+        ));
     }
 }
