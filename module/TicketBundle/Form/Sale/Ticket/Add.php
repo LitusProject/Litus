@@ -54,6 +54,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'type'  => 'checkbox',
             'name'  => 'is_guest',
             'label' => 'Is Guest',
+            'attributes' => array(
+                'id' => 'is_guest',
+            ),
         ));
 
         $this->add(array(
@@ -116,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $optionElements = array();
 
-        if (empty($this->event->getOptions())) {
+        if (empty($this->event->getOptions()->toArray())) {
             $optionElements[] = array(
                 'type'       => 'select',
                 'name'       => 'number_member',
@@ -181,7 +184,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label' => 'Payed',
         ));
 
-        $this->addSubmit('Sale', 'sale_tickets');
+        $this->addSubmit('Sale', 'sale_tickets', 'submit', array('id' => 'sale_tickets'));
     }
 
     private function getNumberOptions()
