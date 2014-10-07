@@ -65,18 +65,9 @@
                 $('#sale_invalid').removeClass('in');
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
-                var data = {
-                    force: $('#force').is(':checked') ? 1 : 0,
-                    is_guest: $('#is_guest').is(':checked') ? 1 : 0,
-                    person_id: $('#personId').val(),
-                    person: $('#personSearch').val(),
-                    guest_first_name: $('#guest_first_name').val(),
-                    guest_last_name: $('#guest_last_name').val(),
-                    guest_email: $('#guest_email').val(),
-                    payed: $('#payed').val()
-                }
-                $('.ticket_option').each(function () {
-                    data[$(this).attr('id')] = $(this).val();
+                var data = {};
+                $('#ticket_sale_form input').each(function () {
+                    data[$(this).attr('name')] = $(this).val();
                 });
 
                 $.ajax({

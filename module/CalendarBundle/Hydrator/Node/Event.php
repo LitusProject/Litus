@@ -96,7 +96,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         return $data;
     }
 
-    private function getLanguages()
+    protected function getLanguages()
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -107,7 +107,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function _loadDate($date)
+    protected static function _loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

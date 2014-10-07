@@ -18,7 +18,9 @@
 
 namespace TicketBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     TicketBundle\Entity\Event;
 
@@ -27,7 +29,7 @@ use CommonBundle\Entity\User\Person,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NumberTickets extends \Zend\Validator\AbstractValidator
+class NumberTickets extends \Zend\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
     const EXCEEDS_MAX_PERSON = 'exceedsMaxPerson';
@@ -47,6 +49,11 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      * @var Person
      */
     private $_person;
+
+    /**
+     * @var Form
+     */
+    private $_form;
 
     /**
      * Error messages
@@ -89,29 +96,29 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
 
         $number = 0;
         if (count($this->_event->getOptions()) == 0) {
-            $number += $context['number_member'];
+            $number += $this->_form->get('options_form')->get('number_member')->getValue();
             if (!$this->_event->isOnlyMembers()) {
-                $number += $context['number_non_member'];
+                $number += $this->_form->get('options_form')->get('number_non_member')->getValue();
             }
         } else {
             $options = $this->_event->getOptions();
             foreach ($options as $option) {
-                $number += $context['option_' . $option->getId() . '_number_member'];
+                $number += $this->_form->get('options_form')->get('option_' . $option->getId() . '_number_member')->getValue();
                 if (!$this->_event->isOnlyMembers()) {
-                    $number += $context['option_' . $option->getId() . '_number_non_member'];
+                    $number += $this->_form->get('options_form')->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
         }
 
-        if ($this->_person == null && isset($context['person_id']) && is_numeric($context['person_id'])) {
+        if ($this->_person == null && is_numeric($this->_form->get('person_form')->get('person_id')->getValue())) {
             $person = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($context['person_id']);
+                ->findOneById($this->_form->get('person_form')->get('person_id')->getValue());
         } else {
             $person = $this->_person;
         }
 
-        if (null == $person && !isset($context['is_guest'])) {
+        if (null == $person && !$this->_form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -136,5 +143,16 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
         }
 
         return true;
+    }
+
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
+
+        return $this;
     }
 }

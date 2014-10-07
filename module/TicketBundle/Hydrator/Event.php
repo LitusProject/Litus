@@ -32,7 +32,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         'limit_per_person', 'only_members',
     );
 
-    protected function doHydrate(array $array, $object = null)
+    protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
             $object = new EventEntity();
@@ -46,8 +46,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $closeDate = self::loadDate($data['bookings_close_date']);
 
-        $priceMembers = $enableOptions ? 0 : $data['price_members'];
-        $priceNonMembers = $enableOptions ? 0 : ($data['only_members'] ? 0 : $data['price_non_members']);
+        $priceMembers = $enableOptions ? 0 : $data['prices']['price_members'];
+        $priceNonMembers = $enableOptions ? 0 : ($data['only_members'] ? 0 : $data['prices']['price_non_members']);
 
         $generateTickets = $data['generate_tickets'];
 
@@ -81,7 +81,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if ($data['generate_tickets']) {
-            if ($event->areTicketsGenerated()) {
+            if ($object->areTicketsGenerated()) {
                 if ($data['number_of_tickets'] >= $object->getNumberOfTickets()) {
                     for ($i = $object->getNumberOfTickets(); $i < $data['number_of_tickets']; $i++) {
                         $this->getEntityManager()->persist(
@@ -126,10 +126,10 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     );
                 }
             }
-        } else { // tickets are not generated (anymore)
+        } elseif ($object->getId()) { // tickets are not generated (anymore)
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllEmptyByEvent($event);
+                ->findAllEmptyByEvent($object);
             foreach ($tickets as $ticket) {
                 $this->getEntityManager()->remove($ticket);
             }
@@ -169,7 +169,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     'option_id' => $option->getId(),
                     'option' => $option->getName(),
                     'price_members' => number_format($option->getPriceMembers()/100, 2),
-                    'price_non_members' => $event->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
+                    'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
                 );
             }
         }
