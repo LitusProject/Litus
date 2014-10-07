@@ -117,7 +117,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        $optionsForm = $this->addFieldset('Options', 'options');
+        $optionsForm = $this->addFieldset('Options', 'options_form');
 
         if (empty($this->event->getOptions()->toArray())) {
             $optionsForm->add(array(
@@ -216,57 +216,65 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
         $force = isset($this->data['force']) && $this->data['force'];
 
-        $inputFilter[] = array(
-            'name'     => 'guest_first_name',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
+        $personForm = array(
+            array(
+                'name'     => 'person_id',
+                'required' => !$isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'int',
+                    ),
+                ),
             ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'guest_last_name',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'guest_email',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array('name' => 'EmailAddress'),
-            ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'person_id',
-            'required' => !$isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'int',
+            array(
+                'name'     => 'person',
+                'required' => !$isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
                 ),
             ),
         );
 
-        $inputFilter[] = array(
-            'name'     => 'person',
-            'required' => !$isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
+        $inputFilter['person_form'] = $this->getInputFilterFactory()
+                ->createInputFilter($personForm);
+
+        $guestForm = array(
+            array(
+                'name'     => 'guest_first_name',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            array(
+                'name'     => 'guest_last_name',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            array(
+                'name'     => 'guest_email',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'EmailAddress'),
+                ),
             ),
         );
 
+        $inputFilter['guest_form'] = $this->getInputFilterFactory()
+                ->createInputFilter($guestForm);
+
         if (!$force) {
+            $optionsForm = array();
             if (empty($this->event->getOptions())) {
-                $inputFilter[] = array(
+                $optionsForm[] = array(
                     'name'     => 'number_member',
                     'required' => true,
                     'validators' => array(
@@ -275,7 +283,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 );
 
                 if (!$this->event->isOnlyMembers()) {
-                    $inputFilter[] = array(
+                    $optionsForm[] = array(
                         'name'     => 'number_non_member',
                         'required' => true,
                         'validators' => array(
@@ -284,9 +292,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     );
                 }
             } else {
-                $options = array();
                 foreach ($this->event->getOptions() as $option) {
-                    $options[] = array(
+                    $optionsForm[] = array(
                         'name'     => 'option_' . $option->getId() . '_number_member',
                         'required' => true,
                         'validators' => array(
@@ -295,7 +302,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     );
 
                     if (!$this->event->isOnlyMembers()) {
-                        $options[] = array(
+                        $optionsForm[] = array(
                             'name'     => 'option_' . $option->getId() . '_number_non_member',
                             'required' => true,
                             'validators' => array(
@@ -304,9 +311,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         );
                     }
                 }
-
-                $inputFilter['options'] = $options;
             }
+
+            $inputFilter['options_form'] = $this->getInputFilterFactory()
+                    ->createInputFilter($optionsForm);
         }
 
         return $inputFilter;

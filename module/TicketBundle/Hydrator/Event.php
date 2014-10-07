@@ -152,19 +152,19 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['event'] = $event->getActivity()->getId();
-        $data['bookings_close_date'] = $event->getBookingsCloseDate() ? $event->getBookingsCloseDate()->format('d/m/Y H:i') : '';
-        $data['generate_tickets'] = $event->areTicketsGenerated();
-        $data['allow_remove'] = $event->allowRemove();
+        $data['event'] = $object->getActivity()->getId();
+        $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';
+        $data['generate_tickets'] = $object->areTicketsGenerated();
+        $data['allow_remove'] = $object->allowRemove();
 
-        if (sizeof($event->getOptions()) == 0) {
-            $data['prices']['price_members'] = number_format($event->getPriceMembers()/100, 2);
-            $data['prices']['price_non_members'] = $event->isOnlyMembers() ? '' : number_format($event->getPriceNonMembers()/100, 2);
+        if (sizeof($object->getOptions()) == 0) {
+            $data['prices']['price_members'] = number_format($object->getPriceMembers()/100, 2);
+            $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers()/100, 2);
         } else {
             $data['enable_options'] = true;
             $data['enable_options_hidden'] = '1';
 
-            foreach ($event->getOptions() as $option) {
+            foreach ($object->getOptions() as $option) {
                 $data['options'][] = array(
                     'option_id' => $option->getId(),
                     'option' => $option->getName(),
@@ -181,7 +181,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function loadDate($date)
+    protected static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

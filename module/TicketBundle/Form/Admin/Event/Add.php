@@ -31,6 +31,8 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'TicketBundle\Hydrator\Event';
+
     public function init()
     {
         parent::init();
@@ -135,6 +137,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required'   => true,
                     'attributes' => array(
                         'class' => 'price_non_members',
+                    ),
+                    'options' => array(
+                        'input' => array(
+                            'validators' => array(
+                                new PriceValidator(),
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -257,27 +266,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) &&
             (!isset($this->data['enable_options_hidden']) || $this->data['enable_options_hidden'] != '1')) {
-            $inputFilter[] = array(
-                'name'     => 'price_members',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
+            $optionsForm = array(
+                array(
+                    'name'     => 'price_members',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
                 ),
-                'validators' => array(
-                    new PriceValidator(),
+                array(
+                    'name'     => 'price_non_members',
+                    'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
                 ),
             );
 
-            $inputFilter[] = array(
-                'name'     => 'price_non_members',
-                'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator(),
-                ),
-            );
+            $inputFilter['prices'] = $this->getInputFilterFactory()
+                ->createInputFilter($optionsForm);
         }
 
         return $inputFilter;
