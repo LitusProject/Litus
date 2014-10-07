@@ -33,7 +33,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'CudiBundle\Hydrator\Sale\Article';
 
     /**
-     * @var Article\null
+     * @var Article|null
      */
     protected $article;
 
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $barcodeCheck = $this->getEntityManager()
+        $barcodeCheck = 1 == $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_sale_article_barcode_check');
 
@@ -108,9 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'data-help' => 'This is the main barcode of the article. This one will be printed on the front page.',
             ),
             'options'    => array(
-                'input' => array(
-                    $barcodeInput,
-                ),
+                'input' => $barcodeInput,
             ),
         ));
 

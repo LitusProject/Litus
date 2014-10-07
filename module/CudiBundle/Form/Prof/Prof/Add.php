@@ -18,49 +18,25 @@
 
 namespace CudiBundle\Form\Prof\Prof;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Prof
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('prof_id');
-        $field->setAttribute('id', 'profId');
-        $this->add($field);
-
-        $field = new Text('prof');
-        $field->setLabel('Docent')
-            ->setAttribute('id', 'profSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'prof_id',
+            'attributes' => array(
+                'id' => 'profId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -70,22 +46,29 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'prof',
+            'label'      => 'Docent',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'profSearch',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add');
     }
 }

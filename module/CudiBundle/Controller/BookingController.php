@@ -21,8 +21,6 @@ namespace CudiBundle\Controller;
 use CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Article\Notification\Subscription,
     CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Form\Booking\Booking as BookingForm,
-    CudiBundle\Form\Booking\Search as SearchForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -103,8 +101,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 ->getConfigValue('cudi.bookings_closed_exceptions')
         );
 
-        $form = new BookingForm($this->getEntityManager());
-
         $authenticatedPerson = $this->getAuthentication()->getPersonObject();
 
         if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
@@ -141,6 +137,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $sold[$booking->getArticle()->getId()] += $booking->getNumber();
         }
 
+        $allArticles = array();
+
         $result = array();
         foreach ($enrollments as $enrollment) {
             $subject = $enrollment->getSubject();
@@ -160,7 +158,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         ->getRepository('CudiBundle\Entity\Comment\Comment')
                         ->findAllSiteByArticle($article->getMainArticle());
 
-                    $articles[] = array(
+                    $articleInfo = array(
                         'article' => $article,
                         'comments' => $comments,
                         'mandatory' => $subjectMap->isMandatory(),
@@ -170,6 +168,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
                     );
+
+                    $articles[] = $articleInfo;
+                    $allArticles[] = $articleInfo;
                 }
             }
 
@@ -178,8 +179,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'articles' => $articles,
                 'isMapping' => false,
             );
-
-            $form->addInputsForArticles($articles);
         }
 
         $commonArticles = $this->getEntityManager()
@@ -193,7 +192,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CudiBundle\Entity\Comment\Comment')
                     ->findAllSiteByArticle($commonArticle->getMainArticle());
 
-                $articles[] = array(
+                $articleInfo = array(
                     'article' => $commonArticle,
                     'comments' => $comments,
                     'mandatory' => false,
@@ -203,6 +202,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         && $commonArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
                 );
+
+                $articles[] = $articleInfo;
+                $allArticles[] = $articleInfo;
             }
         }
 
@@ -212,13 +214,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             'isMapping' => false,
         );
 
-        $form->addInputsForArticles($articles);
+        $form = $this->getForm('cudi_booking_booking', array(
+            'articles' => $allArticles,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $enableAssignment = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_automatic_assignment');
@@ -322,7 +327,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             }
         }
 
-        $searchForm = new SearchForm();
+        $searchForm = $this->getForm('cudi_booking_search');
 
         return new ViewModel(
             array(

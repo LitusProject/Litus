@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Add Delivery Directly
  *
@@ -27,28 +25,14 @@ use Doctrine\ORM\EntityManager;
  */
 class AddDirect extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, '', $name);
+        parent::init();
 
-        $this->remove('article_id');
-        $this->remove('article');
-        $this->get('add')
-            ->setName('add_delivery')
-            ->setAttribute('id', 'add_delivery');
-    }
+        $this->remove('article_id')
+            ->remove('article');
 
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('article_id');
-        $inputFilter->remove('article');
-
-        return $inputFilter;
+        $this->remove('add')
+            ->addSubmit('Add', 'stock_add', 'add_delivery', array('id' => 'add_delivery'));
     }
 }

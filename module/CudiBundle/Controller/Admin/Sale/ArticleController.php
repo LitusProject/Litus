@@ -157,7 +157,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($saleArticle);
 
-                if (isset($formData['bookable'])) {
+                if (isset($formData['bookable']) && $formData['bookable']) {
                     $this->getEntityManager()->persist(
                         new BookableLog($this->getAuthentication()->getPersonObject(), $saleArticle)
                     );
@@ -217,7 +217,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getEntityManager()->persist($history);
 

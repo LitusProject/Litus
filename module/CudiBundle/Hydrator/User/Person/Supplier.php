@@ -16,20 +16,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Supplier;
+namespace CudiBundle\Hydrator\User\Person;
 
-/**
- * Edit Supplier
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Edit extends Add
+use CudiBundle\Entity\User\Person\Supplier as SupplierEntity;
+
+class Supplier extends \CommonBundle\Hydrator\User\Person
 {
-    public function init()
+    protected function doHydrate(array $data, $object = null)
     {
-        parent::init();
+        $data['roles'] = array('supplier');
 
-        $this->remove('submit')
-            ->addSubmit('Save', 'supplier_edit');
+        if (null === $object) {
+            $object = new SupplierEntity();
+            $object->setUsername($data['username']);
+        }
+
+        return parent::doHydrate($data, $object);
     }
 }

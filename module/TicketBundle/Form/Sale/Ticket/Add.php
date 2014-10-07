@@ -62,77 +62,65 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'person_form',
+        $personForm = $this->addFieldset('Person', 'person_form');
+
+        $personForm->add(array(
+            'type'       => 'hidden',
+            'name'       => 'person_id',
+            'attributes' => array(
+                'id' => 'personId',
+            ),
+        ));
+
+        $personForm->add(array(
+            'type'       => 'text',
+            'name'       => 'person',
             'label'      => 'Person',
+            'required'   => true,
             'attributes' => array(
-                'id' => 'person_form',
-            ),
-            'elements'   => array(
-                array(
-                    'type'       => 'hidden',
-                    'name'       => 'person_id',
-                    'attributes' => array(
-                        'id' => 'personId',
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'person',
-                    'label'      => 'Person',
-                    'required'   => true,
-                    'attributes' => array(
-                        'autocomplete' => 'off',
-                        'data-provice' => 'typeahead',
-                        'id'           => 'personSearch',
-                    ),
-                ),
+                'autocomplete' => 'off',
+                'data-provice' => 'typeahead',
+                'id'           => 'personSearch',
             ),
         ));
 
-        $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'guest_form',
-            'label'      => 'Guest',
+        $guestForm = $this->addFieldset('Guest', 'guest_form');
+
+        $guestForm->add(array(
+                'type'     => 'text',
+                'name'     => 'guest_first_name',
+                'label'    => 'First Name',
+                'required' => true,
+                'attributes' => array(
+                    'id' => 'guest_first_name',
+                ),
+            )
+        );
+
+        $guestForm->add(array(
+            'type'     => 'text',
+            'name'     => 'guest_last_name',
+            'label'    => 'Last Name',
+            'required' => true,
             'attributes' => array(
-                'id' => 'guest_form',
-            ),
-            'elements'   => array(
-                array(
-                    'type'     => 'text',
-                    'name'     => 'guest_first_name',
-                    'label'    => 'First Name',
-                    'required' => true,
-                    'attributes' => array(
-                        'id' => 'guest_first_name',
-                    ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'guest_last_name',
-                    'label'    => 'Last Name',
-                    'required' => true,
-                    'attributes' => array(
-                        'id' => 'guest_last_name',
-                    ),
-                ),
-                array(
-                    'type'     => 'text',
-                    'name'     => 'guest_email',
-                    'label'    => 'Email',
-                    'required' => true,
-                    'attributes' => array(
-                        'id' => 'guest_email',
-                    ),
-                ),
+                'id' => 'guest_last_name',
             ),
         ));
 
-        $optionElements = array();
+        $guestForm->add(array(
+            'type'     => 'text',
+            'name'     => 'guest_email',
+            'label'    => 'Email',
+            'required' => true,
+            'attributes' => array(
+                'id' => 'guest_email',
+            ),
+        ));
+
+        $optionsForm = $this->addFieldset('Options', 'options_form');
 
         if (empty($this->event->getOptions()->toArray())) {
-            $optionElements[] = array(
+            $optionsForm->add(array(
                 'type'       => 'select',
                 'name'       => 'number_member',
                 'label'      => 'Number Member',
@@ -142,10 +130,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'data-price' => $this->event->getPriceMembersAsInt(100),
                     'options'    => $this->getNumberOptions(),
                 ),
-            );
+            ));
 
             if (!$this->event->isOnlyMembers()) {
-                $optionElements[] = array(
+                $optionsForm->add(array(
                     'type'       => 'select',
                     'name'       => 'number_non_member',
                     'label'      => 'Number Non Member',
@@ -155,11 +143,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-price' => $this->event->getPriceNonMembersAsInt(100),
                         'options'    => $this->getNumberOptions(),
                     ),
-                );
+                ));
             }
         } else {
             foreach ($this->event->getOptions() as $option) {
-                $optionElements[] = array(
+                $optionsForm->add(array(
                     'type'       => 'select',
                     'name'       => 'option_' . $option->getId() . '_number_member',
                     'label'      => ucfirst($option->getName()) . ' (Member)',
@@ -169,10 +157,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-price' => $option->getPriceMembersAsInt(100),
                         'options'    => $this->getNumberOptions(),
                     ),
-                );
+                ));
 
                 if (!$this->event->isOnlyMembers()) {
-                    $optionElements[] = array(
+                    $optionsForm->add(array(
                         'type'       => 'select',
                         'name'       => 'option_' . $option->getId() . '_number_non_member',
                         'label'      => ucfirst($option->getName()) . ' (Non Member)',
@@ -182,17 +170,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-price' => $option->getPriceNonMembersAsInt(100),
                             'options'    => $this->getNumberOptions(),
                         ),
-                    );
+                    ));
                 }
             }
         }
-
-        $this->add(array(
-            'type'     => 'fieldset',
-            'name'     => 'options',
-            'label'    => 'Options',
-            'elements' => $optionElements,
-        ));
 
         $this->add(array(
             'type'  => 'checkbox',
@@ -235,57 +216,65 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
         $force = isset($this->data['force']) && $this->data['force'];
 
-        $inputFilter[] = array(
-            'name'     => 'guest_first_name',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
+        $personForm = array(
+            array(
+                'name'     => 'person_id',
+                'required' => !$isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'int',
+                    ),
+                ),
             ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'guest_last_name',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'guest_email',
-            'required' => $isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array('name' => 'EmailAddress'),
-            ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'person_id',
-            'required' => !$isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'int',
+            array(
+                'name'     => 'person',
+                'required' => !$isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
                 ),
             ),
         );
 
-        $inputFilter[] = array(
-            'name'     => 'person',
-            'required' => !$isGuest,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
+        $inputFilter['person_form'] = $this->getInputFilterFactory()
+                ->createInputFilter($personForm);
+
+        $guestForm = array(
+            array(
+                'name'     => 'guest_first_name',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            array(
+                'name'     => 'guest_last_name',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            array(
+                'name'     => 'guest_email',
+                'required' => $isGuest,
+                'filters'  => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'EmailAddress'),
+                ),
             ),
         );
 
+        $inputFilter['guest_form'] = $this->getInputFilterFactory()
+                ->createInputFilter($guestForm);
+
         if (!$force) {
+            $optionsForm = array();
             if (empty($this->event->getOptions())) {
-                $inputFilter[] = array(
+                $optionsForm[] = array(
                     'name'     => 'number_member',
                     'required' => true,
                     'validators' => array(
@@ -294,7 +283,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 );
 
                 if (!$this->event->isOnlyMembers()) {
-                    $inputFilter[] = array(
+                    $optionsForm[] = array(
                         'name'     => 'number_non_member',
                         'required' => true,
                         'validators' => array(
@@ -303,9 +292,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     );
                 }
             } else {
-                $options = array();
                 foreach ($this->event->getOptions() as $option) {
-                    $options[] = array(
+                    $optionsForm[] = array(
                         'name'     => 'option_' . $option->getId() . '_number_member',
                         'required' => true,
                         'validators' => array(
@@ -314,7 +302,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     );
 
                     if (!$this->event->isOnlyMembers()) {
-                        $options[] = array(
+                        $optionsForm[] = array(
                             'name'     => 'option_' . $option->getId() . '_number_non_member',
                             'required' => true,
                             'validators' => array(
@@ -323,9 +311,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         );
                     }
                 }
-
-                $inputFilter['options'] = $options;
             }
+
+            $inputFilter['options_form'] = $this->getInputFilterFactory()
+                    ->createInputFilter($optionsForm);
         }
 
         return $inputFilter;

@@ -72,6 +72,20 @@ class Academic extends \CommonBundle\Hydrator\User\Person
     {
         $academicYear = $this->getCurrentAcademicYear();
 
+        if (null === $object) {
+            $object = new AcademicEntity();
+            $object->setUsername($data['university_identification']);
+
+            $object->setRoles(array(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('guest'),
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName('student'),
+            ));
+        }
+
         if (isset($data['university'])) {
             $data['university_identification'] = $data['university']['identification'];
 
@@ -97,20 +111,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                     $object->getUniversityStatus($academicYear)
                 );
             }
-        }
-
-        if (null === $object) {
-            $object = new AcademicEntity();
-            $object->setUsername($data['university_identification']);
-
-            $object->setRoles(array(
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('guest'),
-                $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\Acl\Role')
-                    ->findOneByName('student'),
-            ));
         }
 
         $studentDomain = $this->getEntityManager()

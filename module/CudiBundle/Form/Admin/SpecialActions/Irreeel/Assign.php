@@ -18,70 +18,25 @@
 
 namespace CudiBundle\Form\Admin\SpecialActions\Irreeel;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Hidden,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Assign Ir.Reëel
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Assign extends \CommonBundle\Component\OldForm\Admin\Form
+class Assign extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('article_id');
-        $field->setAttribute('id', 'articleId');
-        $this->add($field);
-
-        $field = new Text('article');
-        $field->setLabel('Article')
-            ->setAttribute('class', 'disableEnter')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'articleSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('only_cudi');
-        $field->setLabel('Only Cudi')
-            ->setValue(true);
-        $this->add($field);
-
-        $field = new Checkbox('send_mail');
-        $field->setLabel('Send Mail');
-        $this->add($field);
-
-        $field = new Checkbox('test');
-        $field->setLabel('Test')
-            ->setValue(true);
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Assign')
-            ->setAttribute('class', 'action');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'article_id',
+            'attributes' => array(
+                'id' => 'articleId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -91,22 +46,51 @@ class Assign extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'article',
+            'label'      => 'Article',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'class'        => 'disableEnter',
+                'data-provide' => 'typeahead',
+                'id'           => 'articleSearch',
+                'style'        => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'only_cudi',
+            'label' => 'Only Cudi',
+            'value' => true,
+        ));
+
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'send_mail',
+            'label' => 'Send Mail',
+        ));
+
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'test',
+            'label' => 'Test',
+            'value' => true,
+        ));
+
+        $this->addSubmit('Assign', 'action');
     }
 }

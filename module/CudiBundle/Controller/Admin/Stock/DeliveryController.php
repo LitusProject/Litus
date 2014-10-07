@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
-    CudiBundle\Form\Admin\Stock\Deliveries\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -95,14 +94,15 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
 
-        $form = new AddForm($this->getEntityManager(), $prefix);
+        $form = $this->getForm('cudi_stock_deliveries_add', array(
+            'barcode_prefix' => $prefix,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')

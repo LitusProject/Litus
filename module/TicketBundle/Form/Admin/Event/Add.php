@@ -31,6 +31,8 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'TicketBundle\Hydrator\Event';
+
     public function init()
     {
         parent::init();
@@ -136,6 +138,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'class' => 'price_non_members',
                     ),
+                    'options' => array(
+                        'input' => array(
+                            'validators' => array(
+                                new PriceValidator(),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ));
@@ -152,7 +161,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'should_create_template' => true,
                 'allow_add'              => true,
                 'target_element'         => array(
-                    'type' => 'TicketBundle\Form\Admin\Event\Option',
+                    'type' => 'ticket_event_option',
                 ),
             ),
         ));
@@ -178,38 +187,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilterSpecification()
     {
-        $inputs = array(
-            array(
-                'name'     => 'event',
-                'required' => true,
-                'filter' => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new ActivityValidator($this->getEntityManager()),
-                ),
+        $inputFilter = array();
+
+        $inputFilter[] = array(
+            'name'     => 'event',
+            'required' => true,
+            'filter' => array(
+                array('name' => 'StringTrim'),
             ),
-            array(
-                'name'     => 'bookings_close_date',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'date',
-                        'options' => array(
-                            'format' => 'd/m/Y H:i',
-                        ),
+            'validators' => array(
+                new ActivityValidator($this->getEntityManager()),
+            ),
+        );
+
+        $inputFilter[] = array(
+            'name'     => 'bookings_close_date',
+            'required' => false,
+            'filters'  => array(
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name' => 'date',
+                    'options' => array(
+                        'format' => 'd/m/Y H:i',
                     ),
-                    new DateCompareValidator('now', 'd/m/Y H:i'),
-                    new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
                 ),
+                new DateCompareValidator('now', 'd/m/Y H:i'),
+                new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
             ),
         );
 
         if (isset($this->data['generate_tickets']) && $this->data['generate_tickets']) {
-            $inputs[] = array(
+            $inputFilter[] = array(
                 'name'     => 'number_of_tickets',
                 'required' => true,
                 'filters'  => array(
@@ -226,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             );
         } else {
-            $inputs[] = array(
+            $inputFilter[] = array(
                 'name'     => 'number_of_tickets',
                 'required' => true,
                 'filters'  => array(
@@ -238,7 +248,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
-        $inputs[] = array(
+        $inputFilter[] = array(
             'name'     => 'limit_per_person',
             'required' => true,
             'filters'  => array(
@@ -249,14 +259,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         );
 
-        $inputs[] = array(
+        $inputFilter[] = array(
             'name'     => 'enable_options_hidden',
             'required' => false,
         );
 
         if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) &&
             (!isset($this->data['enable_options_hidden']) || $this->data['enable_options_hidden'] != '1')) {
-            $inputs['prices'] = array(
+            $optionsForm = array(
                 array(
                     'name'     => 'price_members',
                     'required' => true,
@@ -278,8 +288,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 ),
             );
+
+            $inputFilter['prices'] = $this->getInputFilterFactory()
+                ->createInputFilter($optionsForm);
         }
 
-        return $inputs;
+        return $inputFilter;
     }
 }

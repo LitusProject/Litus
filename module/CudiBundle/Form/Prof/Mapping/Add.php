@@ -18,57 +18,25 @@
 
 namespace CudiBundle\Form\Prof\Mapping;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Mapping
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('article_id');
-        $field->setAttribute('id', 'articleId');
-        $this->add($field);
-
-        $field = new Text('article');
-        $field->setLabel('Article')
-            ->setAttribute('id', 'articleSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article_id',
+        $this->add(array(
+            'type'       => 'hidden',
+            'name'       => 'article_id',
+            'attributes' => array(
+                'id' => 'articleId',
+            ),
+            'options'    => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -78,22 +46,35 @@ class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'article',
+            'label'      => 'Article',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+                'data-provide' => 'typeahead',
+                'id'           => 'articleSearch',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
+        ));
+
+        $this->addSubmit('Add');
     }
 }

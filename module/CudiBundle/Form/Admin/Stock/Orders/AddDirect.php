@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock\Orders;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Add Order Directly
  *
@@ -27,27 +25,18 @@ use Doctrine\ORM\EntityManager;
  */
 class AddDirect extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, '', $name);
+        parent::init();
 
-        $this->remove('article_id');
-        $this->remove('article');
-        $this->get('add')
-            ->setName('add_order');
-    }
+        $this->remove('article_id')
+            ->remove('article');
 
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('article_id');
-        $inputFilter->remove('article');
-
-        return $inputFilter;
+        $this->remove('add')
+            ->addSubmit('Add', 'stock_add', 'add_order', array(
+                'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
+                    <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
+                'id'        => 'stock_add',
+            ));
     }
 }

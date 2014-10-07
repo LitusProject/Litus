@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
-    CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Edit Article
  *
@@ -29,39 +25,16 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Submit,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Article         $article
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Article $article, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('subject');
-        $this->remove('submit');
-        $this->remove('draft');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Save', 'btn btn-primary', 'submit');
 
-        $field = new Submit('draft');
-        $field->setValue('Save As Draft')
-            ->setAttribute('class', 'btn btn-info');
-        $this->add($field);
-
-        $this->populateFromArticle($article);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('subject');
-        $inputFilter->remove('subject_id');
-
-        return $inputFilter;
+        $this->remove('draft')
+            ->addSubmit('Save As Draft', 'btn btn-info', 'draft');
     }
 }

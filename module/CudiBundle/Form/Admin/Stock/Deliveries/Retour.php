@@ -18,11 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock\Deliveries;
 
-use CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Return to supplier (inverse of delivery)
  *
@@ -30,48 +25,29 @@ use CommonBundle\Component\OldForm\Admin\Element\Textarea,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Retour extends \CudiBundle\Form\Admin\Stock\Deliveries\Add
+class Retour extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param string          $barcodePrefix
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $barcodePrefix = '', $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $barcodePrefix, $name);
+        parent::init();
 
-        $this->remove('submit');
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'comment',
+            'label'    => 'Comment',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
         $field = new Textarea('comment');
         $field->setLabel('Comment')
             ->setRequired();
         $this->add($field);
-
-        $field = new Submit('add');
-        $field->setValue('Add')
-            ->setAttribute('class', 'stock_add')
-            ->setAttribute('id', 'stock_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

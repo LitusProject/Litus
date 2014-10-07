@@ -18,70 +18,51 @@
 
 namespace CudiBundle\Form\Prof\File;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\File,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add File
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    public function __construct($options = null)
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
         $this->setAttribute('id', 'uploadFile');
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new Text('description');
-        $field->setLabel('Description')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new File('file');
-        $field->setLabel('File')
-            ->setRequired();
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'description',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'description',
+            'label'    => 'Description',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'file',
-                    'required' => false,
+        $this->add(array(
+            'type'     => 'file',
+            'name'     => 'file',
+            'label'    => 'File',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => '256MB',
                             ),
                         ),
                     ),
-                )
-            )
-        );
-
-        return $inputFilter;
+                ),
+            ),
+        ));
     }
 }
