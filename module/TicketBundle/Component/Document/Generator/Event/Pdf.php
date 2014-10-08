@@ -16,33 +16,33 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace TicketBundle\Component\Document\Generator;
+namespace TicketBundle\Component\Document\Generator\Event;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
     DateTime,
     Doctrine\ORM\EntityManager,
-    TicketBundle\Entity\Event as EventEntity;
+    TicketBundle\Entity\Event;
 
 /**
- * Event
+ * Pdf
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Event extends \CommonBundle\Component\Document\Generator\Pdf
+class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var EventEntity
+     * @var Event
      */
     private $_event;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
-     * @param EventEntity   $event
+     * @param Event         $event
      * @param TmpFile       $file          The file to write to
      */
-    public function __construct(EntityManager $entityManager, EventEntity $event, TmpFile $file)
+    public function __construct(EntityManager $entityManager, Event $event, TmpFile $file)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -95,7 +95,7 @@ class Event extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'option',
                         null,
-                        $ticket->getOption()->getName() . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')'
+                        ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')'
                     ),
                     new Object(
                         'number',
