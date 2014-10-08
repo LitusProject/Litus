@@ -287,12 +287,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $shifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
-
         $file = new TmpFile();
-        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
+        $document = new PdfGenerator($this->getEntityManager(), $event, $file);
         $document->generate();
 
         $headers = new Headers();
