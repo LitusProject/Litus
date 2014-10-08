@@ -37,14 +37,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new EventEntity($this->getPerson());
         }
 
-        $startDate = self::_loadDate($data['start_date']);
+        $startDate = self::loadDateTime($data['start_date']);
 
         if (null === $startDate) {
             throw new InvalidDateException();
         }
 
         $object->setStartDate($startDate)
-            ->setEndDate(self::_loadDate($data['end_date']));
+            ->setEndDate(self::loadDateTime($data['end_date']));
 
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
@@ -94,21 +94,5 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         return $data;
-    }
-
-    protected function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    protected static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

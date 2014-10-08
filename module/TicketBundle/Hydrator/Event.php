@@ -44,7 +44,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($data['event']);
 
-        $closeDate = self::loadDate($data['bookings_close_date']);
+        $closeDate = self::loadDateTime($data['bookings_close_date']);
 
         $priceMembers = $enableOptions ? 0 : $data['prices']['price_members'];
         $priceNonMembers = $enableOptions ? 0 : ($data['only_members'] ? 0 : $data['prices']['price_non_members']);
@@ -175,14 +175,5 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         return $data;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    protected static function loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
