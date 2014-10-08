@@ -16,12 +16,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Component\Document\Generator;
+namespace CalendarBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Controller\Plugin\Url,
+    CommonBundle\Component\Util\File\TmpFile as TmpFile,
+    CommonBundle\Entity\General\Language,
     Doctrine\ODM\MongoDB\DocumentManager,
     Doctrine\ORM\EntityManager,
-    LogisticsBundle\Entity\Reservation\VanReservation;
+    Zend\Http\PhpEnvironment\Request;
 
 /**
  * Ics
@@ -36,14 +39,14 @@ class Ics
     private $_entityManager;
 
     /**
-     * @var DocumentManager The DocumentManager
+     * @var Language The language
      */
-    private $_documentManager;
+    private $_language;
 
     /**
-     * @var string
+     * @var string The base url
      */
-    private $_token;
+    private $_serverName;
 
     /**
      * @var string
@@ -51,20 +54,22 @@ class Ics
     private $_suffix;
 
     /**
-     * @param TmpFile         $file
-     * @param EntityManager   $entityManager
-     * @param DocumentManager $documentManager
-     * @param string          $token
+     * @param TmpFile       $file
+     * @param EntityManager $entityManager
+     * @param Language      $language
+     * @param Request       $request
+     * @param Url           $url
      */
-    public function __construct(TmpFile $file, EntityManager $entityManager, DocumentManager $documentManager, $token = null)
+    public function __construct(TmpFile $file, EntityManager $entityManager, Language $language, Request $request, Url $url)
     {
         $this->_entityManager = $entityManager;
-        $this->_documentManager = $documentManager;
-        $this->_token = $token;
+        $this->_language = $language;
+        $this->_serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST');
+        $this->_url = $url;
 
         $this->_suffix = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('logistics.icalendar_uid_suffix');
+            ->getConfigValue('calendar.icalendar_uid_suffix');
 
         $file->appendContent($this->_getHeader());
         $file->appendContent($this->_getReservations());
@@ -81,7 +86,7 @@ class Ics
         $result .= 'VERSION:2.0' . PHP_EOL;
         $result .= 'X-WR-CALNAME:' . $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('organization_short_name') . ' Logistics' . PHP_EOL;
+            ->getConfigValue('organization_short_name') . ' Calendar' . PHP_EOL;
         $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
         $result .= 'CALSCALE:GREGORIAN' . PHP_EOL;
         $result .= 'METHOD:PUBLISH' . PHP_EOL;
@@ -111,60 +116,40 @@ class Ics
     private function _getReservations()
     {
         $result = '';
-        $reservations = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findAllActive();
+        $events = $this->_entityManager
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllActive(0);
 
-        $person = null;
-        if (null !== $this->_token) {
-            $token = $this->_documentManager
-                ->getRepository('LogisticsBundle\Document\Token')
-                ->findOneByHash($this->_token);
-
-            if (null !== $token) {
-                $person = $token->getPerson($this->_entityManager);
-            }
-        }
-
-        foreach ($reservations as $reservation) {
-            if (null !== $person && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person) {
-                continue;
-            }
-
-            $result .= $this->_getEvent($reservation);
+        foreach ($events as $event) {
+            $result .= $this->_getEvent($event);
         }
 
         return $result;
     }
 
     /**
-     * @param  VanReservation $reservation
+     * @param  Event  $event
      * @return string
      */
-    private function _getEvent(VanReservation $reservation)
+    private function _getEvent(Event $event)
     {
-        $summary = array();
-        if (strlen($reservation->getLoad()) > 0) {
-            $summary[] = str_replace("\n", '', $reservation->getLoad());
-        }
-        if (strlen($reservation->getAdditionalInfo()) > 0) {
-            $summary[] = str_replace("\n", '', $reservation->getAdditionalInfo());
-        }
-
         $result = 'BEGIN:VEVENT' . PHP_EOL;
-        $result .= 'SUMMARY:' . $reservation->getReason() . PHP_EOL;
-        $result .= 'DTSTART:' . $reservation->getStartDate()->format('Ymd\THis') . PHP_EOL;
-        $result .= 'DTEND:' . $reservation->getEndDate()->format('Ymd\THis') . PHP_EOL;
-        if ($reservation->getDriver()) {
-            $result .= 'ORGANIZER;CN="' . $reservation->getDriver()->getPerson()->getFullname() . '":MAILTO:' . $reservation->getDriver()->getPerson()->getEmail() . PHP_EOL;
+        $result .= 'SUMMARY:' . $event->getTitle($this->_language) . PHP_EOL;
+        $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
+        if (null !== $event->getEndDate()) {
+            $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
         }
-        if ($reservation->getPassenger()) {
-            $result .= 'ATTENDEE;CN="' . $reservation->getPassenger()->getFullname() . '":MAILTO:' . $reservation->getPassenger()->getEmail() . PHP_EOL;
-        }
-        $result .= 'DESCRIPTION:' . implode(' - ', $summary) . PHP_EOL;
         $result .= 'TRANSP:OPAQUE' . PHP_EOL;
+        $result .= 'LOCATION:' . $event->getLocation($this->_language) . PHP_EOL;
+        $result .= 'URL:' . $this->_serverName . $this->_url->fromRoute(
+                'calendar',
+                array(
+                    'action' => 'view',
+                    'name' => $event->getName(),
+                )
+            ) . PHP_EOL;
         $result .= 'CLASS:PUBLIC' . PHP_EOL;
-        $result .= 'UID:' . $reservation->getId() . '@' . $this->_suffix . PHP_EOL;
+        $result .= 'UID:' . $event->getId() . '@' . $this->_suffix . PHP_EOL;
         $result .= 'END:VEVENT' . PHP_EOL;
 
         return $result;
