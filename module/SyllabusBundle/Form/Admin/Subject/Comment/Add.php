@@ -25,6 +25,8 @@ namespace SyllabusBundle\Form\Admin\Subject\Comment;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'SyllabusBundle\Hydrator\Subject\Comment';
+
     public function init()
     {
         parent::init();
