@@ -455,4 +455,9 @@ VTK Cudi
         'value'       => '1',
         'description' => 'Enable the barcode checks for sale articles.',
     ),
+    array(
+        'key'         => 'cudi.enable_assign_after_stock_update',
+        'value'       => '1',
+        'description' => 'Enable assign after updating the stock (enable_automatic_assignment must also be enabled).',
+    ),
 );
