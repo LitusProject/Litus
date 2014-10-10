@@ -163,9 +163,12 @@
 
                     if (lap.state == 'current') {
                         var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
-                        var lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
-                        if (lapDistance > data.officialResults.lapLength)
-                            lapDistance = data.officialResults.lapLength;
+                        var lapDistance;
+                        if (data.officialResults) {
+                            lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
+                            if (lapDistance > data.officialResults.lapLength)
+                                lapDistance = data.officialResults.lapLength;
+                        }
 
                         $('#noCurrentLap').removeClass('in');
                         $('#currentLapRunnerName').html(lap.fullName);
