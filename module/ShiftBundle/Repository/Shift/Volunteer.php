@@ -50,12 +50,11 @@ class Volunteer extends EntityRepository
             ->having(
                 $query->expr()->gte('COUNT(p.id)', ':min')
             )
-            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
-            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
             ->setParameter('now', new DateTime())
             ->setParameter('min', $minimum)
             ->getQuery();
-
         return $resultSet;
     }
 

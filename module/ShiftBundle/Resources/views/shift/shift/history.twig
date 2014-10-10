@@ -12,7 +12,7 @@
     </div>
     <br>
 
-    {% if unPayedShifts %}
+    {% if unPayedShifts and not praesidium %}
         {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
     {% endif %}
 

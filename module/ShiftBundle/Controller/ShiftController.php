@@ -468,13 +468,13 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $shiftsAsVolunteerCount = 0;
         $unPayedShifts = 0;
         $unPayedCoins = 0;
-        $lastShift = new DateTime();
+        $lastShift = new DateTime('2000-01-01');
         foreach ($asVolunteer as $shift) {
             if ($shift->getStartDate() > $now) {
                 continue;
             }
 
-            //if ($shift->getEndDate() > $lastShift)
+            if ($shift->getEndDate() > $lastShift)
                 $lastShift = $shift->getEndDate();
 
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
@@ -514,6 +514,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsResponsibleCount++;
         }
 
+        $praesidium = $this->getAuthentication()->getPersonObject()->isPraesidium($academicYear);
+
         return new ViewModel(
             array(
                 'shiftsAsVolunteer' => $shiftsAsVolunteer,
@@ -523,6 +525,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'unPayedShifts' => $unPayedShifts,
                 'unPayedCoins' => $unPayedCoins,
                 'lastShift' => $lastShift->format('d/m/Y'),
+                'praesidium' => $praesidium,
             )
         );
     }
