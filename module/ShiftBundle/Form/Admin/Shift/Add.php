@@ -93,13 +93,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -115,13 +113,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -149,10 +145,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
-                    'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),
@@ -165,13 +159,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -184,13 +176,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -248,10 +238,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),
@@ -267,10 +255,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
-                    'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),

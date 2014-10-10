@@ -21,7 +21,7 @@ namespace ShiftBundle\Hydrator;
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     ShiftBundle\Entity\Shift as ShiftEntity;
 
-class Shift extends CommonBundle\Component\Hydrator\Hydrator
+class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array(
         'nb_responsibles',

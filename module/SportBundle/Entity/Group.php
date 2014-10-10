@@ -31,6 +31,8 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Group
 {
+    public static $ALL_MEMBERS = array('one', 'two', 'three', 'four', 'five');
+
     /**
      * @var int The ID of this group
      *
@@ -80,12 +82,9 @@ class Group
      * @param string       $name
      * @param array        $happyHours
      */
-    public function __construct(AcademicYear $academicYear, $name, array $happyHours)
+    public function __construct(AcademicYear $academicYear)
     {
         $this->academicYear = $academicYear;
-
-        $this->name = $name;
-        $this->happyHours = serialize($happyHours);
         $this->members = new ArrayCollection();
     }
 

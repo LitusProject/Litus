@@ -175,16 +175,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = $this->getForm('sport_runner_edit');
+        $form = $this->getForm('sport_runner_edit', $runner);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $runner->setRunnerIdentification($formData['runner_identification']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

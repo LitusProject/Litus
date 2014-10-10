@@ -26,6 +26,8 @@ namespace SportBundle\Form\Admin\Runner;
  */
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'SportBundle\Hydrator\Runner';
+
     public function init()
     {
         parent::init();

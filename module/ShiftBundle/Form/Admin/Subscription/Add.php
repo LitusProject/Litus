@@ -27,6 +27,8 @@ use CommonBundle\Component\Validator\Academic as AcademicValidator;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'ShiftBundle\Hydrator\Subscriber';
+
     public function init()
     {
         parent::init();
@@ -41,13 +43,44 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'data-provide' => 'typeahead',
                 'id'           => 'personSearch',
             ),
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => false,
+                            )
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
             'type'       => 'hidden',
             'name'       => 'person_id',
+            'required'   => true,
             'attributes' => array(
                 'id' => 'personId',
+            ),
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new AcademicValidator(
+                            $this->getEntityManager(),
+                            array(
+                                'byId' => true,
+                            )
+                        ),
+                    ),
+                ),
             ),
         ));
 
@@ -62,42 +95,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilterSpecification()
     {
+        $specs = parent::getInputFilterSpecification();
+
         if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            return array(
-                array(
-                    'name' => 'person_name',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => false,
-                            )
-                        ),
-                    ),
-                ),
-            );
+            unset($specs['person_id']);
         } else {
-            return array(
-                array(
-                    'name' => 'person_id',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => true,
-                            )
-                        ),
-                    ),
-                ),
-            );
+            unset($specs['person_name']);
         }
+
+        return $specs;
     }
 }

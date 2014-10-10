@@ -18,6 +18,8 @@
 
 namespace SportBundle\Form\Group;
 
+use SportBundle\Entity\Group;
+
 /**
  * Add a group of friends.
  *
@@ -26,10 +28,7 @@ namespace SportBundle\Form\Group;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var string[] An array containing all members that should be created
-     */
-    private $_allMembers = array();
+    protected $hydrator = 'SportBundle\Hydrator\Group';
 
     public function init()
     {
@@ -75,22 +74,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        foreach ($this->_allMembers as $i => $memberNb) {
+        foreach (Group::$ALL_MEMBERS as $i => $memberNb) {
             $this->_generateMemberForm($memberNb, ($i < 2));
         }
 
         $this->addSubmit('Submit');
-    }
-
-    /**
-     * @param  string[] $allMembers
-     * @return self
-     */
-    public function setAllMembers(array $allMembers)
-    {
-        $this->_allMembers = $allMembers;
-
-        return $this;
     }
 
     /**
