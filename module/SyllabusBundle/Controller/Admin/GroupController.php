@@ -168,7 +168,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('syllabus_group_study_add');
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($academicYear);
+
+        $form = $this->getForm('syllabus_group_study_add', array('studies' => $studies));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -176,29 +180,33 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $study = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                $studyIds = $formData['studies'];
+                if ($studyIds) {
+                    foreach ($studyIds as $studyId) {
+                        $study = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Study')
+                            ->findOneById($studyId);
 
-                $map = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-                    ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
-
-                if (null !== $map) {
+                        $map = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                            ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
+                        if (null === $map) {
+                            $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
+                        }
+                    }
+                } else {
                     $this->flashMessenger()->error(
                         'Error',
-                        'The group study mapping already existed!'
-                    );
-                } else {
-                    $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Succes',
-                        'The group study mapping was successfully added!'
+                        'No studies were selected to add to the group!'
                     );
                 }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The group study mapping was successfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
