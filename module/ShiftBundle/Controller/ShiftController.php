@@ -474,8 +474,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 continue;
             }
 
-            if ($shift->getEndDate() > $lastShift)
+            if ($shift->getEndDate() > $lastShift) {
                 $lastShift = $shift->getEndDate();
+            }
 
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(

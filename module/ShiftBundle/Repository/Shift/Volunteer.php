@@ -55,6 +55,7 @@ class Volunteer extends EntityRepository
             ->setParameter('now', new DateTime())
             ->setParameter('min', $minimum)
             ->getQuery();
+
         return $resultSet;
     }
 
