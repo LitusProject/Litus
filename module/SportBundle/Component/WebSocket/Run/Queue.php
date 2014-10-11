@@ -383,14 +383,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
+        $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents) {
             $resultPage = (array) json_decode($fileContents);
         }
 
-        if (null !== $resultPage) {
+        if ($resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
