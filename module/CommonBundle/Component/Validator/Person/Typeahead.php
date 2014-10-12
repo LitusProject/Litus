@@ -35,7 +35,7 @@ class Typeahead extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The person does not exits',
+        self::NOT_VALID => 'This person does not exits',
     );
 
     /**
@@ -61,15 +61,7 @@ class Typeahead extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $id = null;
-        foreach ($context as $key => $value) {
-            if (strpos($key, '_id') > 0) {
-                $id = $value;
-            }
-        }
-
-        if (null == $id) {
-            echo 'no Id';
+        if (null == $context['id']) {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -77,7 +69,7 @@ class Typeahead extends \Zend\Validator\AbstractValidator
 
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($id);
+            ->findOneById($context['id']);
 
         if (null === $person) {
             $this->error(self::NOT_VALID);

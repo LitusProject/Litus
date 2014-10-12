@@ -28,11 +28,8 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
     {
         $this->add(array(
             'type'       => 'hidden',
-            'name'       => $this->getName() . '_id',
+            'name'       => 'id',
             'required'   => true,
-            'attributes' => array(
-                'id' => $this->getName() . 'Id',
-            ),
             'options'    => array(
                 'input' => array(
                     'filters'    => array(
@@ -47,12 +44,11 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
 
         $this->add(array(
             'type'       => 'text',
-            'name'       => $this->getName(),
+            'name'       => 'value',
             'required'   => true,
             'attributes' => array(
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',
-                'id'           => $this->getName() . 'Search',
             ),
             'options'    => array(
                 'input' => array(
@@ -64,44 +60,14 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
         ));
     }
 
-    public function setName($name)
-    {
-        if (empty(parent::getName())) {
-            $field = $this->get($this->getName() . '_id')->setName($name . '_id')
-                ->setAttribute('id', $name . 'Id');
-            unset($this->byName[$this->getName() . '_id']);
-            $this->byName[$name . '_id'] = $field;
-
-            $field = $this->get($this->getName())->setName($name)
-                ->setAttribute('id', $name . 'Search');
-            unset($this->byName[$this->getName()]);
-            $this->byName[$name ] = $field;
-        }
-
-        $this->setAttribute('name', $name);
-
-        return $this;
-    }
-
     public function getValue()
     {
-        return $this->get($this->getName() . '_id')->getValue();
-    }
-
-    public function getName()
-    {
-        $name = parent::getName();
-
-        if (empty($name)) {
-            return 'typeahead';
-        }
-
-        return $name;
+        return $this->get('id')->getValue();
     }
 
     public function setLabel($label)
     {
-        $this->get($this->getName())->setLabel($label);
+        $this->get('value')->setLabel($label);
 
         return $this;
     }
@@ -111,7 +77,7 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
         if ('name' == $name) {
             parent::setAttribute($name, $value);
         } else {
-            $this->get($this->getName())->setAttribute($name, $value);
+            $this->get('value')->setAttribute($name, $value);
         }
 
         return $this;
@@ -121,32 +87,14 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFi
     {
         $specs = parent::getInputFilterSpecification();
 
-        $specs[$this->getName() . '_id']['required'] = $this->isRequired();
-        $specs[$this->getName()]['required'] = $this->isRequired();
+        $specs['id']['required'] = $this->isRequired();
+        $specs['value']['required'] = $this->isRequired();
 
         if (isset($this->options['input'])) {
-            $specs[$this->getName()] = array_merge($this->options['input'], $specs[$this->getName()]);
+            $specs['value'] = array_merge($this->options['input'], $specs['value']);
             unset($this->options['input']);
         }
 
         return $specs;
     }
-
-    /*public function setOptions($options)
-    {
-        if ($options instanceof Traversable) {
-            $options = ArrayUtils::iteratorToArray($options);
-        } elseif (!is_array($options)) {
-            throw new Exception\InvalidArgumentException(
-                'The options parameter must be an array or a Traversable'
-            );
-        }
-
-        if (isset($options['input'])) {
-            $this->get($this->getName())
-            unset($options['input']);
-        }
-
-        return parent::setOptions($options);
-    }*/
 }

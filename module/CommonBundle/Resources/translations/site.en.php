@@ -108,4 +108,6 @@ return array(
 
     'Enroll' => 'Enroll',
     'Unsubscribe' => 'Unsubscribe',
+
+    'This person does not exits' => 'This person does not exits',
 );

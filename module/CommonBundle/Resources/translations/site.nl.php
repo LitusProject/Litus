@@ -108,4 +108,6 @@ return array(
 
     'Enroll' => 'Schrijf In',
     'Unsubscribe' => 'Schrijf Uit',
+
+    'This person does not exits' => 'Deze persoon bestaat niet',
 );

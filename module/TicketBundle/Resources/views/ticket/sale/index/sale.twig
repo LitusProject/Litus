@@ -47,15 +47,15 @@
                 }
             }).change();
 
-            $('#personSearch').typeaheadRemote(
+            $('#person_form\\[person\\]').typeaheadRemote(
                 {
                     source: '{{ url("ticket_sale_person_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name=person_form\\[person\\]\\[id\\]]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name=person_form\\[person\\]\\[id\\]]').val('');
                 }
             });
 
