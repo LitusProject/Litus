@@ -43,7 +43,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
         } else {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($formData['person_form']['person_id']);
+                ->findOneById($data['person_form']['person']['person_id']);
             $guestInfo = null;
         }
 

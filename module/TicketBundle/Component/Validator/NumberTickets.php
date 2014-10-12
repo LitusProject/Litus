@@ -110,10 +110,10 @@ class NumberTickets extends \Zend\Validator\AbstractValidator implements FormAwa
             }
         }
 
-        if ($this->_person == null && is_numeric($this->_form->get('person_form')->get('person_id')->getValue())) {
+        if ($this->_person == null && is_numeric($this->_form->get('person_form')->get('person')->getValue())) {
             $person = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($this->_form->get('person_form')->get('person_id')->getValue());
+                ->findOneById($this->_form->get('person_form')->get('person')->getValue());
         } else {
             $person = $this->_person;
         }

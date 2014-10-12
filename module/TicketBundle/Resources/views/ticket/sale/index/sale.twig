@@ -67,7 +67,10 @@
 
                 var data = {};
                 $('#ticket_sale_form input').each(function () {
-                    data[$(this).attr('name')] = $(this).val();
+                    if ($(this).attr('type') == 'checkbox')
+                        data[$(this).attr('name')] = $(this).is(':checked') ? 1 : 0;
+                    else
+                        data[$(this).attr('name')] = $(this).val();
                 });
 
                 $.ajax({
@@ -85,13 +88,7 @@
                             $('#sale_invalid').addClass('in');
                             $('div.help-block').remove();
                             $('.form-group').removeClass('has-error');
-                            for(element in data.errors) {
-                                var list = $('<ul>', {'class': 'errors'});
-                                for (error in data.errors[element])
-                                    list.append($('<li>').html(data.errors[element][error]));
-                                var div = $('<div>', {'class': 'help-block'}).append(list);
-                                $('#' + element).closest('.form-group').addClass('has-error').find('input').after(div);
-                            }
+                            displayErrorsInElement(data.errors, $('#ticket_sale_form'));
                         }
                     },
                     error: function () {
@@ -116,5 +113,29 @@
                 $('#ticket_sale_form').submit();
             });
         });
+
+        function displayErrorsInElement(errors, parent) {
+            $.each(errors, function (name, childErrors) {
+                console.log(childErrors, parent);
+                if (typeof childErrors == 'string') {
+                    var list = parent.find('ul.errors');
+                    if (list.length == 0) {
+                        list = $('<ul>', {'class': 'errors'});
+                        parent.closest('.form-group').addClass('has-error').find('input').after(
+                            $('<div>', {'class': 'help-block'}).append(list)
+                        );
+                    }
+                    list.append($('<li>').html(childErrors));
+                } else {
+                    var child;
+                    if (parent.is('form')) {
+                        child = parent.find('[name=' + name + ']');
+                    } else {
+                        child = parent.find('[name$=\\[' + name + '\\]]');
+                    }
+                    displayErrorsInElement(childErrors, child);
+                }
+            });
+        }
     </script>
 {% endblock %}

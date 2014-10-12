@@ -18,108 +18,110 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use RuntimeException,
-    Zend\InputFilter\InputFilterProviderInterface;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFilterProviderInterface
 {
-    /**
-     * @var string The name of the typeahead
-     */
-    private $name;
-
     public function init()
     {
-        if (null === $this->name) {
-            throw new RuntimeException('Cannot create typeahead without name');
-        }
-
         $this->add(array(
             'type'       => 'hidden',
-            'name'       => $this->name . '_id',
+            'name'       => $this->getName() . '_id',
+            'required'   => true,
             'attributes' => array(
-                'id' => $this->name . 'Id',
+                'id' => $this->getName() . 'Id',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'    => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
             ),
         ));
 
         $this->add(array(
             'type'       => 'text',
-            'name'       => $this->name,
+            'name'       => $this->getName(),
+            'required'   => true,
             'attributes' => array(
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',
-                'id'           => $this->name . 'Search',
+                'id'           => $this->getName() . 'Search',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'    => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
             ),
         ));
-
-        $this->setRequired();
     }
 
-    /**
-     * @param  string $name The name of the typeahead
-     * @return self
-     */
+    public function getValue()
+    {
+        return $this->get($this->getName() . '_id')->getValue();
+    }
+
     public function setName($name)
     {
-        $this->name = $name;
+        if (empty(parent::getName())) {
+            $field = $this->get($this->getName() . '_id')->setName($name . '_id')
+                ->setAttribute('id', $name . 'Id');
+            unset($this->byName[$this->getName() . '_id']);
+            $this->byName[$name . '_id'] = $field;
+
+            $field = $this->get($this->getName())->setName($name)
+                ->setAttribute('id', $name . 'Search');
+            unset($this->byName[$this->getName()]);
+            $this->byName[$name ] = $field;
+        }
+
+        $this->setAttribute('name', $name);
 
         return $this;
     }
 
     public function getName()
     {
-        return $this->name;
+        $name = parent::getName();
+
+        if (empty($name)) {
+            return 'typeahead';
+        }
+
+        return $name;
     }
 
-    public function setAttribute($name, $value)
+    public function setLabel($label)
     {
-        $this->get($this->name)->setAttribute($name, $value);
+        $this->get($this->getName())->setLabel($label);
 
         return $this;
     }
 
-    public function setTypeAheadAttribute($name, $value)
+    public function setAttribute($name, $value)
     {
-        return parent::setAttribute($name, $value);
+        if ('name' == $name) {
+            parent::setAttribute($name, $value);
+        } else {
+            $this->get($this->getName())->setAttribute($name, $value);
+        }
+
+        return $this;
     }
 
     public function getInputFilterSpecification()
     {
-        return array(
-            array(
-                'name'       => $this->name . '_id',
-                'required'   => $this->isRequired(),
-                'filters'    => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'int'),
-                ),
-            ),
-            array(
-                'name'     => $this->name,
-                'required' => $this->isRequired(),
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            ),
-        );
-    }
+        $specs = parent::getInputFilterSpecification();
 
-    public function populateValues($data)
-    {
-        if (is_string($data)) {
-            return;
-        }
+        $specs[$this->getName() . '_id']['required'] = $this->isRequired();
+        $specs[$this->getName()]['required'] = $this->isRequired();
 
-        if (array_key_exists($this->name, $data)) {
-            $this->get($this->name)
-                ->setValue($data[$this->name]);
-        }
-
-        if (array_key_exists($this->name . '_id', $data)) {
-            $this->get($this->name . '_id')
-                ->setValue($data[$this->name . '_id']);
-        }
+        return $specs;
     }
 }

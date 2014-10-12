@@ -14,12 +14,12 @@
         {% for element in fieldset %}
             {% if element.add is defined %}
                 {% if element.showAs() == 'fieldset' and element.getLabel() %}
-                    <fieldset class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    <fieldset name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         <legend>{{ translate(element.getLabel()) }}</legend>
                         {{ _self.renderFieldset(element) }}
                     </fieldset>
                 {% else %}
-                    <div class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         {{ _self.renderFieldset(element) }}
                     </div>
                 {% endif %}

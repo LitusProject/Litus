@@ -87,40 +87,11 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                foreach ($form->getFieldSets() as $fieldset) {
-                    foreach ($fieldset->getElements() as $subElement) {
-                        if (!isset($errors[$fieldset->getName()][$subElement->getName()])) {
-                            continue;
-                        }
-
-                        $formErrors[$subElement->getAttribute('id')] = array();
-
-                        foreach ($errors[$fieldset->getName()][$subElement->getName()] as $error) {
-                            $formErrors[$subElement->getAttribute('id')][] = $error;
-                        }
-                    }
-                }
-
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );

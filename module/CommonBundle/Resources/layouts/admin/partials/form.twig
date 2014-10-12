@@ -14,7 +14,7 @@
         {% for element in fieldset %}
             {% if element.add is defined %}
                 {% if element.showAs() == 'fieldset' and element.getLabel() %}
-                    <fieldset class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    <fieldset name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         <legend>{{ translate(element.getLabel()) }}</legend>
                         {{ _self.renderFieldset(element) }}
                     </fieldset>
@@ -22,7 +22,7 @@
                         <span id="data-template" data-template="{{ _self.renderFieldset(element.getTemplateElement())|escape }}"></span>
                     {% endif %}
                 {% else %}
-                    <div class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
+                    <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         {{ _self.renderFieldset(element) }}
                     </div>
                 {% endif %}

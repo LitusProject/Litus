@@ -18,7 +18,8 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use LogicException,
+use CommonBundle\Component\Validator\Person\TypeAhead as PersonTypeaheadValidator,
+    LogicException,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event;
 
@@ -72,39 +73,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Person',
             'elements'   => array(
                 array(
-                    'type'       => 'hidden',
-                    'name'       => 'person_id',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'personId',
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
+                    'type'       => 'typeahead',
                     'name'       => 'person',
                     'label'      => 'Person',
                     'required'   => true,
-                    'attributes' => array(
-                        'autocomplete' => 'off',
-                        'data-provice' => 'typeahead',
-                        'id'           => 'personSearch',
-                    ),
                     'options'    => array(
                         'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+                            'validators' => array(
+                                new PersonTypeaheadValidator($this->getEntityManager()),
                             ),
                         ),
                     ),
