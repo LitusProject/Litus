@@ -25,6 +25,7 @@
                     $('#academic').hide();
                 }
             }).change();
+
             $('#academicSearch').typeaheadRemote(
                 {
                     source: '{{ url('common_admin_academic_typeahead', {'academicyear': activeAcademicYear.getCode()})}}',

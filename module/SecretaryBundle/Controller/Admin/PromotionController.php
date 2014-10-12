@@ -119,6 +119,8 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 if ($formData['academic_add']) {
                     $formData = $formData['academic'];
 

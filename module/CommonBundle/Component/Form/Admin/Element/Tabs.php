@@ -36,13 +36,6 @@ class Tabs extends \Zend\Form\Element
         'class' => '',
     );
 
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
-
     /**
      * @param array $tabs
      *

@@ -26,10 +26,4 @@ namespace CommonBundle\Component\Form\Admin\Element;
  */
 class Csrf extends \Zend\Form\Element\Csrf
 {
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
 }

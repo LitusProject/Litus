@@ -28,11 +28,4 @@ use CommonBundle\Component\Form\ElementTrait;
 class Password extends \Zend\Form\Element\Password implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
-
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
 }

@@ -24,6 +24,9 @@ return array(
                 'secretary_admin_promotion'    => array('title' => 'Promotions'),
                 'secretary_admin_registration' => array('title' => 'Registrations'),
             ),
+            'controllers' => array(
+                'secretary_admin_export',
+            ),
         ),
     ),
 );

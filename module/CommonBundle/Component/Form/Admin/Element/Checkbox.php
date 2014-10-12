@@ -25,10 +25,4 @@ namespace CommonBundle\Component\Form\Admin\Element;
  */
 class Checkbox extends \Zend\Form\Element\Checkbox
 {
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
 }

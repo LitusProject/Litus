@@ -33,6 +33,23 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
     public function exportAction()
     {
         $form = $this->getForm('secretary_export_export');
+        $form->setAttribute(
+             'action',
+             $this->url()->fromRoute(
+                 'secretary_admin_export', array('action' => 'download')
+             )
+         );
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function downloadAction()
+    {
+        $form = $this->getForm('secretary_export_export');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -69,7 +86,7 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'result' => null,
             )
         );
     }

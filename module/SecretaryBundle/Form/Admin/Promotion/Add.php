@@ -34,6 +34,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'academic_add',
             'label'      => 'Academic',
             'value'      => true,
+            'attributes' => array(
+                'id' => 'academic_add',
+            ),
         ));
 
         $this->add(array(
