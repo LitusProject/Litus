@@ -19,10 +19,9 @@
 namespace CommonBundle\Component\Form\Admin\Element;
 
 use Traversable,
-    Zend\InputFilter\InputFilterProviderInterface,
     Zend\Stdlib\ArrayUtils;
 
-class TypeAhead extends \CommonBundle\Component\Form\Fieldset implements InputFilterProviderInterface
+class TypeAhead extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
