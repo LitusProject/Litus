@@ -18,7 +18,7 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use CommonBundle\Component\Validator\Person\TypeAhead as PersonTypeaheadValidator,
+use CommonBundle\Component\Validator\TypeAhead\Person as PersonTypeaheadValidator,
     LogicException,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event;

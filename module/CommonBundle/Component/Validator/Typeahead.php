@@ -16,11 +16,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Validator\Person;
+namespace CommonBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager,
+    RuntimeException;
 
-class Typeahead extends \Zend\Validator\AbstractValidator
+abstract class Typeahead extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -30,16 +31,21 @@ class Typeahead extends \Zend\Validator\AbstractValidator
     private $_entityManager = null;
 
     /**
+     * @var string The entity to check
+     */
+    protected $entity;
+
+    /**
      * Error messages
      *
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This person does not exits',
+        self::NOT_VALID => 'This entity does not exits',
     );
 
     /**
-     * Create a new person typeahead validator
+     * Create a new typeahead validator
      *
      * @param EntityManager $entityManager The EntityManager instance
      * @param mixed         $opts          The validator's options
@@ -49,6 +55,10 @@ class Typeahead extends \Zend\Validator\AbstractValidator
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
+
+        if (empty($this->entity)) {
+            throw new RuntimeException('The typeahead validator needs an entity');
+        }
     }
 
     /**
@@ -68,7 +78,7 @@ class Typeahead extends \Zend\Validator\AbstractValidator
         }
 
         $person = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\User\Person')
+            ->getRepository($this->entity)
             ->findOneById($context['id']);
 
         if (null === $person) {

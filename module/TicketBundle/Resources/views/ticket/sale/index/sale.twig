@@ -53,9 +53,9 @@
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('[name=person_form\\[person\\]\\[id\\]]').val($(this).data('value').id);
+                    $('[name="person_form[person][id]"]').val($(this).data('value').id);
                 } else {
-                    $('[name=person_form\\[person\\]\\[id\\]]').val('');
+                    $('[name="person_form[person][id]"]').val('');
                 }
             });
 
@@ -131,7 +131,7 @@
                     if (parent.is('form')) {
                         child = parent.find('[name=' + name + ']');
                     } else {
-                        child = parent.find('[name$=\\[' + name + '\\]]');
+                        child = parent.find('[name$="[' + name + ']"]');
                     }
                     displayErrorsInElement(childErrors, child);
                 }
