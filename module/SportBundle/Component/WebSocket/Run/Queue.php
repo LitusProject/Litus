@@ -289,12 +289,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $laps[] = $this->_jsonLap($lap, 'next');
         }
 
+        $fastestLap = $this->_getFastestLap();
+
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
+                'fastestRunner' => $fastestLap['runner'],
+                'fastestTime' => $fastestLap['time'],
+                'mostFrequentRunner' => $this->_getMostFrequentRunner(),
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
@@ -374,6 +379,40 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext($this->_getAcademicYear());
+    }
+
+    private function _getFastestLap()
+    {
+        $previousLaps = array_reverse(
+            $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->findAllPreviousLaps($this->_getAcademicYear())
+        );
+
+        $time = null;
+        $fastestLap = null;
+
+        foreach ($previousLaps as $lap) {
+            if ($fastestLap == null) {
+                $time = $lap->getLapTime();
+                $fastestLap = $lap;
+            } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
+                $time = $lap->getLapTime();
+                $fastestLap = $lap;
+            }
+        }
+
+        return array(
+            'time' => $fastestLap->getLapTime()->format('%i:%S'),
+            'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
+        );
+    }
+
+    private function _getMostFrequentRunner()
+    {
+        return $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->findMostFrequentRunner($this->_getAcademicYear());
     }
 
     private function _getAcademicYear()

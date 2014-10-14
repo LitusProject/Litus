@@ -23,6 +23,9 @@
             <div id="content_controller">
                 <div class="row">
                     <div class="col-md-4">
+                        <h2>Records</h2>
+                            Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
+                            Most laps :<span id="mostFrequentRunner" class="label label-success" style="font-size: 16px;">N/A</span><br>
                         <h2>Laps</h2>
 
                         <p style="margin-right: 20px;line-height: 30px;">
@@ -131,6 +134,8 @@
             });
 
             function displayLaps(data) {
+                $('#fastestTime').html(data.fastestTime);
+                $('#fastestRunner').html(data.fastestRunner);
                 $('#uniqueRunners').html(data.number.uniqueRunners);
                 $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
                 $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
