@@ -290,6 +290,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         $fastestLap = $this->_getFastestLap();
+        $mostFrequent = $this->_getMostFrequentRunner();
 
         $data = (object) array(
             'laps' => (object) array(
@@ -299,7 +300,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ),
                 'fastestRunner' => $fastestLap['runner'],
                 'fastestTime' => $fastestLap['time'],
-                'mostFrequentRunner' => $this->_getMostFrequentRunner(),
+                'mostFrequentRunner' => $mostFrequent['runner'],
+                'mostLaps' => $mostFrequent['laps'],
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
@@ -410,9 +412,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getMostFrequentRunner()
     {
-        return $this->_entityManager
+        $runners = $this->_entityManager
                 ->getRepository('SportBundle\Entity\Lap')
-                ->findMostFrequentRunner($this->_getAcademicYear());
+                ->getRunnersAndCount($this->_getAcademicYear());
+
+        $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runners[0]['runner']);
+
+        return array(
+            'runner' => $runner->getAcademic()->getFullName(),
+            'laps' => $runners[0]['lapCount'],
+        );
     }
 
     private function _getAcademicYear()
