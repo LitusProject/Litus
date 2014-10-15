@@ -112,7 +112,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
                             $groupMembers[] = $newRunner;
                         } else {
-                            if (null === $repositoryCheck->getGroup()) {
+                            if (null === $repositoryCheck->getGroup() || $this->getCurrentAcademicYear() != $repositoryCheck->getGroup()->getAcademicYear()) {
                                 $repositoryCheck->setGroup($newGroup);
                                 $groupMembers[] = $repositoryCheck;
                             }

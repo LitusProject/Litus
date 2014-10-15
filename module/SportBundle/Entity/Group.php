@@ -117,6 +117,14 @@ class Group
     }
 
     /**
+     * @return Academicyear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+
+    /**
      * @return array
      */
     public function getMembers()
