@@ -126,7 +126,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['academic_id']);
+                        ->findOneById($formData['academic']['id']);
 
                     $promotion = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Promotion\Academic')

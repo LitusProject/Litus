@@ -60,14 +60,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function addAction()
     {
-        if ($this->getAuthentication()->isAuthenticated()) {
+        /*if ($this->getAuthentication()->isAuthenticated()) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
                     'action' => 'edit',
                 )
             );
-        }
+        }*/
 
         if (null !== $this->getParam('identification')) {
             if ('u' == substr($this->getParam('identification'), 0, 1)) {

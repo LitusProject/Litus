@@ -170,7 +170,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($formData['person_id']);
+                    ->findOneById($formData['person']['id']);
 
                 $registration = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Registration')

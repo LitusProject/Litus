@@ -213,16 +213,19 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $specification = parent::getInputFilterSpecification();
 
-        if ('' === $this->data['city']) {
+        if ('' === $this->get('city')->getValue()) {
             // empty form
             return array();
         }
 
-        if ($this->data['city'] !== 'other') {
+        if ($this->get('city')->getValue() !== 'other') {
             unset($specification['other']);
 
             foreach ($specification['street'] as $city => $streetSpecification) {
-                $streetSpecification['required'] = $city === $this->data['city'];
+                if ('type' == $city) {
+                    continue;
+                }
+                $streetSpecification['required'] = $city === $this->get('city')->getValue();
             }
         } else {
             unset($specification['street']);

@@ -26,16 +26,16 @@
                 }
             }).change();
 
-            $('#academicSearch').typeaheadRemote(
+            $('#academic\\[academic\\]').typeaheadRemote(
                 {
                     source: '{{ url('common_admin_academic_typeahead', {'academicyear': activeAcademicYear.getCode()})}}',
                     items: 30,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#academicId').val($(this).data('value').id);
+                    $('[name="academic[academic][id]"]').val($(this).data('value').id);
                 } else {
-                    $('#academicId').val('');
+                    $('[name="academic[academic][id]"]').val('');
                 }
             });
         });

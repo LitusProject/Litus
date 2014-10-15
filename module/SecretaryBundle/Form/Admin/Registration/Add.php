@@ -18,7 +18,8 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Entity\Organization\MetaData;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
+    SecretaryBundle\Entity\Organization\MetaData;
 
 /**
  * Add Registration
@@ -32,40 +33,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'personId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'person',
             'label'      => 'Person',
             'required'   => true,
-            'attributes' => array(
-                'id'           => 'personSearch',
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-            ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators' => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
