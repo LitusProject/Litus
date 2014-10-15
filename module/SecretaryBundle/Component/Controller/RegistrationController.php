@@ -121,7 +121,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData($formData);
 
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(
@@ -129,7 +129,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $academicYear,
                         $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneById($formData['subject_id'])
+                            ->findOneById($formData['subject']['id'])
                     )
                 );
 

@@ -43,6 +43,20 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'options' => $cities,
                 'class'   => 'city',
             ),
+            'options' => array(
+                'input' => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'notEmpty',
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -165,11 +179,12 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $this->get('street')->setRequired($required);
         $this->get('number')->setRequired($required);
+        $this->get('mailbox')->setRequired(false);
         $this->get('city')->setRequired($required);
 
         $this->get('other')->setRequired($required);
 
-        return $this->setElementRequired($required);
+        return $this;
     }
 
     private function getCities()
@@ -211,7 +226,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
     public function getInputFilterSpecification()
     {
-        $specification = parent::getInputFilterSpecification();
+        $specs = parent::getInputFilterSpecification();
 
         if ('' === $this->get('city')->getValue()) {
             // empty form
@@ -219,18 +234,18 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         }
 
         if ($this->get('city')->getValue() !== 'other') {
-            unset($specification['other']);
+            unset($specs['other']);
 
-            foreach ($specification['street'] as $city => $streetSpecification) {
+            foreach ($specs['street'] as $city => $streetSpecification) {
                 if ('type' == $city) {
                     continue;
                 }
-                $streetSpecification['required'] = $city === $this->get('city')->getValue();
+                $specs['street'][$city]['required'] = ($city == $this->get('city')->getValue());
             }
         } else {
-            unset($specification['street']);
+            unset($specs['street']);
         }
 
-        return $specification;
+        return $specs;
     }
 }

@@ -211,14 +211,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value' => true,
                 ),
                 array(
-                    'type'  => 'common_address_add-primary',
-                    'name'  => 'primary_address',
-                    'label' => 'Primary Address&mdash;Student Room or Home',
+                    'type'     => 'common_address_add-primary',
+                    'name'     => 'primary_address',
+                    'label'    => 'Primary Address&mdash;Student Room or Home',
+                    'required' => true,
                 ),
                 array(
-                    'type'  => 'common_address_add',
-                    'name'  => 'secondary_address',
-                    'label' => 'Secondary Address&mdash;Home',
+                    'type'     => 'common_address_add',
+                    'name'     => 'secondary_address',
+                    'label'    => 'Secondary Address&mdash;Home',
+                    'required' => true,
                 ),
             ),
         ));

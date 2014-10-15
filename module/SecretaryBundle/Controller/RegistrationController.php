@@ -171,7 +171,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    'extra_info'     => unserialize($code->getInfo()),
+                    //'extra_info'     => unserialize($code->getInfo()), // TODO
                 ));
 
                 $formData = $this->getRequest()->getPost()->toArray();
@@ -294,7 +294,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    // 'extra_info'     => unserialize($code->getInfo()),
+                    //'extra_info'     => unserialize($code->getInfo()),// TODO
                 ));
 
                 return new ViewModel(
@@ -371,6 +371,12 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->findOneById($id);
         }
 
+        $tshirts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
         $oldTshirtBooking = null;
         $oldTshirtSize = null;
         if (null !== $metaData) {
@@ -402,6 +408,22 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     : false;
             }
 
+            if (isset($formData['organization_info']['organization'])) {
+                if (0 == $formData['organization_info']['organization'] && $enableOtherOrganization) {
+                    $selectedOrganization = null;
+                } else {
+                    $selectedOrganization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($formData['organization_info']['organization']);
+                }
+            } else {
+                $selectedOrganization = current(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findAll()
+                );
+            }
+
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -423,31 +445,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                 }
 
-                if (isset($formData['organization'])) {
-                    if (0 == $formData['organization'] && $enableOtherOrganization) {
-                        $organization = null;
-                    } else {
-                        $organization = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization_info']['organization']);
-
-                        $this->_setOrganization(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $organization
-                        );
-                    }
-                } else {
-                    $organization = current(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findAll()
-                    );
-
+                if (null !== $selectedOrganization) {
                     $this->_setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
-                        $organization
+                        $selectedOrganization
                     );
                 }
 
@@ -476,7 +478,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember()) {
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
+                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -525,6 +527,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
 
                 return new ViewModel();
+            } else {
+                return new ViewModel(
+                    array(
+                        'form' => $form,
+                        'termsAndConditions' => $termsAndConditions,
+                        'studentDomain' => $studentDomain,
+                        'membershipArticles' => $membershipArticles,
+                        'organizations' => $organizations,
+                        'selectedOrganization' => $selectedOrganization,
+                        'isPost' => true,
+                        'enableOtherOrganization' => $enableOtherOrganization,
+                    )
+                );
             }
         }
 
@@ -675,14 +690,16 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     private function _isValidCode()
     {
-        // $code = $this->getEntityManager()
-        //     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
-        //     ->findLastByUniversityIdentification($this->getParam('identification'));
-        //
-        // if (null !== $code)
-            return true;
+        return true;//TODO remove
+        $code = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
+            ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        // return false;
+        if (null !== $code) {
+            return true;
+        }
+
+        return false;
     }
 
     private function _getRegisterhibbolethUrl()

@@ -8,7 +8,7 @@
     {% include 'secretary/registration/partials/navigation.twig' %}
 
     {% if form %}
-        {% if organizations|length > 1 or enableOtherOrganization %}
+        {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
             <div id="organizationSelector">
                 <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
                 <ul style="list-style: none; width: 300px; margin: 0 auto;">
@@ -29,7 +29,7 @@
                 </ul>
             </div>
         {% endif %}
-        <div id="registerForm"{% if organizations|length > 1 or enableOtherOrganization %} style="display: none;"{% endif %}>
+        <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         </div>
@@ -98,7 +98,7 @@
 
             var $form = $('#registerForm');
 
-            {% if organizations|length > 1 or enableOtherOrganization %}
+            {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
                 $('#organizationSelector a').click(function (e) {
                     $('#organizationSelector').hide();
                     $form
@@ -169,16 +169,16 @@
                 return false;
             });
 
-            $('.primary-address .city').change(cityChange);
-            $('#become_member').change(toggleMember);
-            toggleMember();
-            cityChange();
-
             {% if selectedOrganization %}
                 $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
             {% elseif isPost %}
                 $('#organization > option[value="0"]').click();
             {% endif %}
+
+            $('.primary-address .city').change(cityChange);
+            $('#become_member').change(toggleMember);
+            toggleMember();
+            cityChange();
 
             $('#university_email').wrap('<div class=\"input-group\" />');
             $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
@@ -222,12 +222,23 @@
         }
 
         function toggleMember() {
-            if ($('#become_member').is(':checked'))
-                $('#organization_info .form-group').show();
+            var $form = $('#registerForm');
+
+            if ($form.find('#become_member').is(':checked'))
+                $form.find('#organization_info .form-group').show();
             else
-                $('#organization_info .form-group').hide();
-            $('#become_member, #conditions, #bakske').closest('.form-group').show();
-            $form.find('#organization').closest('.form-group').hide();
+                $form.find('#organization_info .form-group').hide();
+
+            $form.find('#become_member')
+                .closest('.form-group')
+                    .toggle($('#registerForm').find('#organization').val() !== '0');
+
+            $form.find('#conditions, #bakske')
+                .closest('.form-group')
+                    .show();
+            $form.find('#organization')
+                .closest('.form-group')
+                    .hide();
         }
     </script>
 {% endblock %}
