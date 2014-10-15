@@ -18,6 +18,8 @@
 
 namespace SyllabusBundle\Form\Admin\Prof;
 
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
+
 /**
  * Add Prof
  *
@@ -30,41 +32,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'prof_id',
-            'attributes' => array(
-                'id' => 'profId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'prof',
-            'label'      => 'Docent',
+            'label'      => 'Prof',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'profSearch',
                 'size'         => 70,
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators' => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),

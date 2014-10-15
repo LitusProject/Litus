@@ -21,16 +21,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#subjectSearch').typeaheadRemote(
+            $('#subject').typeaheadRemote(
                 {
                     source: '{{ url('syllabus_admin_subject_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
                     items: 30,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#subjectId').val($(this).data('value').id);
+                    $('[name="subject[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#subjectId').val('');
+                    $('[name="subject[id]"]').val('');
                 }
             });
         });

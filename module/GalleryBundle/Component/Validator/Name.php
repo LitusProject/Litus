@@ -46,6 +46,9 @@ class Name extends AbstractValidator implements FormAwareInterface
      */
     private $album;
 
+    /**
+     * @var Form The form to validate
+     */
     private $form;
 
     /**
@@ -68,6 +71,9 @@ class Name extends AbstractValidator implements FormAwareInterface
         $this->album = $album;
     }
 
+    /**
+     * @param Form $form
+     */
     public function setForm(Form $form)
     {
         $this->form = $form;

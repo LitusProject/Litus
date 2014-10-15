@@ -55,7 +55,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                    ->findOneById($formData['study']['id']);
 
                 $mapping = $form->hydrateObject(
                     new StudySubjectMap($study, $subject, false, $academicYear)

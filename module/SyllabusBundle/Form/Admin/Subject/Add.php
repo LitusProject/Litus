@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Form\Admin\Subject;
 
 use SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
+    SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator,
     SyllabusBundle\Entity\Subject;
 
 /**
@@ -102,41 +103,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'study_id',
-            'attributes' => array(
-                'id' => 'studyId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'study',
             'label'      => 'Study',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'studySearch',
                 'style'        => 'width: 400px',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators' => array(
+                        new StudyTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
