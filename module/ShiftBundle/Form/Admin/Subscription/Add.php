@@ -18,7 +18,7 @@
 
 namespace ShiftBundle\Form\Admin\Subscription;
 
-use CommonBundle\Component\Validator\Academic as AcademicValidator;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
  * Add a subscription to a shift
@@ -34,51 +34,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'person_name',
+            'type'       => 'typeahead',
+            'name'       => 'person',
             'label'      => 'Name',
             'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'personSearch',
-            ),
             'options' => array(
                 'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => false,
-                            )
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'personId',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => true,
-                            )
-                        ),
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
@@ -91,18 +54,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'add');
-    }
-
-    public function getInputFilterSpecification()
-    {
-        $specs = parent::getInputFilterSpecification();
-
-        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            unset($specs['person_id']);
-        } else {
-            unset($specs['person_name']);
-        }
-
-        return $specs;
     }
 }

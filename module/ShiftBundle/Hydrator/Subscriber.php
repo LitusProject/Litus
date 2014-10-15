@@ -39,17 +39,9 @@ class Subscriber extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
         }
 
-        $repository = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic');
-        if ($data['person_id'] == '') {
-            $person = $repository->findOneByUsername($data['person_name']);
-        } else {
-            $person = $repository->findOneById($data['person_id']);
-        }
-
-        if (null === $person) {
-            return;
-        }
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($data['person']['id']);
 
         if ($data['responsible']) {
             if (!$object->canHaveAsResponsible($this->getEntityManager(), $person)) {

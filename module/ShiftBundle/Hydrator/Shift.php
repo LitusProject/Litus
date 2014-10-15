@@ -42,10 +42,10 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['manager_id'] = $manager->getId();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-        $data['manager'] = $manager->getFullName()
+        $data['manager']['id'] = $manager->getId();
+        $data['manager']['value'] = $manager->getFullName()
                 . ($manager instanceof Academic ? ' - ' . $manager->getUniversityIdentification() : '');
         $data['unit'] = $object->getUnit()->getId();
         $data['event'] = null === $object->getEvent()
@@ -70,12 +70,9 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
                 ->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        $peopleRepository = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-        $manager = ('' == $data['manager_id'])
-            ? $peopleRepository->findOneByUsername($data['manager'])
-            : $peopleRepository->findOneById($data['manager_id']);
+        $manager = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($data['manager']['id']);
 
         $editRoles = array();
         if (isset($data['edit_roles'])) {
