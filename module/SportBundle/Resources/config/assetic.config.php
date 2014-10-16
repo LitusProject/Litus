@@ -24,8 +24,9 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@run_js',
             '@common_socket',
+            '@common_remote_typeahead',
+            '@run_js',
         ),
         'sport_run_index' => array(
             '@common_jquery',

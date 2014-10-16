@@ -1,0 +1,45 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        <p>Name: <b>{{ runner.getFullName() }}</b></p>
+        {% if runner.getAcademic() %}
+            <p>University Identification: <b>{{ runner.getAcademic().getUniversityIdentification() }}</b></p>
+        {% endif %}
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <table class="manage">
+        <tr>
+            <th>Name</th>
+        </tr>
+        {% for member in members %}
+            <tr class="item item-{{ member.getId() }}">
+                <td>{{ member.getAcademic().getFullName() }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#personSearch').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('#personId').val($(this).data('value').id);
+                } else {
+                    $('#personId').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}
