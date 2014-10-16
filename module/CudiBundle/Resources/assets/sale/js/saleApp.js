@@ -270,10 +270,7 @@ var currentView = 'selectPaydesk';
 
             queue.queue('show');
         });
-
-        $('body').append(modal);
         modal.permanentModal();
-        $('.modal, .modal-backdrop').addClass('fade');
     }
 
     function _socketError($this) {
