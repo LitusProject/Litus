@@ -195,42 +195,51 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function pastaAction()
+    public function rewardAction()
     {
-        $runners = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Runner')
-            ->findAll();
+        $laps = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findByAcademicYear($this->_getAcademicYear());
 
-        $pastaRunners = array();
-        foreach ($runners as $runner) {
-            $runner->setEntityManager($this->getEntityManager());
+        $rewardTimeLimit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('sport.reward_time_limit');
 
-            foreach ($runner->getLaps($this->_getAcademicYear()) as $lap) {
-                if (
+        $rewardRunners = array();
+        foreach ($laps as $lap) {
+            if (
                     null !== $lap->getEndTime()
-                    && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= 88
-                ) {
-                    if (isset($pastaRunners[$runner->getId()])) {
-                        $pastaRunners[$runner->getId()]['count']++;
-                    } else {
-                        $pastaRunners[$runner->getId()] = array(
-                            'name'  => $runner->getFullName(),
-                            'count' => 1,
-                        );
-                    }
+                    && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
+                )
+            {
+                $runner = $lap->getRunner();
+                $runner->setEntityManager($this->getEntityManager());
+                if (isset($rewardRunners[$runner->getId()])) {
+                    $rewardRunners[$runner->getId()]['count']++;
+                } else {
+                    $rewardRunners[$runner->getId()] = array(
+                        'name'  => $runner->getFullName(),
+                        'count' => 1,
+                    );
                 }
             }
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $pastaRunners,
+            $rewardRunners,
             $this->getParam('page')
         );
+
+        $d1 = new DateTime();
+        $d2 = new DateTime();
+        $d2->add(new DateInterval('PT'.$rewardTimeLimit.'S'));
+        $timeLimit = $d2->diff($d1);
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'timeLimit' => $timeLimit,
             )
         );
     }
