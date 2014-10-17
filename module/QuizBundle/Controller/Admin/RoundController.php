@@ -68,8 +68,9 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $round = new Round($quiz);
-                $form->hydrateObject($round);
+                $round = $form->hydrateObject(
+                    new Round($quiz)
+                );
 
                 $this->getEntityManager()->persist($round);
                 $this->getEntityManager()->flush();

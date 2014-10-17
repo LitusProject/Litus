@@ -68,9 +68,9 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $team = new Team($quiz);
-
-                $form->hydrateObject($team);
+                $team = $form->hydrateObject(
+                    new Team($quiz)
+                );
 
                 $this->getEntityManager()->persist($team);
                 $this->getEntityManager()->flush();

@@ -23,6 +23,11 @@ return array(
             'items'    => array(
                 'quiz_admin_quiz' => array('title' => 'Quiz'),
             ),
+            'controllers' => array(
+                'quiz_admin_quiz',
+                'quiz_admin_round',
+                'quiz_admin_team',
+            ),
         ),
     ),
 );

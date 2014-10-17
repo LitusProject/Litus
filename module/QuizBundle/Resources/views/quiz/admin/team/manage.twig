@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'quiz/admin/team/partials/navigation.twig' %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -73,8 +73,36 @@
         </div>
     </div>
 
-    {% if hasAccess('quiz_admin_round', 'manage') %}
-        <aside>
+    <aside>
+        {% if hasAccess('quiz_admin_quiz', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Quiz</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}">&rarr; Edit Quiz</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_team', 'add') %}
+            <div class="sidebox">
+                <div class="title">Add Team</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a team to this quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_team', {"action": "add", "quizid": quiz.getId()}) }}">&rarr; Add Team</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_round', 'manage') %}
             <div class="sidebox">
                 <div class="title">Manage Rounds</div>
                 <div class="content">
@@ -86,8 +114,8 @@
                     </p>
                 </div>
             </div>
-        </aside>
-    {% endif %}
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}
