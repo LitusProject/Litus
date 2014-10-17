@@ -41,6 +41,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
+     * @var int Minimum runtime required (in seconds)
+     */
+    private static $MIN_LAP_TIME = 60;
+
+    /**
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
@@ -395,12 +400,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fastestLap = null;
 
         foreach ($previousLaps as $lap) {
-            if ($fastestLap == null) {
-                $time = $lap->getLapTime();
-                $fastestLap = $lap;
-            } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
-                $time = $lap->getLapTime();
-                $fastestLap = $lap;
+            if ($this->_isValidLapTime($lap->getLapTime())) {
+                if ($fastestLap == null) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                }
             }
         }
 
@@ -420,10 +427,21 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runners[0]['runner']);
 
-        return array(
-            'runner' => $runner->getAcademic()->getFullName(),
-            'laps' => $runners[0]['lapCount'],
-        );
+        if (strpos($runner->getAcademic()->getFullName(),'VTK gent') !== false) {
+            return array(
+                'runner' => $runner->getAcademic()->getFullName(),
+                'laps' => $runners[0]['lapCount'],
+            );
+        } else {
+            $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runners[1]['runner']);
+
+            return array(
+                'runner' => $runner->getAcademic()->getFullName(),
+                'laps' => $runners[1]['lapCount'],
+            );
+        }
     }
 
     private function _getAcademicYear()
@@ -523,5 +541,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function _convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
+    }
+
+    private function _isValidLapTime(DateInterval $interval)
+    {
+        if ($this->_convertDateIntervalToSeconds($interval) < self::$MIN_LAP_TIME) {
+            return false;
+        }
+
+        return true;
     }
 }
