@@ -291,12 +291,19 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $laps[] = $this->_jsonLap($lap, 'next');
         }
 
+        $fastestLap = $this->_getFastestLap();
+        $mostFrequent = $this->_getMostFrequentRunner();
+
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
+                'fastestRunner' => $fastestLap['runner'],
+                'fastestTime' => $fastestLap['time'],
+                'mostFrequentRunner' => $mostFrequent['runner'],
+                'mostLaps' => $mostFrequent['laps'],
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
@@ -378,6 +385,49 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findNext($this->_getAcademicYear());
     }
 
+    private function _getFastestLap()
+    {
+        $previousLaps = array_reverse(
+            $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->findAllPreviousLaps($this->_getAcademicYear())
+        );
+
+        $time = null;
+        $fastestLap = null;
+
+        foreach ($previousLaps as $lap) {
+            if ($fastestLap == null) {
+                $time = $lap->getLapTime();
+                $fastestLap = $lap;
+            } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
+                $time = $lap->getLapTime();
+                $fastestLap = $lap;
+            }
+        }
+
+        return array(
+            'time' => $fastestLap->getLapTime()->format('%i:%S'),
+            'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
+        );
+    }
+
+    private function _getMostFrequentRunner()
+    {
+        $runners = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->getRunnersAndCount($this->_getAcademicYear());
+
+        $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runners[0]['runner']);
+
+        return array(
+            'runner' => $runner->getAcademic()->getFullName(),
+            'laps' => $runners[0]['lapCount'],
+        );
+    }
+
     private function _getAcademicYear()
     {
         return AcademicYear::getUniversityYear($this->_entityManager);
@@ -385,22 +435,23 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
+        $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents) {
             $resultPage = (array) json_decode($fileContents);
         }
 
-        if (null !== $resultPage) {
+        if ($resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
             $currentPlace = null;
             $teamData = null;
+
             foreach ($resultPage['teams'] as $place => $team) {
-                if ($team[0] == $teamId) {
+                if ($team->nb == $teamId) {
                     $currentPlace = $place;
                     $teamData = $team;
                 }
@@ -410,19 +461,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $behind = 0;
                 if (null !== $currentPlace && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
                 }
 
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
+                $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
 
                 return array(
                     'lapLength' => $resultPage['lap'],
-
-                    'nbLaps' => $teamData[2],
-                    'position' => round($teamData[3] * 100),
-                    'speed' => round($teamData[4], 2),
+                    'nbLaps' => $teamData->laps,
+                    'position' => round($teamData->position * 100),
+                    'speed' => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
-
                     'behind' => $behind,
                 );
             }

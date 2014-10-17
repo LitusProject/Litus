@@ -92,6 +92,81 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function editGroupAction()
+    {
+        if (!($group = $this->_getGroup())) {
+            return new ViewModel();
+        }
+
+        $form = new EditGroupForm($this->getEntityManager());
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getFormData($formData);
+
+                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($formData['person_name']);
+                } else {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneById($formData['person_id']);
+                }
+
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneByUniversityIdentification($academic->getUniversityIdentification());
+
+                if (null === $repositoryCheck) {
+                    $department = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Department')
+                        ->findOneById($formData['department']);
+
+                    $newRunner = new Runner(
+                        $academic->getFirstName(),
+                        $academic->getLastName(),
+                        $academic,
+                        $group,
+                        $department
+                    );
+
+                    $this->getEntityManager()->persist($newRunner);
+
+                    $groupMembers[] = $newRunner;
+                } else {
+                    $repositoryCheck->setGroup($group);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The group was successfully edited!'
+                );
+
+                $this->redirect()->toRoute(
+                    'sport_admin_run',
+                    array(
+                        'action' => 'groups',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'members' => $group->getMembers(),
+            )
+        );
+    }
+
     public function departmentsAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -320,5 +395,49 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     private function _convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
+    }
+
+    /**
+     * @return Group
+     */
+    private function _getGroup()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the group!'
+            );
+
+            $this->redirect()->toRoute(
+                'sport_admin_run',
+                array(
+                    'action' => 'groups',
+                )
+            );
+
+            return;
+        }
+
+        $group = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Group')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $group) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No group with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'sport_admin_run',
+                array(
+                    'action' => 'groups',
+                )
+            );
+
+            return;
+        }
+
+        return $group;
     }
 }

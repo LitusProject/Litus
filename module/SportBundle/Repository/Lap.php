@@ -153,4 +153,25 @@ class Lap extends EntityRepository
 
         return $resultSet[0][1];
     }
+
+    public function getRunnersAndCount(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('IDENTITY(l.runner) runner','COUNT(l.runner) lapCount')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
+            ->groupBy('l.runner')
+            ->orderBy('lapCount','DESC')
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
 }

@@ -59,8 +59,7 @@ EOT
             if (false !== $fileContents && null !== $resultPage) {
                 file_put_contents('data/cache/' . md5('run_result_page'), $fileContents);
                 $this->writeln('Succesfully cached the result page');
-
-                sleep(substr($resultPage->update, 0, strlen($resultPage->update)-1));
+                sleep(10);
             } else {
                 $this->writeln('Failed to cache the result page');
                 sleep(10);
