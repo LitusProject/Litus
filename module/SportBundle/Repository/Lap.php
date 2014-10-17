@@ -154,7 +154,8 @@ class Lap extends EntityRepository
         return $resultSet[0][1];
     }
 
-    public function getRunnersAndCount(AcademicYear $academicYear){
+    public function getRunnersAndCount(AcademicYear $academicYear)
+    {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('IDENTITY(l.runner) runner','COUNT(l.runner) lapCount')
             ->from('SportBundle\Entity\Lap', 'l')
