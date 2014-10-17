@@ -21,6 +21,7 @@ namespace SportBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
+    DateTime,
     SportBundle\Entity\Runner,
     SportBundle\Form\Admin\Group\Edit as EditGroupForm,
     SportBundle\Form\Admin\Runner\Edit as EditForm,
@@ -311,6 +312,61 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('sport.queue_socket_key'),
+            )
+        );
+    }
+
+    public function runnersAction()
+    {
+        $runners = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Lap')
+                ->getRunnersAndCount($this->_getAcademicYear());
+
+        $runnersList = array();
+        foreach ($runners as $runner)
+        {
+            $runnerEntity = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runner['runner']);
+
+            $runnerEntity->setEntityManager($this->getEntityManager());
+
+            $name = $runnerEntity->getFullName();
+            $points = $runnerEntity->getPoints($this->_getAcademicYear());
+
+            $totalTime = 0;
+            $laps = $runnerEntity->getLaps($this->_getAcademicYear());
+            foreach ($laps as $lap)
+            {
+                $lapTime = $lap->getLapTime();
+                $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
+            }
+
+            $d1 = new DateTime();
+            $d2 = new DateTime();
+            $d2->add(new DateInterval('PT'.round($totalTime/count($laps)).'S'));
+            $avarage = $d2->diff($d1);
+
+            array_push($runnersList,
+                array(
+                    'name' => $name,
+                    'laps' => count($laps),
+                    'points' => $points,
+                    'avarage' => $avarage
+                )
+            );
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $runnersList,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYear' => $this->_getAcademicYear(),
             )
         );
     }

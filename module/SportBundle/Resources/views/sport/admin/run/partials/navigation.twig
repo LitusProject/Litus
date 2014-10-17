@@ -15,6 +15,9 @@
             {% if hasAccess('sport_admin_run', 'groups') %}
                 <li><a {% if 'groups' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "groups"}) }}">Groups of Friends</a></li>
             {% endif %}
+            {% if hasAccess('sport_admin_run', 'runners') %}
+                <li><a {% if 'runners' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "runners"}) }}">Runners</a></li>
+            {% endif %}
             {% if hasAccess('sport_admin_run', 'laps') %}
                 <li><a {% if 'laps' == getParam('action') %} class="active" {% endif %} href="{{ url("sport_admin_run", {"action": "laps"}) }}">Laps</a></li>
             {% endif %}
