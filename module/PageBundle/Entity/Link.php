@@ -89,7 +89,7 @@ class Link
      * @param  Page $parent
      * @return self
      */
-    public function setParent(Page $parent)
+    public function setParent(Page $parent = null)
     {
         $this->parent = $parent;
 

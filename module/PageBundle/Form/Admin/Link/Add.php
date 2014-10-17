@@ -42,6 +42,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'category',
             'label'      => 'Category',
             'required'   => true,
+            'attributes' => array(
+                'id'      => 'category',
+            ),
             'options'    => array(
                 'options' => $this->createCategoriesArray(),
             ),
@@ -57,6 +60,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'name'       => 'parent_' . $category->getId(),
                 'label'      => 'Parent',
                 'attributes' => array(
+                    'id'    => 'parent_' . $category->getId(),
                     'class' => 'parent',
                 ),
                 'options'    => array(

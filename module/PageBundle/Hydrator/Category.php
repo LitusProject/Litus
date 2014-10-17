@@ -87,11 +87,4 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 
         return $data;
     }
-
-    private function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
 }

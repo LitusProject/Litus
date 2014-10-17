@@ -54,8 +54,11 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
             $defaultLanguage = Locale::getDefault();
 
             $this->add(array(
-                'type' => 'tabs',
-                'name' => $prefix . 'languages',
+                'type'       => 'tabs',
+                'name'       => $prefix . 'languages',
+                'attributes' => array(
+                    'id' => $prefix . 'languages',
+                ),
             ));
 
             $tabs = $this->get($prefix . 'languages');

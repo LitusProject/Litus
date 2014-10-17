@@ -39,6 +39,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'select',
             'name'       => 'parent',
             'label'      => 'Parent',
+            'attributes' => array(
+                'id' => 'parent',
+            ),
             'options'    => array(
                 'options' => $this->createPagesArray(),
             ),

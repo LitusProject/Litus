@@ -46,7 +46,9 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($data['parent_' . $category->getId()]);
 
-            $object->setParent($parent);
+            if (null !== $parent) {
+                $object->setParent($parent);
+            }
         } else {
             $object->setParent();
         }
@@ -93,12 +95,5 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
         $data['parent_' . $object->getCategory()->getId()] = $object->getParent() ? $object->getParent()->getId() : '';
 
         return $data;
-    }
-
-    private function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
     }
 }
