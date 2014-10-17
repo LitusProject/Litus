@@ -60,14 +60,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function addAction()
     {
-        /*if ($this->getAuthentication()->isAuthenticated()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
                     'action' => 'edit',
                 )
             );
-        }*/
+        }
 
         if (null !== $this->getParam('identification')) {
             if ('u' == substr($this->getParam('identification'), 0, 1)) {
@@ -171,7 +171,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    //'extra_info'     => unserialize($code->getInfo()), // TODO
+                    'extra_info'     => unserialize($code->getInfo()),
                 ));
 
                 $formData = $this->getRequest()->getPost()->toArray();
@@ -294,7 +294,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    //'extra_info'     => unserialize($code->getInfo()),// TODO
+                    'extra_info'     => unserialize($code->getInfo()),
                 ));
 
                 return new ViewModel(
@@ -690,7 +690,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     private function _isValidCode()
     {
-        return true;//TODO remove
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
