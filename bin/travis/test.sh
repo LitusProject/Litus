@@ -34,7 +34,7 @@ install() {
 
 case $1 in
     codestyle)
-        exec bin/fix-cs.sh
+        exec bin/fix-cs.sh --verbose
         ;;
     install)
         install
