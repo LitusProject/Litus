@@ -210,8 +210,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             if (
                     null !== $lap->getEndTime()
                     && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
-                )
-            {
+                ) {
                 $runner = $lap->getRunner();
                 $runner->setEntityManager($this->getEntityManager());
                 if (isset($rewardRunners[$runner->getId()])) {
@@ -232,7 +231,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         $d1 = new DateTime();
         $d2 = new DateTime();
-        $d2->add(new DateInterval('PT'.$rewardTimeLimit.'S'));
+        $d2->add(new DateInterval('PT' . $rewardTimeLimit . 'S'));
         $timeLimit = $d2->diff($d1);
 
         return new ViewModel(
@@ -332,8 +331,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 ->getRunnersAndCount($this->_getAcademicYear());
 
         $runnersList = array();
-        foreach ($runners as $runner)
-        {
+        foreach ($runners as $runner) {
             $runnerEntity = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runner['runner']);
@@ -345,15 +343,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
             $totalTime = 0;
             $laps = $runnerEntity->getLaps($this->_getAcademicYear());
-            foreach ($laps as $lap)
-            {
+            foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
                 $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
             }
 
             $d1 = new DateTime();
             $d2 = new DateTime();
-            $d2->add(new DateInterval('PT'.round($totalTime/count($laps)).'S'));
+            $d2->add(new DateInterval('PT' . round($totalTime/count($laps)) . 'S'));
             $avarage = $d2->diff($d1);
 
             array_push($runnersList,
@@ -361,7 +358,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     'name' => $name,
                     'laps' => count($laps),
                     'points' => $points,
-                    'avarage' => $avarage
+                    'avarage' => $avarage,
                 )
             );
         }
