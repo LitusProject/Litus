@@ -43,8 +43,8 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new NotificationEntity($this->getPerson());
         }
 
-        $startDate = self::_loadDate($data['start_date']);
-        $endDate = self::_loadDate($data['end_date']);
+        $startDate = self::loadDateTime($data['start_date']);
+        $endDate = self::loadDateTime($data['end_date']);
 
         if (null === $startDate || null === $endDate) {
             throw new InvalidDateException();
@@ -94,21 +94,5 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         return $data;
-    }
-
-    private function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
